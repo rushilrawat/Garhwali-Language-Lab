@@ -1,0 +1,11 @@
+{
+  "records": 162,
+  "source_counts": {
+    "asjp": 91,
+    "tatoeba": 36,
+    "wikimedia": 35
+  },
+  "unique_normalized_texts": 160,
+  "native_reviewed": 0,
+  "failures": {}
+}

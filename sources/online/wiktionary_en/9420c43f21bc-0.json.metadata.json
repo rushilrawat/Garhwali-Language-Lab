@@ -1,0 +1,7 @@
+{
+  "url": "https://en.wiktionary.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle=Category%3AGarhwali+adverbs&cmlimit=500",
+  "retrieved_at": "2026-09-07T13:42:32.888135+00:00",
+  "sha256": "afb41c288efd3ed0f07a225313aa43be931ab6e7dc047590c5fbc566fb9a2979",
+  "raw_path": "sources/online/wiktionary_en/afb41c288efd3ed0-9420c43f21bc-0.json",
+  "bytes": 368
+}

@@ -1,0 +1,7 @@
+{
+  "url": "https://en.wiktionary.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle=Category%3AGarhwali+nouns&cmlimit=500",
+  "retrieved_at": "2026-09-07T13:42:33.499897+00:00",
+  "sha256": "a4863f4eb53e8f7630b68f676e132330fc28fff85f54c2e6af6597a8bfaee906",
+  "raw_path": "sources/online/wiktionary_en/a4863f4eb53e8f76-2e8027623be0-0.json",
+  "bytes": 1539
+}

@@ -1,0 +1,7 @@
+{
+  "url": "https://en.wiktionary.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle=Category%3AGarhwali+lemmas&cmlimit=500",
+  "retrieved_at": "2026-09-07T13:42:32.475738+00:00",
+  "sha256": "2dd8a33b9f81838a851eab9a9d021fd0716dfdcdb6ccfe5260e687c7046287a8",
+  "raw_path": "sources/online/wiktionary_en/2dd8a33b9f81838a-f23c8f93616c-0.json",
+  "bytes": 3923
+}

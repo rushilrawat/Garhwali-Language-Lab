@@ -1,0 +1,7 @@
+{
+  "url": "https://archive.org/advancedsearch.php?q=garhwali&output=json&rows=1000&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=language&fl%5B%5D=licenseurl",
+  "retrieved_at": "2026-09-07T13:40:28.450471+00:00",
+  "sha256": "cdd36e479457118e2dae9b1895b6e0cd9a92df4d1006e73b000746d3d988c1c7",
+  "raw_path": "sources/online/discovery/cdd36e479457118e-ia_garhwali.txt",
+  "bytes": 21684
+}

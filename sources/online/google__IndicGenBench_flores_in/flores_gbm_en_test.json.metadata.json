@@ -1,0 +1,7 @@
+{
+  "url": "https://huggingface.co/datasets/google/IndicGenBench_flores_in/resolve/f8650438298df086750ff4973661bb58a201a5ee/flores_gbm_en_test.json",
+  "retrieved_at": "2026-09-07T13:43:50.873505+00:00",
+  "sha256": "d169fad549a560384ca0f73fe161a396e835398526915cc2780d18be8ee49df6",
+  "raw_path": "sources/online/google__IndicGenBench_flores_in/d169fad549a56038-flores_gbm_en_test.json",
+  "bytes": 612402
+}

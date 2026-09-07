@@ -1,0 +1,7 @@
+{
+  "url": "https://en.wiktionary.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle=Category%3AGarhwali+morphemes&cmlimit=500",
+  "retrieved_at": "2026-09-07T13:42:33.171112+00:00",
+  "sha256": "7c66fddee38c8be0f1842895f8eb44364e5d3665b6ea9b38dbaf171a67e9d4b4",
+  "raw_path": "sources/online/wiktionary_en/7c66fddee38c8be0-af84349b03ed-0.json",
+  "bytes": 114
+}

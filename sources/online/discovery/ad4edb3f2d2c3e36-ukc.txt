@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html prefix="dct: http://purl.org/dc/terms/
+              rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+              dcat: http://www.w3.org/ns/dcat#
+              foaf: http://xmlns.com/foaf/0.1/">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Garhwali UKC Lexicon - LiveLanguage</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  
+  
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/notie/3.0.0/notie.min.css">
+  <link rel="stylesheet" href="/LiveLanguage/css/main.css">
+  <link rel="canonical" href="https://datascientiafoundation.github.io/LiveLanguage/datasets/gbm-ukc-lexicon-/">
+
+  
+
+  
+
+  
+
+  
+    <!-- Open Graph -->
+    <meta property="og:title" content="Garhwali UKC Lexicon" />
+<meta property="og:site_name" content="LiveLanguage" />
+
+<meta property="og:description" content="Garhwali is a language from the  family, spoken in Eurasia. The UKC Lexicon of Garhwali is represented as a lexico-semantic network. It consists of words, word senses, synsets, as well as sense-lev..." />
+<meta name="og:image" content="/LiveLanguage/img/LL.png" />
+<meta name="og:image:width" content="150" />
+<meta name="og:image:height" content="150" />
+
+  
+
+  
+
+  <script>
+  var settings = {
+    BASE_URL: "/LiveLanguage",
+    PAGE_URL: "/datasets/gbm-ukc-lexicon-/",
+    REPO_BRANCH: "gh-pages",
+    REPO_OWNER: "datascientiafoundation",
+    REPO_NAME: "LiveLanguage",
+    GITHUB_CLIENT_ID: "8daa7e72ae32454aba88",
+    GATEKEEPER_HOST: "http://localhost:9999"
+  }
+  </script>
+
+  <!-- Map settings-->
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  
+    <!-- multi select -->
+  <script src="https://code.jquery.com/jquery-3.4.0.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+
+
+  <body>
+
+    <div class="account-masthead navbar"  data-component="navigation">
+  <div class="container">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item"><a class="nav-link login-link" href="#" data-hook="login-link">Login</a></li>
+      <li class="nav-item dropdown d-none" data-hook="user-dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-hook="user-dropdown-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <span class="user-issue" data-hook="user-issue"><i class="fa fa-exclamation-circle"></i></span>
+          <span data-hook="user-name">User</span>
+          <span class="caret"></span>
+        </a>
+    </ul>
+    <div class = "dropdown-menu">
+      <a class="dropdown-item admin-only" data-hook="admin-link-list-item" href="/LiveLanguage/admin/">Administration</a>
+      <a class="dropdown-item" href="#" data-hook="logout-link">Logout</a>
+    </div>
+  </div>
+</div>
+<nav class="navbar navbar-expand-sm mb-4 navbar-light">
+  <div class="container">
+    <a class="logo" href="/LiveLanguage/"><img src="/LiveLanguage/img/LL.png"></a>
+
+<!-- <a class="navbar-brand" href="/LiveLanguage/">LiveLanguage</a>   -->
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="sr-only">Toggle navigation</span>
+  <span class="navbar-toggler-icon"></span>
+</button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        
+          
+          <li class="nav-item"><a class="nav-link" href="http://datascientia.disi.unitn.it/" target="_blank">About Us</a></li>
+          
+        
+          
+          <li class="nav-item active"><a class="nav-link" href="/LiveLanguage/datasets/">Datasets <span class="sr-only">(current)</span></a></li>
+          
+        
+          
+          <li class="nav-item"><a class="nav-link" href="/LiveLanguage/organizations/">Organizations</a></li>
+          
+        
+          
+          <li class="nav-item"><a class="nav-link" href="/LiveLanguage/#services">Services</a></li>
+          
+        
+          
+          <li class="nav-item"><a class="nav-link" href="/LiveLanguage/faq/">FAQ</a></li>
+          
+        
+      </ul>
+
+    </div>
+
+  </div>
+</nav>
+
+
+    <section data-hook="main" class="container">
+      <ol class="breadcrumb">
+  
+    <li class="breadcrumb-item"><a href="/LiveLanguage/"><i class="fa fa-home" aria-label="Home"></i></a></li>
+    
+      
+      
+        <li class="breadcrumb-item"><a href="/LiveLanguage/datasets/">Datasets</a></li>
+      
+    
+    <li class="breadcrumb-item active">Garhwali UKC Lexicon</li>
+  
+</ol>
+
+
+
+
+
+
+
+
+
+<div class="container">
+    <div data-component="view-switcher">
+        <div data-component="dataset-display" data-hook="view" data-view="display" typeof="dcat:Dataset"
+             resource="/datasets/gbm-ukc-lexicon-/">
+            <div class="row wrapper ">
+                
+                <div class="secondary col-md-3" property="dct:publisher" resource="/LiveLanguage/datasets/?organization=datascientia-foundation">
+                    <div class="card mb-3">
+                        <div class="card-img-top">
+                            
+                            <a href="/LiveLanguage/datasets/?organization=datascientia-foundation"><img
+                                    src="data:image/jpeg;base64,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" alt="DataScientia Foundation logo"
+                                    class="img-thumbnail rounded mx-auto d-block"></a>
+                            
+                        </div>
+                        <div class="card-header">
+                            <h3 style="word-wrap: break-word">
+                                <a href="/LiveLanguage/datasets/?organization=datascientia-foundation" about="/LiveLanguage/datasets/?organization=datascientia-foundation"
+                                   property="foaf:homepage">
+                                    <span property="foaf:name">DataScientia Foundation</span>
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            DataScientia - a soon-to-be-established not-for-profit organization whose ultimate aim is the creation of a grass-roots community centered around the development and dissemination of a unitary knowledge-driven understanding of the people’s diversity, as it is represented by the data in the Internet. DataScientia is being nurtured by the University of Trento, Department of Information Engineering and Computer Science, in collaboration with a few founding partners.
+                        </div>
+                        <div class="view-code-link">
+                            <a href="https://github.com/datascientiafoundation/LiveLanguage/edit/gh-pages/_datasets/gbm-ukc-lexicon-.md" target="_blank"><i class="fa fa-code"></i> Open in
+                                GitHub</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="primary col">
+                    
+                        <h1>
+                            <span property="dct:title">Garhwali UKC Lexicon</span>
+                            <a href="?view=edit" class="pull-right btn btn-outline-secondary admin-only"
+                               data-hook="edit-dataset-btn">Edit</a>
+                        </h1>
+                        <p property="dct:description" style="text-align: justify; overflow-wrap: break-word;">Garhwali is a language from the  family, spoken in Eurasia. The UKC Lexicon of Garhwali is represented as a lexico-semantic network. It consists of words, word senses, synsets, as well as sense-level and synset-level relationships.</p>
+
+                        <h2>Resources</h2>
+                        <ul>
+                            
+                            <li data-hook="resource-item" property='dcat:distribution' typeof='dcat:Distribution'>
+                                <a href="" id="Garhwali UKC Lexicon LMF format" property='dcat:accessURL'><span property="dct:title">Garhwali UKC Lexicon LMF format</span></a>
+                                <script>
+                                    var resource = window.location.pathname;
+                                    document.getElementById("Garhwali UKC Lexicon LMF format").setAttribute ("href", "http://dsauthproxy.knowdive.disi.unitn.it/?res=" + resource + "&enc=resources/b2b93805-a9a1-490a-b468-11f2dd29b62a/output-gbm.zip");
+
+                                </script>
+                                <span class="badge badge-secondary" property='dcat:mediaType'>xml</span>
+                                <a href="#" class="show-resource-details"
+                                   data-hook="show-resource-details">(Details)</a>
+                                
+                                <table class="table table-striped table-condensed resource-details"
+                                       data-hook="resource-details">
+                                    
+                                    <tr>
+                                        <th>License</th>
+                                        <td>
+                                            <a property="dct:license" resource="https://creativecommons.org/licenses/by-nc-sa/4.0/" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                                                Creative Commons Attribution NonCommercial ShareAlike
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+
+                                    
+                                    <tr>
+                                        <th>Last updated</th>
+                                        <td>2023-04-17</td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+
+                                    
+                                    <tr>
+                                        <th>Created</th>
+                                        <td>2023-04-17</td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+
+                                    
+                                    <tr>
+                                        <th>Size (Bytes)</th>
+                                        <td>799</td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+
+                                    
+                                    <tr>
+                                        <th>Release Date</th>
+                                        <td>2023-04-17</td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+
+                                    
+                                    <tr>
+                                        <th>Distribution document or page</th>
+                                        <td></td>
+                                    </tr>
+                                    
+                                    
+                                    
+                                    
+                                </table>
+                            </li>
+                            
+                        </ul>
+
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+
+                        
+                        
+
+                        
+                        
+                        
+
+                        
+
+                        
+                        
+                        
+
+
+                        <h2>Map</h2>
+                        <div id='map' style='height: 300px; allowfullscreen:"";mozallowfullscreen:"true";'></div>
+                        <script>
+                            var map = new maplibregl.Map({
+                                container: 'map',
+                                style: 'https://demotiles.maplibre.org/style.json', // stylesheet location
+                                center: [78.7201,30.5061], // starting position [lng, lat]
+                            zoom: 4// starting zoom
+                            });
+                            map.addControl(new maplibregl.FullscreenControl());
+                            var marker = new maplibregl.Marker().setLngLat([78.7201,30.5061]).addTo(map);
+                        </script>
+                        <br/>
+
+                        
+                        
+                        
+
+
+                        <h2>Metadata</h2>
+                        <table class="table table-striped dataset-details">
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+                            <tr>
+  <th>Category</th>
+  <td>
+    
+      
+        <a href="/LiveLanguage/datasets/?category=ukc-lexicons">UKC Lexicons</a>
+      
+    
+  </td>
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Maintainer</th>
+                                <td>
+                                    
+                                    DataScientia Foundation
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Maintainer Email</th>
+                                <td>
+                                    
+                                    
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Tags</th>
+                                <td>
+                                    
+                                    
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Provenance</th>
+                                <td>
+                                    
+
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <a href="http://en.wiktionary.org" target="_blank">Wiktionary 2022.01. by Wikimedia Foundation</a><br>
+                                    
+                                    
+                                    
+                                    
+                                    <a href="https://wordnet.princeton.edu" target="_blank">Princeton WordNet 2.1 by Princeton University</a><br>
+                                    
+
+
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Version</th>
+                                <td>
+                                    
+                                    1.0
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Dataset Level</th>
+                                <td>
+                                    
+                                    Language Level (L1-2)
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Download Access Level</th>
+                                <td>
+                                    
+                                    Open Access
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Dataset description document or page</th>
+                                <td>
+                                    
+                                    <a href="">  </a>
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Landing Page</th>
+                                <td>
+                                    
+                                    <a href="">  </a>
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Date of Collection</th>
+                                <td>
+                                    
+                                    
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Words</th>
+                                <td>
+                                    
+                                    1
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Synsets</th>
+                                <td>
+                                    
+                                    1
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Senses</th>
+                                <td>
+                                    
+                                    1
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Sense Relations</th>
+                                <td>
+                                    
+                                    0
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>Synset Relations</th>
+                                <td>
+                                    
+                                    0
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            <tr>
+                                <th>More Information</th>
+                                <td>
+                                    
+                                    <a href="http://ukc.datascientia.eu/"> http://ukc.datascientia.eu/ </a>
+                                    
+                                </td>
+                            </tr>
+
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div data-hook="view" data-view="edit">
+                <div class="row wrapper">
+                    <div class="col-sm-12 primary">
+                        
+
+
+
+
+<form data-component="form dataset-form"
+  data-file-dir="_datasets"
+  data-render-dir="datasets"
+  
+    data-file-path="_datasets/gbm-ukc-lexicon-.md"
+    data-render-path="/datasets/gbm-ukc-lexicon-/"
+  >
+  <input type="hidden" id="schema" name="schema" value="default">
+
+  <fieldset>
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="title">Title</label>
+  <input type="text" class="form-control" id="title" name="title" placeholder="" value="Garhwali UKC Lexicon">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="organization">Organization</label>
+  <div class="input-group">
+    <select class="form-control" id="organization" name="organization">
+      <option value="">Select...</option>
+      
+        <option selected="selected">DataScientia Foundation</option>
+      
+    </select>
+    <span class="input-group-btn">
+      <a href="/LiveLanguage/add-organization/" class="btn btn-outline-secondary"><i class="fa fa-plus"></i></a>
+    </span>
+  </div>
+</div>
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="notes">Description</label>
+  <textarea class="form-control" id="notes" name="notes" placeholder="Description">Garhwali is a language from the  family, spoken in Eurasia. The UKC Lexicon of Garhwali is represented as a lexico-semantic network. It consists of words, word senses, synsets, as well as sense-level and synset-level relationships.</textarea>
+</div>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </fieldset>
+
+  <h2>Resources</h2>
+  <div data-component="editable-list" data-item-label="resource">
+    <div data-hook="items">
+    
+      <div class="card card-body bg-light mb-3" data-hook="item">
+  <fieldset>
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][name]">Resource Name</label>
+  <input type="text" class="form-control" id="resources[][name]" name="resources[][name]" placeholder="" value="Garhwali UKC Lexicon LMF format">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][url]">URL</label>
+  <input type="text" class="form-control" id="resources[][url]" name="resources[][url]" placeholder="" value="resources/b2b93805-a9a1-490a-b468-11f2dd29b62a/output-gbm.zip">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][format]">Format</label>
+  <select class="form-control" id="resources[][format]" name="resources[][format]">
+    <option value="">Select...</option>
+    
+      <option>api</option>
+    
+      <option>csv</option>
+    
+      <option>tsv</option>
+    
+      <option>rdf</option>
+    
+      <option>json</option>
+    
+      <option>geojson</option>
+    
+      <option>html</option>
+    
+      <option>kml</option>
+    
+      <option>kmz</option>
+    
+      <option>shp</option>
+    
+      <option selected="selected">xml</option>
+    
+  </select>
+</div>
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][license]">License</label>
+  <select class="form-control" id="resources[][license]" name="resources[][license]">
+    <option value="">Select...</option>
+    
+      <option value="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</option>
+    
+      <option value="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution Share-Alike</option>
+    
+      <option selected="selected" value="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution NonCommercial ShareAlike</option>
+    
+      <option value="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)</option>
+    
+      <option value="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CCZero</option>
+    
+      <option value="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">UK Open Government Licence</option>
+    
+      <option value="http://www.opendefinition.org/licenses/odc-by">Open Data Commons Attribution License</option>
+    
+      <option value="http://www.opendefinition.org/licenses/odc-odbl">Open Data Commons Open Database License (ODbL)</option>
+    
+      <option value="http://www.opendefinition.org/licenses/odc-pddl">Open Data Commons Public Domain Dedication and Licence (PDDL)</option>
+    
+      <option value="">Not Applicable</option>
+    
+  </select>
+  <div class="help-block">Not sure what license to use? See <a href="http://licenses.opendefinition.org/">http://licenses.opendefinition.org/</a></div>
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][last_updated]">Last updated</label>
+  <input type="text" class="form-control" id="resources[][last_updated]" name="resources[][last_updated]" placeholder="" value="2023-04-17">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][created]">Created</label>
+  <input type="text" class="form-control" id="resources[][created]" name="resources[][created]" placeholder="" value="2023-04-17">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][size]">Size (Bytes)</label>
+  <input type="text" class="form-control" id="resources[][size]" name="resources[][size]" placeholder="" value="799">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][release_date]">Release Date</label>
+  <input type="text" class="form-control" id="resources[][release_date]" name="resources[][release_date]" placeholder="" value="2023-04-17">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][distribution_document]">Distribution document or page</label>
+  <input type="text" class="form-control" id="resources[][distribution_document]" name="resources[][distribution_document]" placeholder="" value="">
+</div>
+
+  
+  </fieldset>
+  <button type="button" class="btn btn-danger btn-sm" data-hook="remove-item-btn"><i class="fa fa-minus"></i> Remove Resource</button>
+</div>
+    
+    </div>
+
+    <button type="button" class="btn btn-outline-secondary" data-hook="add-item-btn" title="Add resource"><i class="fa fa-plus"></i> Add Resource</button>
+
+    <script type="text/template" data-hook="item-template">
+    <div class="card card-body bg-light mb-3" data-hook="item">
+  <fieldset>
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][name]">Resource Name</label>
+  <input type="text" class="form-control" id="resources[][name]" name="resources[][name]" placeholder="" value="">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][url]">URL</label>
+  <input type="text" class="form-control" id="resources[][url]" name="resources[][url]" placeholder="" value="">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][format]">Format</label>
+  <select class="form-control" id="resources[][format]" name="resources[][format]">
+    <option value="">Select...</option>
+    
+      <option>api</option>
+    
+      <option>csv</option>
+    
+      <option>tsv</option>
+    
+      <option>rdf</option>
+    
+      <option>json</option>
+    
+      <option>geojson</option>
+    
+      <option>html</option>
+    
+      <option>kml</option>
+    
+      <option>kmz</option>
+    
+      <option>shp</option>
+    
+      <option>xml</option>
+    
+  </select>
+</div>
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][license]">License</label>
+  <select class="form-control" id="resources[][license]" name="resources[][license]">
+    <option value="">Select...</option>
+    
+      <option value="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</option>
+    
+      <option value="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution Share-Alike</option>
+    
+      <option value="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution NonCommercial ShareAlike</option>
+    
+      <option value="https://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)</option>
+    
+      <option value="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CCZero</option>
+    
+      <option value="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">UK Open Government Licence</option>
+    
+      <option value="http://www.opendefinition.org/licenses/odc-by">Open Data Commons Attribution License</option>
+    
+      <option value="http://www.opendefinition.org/licenses/odc-odbl">Open Data Commons Open Database License (ODbL)</option>
+    
+      <option value="http://www.opendefinition.org/licenses/odc-pddl">Open Data Commons Public Domain Dedication and Licence (PDDL)</option>
+    
+      <option value="">Not Applicable</option>
+    
+  </select>
+  <div class="help-block">Not sure what license to use? See <a href="http://licenses.opendefinition.org/">http://licenses.opendefinition.org/</a></div>
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][last_updated]">Last updated</label>
+  <input type="text" class="form-control" id="resources[][last_updated]" name="resources[][last_updated]" placeholder="" value="">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][created]">Created</label>
+  <input type="text" class="form-control" id="resources[][created]" name="resources[][created]" placeholder="" value="">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][size]">Size (Bytes)</label>
+  <input type="text" class="form-control" id="resources[][size]" name="resources[][size]" placeholder="" value="">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][release_date]">Release Date</label>
+  <input type="text" class="form-control" id="resources[][release_date]" name="resources[][release_date]" placeholder="" value="">
+</div>
+
+  
+    
+    
+    
+    <div class="form-group">
+  <label for="resources[][distribution_document]">Distribution document or page</label>
+  <input type="text" class="form-control" id="resources[][distribution_document]" name="resources[][distribution_document]" placeholder="" value="">
+</div>
+
+  
+  </fieldset>
+  <button type="button" class="btn btn-danger btn-sm" data-hook="remove-item-btn"><i class="fa fa-minus"></i> Remove Resource</button>
+</div>
+    </script>
+  </div>
+
+  <fieldset>
+    <h2>Additional Info</h2>
+
+    
+      
+    
+      
+    
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="category[]">Category</label>
+  <select class="form-control select2" id="category[]" name="category[]" multiple="multiple" style="width: 100%">
+    
+      <option>Monolingual Lexicons</option>
+    
+      <option>Multilingual Lexicons</option>
+    
+      <option>Raw Cross-Lingual Datasets</option>
+    
+      <option>Raw Monolingual Datasets</option>
+    
+  </select>
+</div>
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="maintainer">Maintainer</label>
+  <input type="text" class="form-control" id="maintainer" name="maintainer" placeholder="" value="DataScientia Foundation">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="maintainer_email">Maintainer Email</label>
+  <input type="text" class="form-control" id="maintainer_email" name="maintainer_email" placeholder="" value="">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="tags">Tags</label>
+  <input type="text" class="form-control" id="tags" name="tags" placeholder="" value="">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="provenance">Provenance</label>
+  <input type="text" class="form-control" id="provenance" name="provenance" placeholder="" value="Wiktionary 2022.01. by Wikimedia Foundation (http://en.wiktionary.org); Princeton WordNet 2.1 by Princeton University (https://wordnet.princeton.edu)">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="version">Version</label>
+  <input type="text" class="form-control" id="version" name="version" placeholder="" value="1.0">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="dataset_level">Dataset Level</label>
+  <input type="text" class="form-control" id="dataset_level" name="dataset_level" placeholder="" value="Language Level (L1-2)">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="dataset_access">Download Access Level</label>
+  <input type="text" class="form-control" id="dataset_access" name="dataset_access" placeholder="" value="Open Access">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="dataset_description">Dataset description document or page</label>
+  <input type="text" class="form-control" id="dataset_description" name="dataset_description" placeholder="" value="">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="landing_page">Landing Page</label>
+  <input type="text" class="form-control" id="landing_page" name="landing_page" placeholder="" value="">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="date_of_collection">Date of Collection</label>
+  <input type="text" class="form-control" id="date_of_collection" name="date_of_collection" placeholder="" value="">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="language">Language</label>
+  <input type="text" class="form-control" id="language" name="language" placeholder="" value="">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="language_code">ISO-3 Language Code</label>
+  <input type="text" class="form-control" id="language_code" name="language_code" placeholder="" value="">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="words">Words</label>
+  <input type="text" class="form-control" id="words" name="words" placeholder="" value="1">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="synsets">Synsets</label>
+  <input type="text" class="form-control" id="synsets" name="synsets" placeholder="" value="1">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="senses">Senses</label>
+  <input type="text" class="form-control" id="senses" name="senses" placeholder="" value="1">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="sense_relations">Sense Relations</label>
+  <input type="text" class="form-control" id="sense_relations" name="sense_relations" placeholder="" value="0">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="synset_relations">Synset Relations</label>
+  <input type="text" class="form-control" id="synset_relations" name="synset_relations" placeholder="" value="0">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="more_information">More Information</label>
+  <input type="text" class="form-control" id="more_information" name="more_information" placeholder="" value="http://ukc.datascientia.eu/">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="latitude_map">latitude</label>
+  <input type="text" class="form-control" id="latitude_map" name="latitude_map" placeholder="" value="30.5061">
+</div>
+
+      
+    
+      
+        
+        
+        
+        <div class="form-group">
+  <label for="longitude_map">longitude</label>
+  <input type="text" class="form-control" id="longitude_map" name="longitude_map" placeholder="" value="78.7201">
+</div>
+
+      
+    
+
+  </fieldset>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+  
+    <button class="btn btn-danger" data-component="delete-page-button" data-file-path="_datasets/gbm-ukc-lexicon-.md">
+      <i class="fa fa-trash"></i> Delete dataset
+    </button>
+  
+  <a href="/LiveLanguage/datasets/gbm-ukc-lexicon-/" class="btn btn-outline-secondary float-right">Cancel</a>
+</form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </section>
+
+    <!-- general behavior -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="/LiveLanguage/scripts/dist/bundle.js"></script>
+
+<footer class="site-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 footer-left">
+                <ul class="list-unstyled">
+                    <li><a class="footer-logo" type="button" href="http://datascientia.disi.unitn.it/"><img
+                            src="/LiveLanguage/img/data-scientia-white.png"></a></li>
+                    <p class="footerAddress"><br>
+                        <a href="http://knowdive.disi.unitn.it/">Knowdive</a>, <a
+                                href="http://www.unitn.it/" target="_blank" rel="noopener noreferrer">University of
+                            Trento</a>,<br>
+                        38123 Povo, Trento, Italy.</p>
+                </ul>
+            </div>
+            <div class="col footer-center-left">
+                <ul class="list-unstyled">
+                    <li><b><p>DataScientia</p></b></li>
+                    <li><a href="https://ds.datascientia.eu/community/welcome">Community</a></li>
+                    <li><a href="https://datascientia.disi.unitn.it/education/">Education</a></li>
+                    <li><a href="https://ds.datascientia.eu/community/public/our-projects">Projects</a></li>
+                    <li><a href="https://datascientia.disi.unitn.it/partners/">Partners</a></li>
+                    <li><a href="https://ds.datascientia.eu/community/public/our-team">Team</a></li>
+                    <li><a href="https://ds.datascientia.eu/community/authentication/register">Join Us</a></li>
+                </ul>
+            </div>
+            <div class="col footer-center-right">
+                <ul class="list-unstyled">
+                    <li><b><p>Services</p></b></li>
+                    <li><a >LiveMedia</a></li>
+                    <li><a href="https://datascientiafoundation.github.io/LiveLanguage/">LiveLanguage</a></li>
+                    <li><a href="https://datascientiafoundation.github.io/LiveKnowledge/">LiveKnowledge</a></li>
+                    <li><a href="https://datascientiafoundation.github.io/LiveData/">LiveData</a></li>
+                    <li><a href="https://datascientiafoundation.github.io/LivePeople/">LivePeople</a></li>
+                </ul>
+            </div>
+            <div class="col footer-right">
+                <ul class="list-unstyled">
+                    <li><b><p>About Us</p></b></li>
+                    <li><a href="https://datascientia.disi.unitn.it/about-us/">Manifesto</a></li>
+                    <li><a href="https://datascientia.disi.unitn.it/news/">News</a></li>
+                    <li><a href="https://datascientia.disi.unitn.it/contact/">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

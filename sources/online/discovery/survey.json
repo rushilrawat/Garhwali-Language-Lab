@@ -1,0 +1,89 @@
+{
+  "hf_garhwali": {
+    "status": "downloaded",
+    "url": "https://huggingface.co/api/datasets?search=garhwali&limit=100&full=true",
+    "retrieved_at": "2026-09-07T13:40:27.640562+00:00",
+    "sha256": "6dae6e9ed051c8d578755b8f271769e2ee8e2c8e49470f76fba5142fb338c067",
+    "raw_path": "sources/online/discovery/6dae6e9ed051c8d5-hf_garhwali.txt",
+    "bytes": 853
+  },
+  "hf_gbm": {
+    "status": "downloaded",
+    "url": "https://huggingface.co/api/datasets?filter=language%3Agbm&limit=100&full=true",
+    "retrieved_at": "2026-09-07T13:40:27.829023+00:00",
+    "sha256": "02f4709b0bf1c3a9c8e5c85f5c20a1f22964909b53c19690b259f1242e1704f5",
+    "raw_path": "sources/online/discovery/02f4709b0bf1c3a9-hf_gbm.txt",
+    "bytes": 1399022
+  },
+  "hf_pahari": {
+    "status": "downloaded",
+    "url": "https://huggingface.co/api/datasets?search=pahari&limit=100&full=true",
+    "retrieved_at": "2026-09-07T13:40:27.897877+00:00",
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "raw_path": "sources/online/discovery/4f53cda18c2baa0c-hf_pahari.txt",
+    "bytes": 2
+  },
+  "ia_garhwali": {
+    "status": "downloaded",
+    "url": "https://archive.org/advancedsearch.php?q=garhwali&output=json&rows=1000&page=1&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=language&fl%5B%5D=licenseurl",
+    "retrieved_at": "2026-09-07T13:40:28.450471+00:00",
+    "sha256": "cdd36e479457118e2dae9b1895b6e0cd9a92df4d1006e73b000746d3d988c1c7",
+    "raw_path": "sources/online/discovery/cdd36e479457118e-ia_garhwali.txt",
+    "bytes": 21684
+  },
+  "github_garhwali": {
+    "status": "downloaded",
+    "url": "https://api.github.com/search/repositories?q=garhwali&per_page=100",
+    "retrieved_at": "2026-09-07T13:40:30.019444+00:00",
+    "sha256": "2c8cab0bab3c587b1c1506941629c3c0c6e2cac31a21b06753ed0f91a0b4a404",
+    "raw_path": "sources/online/discovery/2c8cab0bab3c587b-github_garhwali.txt",
+    "bytes": 243134
+  },
+  "vaani_splits": {
+    "status": "failed",
+    "url": "https://datasets-server.huggingface.co/splits?dataset=ARTPARK-IISc%2FVaani-transcription-part",
+    "error": "curl: (56) The requested URL returned error: 401\n"
+  },
+  "vaani_card": {
+    "status": "failed",
+    "url": "https://huggingface.co/datasets/ARTPARK-IISc/Vaani-transcription-part/raw/main/README.md",
+    "error": "curl: (56) The requested URL returned error: 401\n"
+  },
+  "lsi_metadata": {
+    "status": "downloaded",
+    "url": "https://archive.org/metadata/LSIV0-V11",
+    "retrieved_at": "2026-09-07T13:40:31.777495+00:00",
+    "sha256": "c972567fa7d61e2cf8904d2f74f9b9421dbd80528a205d4b33943f2eb5b8a2d7",
+    "raw_path": "sources/online/discovery/c972567fa7d61e2c-lsi_metadata.txt",
+    "bytes": 111799
+  },
+  "proverbs_metadata": {
+    "status": "downloaded",
+    "url": "https://archive.org/metadata/cu31924089930774",
+    "retrieved_at": "2026-09-07T13:40:32.985698+00:00",
+    "sha256": "4e4eee22bef942d11d12cfdb94cc0fbcd74de0d7af39c50219bd9770a6371ba6",
+    "raw_path": "sources/online/discovery/4e4eee22bef942d1-proverbs_metadata.txt",
+    "bytes": 86000
+  },
+  "kaikki": {
+    "status": "failed",
+    "url": "https://kaikki.org/dictionary/Garhwali/",
+    "error": "curl: (56) The requested URL returned error: 404\n"
+  },
+  "ukc": {
+    "status": "downloaded",
+    "url": "https://datascientiafoundation.github.io/LiveLanguage/datasets/gbm-ukc-lexicon-/",
+    "retrieved_at": "2026-09-07T13:40:33.740013+00:00",
+    "sha256": "ad4edb3f2d2c3e3671f01e618c1671744bd21747f3ba63c2f37f30919091a47b",
+    "raw_path": "sources/online/discovery/ad4edb3f2d2c3e36-ukc.txt",
+    "bytes": 57557
+  },
+  "panlex": {
+    "status": "downloaded",
+    "url": "https://panlex.org/downloads/",
+    "retrieved_at": "2026-09-07T13:40:33.966327+00:00",
+    "sha256": "03c736941fdb67bbf946ee138e3244aa3d2075c7883a3499c8502a7e4250b9f4",
+    "raw_path": "sources/online/discovery/03c736941fdb67bb-panlex.txt",
+    "bytes": 39847
+  }
+}

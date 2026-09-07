@@ -1,0 +1,7 @@
+{
+  "url": "https://en.wiktionary.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle=Category%3AGarhwali+determiners&cmlimit=500",
+  "retrieved_at": "2026-09-07T13:42:33.026228+00:00",
+  "sha256": "dc7f0b32ad21d9012be6d0d964ca5913c2a3901d4000d7f47ed60b0d4d0a51d2",
+  "raw_path": "sources/online/wiktionary_en/dc7f0b32ad21d901-4c9be267cbce-0.json",
+  "bytes": 130
+}
