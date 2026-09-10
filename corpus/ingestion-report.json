@@ -1,11 +1,18 @@
 {
-  "records": 162,
+  "records": 3560,
   "source_counts": {
     "asjp": 91,
+    "chan_numerals_garhwali": 40,
+    "incubator_wt": 4,
+    "meta_omni": 2927,
+    "mamta_southasia_examples": 67,
+    "opus_translatewiki_gbm": 181,
+    "sand_garhwali": 123,
     "tatoeba": 36,
-    "wikimedia": 35
+    "wikimedia": 35,
+    "wiktionary_en": 56
   },
-  "unique_normalized_texts": 160,
+  "unique_normalized_texts": 3492,
   "native_reviewed": 0,
   "failures": {}
 }

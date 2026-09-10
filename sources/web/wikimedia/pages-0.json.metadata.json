@@ -1,6 +1,0 @@
-{
-  "url": "https://incubator.wikimedia.org/w/api.php?action=query&format=json&generator=allpages&gapnamespace=0&gapprefix=Wp%2Fgbm%2F&gaplimit=50&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main",
-  "retrieved_at": "2026-09-07T05:50:51.975897+00:00",
-  "sha256": "de7246db5e25d0750011cd95f61f8d22900f1e8ee50481c4b7400c03f8134259",
-  "raw_path": "sources/web/wikimedia/pages-0.json"
-}

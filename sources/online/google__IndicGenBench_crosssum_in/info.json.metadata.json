@@ -1,7 +1,0 @@
-{
-  "url": "https://huggingface.co/api/datasets/google/IndicGenBench_crosssum_in",
-  "retrieved_at": "2026-09-07T13:42:38.841487+00:00",
-  "sha256": "354fe2ddf42cd33757af24b04eb017608d0580b8eb952df65f4a320653ffe75c",
-  "raw_path": "sources/online/google__IndicGenBench_crosssum_in/354fe2ddf42cd337-info.json",
-  "bytes": 6084
-}

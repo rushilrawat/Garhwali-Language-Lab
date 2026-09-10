@@ -1,0 +1,128 @@
+# ============================================
+# Garhwali Language Lab
+# ============================================
+
+# Raw / downloaded source data
+data/raw/
+data/downloads/
+data/sources/
+data/vaani/
+downloads/
+raw/
+
+# Project source snapshots (keep only their tracked documentation)
+/sources/online/*
+!/sources/online/README.md
+!/sources/online/deep-search-catalog.md
+!/sources/online/source-audit-2026-09-08.md
+/sources/web/
+/restricted/
+/quarantine/
+/extracted/
+
+# Processed / generated datasets
+data/extracted/
+data/processed/
+data/normalized/
+data/cleaned/
+data/temp/
+data/cache/
+data/generated/
+
+# Large dataset formats
+*.csv
+*.tsv
+*.jsonl
+*.parquet
+*.arrow
+*.feather
+
+# Documents / source material
+*.pdf
+*.doc
+*.docx
+*.epub
+
+# Audio / video
+*.mp3
+*.wav
+*.m4a
+*.flac
+*.ogg
+*.mp4
+*.mov
+*.webm
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.gz
+*.7z
+*.rar
+
+# Model weights / checkpoints
+models/
+checkpoints/
+outputs/
+runs/
+artifacts/
+wandb/
+
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs / temporary files
+*.log
+*.tmp
+*.temp
+.cache/
+tmp/
+temp/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.vscode/
+.idea/
+
+# Node (if we build a website/demo later)
+node_modules/
+.next/
+dist/
+build/
+coverage/
+
+# Accidental editor/clipboard artifact
+/.gitignore#*

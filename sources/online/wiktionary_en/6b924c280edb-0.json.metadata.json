@@ -1,7 +1,0 @@
-{
-  "url": "https://en.wiktionary.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle=Category%3AGarhwali+multiword+terms&cmlimit=500",
-  "retrieved_at": "2026-09-07T13:42:33.281381+00:00",
-  "sha256": "7deac29b4247b6a90fa84ce66ef934d617f8d3c69b28800cdcaa1874d56027c3",
-  "raw_path": "sources/online/wiktionary_en/7deac29b4247b6a9-6b924c280edb-0.json",
-  "bytes": 308
-}

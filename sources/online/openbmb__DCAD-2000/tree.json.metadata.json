@@ -1,7 +1,0 @@
-{
-  "url": "https://huggingface.co/api/datasets/openbmb/DCAD-2000/tree/main?recursive=true",
-  "retrieved_at": "2026-09-07T13:42:48.126554+00:00",
-  "sha256": "185d92800293131c2461cfda89698eeca0ade8bf557de723ee540f317c50e3e4",
-  "raw_path": "sources/online/openbmb__DCAD-2000/185d92800293131c-tree.json",
-  "bytes": 97001
-}

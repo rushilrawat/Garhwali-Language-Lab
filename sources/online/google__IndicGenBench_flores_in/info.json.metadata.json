@@ -1,7 +1,0 @@
-{
-  "url": "https://huggingface.co/api/datasets/google/IndicGenBench_flores_in",
-  "retrieved_at": "2026-09-07T13:42:38.222620+00:00",
-  "sha256": "6e324e67979e37d6dd84a2ba8dc5782edf15f30fa27bdec2178a5bbb801f996d",
-  "raw_path": "sources/online/google__IndicGenBench_flores_in/6e324e67979e37d6-info.json",
-  "bytes": 6410
-}

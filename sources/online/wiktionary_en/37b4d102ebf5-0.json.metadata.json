@@ -1,7 +1,0 @@
-{
-  "url": "https://en.wiktionary.org/w/api.php?action=query&format=json&list=categorymembers&cmtitle=Category%3AGarhwali+adjectives&cmlimit=500",
-  "retrieved_at": "2026-09-07T13:42:32.717082+00:00",
-  "sha256": "b4cba1fc52ccd8426d393d44b311298c3e65e1700c7bffbb8e957d849fea74c5",
-  "raw_path": "sources/online/wiktionary_en/b4cba1fc52ccd842-37b4d102ebf5-0.json",
-  "bytes": 233
-}

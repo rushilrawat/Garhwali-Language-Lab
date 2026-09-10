@@ -1,7 +1,0 @@
-{
-  "url": "https://huggingface.co/datasets/google/IndicGenBench_xorqa_in/resolve/76b771d1c6c3fa90740900b9cb08f2e8b35d0af2/xorqa_gbm_train.json",
-  "retrieved_at": "2026-09-07T13:43:51.662043+00:00",
-  "sha256": "2cd35b5e9923261173fb1bb6422a37bf6f58ba469194d50312581b299f676091",
-  "raw_path": "sources/online/google__IndicGenBench_xorqa_in/2cd35b5e99232611-xorqa_gbm_train.json",
-  "bytes": 139553
-}

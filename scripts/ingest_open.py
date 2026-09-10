@@ -8,6 +8,7 @@ import json
 import re
 import subprocess
 import unicodedata
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlencode
@@ -47,7 +48,7 @@ def record(source, key, text, license_id, license_url, attribution, info, **extr
     return dict(record_id=f'{source}:{key}', source_id=source, text_original=text,
                 text_normalized=normalized, iso_639_3='gbm', license_id=license_id,
                 license_url=license_url, attribution=attribution,
-                quality_status='unreviewed', native_reviewed=False,
+                quality_status='unreviewed', native_reviewed=False, training_eligible=False,
                 text_sha256=digest(normalized.encode()), provenance=info, **extra)
 
 def asjp():
@@ -68,16 +69,10 @@ def asjp():
 
 def tatoeba():
     url = 'https://downloads.tatoeba.org/exports/per_language/gbm/gbm_sentences_detailed.tsv.bz2'
-    local = Path('/private/tmp/gbm_sentences_detailed.tsv')
-    if local.exists():
-        data = local.read_bytes()
-        info = {'url': url, 'retrieved_at': datetime.fromtimestamp(local.stat().st_mtime, timezone.utc).isoformat(),
-                'sha256': digest(data), 'raw_path': str(local)}
-        raw_path = RAW / 'tatoeba' / 'gbm_sentences_detailed.tsv'
-        raw_path.parent.mkdir(parents=True, exist_ok=True)
-        raw_path.write_bytes(data)
-        info['raw_path'] = str(raw_path.relative_to(ROOT))
-        (raw_path.with_name(raw_path.name + '.metadata.json')).write_text(json.dumps(info, indent=2))
+    # Reuse only the recorded snapshot, never an unrelated temporary file.
+    saved = RAW / 'tatoeba' / 'gbm_sentences_detailed.tsv'
+    if saved.exists() and saved.with_name(saved.name + '.metadata.json').exists():
+        data, info = fetch('tatoeba', saved.name, url)
     else:
         compressed, info = fetch('tatoeba', 'gbm_sentences_detailed.tsv.bz2', url)
         data = bz2.decompress(compressed)
@@ -85,11 +80,12 @@ def tatoeba():
     for fields in csv.reader(io.StringIO(data.decode()), delimiter='\t'):
         assert len(fields) >= 4 and fields[1] == 'gbm', 'Unexpected Tatoeba schema'
         key, _, text, author = fields[:4]
+        author = None if author in ('', r'\N') else author
         rows.append(record('tatoeba', key, text, 'CC-BY-2.0-FR',
             'https://creativecommons.org/licenses/by/2.0/fr/',
-            f'Tatoeba sentence {key}; contributor {author}; see sentence history for attribution', info,
+            f'Tatoeba sentence {key}; contributor {author or 'unavailable in export'}; see sentence history for attribution', info,
             item_url=f'https://tatoeba.org/en/sentences/show/{key}', contributor=author,
-            source_fields=fields, script='Deva', genre='sentence', corpus_layer='review_queue'))
+            source_fields=fields, quality_flags=['missing_contributor'] if author is None else [], script='Deva', genre='sentence', corpus_layer='review_queue'))
     assert rows, 'Tatoeba parser produced no records'
     return rows
 
@@ -143,10 +139,10 @@ def main():
     assert len(ids) == len(set(ids)), 'Duplicate record IDs'
     for r in records:
         assert r['license_url'] and r['attribution'] and r['text_original']
-    counts = {s: sum(r['source_id'] == s for r in records) for s in ['asjp', 'tatoeba', 'wikimedia']}
+    counts = dict(Counter(r['source_id'] for r in records))
     report = dict(records=len(records), source_counts=counts,
                   unique_normalized_texts=len({r['text_sha256'] for r in records}),
-                  native_reviewed=0, failures=failures)
+                  native_reviewed=sum(bool(r.get('native_reviewed')) for r in records), failures=failures)
     (OUT / 'ingestion-report.json').write_text(json.dumps(report, indent=2))
     print(json.dumps(report, indent=2))
     return bool(failures)

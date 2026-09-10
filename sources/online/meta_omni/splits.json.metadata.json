@@ -1,7 +1,0 @@
-{
-  "url": "https://datasets-server.huggingface.co/splits?dataset=facebook%2Fomnilingual-asr-corpus",
-  "retrieved_at": "2026-09-07T13:40:50.370338+00:00",
-  "sha256": "622cbc277ff0214c952ed9bf1cf342f1f866619e7dee863a424ce9394111e1df",
-  "raw_path": "sources/online/meta_omni/622cbc277ff0214c-splits.json",
-  "bytes": 78401
-}

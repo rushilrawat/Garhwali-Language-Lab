@@ -1,7 +1,0 @@
-{
-  "url": "https://huggingface.co/api/datasets?filter=language%3Agbm&limit=100&full=true",
-  "retrieved_at": "2026-09-07T13:40:27.829023+00:00",
-  "sha256": "02f4709b0bf1c3a9c8e5c85f5c20a1f22964909b53c19690b259f1242e1704f5",
-  "raw_path": "sources/online/discovery/02f4709b0bf1c3a9-hf_gbm.txt",
-  "bytes": 1399022
-}
