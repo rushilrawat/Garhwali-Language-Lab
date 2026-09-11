@@ -44,6 +44,22 @@ class ReleaseIndexTests(unittest.TestCase):
             'derived audio counts sum to 2, expected 3',
         ])
 
+    def test_rejects_benchmark_training_leakage(self):
+        index = {
+            'release_id': 'v0.1',
+            'status': 'integrated_experimental_release',
+            'text': {'total': 1, 'splits': {'train': 1, 'validation': 0, 'test': 0}},
+            'speech': {'total': 1, 'splits': {'train': 1, 'validation': 0, 'test': 0}},
+            'leakage': {'text_hash_cross_split': 0},
+            'garhwali_bench': {
+                'internal_exact_train_text': 1,
+                'asr_speaker_overlap': 0,
+            },
+        }
+        self.assertEqual(m.validate(index), [
+            'garhwali_bench.internal_exact_train_text must be zero, found 1',
+        ])
+
 
 if __name__ == '__main__':
     unittest.main()

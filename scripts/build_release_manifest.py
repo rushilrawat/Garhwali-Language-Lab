@@ -21,6 +21,9 @@ def main():
     language_resources_report = read_optional_json(ROOT/'data/processed/model_ready/language_resources/report.json')
     native_review_report = read_optional_json(ROOT/'data/processed/native_review/results/report.json')
     long_form_audio_report = read_optional_json(ROOT/'data/processed/long_form_audio/report.json')
+    garhwali_benchmark_report = read_optional_json(
+        ROOT/'data/processed/evaluation/garhwali_bench/manifest.json'
+    )
     asr_finetune_report = (
         read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
         or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
@@ -104,6 +107,7 @@ def main():
       'language_resources_report': language_resources_report,
       'native_review_report': native_review_report,
       'long_form_audio_report': long_form_audio_report,
+      'garhwali_benchmark_report': garhwali_benchmark_report,
       'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',

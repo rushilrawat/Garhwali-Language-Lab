@@ -31,10 +31,15 @@ source terms.
 | Normalized TTS candidate pairs | 1,736 |
 | Current Whisper-tiny baseline | 0.743 WER / 0.404 CER |
 | Noisy experimental machine transcript pilot | 100 rows |
+| GarhwaliBench external task records | 3,847 |
+| GarhwaliBench held-out text / ASR | 2,492 / 112 |
+| Character bigram baseline | 16.464 perplexity |
 
 Text segments use connected-document splitting: 80,926 train, 2,488 validation,
 and 2,801 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.
 No exact text hash or identified speaker crosses these partitions.
+GarhwaliBench additionally reports zero exact train/evaluation text overlap and
+zero ASR speaker overlap.
 
 ## Data represented
 

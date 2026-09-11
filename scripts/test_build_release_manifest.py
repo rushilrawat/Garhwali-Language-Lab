@@ -24,6 +24,10 @@ class ReleaseManifestTests(unittest.TestCase):
                 'data/processed/model_ready/language_resources/report.json': {'tokenizer_vocabulary_size': 332},
                 'data/processed/native_review/results/report.json': {'adjudicated': 0},
                 'data/processed/long_form_audio/report.json': {'clips': 3},
+                'data/processed/evaluation/garhwali_bench/manifest.json': {
+                    'release_id': 'garhwali-bench-test',
+                    'records': {'external_total': 3},
+                },
                 'models/whisper-tiny-garhwali-v0.1/report.json': {'wer': 0.79},
             }
             for relative, payload in reports.items():
@@ -51,6 +55,7 @@ class ReleaseManifestTests(unittest.TestCase):
             self.assertEqual(manifest['files']['long_form_audio_segments']['records'], 3)
             self.assertEqual(manifest['language_resources_report']['tokenizer_vocabulary_size'], 332)
             self.assertEqual(manifest['long_form_audio_report']['clips'], 3)
+            self.assertEqual(manifest['garhwali_benchmark_report']['release_id'], 'garhwali-bench-test')
             self.assertEqual(manifest['asr_finetune_report']['wer'], 0.79)
 
 

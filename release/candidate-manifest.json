@@ -60,6 +60,17 @@
     "review_status": "automated_quality_screened",
     "native_review_optional": true
   },
+  "garhwali_bench": {
+    "release_id": "garhwali-bench-v0.1-experimental",
+    "external_records": 3847,
+    "held_out_text_records": 2492,
+    "speaker_safe_asr_records": 112,
+    "character_bigram_perplexity": 16.464093,
+    "character_oov_rate": 0.00000498,
+    "external_exact_train_text": 0,
+    "internal_exact_train_text": 0,
+    "asr_speaker_overlap": 0
+  },
   "asr_baseline": {
     "model": "whisper-tiny-garhwali-v0.2",
     "training_steps_after_initial_pass": 3242,

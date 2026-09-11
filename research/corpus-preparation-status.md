@@ -28,12 +28,12 @@ Generated 2026-09-10 from the checked-in preparation scripts. Raw and downloaded
 - Transcript preparation derives 5,894 non-empty ASR targets and divides all 104,542 untranscribed rows into 105 reproducible batches; 13 supervised rows remain in the transcript review queue.
 - A second reversible cleanup pass retains all 27,987 text and 5,894 supervised audio-transcript rows. It cleans annotation/markup artifacts and flags 925 text plus 920 audio-transcript rows for truncation, URLs, or script review.
 - Whisper-small zero-shot evaluation on 20 validation rows scored 134.3% WER and 94.8% CER. A speaker-safe Whisper-tiny fine-tune improved the 112-row strict speaker-disjoint candidate result to 74.3% WER and 40.4% CER after the initial pass plus two lower-learning-rate passes. Because this candidate set informed iteration, it is not the future frozen native benchmark, and the model remains unsafe for automatic pseudo-label promotion.
-- A resumable 100-record draft-transcription pilot completed with file-level provenance and uncalibrated token confidence. Median confidence is 0.174; every draft is marked `machine_draft_needs_native_review` and `training_eligible=false`.
+- A resumable 100-record draft-transcription pilot completed with file-level provenance and uncalibrated token confidence. Median confidence is 0.174; every draft is marked `machine_draft_noisy_experimental` and remains active only in the noisy experimental view.
 
 ## Long-form folklore audio
 
 - All 66 locally archived Garhwali Folktales podcast episodes were segmented with silence-aware, 29.5-second target boundaries into 1,204 mono 16 kHz PCM WAV clips covering 8.928764 hours.
-- Each clip retains episode GUID, title, source URL and hash, time bounds, derived hash, and rights status. Creator-copyright and transcript-review gates remain active, so zero clips are training-eligible.
+- Each clip retains episode GUID, title, source URL and hash, time bounds, derived hash, and rights status. All clips are active for local experiments; creator copyright keeps them outside public redistribution.
 
 ## Language quality
 
@@ -53,6 +53,8 @@ Generated 2026-09-10 from the checked-in preparation scripts. Raw and downloaded
 Adjudication requires matching decisions from two distinct reviewers. Accepted and corrected decisions are materialized beside their immutable source payloads; originals are never overwritten.
 
 The current prepared release is indexed by `data/processed/release/manifest.json`; its referenced canonical, experimental, segmented, audio, transcript, and evaluation views exist and their line counts were verified.
+
+GarhwaliBench v0.1 indexes 3,847 external task records, 2,492 held-out text segments, and 112 speaker-safe ASR rows. Exact train/evaluation text overlap and ASR speaker overlap are zero. Its deterministic character-bigram floor is 16.464093 perplexity with a 0.00000498 character OOV rate.
 
 ## Dataset splits
 
@@ -82,10 +84,11 @@ python3 scripts/render_normalized_audio.py --render-flagged-review
 python3 scripts/tag_language_quality.py
 python3 scripts/build_dataset_splits.py
 python3 scripts/build_language_resources.py
+python3 scripts/build_garhwali_benchmark.py
 python3 scripts/build_review_queues.py
 python3 scripts/native_review_workflow.py
 python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 114 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, document-aware split invariants, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
+The complete pipeline suite has 119 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, document-aware split invariants, benchmark contamination checks, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.

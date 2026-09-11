@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-116%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-119%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -120,10 +120,14 @@ not a defect in the dataset.
 - **Whisper-tiny Garhwali baseline:** speaker-disjoint candidate WER improved from 1.343 zero-shot
   to 0.743 after controlled fine-tuning; it remains too inaccurate for trusted
   pseudo-labeling.
+- **GarhwaliBench v0.1:** 3,847 external task records, 2,492 held-out text
+  segments, and 112 speaker-safe ASR rows, with zero measured training overlap.
+- **Character bigram floor:** 16.464 held-out perplexity and 0.000498% character
+  OOV rate for reproducible comparison with later language models.
 - **100 machine transcript drafts** exercise resumable scoring; all are available
   as explicitly noisy experimental labels and their median uncalibrated confidence
   is 0.174.
-- **116 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **119 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
 These figures describe the preparation snapshot generated on 2026-09-10. Raw
@@ -229,6 +233,7 @@ python3 -m venv .venv
 .venv/bin/python scripts/tag_language_quality.py
 .venv/bin/python scripts/build_dataset_splits.py
 .venv/bin/python scripts/build_language_resources.py
+.venv/bin/python scripts/build_garhwali_benchmark.py
 .venv/bin/python scripts/build_review_queues.py
 .venv/bin/python scripts/native_review_workflow.py
 .venv/bin/python scripts/segment_long_audio.py
@@ -385,6 +390,8 @@ selection rules, exclusions, counts, and leakage checks.
   remains gated on transcript review and voice consent.
 - [x] Fine-tune and evaluate a Garhwali Whisper baseline on speaker-safe splits;
   the best controlled run scores 0.743 WER / 0.404 CER and remains experimental.
+- [x] Build GarhwaliBench v0.1 and run a dependency-free character-language-model
+  baseline with explicit contamination checks.
 
 ### 9. Testing and review — High
 
@@ -412,12 +419,27 @@ selection rules, exclusions, counts, and leakage checks.
 | Stage | Primary artifact | Success condition |
 | --- | --- | --- |
 | **1. Corpus v1.0** | `GarhwaliCorpus` | Clean, deduplicated, rights-aware, source-versioned text and audio with raw and normalized forms |
-| **2. Benchmark v1.0** | `GarhwaliBench` | Frozen native-reviewed evaluation for language quality, translation, generation, dialects, code-switching, retrieval, and speech |
+| **2. Benchmark v1.0** | `GarhwaliBench` | Frozen, checksum-addressed experimental evaluation for language quality, translation, generation, dialects, code-switching, retrieval, and speech; later corrections are versioned |
 | **3. Baseline audit** | `Garhwali Model Report` | Evaluate current multilingual, Indic, MT, tokenizer, retrieval, and speech systems before selecting new training runs |
 | **4. Controlled modeling** | `GarhwaliGPT` plus adapted models | Treat a small scratch LM as a scientific control; build practical systems through multilingual continued pretraining, translation, retrieval, and speech adaptation |
 | **5. Research experiments** | Reproducible ablation suite | Quantify which changes survive multiple seeds and which apparent gains disappear |
 | **6. Community expansion** | Corpus v1.x/v2 | Native corrections, additional varieties and districts, conversations, parallel data, and corrected historical text |
 | **7. Public platform** | Dataset, models, leaderboard, API, explorer | Reproducible releases another researcher can inspect, run, compare, and extend |
+
+### Next execution cycle
+
+1. **Model baseline audit — High:** evaluate multilingual text, translation,
+   retrieval, and speech systems on the frozen GarhwaliBench manifests.
+2. **Model-assisted text cleanup — High:** propose OCR, spelling,
+   Hindi/Garhwali, mixed-language, and dialect corrections using model
+   disagreement and confidence; preserve every original value.
+3. **Cleanup ablation — Medium:** rebuild the corpus and measure whether proposed
+   corrections improve held-out results before promoting them.
+4. **Controlled modeling — Xhigh:** run data-scaling, transfer, tokenizer,
+   continued-pretraining, and instruction-tuning experiments with multiple seeds.
+
+The first benchmark index and deterministic character baseline are complete. See
+[`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
 
 `GarhwaliBench` should complement existing generation benchmarks by measuring
 things that require Garhwali knowledge: Garhwali–Hindi–English translation,
@@ -470,7 +492,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **116 passing tests**, **365 source
+The current local verification result is **119 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
 
 ## 🤝 Contributing

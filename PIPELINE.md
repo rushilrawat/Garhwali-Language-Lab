@@ -54,4 +54,11 @@ Add a new wave by defining `<name>_wave_acquire` and `<name>_wave_extract` in
 .venv/bin/python scripts/dedup_report.py
 .venv/bin/python scripts/verify_ingestion.py
 .venv/bin/python scripts/tag_language_quality.py
+.venv/bin/python scripts/build_dataset_splits.py
+.venv/bin/python scripts/build_garhwali_benchmark.py
 ```
+
+The benchmark builder indexes the frozen external, text, and ASR evaluation
+assets, validates their schemas and checksums, rejects internal text or speaker
+leakage, reports external contamination separately, and runs the deterministic
+character-bigram floor used by later model audits.

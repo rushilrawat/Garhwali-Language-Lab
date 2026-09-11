@@ -25,6 +25,10 @@ def validate(index):
     for name, value in index['leakage'].items():
         if value != 0:
             errors.append(f'{name} must be zero, found {value}')
+    for name in ('internal_exact_train_text', 'asr_speaker_overlap'):
+        value = index.get('garhwali_bench', {}).get(name, 0)
+        if value != 0:
+            errors.append(f'garhwali_bench.{name} must be zero, found {value}')
     return errors
 
 
