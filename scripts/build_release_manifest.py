@@ -24,6 +24,12 @@ def main():
     garhwali_benchmark_report = read_optional_json(
         ROOT/'data/processed/evaluation/garhwali_bench/manifest.json'
     )
+    multilingual_tokenizer_audit = read_optional_json(
+        ROOT/'data/processed/evaluation/model_audit/tokenizer_report.json'
+    )
+    indicbertv2_masked_lm_report = read_optional_json(
+        ROOT/'data/processed/evaluation/model_audit/indicbertv2_masked_lm.json'
+    )
     asr_finetune_report = (
         read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
         or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
@@ -108,6 +114,8 @@ def main():
       'native_review_report': native_review_report,
       'long_form_audio_report': long_form_audio_report,
       'garhwali_benchmark_report': garhwali_benchmark_report,
+      'multilingual_tokenizer_audit': multilingual_tokenizer_audit,
+      'indicbertv2_masked_lm_report': indicbertv2_masked_lm_report,
       'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',

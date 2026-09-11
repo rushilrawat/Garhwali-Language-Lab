@@ -71,6 +71,18 @@
     "internal_exact_train_text": 0,
     "asr_speaker_overlap": 0
   },
+  "multilingual_model_audit": {
+    "tokenizers_evaluated": 5,
+    "held_out_text_records": 2492,
+    "best_tokenizer": "ai4bharat/IndicBERTv2-MLM-only",
+    "best_fertility_tokens_per_word": 1.531569,
+    "indicbertv2_masked_lm_records": 128,
+    "indicbertv2_masked_tokens": 506,
+    "indicbertv2_masked_token_accuracy": 0.17786561,
+    "indicbertv2_masked_token_cross_entropy": 6.977486,
+    "indicbertv2_masked_token_perplexity": 1072.219001,
+    "indicbertv2_truncated_records": 0
+  },
   "asr_baseline": {
     "model": "whisper-tiny-garhwali-v0.2",
     "training_steps_after_initial_pass": 3242,

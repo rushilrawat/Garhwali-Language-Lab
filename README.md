@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-119%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-123%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -124,6 +124,10 @@ not a defect in the dataset.
   segments, and 112 speaker-safe ASR rows, with zero measured training overlap.
 - **Character bigram floor:** 16.464 held-out perplexity and 0.000498% character
   OOV rate for reproducible comparison with later language models.
+- **Multilingual tokenizer audit:** IndicBERTv2 leads five candidates at 1.532
+  tokens per Garhwali word; the Garhwali OpenLLaMA adapter tokenizer needs 5.327.
+- **IndicBERTv2 baseline:** 17.79% masked-token accuracy on 506 deterministic
+  masks from 128 held-out records, with no truncation.
 - **100 machine transcript drafts** exercise resumable scoring; all are available
   as explicitly noisy experimental labels and their median uncalibrated confidence
   is 0.174.
@@ -234,6 +238,8 @@ python3 -m venv .venv
 .venv/bin/python scripts/build_dataset_splits.py
 .venv/bin/python scripts/build_language_resources.py
 .venv/bin/python scripts/build_garhwali_benchmark.py
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/audit_multilingual_tokenizers.py
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_masked_lm_baseline.py
 .venv/bin/python scripts/build_review_queues.py
 .venv/bin/python scripts/native_review_workflow.py
 .venv/bin/python scripts/segment_long_audio.py
@@ -392,6 +398,8 @@ selection rules, exclusions, counts, and leakage checks.
   the best controlled run scores 0.743 WER / 0.404 CER and remains experimental.
 - [x] Build GarhwaliBench v0.1 and run a dependency-free character-language-model
   baseline with explicit contamination checks.
+- [x] Audit five pinned multilingual tokenizers and run the first full
+  IndicBERTv2 masked-language baseline.
 
 ### 9. Testing and review — High
 
@@ -440,6 +448,8 @@ selection rules, exclusions, counts, and leakage checks.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
+The multilingual tokenizer and IndicBERTv2 findings are in
+[`research/multilingual-model-audit-2026-09-11.md`](research/multilingual-model-audit-2026-09-11.md).
 
 `GarhwaliBench` should complement existing generation benchmarks by measuring
 things that require Garhwali knowledge: Garhwali–Hindi–English translation,
@@ -492,7 +502,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **119 passing tests**, **365 source
+The current local verification result is **123 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
 
 ## 🤝 Contributing

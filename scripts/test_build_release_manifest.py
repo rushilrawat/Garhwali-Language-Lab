@@ -28,6 +28,12 @@ class ReleaseManifestTests(unittest.TestCase):
                     'release_id': 'garhwali-bench-test',
                     'records': {'external_total': 3},
                 },
+                'data/processed/evaluation/model_audit/tokenizer_report.json': {
+                    'audit_id': 'tokenizers-test',
+                },
+                'data/processed/evaluation/model_audit/indicbertv2_masked_lm.json': {
+                    'run_id': 'masked-lm-test',
+                },
                 'models/whisper-tiny-garhwali-v0.1/report.json': {'wer': 0.79},
             }
             for relative, payload in reports.items():
@@ -56,6 +62,8 @@ class ReleaseManifestTests(unittest.TestCase):
             self.assertEqual(manifest['language_resources_report']['tokenizer_vocabulary_size'], 332)
             self.assertEqual(manifest['long_form_audio_report']['clips'], 3)
             self.assertEqual(manifest['garhwali_benchmark_report']['release_id'], 'garhwali-bench-test')
+            self.assertEqual(manifest['multilingual_tokenizer_audit']['audit_id'], 'tokenizers-test')
+            self.assertEqual(manifest['indicbertv2_masked_lm_report']['run_id'], 'masked-lm-test')
             self.assertEqual(manifest['asr_finetune_report']['wer'], 0.79)
 
 

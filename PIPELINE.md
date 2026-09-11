@@ -9,6 +9,7 @@ steps and checkpoints progress in `data/cache/ingestion-graph.sqlite`.
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-pipeline.txt
+.venv/bin/python -m pip install --target .cache/asr-runtime -r requirements-model-audit.txt
 ```
 
 ## Run and resume
@@ -56,9 +57,16 @@ Add a new wave by defining `<name>_wave_acquire` and `<name>_wave_extract` in
 .venv/bin/python scripts/tag_language_quality.py
 .venv/bin/python scripts/build_dataset_splits.py
 .venv/bin/python scripts/build_garhwali_benchmark.py
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/audit_multilingual_tokenizers.py
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_masked_lm_baseline.py
 ```
 
 The benchmark builder indexes the frozen external, text, and ASR evaluation
 assets, validates their schemas and checksums, rejects internal text or speaker
 leakage, reports external contamination separately, and runs the deterministic
 character-bigram floor used by later model audits.
+
+The tokenizer audit loads only pinned local snapshots and measures fragmentation,
+unknown tokens, and context overflow on the frozen text evaluation set. The
+masked-language runner uses deterministic hash-selected masks so repeated model
+comparisons score the same held-out positions.

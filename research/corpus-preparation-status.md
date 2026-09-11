@@ -56,6 +56,8 @@ The current prepared release is indexed by `data/processed/release/manifest.json
 
 GarhwaliBench v0.1 indexes 3,847 external task records, 2,492 held-out text segments, and 112 speaker-safe ASR rows. Exact train/evaluation text overlap and ASR speaker overlap are zero. Its deterministic character-bigram floor is 16.464093 perplexity with a 0.00000498 character OOV rate.
 
+The multilingual audit compares five pinned tokenizers on all 2,492 held-out texts. IndicBERTv2 has the lowest fertility at 1.531569 tokens per whitespace word. Its first 128-record masked-language pilot scores 17.786561% masked-token accuracy and 6.977486 cross-entropy over 506 deterministic masks, with zero truncation.
+
 ## Dataset splits
 
 - Document-aware text partitions contain 80,926 train, 2,488 validation, and 2,801 test segments. Exact segment hashes do not cross partitions.
@@ -85,10 +87,12 @@ python3 scripts/tag_language_quality.py
 python3 scripts/build_dataset_splits.py
 python3 scripts/build_language_resources.py
 python3 scripts/build_garhwali_benchmark.py
+PYTHONPATH=.cache/asr-runtime python3 scripts/audit_multilingual_tokenizers.py
+PYTHONPATH=.cache/asr-runtime python3 scripts/run_masked_lm_baseline.py
 python3 scripts/build_review_queues.py
 python3 scripts/native_review_workflow.py
 python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 119 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, document-aware split invariants, benchmark contamination checks, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
+The complete pipeline suite has 123 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, document-aware split invariants, benchmark contamination checks, tokenizer and masked-language audit logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.

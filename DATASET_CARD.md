@@ -34,6 +34,8 @@ source terms.
 | GarhwaliBench external task records | 3,847 |
 | GarhwaliBench held-out text / ASR | 2,492 / 112 |
 | Character bigram baseline | 16.464 perplexity |
+| Best multilingual tokenizer | IndicBERTv2 / 1.531569 tokens per word |
+| IndicBERTv2 masked-token pilot | 17.786561% accuracy / 506 masks |
 
 Text segments use connected-document splitting: 80,926 train, 2,488 validation,
 and 2,801 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.
