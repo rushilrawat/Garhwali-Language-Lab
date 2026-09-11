@@ -1,7 +1,7 @@
 {
   "release_id": "garhwali-language-lab-v0.1.0-candidate.1",
   "status": "integrated_experimental_release",
-  "generated": "2026-09-10",
+  "generated": "2026-09-11",
   "language": "Garhwali (gbm)",
   "local_storage_gb_approx": 34,
   "text": {
@@ -82,6 +82,21 @@
     "indicbertv2_masked_token_cross_entropy": 6.977486,
     "indicbertv2_masked_token_perplexity": 1072.219001,
     "indicbertv2_truncated_records": 0
+  },
+  "translation_baseline": {
+    "direction": "Garhwali-to-English",
+    "development_pairs": 997,
+    "test_pairs": 1012,
+    "translation_memory_bleu_smoothed": 0.00820786,
+    "translation_memory_chrf2": 0.21588612,
+    "nllb_pilot_records": 32,
+    "nllb_source_token_proxy": "hin_Deva",
+    "nllb_base_bleu_smoothed": 0.21971862,
+    "nllb_base_chrf2": 0.57413371,
+    "community_adapter_bleu_smoothed": 0.09546021,
+    "community_adapter_chrf2": 0.46047417,
+    "selected_pilot": "facebook/nllb-200-distilled-600M",
+    "status": "experimental_hindi_source_token_proxy"
   },
   "asr_baseline": {
     "model": "whisper-tiny-garhwali-v0.2",

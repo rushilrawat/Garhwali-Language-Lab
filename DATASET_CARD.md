@@ -36,6 +36,8 @@ source terms.
 | Character bigram baseline | 16.464 perplexity |
 | Best multilingual tokenizer | IndicBERTv2 / 1.531569 tokens per word |
 | IndicBERTv2 masked-token pilot | 17.786561% accuracy / 506 masks |
+| Translation benchmark | 997 development / 1,012 test pairs |
+| NLLB Hindi-token proxy pilot | 0.219719 BLEU / 0.574134 chrF2 on 32 rows |
 
 Text segments use connected-document splitting: 80,926 train, 2,488 validation,
 and 2,801 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.
@@ -97,6 +99,9 @@ publish raw caches, reference images, or private reviewer identities.
   and mixed Kumauni/Garhwali/English material.
 - Candidate evaluation manifests are automatically screened experimental targets,
   not claimed native ground truth.
+- The translation pilot uses NLLB's Hindi language token because NLLB has no
+  Garhwali token. Its 32-record result is an engineering baseline, not a final
+  Garhwali translation evaluation.
 - The current fine-tuned ASR baseline improves substantially over zero-shot
   Whisper but remains too inaccurate to treat machine drafts as trusted labels;
   they stay explicitly marked as noisy experimental data.

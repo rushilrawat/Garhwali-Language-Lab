@@ -30,6 +30,15 @@ def main():
     indicbertv2_masked_lm_report = read_optional_json(
         ROOT/'data/processed/evaluation/model_audit/indicbertv2_masked_lm.json'
     )
+    translation_floor_report = read_optional_json(
+        ROOT/'data/processed/evaluation/translation/report.json'
+    )
+    nllb_translation_report = read_optional_json(
+        ROOT/'data/processed/evaluation/translation/nllb_hindi_proxy/report.json'
+    )
+    nllb_adapter_report = read_optional_json(
+        ROOT/'data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy/report.json'
+    )
     asr_finetune_report = (
         read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
         or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
@@ -103,7 +112,7 @@ def main():
         path = ROOT/rel
         entries[name] = {'path': rel, 'exists': path.exists(), 'records': line_count(path) if path.exists() else None}
     manifest = {
-      'release_id': 'garhwali-preparation-2026-09-10',
+      'release_id': 'garhwali-preparation-2026-09-11',
       'generated': date.today().isoformat(),
       'language': 'Garhwali (gbm)',
       'text_report': text_report,
@@ -116,6 +125,9 @@ def main():
       'garhwali_benchmark_report': garhwali_benchmark_report,
       'multilingual_tokenizer_audit': multilingual_tokenizer_audit,
       'indicbertv2_masked_lm_report': indicbertv2_masked_lm_report,
+      'translation_floor_report': translation_floor_report,
+      'nllb_translation_report': nllb_translation_report,
+      'nllb_adapter_report': nllb_adapter_report,
       'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',

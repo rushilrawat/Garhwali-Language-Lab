@@ -34,6 +34,15 @@ class ReleaseManifestTests(unittest.TestCase):
                 'data/processed/evaluation/model_audit/indicbertv2_masked_lm.json': {
                     'run_id': 'masked-lm-test',
                 },
+                'data/processed/evaluation/translation/report.json': {
+                    'run_id': 'translation-floors-test',
+                },
+                'data/processed/evaluation/translation/nllb_hindi_proxy/report.json': {
+                    'run_id': 'nllb-base-test',
+                },
+                'data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy/report.json': {
+                    'run_id': 'nllb-adapter-test',
+                },
                 'models/whisper-tiny-garhwali-v0.1/report.json': {'wer': 0.79},
             }
             for relative, payload in reports.items():
@@ -64,6 +73,9 @@ class ReleaseManifestTests(unittest.TestCase):
             self.assertEqual(manifest['garhwali_benchmark_report']['release_id'], 'garhwali-bench-test')
             self.assertEqual(manifest['multilingual_tokenizer_audit']['audit_id'], 'tokenizers-test')
             self.assertEqual(manifest['indicbertv2_masked_lm_report']['run_id'], 'masked-lm-test')
+            self.assertEqual(manifest['translation_floor_report']['run_id'], 'translation-floors-test')
+            self.assertEqual(manifest['nllb_translation_report']['run_id'], 'nllb-base-test')
+            self.assertEqual(manifest['nllb_adapter_report']['run_id'], 'nllb-adapter-test')
             self.assertEqual(manifest['asr_finetune_report']['wer'], 0.79)
 
 
