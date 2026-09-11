@@ -38,6 +38,8 @@ source terms.
 | IndicBERTv2 masked-token pilot | 17.786561% accuracy / 506 masks |
 | Translation benchmark | 997 development / 1,012 test pairs |
 | NLLB Hindi-token proxy pilot | 0.219719 BLEU / 0.574134 chrF2 on 32 rows |
+| XORQA retrieval index | 1,059 passages / 1,039 dev/test questions |
+| IndicBERTv2 retrieval | 10.389610% Recall@10 on 539 test questions |
 
 Text segments use connected-document splitting: 80,926 train, 2,488 validation,
 and 2,801 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.
@@ -102,6 +104,9 @@ publish raw caches, reference images, or private reviewer identities.
 - The translation pilot uses NLLB's Hindi language token because NLLB has no
   Garhwali token. Its 32-record result is an engineering baseline, not a final
   Garhwali translation evaluation.
+- XORQA supplies no English oracle question for its 539 test rows. The English
+  lexical comparator therefore covers dev only, and retrieval scoring credits
+  only each row's associated deduplicated passage.
 - The current fine-tuned ASR baseline improves substantially over zero-shot
   Whisper but remains too inaccurate to treat machine drafts as trusted labels;
   they stay explicitly marked as noisy experimental data.

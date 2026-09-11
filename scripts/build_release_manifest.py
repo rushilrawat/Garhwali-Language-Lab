@@ -39,6 +39,12 @@ def main():
     nllb_adapter_report = read_optional_json(
         ROOT/'data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy/report.json'
     )
+    retrieval_floor_report = read_optional_json(
+        ROOT/'data/processed/evaluation/retrieval/report.json'
+    )
+    indicbertv2_retrieval_report = read_optional_json(
+        ROOT/'data/processed/evaluation/retrieval/indicbertv2/report.json'
+    )
     asr_finetune_report = (
         read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
         or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
@@ -128,6 +134,8 @@ def main():
       'translation_floor_report': translation_floor_report,
       'nllb_translation_report': nllb_translation_report,
       'nllb_adapter_report': nllb_adapter_report,
+      'retrieval_floor_report': retrieval_floor_report,
+      'indicbertv2_retrieval_report': indicbertv2_retrieval_report,
       'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',

@@ -43,6 +43,12 @@ class ReleaseManifestTests(unittest.TestCase):
                 'data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy/report.json': {
                     'run_id': 'nllb-adapter-test',
                 },
+                'data/processed/evaluation/retrieval/report.json': {
+                    'run_id': 'retrieval-floors-test',
+                },
+                'data/processed/evaluation/retrieval/indicbertv2/report.json': {
+                    'run_id': 'retrieval-indicbert-test',
+                },
                 'models/whisper-tiny-garhwali-v0.1/report.json': {'wer': 0.79},
             }
             for relative, payload in reports.items():
@@ -76,6 +82,8 @@ class ReleaseManifestTests(unittest.TestCase):
             self.assertEqual(manifest['translation_floor_report']['run_id'], 'translation-floors-test')
             self.assertEqual(manifest['nllb_translation_report']['run_id'], 'nllb-base-test')
             self.assertEqual(manifest['nllb_adapter_report']['run_id'], 'nllb-adapter-test')
+            self.assertEqual(manifest['retrieval_floor_report']['run_id'], 'retrieval-floors-test')
+            self.assertEqual(manifest['indicbertv2_retrieval_report']['run_id'], 'retrieval-indicbert-test')
             self.assertEqual(manifest['asr_finetune_report']['wer'], 0.79)
 
 

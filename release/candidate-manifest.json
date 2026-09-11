@@ -98,6 +98,22 @@
     "selected_pilot": "facebook/nllb-200-distilled-600M",
     "status": "experimental_hindi_source_token_proxy"
   },
+  "retrieval_baseline": {
+    "benchmark": "IndicGenBench XORQA Garhwali",
+    "source_rows": 1139,
+    "unique_passages": 1059,
+    "development_queries": 500,
+    "test_queries": 539,
+    "test_word_bm25_recall_at_10": 0.01669759,
+    "test_character_bm25_recall_at_10": 0.02411874,
+    "test_indicbertv2_recall_at_1": 0.02226345,
+    "test_indicbertv2_recall_at_5": 0.08163265,
+    "test_indicbertv2_recall_at_10": 0.1038961,
+    "test_indicbertv2_mrr_at_10": 0.04660747,
+    "dev_oracle_english_bm25_recall_at_10": 0.852,
+    "missing_test_oracle_questions": 539,
+    "status": "experimental_single_associated_passage_relevance"
+  },
   "asr_baseline": {
     "model": "whisper-tiny-garhwali-v0.2",
     "training_steps_after_initial_pass": 3242,

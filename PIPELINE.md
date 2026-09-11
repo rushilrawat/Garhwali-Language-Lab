@@ -62,6 +62,8 @@ PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_masked_lm_baseline.py
 .venv/bin/python scripts/run_translation_baseline.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --max-records 32 --max-new-tokens 64 --device cpu
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --adapter .cache/model-adapters/garhwali-nllb-v12 --output data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy --max-records 32 --max-new-tokens 64 --device cpu
+.venv/bin/python scripts/run_retrieval_baseline.py
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
 ```
 
 The benchmark builder indexes the frozen external, text, and ASR evaluation
@@ -81,3 +83,10 @@ Because NLLB has no Garhwali language token, both runs explicitly use `hin_Deva`
 as an experimental source-token proxy and `eng_Latn` as the target token. The
 community adapter's own language-token mapping is undocumented, so its result is
 retained for comparison rather than treated as a validated Garhwali score.
+
+The retrieval audit deduplicates XORQA contexts into a fixed passage index and
+scores dev/test questions without training on benchmark queries. Word and
+character BM25 provide dependency-free cross-script floors. Pinned IndicBERTv2
+uses zero-shot, mean-pooled embeddings for a full 539-query test comparison.
+English oracle BM25 is reported only on the 500 dev rows where the upstream
+benchmark supplies a non-empty oracle question.

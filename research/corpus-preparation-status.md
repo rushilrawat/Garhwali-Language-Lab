@@ -60,6 +60,8 @@ The multilingual audit compares five pinned tokenizers on all 2,492 held-out tex
 
 The Garhwali-to-English translation audit covers 997 IndicGenBench FLORES development pairs and all 1,012 test pairs. The deterministic translation-memory floor scores 0.008208 smoothed BLEU / 0.215886 chrF2. On the same fixed 32-record pilot, pinned NLLB-200 distilled with an explicit Hindi source-token proxy scores 0.219719 / 0.574134, while the community Garhwali LoRA adapter scores 0.095460 / 0.460474. The base model is retained as the current pilot because the adapter underperforms and publishes no Garhwali language-token mapping.
 
+The XORQA retrieval audit deduplicates 1,139 source rows into 1,059 passages and evaluates 500 dev plus 539 test questions. On the full test split, word BM25 reaches 1.669759% Recall@10, character BM25 reaches 2.411874%, and zero-shot mean-pooled IndicBERTv2 reaches 10.389610% with 2.226345% Recall@1. English oracle BM25 reaches 85.2% Recall@10 on the 500 dev rows where the upstream benchmark supplies oracle questions; all 539 test oracle questions are empty and are explicitly excluded from that comparator.
+
 ## Dataset splits
 
 - Document-aware text partitions contain 80,926 train, 2,488 validation, and 2,801 test segments. Exact segment hashes do not cross partitions.
@@ -93,10 +95,12 @@ PYTHONPATH=.cache/asr-runtime python3 scripts/audit_multilingual_tokenizers.py
 PYTHONPATH=.cache/asr-runtime python3 scripts/run_masked_lm_baseline.py
 python3 scripts/run_translation_baseline.py
 PYTHONPATH=.cache/asr-runtime python3 scripts/run_nllb_translation_baseline.py --max-records 32 --max-new-tokens 64 --device cpu
+python3 scripts/run_retrieval_baseline.py
+PYTHONPATH=.cache/asr-runtime python3 scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
 python3 scripts/build_review_queues.py
 python3 scripts/native_review_workflow.py
 python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 128 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, and translation audit logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
+The complete pipeline suite has 134 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, and retrieval audit logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
