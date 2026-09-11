@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-134%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-136%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -117,9 +117,9 @@ not a defect in the dataset.
   the complete experimental view.
 - **1,204 clips / 8.93 hours** derived from 66 archived Garhwali folktale
   episodes, with source rights and review gates retained.
-- **Whisper-tiny Garhwali baseline:** speaker-disjoint candidate WER improved from 1.343 zero-shot
-  to 0.743 after controlled fine-tuning; it remains too inaccurate for trusted
-  pseudo-labeling.
+- **Speaker-safe ASR comparison:** zero-shot Whisper-tiny scores 1.479 WER / 1.368
+  CER, zero-shot Whisper-small scores 0.972 / 0.578, and the controlled
+  Whisper-tiny fine-tune reaches 0.743 / 0.404 on the same 112 records.
 - **GarhwaliBench v0.1:** 3,847 external task records, 2,492 held-out text
   segments, and 112 speaker-safe ASR rows, with zero measured training overlap.
 - **Character bigram floor:** 16.464 held-out perplexity and 0.000498% character
@@ -244,6 +244,7 @@ PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_masked_lm_baseline.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --max-records 32 --max-new-tokens 64 --device cpu
 .venv/bin/python scripts/run_retrieval_baseline.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_whisper_comparison.py --device cpu
 .venv/bin/python scripts/build_review_queues.py
 .venv/bin/python scripts/native_review_workflow.py
 .venv/bin/python scripts/segment_long_audio.py
@@ -409,6 +410,8 @@ selection rules, exclusions, counts, and leakage checks.
   same deterministic 32-record pilot.
 - [x] Establish XORQA passage-retrieval floors on all 1,039 dev/test questions
   and evaluate pinned IndicBERTv2 semantic retrieval on all 539 test questions.
+- [x] Compare zero-shot Whisper-tiny, zero-shot Whisper-small, and both local
+  fine-tuned checkpoints on the identical 112-row speaker-safe test set.
 
 ### 9. Testing and review — High
 
@@ -445,15 +448,16 @@ selection rules, exclusions, counts, and leakage checks.
 
 ### Next execution cycle
 
-1. **Model baseline audit — High:** complete the remaining speech comparisons;
-   multilingual text, translation, and retrieval baselines are complete.
-2. **Model-assisted text cleanup — High:** propose OCR, spelling,
+1. **Model-assisted text cleanup — High:** propose OCR, spelling,
    Hindi/Garhwali, mixed-language, and dialect corrections using model
    disagreement and confidence; preserve every original value.
-3. **Cleanup ablation — Medium:** rebuild the corpus and measure whether proposed
+2. **Cleanup ablation — Medium:** rebuild the corpus and measure whether proposed
    corrections improve held-out results before promoting them.
-4. **Controlled modeling — Xhigh:** run data-scaling, transfer, tokenizer,
+3. **Controlled modeling — Xhigh:** run data-scaling, transfer, tokenizer,
    continued-pretraining, and instruction-tuning experiments with multiple seeds.
+4. **SraVaani comparison — High:** run the gated model on the same ASR manifest
+   when provider approval becomes available; its published score uses a different
+   split and cannot replace the local comparison.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
@@ -463,6 +467,8 @@ The Garhwali-to-English floors and NLLB comparison are in
 [`research/translation-baseline-2026-09-11.md`](research/translation-baseline-2026-09-11.md).
 The XORQA lexical and IndicBERTv2 results are in
 [`research/retrieval-baseline-2026-09-11.md`](research/retrieval-baseline-2026-09-11.md).
+The complete local ASR comparison and SraVaani access status are in
+[`research/speech-baseline-comparison-2026-09-11.md`](research/speech-baseline-comparison-2026-09-11.md).
 
 `GarhwaliBench` should complement existing generation benchmarks by measuring
 things that require Garhwali knowledge: Garhwali–Hindi–English translation,
@@ -515,7 +521,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **134 passing tests**, **365 source
+The current local verification result is **136 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
 
 ## 🤝 Contributing

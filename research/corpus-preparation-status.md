@@ -1,6 +1,6 @@
 # Corpus preparation status
 
-Generated 2026-09-10 from the checked-in preparation scripts. Raw and downloaded material remains under gitignore.
+Updated 2026-09-11 from the checked-in preparation scripts. Raw and downloaded material remains under gitignore.
 
 ## Text
 
@@ -29,6 +29,7 @@ Generated 2026-09-10 from the checked-in preparation scripts. Raw and downloaded
 - A second reversible cleanup pass retains all 27,987 text and 5,894 supervised audio-transcript rows. It cleans annotation/markup artifacts and flags 925 text plus 920 audio-transcript rows for truncation, URLs, or script review.
 - Whisper-small zero-shot evaluation on 20 validation rows scored 134.3% WER and 94.8% CER. A speaker-safe Whisper-tiny fine-tune improved the 112-row strict speaker-disjoint candidate result to 74.3% WER and 40.4% CER after the initial pass plus two lower-learning-rate passes. Because this candidate set informed iteration, it is not the future frozen native benchmark, and the model remains unsafe for automatic pseudo-label promotion.
 - A resumable 100-record draft-transcription pilot completed with file-level provenance and uncalibrated token confidence. Median confidence is 0.174; every draft is marked `machine_draft_noisy_experimental` and remains active only in the noisy experimental view.
+- A fair four-checkpoint comparison now uses the same 112 speaker-safe test rows and the same normalization. Zero-shot Whisper-tiny scores 147.939% WER / 136.810% CER; zero-shot Whisper-small scores 97.172% / 57.822%; the first local tiny fine-tune scores 79.051% / 42.907%; and the second reaches 74.305% / 40.440%. SraVaani 1.0 remains unrun because the authenticated account has not received its separate model-repository approval.
 
 ## Long-form folklore audio
 
@@ -97,10 +98,11 @@ python3 scripts/run_translation_baseline.py
 PYTHONPATH=.cache/asr-runtime python3 scripts/run_nllb_translation_baseline.py --max-records 32 --max-new-tokens 64 --device cpu
 python3 scripts/run_retrieval_baseline.py
 PYTHONPATH=.cache/asr-runtime python3 scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
+PYTHONPATH=.cache/asr-runtime python3 scripts/run_whisper_comparison.py --device cpu
 python3 scripts/build_review_queues.py
 python3 scripts/native_review_workflow.py
 python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 134 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, and retrieval audit logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
+The complete pipeline suite has 136 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, and speech-comparison logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.

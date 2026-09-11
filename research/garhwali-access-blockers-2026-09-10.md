@@ -2,6 +2,22 @@
 
 Checked with the project's authenticated Hugging Face account on 2026-09-10.
 
+## Gated Garhwali model
+
+### SraVaani 1.0
+
+- Repository: <https://huggingface.co/ARTPARK-IISc/SraVaani-1.0>
+- Gate: separate provider approval despite working VAANI dataset access.
+- Current account state, checked 2026-09-11: small configuration-file download
+  returns `Access denied. This repository requires approval.`
+- Published scope: multilingual FastConformer ASR with Garhwali support; the
+  official model card reports 53.5 WER on its own Vaani evaluation.
+- Next action: after approval, run the model on the existing checksum-addressed
+  112-row speaker-safe manifest and score it with the local WER/CER normalizer.
+
+The published score uses a different split and scoring setup and is not entered
+as a local benchmark result. Community mirrors are not used to bypass the gate.
+
 ## Same gate pattern as VAANI
 
 ### Chaashini
@@ -55,4 +71,3 @@ The tokenizer may become a comparison artifact after access, but it cannot incre
 3. Pursue Max Planck/TLA because it may add elicited speech and aligned working files unavailable from VAANI.
 4. Ask Free Bibles India for a working Garhwali New Testament export.
 5. Submit digitization requests for public-domain-era books and periodicals.
-

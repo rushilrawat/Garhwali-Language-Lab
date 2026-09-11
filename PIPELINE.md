@@ -64,6 +64,7 @@ PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_base
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --adapter .cache/model-adapters/garhwali-nllb-v12 --output data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy --max-records 32 --max-new-tokens 64 --device cpu
 .venv/bin/python scripts/run_retrieval_baseline.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_whisper_comparison.py --device cpu
 ```
 
 The benchmark builder indexes the frozen external, text, and ASR evaluation
@@ -90,3 +91,10 @@ character BM25 provide dependency-free cross-script floors. Pinned IndicBERTv2
 uses zero-shot, mean-pooled embeddings for a full 539-query test comparison.
 English oracle BM25 is reported only on the 500 dev rows where the upstream
 benchmark supplies a non-empty oracle question.
+
+The Whisper comparison runner evaluates pinned local checkpoints on the strict
+112-row speaker-safe ASR test manifest with one normalization and micro-averaged
+WER/CER implementation. Use explicit `--model`, `--model-id`, `--revision`, and
+`--output` arguments for Whisper-small or a fine-tuned checkpoint. SraVaani 1.0
+is documented but cannot be run locally until its separate Hugging Face gate is
+approved.

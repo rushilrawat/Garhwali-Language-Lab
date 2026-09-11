@@ -126,6 +126,21 @@
     "draft_strict_training_eligible_rows": 0,
     "draft_experimental_training_eligible_rows": 100
   },
+  "speech_baseline_comparison": {
+    "evaluation_rows": 112,
+    "evaluation_manifest_sha256": "2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52",
+    "whisper_tiny_zero_shot_wer": 1.4793863854266538,
+    "whisper_tiny_zero_shot_cer": 1.3680964395850854,
+    "whisper_small_zero_shot_wer": 0.9717162032598274,
+    "whisper_small_zero_shot_cer": 0.5782169890664424,
+    "whisper_tiny_finetune_v0_1_wer": 0.7905081495685522,
+    "whisper_tiny_finetune_v0_1_cer": 0.4290720493411831,
+    "whisper_tiny_finetune_v0_2_wer": 0.7430488974113135,
+    "whisper_tiny_finetune_v0_2_cer": 0.40440145780768155,
+    "selected_checkpoint": "whisper-tiny-garhwali-v0.2",
+    "sravaani_status": "provider_approval_required",
+    "promotion_status": "rejected_for_automatic_pseudolabeling"
+  },
   "leakage": {
     "text_hash_cross_split": 0,
     "identified_speaker_cross_split": 0

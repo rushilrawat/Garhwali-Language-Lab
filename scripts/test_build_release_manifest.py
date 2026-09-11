@@ -49,7 +49,14 @@ class ReleaseManifestTests(unittest.TestCase):
                 'data/processed/evaluation/retrieval/indicbertv2/report.json': {
                     'run_id': 'retrieval-indicbert-test',
                 },
+                'data/processed/evaluation/asr/whisper_tiny_zero_shot/report.json': {
+                    'run_id': 'whisper-tiny-zero-shot-test',
+                },
+                'data/processed/evaluation/asr/whisper_small_zero_shot/report.json': {
+                    'run_id': 'whisper-small-zero-shot-test',
+                },
                 'models/whisper-tiny-garhwali-v0.1/report.json': {'wer': 0.79},
+                'models/whisper-tiny-garhwali-v0.2/report.json': {'wer': 0.74},
             }
             for relative, payload in reports.items():
                 path = root / relative
@@ -84,7 +91,9 @@ class ReleaseManifestTests(unittest.TestCase):
             self.assertEqual(manifest['nllb_adapter_report']['run_id'], 'nllb-adapter-test')
             self.assertEqual(manifest['retrieval_floor_report']['run_id'], 'retrieval-floors-test')
             self.assertEqual(manifest['indicbertv2_retrieval_report']['run_id'], 'retrieval-indicbert-test')
-            self.assertEqual(manifest['asr_finetune_report']['wer'], 0.79)
+            self.assertEqual(manifest['whisper_tiny_zero_shot_report']['run_id'], 'whisper-tiny-zero-shot-test')
+            self.assertEqual(manifest['whisper_small_zero_shot_report']['run_id'], 'whisper-small-zero-shot-test')
+            self.assertEqual(manifest['asr_finetune_report']['wer'], 0.74)
 
 
 if __name__ == '__main__':

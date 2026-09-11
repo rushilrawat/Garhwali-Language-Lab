@@ -30,6 +30,8 @@ source terms.
 | Pronunciations with source phonetic segments | 293 |
 | Normalized TTS candidate pairs | 1,736 |
 | Current Whisper-tiny baseline | 0.743 WER / 0.404 CER |
+| Zero-shot Whisper-tiny, same 112 rows | 1.479 WER / 1.368 CER |
+| Zero-shot Whisper-small, same 112 rows | 0.972 WER / 0.578 CER |
 | Noisy experimental machine transcript pilot | 100 rows |
 | GarhwaliBench external task records | 3,847 |
 | GarhwaliBench held-out text / ASR | 2,492 / 112 |
@@ -110,6 +112,9 @@ publish raw caches, reference images, or private reviewer identities.
 - The current fine-tuned ASR baseline improves substantially over zero-shot
   Whisper but remains too inaccurate to treat machine drafts as trusted labels;
   they stay explicitly marked as noisy experimental data.
+- SraVaani 1.0 lists Garhwali support and a 53.5 WER on its own Vaani evaluation,
+  but its weights require separate provider approval. That published result uses
+  a different split and scoring setup from this dataset's speaker-safe test.
 
 ## Reproduction
 

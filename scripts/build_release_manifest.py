@@ -45,6 +45,12 @@ def main():
     indicbertv2_retrieval_report = read_optional_json(
         ROOT/'data/processed/evaluation/retrieval/indicbertv2/report.json'
     )
+    whisper_tiny_zero_shot_report = read_optional_json(
+        ROOT/'data/processed/evaluation/asr/whisper_tiny_zero_shot/report.json'
+    )
+    whisper_small_zero_shot_report = read_optional_json(
+        ROOT/'data/processed/evaluation/asr/whisper_small_zero_shot/report.json'
+    )
     asr_finetune_report = (
         read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
         or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
@@ -136,6 +142,8 @@ def main():
       'nllb_adapter_report': nllb_adapter_report,
       'retrieval_floor_report': retrieval_floor_report,
       'indicbertv2_retrieval_report': indicbertv2_retrieval_report,
+      'whisper_tiny_zero_shot_report': whisper_tiny_zero_shot_report,
+      'whisper_small_zero_shot_report': whisper_small_zero_shot_report,
       'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',
