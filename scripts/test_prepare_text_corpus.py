@@ -60,6 +60,22 @@ class TextPreparationTests(unittest.TestCase):
         self.assertEqual(m.split_for_hash(digest), m.split_for_hash(digest))
         self.assertIn(m.split_for_hash(digest), {"train", "validation", "test"})
 
+    def test_experimental_training_eligibility_survives_canonicalization(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / 'experimental' / 'rows.jsonl'
+            source.parent.mkdir()
+            source.write_text(json.dumps({
+                'record_id': 'experimental:1',
+                'text_normalized': 'म्यार भाषा',
+                'experimental_training_eligible': True,
+                'training_eligible': False,
+            }) + '\n', encoding='utf-8')
+            m.prepare([source], root / 'out', root=root)
+            row = json.loads((root / 'out/canonical.jsonl').read_text())
+            self.assertTrue(row['provenance'][0]['experimental_training_eligible'])
+            self.assertTrue(row['any_experimental_training_eligible_source'])
+
 
 if __name__ == "__main__":
     unittest.main()

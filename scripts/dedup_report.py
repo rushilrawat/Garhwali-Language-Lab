@@ -9,7 +9,7 @@ LAYER_PATHS = {
     'corpus': ROOT / 'corpus',
     'benchmarks': ROOT / 'benchmarks',
     'restricted': ROOT / 'restricted',
-    'quarantine': ROOT / 'quarantine',
+    'experimental': ROOT / 'experimental',
     'extracted/historical': ROOT / 'extracted' / 'historical',
 }
 OUTPUT = ROOT / 'outputs' / 'online-ingestion-2026-09-07' / 'dedup-report.json'

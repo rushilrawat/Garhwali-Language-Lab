@@ -61,6 +61,7 @@ def main() -> None:
                 "sha256": hashlib.sha256(destination.read_bytes()).hexdigest(),
                 "rights_status": "publicly_downloadable_creator_copyright",
                 "training_eligible": False,
+                "experimental_training_eligible": True,
             }
         )
 

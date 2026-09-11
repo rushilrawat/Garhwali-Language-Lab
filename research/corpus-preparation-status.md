@@ -6,9 +6,9 @@ Generated 2026-09-10 from the checked-in preparation scripts. Raw and downloaded
 
 - 30,088 source records from 35 files; 27,987 unique normalized texts / 7,391,666 characters.
 - 2,101 duplicate rows retained in 2,003 provenance groups.
-- PahariLI's 15,000 records explicitly labeled `gbm` are available in the user-approved candidate view `data/processed/text/paharili_garhwali.jsonl`; the original quarantine snapshot remains unchanged for provenance.
-- The final web-learning pass archived 189 phrase or example rows from three eUttaranchal lessons, LanguagesHome, and Omniglot. Exact deduplication contributed 139 new unique texts; all 189 retain source URLs and no-open-license flags in the experimental quarantine layer.
-- All 27,987 canonical normalized texts, including quarantine and restricted provenance, are available in the opt-in `data/processed/text/all_garhwali.jsonl` view.
+- PahariLI's 15,000 records explicitly labeled `gbm` are active in the complete experimental corpus and in `data/processed/text/paharili_garhwali.jsonl`; source provenance remains unchanged.
+- The final web-learning pass archived 189 phrase or example rows from three eUttaranchal lessons, LanguagesHome, and Omniglot. Exact deduplication contributed 139 new unique texts; all 189 are active for local experiments and retain source URLs and no-open-license flags.
+- All 27,987 canonical normalized texts, including experimental and restricted provenance, are active in `data/processed/text/all_garhwali.jsonl`.
 - Conservative cleanup retained all 27,987 texts, removed invisible formatting characters from 821 records, and routed 7,237 records to `data/processed/review/text_cleanup_review.jsonl` without rewriting spelling or dialect forms.
 - Sentence-like re-extraction exposes 91,536 occurrences / 86,215 exact-unique segments while retaining every parent and provenance chain. Connected-component assignment resolves all 332 prior cross-document conflicts; zero exact segment now crosses train, validation and test.
 - Deterministic document-aware partitions: train 25,293; validation 1,364; test 1,330. Only 136 documents moved from their original hash split to keep connected documents together.
@@ -18,11 +18,11 @@ Generated 2026-09-10 from the checked-in preparation scripts. Raw and downloaded
 
 - 110,436 WAV rows, 135.509 hours; 5,894 supervised and 104,542 untranscribed.
 - Supervised official partitions: train 4,778; validation 666; test 450.
-- 13 transcript rows are quarantined (8 Bengali-script rows, with overlapping review flags).
+- Thirteen transcript rows retain review flags (including eight Bengali-script rows) but remain present in the complete experimental supervised view.
 - 110,436/110,436 WAVs are readable, mono, 16 kHz, 16-bit PCM. Three exceed the clipping review threshold.
 - The full signal pass now measures RMS, peak, zero share, and DC offset for every WAV. Median RMS is -16.375 dBFS; 856 files are below -40 dBFS, 552 are above -10 dBFS, and 2,718 have absolute DC offset above 0.02.
 - A non-destructive normalization manifest covers all 110,436 WAVs. It flags 4,112 files for signal review and 10,967 gain recommendations whose projected peak would exceed -1 dBFS; no source audio was rewritten.
-- The strict ASR/TTS selection has 1,736 unflagged recordings rendered as derived, gain-adjusted, DC-corrected WAVs. Another 266 strict files have peak-safe review copies whose projected-clipping, unusual-level, or high-DC flags remain attached; they are not training-eligible. All original VAANI audio remains unchanged.
+- The strict ASR/TTS selection has 1,736 unflagged recordings rendered as derived, gain-adjusted, DC-corrected WAVs. Another 266 strict files have peak-safe copies whose projected-clipping, unusual-level, or high-DC flags remain attached; all 2,002 are active experimentally. All original VAANI audio remains unchanged.
 - No supervised speaker appears across partitions.
 - Model-ready audio manifests retain all 5,894 supervised and 104,542 untranscribed rows, with quality flags attached rather than excluded.
 - Transcript preparation derives 5,894 non-empty ASR targets and divides all 104,542 untranscribed rows into 105 reproducible batches; 13 supervised rows remain in the transcript review queue.
@@ -59,7 +59,7 @@ The current prepared release is indexed by `data/processed/release/manifest.json
 - Document-aware text partitions contain 80,926 train, 2,488 validation, and 2,801 test segments. Exact segment hashes do not cross partitions.
 - Strict ASR and TTS candidate partitions retain 2,002 clean transcript/audio rows from 248 identified speakers: 1,621 train, 269 validation, and 112 test. No identified speaker crosses a partition.
 - The broader 5,894-row supervised ASR export remains available. The strict view excludes 3,886 placeholder-speaker rows and six transcript/language-review rows rather than deleting them.
-- Candidate evaluation manifests contain 2,492 unflagged test text segments and 112 strict test audio rows. They are checksum-addressed and marked `pending_native_review`; they are not yet the final native-reviewed benchmark.
+- Candidate evaluation manifests contain 2,492 unflagged test text segments and 112 strict test audio rows. They are checksum-addressed, automatically screened, and active for experimental evaluation; later native corrections remain optional versioned improvements.
 - Reproduce these outputs with `python3 scripts/build_dataset_splits.py`. The release manifest records every split artifact, row count, and SHA-256 digest.
 
 ## Reproduction

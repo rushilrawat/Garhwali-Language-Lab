@@ -17,7 +17,7 @@ raw/
 !/sources/online/source-audit-2026-09-08.md
 /sources/web/
 /restricted/
-/quarantine/
+/experimental/
 /extracted/
 
 # Processed / generated datasets

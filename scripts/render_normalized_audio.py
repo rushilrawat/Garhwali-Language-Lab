@@ -107,7 +107,8 @@ def build_derived_audio(
                         'derived_audio_path': str(output.relative_to(root)),
                         'quality_flags': plan['flags'],
                         'training_eligible': False,
-                        'review_status': 'requires_signal_review',
+                        'experimental_training_eligible': True,
+                        'review_status': 'signal_flagged_experimental',
                         'normalization': {
                             'gain_db': round(peak_safe_gain, 4),
                             'dc_offset_removed': plan.get('dc_offset_normalized') or 0,

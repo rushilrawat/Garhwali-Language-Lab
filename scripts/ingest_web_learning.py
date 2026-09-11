@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT/'data/downloads/web_learning'
-OUT = ROOT/'quarantine/web_learning_garhwali.jsonl'
+OUT = ROOT/'experimental/web_learning_garhwali.jsonl'
 URLS = {
  'euttaranchal_1':'https://www.euttaranchal.com/culture/learn-garhwali.php',
  'euttaranchal_2':'https://www.euttaranchal.com/culture/learn-garhwali-lesson-2.php',
@@ -78,7 +78,7 @@ def main():
                 'text_original':text,'text_normalized':text,'parallel_english':english,
                 'iso_639_3':'gbm','script':'Deva' if re.search(r'[\u0900-\u097f]',text) else 'Latn',
                 'license_id':'not_stated','rights_status':'public_webpage_no_open_license_stated',
-                'attribution':'Page author/publisher named at source URL','corpus_layer':'quarantine',
+                'attribution':'Page author/publisher named at source URL','corpus_layer':'experimental',
                 'training_eligible':True,'usage':'all_data_experimental_user_approved',
                 'quality_flags':['native_accuracy_unverified','web_source'],
                 'provenance':{'raw_path':str(raw.relative_to(ROOT)),'sha256':digest}})

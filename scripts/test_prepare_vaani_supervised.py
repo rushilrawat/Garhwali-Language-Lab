@@ -25,7 +25,7 @@ class VaaniPreparationTests(unittest.TestCase):
         self.assertFalse(decision["recommended_for_supervised_training"])
         self.assertIn("manual-transcript-review", decision["quality_flags"])
 
-    def test_bengali_row_is_quarantined(self):
+    def test_bengali_row_is_flagged_for_experimental_review(self):
         decision = m.quality_decision({"quality_flags": []}, "আমি")
         self.assertFalse(decision["recommended_for_supervised_training"])
         self.assertIn("bengali-script-under-garhwali-label", decision["quality_flags"])
@@ -50,6 +50,7 @@ class VaaniPreparationTests(unittest.TestCase):
             self.assertEqual(row.get('languages_known'), ['Garhwali', 'Hindi'])
             self.assertEqual(row.get('state'), 'Uttarakhand')
             self.assertEqual(row.get('source'), 'ARTPARK-IISc/Vaani')
+            self.assertTrue(row.get('experimental_audio_eligible'))
 
 
 if __name__ == "__main__":

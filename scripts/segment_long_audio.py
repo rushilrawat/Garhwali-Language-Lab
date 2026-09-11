@@ -138,7 +138,8 @@ def segment_collection(
                 'audio_format': 'wav_pcm_s16le_mono_16000hz',
                 'rights_status': episode['rights_status'],
                 'training_eligible': False,
-                'review_status': 'needs_transcription_and_rights_review',
+                'experimental_training_eligible': True,
+                'review_status': 'untranscribed_creator_copyright_experimental',
             })
         counts['episodes'] += 1
         counts['clips'] += len(bounds)
@@ -154,8 +155,10 @@ def segment_collection(
         'total_duration_hours': round(sum(row['duration_seconds'] for row in rows) / 3600, 6),
         'max_segment_seconds': max_seconds,
         'source_audio_unchanged': True,
-        'training_eligible': False,
-        'reason': 'creator-copyright audio requires rights and transcript review',
+        'strict_training_eligible': False,
+        'experimental_training_eligible': True,
+        'public_redistribution_eligible': False,
+        'reason': 'active local experimental audio; creator copyright blocks public redistribution',
     }
     (output_dir / 'report.json').write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + '\n',

@@ -59,7 +59,7 @@ The transcription repository is a transcribed subset/export of VAANI, but it is 
 - The main repository has 104,542 untranscribed WAVs that do not occur in the transcription repository.
 - There are no duplicate WAV filenames within either repository.
 
-For the 5,868 shared WAVs, 5,126 transcript strings match after whitespace and case normalization. Another 736 differ only because the transcription repository adds closing `</pause>` tags. Six have other annotation or text differences. Eight supervised rows contain Bengali script under the Garhwali label; one is also among the six cross-repository disagreements. These rows are flagged for quarantine. The transcription repository should therefore be treated as a related, partly revised transcript release rather than blindly appended to the main transcript column.
+For the 5,868 shared WAVs, 5,126 transcript strings match after whitespace and case normalization. Another 736 differ only because the transcription repository adds closing `</pause>` tags. Six have other annotation or text differences. Eight supervised rows contain Bengali script under the Garhwali label; one is also among the six cross-repository disagreements. These rows retain explicit script flags while remaining in the active experimental supervised view. The transcription repository should therefore be treated as a related, partly revised transcript release rather than blindly appended to the main transcript column.
 
 The shared transcribed WAVs total 31,561.176 seconds, or **8.766993 hours**, using durations from the main repository. The 26 transcription-only rows have no public duration field in the transcription repository, so their duration cannot be added without reading their audio.
 

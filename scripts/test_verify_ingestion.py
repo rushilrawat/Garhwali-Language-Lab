@@ -4,9 +4,9 @@ import verify_ingestion as m
 
 
 class VerifyIngestionTests(unittest.TestCase):
-    def test_explicit_experimental_quarantine_use_is_allowed(self):
+    def test_explicit_experimental_use_is_allowed(self):
         row = {'training_eligible': True, 'usage': 'all_data_experimental_user_approved'}
-        self.assertTrue(m.training_use_is_authorized(row, 'quarantine'))
+        self.assertTrue(m.training_use_is_authorized(row, 'experimental'))
         self.assertFalse(m.training_use_is_authorized(row, 'corpus'))
 
     def test_unlicensed_source_requires_rights_status_and_source_url(self):

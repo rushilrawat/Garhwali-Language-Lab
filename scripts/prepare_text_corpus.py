@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INPUTS = ("corpus", "restricted", "quarantine", "extracted", "data/extracted")
+DEFAULT_INPUTS = ("corpus", "restricted", "experimental", "extracted", "data/extracted")
 TEXT_FIELDS = ("text_normalized", "text", "source_text", "transcript")
 ID_FIELDS = ("record_id", "id", "utterance_id", "audio_path")
 QUALITY_METADATA_FIELDS = (
@@ -121,6 +121,9 @@ def prepare(paths: list[Path], output_dir: Path, root: Path = ROOT) -> dict:
                     "license_url": row.get("license_url"),
                     "rights_status": row.get("rights_status"),
                     "training_eligible": bool(row.get("training_eligible", False)),
+                    "experimental_training_eligible": bool(
+                        row.get("experimental_training_eligible", True)
+                    ),
                     "quality_flags": row.get("quality_flags", []),
                     **{name: row[name] for name in QUALITY_METADATA_FIELDS if row.get(name) not in (None, "", [])},
                     "linguistic_metadata": {
@@ -143,6 +146,9 @@ def prepare(paths: list[Path], output_dir: Path, root: Path = ROOT) -> dict:
     for row in canonical:
         row["source_count"] = len(row["provenance"])
         row["any_training_eligible_source"] = any(p["training_eligible"] for p in row["provenance"])
+        row["any_experimental_training_eligible_source"] = any(
+            p["experimental_training_eligible"] for p in row["provenance"]
+        )
 
     output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "canonical.jsonl").write_text(

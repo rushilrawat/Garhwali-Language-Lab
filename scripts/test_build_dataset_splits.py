@@ -56,13 +56,23 @@ class DatasetSplitTests(unittest.TestCase):
             self.assertEqual(report['text']['records'], {'test': 2, 'train': 1, 'validation': 0})
             self.assertEqual(report['asr_strict']['records'], {'test': 1, 'train': 1, 'validation': 0})
             self.assertEqual(report['tts_candidate']['records'], {'test': 1, 'train': 1, 'validation': 0})
+            self.assertEqual(report['asr_experimental_all']['records'], {
+                'test': 2, 'train': 1, 'validation': 1,
+            })
             self.assertEqual(report['excluded_audio']['unidentified_speaker'], 1)
             self.assertEqual(report['excluded_audio']['transcript_or_language_review'], 1)
             evaluation = [json.loads(line) for line in (out / 'evaluation/asr_candidate.jsonl').read_text().splitlines()]
             self.assertEqual([row['audio_sha256'] for row in evaluation], ['2' * 64])
-            self.assertEqual(evaluation[0]['review_status'], 'pending_native_review')
+            self.assertEqual(evaluation[0]['review_status'], 'automated_quality_screened')
+            self.assertTrue(evaluation[0]['experimental_evaluation_eligible'])
             text_evaluation = [json.loads(line) for line in (out / 'evaluation/text_candidate.jsonl').read_text().splitlines()]
             self.assertEqual([row['segment_sha256'] for row in text_evaluation], ['b' * 64])
+            experimental = [
+                json.loads(line)
+                for line in (out / 'asr_experimental/test.jsonl').read_text().splitlines()
+            ]
+            self.assertEqual(len(experimental), 2)
+            self.assertTrue(all(row['experimental_training_eligible'] for row in experimental))
 
     def test_rejects_identified_speaker_crossing_splits(self):
         with tempfile.TemporaryDirectory() as tmp:

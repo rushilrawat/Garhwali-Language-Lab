@@ -27,7 +27,7 @@ bypassed, and no remote audio or video was bulk downloaded.
 | `restricted/` | Archive.org Garhwali folk-song thesis | 1 OCR document | Archive item declares CC BY-NC-SA 4.0; mixed-language and quoted-song review flags retained |
 | `restricted/` | PanLex `gbm` filter | 13 forms | Current PanLex page declares CC BY-NC-SA 4.0; mirror's older CC0 statement was not relied on |
 | `restricted/` | Garhwali Open Bible Stories | 50 complete stories | CC BY-NC-SA 4.0 catalog terms; illustrations excluded and item-level license-block absence flagged |
-| `quarantine/` | MADLAD-400 `gbm` clean partition | 18 novel documents from 137 upstream documents | 119 exact DCAD duplicates skipped; ODC-BY database terms retained, but original page copyrights remain unresolved |
+| `experimental/` | MADLAD-400 `gbm` clean partition | 18 novel documents from 137 upstream documents | Active for local experiments; 119 exact DCAD duplicates skipped and source-rights flags retained |
 | `extracted/historical/` | LSI IX.4 OCR | 93 pages | Historical mixed-language OCR; page alignment and language segmentation remain review tasks |
 | `extracted/historical/` | Proverbs & Folklore of Kumaun and Garhwal (1894) OCR | 440 pages | Historical mixed-language OCR; US public-domain evidence is saved, India status remains pending |
 | `extracted/historical/` | Garhwali administrative manuscript (1865) | 1 manuscript image/OCR record | 1865 public-domain material; Archive item declares CC0; OCR is poor and needs human transcription |
@@ -42,7 +42,7 @@ bypassed, and no remote audio or video was bulk downloaded.
 | Git-ignored `data/extracted/garhwali_idioms_dhyani/` | Balakrishna D. Dhyani, *Garhwali Muhavare Aur Kahavaten* | 99 exact-unique records | 69 standalone proverbs plus 30 Garhwali comparison entries; Hindi/English notes retained; no exact overlap across 33,807 existing text records |
 
 The open corpus now contains 3,560 source records. The candidate sources
-are kept in `quarantine/`: Indic Dialect ASR 7,823 rows, PahariLI 15,000,
+are active in `experimental/`: Indic Dialect ASR 7,823 rows, PahariLI 15,000,
 hikinegi 53, DCAD 119, and 18 exact-novel MADLAD clean documents. Across every
 layer there are 32,967 source records and 30,913 exact unique normalized texts;
 see the machine-generated [dedup
@@ -66,7 +66,7 @@ publicly available. The current status is:
 * LSI and the 1894 book were downloaded as scans/OCR and kept in the historical
   layer. The LSI XML index-to-printed-page alignment is marked provisional.
 * PahariLI, MADLAD, GlotCC, FineWeb-2, HPLT and DCAD were catalogued as
-  discovery or quarantine sources. MADLAD's clean Garhwali partition has 137
+  discovery or experimental sources. MADLAD's clean Garhwali partition has 137
   documents; 119 exactly duplicate DCAD, so only 18 novel documents were added.
   Their repository or database licenses do not automatically clear the underlying
   web pages, translations or recordings.
@@ -174,7 +174,7 @@ Garhwali, were extracted; the following Marchha section was left out.
 * The Hugging Face row viewer for the pinned Indic Dialect ASR mirror returned
   502/500 after offset 200. The collector recovered all 11 Parquet shards with
   HTTP range reads over the sentence/language/source columns only; no audio was
-  downloaded, and the resulting 7,823 rows remain quarantined.
+  downloaded, and the resulting 7,823 rows are active for local experiments.
 * Google Books' metadata API returned 429 while resolving the 1900 Upreti
   record. The public full-view page exposed a signed scan download, so the
   135-page PDF was acquired from that page and only the Garhwali section was

@@ -1,8 +1,8 @@
 # Corpus redistribution and model-use policy
 
 This policy separates local research retention from public redistribution. The
-project keeps every acquired record in its provenance layer, including restricted,
-quarantine, and rights-pending material. Retention does not change the source's
+project keeps every acquired record in its active experimental layer, including
+restricted and rights-pending material. Retention does not change the source's
 copyright, license, consent scope, or attribution requirements.
 
 ## Public dataset releases
@@ -23,7 +23,7 @@ resolved.
 
 ## Local research layers
 
-`restricted/`, `quarantine/`, historical rights-pending material, public social
+`restricted/`, `experimental/`, historical rights-pending material, public social
 posts, modern books, podcasts, and source components without a verified license
 remain local research inputs. They may be analyzed in the complete experimental
 view but are excluded from public dataset payloads and public model-training
@@ -47,5 +47,5 @@ audio identifier; derived records and future releases must carry the resulting
 exclusion while preserving a private audit entry.
 
 The current `v0.1.0-candidate.1` release is an internal research candidate. Its
-evaluation rows and pronunciation/TTS resources remain pending native review, and
+evaluation rows and pronunciation/TTS resources retain optional native-review metadata, and
 it is not a blanket public redistribution grant for the local corpus.

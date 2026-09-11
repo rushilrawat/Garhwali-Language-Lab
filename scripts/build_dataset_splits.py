@@ -69,6 +69,15 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT)
             excluded[reason] += 1
         else:
             strict_audio.append(row)
+    experimental_audio = [{
+        **row,
+        'experimental_training_eligible': True,
+        'experimental_quality_flags': sorted(set(
+            row.get('transcript_review_flags', [])
+            + row.get('training_quality_flags', [])
+            + row.get('language_quality', {}).get('review_reasons', [])
+        )),
+    } for row in audio_rows if str(row.get('asr_target_clean') or '').strip()]
 
     speaker_splits = defaultdict(set)
     for row in strict_audio:
@@ -80,23 +89,38 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT)
     text_counts = Counter()
     audio_counts = Counter()
     audio_hours = Counter()
+    experimental_audio_counts = Counter()
+    experimental_audio_hours = Counter()
     for split in SPLITS:
         split_text = [row for row in text_rows if row['split'] == split]
         split_audio = [row for row in strict_audio if row['split'] == split]
+        split_experimental_audio = [row for row in experimental_audio if row['split'] == split]
         text_counts[split] = len(split_text)
         audio_counts[split] = len(split_audio)
         audio_hours[split] = round(sum(row.get('duration_seconds', 0) for row in split_audio) / 3600, 6)
+        experimental_audio_counts[split] = len(split_experimental_audio)
+        experimental_audio_hours[split] = round(
+            sum(row.get('duration_seconds', 0) for row in split_experimental_audio) / 3600, 6
+        )
         artifacts[f'text/{split}.jsonl'] = write_jsonl(output_dir / 'text' / f'{split}.jsonl', split_text)
         artifacts[f'asr/{split}.jsonl'] = write_jsonl(output_dir / 'asr' / f'{split}.jsonl', split_audio)
         artifacts[f'tts/{split}.jsonl'] = write_jsonl(output_dir / 'tts' / f'{split}.jsonl', split_audio)
+        artifacts[f'asr_experimental/{split}.jsonl'] = write_jsonl(
+            output_dir / 'asr_experimental' / f'{split}.jsonl', split_experimental_audio
+        )
+        artifacts[f'tts_experimental/{split}.jsonl'] = write_jsonl(
+            output_dir / 'tts_experimental' / f'{split}.jsonl', split_experimental_audio
+        )
 
     text_evaluation = [
-        {**row, 'review_status': 'pending_native_review'}
+        {**row, 'review_status': 'automated_quality_screened',
+         'experimental_evaluation_eligible': True, 'native_review_optional': True}
         for row in text_rows
         if row['split'] == 'test' and not row.get('quality_flags')
     ]
     asr_evaluation = [
-        {**row, 'review_status': 'pending_native_review'}
+        {**row, 'review_status': 'automated_quality_screened',
+         'experimental_evaluation_eligible': True, 'native_review_optional': True}
         for row in strict_audio
         if row['split'] == 'test'
     ]
@@ -109,7 +133,7 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT)
 
     report = {
         'release_id': 'garhwali-splits-candidate-2026-09-10',
-        'release_status': 'candidate_pending_native_review',
+        'release_status': 'integrated_experimental_candidate',
         'text': {'records': dict(sorted(text_counts.items()))},
         'asr_strict': {
             'records': dict(sorted(audio_counts.items())),
@@ -121,10 +145,21 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT)
             'hours': dict(sorted(audio_hours.items())),
             'identified_speakers': len(speaker_splits),
         },
+        'asr_experimental_all': {
+            'records': dict(sorted(experimental_audio_counts.items())),
+            'hours': dict(sorted(experimental_audio_hours.items())),
+            'quality_flags_retained': True,
+        },
+        'tts_experimental_all': {
+            'records': dict(sorted(experimental_audio_counts.items())),
+            'hours': dict(sorted(experimental_audio_hours.items())),
+            'quality_flags_retained': True,
+        },
         'evaluation_candidates': {
             'text_records': len(text_evaluation),
             'asr_records': len(asr_evaluation),
-            'review_status': 'pending_native_review',
+            'review_status': 'automated_quality_screened',
+            'native_review_optional': True,
         },
         'excluded_audio': dict(sorted(excluded.items())),
         'leakage_checks': {

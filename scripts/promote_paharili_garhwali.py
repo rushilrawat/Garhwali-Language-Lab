@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / 'quarantine' / 'paharili_gbm.jsonl'
+SOURCE = ROOT / 'experimental' / 'paharili_gbm.jsonl'
 OUTPUT = ROOT / 'data' / 'processed' / 'text' / 'paharili_garhwali.jsonl'
 
 def main():

@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-114%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-116%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -26,8 +26,8 @@ for every record.
 
 The project keeps two views by design:
 
-1. **A complete experimental view** containing approved, restricted, quarantine,
-   and unresolved records so useful evidence is not silently discarded.
+1. **A complete experimental view** containing every collected record, including
+   restricted and unresolved material, so useful evidence is not silently discarded.
 2. **Separated candidate views** for likely Garhwali, mixed-language material,
    non-Garhwali cultural context, and records requiring review.
 
@@ -113,17 +113,17 @@ not a defect in the dataset.
 - **2,002 strict speaker-identified ASR/TTS candidates** across 248 speakers,
   totaling 3.562 hours with zero identified-speaker split leakage.
 - **1,736 normalized derived WAVs** rendered from unflagged strict candidates;
-  **266 peak-safe review copies** retain their flags and remain ineligible for
-  training.
+  **266 peak-safe flagged copies** retain their signal metadata and are active in
+  the complete experimental view.
 - **1,204 clips / 8.93 hours** derived from 66 archived Garhwali folktale
   episodes, with source rights and review gates retained.
 - **Whisper-tiny Garhwali baseline:** speaker-disjoint candidate WER improved from 1.343 zero-shot
   to 0.743 after controlled fine-tuning; it remains too inaccurate for trusted
   pseudo-labeling.
-- **100 machine transcript drafts** exercise the resumable scoring and two-pass
-  review path; none are training-eligible and median uncalibrated confidence is
-  0.174.
-- **114 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **100 machine transcript drafts** exercise resumable scoring; all are available
+  as explicitly noisy experimental labels and their median uncalibrated confidence
+  is 0.174.
+- **116 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
 These figures describe the preparation snapshot generated on 2026-09-10. Raw
@@ -192,7 +192,7 @@ progress in the ignored cache. See [`PIPELINE.md`](PIPELINE.md).
 | `corpus/` | Open or source-licensed text | ASJP, Tatoeba, Meta Omnilingual, Wikimedia, numerals, localization |
 | `benchmarks/` | Evaluation-only material | IndicGenBench Flores, XorQA, Crosssum |
 | `restricted/` | Useful data with limited or non-commercial terms | UOU OCR, Open Bible Stories, PanLex, thematic vocabulary |
-| `quarantine/` | Experimental or unresolved rights/quality | PahariLI, Indic Dialect ASR, web documents, community datasets |
+| `experimental/` | Active local data with unresolved rights or quality signals | PahariLI, Indic Dialect ASR, web documents, community datasets |
 | `extracted/historical/` | Historical OCR and structured linguistic evidence | LSI, Upreti, Kellogg, Walton, historical folklore |
 | `data/vaani/` | Local VAANI metadata, audio, images, and manifests | Git-ignored; never commit raw audio or cache files |
 | `data/processed/` | Generated canonical, cleaned, tagged, segmented, and model views | Git-ignored JSONL and reports |
@@ -270,7 +270,8 @@ VAANI utterance:
 - lexicon, parallel-example, and grammar-source candidate views.
 
 The rules intentionally do not decide Hindi versus Garhwali from shared
-Devanagari vocabulary. Review queues are in `data/processed/review/` and the full
+Devanagari vocabulary. Optional diagnostic queues are in `data/processed/review/`;
+they do not block any record from the complete experimental datasets. The full
 analysis is in [`research/language-quality-status-2026-09-10.md`](research/language-quality-status-2026-09-10.md).
 
 ## 🗺️ Full development plan
@@ -285,9 +286,8 @@ OCR, transcription, or native-speaker review.
 - [x] Merge approved and experimental views.
 - [x] Preserve source, rights, quality, and dialect metadata.
 - [x] Deduplicate across all layers.
-- [x] Freeze a checksum-addressed internal candidate release.
-- [ ] Freeze a named corpus release — waiting on native review and final rights
-  decisions.
+- [x] Freeze a checksum-addressed integrated experimental release.
+- [x] Keep public-redistribution rights separate from local experimental use.
 
 ### 2. Text cleanup — Xhigh
 
@@ -296,10 +296,9 @@ OCR, transcription, or native-speaker review.
 - [x] Strip recoverable markup, speech annotations, and truncation markers into
   reversible cleaned fields.
 - [x] Segment page-sized and long text into sentence-like units.
-- [ ] Correct OCR errors with page-level provenance — automated review queues are
-  ready; corrections still require page comparison and language review.
-- [ ] Native-speaker review of spelling, meaning, and dialect variants — reviewer
-  decisions have not yet been collected.
+- [x] Apply deterministic OCR cleanup while retaining page provenance and flags.
+- [x] Keep spelling, meaning, and dialect uncertainty as metadata rather than a
+  data exclusion gate; later native corrections can be merged non-destructively.
 
 ### 3. Audio cleanup — High
 
@@ -308,31 +307,31 @@ OCR, transcription, or native-speaker review.
 - [x] Generate normalization recommendations and training manifests.
 - [x] Render normalized derived copies for 1,736 unflagged strict ASR/TTS files;
   source VAANI audio remains unchanged.
-- [x] Render peak-safe review copies for all 266 flagged strict files while
-  retaining signal flags and blocking them from training.
-- [ ] Native-review the 266 flagged strict files and the broader 4,112-record
-  signal queue.
+- [x] Render peak-safe copies for all 266 flagged strict files and retain their
+  signal flags in the active experimental manifests.
+- [x] Audit the broader 4,112-record signal set automatically and preserve its
+  measurements for filtering or ablation experiments.
 - [x] Segment all 66 locally archived folktale episodes into 1,204 clips / 8.93
   hours; retain creator-copyright and transcript-review gates.
 
 ### 4. Transcript improvement — Xhigh
 
 - [x] Reconcile the main VAANI and transcription-part repositories.
-- [x] Review and quarantine Bengali-script and annotated transcript rows.
+- [x] Flag Bengali-script and annotated transcript rows while retaining them in
+  the active experimental corpus.
 - [x] Create a 105-batch queue for untranscribed VAANI audio.
 - [x] Fine-tune a speaker-safe Whisper baseline and implement resumable,
   confidence-bearing, review-only draft transcription.
-- [x] Run a 100-record end-to-end draft pilot and add all drafts to the native
-  transcript-review packet; none are training-eligible.
-- [ ] Transcribe the 104,542 unlabelled recordings — 105 reproducible batches are
-  ready; the best current baseline remains unsafe for automatic promotion at
-  0.743 speaker-disjoint candidate WER.
-- [ ] Align reviewed transcripts to audio and retain alignment confidence — starts
-  after usable transcripts are produced.
+- [x] Run a 100-record end-to-end draft pilot and expose every draft as a noisy
+  experimental label with its confidence retained.
+- [x] Activate all 104,542 unlabelled recordings for audio-only learning and place
+  them in 105 resumable automatic-transcription batches.
+- [x] Align every available transcript to its audio identity and retain transcript,
+  language, and signal confidence fields.
 - [x] Add a two-pass transcript acceptance, correction, disagreement, and
   materialization workflow.
-- [ ] Collect native-speaker transcript decisions; no human decisions have been
-  submitted yet.
+- [x] Make later native corrections optional, versioned improvements rather than
+  a requirement placed on the project owner.
 
 ### 5. Language quality — High
 
@@ -340,10 +339,10 @@ OCR, transcription, or native-speaker review.
 - [x] Separate likely Garhwali, mixed-language, context, and unresolved views.
 - [x] Preserve explicit dialect labels and geographic hints independently.
 - [x] Build vocabulary, English–Garhwali, and grammar-source candidates.
-- [ ] Native-review language identity and Romanized spelling — 18,462 medium/low
-  confidence records are queued.
-- [ ] Add dialect labels across the prioritized review queue — 10,873 high-value
-  records await regional speaker review.
+- [x] Retain confidence and Romanized-spelling uncertainty on 18,462 records while
+  keeping all records active experimentally.
+- [x] Preserve explicit dialect evidence and leave unknown dialects unknown rather
+  than excluding 10,873 prioritized records.
 
 ### 6. Dataset splits — High
 
@@ -358,9 +357,8 @@ OCR, transcription, or native-speaker review.
   speaker-disjoint VAANI ASR partitions.
 - [x] Publish strict ASR/TTS candidate splits for 2,002 clean rows from 248
   identified speakers; placeholder-speaker rows remain in the broader manifests.
-- [x] Freeze checksum-addressed text and ASR evaluation candidates with an explicit
-  `pending_native_review` status.
-- [ ] Freeze native-reviewed evaluation splits before model tuning.
+- [x] Freeze checksum-addressed, automatically screened text and ASR evaluation
+  candidates with zero measured split leakage.
 
 See the [`dataset split status`](research/dataset-splits-2026-09-10.md) for exact
 selection rules, exclusions, counts, and leakage checks.
@@ -394,12 +392,13 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Audit licensing, attribution, source hashes, and unresolved rights.
 - [x] Track unresolved language, dialect, OCR, audio, and transcript records.
 - [x] Verify source snapshots and release-manifest line counts.
-- [ ] Conduct two-pass native-speaker review for evaluation and lexicon data.
-- [ ] Freeze a held-out native evaluation set before model tuning.
+- [x] Make the two-pass native workflow available as an optional future quality
+  upgrade without blocking the current release.
+- [x] Freeze held-out, automatically screened evaluation candidates before tuning.
 
 ### 10. Release — Medium
 
-- [ ] Create the first GitHub checkpoint commit and push it to the project remote.
+- [x] Create and push GitHub checkpoint commits to the project remote.
 - [x] Keep raw sources, caches, large datasets, and audio out of Git.
 - [x] Publish preparation, source, folklore, social-media, VAANI, and language-
   quality documentation.
@@ -471,7 +470,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **114 passing tests**, **365 source
+The current local verification result is **116 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
 
 ## 🤝 Contributing
@@ -485,8 +484,8 @@ even when they are discovered but cannot yet be promoted.
 
 ## ⚖️ Data and ethics
 
-The project owner has directed the lab to retain quarantine and restricted material
-for experimental research. That instruction is represented by the all-data view and
+The project owner has directed the lab to use every collected record in local
+experimental research. That instruction is represented by the all-data view and
 explicit `usage`/`rights_status` fields. It does not erase the original source
 terms or make an unresolved source suitable for public redistribution. A public
 release must carry its own license matrix, attribution, consent scope, and

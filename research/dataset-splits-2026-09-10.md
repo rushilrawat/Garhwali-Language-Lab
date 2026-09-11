@@ -41,13 +41,14 @@ rows and six language/transcript-review rows. Exclusion from the strict view doe
 not remove a row from the broader supervised corpus.
 
 The ASR and TTS manifests are currently identical candidate selections. TTS use
-still requires speaker suitability, consent-scope, transcript, and audio review;
+retains speaker suitability, consent-scope, transcript, and audio quality flags;
 the label does not claim that every retained speaker is ready for voice modeling.
 
 ## Evaluation candidates
 
 The frozen candidate manifests contain 2,492 unflagged text-test segments and 112
-strict ASR test rows. Every row is marked `pending_native_review`. They provide a
+strict ASR test rows. Every row is marked `automated_quality_screened` and can be
+used as an experimental evaluation candidate. They provide a
 stable review target but are not yet the final benchmark, because freezing a
 language evaluation without Garhwali-speaker acceptance would turn automated
 judgment into ground truth.

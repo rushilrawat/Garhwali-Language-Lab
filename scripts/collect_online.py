@@ -1113,7 +1113,8 @@ def indic_asr_extract():
                 'CC-BY-4.0', BY,
                 f'Indic Dialect ASR dataset by grushaaaaa; declared source: {source_name}',
                 split='train', upstream_row_index=row_index, upstream_source=source_name,
-                usage='provenance_review_only', corpus_layer='quarantine', genre='speech_transcript',
+                usage='all_data_experimental_user_approved', corpus_layer='experimental',
+                experimental_training_eligible=True, genre='speech_transcript',
                 modality='speech_transcript', audio_referenced=True,
                 source_url='https://huggingface.co/datasets/grushaaaaa/indic-dialect-asr',
                 rights_status='dataset_declares_CC_BY_4; source_component_and_consent_review_pending',
@@ -1122,7 +1123,7 @@ def indic_asr_extract():
             rows.append(rec)
     if not rows:
         raise ValueError('No Garhwali ASR row snapshots found')
-    save_records(ROOT / 'quarantine' / 'indic_dialect_asr_gbm.jsonl', rows)
+    save_records(ROOT / 'experimental' / 'indic_dialect_asr_gbm.jsonl', rows)
     sources = Counter(row['upstream_source'] for row in rows)
     print(json.dumps({'indic_dialect_asr_gbm': len(rows), 'upstream_sources': sources}, indent=2))
 
@@ -1198,12 +1199,13 @@ def more_extract():
             rows.append(make_record('paharili_gbm', f'{split}:{index}', text_value, info,
                 'Apache-2.0-repository-declared', 'https://www.apache.org/licenses/LICENSE-2.0',
                 'Rachana Gusain, PahariLI repository', split=split, upstream_label=label,
-                usage='provenance_review_only', corpus_layer='quarantine', genre='mixed_web_and_scripture',
+                usage='all_data_experimental_user_approved', corpus_layer='experimental',
+                experimental_training_eligible=True, genre='mixed_web_and_scripture',
                 modality='text', source_url='https://github.com/rachanagusain/PahariLI',
                 rights_status='repository_Apache_2; underlying_blogs_and_translated_text_not_sublicensed',
                 quality_flags=['source_lineage_missing', 'component_rights_review_required',
                                'possible_modern_scripture_or_blog_text']))
-    save_records(ROOT / 'quarantine' / 'paharili_gbm.jsonl', rows)
+    save_records(ROOT / 'experimental' / 'paharili_gbm.jsonl', rows)
 
     raw, info = snapshot('hikinegi_garhwali', 'train.jsonl')
     hikinegi_rows = []
@@ -1216,13 +1218,14 @@ def more_extract():
             'https://huggingface.co/datasets/hikinegi/Garhwali-Dataset',
             'hikinegi/Garhwali-Dataset uploader; authorship and license not stated',
             english_prompt=item.get('instruction'), script_variant='Latin_transliteration',
-            usage='provenance_review_only', corpus_layer='quarantine', genre='phrase_translation',
+            usage='all_data_experimental_user_approved', corpus_layer='experimental',
+            experimental_training_eligible=True, genre='phrase_translation',
             modality='text', source_url='https://huggingface.co/datasets/hikinegi/Garhwali-Dataset',
             rights_status='publicly_downloadable_but_no_license_or_authorship_statement',
             quality_flags=['unlicensed', 'community_upload', 'native_accuracy_unverified'])
         rec['script'] = 'Latn'
         hikinegi_rows.append(rec)
-    save_records(ROOT / 'quarantine' / 'hikinegi_garhwali.jsonl', hikinegi_rows)
+    save_records(ROOT / 'experimental' / 'hikinegi_garhwali.jsonl', hikinegi_rows)
 
     dcad_rows = []
     for decision in ['keep', 'remove']:
@@ -1238,13 +1241,14 @@ def more_extract():
                 'OpenBMB DCAD-2000; underlying Common Crawl/MADLAD pages retain source copyrights',
                 upstream_filter_decision=decision, upstream_collection=item.get('collection'),
                 common_crawl_source=item.get('source'), upstream_url=item.get('url') or None,
-                upstream_metrics=metrics, usage='provenance_review_only', corpus_layer='quarantine',
+                upstream_metrics=metrics, usage='all_data_experimental_user_approved',
+                corpus_layer='experimental', experimental_training_eligible=True,
                 genre='web_document', modality='text',
                 source_url='https://huggingface.co/datasets/openbmb/DCAD-2000',
                 rights_status='dataset_LICENSE_link_missing; underlying_web_copyrights_not_cleared',
                 quality_flags=['common_crawl', 'component_rights_review_required',
                                'source_url_missing'] + (['upstream_rejected'] if decision == 'remove' else [])))
-    save_records(ROOT / 'quarantine' / 'dcad_gbm.jsonl', dcad_rows)
+    save_records(ROOT / 'experimental' / 'dcad_gbm.jsonl', dcad_rows)
 
     print(json.dumps({'paharili_gbm': len(rows), 'hikinegi_garhwali': len(hikinegi_rows),
                       'dcad_gbm': len(dcad_rows)}, indent=2))
@@ -1288,7 +1292,7 @@ def third_wave_acquire():
 def existing_text_hashes(exclude=None):
     """Return normalized-text hashes already stored across every corpus layer."""
     excluded = {str(Path(item)) for item in (exclude or [])}
-    folders = [CORPUS, ROOT / 'benchmarks', ROOT / 'restricted', ROOT / 'quarantine',
+    folders = [CORPUS, ROOT / 'benchmarks', ROOT / 'restricted', ROOT / 'experimental',
                ROOT / 'extracted' / 'historical']
     hashes = set()
     for folder in folders:
@@ -1330,7 +1334,8 @@ def madlad_clean_records(raw, info, known_hashes):
             'ODC-BY-1.0-database-only', 'https://opendatacommons.org/licenses/by/1-0/',
             'Kudugunta et al. (2023), MADLAD-400; original web authors retain component rights',
             upstream_row=index, upstream_split='clean', dataset_revision=info.get('dataset_revision'),
-            usage='provenance_review_only', corpus_layer='quarantine', genre='web_document',
+            usage='all_data_experimental_user_approved', corpus_layer='experimental',
+            experimental_training_eligible=True, genre='web_document',
             modality='text', source_url='https://huggingface.co/datasets/allenai/MADLAD-400',
             rights_status='ODC_BY_1_covers_database; underlying_page_copyrights_not_cleared',
             quality_flags=flags,
@@ -1357,7 +1362,7 @@ def third_wave_extract():
     info = madlad_provenance(info)
     if sha(raw) != info['upstream_partition_sha256']:
         raise ValueError('MADLAD Garhwali clean partition checksum mismatch')
-    target = ROOT / 'quarantine' / 'madlad400_gbm_clean.jsonl'
+    target = ROOT / 'experimental' / 'madlad400_gbm_clean.jsonl'
     known = existing_text_hashes(exclude=[str(target.relative_to(ROOT))])
     rows, duplicates = madlad_clean_records(raw, info, known)
     if len(rows) + duplicates != 137:
@@ -1365,7 +1370,7 @@ def third_wave_extract():
     save_records(target, rows)
     print(json.dumps({'madlad_clean_upstream_documents': 137,
                       'exact_duplicates_skipped': duplicates,
-                      'novel_documents_added_to_quarantine': len(rows)}, indent=2))
+                      'novel_documents_added_to_experimental': len(rows)}, indent=2))
 
 
 def fourth_wave_acquire():

@@ -104,7 +104,7 @@ community writing rather than overrepresenting religious translation or OCR.
 3. Add reviewer judgments for language identity, OCR confidence, spelling,
    case marking, agreement, segmentation and semantic completeness.
 4. Maintain independent `core_open`, `restricted_nc`, `restricted_nc_nd`,
-   `historical_review`, `benchmark_only`, and `quarantine` layers.
+   `historical_review`, `benchmark_only`, and active `experimental` layers.
 5. Split evaluation data by speaker, document and source before text-level
    randomization, then publish exact and near-duplicate checks.
 6. Keep scholarly examples in an attributable research-example table. Do not

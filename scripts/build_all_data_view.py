@@ -15,8 +15,8 @@ def main():
             if not line.strip(): continue
             row = json.loads(line)
             row['candidate_use'] = 'all_data_experimental'
-            row['includes_quarantine_or_restricted'] = any(
-                p.get('layer') in {'quarantine', 'restricted'} for p in row.get('provenance', [])
+            row['includes_experimental_or_restricted'] = any(
+                p.get('layer') in {'experimental', 'restricted'} for p in row.get('provenance', [])
             )
             dst.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n')
             count += 1

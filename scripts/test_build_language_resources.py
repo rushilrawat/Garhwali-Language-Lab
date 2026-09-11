@@ -56,10 +56,13 @@ class LanguageResourceTests(unittest.TestCase):
             self.assertNotIn('प', tokenizer['vocab'])
             pronunciations = [json.loads(line) for line in (out / 'pronunciation/lexicon.jsonl').read_text().splitlines()]
             self.assertEqual(pronunciations[0]['source_phonetic_segments'], ['tʃ', 'aː', 'r'])
-            self.assertEqual(pronunciations[1]['pronunciation_status'], 'grapheme_only_pending_native_review')
+            self.assertEqual(pronunciations[1]['pronunciation_status'], 'grapheme_only_unverified')
+            self.assertTrue(pronunciations[1]['experimental_training_eligible'])
             tts = [json.loads(line) for line in (out / 'tts/train.jsonl').read_text().splitlines()]
             self.assertEqual(tts[0]['text'], 'गढ़वाली भाषा')
             self.assertEqual(tts[0]['audio'], 'derived.wav')
+            self.assertEqual(tts[0]['review_status'], 'automated_quality_screened')
+            self.assertTrue(tts[0]['experimental_training_eligible'])
             self.assertEqual(report['tts_pairs'], 1)
 
 

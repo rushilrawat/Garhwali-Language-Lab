@@ -94,9 +94,10 @@ def build_resources(text_path=TEXT, lexicon_path=LEXICON, audio_dir=AUDIO, outpu
             'graphemes': orthographic_units(form),
             'source_phonetic_segments': source_segments,
             'pronunciation_status': (
-                'source_phonetic_segments_pending_native_review'
-                if source_segments else 'grapheme_only_pending_native_review'
+                'source_phonetic_segments_unverified'
+                if source_segments else 'grapheme_only_unverified'
             ),
+            'experimental_training_eligible': True,
             'glosses': row.get('glosses', {}),
             'dialect_quality': row.get('dialect_quality', {}),
             'provenance': row.get('provenance', []),
@@ -118,7 +119,8 @@ def build_resources(text_path=TEXT, lexicon_path=LEXICON, audio_dir=AUDIO, outpu
                 'district': row.get('district'),
                 'split': split,
                 'license': row.get('license'),
-                'review_status': 'candidate_pending_native_review',
+                'review_status': 'automated_quality_screened',
+                'experimental_training_eligible': True,
             })
         write_jsonl(output_dir / 'tts' / f'{split}.jsonl', rows)
         tts_counts[split] = len(rows)

@@ -82,7 +82,7 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(duplicate_count, 1)
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]['text_normalized'], novel)
-        self.assertEqual(rows[0]['corpus_layer'], 'quarantine')
+        self.assertEqual(rows[0]['corpus_layer'], 'experimental')
         self.assertFalse(rows[0]['training_eligible'])
         self.assertIn('component_rights_review_required', rows[0]['quality_flags'])
         self.assertLessEqual(rows[0]['quality_metrics']['devanagari_share_of_nonspace'], 1)

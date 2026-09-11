@@ -4,7 +4,7 @@
 
 **Goal:** Convert the collected Garhwali sources into reproducible, quality-labelled, deduplicated candidate datasets for text and speech modeling.
 
-**Architecture:** Raw and source-layer files remain immutable. Preparation scripts stream records into Git-ignored `data/processed/` views, retain every source reference in duplicate groups, and write deterministic reports and split assignments. Speech preparation consumes the verified VAANI manifests and produces supervised, quarantine and unlabeled views without copying audio.
+**Architecture:** Raw and source-layer files remain immutable. Preparation scripts stream records into Git-ignored `data/processed/` views, retain every source reference in duplicate groups, and write deterministic reports and split assignments. Speech preparation consumes the verified VAANI manifests and produces supervised, flagged-experimental and unlabeled views without copying audio.
 
 **Tech Stack:** Python 3.12 standard library, JSONL, SHA-256, `unittest`.
 
@@ -32,7 +32,7 @@
 - Generate: `data/processed/text/report.json`
 
 **Interfaces:**
-- Consumes: JSONL records under `corpus/`, `restricted/`, `quarantine/`, `extracted/`, and `data/extracted/`.
+- Consumes: JSONL records under `corpus/`, `restricted/`, `experimental/`, `extracted/`, and `data/extracted/`.
 - Produces: `normalize_text(text: str) -> str`, `quality_signals(text: str) -> dict`, `split_for_hash(digest: str) -> str`, and `prepare(paths, output_dir) -> dict`.
 
 - [x] Write tests proving NFC/whitespace normalization, fallback text fields, provenance-preserving deduplication, deterministic split assignment and rejection of empty records.
@@ -41,22 +41,22 @@
 - [x] Run the focused test and then the full script test suite.
 - [x] Build the current dataset and validate report counts against emitted line counts.
 
-### Task 2: VAANI supervised and quarantine views
+### Task 2: VAANI supervised and flagged-experimental views
 
 **Files:**
 - Create: `scripts/prepare_vaani_supervised.py`
 - Create: `scripts/test_prepare_vaani_supervised.py`
 - Generate: `data/processed/vaani/supervised.jsonl`
-- Generate: `data/processed/vaani/quarantine.jsonl`
+- Generate: `data/processed/vaani/experimental_review.jsonl`
 - Generate: `data/processed/vaani/untranscribed.jsonl`
 
 **Interfaces:**
 - Consumes: `data/vaani/canonical-supervised-manifest.jsonl`, `canonical-full-manifest.jsonl`, and reconciliation reports.
 - Produces: transcript-selection and quality decisions keyed by stable WAV path.
 
-- [x] Test transcript precedence, pause-tag normalization, Bengali-script quarantine and preservation of supplied splits.
+- [x] Test transcript precedence, pause-tag normalization, Bengali-script flags and preservation of supplied splits.
 - [x] Implement the minimal manifest transformer.
-- [x] Verify 5,894 supervised rows, eight Bengali-script quarantines and 104,542 unlabeled rows.
+- [x] Verify 5,894 supervised rows, eight Bengali-script flags and 104,542 unlabeled rows.
 
 ### Task 3: Audio quality inventory
 
@@ -86,4 +86,4 @@
 
 - [x] Generate review queues for transcript disagreements, OCR pages, social vocabulary and low-confidence text.
 - [x] Verify no text hash or speaker identity crosses candidate train/validation/test partitions.
-- [x] Document usable, restricted, quarantined and unlabeled totals and the exact commands required to reproduce them.
+- [x] Document open, restricted, active-experimental and unlabeled totals and the exact commands required to reproduce them.

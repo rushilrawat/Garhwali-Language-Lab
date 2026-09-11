@@ -87,4 +87,4 @@ VAANI geography is Uttarkashi **74,552 (67.51%)** and Tehri Garhwal **35,884 (32
 .venv/bin/python scripts/build_release_manifest.py
 ```
 
-The next quality gain requires native-speaker decisions: confirm the 18,462 non-high-confidence text labels, add dialects to the prioritized 10,873 records, and transcribe enough of the 104,542 unlabelled recordings to validate language identity and broaden supervised coverage.
+The next optional quality gain is versioned native-speaker correction of the 18,462 non-high-confidence labels and 10,873 prioritized dialect records. All remain active experimentally. The 104,542 unlabelled recordings are active for audio-only learning and organized into 105 resumable automatic-transcription batches.

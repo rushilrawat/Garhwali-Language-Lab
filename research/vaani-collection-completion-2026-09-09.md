@@ -22,7 +22,7 @@ The supplied split has no speaker-image-hash overlap between train, validation, 
 - 5,126 shared transcripts match after whitespace and case normalization.
 - 736 differ only by closing `</pause>` tags.
 - Six have other annotation or text differences and are flagged for manual review.
-- Eight supervised rows contain Bengali script under the Garhwali label and are flagged for quarantine.
+- Eight supervised rows contain Bengali script under the Garhwali label; they retain script flags and remain active in the experimental supervised view.
 - 104,542 main WAVs remain untranscribed, totaling approximately 126.706 hours.
 
 ## Local artifacts

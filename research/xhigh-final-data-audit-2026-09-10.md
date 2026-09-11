@@ -20,7 +20,7 @@ The pass also replaced header-only audio checking with signal-level measurements
 | Omniglot | 4 | Devanagari sample text |
 | **Total** | **189** | **185 Romanized, 4 Devanagari** |
 
-The extractor archives each raw HTML response by SHA-256 and stores the source URL, paired English where present, script, rights status, and quality flags. One repeated web row and 49 rows already present in other sources account for 50 duplicate occurrences; 139 texts are new to the canonical view. The sources do not state an open text license, so these rows remain traceable in the user-approved experimental quarantine layer.[^1][^2][^3]
+The extractor archives each raw HTML response by SHA-256 and stores the source URL, paired English where present, script, rights status, and quality flags. One repeated web row and 49 rows already present in other sources account for 50 duplicate occurrences; 139 texts are new to the canonical view. The sources do not state an open text license, so these rows remain traceable and active in the user-approved local experimental layer.[^1][^2][^3]
 
 ## Text re-extraction
 
@@ -61,7 +61,7 @@ The normalization manifest recommends gain toward -20 dBFS, capped to ±12 dB, a
 The current Hugging Face language filter exposes 24 datasets tagged for `gbm`; repository inspection showed that most are mirrors or derivatives already represented locally.[^4] In particular:
 
 - `mlexplorer008/hin_dialect_classification` mirrors the HinDialect material already represented by 128 Garhwali rows, so it was not counted again.[^5]
-- `grushaaaaa/indic-dialect-asr` is already represented by 7,823 quarantined Garhwali transcript rows with component lineage retained.[^6]
+- `grushaaaaa/indic-dialect-asr` is represented by 7,823 active experimental Garhwali transcript rows with component lineage retained.[^6]
 - Chaashini remains gated and currently advertises only one 2.2-second Garhwali clip, so gaining access would add negligible volume.[^7]
 - `aoiandroid/mms-multilingual-audio-5to30min` offers one approximately 28.3-minute Garhwali YouTube-derived recording without a transcript. It remains a discovery lead because it needs source-level rights and duplication review.[^8]
 
@@ -85,7 +85,7 @@ The project-local `.venv` now contains the pinned LangGraph dependencies. All **
 
 ## Remaining limits
 
-This is the practical end of high-yield unattended collection from the sources currently reachable. The largest remaining improvement is the **104,542 untranscribed VAANI utterances**, which requires transcription or a Garhwali-adapted ASR model. Native-speaker review remains necessary for Romanized spelling, dialect labels, OCR repairs, the 13 VAANI transcript flags, and mixed-language records. Books, podcasts, songs, private/community archives, and blocked sites may still contain material, but each needs a supplied copy, permission, or human transcription before it becomes reliable training data.
+This is the practical end of high-yield unattended collection from the sources currently reachable. The largest remaining automatic improvement is better transcription of the **104,542 untranscribed VAANI utterances** with a stronger Garhwali-adapted ASR model. Every recording is already active for audio-only learning and queued in a resumable job. Romanized spelling, dialect labels, OCR repairs, the 13 VAANI transcript flags, and mixed-language records remain active with uncertainty metadata; later native corrections are optional versioned improvements. Books, podcasts, songs, private/community archives, and blocked sites may still contain material, but each needs a reachable copy before it can be ingested.
 
 [^1]: [eUttaranchal, Learn Garhwali](https://www.euttaranchal.com/culture/learn-garhwali.php)
 [^2]: [LanguagesHome, English to Garhwali](https://www.languageshome.com/English-Garhwali.htm)

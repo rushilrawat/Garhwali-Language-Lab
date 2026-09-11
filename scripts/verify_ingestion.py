@@ -4,13 +4,13 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-LAYERS = ['corpus', 'benchmarks', 'restricted', 'quarantine', 'extracted/historical']
+LAYERS = ['corpus', 'benchmarks', 'restricted', 'experimental', 'extracted/historical']
 
 
 def training_use_is_authorized(row, layer):
     if not row.get('training_eligible', False):
         return True
-    return layer in {'restricted', 'quarantine'} and row.get('usage') == 'all_data_experimental_user_approved'
+    return layer in {'restricted', 'experimental'} and row.get('usage') == 'all_data_experimental_user_approved'
 
 
 def rights_are_documented(row):
@@ -53,9 +53,10 @@ def main():
     assert devanagari / characters > 0.5, 'UOU OCR is not predominantly Unicode Devanagari'
 
     madlad = [json.loads(line) for line in
-              (ROOT / 'quarantine' / 'madlad400_gbm_clean.jsonl').read_text().splitlines()]
+              (ROOT / 'experimental' / 'madlad400_gbm_clean.jsonl').read_text().splitlines()]
     assert len(madlad) == 18
-    assert all(row.get('corpus_layer') == 'quarantine' for row in madlad)
+    assert all(row.get('corpus_layer') == 'experimental' for row in madlad)
+    assert all(row.get('experimental_training_eligible') for row in madlad)
     assert all('component_rights_review_required' in row.get('quality_flags', [])
                for row in madlad)
     assert all(0 <= row['quality_metrics']['devanagari_share_of_nonspace'] <= 1

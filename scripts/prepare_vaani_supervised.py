@@ -70,6 +70,7 @@ def prepared_supervised(path: Path, transcription_rows: dict[str, dict]):
                 "split": authoritative_split,
                 "selected_transcript": transcript,
                 "selected_transcript_sha256": hashlib.sha256(transcript.encode()).hexdigest(),
+                "experimental_training_eligible": bool(transcript),
                 **decision,
             }
 
@@ -97,6 +98,7 @@ def untranscribed(path: Path):
                 "config": row.get("config"),
                 "utterance_sequence_id": row.get("utterance_sequence_id"),
                 "transcript_status": "untranscribed",
+                "experimental_audio_eligible": True,
             }
 
 
@@ -110,15 +112,16 @@ def main() -> None:
         VAANI / "canonical-supervised-manifest.jsonl", transcription_rows
     ))
     supervised_count = write_jsonl(OUT / "supervised.jsonl", supervised_rows)
-    quarantine = [row for row in supervised_rows if not row["recommended_for_supervised_training"]]
-    quarantine_count = write_jsonl(OUT / "quarantine.jsonl", quarantine)
+    experimental_review = [row for row in supervised_rows if not row["recommended_for_supervised_training"]]
+    experimental_review_count = write_jsonl(OUT / "experimental_review.jsonl", experimental_review)
     untranscribed_count = write_jsonl(
         OUT / "untranscribed.jsonl", untranscribed(VAANI / "canonical-full-manifest.jsonl")
     )
     report = {
         "supervised_rows": supervised_count,
-        "recommended_supervised_rows": supervised_count - quarantine_count,
-        "quarantine_rows": quarantine_count,
+        "recommended_supervised_rows": supervised_count - experimental_review_count,
+        "experimental_review_rows": experimental_review_count,
+        "experimental_supervised_rows": supervised_count,
         "untranscribed_rows": untranscribed_count,
         "bengali_script_rows": sum(has_bengali_script(row["selected_transcript"]) for row in supervised_rows),
         "quality_flags": dict(sorted(Counter(flag for row in supervised_rows for flag in row["quality_flags"]).items())),

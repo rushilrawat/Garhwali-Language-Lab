@@ -39,7 +39,8 @@ def build_draft_record(row, transcript, mean_token_log_probability, model_name):
         'token_confidence_uncalibrated': round(confidence, 8),
         'confidence_is_calibrated': False,
         'training_eligible': False,
-        'review_status': 'machine_draft_needs_native_review',
+        'experimental_training_eligible': True,
+        'review_status': 'machine_draft_noisy_experimental',
     }
 
 
