@@ -984,7 +984,7 @@ def opus_extract():
             upstream_version='v2026-07-01', english_alignments=english_by_gbm.get(text_value, []),
             opus_pair_ids=ids_by_gbm.get(text_value, []), parallel_snapshot=zip_info,
             upstream_mono_line=index, duplicate_mono_lines=duplicate_lines.get(text_value, []),
-            source_url='https://opus.nlpl.eu/translatewiki/',
+            source_url='https://opus.nlpl.eu/datasets/translatewiki',
             rights_status='translatewiki_translations_declared_CC_BY_3.0',
             quality_flags=['software_interface_fragment', 'native_accuracy_unverified'])
         rows.append(rec)

@@ -10,10 +10,21 @@ def line_count(path):
     with path.open(encoding='utf-8') as f:
         return sum(1 for line in f if line.strip())
 
+def read_optional_json(path):
+    return json.loads(path.read_text()) if path.exists() else None
+
 def main():
     text_report = json.loads((ROOT/'data/processed/text/report.json').read_text())
     vaani_report = json.loads((ROOT/'data/processed/vaani/report.json').read_text())
     audio_report = json.loads((ROOT/'data/processed/audio/report.json').read_text())
+    dataset_split_report = json.loads((ROOT/'data/processed/model_ready/splits/report.json').read_text())
+    language_resources_report = read_optional_json(ROOT/'data/processed/model_ready/language_resources/report.json')
+    native_review_report = read_optional_json(ROOT/'data/processed/native_review/results/report.json')
+    long_form_audio_report = read_optional_json(ROOT/'data/processed/long_form_audio/report.json')
+    asr_finetune_report = (
+        read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
+        or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
+    )
     files = {
       'text_canonical': 'data/processed/text/canonical.jsonl',
       'text_all_experimental': 'data/processed/text/all_garhwali.jsonl',
@@ -46,6 +57,31 @@ def main():
       'asr_finetuning_validation': 'data/processed/model_ready/asr_finetuning/validation.jsonl',
       'asr_finetuning_test': 'data/processed/model_ready/asr_finetuning/test.jsonl',
       'asr_baseline_predictions': 'data/processed/evaluation/asr/baseline_predictions.jsonl',
+      'split_text_train': 'data/processed/model_ready/splits/text/train.jsonl',
+      'split_text_validation': 'data/processed/model_ready/splits/text/validation.jsonl',
+      'split_text_test': 'data/processed/model_ready/splits/text/test.jsonl',
+      'split_asr_train': 'data/processed/model_ready/splits/asr/train.jsonl',
+      'split_asr_validation': 'data/processed/model_ready/splits/asr/validation.jsonl',
+      'split_asr_test': 'data/processed/model_ready/splits/asr/test.jsonl',
+      'split_tts_train': 'data/processed/model_ready/splits/tts/train.jsonl',
+      'split_tts_validation': 'data/processed/model_ready/splits/tts/validation.jsonl',
+      'split_tts_test': 'data/processed/model_ready/splits/tts/test.jsonl',
+      'split_text_evaluation_candidate': 'data/processed/model_ready/splits/evaluation/text_candidate.jsonl',
+      'split_asr_evaluation_candidate': 'data/processed/model_ready/splits/evaluation/asr_candidate.jsonl',
+      'audio_normalized_train': 'data/processed/model_ready/audio_normalized/manifests/train.jsonl',
+      'audio_normalized_validation': 'data/processed/model_ready/audio_normalized/manifests/validation.jsonl',
+      'audio_normalized_test': 'data/processed/model_ready/audio_normalized/manifests/test.jsonl',
+      'audio_normalization_requires_review': 'data/processed/model_ready/audio_normalized/requires_review.jsonl',
+      'audio_normalized_review_copies': 'data/processed/model_ready/audio_normalized/review_manifest.jsonl',
+      'pronunciation_candidates': 'data/processed/model_ready/language_resources/pronunciation/lexicon.jsonl',
+      'tts_pairs_train': 'data/processed/model_ready/language_resources/tts/train.jsonl',
+      'tts_pairs_validation': 'data/processed/model_ready/language_resources/tts/validation.jsonl',
+      'tts_pairs_test': 'data/processed/model_ready/language_resources/tts/test.jsonl',
+      'native_review_adjudicated': 'data/processed/native_review/results/adjudicated.jsonl',
+      'native_review_disagreements': 'data/processed/native_review/results/disagreements.jsonl',
+      'long_form_audio_segments': 'data/processed/long_form_audio/manifest.jsonl',
+      'asr_finetune_predictions': 'models/whisper-tiny-garhwali-v0.2/evaluation_predictions.jsonl',
+      'vaani_machine_transcript_drafts': 'data/processed/model_ready/transcripts/machine_drafts.jsonl',
     }
     entries = {}
     for name, rel in files.items():
@@ -58,6 +94,11 @@ def main():
       'text_report': text_report,
       'vaani_report': vaani_report,
       'audio_report': audio_report,
+      'dataset_split_report': dataset_split_report,
+      'language_resources_report': language_resources_report,
+      'native_review_report': native_review_report,
+      'long_form_audio_report': long_form_audio_report,
+      'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',
       'experimental_views': ['text_all_experimental', 'paharili_garhwali'],

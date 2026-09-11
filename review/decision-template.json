@@ -1,0 +1,12 @@
+{
+  "review_type": "lexicon",
+  "target_id": "stable SHA-256 identifier from the review packet",
+  "reviewer_id": "project-assigned pseudonymous reviewer ID",
+  "round": 1,
+  "decision": "accept",
+  "corrected_text": "",
+  "language": "Garhwali",
+  "dialect_labels": [],
+  "pronunciation": "",
+  "notes": ""
+}

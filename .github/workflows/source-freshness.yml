@@ -1,0 +1,23 @@
+name: Source freshness
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * 1"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements-pipeline.txt
+      - run: python scripts/check_source_freshness.py --live --timeout 20 --output source-freshness.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source-freshness
+          path: source-freshness.json
+          retention-days: 30

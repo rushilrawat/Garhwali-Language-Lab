@@ -1,0 +1,76 @@
+{
+  "release_id": "garhwali-language-lab-v0.1.0-candidate.1",
+  "status": "candidate_pending_native_review",
+  "generated": "2026-09-10",
+  "language": "Garhwali (gbm)",
+  "local_storage_gb_approx": 34,
+  "text": {
+    "total": 86215,
+    "splits": {
+      "train": 80926,
+      "validation": 2488,
+      "test": 2801
+    },
+    "unique_parent_documents": 27987
+  },
+  "speech": {
+    "total": 2002,
+    "hours": 3.562395,
+    "identified_speakers": 248,
+    "splits": {
+      "train": 1621,
+      "validation": 269,
+      "test": 112
+    },
+    "broader_supervised_rows_preserved": 5894,
+    "untranscribed_rows_preserved": 104542
+  },
+  "derived_audio": {
+    "total": 2002,
+    "splits": {
+      "train": 1422,
+      "validation": 225,
+      "test": 89
+    },
+    "flagged_review_copies": 266,
+    "flagged_strict_rows_pending_review": 266
+  },
+  "long_form_audio": {
+    "episodes": 66,
+    "clips": 1204,
+    "hours": 8.928764,
+    "training_eligible": false
+  },
+  "language_resources": {
+    "tokenizer_type": "unicode_character",
+    "tokenizer_vocabulary_size": 332,
+    "tokenizer_training_texts": 80926,
+    "word_types": 203706,
+    "lexicon_candidates": 1124,
+    "pronunciation_candidates": 1124,
+    "pronunciations_with_source_phonetics": 293,
+    "tts_pairs": 1736
+  },
+  "evaluation_candidates": {
+    "text": 2492,
+    "speech": 112,
+    "review_status": "pending_two_pass_native_review"
+  },
+  "asr_baseline": {
+    "model": "whisper-tiny-garhwali-v0.2",
+    "training_steps_after_initial_pass": 3242,
+    "test_rows": 112,
+    "wer": 0.7430488974113135,
+    "cer": 0.40440145780768155,
+    "promotion_status": "rejected_for_automatic_pseudolabeling",
+    "review_only_draft_rows": 100,
+    "draft_median_uncalibrated_confidence": 0.17401576,
+    "draft_training_eligible_rows": 0
+  },
+  "leakage": {
+    "text_hash_cross_split": 0,
+    "identified_speaker_cross_split": 0
+  },
+  "release_policy": "Public redistribution is limited to records with verified compatible source terms; restricted, quarantine, rights-pending, and personal review data remain local.",
+  "machine_manifest": "data/processed/release/manifest.json"
+}

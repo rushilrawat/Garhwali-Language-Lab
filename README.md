@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-84%20passing-success.svg)](research/language-quality-status-2026-09-10.md)
+[![tests](https://img.shields.io/badge/tests-114%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -34,6 +34,34 @@ The project keeps two views by design:
 The pipeline does not infer a dialect from a district name, treat a downloadable
 page as automatically licensed, or silently correct a spelling variant. Those
 decisions remain visible and reversible.
+
+## 🧭 North star
+
+> **Build an open, reproducible, dialect-aware, and native-validated foundation
+> for Garhwali language technology, spanning corpus construction, evaluation,
+> language modeling, translation, speech, and retrieval, while experimentally
+> determining what works when data is extremely scarce.**
+
+The finished contribution is a research platform rather than a single model:
+
+```text
+Garhwali Language Lab
+├── GarhwaliCorpus       rights-cleared, versioned, provenance-preserving data
+├── GarhwaliBench        frozen, native-reviewed, dialect-aware evaluation
+├── Research Suite       tokenizer, quality, transfer, scaling, and ablations
+├── Garhwali Models      LM, translation, retrieval, ASR, and TTS baselines
+├── Community Layer      transcription, correction, and dialect contribution
+└── Public Infrastructure
+                         datasets, model cards, leaderboard, API, and demos
+```
+
+This direction reflects the current field. [SraVaani 1.0](https://vaani.iisc.ac.in/models/sravaani)
+already supports Garhwali in a 65-language ASR model, and a
+[2026 VarDial study](https://aclanthology.org/2026.vardial-1.12/) directly examines
+Garhwali ASR transfer and pretraining-language bias. Garhwali also appears in
+[IndicGenBench](https://aclanthology.org/2024.acl-long.595/). The lab therefore
+uses ASR as one controlled research track and places equal weight on corpus
+quality, native evaluation, translation, dialect robustness, and retrieval.
 
 ## ❤️ Why this lab exists
 
@@ -82,7 +110,21 @@ not a defect in the dataset.
   records, 859 unresolved records, and 317 non-Garhwali cultural-context records.
 - **1,124 lexicon candidates**, 446 unique English–Garhwali pairs, and 1,187
   grammar-source candidates.
-- **84 automated tests** and **365 immutable source snapshots** verified.
+- **2,002 strict speaker-identified ASR/TTS candidates** across 248 speakers,
+  totaling 3.562 hours with zero identified-speaker split leakage.
+- **1,736 normalized derived WAVs** rendered from unflagged strict candidates;
+  **266 peak-safe review copies** retain their flags and remain ineligible for
+  training.
+- **1,204 clips / 8.93 hours** derived from 66 archived Garhwali folktale
+  episodes, with source rights and review gates retained.
+- **Whisper-tiny Garhwali baseline:** speaker-disjoint candidate WER improved from 1.343 zero-shot
+  to 0.743 after controlled fine-tuning; it remains too inaccurate for trusted
+  pseudo-labeling.
+- **100 machine transcript drafts** exercise the resumable scoring and two-pass
+  review path; none are training-eligible and median uncalibrated confidence is
+  0.174.
+- **114 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+  by a scheduled freshness audit.
 
 These figures describe the preparation snapshot generated on 2026-09-10. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
@@ -92,9 +134,9 @@ Git through `.gitignore`.
 
 <div align="center">
 
-| `~30 GB` | `110,436` | `135.5 h` | `27,987` |
+| `~34 GB` | `110,436` | `135.5 h` | `27,987` |
 | --- | ---: | ---: | ---: |
-| local VAANI audio | recordings | audio duration | unique text lines |
+| local corpus data | recordings | audio duration | unique text lines |
 
 | `7.39M` | `1.44M` | `86,215` | `1,124` |
 | ---: | ---: | ---: | ---: |
@@ -106,9 +148,9 @@ Git through `.gitignore`.
 
 </div>
 
-The storage figure is the measured local VAANI directory size; processed views add
-about 1.4 GB. *Whitespace tokens are an engineering count from the canonical text
-view, not a linguistic tokenization.*
+The storage figure combines the measured 30.1 GiB VAANI directory, 3.1 GiB of
+processed views, and about 0.3 GiB of downloads. *Whitespace tokens are an engineering count
+from the canonical text view, not a linguistic tokenization.*
 
 ## 🧱 How the pipeline fits together
 
@@ -182,10 +224,24 @@ python3 -m venv .venv
 .venv/bin/python scripts/deep_cleanup.py
 .venv/bin/python scripts/audit_audio_quality.py --untranscribed data/processed/vaani/untranscribed.jsonl
 .venv/bin/python scripts/prepare_audio_normalization.py
+.venv/bin/python scripts/render_normalized_audio.py --render-flagged-review
 .venv/bin/python scripts/segment_text_corpus.py
 .venv/bin/python scripts/tag_language_quality.py
+.venv/bin/python scripts/build_dataset_splits.py
+.venv/bin/python scripts/build_language_resources.py
 .venv/bin/python scripts/build_review_queues.py
+.venv/bin/python scripts/native_review_workflow.py
+.venv/bin/python scripts/segment_long_audio.py
 .venv/bin/python scripts/build_release_manifest.py
+.venv/bin/python scripts/validate_release_index.py
+```
+
+ASR experiments use the separately pinned `requirements-asr.txt`. Generated
+checkpoints and review-only machine drafts remain Git-ignored:
+
+```bash
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/train_whisper_garhwali.py --device mps
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/transcribe_vaani_drafts.py --device mps --max-records 100
 ```
 
 ### Use the checkpointed ingestion graph
@@ -229,7 +285,9 @@ OCR, transcription, or native-speaker review.
 - [x] Merge approved and experimental views.
 - [x] Preserve source, rights, quality, and dialect metadata.
 - [x] Deduplicate across all layers.
-- [ ] Freeze a named corpus release after native review and rights decisions.
+- [x] Freeze a checksum-addressed internal candidate release.
+- [ ] Freeze a named corpus release — waiting on native review and final rights
+  decisions.
 
 ### 2. Text cleanup — Xhigh
 
@@ -238,25 +296,43 @@ OCR, transcription, or native-speaker review.
 - [x] Strip recoverable markup, speech annotations, and truncation markers into
   reversible cleaned fields.
 - [x] Segment page-sized and long text into sentence-like units.
-- [ ] Correct OCR errors with page-level provenance.
-- [ ] Native-speaker review of spelling, meaning, and dialect variants.
+- [ ] Correct OCR errors with page-level provenance — automated review queues are
+  ready; corrections still require page comparison and language review.
+- [ ] Native-speaker review of spelling, meaning, and dialect variants — reviewer
+  decisions have not yet been collected.
 
 ### 3. Audio cleanup — High
 
 - [x] Audit all VAANI WAV headers and signal metrics.
 - [x] Identify clipped, quiet, loud, DC-offset, and projected-clipping files.
 - [x] Generate normalization recommendations and training manifests.
-- [ ] Apply reviewed loudness and DC correction to derived audio copies.
-- [ ] Segment any future long-form recordings.
+- [x] Render normalized derived copies for 1,736 unflagged strict ASR/TTS files;
+  source VAANI audio remains unchanged.
+- [x] Render peak-safe review copies for all 266 flagged strict files while
+  retaining signal flags and blocking them from training.
+- [ ] Native-review the 266 flagged strict files and the broader 4,112-record
+  signal queue.
+- [x] Segment all 66 locally archived folktale episodes into 1,204 clips / 8.93
+  hours; retain creator-copyright and transcript-review gates.
 
 ### 4. Transcript improvement — Xhigh
 
 - [x] Reconcile the main VAANI and transcription-part repositories.
 - [x] Review and quarantine Bengali-script and annotated transcript rows.
 - [x] Create a 105-batch queue for untranscribed VAANI audio.
-- [ ] Transcribe the 104,542 unlabelled recordings.
-- [ ] Align reviewed transcripts to audio and retain alignment confidence.
-- [ ] Add native-speaker transcript acceptance and correction decisions.
+- [x] Fine-tune a speaker-safe Whisper baseline and implement resumable,
+  confidence-bearing, review-only draft transcription.
+- [x] Run a 100-record end-to-end draft pilot and add all drafts to the native
+  transcript-review packet; none are training-eligible.
+- [ ] Transcribe the 104,542 unlabelled recordings — 105 reproducible batches are
+  ready; the best current baseline remains unsafe for automatic promotion at
+  0.743 speaker-disjoint candidate WER.
+- [ ] Align reviewed transcripts to audio and retain alignment confidence — starts
+  after usable transcripts are produced.
+- [x] Add a two-pass transcript acceptance, correction, disagreement, and
+  materialization workflow.
+- [ ] Collect native-speaker transcript decisions; no human decisions have been
+  submitted yet.
 
 ### 5. Language quality — High
 
@@ -264,8 +340,10 @@ OCR, transcription, or native-speaker review.
 - [x] Separate likely Garhwali, mixed-language, context, and unresolved views.
 - [x] Preserve explicit dialect labels and geographic hints independently.
 - [x] Build vocabulary, English–Garhwali, and grammar-source candidates.
-- [ ] Native-review language identity and Romanized spelling.
-- [ ] Add dialect labels across the prioritized review queue.
+- [ ] Native-review language identity and Romanized spelling — 18,462 medium/low
+  confidence records are queued.
+- [ ] Add dialect labels across the prioritized review queue — 10,873 high-value
+  records await regional speaker review.
 
 ### 6. Dataset splits — High
 
@@ -274,9 +352,18 @@ OCR, transcription, or native-speaker review.
 - [x] Create a complete experimental all-data view.
 - [x] Prevent exact duplicate segments from receiving different provisional segment
   hashes.
-- [ ] Resolve the 332 cross-document segment conflicts with connected-component,
-  document-aware splitting.
-- [ ] Publish immutable speaker-disjoint text, ASR, TTS, and evaluation splits.
+- [x] Resolve all 332 cross-document segment conflicts with connected-component,
+  document-aware splitting; zero exact segments now cross splits.
+- [x] Publish deterministic document-aware text splits and preserve the official
+  speaker-disjoint VAANI ASR partitions.
+- [x] Publish strict ASR/TTS candidate splits for 2,002 clean rows from 248
+  identified speakers; placeholder-speaker rows remain in the broader manifests.
+- [x] Freeze checksum-addressed text and ASR evaluation candidates with an explicit
+  `pending_native_review` status.
+- [ ] Freeze native-reviewed evaluation splits before model tuning.
+
+See the [`dataset split status`](research/dataset-splits-2026-09-10.md) for exact
+selection rules, exclusions, counts, and leakage checks.
 
 ### 7. Pipeline engineering — Medium
 
@@ -284,8 +371,8 @@ OCR, transcription, or native-speaker review.
 - [x] Add LangGraph checkpoints, retry policies, and resumable runs.
 - [x] Add source hashes, provenance, validation, deduplication, and release reports.
 - [x] Keep raw data, caches, generated datasets, and audio ignored by Git.
-- [ ] Add scheduled freshness checks for source pages and dataset revisions.
-- [ ] Add CI that runs the test suite and validates release-manifest counts.
+- [x] Add scheduled freshness checks for source pages and dataset revisions.
+- [x] Add CI that runs the test suite and validates release-manifest counts.
 
 ### 8. Model preparation — High
 
@@ -293,10 +380,13 @@ OCR, transcription, or native-speaker review.
 - [x] Export ASR supervised and untranscribed manifests.
 - [x] Export lexicon and parallel-example candidates.
 - [x] Run and document a zero-shot ASR baseline.
-- [ ] Build a Garhwali language model/tokenizer resource.
-- [ ] Build pronunciation and grapheme-to-phoneme resources.
-- [ ] Prepare TTS text/audio pairs after transcript and speaker review.
-- [ ] Fine-tune and evaluate Garhwali ASR using speaker-safe splits.
+- [x] Build a 332-symbol Unicode tokenizer resource from train-only text.
+- [x] Build 1,124 pronunciation candidates, including 293 with source phonetic
+  evidence; native pronunciation validation remains pending.
+- [x] Prepare 1,736 normalized, speaker-safe TTS candidate pairs; public TTS use
+  remains gated on transcript review and voice consent.
+- [x] Fine-tune and evaluate a Garhwali Whisper baseline on speaker-safe splits;
+  the best controlled run scores 0.743 WER / 0.404 CER and remains experimental.
 
 ### 9. Testing and review — High
 
@@ -314,36 +404,60 @@ OCR, transcription, or native-speaker review.
 - [x] Publish preparation, source, folklore, social-media, VAANI, and language-
   quality documentation.
 - [x] Generate a versioned local release manifest.
-- [ ] Choose and document the final redistribution and model-use policy.
-- [ ] Publish a dataset card with license matrix, attribution, consent scope,
+- [x] Document the redistribution and model-use policy.
+- [x] Publish a dataset card with license treatment, attribution, consent scope,
   exclusions, review status, and reproducibility commands.
 
-## 🧭 The broader collection and research plan
+## 🔭 Research platform roadmap
 
-The full project continues beyond the current snapshot:
+| Stage | Primary artifact | Success condition |
+| --- | --- | --- |
+| **1. Corpus v1.0** | `GarhwaliCorpus` | Clean, deduplicated, rights-aware, source-versioned text and audio with raw and normalized forms |
+| **2. Benchmark v1.0** | `GarhwaliBench` | Frozen native-reviewed evaluation for language quality, translation, generation, dialects, code-switching, retrieval, and speech |
+| **3. Baseline audit** | `Garhwali Model Report` | Evaluate current multilingual, Indic, MT, tokenizer, retrieval, and speech systems before selecting new training runs |
+| **4. Controlled modeling** | `GarhwaliGPT` plus adapted models | Treat a small scratch LM as a scientific control; build practical systems through multilingual continued pretraining, translation, retrieval, and speech adaptation |
+| **5. Research experiments** | Reproducible ablation suite | Quantify which changes survive multiple seeds and which apparent gains disappear |
+| **6. Community expansion** | Corpus v1.x/v2 | Native corrections, additional varieties and districts, conversations, parallel data, and corrected historical text |
+| **7. Public platform** | Dataset, models, leaderboard, API, explorer | Reproducible releases another researcher can inspect, run, compare, and extend |
 
-1. **Finish VAANI’s value:** transcribe representative batches first, balance
-   Uttarkashi and Tehri Garhwal, review speaker metadata, and then expand to the
-   full untranscribed queue.
-2. **Native-led language review:** recruit reviewers from multiple Garhwali
-   regions; record accepted form, alternative form, gloss, example, dialect,
-   reviewer ID, timestamp, and disagreement resolution.
-3. **Dialect coverage:** add consensual recordings and vocabulary from additional
-   districts, ages, genders, and speaking contexts. Never infer a dialect solely
-   from residence.
-4. **Licensed dictionary work:** request a versioned Garhwali-only HimLingo export
-   with contributor consent and explicit redistribution/model-training rights.
-5. **Archives and books:** obtain permission or verify public-domain status for
-   historical periodicals, folk literature, grammars, plays, novels, and local
-   stories; OCR page by page and keep original and corrected text separate.
-6. **Community speech:** collect prompted speech, natural conversation, stories,
-   songs, jagar, mangal, theatre, and procedural explanations with consent and
-   performer/speaker rights recorded separately.
-7. **Model baselines:** train a tokenizer, language model, ASR model, and TTS
-   baseline only after the split and review gates are frozen.
-8. **Public release:** publish only the subset whose source terms, consent,
-   attribution, and review state support the selected use; retain an auditable
-   internal experimental view for research decisions.
+`GarhwaliBench` should complement existing generation benchmarks by measuring
+things that require Garhwali knowledge: Garhwali–Hindi–English translation,
+meaning preservation, morphology, idioms, Hindi/Garhwali discrimination,
+code-switching, Devanagari and Romanized text, historical and contemporary usage,
+dialect robustness, cultural QA, retrieval, and multi-reference ASR. Native
+speakers define accepted language; model-assisted review can prioritize work but
+cannot establish ground truth.
+
+### Controlled research questions
+
+| Experiment | Question |
+| --- | --- |
+| Data scaling | What changes at 100K, 500K, 1M, 2M, and 5M clean tokens? |
+| Quality vs. quantity | Does a smaller reviewed corpus outperform a larger noisy corpus? |
+| OCR corruption | At what character-error rate does historical OCR become harmful? |
+| Hindi transfer | When does Hindi help Garhwali, and when does it produce Hindi-like output? |
+| Parallel data | How much value comes from native-reviewed Garhwali–Hindi–English alignment? |
+| Code-switching | Does natural mixing improve transfer or obscure Garhwali competence? |
+| Tokenization | Does lower token fertility improve downstream quality? |
+| Dialect balance | Does balanced sampling protect less represented varieties? |
+| Synthetic data | At what synthetic-to-human ratio do gains stop or reverse? |
+| CPT vs. SFT | Which capabilities come from language exposure and which from instruction tuning? |
+| Forgetting | Does Garhwali adaptation degrade Hindi, English, or general capabilities? |
+| RAG vs. CPT | Are cultural facts better served by cited retrieval than by model weights? |
+| Abstention | Can a system identify an unknown Garhwali fact or word instead of inventing one? |
+
+Translation and retrieval are first-class near-term tracks. A native-reviewed
+`GarhwaliParallel` resource should align Garhwali, Hindi, and English, while
+`GarhwaliRAG` should answer from trusted corpus passages and expose source, page
+or speaker, date, dialect evidence, and confidence. Speech experiments should
+measure generalization across speakers, districts, code-switching, and spelling
+variation with multiple seeds and speaker-safe evaluation.
+
+The project is complete when another researcher can obtain a documented corpus,
+reproduce its preparation, evaluate against a frozen native-reviewed benchmark,
+compare strong baselines by source and variety, and trace every result to its
+evidence. A Garhwali speaker should also be able to contribute, correct, search,
+translate, and see where the system's answers came from.
 
 The detailed gap plan is [`research/gap-closure-plan.md`](research/gap-closure-plan.md),
 and the known access blockers are [`research/garhwali-access-blockers-2026-09-10.md`](research/garhwali-access-blockers-2026-09-10.md).
@@ -357,7 +471,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **84 passing tests**, **365 source
+The current local verification result is **114 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
 
 ## 🤝 Contributing
