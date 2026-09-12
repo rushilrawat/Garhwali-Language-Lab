@@ -45,6 +45,8 @@ Updated 2026-09-11 from the checked-in preparation scripts. Raw and downloaded m
 - Model selection uses only the 2,488-row validation split. Full-data trigrams win with 11.712997 mean validation perplexity; the frozen 2,492-row test candidate is untouched until this selection is fixed.
 - The selected full-data trigram reaches 11.893886 frozen-test perplexity, 27.76% below the earlier 16.464093 bigram floor. Seed variance is zero at full data because each seed contains the identical complete training set.
 - Exact train/validation and train/test text overlap are both zero. The scaling curve continues to improve from 50% to 100%, supporting continued collection and controlled transfer experiments.
+- A three-seed IndicBERTv2 transfer pilot freezes the 277.5M-parameter encoder and trains only 842,128 MLM-head parameters for 64 train-only steps per seed. All three seeds improve the same 128-record validation subset.
+- Mean masked-token validation cross-entropy falls from 6.678164 to 6.578552 (standard deviation 0.014935), while accuracy moves from 21.747212% to 21.933086%. The result advances to encoder adaptation; the frozen test candidate remains unused.
 
 ## Long-form folklore audio
 
@@ -120,4 +122,4 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 148 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, controlled multi-seed text scaling, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, and speech-comparison logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
+The complete pipeline suite has 151 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, controlled multi-seed text scaling and IndicBERTv2 adaptation, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, and speech-comparison logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.

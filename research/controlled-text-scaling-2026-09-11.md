@@ -40,14 +40,35 @@ character-bigram floor. All three seeds are identical at 100% because every run
 contains the same complete training set; this zero variance is expected for a
 deterministic count model.
 
-This establishes the corpus scaling floor. The next controlled-modeling substep
-is pretrained-model transfer and continued masked-language adaptation with the
-same validation-first, frozen-test-last discipline.
+This establishes the corpus scaling floor.
+
+## IndicBERTv2 transfer control
+
+The next pilot uses pinned `ai4bharat/IndicBERTv2-MLM-only` revision
+`8598f13fe52443bc3fc054fcd665944560145b5c`. The 277.5M-parameter encoder is
+frozen; only the 842,128 parameters in the MLM prediction transform and output
+bias are trained for 64 steps under seeds 17, 29, and 43. Each seed draws from
+the training split and scores the same 128-record validation subset with 538
+deterministic masked tokens.
+
+| Run | Validation cross-entropy | Masked-token accuracy |
+| --- | ---: | ---: |
+| Unadapted checkpoint | 6.678164 | 21.747212% |
+| Seed 17 | 6.590277 | 22.118959% |
+| Seed 29 | 6.557475 | 21.747212% |
+| Seed 43 | 6.587905 | 21.933086% |
+| Adapted mean | **6.578552** | **21.933086%** |
+
+All three seeds improve validation cross-entropy. The mean improvement is
+0.099612 with a 0.014935 standard deviation. This justifies moving to encoder
+LoRA or full continued pretraining. It is a validation-only transfer result; the
+frozen test candidate has not been evaluated or used for selection.
 
 ## Reproduce
 
 ```bash
 python3 scripts/run_text_scaling_experiment.py
+PYTHONPATH=.cache/asr-runtime python3 scripts/run_indicbert_adaptation.py --device cpu
 ```
 
 The full run matrix is generated under `data/processed/evaluation/` and remains

@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-148%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-151%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -458,8 +458,8 @@ selection rules, exclusions, counts, and leakage checks.
 2. [x] **Cleanup ablation — Medium:** fixed-split evaluation rejected automatic
    promotion of both mechanical and bulk spelling variants.
 3. [ ] **Controlled modeling — Xhigh:** the three-seed, six-scale bigram/trigram
-   control is complete; transfer, continued-pretraining, and instruction-tuning
-   experiments remain.
+   control and three-seed IndicBERTv2 head-transfer pilot are complete; encoder
+   continued-pretraining and instruction-tuning experiments remain.
 4. [ ] **SraVaani comparison — High:** run the gated model on the same ASR manifest
    when provider approval becomes available; its published score uses a different
    split and cannot replace the local comparison.
@@ -530,7 +530,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **148 passing tests**, **365 source
+The current local verification result is **151 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
 
 ## 🤝 Contributing

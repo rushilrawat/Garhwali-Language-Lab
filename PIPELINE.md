@@ -68,6 +68,7 @@ PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_whisper_comparison.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/propose_text_cleanup.py --model-records 4096 --device cpu
 .venv/bin/python scripts/run_text_cleanup_ablation.py
 .venv/bin/python scripts/run_text_scaling_experiment.py
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_adaptation.py --device cpu
 ```
 
 The benchmark builder indexes the frozen external, text, and ASR evaluation
@@ -114,3 +115,9 @@ training fractions under three deterministic seeds. It selects order and scale
 using validation cross-entropy, then evaluates only that configuration on the
 frozen test candidate. Exact train/validation and train/test overlap must remain
 zero in the resulting integrity report.
+
+The first transfer pilot freezes the IndicBERTv2 encoder and adapts only its MLM
+prediction transform and output bias for 64 train-only steps under three seeds.
+It evaluates a fixed 128-record validation subset, saves small ignored head
+checkpoints, and does not touch the frozen test candidate. Its only promotion
+decision is whether the stronger encoder-adaptation experiment is justified.

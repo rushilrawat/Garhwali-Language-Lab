@@ -185,6 +185,21 @@
     "train_validation_exact_text_overlap": 0,
     "train_test_exact_text_overlap": 0
   },
+  "indicbertv2_head_adaptation": {
+    "status": "advance_to_encoder_adaptation",
+    "seeds": [17, 29, 43],
+    "steps_per_seed": 64,
+    "training_pool_records_per_seed": 512,
+    "validation_records": 128,
+    "validation_masked_tokens": 538,
+    "encoder_frozen": true,
+    "trainable_parameters": 842128,
+    "baseline_validation_cross_entropy": 6.67816411,
+    "mean_adapted_validation_cross_entropy": 6.57855235,
+    "std_adapted_validation_cross_entropy": 0.01493512,
+    "improved_seed_count": 3,
+    "frozen_test_records_used": 0
+  },
   "leakage": {
     "text_hash_cross_split": 0,
     "identified_speaker_cross_split": 0
