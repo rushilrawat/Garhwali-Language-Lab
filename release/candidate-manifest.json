@@ -200,6 +200,31 @@
     "improved_seed_count": 3,
     "frozen_test_records_used": 0
   },
+  "indicbertv2_encoder_lora": {
+    "status": "selected_for_longer_continued_pretraining",
+    "seeds": [17, 29, 43],
+    "steps_per_seed": 256,
+    "training_pool_records_per_seed": 2048,
+    "validation_records": 128,
+    "trainable_parameters": 147456,
+    "baseline_validation_cross_entropy": 6.67816411,
+    "mean_validation_cross_entropy": 6.06264824,
+    "std_validation_cross_entropy": 0.00631318,
+    "improved_seed_count": 3
+  },
+  "indicbertv2_transfer_frozen_test": {
+    "test_records": 256,
+    "masked_tokens": 1037,
+    "test_subset_sha256": "943cd7bf66ac462fb0e6db9e10783ceca727ee131aefceb0da62774ae6c060e3",
+    "base_cross_entropy": 6.65932994,
+    "head_only_mean_cross_entropy": 6.53723563,
+    "encoder_lora_mean_cross_entropy": 6.01409287,
+    "encoder_lora_std_cross_entropy": 0.00882765,
+    "encoder_lora_accuracy": 0.21279331,
+    "selected_family": "encoder_lora_256_steps",
+    "train_test_exact_text_overlap": 0,
+    "future_test_tuning_allowed": false
+  },
   "leakage": {
     "text_hash_cross_split": 0,
     "identified_speaker_cross_split": 0

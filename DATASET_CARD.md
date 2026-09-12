@@ -47,6 +47,7 @@ source terms.
 | Controlled text-scaling runs | 36 validation runs / 3 seeds / 6 scales |
 | Selected character trigram | 11.893886 frozen-test perplexity |
 | IndicBERTv2 head adaptation | 6.678164 → 6.578552 validation cross-entropy |
+| IndicBERTv2 encoder LoRA | 6.659330 → 6.014093 frozen-test cross-entropy |
 
 Text segments use connected-document splitting: 80,926 train, 2,488 validation,
 and 2,801 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.

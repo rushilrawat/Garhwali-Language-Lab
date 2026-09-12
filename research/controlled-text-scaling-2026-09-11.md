@@ -64,11 +64,48 @@ All three seeds improve validation cross-entropy. The mean improvement is
 LoRA or full continued pretraining. It is a validation-only transfer result; the
 frozen test candidate has not been evaluated or used for selection.
 
+## Encoder LoRA continuation
+
+The encoder experiment inserts rank-4 LoRA weights into all attention query and
+value projections, leaving the MLM head and base parameters frozen. This trains
+147,456 of 278,292,880 parameters. A 32-step screen improved every seed; the
+validation-selected 256-step configuration was then run under all three seeds.
+
+| Run | Validation cross-entropy | Masked-token accuracy |
+| --- | ---: | ---: |
+| Unadapted checkpoint | 6.678164 | 21.747212% |
+| Seed 17 | 6.069991 | 21.747212% |
+| Seed 29 | 6.054579 | 21.747212% |
+| Seed 43 | 6.063375 | 21.561338% |
+| LoRA mean | **6.062648** | **21.685254%** |
+
+The mean validation loss improves by 0.615516 with a 0.006313 standard deviation.
+
+## Frozen transfer comparison
+
+After fixing the LoRA configuration, one deterministic 256-record subset of the
+frozen test candidate was opened. Its SHA-256 is
+`943cd7bf66ac462fb0e6db9e10783ceca727ee131aefceb0da62774ae6c060e3`; every model
+scores the same 1,037 masked tokens.
+
+| Family | Test cross-entropy | Standard deviation | Masked-token accuracy |
+| --- | ---: | ---: | ---: |
+| Unadapted IndicBERTv2 | 6.659330 | 0.000000 | 20.443587% |
+| 64-step head-only adaptation | 6.537236 | 0.022426 | 20.475731% |
+| 256-step encoder LoRA | **6.014093** | **0.008828** | **21.279331%** |
+
+All three LoRA seeds beat both the base and head-only controls. The LoRA mean
+reduces frozen-test cross-entropy by 0.645237 and raises masked-token accuracy by
+0.835744 percentage points. Exact train/test overlap is zero. This result is
+closed: the test subset will not be used to retune the same model family.
+
 ## Reproduce
 
 ```bash
 python3 scripts/run_text_scaling_experiment.py
 PYTHONPATH=.cache/asr-runtime python3 scripts/run_indicbert_adaptation.py --device cpu
+PYTHONPATH=.cache/asr-runtime:scripts python3 scripts/run_indicbert_lora_adaptation.py --device cpu --steps 256 --training-records 2048
+PYTHONPATH=.cache/asr-runtime:scripts python3 scripts/evaluate_indicbert_transfer.py --device cpu --test-records 256
 ```
 
 The full run matrix is generated under `data/processed/evaluation/` and remains

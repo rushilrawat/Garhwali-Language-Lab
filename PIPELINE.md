@@ -69,6 +69,8 @@ PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/propose_text_cleanup.py -
 .venv/bin/python scripts/run_text_cleanup_ablation.py
 .venv/bin/python scripts/run_text_scaling_experiment.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_adaptation.py --device cpu
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_indicbert_lora_adaptation.py --device cpu --steps 256 --training-records 2048
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/evaluate_indicbert_transfer.py --device cpu --test-records 256
 ```
 
 The benchmark builder indexes the frozen external, text, and ASR evaluation
@@ -121,3 +123,10 @@ prediction transform and output bias for 64 train-only steps under three seeds.
 It evaluates a fixed 128-record validation subset, saves small ignored head
 checkpoints, and does not touch the frozen test candidate. Its only promotion
 decision is whether the stronger encoder-adaptation experiment is justified.
+
+The encoder pilot adds rank-4 LoRA parameters to every attention query and value
+projection, trains three 256-step seeds, and selects the run length on validation.
+The transfer evaluator then opens one checksum-addressed 256-record frozen-test
+subset exactly once to compare the unadapted model, head-only adaptation, and all
+three LoRA seeds. Its result is final for this experiment and cannot be used to
+retune the same test comparison.
