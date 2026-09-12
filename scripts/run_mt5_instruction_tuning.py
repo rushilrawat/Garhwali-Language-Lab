@@ -152,19 +152,27 @@ def resolve_device(requested):
     return 'mps' if torch.backends.mps.is_available() else 'cpu'
 
 
-def load_tokenizer():
+def model_metadata(model_id, revision, model_path):
+    return {
+        'model_id': model_id,
+        'revision': revision,
+        'model_path': str(model_path),
+    }
+
+
+def load_tokenizer(model_path=MODEL):
     from transformers import AutoTokenizer
 
     return AutoTokenizer.from_pretrained(
-        MODEL, local_files_only=True, fix_mistral_regex=True,
+        model_path, local_files_only=True, fix_mistral_regex=True,
     )
 
 
-def load_base_model(device):
+def load_base_model(device, model_path=MODEL):
     from transformers import AutoModelForSeq2SeqLM
 
     return AutoModelForSeq2SeqLM.from_pretrained(
-        MODEL, local_files_only=True,
+        model_path, local_files_only=True,
     ).to(device)
 
 
@@ -299,11 +307,23 @@ def dataset_digest(rows):
     return hashlib.sha256(payload).hexdigest()
 
 
+def display_path(path):
+    resolved = Path(path)
+    if not resolved.is_absolute():
+        resolved = (Path.cwd() / resolved).resolve()
+    try:
+        return str(resolved.relative_to(ROOT))
+    except ValueError:
+        return str(resolved)
+
+
 def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
         seeds=DEFAULT_SEEDS, steps=64, training_records=2304,
         validation_records=130, learning_rate=2e-4, batch_size=1,
         evaluation_batch_size=4, max_input_length=96, max_target_length=72,
-        max_new_tokens=32, rank=4, alpha=8, device='auto'):
+        max_new_tokens=32, rank=4, alpha=8, device='auto',
+        model_path=MODEL, model_id=MODEL_ID, revision=REVISION,
+        run_id='garhwali-mt5-instruction-lora-v0.1'):
     os.environ.setdefault('TOKENIZERS_PARALLELISM', 'false')
     import torch
     from peft import LoraConfig, PeftModel, TaskType, get_peft_model
@@ -313,11 +333,11 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
     validation_all = read_jsonl(Path(data_dir) / 'validation.jsonl')
     test_rows = read_jsonl(Path(data_dir) / 'test.jsonl')
     validation_rows = select_rows(validation_all, validation_records, 101)
-    tokenizer = load_tokenizer()
+    tokenizer = load_tokenizer(model_path)
     started = time.monotonic()
 
-    print(f'evaluating base mT5 on {len(validation_rows)} validation records', flush=True)
-    base = load_base_model(device)
+    print(f'evaluating base {model_id} on {len(validation_rows)} validation records', flush=True)
+    base = load_base_model(device, model_path)
     total_parameters = sum(parameter.numel() for parameter in base.parameters())
     baseline_validation = score_model(
         base, tokenizer, validation_rows, max_input_length, max_target_length,
@@ -327,12 +347,14 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
     gc.collect()
 
     checkpoint_dir = Path(checkpoint_dir)
+    if not checkpoint_dir.is_absolute():
+        checkpoint_dir = (Path.cwd() / checkpoint_dir).resolve()
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
     runs = []
     trainable_parameters = None
     for seed in seeds:
         torch.manual_seed(seed)
-        base = load_base_model('cpu')
+        base = load_base_model('cpu', model_path)
         config = LoraConfig(
             r=rank,
             lora_alpha=alpha,
@@ -347,7 +369,7 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
             if parameter.requires_grad
         )
         pool = select_rows(train_rows, training_records, seed)
-        print(f'training mT5 LoRA seed {seed} ({steps} steps)', flush=True)
+        print(f'training {model_id} LoRA seed {seed} ({steps} steps)', flush=True)
         training = train_seed(
             model, tokenizer, pool, seed, steps, learning_rate,
             max_input_length, max_target_length, batch_size, device,
@@ -362,7 +384,7 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
             'seed': seed,
             'training': training,
             'validation': validation,
-            'checkpoint': str(checkpoint.relative_to(ROOT)),
+            'checkpoint': display_path(checkpoint),
         })
         print(
             f"seed {seed}: validation loss {validation['cross_entropy']:.6f} "
@@ -374,7 +396,7 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
 
     summary = summarize_runs(baseline_validation, runs)
     print('opening fixed instruction test split for final evaluation', flush=True)
-    base = load_base_model(device)
+    base = load_base_model(device, model_path)
     base_test, base_hypotheses = evaluate_test_model(
         base, tokenizer, test_rows, max_input_length, max_target_length,
         max_new_tokens, evaluation_batch_size, device,
@@ -393,7 +415,7 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
         })
     for run_record in runs:
         seed = run_record['seed']
-        base = load_base_model('cpu')
+        base = load_base_model('cpu', model_path)
         model = PeftModel.from_pretrained(
             base, checkpoint_dir / f'seed-{seed}', local_files_only=True,
         ).to(device)
@@ -418,10 +440,10 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
     selected_run = next(run for run in runs if run['seed'] == summary['best_seed'])
     selected_test = selected_run['test']
     report = {
-        'run_id': 'garhwali-mt5-instruction-lora-v0.1',
+        'run_id': run_id,
         'status': 'completed_multi_seed_instruction_tuning',
-        'model_id': MODEL_ID,
-        'revision': REVISION,
+        'model_id': model_id,
+        'revision': revision,
         'adaptation_scope': 'LoRA on encoder and decoder attention q/v projections',
         'total_parameters': total_parameters,
         'trainable_parameters': trainable_parameters,
@@ -450,6 +472,7 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
             'lora_alpha': alpha,
             'target_modules': list(TARGET_MODULES),
             'device': device,
+            'model_path': str(model_path),
         },
         'baseline_validation': baseline_validation,
         'runs': runs,
@@ -506,6 +529,10 @@ def main():
     parser.add_argument('--rank', type=int, default=4)
     parser.add_argument('--alpha', type=int, default=8)
     parser.add_argument('--device', choices=('auto', 'mps', 'cpu'), default='auto')
+    parser.add_argument('--model-path', type=Path, default=MODEL)
+    parser.add_argument('--model-id', default=MODEL_ID)
+    parser.add_argument('--revision', default=REVISION)
+    parser.add_argument('--run-id', default='garhwali-mt5-instruction-lora-v0.1')
     args = parser.parse_args()
     report = run(
         data_dir=args.data_dir,
@@ -524,6 +551,10 @@ def main():
         rank=args.rank,
         alpha=args.alpha,
         device=args.device,
+        model_path=args.model_path,
+        model_id=args.model_id,
+        revision=args.revision,
+        run_id=args.run_id,
     )
     print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
 

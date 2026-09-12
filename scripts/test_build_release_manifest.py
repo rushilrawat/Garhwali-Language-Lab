@@ -94,6 +94,7 @@ class ReleaseManifestTests(unittest.TestCase):
             self.assertEqual(manifest['whisper_tiny_zero_shot_report']['run_id'], 'whisper-tiny-zero-shot-test')
             self.assertEqual(manifest['whisper_small_zero_shot_report']['run_id'], 'whisper-small-zero-shot-test')
             self.assertEqual(manifest['asr_finetune_report']['wer'], 0.74)
+            self.assertIn('vaani_sravaani_transcript_drafts', manifest['experimental_views'])
 
 
 if __name__ == '__main__':

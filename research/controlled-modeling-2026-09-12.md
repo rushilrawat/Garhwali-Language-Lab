@@ -78,12 +78,42 @@ The fixed 84-record test split was opened only after every seed was trained and
 the validation-selected seed was fixed. It is closed for further tuning of this
 configuration.
 
+## mT0 accuracy continuation
+
+Raw mT5's sentinel-only output showed that the base model, rather than the
+instruction schema alone, was the main bottleneck. The official
+`bigscience/mt0-small` checkpoint is an instruction-tuned multilingual mT5
+family model, so it was audited on validation before any Garhwali updates. It
+produced 120 distinct answers over 130 validation prompts and a 5.614353
+teacher-forced cross-entropy.
+
+Because the earlier 84-record instruction test had already been opened, a new
+test was frozen from 258 parent records in the old training split. Those parents
+were unseen by all three earlier 64-step mT5 pilot prefixes; the old test was not
+reused. The resulting v0.2 split contains 2,046 train, 130 validation, and 258
+test records across all six tasks, with zero parent crossing.
+
+| System | Validation cross-entropy | New-test cross-entropy | New-test chrF2 |
+| --- | ---: | ---: | ---: |
+| Zero-shot mT0-small | 5.614353 | 5.667379 | 0.069982 |
+| Seed 17 LoRA, 256 steps | 4.972468 | 5.038235 | 0.056929 |
+| Seed 29 LoRA, validation-selected | **4.954111** | **5.008859** | **0.052588** |
+| Seed 43 LoRA, 256 steps | 4.959387 | 5.011715 | 0.053027 |
+| Adapted mean | **4.961989** | **5.019603** | **0.054181** |
+
+All three seeds improve both validation and new-test teacher-forced loss. The
+adapted outputs are no longer sentinel-only, but exact match remains 0% because
+the short lexical benchmark needs native-reference scoring and more training.
+This is the current accuracy baseline; it is not yet a production model.
+
 ## Reproduce
 
 ```bash
 python3 scripts/build_instruction_dataset.py
+python3 scripts/build_instruction_accuracy_split.py
 PYTHONPATH=.cache/asr-runtime:scripts python3 scripts/run_indicbert_lora_adaptation.py --device cpu --steps 1024 --training-records 8192 --output data/processed/evaluation/controlled_modeling/indicbert_lora_long.json --checkpoint-dir models/controlled_modeling/indicbert_lora_v0.2
 PYTHONPATH=.cache/asr-runtime:scripts python3 scripts/run_mt5_instruction_tuning.py --device cpu --steps 64 --training-records 2304
+PYTHONPATH=.cache/asr-runtime:scripts python3 scripts/run_mt5_instruction_tuning.py --device cpu --data-dir data/processed/model_ready/instructions_v0.2 --output-dir data/processed/evaluation/controlled_modeling/mt0_instruction_v0.2 --checkpoint-dir models/controlled_modeling/mt0_instruction_v0.2 --steps 256 --training-records 2046 --model-path .cache/huggingface/hub/models--bigscience--mt0-small/snapshots/8116a34237e19160ec003147e758f065876d95f0 --model-id bigscience/mt0-small --revision 8116a34237e19160ec003147e758f065876d95f0 --run-id garhwali-mt0-instruction-lora-v0.2
 ```
 
 Generated datasets, model weights, adapters, and predictions stay ignored. The

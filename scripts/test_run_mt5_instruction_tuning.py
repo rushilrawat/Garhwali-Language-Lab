@@ -1,9 +1,18 @@
 import unittest
+from pathlib import Path
 
 import run_mt5_instruction_tuning as m
 
 
 class InstructionTuningTests(unittest.TestCase):
+    def test_model_metadata_preserves_pinned_override(self):
+        metadata = m.model_metadata(
+            'bigscience/mt0-small', 'revision-sha', Path('/tmp/mt0'),
+        )
+        self.assertEqual(metadata['model_id'], 'bigscience/mt0-small')
+        self.assertEqual(metadata['revision'], 'revision-sha')
+        self.assertEqual(metadata['model_path'], '/tmp/mt0')
+
     def test_select_rows_is_deterministic_and_task_balanced(self):
         rows = [
             {'instruction_sha256': f'a-{index}', 'task': 'a'}

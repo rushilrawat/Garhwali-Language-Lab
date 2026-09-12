@@ -51,6 +51,7 @@ source terms.
 | Longer IndicBERTv2 LoRA | 6.678164 → 5.624498 mean validation cross-entropy |
 | Instruction examples | 2,518 total / 2,304 train / 130 validation / 84 test |
 | mT5 instruction LoRA | 28.201385 → 27.569880 mean validation cross-entropy |
+| mT0-small accuracy LoRA | 5.614353 → 4.961989 mean validation cross-entropy |
 
 Text segments use connected-document splitting: 80,926 train, 2,488 validation,
 and 2,801 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.
@@ -60,8 +61,9 @@ zero ASR speaker overlap.
 
 The instruction split inherits document-level parent partitions and has zero
 parent or exact instruction-pair crossing. All 2,518 records are active for local
-experiments. The first mT5 LoRA run is a controlled baseline: generated test
-answers score 0% exact match and are not promoted for application use.
+experiments. The first mT5 run remains a negative baseline; the later mT0-small
+run improves teacher-forced accuracy on a new 258-record test but still requires
+native-reference evaluation before application use.
 
 ## Data represented
 
@@ -123,12 +125,14 @@ publish raw caches, reference images, or private reviewer identities.
 - XORQA supplies no English oracle question for its 539 test rows. The English
   lexical comparator therefore covers dev only, and retrieval scoring credits
   only each row's associated deduplicated passage.
-- The current fine-tuned ASR baseline improves substantially over zero-shot
-  Whisper but remains too inaccurate to treat machine drafts as trusted labels;
-  they stay explicitly marked as noisy experimental data.
+- SraVaani 1.0 is the strongest tested ASR baseline at 42.761% WER / 17.606%
+  CER on the 112-row speaker-safe comparison. It remains too inaccurate to turn
+  machine drafts into trusted labels without review. The first 100 untranscribed
+  rows have revision-pinned SraVaani drafts; 99 are non-empty and all 100 remain
+  active as noisy experimental records.
 - SraVaani 1.0 lists Garhwali support and a 53.5 WER on its own Vaani evaluation,
-  but its weights require separate provider approval. That published result uses
-  a different split and scoring setup from this dataset's speaker-safe test.
+  while this project uses a provider-approved pinned snapshot. The published
+  result uses a different split and scoring setup and is not directly comparable.
 - The 35,864 corpus-neighbor spelling pairs are suggestions, not corrections.
   Bulk substitution lowers character perplexity and token OOV but can erase real
   dialect and spelling forms, so no spelling proposal is promoted automatically.

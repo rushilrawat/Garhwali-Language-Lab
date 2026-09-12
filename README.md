@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-163%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-172%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -56,7 +56,8 @@ Garhwali Language Lab
 ```
 
 This direction reflects the current field. [SraVaani 1.0](https://vaani.iisc.ac.in/models/sravaani)
-already supports Garhwali in a 65-language ASR model, and a
+supports Garhwali in a 65-language ASR model and reaches 42.761% WER / 17.606%
+CER on this lab's fixed 112-record comparison. A
 [2026 VarDial study](https://aclanthology.org/2026.vardial-1.12/) directly examines
 Garhwali ASR transfer and pretraining-language bias. Garhwali also appears in
 [IndicGenBench](https://aclanthology.org/2024.acl-long.595/). The lab therefore
@@ -133,6 +134,9 @@ not a defect in the dataset.
 - **Instruction resource:** 2,518 split-safe Garhwali translation and lexicon
   instructions; a first three-seed mT5 LoRA baseline improves validation
   loss but remains unfit for generation.
+- **Accuracy continuation:** mT0-small reaches **4.961989** mean validation and
+  **5.019603** mean new-test cross-entropy after 256-step three-seed LoRA; all
+  seeds improve the held-out loss, while exact-match generation remains 0%.
 - **100 machine transcript drafts** exercise resumable scoring; all are available
   as explicitly noisy experimental labels and their median uncalibrated confidence
   is 0.174.
@@ -467,12 +471,14 @@ selection rules, exclusions, counts, and leakage checks.
 2. [x] **Cleanup ablation — Medium:** fixed-split evaluation rejected automatic
    promotion of both mechanical and bulk spelling variants.
 3. [x] **Controlled modeling — Xhigh:** scaling, head transfer, 1,024-step
-   encoder-LoRA continuation, split-safe instruction construction, three-seed
-   mT5 tuning, and downstream evaluation are complete. The first mT5 adapter is
-   retained as a negative baseline because generated answers remain unusable.
-4. [ ] **SraVaani comparison — High:** run the gated model on the same ASR manifest
-   when provider approval becomes available; its published score uses a different
-   split and cannot replace the local comparison.
+   encoder-LoRA continuation, split-safe instruction construction, and
+   multi-seed mT5/mT0 tuning are complete. mT0 is the current accuracy baseline;
+   exact-match generation and native-reference review remain open.
+4. [x] **SraVaani comparison — High:** the provider-approved, revision-pinned
+   model scores 42.761% WER / 17.606% CER on the same 112-row ASR manifest,
+   reducing WER by 42.45% relative to the best local Whisper checkpoint. A
+   resumable first pass produced 100 active experimental drafts for previously
+   untranscribed audio; 99 are non-empty.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).

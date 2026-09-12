@@ -51,6 +51,9 @@ def main():
     whisper_small_zero_shot_report = read_optional_json(
         ROOT/'data/processed/evaluation/asr/whisper_small_zero_shot/report.json'
     )
+    sravaani_report = read_optional_json(
+        ROOT/'data/processed/evaluation/asr/sravaani_1_0/report.json'
+    )
     asr_finetune_report = (
         read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
         or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
@@ -118,6 +121,7 @@ def main():
       'long_form_audio_segments': 'data/processed/long_form_audio/manifest.jsonl',
       'asr_finetune_predictions': 'models/whisper-tiny-garhwali-v0.2/evaluation_predictions.jsonl',
       'vaani_machine_transcript_drafts': 'data/processed/model_ready/transcripts/machine_drafts.jsonl',
+      'vaani_sravaani_transcript_drafts': 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl',
     }
     entries = {}
     for name, rel in files.items():
@@ -144,6 +148,7 @@ def main():
       'indicbertv2_retrieval_report': indicbertv2_retrieval_report,
       'whisper_tiny_zero_shot_report': whisper_tiny_zero_shot_report,
       'whisper_small_zero_shot_report': whisper_small_zero_shot_report,
+      'sravaani_report': sravaani_report,
       'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',
@@ -158,6 +163,7 @@ def main():
         'split_tts_experimental_test',
         'vaani_untranscribed',
         'vaani_machine_transcript_drafts',
+        'vaani_sravaani_transcript_drafts',
       ],
     }
     out = ROOT/'data/processed/release'; out.mkdir(parents=True, exist_ok=True)

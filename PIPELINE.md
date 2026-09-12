@@ -72,8 +72,10 @@ PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_adaptation.
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_indicbert_lora_adaptation.py --device cpu --steps 256 --training-records 2048
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/evaluate_indicbert_transfer.py --device cpu --test-records 256
 .venv/bin/python scripts/build_instruction_dataset.py
+.venv/bin/python scripts/build_instruction_accuracy_split.py
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_indicbert_lora_adaptation.py --device cpu --steps 1024 --training-records 8192 --output data/processed/evaluation/controlled_modeling/indicbert_lora_long.json --checkpoint-dir models/controlled_modeling/indicbert_lora_v0.2
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_mt5_instruction_tuning.py --device cpu --steps 64 --training-records 2304
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_mt5_instruction_tuning.py --device cpu --data-dir data/processed/model_ready/instructions_v0.2 --output-dir data/processed/evaluation/controlled_modeling/mt0_instruction_v0.2 --checkpoint-dir models/controlled_modeling/mt0_instruction_v0.2 --steps 256 --training-records 2046 --model-path .cache/huggingface/hub/models--bigscience--mt0-small/snapshots/8116a34237e19160ec003147e758f065876d95f0 --model-id bigscience/mt0-small --revision 8116a34237e19160ec003147e758f065876d95f0 --run-id garhwali-mt0-instruction-lora-v0.2
 ```
 
 The benchmark builder indexes the frozen external, text, and ASR evaluation
@@ -104,9 +106,13 @@ benchmark supplies a non-empty oracle question.
 The Whisper comparison runner evaluates pinned local checkpoints on the strict
 112-row speaker-safe ASR test manifest with one normalization and micro-averaged
 WER/CER implementation. Use explicit `--model`, `--model-id`, `--revision`, and
-`--output` arguments for Whisper-small or a fine-tuned checkpoint. SraVaani 1.0
-is documented but cannot be run locally until its separate Hugging Face gate is
-approved.
+`--output` arguments for Whisper-small or a fine-tuned checkpoint. The separate
+`run_sravaani_comparison.py` runner evaluates the provider-approved SraVaani 1.0
+snapshot on those same 112 rows. Its local score is 42.761% WER / 17.606% CER;
+the official 53.5 WER remains a separate result from a different evaluation.
+`transcribe_sravaani_drafts.py` applies the same pinned snapshot resumably to the
+untranscribed queue. Its outputs stay active in the experimental view with model
+revision and machine-draft status attached.
 
 The cleanup proposer keeps the original, current, and proposed text together for
 all parent records. It builds spelling candidates from train-only corpus counts,
@@ -142,3 +148,8 @@ runner trains three rank-4 LoRA seeds, selects on 130 validation records, and
 opens the separate 84-record instruction test only after selection. Generated
 answers and teacher-forced loss are both retained so a lower loss cannot hide an
 unusable generation result.
+
+The accuracy continuation freezes a second 258-record instruction test from
+previously unused training parents, audits mT0-small on validation, and then
+trains three 256-step LoRA seeds. It keeps the earlier 84-record test closed and
+reports teacher-forced loss alongside chrF2 and exact match.

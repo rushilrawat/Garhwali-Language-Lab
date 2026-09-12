@@ -137,8 +137,16 @@
     "whisper_tiny_finetune_v0_1_cer": 0.4290720493411831,
     "whisper_tiny_finetune_v0_2_wer": 0.7430488974113135,
     "whisper_tiny_finetune_v0_2_cer": 0.40440145780768155,
-    "selected_checkpoint": "whisper-tiny-garhwali-v0.2",
-    "sravaani_status": "provider_approval_required",
+    "selected_checkpoint": "ARTPARK-IISc/SraVaani-1.0",
+    "sravaani_status": "provider_approved_evaluated",
+    "sravaani_revision": "f5dd5358325a5208775b91dad98918e079ea2b27",
+    "sravaani_model_artifact_sha256": "789a21b6df8b0bb2ea2cc1c120edbfd4b898d3a26e6c6673cca45d14b64a47f2",
+    "sravaani_wer": 0.4276126558005753,
+    "sravaani_cer": 0.17605831230726102,
+    "sravaani_relative_wer_reduction_vs_whisper_v0_2": 0.424516129032258,
+    "sravaani_draft_pilot_rows": 100,
+    "sravaani_draft_pilot_nonempty": 99,
+    "sravaani_drafts_active_experimentally": true,
     "promotion_status": "rejected_for_automatic_pseudolabeling"
   },
   "model_assisted_text_cleanup": {
@@ -267,6 +275,34 @@
     "selected_seed_test_cross_entropy": 29.05934742,
     "selected_seed_test_exact_match": 0.0,
     "selected_seed_test_chrf2": 0.0,
+    "test_records_used_for_training": 0
+  },
+  "instruction_accuracy_split_v2": {
+    "run_id": "garhwali-instruction-accuracy-split-v0.2",
+    "train_records": 2046,
+    "validation_records": 130,
+    "test_records": 258,
+    "test_sha256": "1555d0334d0d0b4c5223f0948fc096c670b0a478c9da922c199af2a825ce5eb6",
+    "previously_closed_test_reused": 0,
+    "prior_seen_parent_test_overlap": 0,
+    "parent_cross_split": 0,
+    "all_records_active_experimentally": true
+  },
+  "mt0_instruction_tuning_v2": {
+    "status": "accuracy_baseline_not_promoted",
+    "model": "bigscience/mt0-small",
+    "revision": "8116a34237e19160ec003147e758f065876d95f0",
+    "seeds": [17, 29, 43],
+    "steps_per_seed": 256,
+    "trainable_parameters": 172032,
+    "baseline_validation_cross_entropy": 5.61435313,
+    "mean_validation_cross_entropy": 4.96198884,
+    "mean_test_cross_entropy": 5.01960305,
+    "all_seed_test_cross_entropy_below_base": true,
+    "selected_seed": 29,
+    "selected_seed_test_cross_entropy": 5.00885879,
+    "selected_seed_test_chrf2": 0.05258826,
+    "selected_seed_test_exact_match": 0.0,
     "test_records_used_for_training": 0
   },
   "leakage": {

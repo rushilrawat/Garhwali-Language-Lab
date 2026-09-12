@@ -1,22 +1,22 @@
 # Garhwali access blockers after VAANI
 
-Checked with the project's authenticated Hugging Face account on 2026-09-10.
+Checked with the project's authenticated Hugging Face account; updated 2026-09-12.
 
 ## Gated Garhwali model
 
 ### SraVaani 1.0
 
 - Repository: <https://huggingface.co/ARTPARK-IISc/SraVaani-1.0>
-- Gate: separate provider approval despite working VAANI dataset access.
-- Current account state, checked 2026-09-11: small configuration-file download
-  returns `Access denied. This repository requires approval.`
+- Gate: separate provider approval despite working VAANI dataset access; access
+  was granted and verified on 2026-09-12.
 - Published scope: multilingual FastConformer ASR with Garhwali support; the
   official model card reports 53.5 WER on its own Vaani evaluation.
-- Next action: after approval, run the model on the existing checksum-addressed
-  112-row speaker-safe manifest and score it with the local WER/CER normalizer.
+- Completed action: revision `f5dd5358325a5208775b91dad98918e079ea2b27`
+  scores 42.761% WER / 17.606% CER on the checksum-addressed 112-row speaker-safe
+  manifest. The model artifact SHA-256 begins `789a21b6df8b0bb2`.
 
-The published score uses a different split and scoring setup and is not entered
-as a local benchmark result. Community mirrors are not used to bypass the gate.
+The published 53.5 WER uses a different split and scoring setup and remains
+separate from the local benchmark result. Community mirrors were not used.
 
 ## Same gate pattern as VAANI
 
