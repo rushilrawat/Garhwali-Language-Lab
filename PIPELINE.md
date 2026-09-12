@@ -67,6 +67,7 @@ PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_retrieval_b
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_whisper_comparison.py --device cpu
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/propose_text_cleanup.py --model-records 4096 --device cpu
 .venv/bin/python scripts/run_text_cleanup_ablation.py
+.venv/bin/python scripts/run_text_scaling_experiment.py
 ```
 
 The benchmark builder indexes the frozen external, text, and ASR evaluation
@@ -107,3 +108,9 @@ uses a pinned IndicBERTv2 masked-language score to rank 4,096 priority records,
 and never changes language or dialect labels automatically. The ablation compares
 the unchanged, mechanical-only, and bulk spelling variants on the fixed document
 split before any proposal can enter a versioned cleaned view.
+
+The scaling runner compares character bigram and trigram controls at six nested
+training fractions under three deterministic seeds. It selects order and scale
+using validation cross-entropy, then evaluates only that configuration on the
+frozen test candidate. Exact train/validation and train/test overlap must remain
+zero in the resulting integrity report.

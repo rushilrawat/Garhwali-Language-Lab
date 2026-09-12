@@ -169,6 +169,22 @@
     "mechanical_promotion_status": "not_promoted",
     "spelling_promotion_status": "not_promoted"
   },
+  "controlled_text_scaling": {
+    "model_family": "add-one-smoothed_character_ngram",
+    "training_records": 80926,
+    "validation_records": 2488,
+    "frozen_test_records": 2492,
+    "fractions": [0.01, 0.05, 0.1, 0.25, 0.5, 1.0],
+    "seeds": [17, 29, 43],
+    "orders": [2, 3],
+    "validation_runs": 36,
+    "selected_order": 3,
+    "selected_fraction": 1.0,
+    "mean_validation_perplexity": 11.71299731,
+    "frozen_test_perplexity": 11.89388647,
+    "train_validation_exact_text_overlap": 0,
+    "train_test_exact_text_overlap": 0
+  },
   "leakage": {
     "text_hash_cross_split": 0,
     "identified_speaker_cross_split": 0
