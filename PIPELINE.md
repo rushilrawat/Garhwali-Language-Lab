@@ -65,6 +65,8 @@ PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_base
 .venv/bin/python scripts/run_retrieval_baseline.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_whisper_comparison.py --device cpu
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/propose_text_cleanup.py --model-records 4096 --device cpu
+.venv/bin/python scripts/run_text_cleanup_ablation.py
 ```
 
 The benchmark builder indexes the frozen external, text, and ASR evaluation
@@ -98,3 +100,10 @@ WER/CER implementation. Use explicit `--model`, `--model-id`, `--revision`, and
 `--output` arguments for Whisper-small or a fine-tuned checkpoint. SraVaani 1.0
 is documented but cannot be run locally until its separate Hugging Face gate is
 approved.
+
+The cleanup proposer keeps the original, current, and proposed text together for
+all parent records. It builds spelling candidates from train-only corpus counts,
+uses a pinned IndicBERTv2 masked-language score to rank 4,096 priority records,
+and never changes language or dialect labels automatically. The ablation compares
+the unchanged, mechanical-only, and bulk spelling variants on the fixed document
+split before any proposal can enter a versioned cleaned view.

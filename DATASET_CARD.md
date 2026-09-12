@@ -42,6 +42,8 @@ source terms.
 | NLLB Hindi-token proxy pilot | 0.219719 BLEU / 0.574134 chrF2 on 32 rows |
 | XORQA retrieval index | 1,059 passages / 1,039 dev/test questions |
 | IndicBERTv2 retrieval | 10.389610% Recall@10 on 539 test questions |
+| Reversible text-cleanup proposals | 27,987 records / 16,687 with signals |
+| IndicBERTv2 cleanup ranking | 4,096 records / 410 high-loss disagreements |
 
 Text segments use connected-document splitting: 80,926 train, 2,488 validation,
 and 2,801 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.
@@ -115,6 +117,9 @@ publish raw caches, reference images, or private reviewer identities.
 - SraVaani 1.0 lists Garhwali support and a 53.5 WER on its own Vaani evaluation,
   but its weights require separate provider approval. That published result uses
   a different split and scoring setup from this dataset's speaker-safe test.
+- The 35,864 corpus-neighbor spelling pairs are suggestions, not corrections.
+  Bulk substitution lowers character perplexity and token OOV but can erase real
+  dialect and spelling forms, so no spelling proposal is promoted automatically.
 
 ## Reproduction
 

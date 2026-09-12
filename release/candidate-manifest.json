@@ -141,6 +141,34 @@
     "sravaani_status": "provider_approval_required",
     "promotion_status": "rejected_for_automatic_pseudolabeling"
   },
+  "model_assisted_text_cleanup": {
+    "total_records": 27987,
+    "active_for_experiment": 27987,
+    "excluded": 0,
+    "records_with_any_proposal": 16687,
+    "model_scored_records": 4096,
+    "model_masked_tokens": 81116,
+    "model_source_disagreements": 410,
+    "mechanical_change_records": 108,
+    "spelling_candidate_records": 10200,
+    "spelling_candidate_pairs": 35864,
+    "hindi_garhwali_ambiguity_records": 2327,
+    "dialect_priority_records": 10660,
+    "ocr_priority_records": 2328,
+    "application_status": "proposal_only",
+    "originals_preserved": true
+  },
+  "text_cleanup_ablation": {
+    "train_records": 25169,
+    "test_records": 1393,
+    "baseline_character_bigram_perplexity": 16.88499549,
+    "mechanical_character_bigram_perplexity": 16.88726214,
+    "bulk_spelling_character_bigram_perplexity": 16.76707705,
+    "baseline_test_token_oov_rate": 0.06995491,
+    "bulk_spelling_test_token_oov_rate": 0.06016912,
+    "mechanical_promotion_status": "not_promoted",
+    "spelling_promotion_status": "not_promoted"
+  },
   "leakage": {
     "text_hash_cross_split": 0,
     "identified_speaker_cross_split": 0

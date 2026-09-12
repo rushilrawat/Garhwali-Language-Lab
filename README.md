@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-136%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-145%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -315,6 +315,11 @@ OCR, transcription, or native-speaker review.
 - [x] Apply deterministic OCR cleanup while retaining page provenance and flags.
 - [x] Keep spelling, meaning, and dialect uncertainty as metadata rather than a
   data exclusion gate; later native corrections can be merged non-destructively.
+- [x] Score 4,096 priority texts with pinned IndicBERTv2 and attach reversible
+  OCR, spelling, language-ambiguity, and dialect-evidence proposals to all 27,987
+  parent texts without excluding or overwriting any record.
+- [x] Ablate mechanical and bulk spelling variants on the fixed document split;
+  neither variant was promoted into canonical text.
 
 ### 3. Audio cleanup — High
 
@@ -448,14 +453,13 @@ selection rules, exclusions, counts, and leakage checks.
 
 ### Next execution cycle
 
-1. **Model-assisted text cleanup — High:** propose OCR, spelling,
-   Hindi/Garhwali, mixed-language, and dialect corrections using model
-   disagreement and confidence; preserve every original value.
-2. **Cleanup ablation — Medium:** rebuild the corpus and measure whether proposed
-   corrections improve held-out results before promoting them.
-3. **Controlled modeling — Xhigh:** run data-scaling, transfer, tokenizer,
+1. [x] **Model-assisted text cleanup — High:** 27,987 immutable originals now
+   carry reversible proposals; 4,096 priority records have pinned-model scores.
+2. [x] **Cleanup ablation — Medium:** fixed-split evaluation rejected automatic
+   promotion of both mechanical and bulk spelling variants.
+3. [ ] **Controlled modeling — Xhigh:** run data-scaling, transfer, tokenizer,
    continued-pretraining, and instruction-tuning experiments with multiple seeds.
-4. **SraVaani comparison — High:** run the gated model on the same ASR manifest
+4. [ ] **SraVaani comparison — High:** run the gated model on the same ASR manifest
    when provider approval becomes available; its published score uses a different
    split and cannot replace the local comparison.
 
@@ -469,6 +473,8 @@ The XORQA lexical and IndicBERTv2 results are in
 [`research/retrieval-baseline-2026-09-11.md`](research/retrieval-baseline-2026-09-11.md).
 The complete local ASR comparison and SraVaani access status are in
 [`research/speech-baseline-comparison-2026-09-11.md`](research/speech-baseline-comparison-2026-09-11.md).
+The reversible cleanup proposals and fixed-split ablation are in
+[`research/model-assisted-text-cleanup-2026-09-11.md`](research/model-assisted-text-cleanup-2026-09-11.md).
 
 `GarhwaliBench` should complement existing generation benchmarks by measuring
 things that require Garhwali knowledge: Garhwali–Hindi–English translation,
@@ -521,7 +527,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **136 passing tests**, **365 source
+The current local verification result is **145 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
 
 ## 🤝 Contributing

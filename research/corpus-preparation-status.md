@@ -31,6 +31,14 @@ Updated 2026-09-11 from the checked-in preparation scripts. Raw and downloaded m
 - A resumable 100-record draft-transcription pilot completed with file-level provenance and uncalibrated token confidence. Median confidence is 0.174; every draft is marked `machine_draft_noisy_experimental` and remains active only in the noisy experimental view.
 - A fair four-checkpoint comparison now uses the same 112 speaker-safe test rows and the same normalization. Zero-shot Whisper-tiny scores 147.939% WER / 136.810% CER; zero-shot Whisper-small scores 97.172% / 57.822%; the first local tiny fine-tune scores 79.051% / 42.907%; and the second reaches 74.305% / 40.440%. SraVaani 1.0 remains unrun because the authenticated account has not received its separate model-repository approval.
 
+## Model-assisted text cleanup
+
+- All 27,987 parent texts now have immutable original/current fields in a reversible cleanup-proposal manifest; zero records are excluded.
+- Pinned IndicBERTv2 scored 4,096 OCR-, language-, spelling-, and dialect-priority records over 81,116 deterministic masked tokens. The 90th-percentile loss threshold identifies 410 model/source disagreements for inspection without changing source labels.
+- Train-only corpus frequencies produced 35,864 low-confidence one-edit spelling pairs across 10,200 records. These remain suggestions because frequent neighbors can be semantically wrong or valid competing dialect forms.
+- The fixed document-split ablation compared 25,169 train and 1,393 test parent texts. Mechanical cleanup changed 108 records and moved character-bigram perplexity from 16.88499549 to 16.88726214, so it was not promoted.
+- Bulk spelling substitution changed 10,244 records, lowered perplexity to 16.76707705, and lowered test token OOV from 0.06995491 to 0.06016912. It was still not promoted because the aggregate metric cannot establish semantic or dialect correctness.
+
 ## Long-form folklore audio
 
 - All 66 locally archived Garhwali Folktales podcast episodes were segmented with silence-aware, 29.5-second target boundaries into 1,204 mono 16 kHz PCM WAV clips covering 8.928764 hours.
@@ -105,4 +113,4 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 136 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, and speech-comparison logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
+The complete pipeline suite has 145 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, and speech-comparison logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
