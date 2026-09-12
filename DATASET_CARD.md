@@ -144,3 +144,8 @@ stays under `data/processed/`; the tracked release summary is
 [`release/candidate-manifest.json`](release/candidate-manifest.json). The full
 test suite, release-index validator, leakage checks, and source-freshness workflow
 run in GitHub Actions.
+
+The Hugging Face export builder creates separate text, ASR, SraVaani-draft,
+lexicon, and instruction configurations. Its public profile excludes components
+whose underlying redistribution evidence is absent or still needs review, while
+the complete experimental profile remains available locally.

@@ -28,6 +28,7 @@ data/cleaned/
 data/temp/
 data/cache/
 data/generated/
+data/huggingface/
 data/review_decisions/
 
 # Large dataset formats

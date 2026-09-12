@@ -548,8 +548,37 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **163 passing tests**, **365 source
+The current local verification result is **175 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
+
+## 🤗 Hugging Face release
+
+`scripts/build_huggingface_dataset.py` creates an upload-ready multi-config
+dataset with text, supervised ASR, SraVaani drafts, lexicon, and instruction
+splits. The public profile includes only records with explicit compatible
+redistribution evidence. Audio is hard-linked by SHA-256, so preparing the upload
+folder does not duplicate the 15 GB VAANI corpus on disk.
+
+```bash
+# Preview metadata while SraVaani transcription is still running
+PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
+  --output data/huggingface/garhwali-language-lab-preview \
+  --allow-partial-drafts
+
+# Final package; refuses to run until every draft is present
+PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
+  --output data/huggingface/garhwali-language-lab \
+  --include-audio
+
+# Run after choosing the final Hugging Face namespace/repository name
+HF_HOME=.cache/huggingface hf upload NAMESPACE/garhwali-language-lab \
+  data/huggingface/garhwali-language-lab . --repo-type dataset
+```
+
+The generated `README.md` is the Hugging Face dataset card, while
+`manifest.json` records configuration counts, shard names, draft completeness,
+and whether audio was included. The complete experimental profile remains local
+because source access does not automatically grant public redistribution rights.
 
 ## 🤝 Contributing
 

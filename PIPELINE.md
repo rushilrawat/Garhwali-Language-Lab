@@ -76,6 +76,7 @@ PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/evaluate_indicber
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_indicbert_lora_adaptation.py --device cpu --steps 1024 --training-records 8192 --output data/processed/evaluation/controlled_modeling/indicbert_lora_long.json --checkpoint-dir models/controlled_modeling/indicbert_lora_v0.2
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_mt5_instruction_tuning.py --device cpu --steps 64 --training-records 2304
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_mt5_instruction_tuning.py --device cpu --data-dir data/processed/model_ready/instructions_v0.2 --output-dir data/processed/evaluation/controlled_modeling/mt0_instruction_v0.2 --checkpoint-dir models/controlled_modeling/mt0_instruction_v0.2 --steps 256 --training-records 2046 --model-path .cache/huggingface/hub/models--bigscience--mt0-small/snapshots/8116a34237e19160ec003147e758f065876d95f0 --model-id bigscience/mt0-small --revision 8116a34237e19160ec003147e758f065876d95f0 --run-id garhwali-mt0-instruction-lora-v0.2
+PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py --output data/huggingface/garhwali-language-lab --include-audio
 ```
 
 The benchmark builder indexes the frozen external, text, and ASR evaluation
@@ -153,3 +154,9 @@ The accuracy continuation freezes a second 258-record instruction test from
 previously unused training parents, audits mT0-small on validation, and then
 trains three 256-step LoRA seeds. It keeps the earlier 84-record test closed and
 reports teacher-forced loss alongside chrF2 and exact match.
+
+The Hugging Face builder writes JSONL shards for five Dataset Viewer
+configurations, generates the dataset card and manifest, filters the public
+profile using component-level license evidence, and hard-links content-addressed
+audio. Its final mode rejects an incomplete SraVaani draft set; partial output is
+available only through the explicit preview flag.
