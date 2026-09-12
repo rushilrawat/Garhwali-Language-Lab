@@ -197,9 +197,18 @@ def run(train_path=TRAIN, validation_path=VALIDATION, output_path=OUTPUT,
         del model, base
         gc.collect()
 
+    summary = summarize_lora(baseline, runs)
+    if steps > 256 and summary['improved_seed_count'] == len(runs):
+        summary['promotion_status'] = 'validated_longer_continued_pretraining'
     report = {
-        'run_id': 'indicbertv2-garhwali-encoder-lora-v0.1',
-        'status': 'validation_only_encoder_adaptation_pilot',
+        'run_id': (
+            'indicbertv2-garhwali-encoder-lora-v0.2'
+            if steps > 256 else 'indicbertv2-garhwali-encoder-lora-v0.1'
+        ),
+        'status': (
+            'completed_longer_corpus_wide_sampled_continued_pretraining'
+            if steps > 256 else 'validation_only_encoder_adaptation_pilot'
+        ),
         'model_id': head.MODEL_ID,
         'revision': head.REVISION,
         'adaptation_scope': 'LoRA on encoder attention query/value projections; MLM head frozen',
@@ -222,7 +231,7 @@ def run(train_path=TRAIN, validation_path=VALIDATION, output_path=OUTPUT,
         },
         'baseline_validation': baseline,
         'runs': runs,
-        'summary': summarize_lora(baseline, runs),
+        'summary': summary,
         'integrity': {
             'training_split_only': True,
             'selection_split': 'validation',

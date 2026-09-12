@@ -71,6 +71,9 @@ PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/propose_text_cleanup.py -
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_adaptation.py --device cpu
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_indicbert_lora_adaptation.py --device cpu --steps 256 --training-records 2048
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/evaluate_indicbert_transfer.py --device cpu --test-records 256
+.venv/bin/python scripts/build_instruction_dataset.py
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_indicbert_lora_adaptation.py --device cpu --steps 1024 --training-records 8192 --output data/processed/evaluation/controlled_modeling/indicbert_lora_long.json --checkpoint-dir models/controlled_modeling/indicbert_lora_v0.2
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_mt5_instruction_tuning.py --device cpu --steps 64 --training-records 2304
 ```
 
 The benchmark builder indexes the frozen external, text, and ASR evaluation
@@ -130,3 +133,12 @@ The transfer evaluator then opens one checksum-addressed 256-record frozen-test
 subset exactly once to compare the unadapted model, head-only adaptation, and all
 three LoRA seeds. Its result is final for this experiment and cannot be used to
 retune the same test comparison.
+
+The longer continuation draws an 8,192-record pool per seed from the whole text
+training partition and takes 1,024 updates without reopening the closed transfer
+test. The instruction builder then derives 2,518 translation and lexicon prompts
+from existing evidence while inheriting each parent document's split. The mT5
+runner trains three rank-4 LoRA seeds, selects on 130 validation records, and
+opens the separate 84-record instruction test only after selection. Generated
+answers and teacher-forced loss are both retained so a lower loss cannot hide an
+unusable generation result.

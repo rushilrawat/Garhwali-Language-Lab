@@ -1,7 +1,7 @@
 {
   "release_id": "garhwali-language-lab-v0.1.0-candidate.1",
   "status": "integrated_experimental_release",
-  "generated": "2026-09-11",
+  "generated": "2026-09-12",
   "language": "Garhwali (gbm)",
   "local_storage_gb_approx": 34,
   "text": {
@@ -224,6 +224,50 @@
     "selected_family": "encoder_lora_256_steps",
     "train_test_exact_text_overlap": 0,
     "future_test_tuning_allowed": false
+  },
+  "indicbertv2_encoder_lora_long": {
+    "status": "validated_longer_continued_pretraining",
+    "seeds": [17, 29, 43],
+    "steps_per_seed": 1024,
+    "training_pool_records_per_seed": 8192,
+    "unique_training_records_per_seed": 1024,
+    "validation_records": 128,
+    "validation_masked_tokens": 538,
+    "trainable_parameters": 147456,
+    "baseline_validation_cross_entropy": 6.67816411,
+    "mean_validation_cross_entropy": 5.62449828,
+    "std_validation_cross_entropy": 0.02223708,
+    "mean_validation_accuracy": 0.2354399,
+    "improved_seed_count": 3,
+    "frozen_test_records_used": 0
+  },
+  "instruction_dataset": {
+    "total_records": 2518,
+    "train_records": 2304,
+    "validation_records": 130,
+    "test_records": 84,
+    "tasks": 6,
+    "parent_cross_split": 0,
+    "exact_instruction_pair_cross_split": 0,
+    "all_records_active_experimentally": true,
+    "provenance_preserved": true
+  },
+  "mt5_instruction_tuning": {
+    "status": "not_promoted_for_generation",
+    "model": "google/mt5-small",
+    "revision": "73fb5dbe4756edadc8fbe8c769b0a109493acf7a",
+    "seeds": [17, 29, 43],
+    "steps_per_seed": 64,
+    "trainable_parameters": 172032,
+    "baseline_validation_cross_entropy": 28.2013851,
+    "mean_validation_cross_entropy": 27.56987976,
+    "improved_validation_seed_count": 3,
+    "selected_seed": 29,
+    "base_test_cross_entropy": 30.41628715,
+    "selected_seed_test_cross_entropy": 29.05934742,
+    "selected_seed_test_exact_match": 0.0,
+    "selected_seed_test_chrf2": 0.0,
+    "test_records_used_for_training": 0
   },
   "leakage": {
     "text_hash_cross_split": 0,

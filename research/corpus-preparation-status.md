@@ -1,6 +1,6 @@
 # Corpus preparation status
 
-Updated 2026-09-11 from the checked-in preparation scripts. Raw and downloaded material remains under gitignore.
+Updated 2026-09-12 from the checked-in preparation scripts. Raw and downloaded material remains under gitignore.
 
 ## Text
 
@@ -49,6 +49,9 @@ Updated 2026-09-11 from the checked-in preparation scripts. Raw and downloaded m
 - Mean masked-token validation cross-entropy falls from 6.678164 to 6.578552 (standard deviation 0.014935), while accuracy moves from 21.747212% to 21.933086%. The result advances to encoder adaptation; the frozen test candidate remains unused.
 - Rank-4 LoRA on all IndicBERTv2 attention query/value projections trains 147,456 parameters for 256 steps per seed. Validation loss falls to a 6.062648 mean across all three seeds, 0.615516 below the unadapted checkpoint.
 - With configuration fixed, a checksum-addressed 256-record frozen-test subset and 1,037 common masked tokens compare the base, head-only, and encoder-LoRA families. Base loss is 6.659330, head-only mean loss is 6.537236, and LoRA mean loss is 6.014093 with 0.008828 standard deviation. Exact train/test overlap is zero and this test result is closed to further tuning.
+- A longer 1,024-step IndicBERTv2 LoRA continuation draws an 8,192-record pool per seed from the full training partition. All three seeds improve validation loss; the 5.624498 mean is 7.23% below the earlier 256-step LoRA mean. The closed transfer test remains untouched.
+- Existing parallel and lexicon evidence yields 2,518 active instruction records: 2,304 train, 130 validation, and 84 test. Parent-document and exact instruction-pair crossing are both zero, and provenance and rights fields remain attached.
+- Three 64-step mT5-small LoRA seeds all improve validation loss from 28.201385 to a 27.569880 mean. The validation-selected seed 29 scores 29.059347 test cross-entropy versus the base model's 30.416287, but generation remains at 0% exact match and 0.0 chrF2 after sentinel-token removal, so this adapter is not promoted.
 
 ## Long-form folklore audio
 
@@ -118,10 +121,13 @@ PYTHONPATH=.cache/asr-runtime python3 scripts/run_nllb_translation_baseline.py -
 python3 scripts/run_retrieval_baseline.py
 PYTHONPATH=.cache/asr-runtime python3 scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
 PYTHONPATH=.cache/asr-runtime python3 scripts/run_whisper_comparison.py --device cpu
+python3 scripts/build_instruction_dataset.py
+PYTHONPATH=.cache/asr-runtime:scripts python3 scripts/run_indicbert_lora_adaptation.py --device cpu --steps 1024 --training-records 8192 --output data/processed/evaluation/controlled_modeling/indicbert_lora_long.json --checkpoint-dir models/controlled_modeling/indicbert_lora_v0.2
+PYTHONPATH=.cache/asr-runtime:scripts python3 scripts/run_mt5_instruction_tuning.py --device cpu --steps 64 --training-records 2304
 python3 scripts/build_review_queues.py
 python3 scripts/native_review_workflow.py
 python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 155 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, controlled multi-seed text scaling and IndicBERTv2 head/encoder adaptation, frozen transfer comparison, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, and speech-comparison logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
+The complete pipeline suite has 163 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, controlled multi-seed text scaling, IndicBERTv2 head/encoder adaptation, instruction construction and mT5 tuning utilities, frozen transfer comparison, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, and speech-comparison logic, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.

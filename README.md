@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-155%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-163%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -128,10 +128,15 @@ not a defect in the dataset.
   tokens per Garhwali word; the Garhwali OpenLLaMA adapter tokenizer needs 5.327.
 - **IndicBERTv2 baseline:** 17.79% masked-token accuracy on 506 deterministic
   masks from 128 held-out records, with no truncation.
+- **Controlled continuation:** a 1,024-step, three-seed IndicBERTv2 LoRA run
+  lowers mean validation cross-entropy from 6.678 to 5.624.
+- **Instruction resource:** 2,518 split-safe Garhwali translation and lexicon
+  instructions; a first three-seed mT5 LoRA baseline improves validation
+  loss but remains unfit for generation.
 - **100 machine transcript drafts** exercise resumable scoring; all are available
   as explicitly noisy experimental labels and their median uncalibrated confidence
   is 0.174.
-- **119 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **163 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
 These figures describe the preparation snapshot generated on 2026-09-10. Raw
@@ -417,6 +422,10 @@ selection rules, exclusions, counts, and leakage checks.
   and evaluate pinned IndicBERTv2 semantic retrieval on all 539 test questions.
 - [x] Compare zero-shot Whisper-tiny, zero-shot Whisper-small, and both local
   fine-tuned checkpoints on the identical 112-row speaker-safe test set.
+- [x] Build 2,518 provenance-preserving instruction records with parent-disjoint
+  splits and run three-seed mT5 LoRA instruction tuning.
+- [x] Extend IndicBERTv2 LoRA continuation to 1,024 steps per seed and evaluate
+  the full instruction-tuning seed set after validation selection.
 
 ### 9. Testing and review — High
 
@@ -457,9 +466,10 @@ selection rules, exclusions, counts, and leakage checks.
    carry reversible proposals; 4,096 priority records have pinned-model scores.
 2. [x] **Cleanup ablation — Medium:** fixed-split evaluation rejected automatic
    promotion of both mechanical and bulk spelling variants.
-3. [ ] **Controlled modeling — Xhigh:** scaling, head transfer, and three-seed
-   256-step encoder-LoRA comparison are complete; longer full-corpus continued
-   pretraining and instruction-tuning experiments remain.
+3. [x] **Controlled modeling — Xhigh:** scaling, head transfer, 1,024-step
+   encoder-LoRA continuation, split-safe instruction construction, three-seed
+   mT5 tuning, and downstream evaluation are complete. The first mT5 adapter is
+   retained as a negative baseline because generated answers remain unusable.
 4. [ ] **SraVaani comparison — High:** run the gated model on the same ASR manifest
    when provider approval becomes available; its published score uses a different
    split and cannot replace the local comparison.
@@ -478,6 +488,8 @@ The reversible cleanup proposals and fixed-split ablation are in
 [`research/model-assisted-text-cleanup-2026-09-11.md`](research/model-assisted-text-cleanup-2026-09-11.md).
 The first controlled data-scaling curve is in
 [`research/controlled-text-scaling-2026-09-11.md`](research/controlled-text-scaling-2026-09-11.md).
+The longer continuation and instruction-tuning results are in
+[`research/controlled-modeling-2026-09-12.md`](research/controlled-modeling-2026-09-12.md).
 
 `GarhwaliBench` should complement existing generation benchmarks by measuring
 things that require Garhwali knowledge: Garhwali–Hindi–English translation,
@@ -530,7 +542,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **155 passing tests**, **365 source
+The current local verification result is **163 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
 
 ## 🤝 Contributing

@@ -48,12 +48,20 @@ source terms.
 | Selected character trigram | 11.893886 frozen-test perplexity |
 | IndicBERTv2 head adaptation | 6.678164 → 6.578552 validation cross-entropy |
 | IndicBERTv2 encoder LoRA | 6.659330 → 6.014093 frozen-test cross-entropy |
+| Longer IndicBERTv2 LoRA | 6.678164 → 5.624498 mean validation cross-entropy |
+| Instruction examples | 2,518 total / 2,304 train / 130 validation / 84 test |
+| mT5 instruction LoRA | 28.201385 → 27.569880 mean validation cross-entropy |
 
 Text segments use connected-document splitting: 80,926 train, 2,488 validation,
 and 2,801 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.
 No exact text hash or identified speaker crosses these partitions.
 GarhwaliBench additionally reports zero exact train/evaluation text overlap and
 zero ASR speaker overlap.
+
+The instruction split inherits document-level parent partitions and has zero
+parent or exact instruction-pair crossing. All 2,518 records are active for local
+experiments. The first mT5 LoRA run is a controlled baseline: generated test
+answers score 0% exact match and are not promoted for application use.
 
 ## Data represented
 
