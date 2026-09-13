@@ -29,10 +29,11 @@ source terms.
 | Lexicon/pronunciation candidates | 1,124 |
 | Pronunciations with source phonetic segments | 293 |
 | Normalized TTS candidate pairs | 1,736 |
-| Current Whisper-tiny baseline | 0.743 WER / 0.404 CER |
+| Current SraVaani baseline | 0.428 WER / 0.176 CER |
 | Zero-shot Whisper-tiny, same 112 rows | 1.479 WER / 1.368 CER |
 | Zero-shot Whisper-small, same 112 rows | 0.972 WER / 0.578 CER |
-| Noisy experimental machine transcript pilot | 100 rows |
+| SraVaani experimental drafts | 104,542 source rows / 104,534 unique audio |
+| SraVaani draft quality | 103,354 standard / 1,188 flagged |
 | GarhwaliBench external task records | 3,847 |
 | GarhwaliBench held-out text / ASR | 2,492 / 112 |
 | Character bigram baseline | 16.464 perplexity |

@@ -54,6 +54,9 @@ def main():
     sravaani_report = read_optional_json(
         ROOT/'data/processed/evaluation/asr/sravaani_1_0/report.json'
     )
+    sravaani_draft_quality_report = read_optional_json(
+        ROOT/'data/processed/model_ready/transcripts/machine_drafts_sravaani_quality_report.json'
+    )
     asr_finetune_report = (
         read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
         or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
@@ -122,6 +125,7 @@ def main():
       'asr_finetune_predictions': 'models/whisper-tiny-garhwali-v0.2/evaluation_predictions.jsonl',
       'vaani_machine_transcript_drafts': 'data/processed/model_ready/transcripts/machine_drafts.jsonl',
       'vaani_sravaani_transcript_drafts': 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl',
+      'vaani_sravaani_transcript_quality': 'data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl',
     }
     entries = {}
     for name, rel in files.items():
@@ -149,6 +153,7 @@ def main():
       'whisper_tiny_zero_shot_report': whisper_tiny_zero_shot_report,
       'whisper_small_zero_shot_report': whisper_small_zero_shot_report,
       'sravaani_report': sravaani_report,
+      'sravaani_draft_quality_report': sravaani_draft_quality_report,
       'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',
@@ -164,6 +169,7 @@ def main():
         'vaani_untranscribed',
         'vaani_machine_transcript_drafts',
         'vaani_sravaani_transcript_drafts',
+        'vaani_sravaani_transcript_quality',
       ],
     }
     out = ROOT/'data/processed/release'; out.mkdir(parents=True, exist_ok=True)

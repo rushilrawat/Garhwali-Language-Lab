@@ -74,6 +74,7 @@ def audio_row(row, transcript_field):
         'main_split', 'transcription_split', 'quality_flags',
         'training_quality_flags', 'review_status',
         'machine_transcript_model', 'machine_transcript_model_revision',
+        'machine_transcript_quality',
         'experimental_training_eligible', 'training_eligible',
     )
     exported = {key: row.get(key) for key in keep if key in row}
@@ -256,7 +257,10 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
         )
 
     queue_path = ROOT / 'data/processed/model_ready/transcripts/untranscribed_queue.jsonl'
-    drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl'
+    quality_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl'
+    drafts_path = quality_drafts_path if quality_drafts_path.exists() else (
+        ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl'
+    )
     queue = list(read_jsonl(queue_path))
     queue_count = len(queue)
     drafts = list(read_jsonl(drafts_path))

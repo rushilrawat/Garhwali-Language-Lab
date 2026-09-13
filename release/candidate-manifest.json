@@ -151,6 +151,13 @@
     "sravaani_draft_missing_audio_hashes": 0,
     "sravaani_draft_unexpected_audio_hashes": 0,
     "sravaani_drafts_active_experimentally": true,
+    "sravaani_draft_unique_hypotheses": 103996,
+    "sravaani_draft_standard_rows": 103354,
+    "sravaani_draft_flagged_rows": 1188,
+    "sravaani_draft_high_risk_rows": 1083,
+    "sravaani_draft_no_devanagari_rows": 1026,
+    "sravaani_draft_bengali_script_rows": 257,
+    "sravaani_draft_repetition_loop_rows": 17,
     "promotion_status": "rejected_for_automatic_pseudolabeling"
   },
   "model_assisted_text_cleanup": {

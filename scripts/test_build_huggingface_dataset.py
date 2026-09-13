@@ -28,10 +28,12 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'audio_sha256': 'ab' * 32,
             'local_audio_path': 'data/audio/source.wav',
             'asr_target_clean': 'गढ़वाली',
+            'machine_transcript_quality': {'flags': ['mixed_script']},
         }
         exported = m.audio_row(row, transcript_field='asr_target_clean')
         self.assertEqual(exported['audio'], f'audio/ab/{"ab" * 32}.wav')
         self.assertEqual(exported['transcript'], 'गढ़वाली')
+        self.assertEqual(exported['machine_transcript_quality']['flags'], ['mixed_script'])
         self.assertNotIn('local_audio_path', exported)
 
     def test_shards_are_deterministic_and_reported(self):

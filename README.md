@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-177%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-181%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -104,7 +104,8 @@ not a defect in the dataset.
 - **91,536 sentence-like occurrences** exposed from page-sized and long records,
   producing **86,215 exact-unique segments** with parent provenance retained.
 - **110,436 VAANI Garhwali recordings** totaling **135.509 hours**; 5,894 have
-  transcripts and 104,542 are queued for transcription.
+  human transcripts and all 104,542 previously untranscribed rows now have
+  revision-pinned SraVaani experimental drafts.
 - **363 identified speaker IDs**, with district, gender, and speaker-status fields
   preserved; current VAANI coverage is Uttarkashi and Tehri Garhwal.
 - **25,343 likely Garhwali text candidates**, 1,468 source-declared mixed-language
@@ -118,9 +119,9 @@ not a defect in the dataset.
   the complete experimental view.
 - **1,204 clips / 8.93 hours** derived from 66 archived Garhwali folktale
   episodes, with source rights and review gates retained.
-- **Speaker-safe ASR comparison:** zero-shot Whisper-tiny scores 1.479 WER / 1.368
-  CER, zero-shot Whisper-small scores 0.972 / 0.578, and the controlled
-  Whisper-tiny fine-tune reaches 0.743 / 0.404 on the same 112 records.
+- **Speaker-safe ASR comparison:** SraVaani leads at 0.428 WER / 0.176 CER,
+  ahead of the controlled Whisper-tiny fine-tune at 0.743 / 0.404 on the same
+  112 recordings.
 - **GarhwaliBench v0.1:** 3,847 external task records, 2,492 held-out text
   segments, and 112 speaker-safe ASR rows, with zero measured training overlap.
 - **Character bigram floor:** 16.464 held-out perplexity and 0.000498% character
@@ -137,13 +138,13 @@ not a defect in the dataset.
 - **Accuracy continuation:** mT0-small reaches **4.961989** mean validation and
   **5.019603** mean new-test cross-entropy after 256-step three-seed LoRA; all
   seeds improve the held-out loss, while exact-match generation remains 0%.
-- **100 machine transcript drafts** exercise resumable scoring; all are available
-  as explicitly noisy experimental labels and their median uncalibrated confidence
-  is 0.174.
-- **163 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **104,542 SraVaani machine drafts** cover 104,534 unique recordings. Automated
+  quality analysis marks 103,354 standard and 1,188 flagged rows while retaining
+  every source row in the active experimental view.
+- **181 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
-These figures describe the preparation snapshot generated on 2026-09-10. Raw
+These figures describe the preparation snapshot updated on 2026-09-13. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
 Git through `.gitignore`.
 
@@ -239,6 +240,7 @@ python3 -m venv .venv
 .venv/bin/python scripts/build_audio_training_manifests.py
 .venv/bin/python scripts/prepare_transcripts.py
 .venv/bin/python scripts/deep_cleanup.py
+PYTHONPATH=scripts .venv/bin/python scripts/analyze_sravaani_drafts.py
 .venv/bin/python scripts/audit_audio_quality.py --untranscribed data/processed/vaani/untranscribed.jsonl
 .venv/bin/python scripts/prepare_audio_normalization.py
 .venv/bin/python scripts/render_normalized_audio.py --render-flagged-review
@@ -354,6 +356,10 @@ OCR, transcription, or native-speaker review.
   confidence-bearing, review-only draft transcription.
 - [x] Run a 100-record end-to-end draft pilot and expose every draft as a noisy
   experimental label with its confidence retained.
+- [x] Transcribe all 104,542 unlabelled source rows with pinned SraVaani 1.0,
+  covering 104,534 unique audio hashes with zero missing recordings.
+- [x] Attach reversible script, repetition, duration-rate, and repeated-hypothesis
+  quality signals while keeping every draft active experimentally.
 - [x] Activate all 104,542 unlabelled recordings for audio-only learning and place
   them in 105 resumable automatic-transcription batches.
 - [x] Align every available transcript to its audio identity and retain transcript,
@@ -548,7 +554,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **177 passing tests**, **365 source
+The current local verification result is **181 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
 
 ## 🤗 Hugging Face release
