@@ -1,7 +1,7 @@
 {
   "release_id": "garhwali-language-lab-v0.1.0-candidate.1",
   "status": "integrated_experimental_release",
-  "generated": "2026-09-12",
+  "generated": "2026-09-13",
   "language": "Garhwali (gbm)",
   "local_storage_gb_approx": 34,
   "text": {
@@ -321,5 +321,6 @@
     "identified_speaker_cross_split": 0
   },
   "release_policy": "Every collected record is active for local experiments. Public redistribution is limited to records with verified compatible source terms; restricted, rights-pending, and personal review data remain local.",
-  "machine_manifest": "data/processed/release/manifest.json"
+  "machine_manifest": "data/processed/release/manifest.json",
+  "final_audit": "release/final-audit.json"
 }

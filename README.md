@@ -551,11 +551,17 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 .venv/bin/python -m unittest discover -s scripts -p 'test_*.py'
 .venv/bin/python scripts/dedup_report.py
 .venv/bin/python scripts/verify_ingestion.py
+.venv/bin/python scripts/build_huggingface_dataset.py
+.venv/bin/python scripts/audit_final_release.py
 git diff --check
 ```
 
-The current local verification result is **181 passing tests**, **365 source
-snapshots verified**, and zero release-manifest count mismatches.
+The final audit checks the tracked release index against every generated Hugging
+Face shard, including actual row counts, provenance, transcript/source/license
+metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
+machine-readable result is [`release/final-audit.json`](release/final-audit.json).
+The current verification result is **183 passing tests**, **365 verified source
+snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release
 
@@ -566,12 +572,12 @@ redistribution evidence. Audio is hard-linked by SHA-256, so preparing the uploa
 folder does not duplicate the 15 GB VAANI corpus on disk.
 
 ```bash
-# Preview metadata while SraVaani transcription is still running
+# Build and audit the complete metadata package without copying audio
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
-  --output data/huggingface/garhwali-language-lab-preview \
-  --allow-partial-drafts
+  --output data/huggingface/garhwali-language-lab
+.venv/bin/python scripts/audit_final_release.py
 
-# Final package; refuses to run until every draft is present
+# Attach audio immediately before the final upload
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
   --output data/huggingface/garhwali-language-lab \
   --include-audio

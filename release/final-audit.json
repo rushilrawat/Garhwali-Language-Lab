@@ -1,0 +1,47 @@
+{
+  "audit_id": "garhwali-final-release-audit-v0.1",
+  "configs": {
+    "asr/test": 112,
+    "asr/train": 1621,
+    "asr/validation": 269,
+    "instructions/test": 102,
+    "instructions/train": 888,
+    "instructions/validation": 50,
+    "lexicon/train": 655,
+    "sravaani_drafts/train": 104534,
+    "text/test": 309,
+    "text/train": 18100,
+    "text/validation": 335
+  },
+  "drafts": {
+    "complete": true,
+    "draft_inherited_duplicate_rows": 8,
+    "draft_queue_records": 104542,
+    "draft_records": 104542,
+    "draft_unique_audio": 104534,
+    "empty_transcripts": 34,
+    "exported_unique_audio": 104534,
+    "quality_metadata_missing": 0,
+    "supervised_training_eligible": 0
+  },
+  "errors": [],
+  "exported_rows": 126975,
+  "generated": "2026-09-13",
+  "leakage": {
+    "asr_audio_cross_split": 0,
+    "asr_speaker_cross_split": 0,
+    "text_id_cross_split": 0
+  },
+  "provenance": {
+    "asr_missing_transcript_source_or_license": 0,
+    "missing_rows": 0,
+    "public_rights_failures": 0
+  },
+  "release_id": "garhwali-language-lab-v0.1.0-candidate.1",
+  "status": "passed",
+  "warnings": [
+    "metadata_only_audio_paths",
+    "inherited_source_audio_duplicates_collapsed",
+    "empty_machine_drafts_retained_with_quality_flags"
+  ]
+}
