@@ -127,9 +127,9 @@ publish raw caches, reference images, or private reviewer identities.
   only each row's associated deduplicated passage.
 - SraVaani 1.0 is the strongest tested ASR baseline at 42.761% WER / 17.606%
   CER on the 112-row speaker-safe comparison. It remains too inaccurate to turn
-  machine drafts into trusted labels without review. The first 100 untranscribed
-  rows have revision-pinned SraVaani drafts; 99 are non-empty and all 100 remain
-  active as noisy experimental records.
+  machine drafts into trusted labels without review. All 104,542 untranscribed
+  source rows have revision-pinned SraVaani drafts, covering 104,534 unique audio
+  hashes; all remain active as noisy experimental records.
 - SraVaani 1.0 lists Garhwali support and a 53.5 WER on its own Vaani evaluation,
   while this project uses a provider-approved pinned snapshot. The published
   result uses a different split and scoring setup and is not directly comparable.

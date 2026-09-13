@@ -113,7 +113,9 @@ snapshot on those same 112 rows. Its local score is 42.761% WER / 17.606% CER;
 the official 53.5 WER remains a separate result from a different evaluation.
 `transcribe_sravaani_drafts.py` applies the same pinned snapshot resumably to the
 untranscribed queue. Its outputs stay active in the experimental view with model
-revision and machine-draft status attached.
+revision and machine-draft status attached. The completed run covers all 104,542
+source rows / 104,534 unique audio hashes; eight inherited duplicate-audio rows
+retain both source paths and collapse to one row in the Hugging Face export.
 
 The cleanup proposer keeps the original, current, and proposed text together for
 all parent records. It builds spelling candidates from train-only corpus counts,

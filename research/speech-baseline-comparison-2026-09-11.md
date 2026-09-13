@@ -51,14 +51,15 @@ The 2026 VarDial study previously catalogued in this repository reports other
 Garhwali systems on another split, including wav2vec2-BERT at 0.493 WER / 0.193
 CER. Those numbers also remain external references rather than direct comparisons.
 
-## Untranscribed-audio pilot
+## Untranscribed-audio pass
 
-The resumable SraVaani path processed the first 100 priority records from the
-104,542-row untranscribed queue. All audio hashes are unique, 99 drafts are
-non-empty, and mean Devanagari share among alphabetic output is 91%. The same 100
-audio hashes have earlier Whisper drafts, with zero exact transcript agreement.
-There are no references for these rows, so agreement is not an accuracy score.
-All SraVaani drafts retain source metadata and remain active only as explicitly
+The resumable SraVaani path processed all 104,542 source rows in the untranscribed
+queue, covering 104,534 unique audio hashes with zero missing or unexpected
+hashes. Eight repeated hashes are inherited from VAANI rows with distinct source
+filenames; each pair produced identical text. Thirty-four drafts are empty and
+1,026 contain alphabetic output without a Devanagari letter, so these signals
+remain attached for later quality analysis. There are no human references for
+these rows. All drafts retain source metadata and remain active only as explicitly
 noisy experimental records.
 
 ## Reproduction

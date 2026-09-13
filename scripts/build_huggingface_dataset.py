@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import os
+from collections import Counter
 from pathlib import Path
 
 
@@ -78,7 +79,33 @@ def audio_row(row, transcript_field):
     exported = {key: row.get(key) for key in keep if key in row}
     exported['audio'] = content_audio_path(row['audio_sha256'])
     exported['transcript'] = row.get(transcript_field, '')
+    if row.get('duplicate_source_audio_paths'):
+        exported['duplicate_source_audio_paths'] = row['duplicate_source_audio_paths']
     return exported
+
+
+def draft_identity(row):
+    return row['audio_sha256'], row.get('audio_path') or row.get('local_audio_path')
+
+
+def drafts_cover_queue(queue, drafts):
+    return Counter(map(draft_identity, queue)) == Counter(map(draft_identity, drafts))
+
+
+def deduplicate_audio_rows(rows, transcript_field):
+    groups = {}
+    for row in rows:
+        digest = row['audio_sha256']
+        if digest not in groups:
+            groups[digest] = dict(row)
+            groups[digest]['duplicate_source_audio_paths'] = []
+        current = groups[digest]
+        if current.get(transcript_field, '') != row.get(transcript_field, ''):
+            raise ValueError(f'conflicting transcripts for audio_sha256={digest}')
+        source_path = row.get('audio_path') or row.get('local_audio_path')
+        if source_path not in current['duplicate_source_audio_paths']:
+            current['duplicate_source_audio_paths'].append(source_path)
+    yield from groups.values()
 
 
 def text_row(row):
@@ -230,19 +257,23 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
 
     queue_path = ROOT / 'data/processed/model_ready/transcripts/untranscribed_queue.jsonl'
     drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl'
-    queue_count = sum(1 for _ in read_jsonl(queue_path))
+    queue = list(read_jsonl(queue_path))
+    queue_count = len(queue)
     drafts = list(read_jsonl(drafts_path))
+    unique_drafts = list(deduplicate_audio_rows(drafts, 'machine_transcript'))
     report['draft_queue_records'] = queue_count
     report['draft_records'] = len(drafts)
-    report['drafts_complete'] = len({row['audio_sha256'] for row in drafts}) == queue_count
+    report['draft_unique_audio'] = len(unique_drafts)
+    report['draft_inherited_duplicate_rows'] = len(drafts) - len(unique_drafts)
+    report['drafts_complete'] = drafts_cover_queue(queue, drafts)
     if not report['drafts_complete'] and not allow_partial_drafts:
         raise RuntimeError(
             f'SraVaani drafts incomplete: {len(drafts)}/{queue_count}; '
             'use --allow-partial-drafts only for a preview'
         )
-    audio_sources.extend(drafts)
+    audio_sources.extend(unique_drafts)
     report['configs']['sravaani_drafts/train'] = write_shards(
-        (audio_row(row, 'machine_transcript') for row in drafts),
+        (audio_row(row, 'machine_transcript') for row in unique_drafts),
         output / 'data/sravaani_drafts', 'train', shard_rows,
     )
 

@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-172%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-177%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -476,9 +476,9 @@ selection rules, exclusions, counts, and leakage checks.
    exact-match generation and native-reference review remain open.
 4. [x] **SraVaani comparison — High:** the provider-approved, revision-pinned
    model scores 42.761% WER / 17.606% CER on the same 112-row ASR manifest,
-   reducing WER by 42.45% relative to the best local Whisper checkpoint. A
-   resumable first pass produced 100 active experimental drafts for previously
-   untranscribed audio; 99 are non-empty.
+   reducing WER by 42.45% relative to the best local Whisper checkpoint. The
+   resumable full pass produced drafts for all 104,542 untranscribed source rows,
+   covering 104,534 unique recordings with zero missing audio hashes.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
@@ -548,7 +548,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 git diff --check
 ```
 
-The current local verification result is **175 passing tests**, **365 source
+The current local verification result is **177 passing tests**, **365 source
 snapshots verified**, and zero release-manifest count mismatches.
 
 ## 🤗 Hugging Face release

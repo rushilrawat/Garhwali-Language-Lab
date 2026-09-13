@@ -46,6 +46,27 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             ])
             self.assertEqual(json.loads(paths[-1].read_text())['id'], '4')
 
+    def test_draft_coverage_accepts_source_rows_with_duplicate_audio(self):
+        queue = [
+            {'audio_sha256': 'same', 'audio_path': 'one.wav'},
+            {'audio_sha256': 'same', 'audio_path': 'two.wav'},
+        ]
+        drafts = [
+            {'audio_sha256': 'same', 'audio_path': 'one.wav'},
+            {'audio_sha256': 'same', 'audio_path': 'two.wav'},
+        ]
+        self.assertTrue(m.drafts_cover_queue(queue, drafts))
+        self.assertFalse(m.drafts_cover_queue(queue, drafts[:1]))
+
+    def test_duplicate_audio_rows_merge_source_paths(self):
+        rows = [
+            {'audio_sha256': 'same', 'audio_path': 'one.wav', 'machine_transcript': 'पाठ'},
+            {'audio_sha256': 'same', 'audio_path': 'two.wav', 'machine_transcript': 'पाठ'},
+        ]
+        merged = list(m.deduplicate_audio_rows(rows, 'machine_transcript'))
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0]['duplicate_source_audio_paths'], ['one.wav', 'two.wav'])
+
 
 if __name__ == '__main__':
     unittest.main()
