@@ -56,3 +56,11 @@ PYTHONPATH=scripts .venv/bin/python -m unittest scripts/test_build_quality_tiers
 Generated tiered manifests and the machine-readable report are under
 `data/processed/model_ready/quality_v2/` and remain Git-ignored with the other
 generated datasets.
+
+## Public transparency
+
+The Hugging Face package now includes a complete `catalog` configuration for all
+27,987 exact-unique text records. Rights-pending records expose their stable hash,
+source URL, rights status, language evidence, quality tier, and review reasons.
+Only the protected text value is redacted. This makes the full collection visible
+and countable without falsely relicensing third-party content.

@@ -32,6 +32,38 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertEqual(m.text_row({**base, 'text': 'गढ़वाली'})['script'], 'Deva')
         self.assertEqual(m.text_row({**base, 'text': 'garhwali'})['script'], 'Latn')
 
+    def test_catalog_keeps_every_identity_but_redacts_unlicensed_text(self):
+        row = {
+            'text_sha256': 'a' * 64,
+            'text': 'गढ़वाली पाठ',
+            'split': 'train',
+            'language_bucket': 'garhwali_candidate',
+            'quality_v2': {'tier': 'high_quality_local_only'},
+            'provenance': [{
+                'source_id': 'example',
+                'source_url': 'https://example.test/garhwali',
+                'iso_639_3': 'gbm',
+                'rights_status': 'public_webpage_no_open_license_stated',
+            }],
+        }
+        exported = m.catalog_row(row)
+        self.assertIsNone(exported['text'])
+        self.assertFalse(exported['text_publicly_available'])
+        self.assertEqual(exported['text_sha256'], row['text_sha256'])
+        self.assertEqual(exported['sources'][0]['source_url'], 'https://example.test/garhwali')
+        self.assertEqual(exported['quality_v2']['tier'], 'high_quality_local_only')
+
+    def test_catalog_includes_open_text(self):
+        row = {
+            'text_sha256': 'b' * 64,
+            'text': 'गढ़वाली पाठ',
+            'provenance': [{'iso_639_3': 'gbm', 'license': 'CC-BY-4.0'}],
+        }
+        exported = m.catalog_row(row)
+        self.assertEqual(exported['text'], 'गढ़वाली पाठ')
+        self.assertTrue(exported['text_publicly_available'])
+        self.assertIsNone(exported['redaction_reason'])
+
     def test_audio_export_uses_content_addressed_relative_path(self):
         row = {
             'audio_sha256': 'ab' * 32,

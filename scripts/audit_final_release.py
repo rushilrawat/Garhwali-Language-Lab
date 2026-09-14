@@ -21,6 +21,7 @@ REQUIRED_CONFIGS = {
     'asr/train', 'asr/validation', 'asr/test',
     'sravaani_drafts/train', 'lexicon/train',
     'instructions/train', 'instructions/validation', 'instructions/test',
+    'catalog/train',
 }
 
 
@@ -70,6 +71,9 @@ def audit(index, dataset_root):
     empty_drafts = 0
     draft_quality_missing = 0
     supervised_drafts = 0
+    catalog_ids = set()
+    catalog_redacted = 0
+    catalog_missing_evidence = 0
 
     for key, config in sorted(manifest.get('configs', {}).items()):
         group, split = key.split('/', 1)
@@ -148,6 +152,16 @@ def audit(index, dataset_root):
                 empty_drafts += not bool(row.get('transcript'))
                 draft_quality_missing += not bool(row.get('machine_transcript_quality'))
                 supervised_drafts += row.get('training_eligible') is True
+        elif group == 'catalog':
+            for row in rows:
+                identity = row.get('id')
+                if not identity or identity in catalog_ids:
+                    errors.append('catalog contains a missing or duplicate stable ID')
+                catalog_ids.add(identity)
+                if row.get('text') is None:
+                    catalog_redacted += 1
+                    if not row.get('redaction_reason') or not row.get('sources'):
+                        catalog_missing_evidence += 1
 
     errors.extend(overlap_error('text IDs', text_ids))
     errors.extend(overlap_error('ASR audio hashes', asr_hashes))
@@ -156,6 +170,13 @@ def audit(index, dataset_root):
         errors.append(f'{draft_quality_missing} SraVaani drafts lack quality metadata')
     if supervised_drafts:
         errors.append(f'{supervised_drafts} machine drafts are marked supervised-training eligible')
+    expected_catalog_records = index.get('text', {}).get(
+        'unique_parent_documents', index.get('text', {}).get('total')
+    )
+    if len(catalog_ids) != expected_catalog_records:
+        errors.append('catalog does not account for every exact-unique text record')
+    if catalog_missing_evidence:
+        errors.append(f'{catalog_missing_evidence} redacted catalog rows lack public evidence')
 
     asr_total = sum(actual_counts.get(f'asr/{split}', 0) for split in ('train', 'validation', 'test'))
     if asr_total != index.get('speech', {}).get('strict_comparison_rows'):
@@ -235,6 +256,11 @@ def audit(index, dataset_root):
             'quality_metadata_missing': draft_quality_missing,
             'supervised_training_eligible': supervised_drafts,
             'complete': bool(manifest.get('drafts_complete')),
+        },
+        'catalog': {
+            'records': len(catalog_ids),
+            'redacted_text_records': catalog_redacted,
+            'missing_evidence': catalog_missing_evidence,
         },
     }
 

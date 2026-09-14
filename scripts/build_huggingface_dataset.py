@@ -152,6 +152,37 @@ def text_row(row):
     }
 
 
+def catalog_provenance(item):
+    keep = (
+        'source_id', 'source_url', 'record_id', 'iso_639_3', 'genre', 'script',
+        'license', 'license_id', 'license_url', 'rights_status', 'quality_flags',
+    )
+    return {key: item.get(key) for key in keep if item.get(key) not in (None, '', [])}
+
+
+def catalog_row(row, include_restricted_text=False):
+    items = provenance_items(row)
+    text_is_public = bool(items) and all(is_publishable_provenance(item) for item in items)
+    text = row.get('text_model') or row.get('text_clean') or row.get('text') or ''
+    exported = {
+        'id': row['text_sha256'],
+        'split': row.get('split'),
+        'text': text if text_is_public or include_restricted_text else None,
+        'text_sha256': row['text_sha256'],
+        'text_character_count': len(text),
+        'text_publicly_available': text_is_public,
+        'redaction_reason': None if text_is_public or include_restricted_text else 'source_rights_do_not_permit_public_text_redistribution',
+        'language_bucket': row.get('language_bucket'),
+        'language_quality': row.get('language_quality'),
+        'dialect_quality': row.get('dialect_quality'),
+        'genre_quality': row.get('genre_quality'),
+        'surface_quality': row.get('quality'),
+        'quality_v2': row.get('quality_v2'),
+        'sources': [catalog_provenance(item) for item in items],
+    }
+    return exported
+
+
 def write_shards(rows, directory, split, shard_rows=10_000):
     directory.mkdir(parents=True, exist_ok=True)
     for old in directory.glob(f'{split}-*.jsonl'):
@@ -259,6 +290,10 @@ configs:
     path: data/instructions/validation-*.jsonl
   - split: test
     path: data/instructions/test-*.jsonl
+- config_name: catalog
+  data_files:
+  - split: train
+    path: data/catalog/train-*.jsonl
 ---
 
 # Garhwali Language Lab
@@ -271,6 +306,12 @@ by the Garhwali Language Lab. Every row retains source and license evidence.
 This rights-filtered package contains **{exported_rows:,} records** across five
 configurations, including transcripts for **{report['draft_unique_audio']:,}
 unique SraVaani recordings**. {audio_summary}
+
+The `catalog` configuration publicly accounts for all
+**{report['catalog_records']:,} exact-unique collected text records**. Rows whose
+source terms do not permit redistribution retain their stable content hash,
+source URL, rights status, quality tier, language evidence, and review reasons;
+only the protected text value is redacted. Nothing is silently omitted.
 
 The `asr` configuration contains human transcripts from VAANI. The
 `sravaani_drafts` configuration contains machine-generated hypotheses from
@@ -304,6 +345,21 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
         report['configs'][f'text/{split}'] = write_shards(
             (text_row(row) for row in rows), output / 'data/text', split, shard_rows
         )
+
+    quality_catalog = read_jsonl(
+        ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
+    )
+    catalog_rows = [
+        catalog_row(row, include_restricted_text=profile == 'experimental-local')
+        for row in quality_catalog
+    ]
+    report['catalog_records'] = len(catalog_rows)
+    report['catalog_redacted_text_records'] = sum(
+        row['text'] is None for row in catalog_rows
+    )
+    report['configs']['catalog/train'] = write_shards(
+        catalog_rows, output / 'data/catalog', 'train', shard_rows
+    )
 
     audio_sources = []
     asr_dir = ROOT / 'data/processed/model_ready/splits/asr'

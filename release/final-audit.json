@@ -7,10 +7,16 @@
     "unexpected_files": 0
   },
   "audit_id": "garhwali-final-release-audit-v0.1",
+  "catalog": {
+    "missing_evidence": 0,
+    "records": 27987,
+    "redacted_text_records": 25717
+  },
   "configs": {
     "asr/test": 112,
     "asr/train": 1621,
     "asr/validation": 269,
+    "catalog/train": 27987,
     "instructions/test": 102,
     "instructions/train": 888,
     "instructions/validation": 50,
@@ -32,7 +38,7 @@
     "supervised_training_eligible": 0
   },
   "errors": [],
-  "exported_rows": 112601,
+  "exported_rows": 140588,
   "generated": "2026-09-14",
   "leakage": {
     "asr_audio_cross_split": 0,

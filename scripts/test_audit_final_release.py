@@ -32,6 +32,11 @@ class FinalReleaseAuditTests(unittest.TestCase):
             'instructions/train': [{'instruction': 'a', 'response': 'b', 'provenance': provenance}],
             'instructions/validation': [{'instruction': 'c', 'response': 'd', 'provenance': provenance}],
             'instructions/test': [{'instruction': 'e', 'response': 'f', 'provenance': provenance}],
+            'catalog/train': [
+                {'id': 'text-a', 'text': 'अ', 'sources': provenance},
+                {'id': 'text-b', 'text': None, 'redaction_reason': 'rights_pending', 'sources': provenance},
+                {'id': 'text-c', 'text': 'क', 'sources': provenance},
+            ],
         }
         for key, content in rows.items():
             config, split = key.split('/')

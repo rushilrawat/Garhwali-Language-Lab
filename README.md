@@ -488,6 +488,8 @@ selection rules, exclusions, counts, and leakage checks.
   speech, and SraVaani drafts; preserve every value and attach explicit tier reasons.
 - [ ] Correct and re-review the quality-gate queues, beginning with 188
   rights-eligible text records, 13 supervised transcripts, and 1,188 risky drafts.
+- [x] Publish a transparency catalog for every collected text record; rights-pending
+  rows expose provenance and quality metadata while only the protected text is redacted.
 
 ### 10. Release — Medium
 
