@@ -493,11 +493,10 @@ selection rules, exclusions, counts, and leakage checks.
    corpus-level failure checks. The comparison finds 1,154 structurally lower-risk
    alternatives and retains the original as the structural preference for 34.
    Nothing is automatically promoted; accuracy still requires human references.
-7. [x] **Recovery confidence calibration — High:** the separate 112-record human
-   benchmark shows SraVaani has lower row-level CER on 108 records, Whisper on
-   3, with 1 tie. All 1,188 recovery rows now carry bounded review-confidence
-   evidence; 1,074 minimal-agreement rows are explicitly out of calibration-bin
-   support, and no row is promoted or removed.
+7. [x] **Recovery confidence calibration — High:** 381 human-referenced,
+   training-disjoint recordings show SraVaani has lower row-level CER on 369,
+   Whisper on 8, with 4 ties. All 1,188 recovery rows now map to an observed
+   agreement band; no row is promoted or removed.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).

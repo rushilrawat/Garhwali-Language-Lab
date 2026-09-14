@@ -27,6 +27,11 @@ REQUIRED_ARTIFACTS = (
 )
 
 
+def resolve_input_path(path):
+    path = Path(path)
+    return path if path.is_absolute() else ROOT / path
+
+
 def select_rows(rows, limit):
     selected = sorted(rows, key=lambda row: row['audio_sha256'])
     return selected[:limit] if limit else selected
@@ -82,7 +87,7 @@ def run(
             device = 'mps'
         else:
             device = 'cpu'
-    input_path = Path(input_path)
+    input_path = resolve_input_path(input_path)
     with input_path.open(encoding='utf-8') as handle:
         rows = select_rows([json.loads(line) for line in handle if line.strip()], max_records)
 

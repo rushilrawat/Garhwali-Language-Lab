@@ -1,3 +1,4 @@
 numpy==2.5.3
 torch==2.14.0
 transformers==5.17.0
+sentencepiece==0.2.2

@@ -8,6 +8,12 @@ import transcribe_sravaani_drafts as drafts
 
 
 class SraVaaniComparisonTests(unittest.TestCase):
+    def test_project_relative_input_path_is_resolved(self):
+        self.assertEqual(
+            m.resolve_input_path(Path('data/example.jsonl')),
+            m.ROOT / 'data/example.jsonl',
+        )
+
     def test_select_rows_is_deterministic(self):
         rows = [
             {'audio_sha256': 'b'},

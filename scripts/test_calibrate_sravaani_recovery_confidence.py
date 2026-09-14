@@ -1,9 +1,16 @@
 import unittest
+from pathlib import Path
 
 import calibrate_sravaani_recovery_confidence as m
 
 
 class SraVaaniRecoveryConfidenceTests(unittest.TestCase):
+    def test_project_relative_path_is_resolved(self):
+        self.assertEqual(
+            m.resolve_project_path(Path('data/example.jsonl')),
+            m.ROOT / 'data/example.jsonl',
+        )
+
     def test_character_agreement_is_bounded_and_exact(self):
         self.assertEqual(m.character_agreement('गढ़वाली भाषा', 'गढ़वाली भाषा'), 1.0)
         self.assertEqual(m.character_agreement('', ''), 1.0)

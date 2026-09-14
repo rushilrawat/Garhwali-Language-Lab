@@ -16,10 +16,17 @@ from asr_metrics import edit_distance, normalize, score
 ROOT = Path(__file__).resolve().parents[1]
 RECOVERY = ROOT / 'data/processed/model_ready/transcripts/sravaani_recovery_whisper_v0.2.jsonl'
 SUPERVISED = ROOT / 'data/processed/vaani/supervised.jsonl'
-SRA_BENCHMARK = ROOT / 'data/processed/evaluation/asr/sravaani_1_0/predictions.jsonl'
-WHISPER_BENCHMARK = ROOT / 'models/whisper-tiny-garhwali-v0.2/evaluation_predictions.jsonl'
+TRAINING_MANIFEST = ROOT / 'data/processed/model_ready/splits/asr/train.jsonl'
+CALIBRATION_DIR = ROOT / 'data/processed/evaluation/asr/confidence_calibration'
+SRA_BENCHMARK = CALIBRATION_DIR / 'sravaani/predictions.jsonl'
+WHISPER_BENCHMARK = CALIBRATION_DIR / 'whisper_v0.2/predictions.jsonl'
 OUTPUT = ROOT / 'data/processed/model_ready/transcripts/sravaani_recovery_confidence.jsonl'
 REPORT = ROOT / 'data/processed/model_ready/transcripts/sravaani_recovery_confidence_report.json'
+
+
+def resolve_project_path(path):
+    path = Path(path)
+    return path if path.is_absolute() else ROOT / path
 
 
 def read_jsonl(path):
@@ -227,15 +234,30 @@ def score_recovery_row(row, calibration, direct_reference=False):
 
 
 def run(recovery_path=RECOVERY, supervised_path=SUPERVISED,
+        training_manifest_path=TRAINING_MANIFEST,
         sravaani_benchmark_path=SRA_BENCHMARK,
         whisper_benchmark_path=WHISPER_BENCHMARK,
         output_path=OUTPUT, report_path=REPORT):
+    recovery_path = resolve_project_path(recovery_path)
+    supervised_path = resolve_project_path(supervised_path)
+    training_manifest_path = resolve_project_path(training_manifest_path)
+    sravaani_benchmark_path = resolve_project_path(sravaani_benchmark_path)
+    whisper_benchmark_path = resolve_project_path(whisper_benchmark_path)
+    output_path = resolve_project_path(output_path)
+    report_path = resolve_project_path(report_path)
     recovery = read_jsonl(recovery_path)
     supervised = read_jsonl(supervised_path)
     calibration_rows = join_calibration(
         read_jsonl(sravaani_benchmark_path), read_jsonl(whisper_benchmark_path)
     )
     calibration = summarize_calibration(calibration_rows)
+    calibration_hashes = {row['audio_sha256'] for row in calibration_rows}
+    training_hashes = {
+        row['audio_sha256'] for row in read_jsonl(training_manifest_path)
+    }
+    training_overlap = calibration_hashes & training_hashes
+    if training_overlap:
+        raise ValueError('Confidence calibration overlaps Whisper training audio')
     recovery_hashes = {row['audio_sha256'] for row in recovery}
     supervised_hashes = {row['audio_sha256'] for row in supervised}
     direct_hashes = recovery_hashes & supervised_hashes
@@ -249,7 +271,7 @@ def run(recovery_path=RECOVERY, supervised_path=SUPERVISED,
     write_jsonl(output_path, scored)
     output_hashes = {row['audio_sha256'] for row in scored}
     report = {
-        'run_id': 'sravaani-recovery-confidence-v0.1',
+        'run_id': 'sravaani-recovery-confidence-v0.2',
         'data_grain': 'one row per recovery audio SHA-256',
         'inputs': {
             'recovery': {
@@ -259,6 +281,10 @@ def run(recovery_path=RECOVERY, supervised_path=SUPERVISED,
             'supervised_vaani': {
                 'path': str(Path(supervised_path).relative_to(ROOT)),
                 'sha256': sha256_file(supervised_path),
+            },
+            'whisper_training_manifest': {
+                'path': str(Path(training_manifest_path).relative_to(ROOT)),
+                'sha256': sha256_file(training_manifest_path),
             },
             'sravaani_benchmark_predictions': {
                 'path': str(Path(sravaani_benchmark_path).relative_to(ROOT)),
@@ -281,6 +307,9 @@ def run(recovery_path=RECOVERY, supervised_path=SUPERVISED,
             'supervised_vaani_records': len(supervised),
             'supervised_unique_audio_hashes': len(supervised_hashes),
             'same_record_reference_matches': len(direct_hashes),
+            'calibration_records': len(calibration_rows),
+            'calibration_unique_audio_hashes': len(calibration_hashes),
+            'calibration_whisper_training_overlap': len(training_overlap),
         },
         'confidence_bands': dict(sorted(Counter(
             row['confidence_band'] for row in scored
@@ -324,6 +353,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--recovery', type=Path, default=RECOVERY)
     parser.add_argument('--supervised', type=Path, default=SUPERVISED)
+    parser.add_argument('--training-manifest', type=Path, default=TRAINING_MANIFEST)
     parser.add_argument('--sravaani-benchmark', type=Path, default=SRA_BENCHMARK)
     parser.add_argument('--whisper-benchmark', type=Path, default=WHISPER_BENCHMARK)
     parser.add_argument('--output', type=Path, default=OUTPUT)
@@ -332,6 +362,7 @@ def main():
     print(json.dumps(run(
         args.recovery,
         args.supervised,
+        args.training_manifest,
         args.sravaani_benchmark,
         args.whisper_benchmark,
         args.output,
