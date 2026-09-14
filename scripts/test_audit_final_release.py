@@ -16,7 +16,10 @@ def write_jsonl(path, rows):
 class FinalReleaseAuditTests(unittest.TestCase):
     def fixture(self, root):
         configs = {}
-        provenance = [{'license_url': 'https://creativecommons.org/licenses/by/4.0/'}]
+        provenance = [{
+            'license_url': 'https://creativecommons.org/licenses/by/4.0/',
+            'iso_639_3': 'gbm',
+        }]
         rows = {
             'text/train': [{'id': 'text-a', 'text': 'अ', 'language': 'gbm', 'provenance': provenance}],
             'text/validation': [{'id': 'text-b', 'text': 'ब', 'language': 'gbm', 'provenance': provenance}],
@@ -71,7 +74,7 @@ class FinalReleaseAuditTests(unittest.TestCase):
         self.assertEqual(report['status'], 'passed')
         self.assertEqual(report['errors'], [])
         self.assertEqual(report['drafts']['empty_transcripts'], 1)
-        self.assertIn('metadata_only_audio_paths', report['warnings'])
+        self.assertIn('audio_not_included', report['warnings'])
 
     def test_rejects_shard_mismatch_and_split_leakage(self):
         with tempfile.TemporaryDirectory() as directory:

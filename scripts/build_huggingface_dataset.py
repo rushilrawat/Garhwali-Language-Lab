@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 from collections import Counter
 from pathlib import Path
 
@@ -64,14 +65,29 @@ def is_public_text_row(row):
     return bool(items) and all(is_publishable_provenance(item) for item in items)
 
 
+def is_public_garhwali_text_row(row):
+    items = provenance_items(row)
+    return is_public_text_row(row) and all(
+        item.get('iso_639_3') == 'gbm' for item in items
+    )
+
+
 def content_audio_path(audio_sha256):
     return f'audio/{audio_sha256[:2]}/{audio_sha256}.wav'
 
 
-def audio_row(row, transcript_field):
+def public_speaker_id(row):
+    speaker = row.get('speaker_id')
+    if speaker in (None, '', 'NA'):
+        return None
+    value = f"{row.get('source', '')}|{speaker}".encode()
+    return f'speaker_{hashlib.sha256(value).hexdigest()[:16]}'
+
+
+def audio_row(row, transcript_field, include_audio_reference=True):
     keep = (
         'audio_sha256', 'duration_seconds', 'language', 'district', 'state',
-        'gender', 'speaker_id', 'languages_known', 'source', 'license',
+        'gender', 'languages_known', 'source', 'license',
         'main_split', 'transcription_split', 'quality_flags',
         'training_quality_flags', 'review_status',
         'machine_transcript_model', 'machine_transcript_model_revision',
@@ -79,10 +95,13 @@ def audio_row(row, transcript_field):
         'experimental_training_eligible', 'training_eligible',
     )
     exported = {key: row.get(key) for key in keep if key in row}
-    exported['audio'] = content_audio_path(row['audio_sha256'])
+    if include_audio_reference:
+        exported['audio'] = content_audio_path(row['audio_sha256'])
+    exported['speaker_id'] = public_speaker_id(row)
     exported['transcript'] = row.get(transcript_field, '')
-    if row.get('duplicate_source_audio_paths'):
-        exported['duplicate_source_audio_paths'] = row['duplicate_source_audio_paths']
+    exported['source_audio_records'] = max(
+        1, len(row.get('duplicate_source_audio_paths') or [])
+    )
     return exported
 
 
@@ -111,11 +130,21 @@ def deduplicate_audio_rows(rows, transcript_field):
 
 
 def text_row(row):
+    scripts = set()
+    for character in row['text']:
+        codepoint = ord(character)
+        if 0x0900 <= codepoint <= 0x097F:
+            scripts.add('Deva')
+        elif 0x0980 <= codepoint <= 0x09FF:
+            scripts.add('Beng')
+        elif character.isascii() and character.isalpha():
+            scripts.add('Latn')
+    script = next(iter(scripts)) if len(scripts) == 1 else ('Mixed' if scripts else 'Other')
     return {
         'id': row['segment_sha256'],
         'text': row['text'],
         'language': 'gbm',
-        'script': 'Deva',
+        'script': script,
         'split': row['split'],
         'quality_flags': row.get('quality_flags') or [],
         'provenance': provenance_items(row),
@@ -164,6 +193,14 @@ def link_audio(rows, output):
     return {'new': linked, 'total': len(seen)}
 
 
+def remove_packaged_audio(output):
+    directory = Path(output) / 'audio'
+    count = sum(1 for _ in directory.rglob('*.wav')) if directory.exists() else 0
+    if directory.exists():
+        shutil.rmtree(directory)
+    return count
+
+
 def sha256_file(path):
     digest = hashlib.sha256()
     with Path(path).open('rb') as handle:
@@ -175,6 +212,11 @@ def sha256_file(path):
 def dataset_card(report):
     draft_status = 'complete' if report['drafts_complete'] else 'partial'
     exported_rows = sum(item['records'] for item in report['configs'].values())
+    audio_summary = (
+        f"The package includes **{report['linked_audio_files']:,} content-addressed audio files**."
+        if report['include_audio'] else
+        'This transcript-only package does not include audio files or source filenames.'
+    )
     return f'''---
 language:
 - gbm
@@ -226,9 +268,8 @@ Versioned Garhwali (`gbm`) text, speech, lexicon, and instruction resources buil
 by the Garhwali Language Lab. Every row retains source and license evidence.
 
 This rights-filtered package contains **{exported_rows:,} records** across five
-configurations, including **{report['draft_unique_audio']:,} unique SraVaani
-draft recordings** and **{report['linked_audio_files']:,} content-addressed audio
-files** when audio is included.
+configurations, including transcripts for **{report['draft_unique_audio']:,}
+unique SraVaani recordings**. {audio_summary}
 
 The `asr` configuration contains human transcripts from VAANI. The
 `sravaani_drafts` configuration contains machine-generated hypotheses from
@@ -256,7 +297,7 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     for split in ('train', 'validation', 'test'):
         rows = read_jsonl(text_dir / f'{split}.jsonl')
         if profile == 'public':
-            rows = (row for row in rows if is_public_text_row(row))
+            rows = (row for row in rows if is_public_garhwali_text_row(row))
         report['configs'][f'text/{split}'] = write_shards(
             (text_row(row) for row in rows), output / 'data/text', split, shard_rows
         )
@@ -267,7 +308,7 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
         rows = list(read_jsonl(asr_dir / f'{split}.jsonl'))
         audio_sources.extend(rows)
         report['configs'][f'asr/{split}'] = write_shards(
-            (audio_row(row, 'asr_target_clean') for row in rows),
+            (audio_row(row, 'asr_target_clean', include_audio) for row in rows),
             output / 'data/asr', split, shard_rows,
         )
 
@@ -292,7 +333,7 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
         )
     audio_sources.extend(unique_drafts)
     report['configs']['sravaani_drafts/train'] = write_shards(
-        (audio_row(row, 'machine_transcript') for row in unique_drafts),
+        (audio_row(row, 'machine_transcript', include_audio) for row in unique_drafts),
         output / 'data/sravaani_drafts', 'train', shard_rows,
     )
 
@@ -314,9 +355,11 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
             rows, output / 'data/instructions', split, shard_rows,
         )
 
+    removed_audio_files = 0 if include_audio else remove_packaged_audio(output)
     link_report = link_audio(audio_sources, output) if include_audio else {'new': 0, 'total': 0}
     report['linked_audio_files'] = link_report['total']
     report['newly_linked_audio_files'] = link_report['new']
+    report['removed_audio_files'] = removed_audio_files
     output.mkdir(parents=True, exist_ok=True)
     (output / 'README.md').write_text(dataset_card(report), encoding='utf-8')
     (output / 'manifest.json').write_text(

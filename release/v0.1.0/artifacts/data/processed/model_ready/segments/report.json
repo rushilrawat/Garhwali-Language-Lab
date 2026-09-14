@@ -1,0 +1,31 @@
+{
+  "document_components": 26625,
+  "document_split_records": {
+    "test": 1330,
+    "train": 25293,
+    "validation": 1364
+  },
+  "documents_remapped_from_provisional_split": 136,
+  "duplicate_segment_occurrences": 5321,
+  "parent_records": 27987,
+  "parent_split_conflict_segments": 332,
+  "provisional_segment_split_records": {
+    "test": 4313,
+    "train": 77549,
+    "validation": 4353
+  },
+  "quality_flags": {
+    "no_devanagari": 30859,
+    "very_long": 31,
+    "very_short": 2338
+  },
+  "remaining_cross_split_segments": 0,
+  "segment_split_records": {
+    "test": 2801,
+    "train": 80926,
+    "validation": 2488
+  },
+  "source_segments": 91536,
+  "split_note": "Connected documents sharing any exact segment receive one deterministic component split.",
+  "unique_segments": 86215
+}

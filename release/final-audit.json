@@ -1,9 +1,9 @@
 {
   "audio": {
-    "included": true,
+    "included": false,
     "missing_files": 0,
-    "present_files": 106536,
-    "referenced_unique_files": 106536,
+    "present_files": 0,
+    "referenced_unique_files": 0,
     "unexpected_files": 0
   },
   "audit_id": "garhwali-final-release-audit-v0.1",
@@ -16,9 +16,9 @@
     "instructions/validation": 50,
     "lexicon/train": 655,
     "sravaani_drafts/train": 104534,
-    "text/test": 309,
-    "text/train": 18100,
-    "text/validation": 335
+    "text/test": 223,
+    "text/train": 3939,
+    "text/validation": 208
   },
   "drafts": {
     "complete": true,
@@ -32,7 +32,7 @@
     "supervised_training_eligible": 0
   },
   "errors": [],
-  "exported_rows": 126975,
+  "exported_rows": 112601,
   "generated": "2026-09-13",
   "leakage": {
     "asr_audio_cross_split": 0,
@@ -42,11 +42,13 @@
   "provenance": {
     "asr_missing_transcript_source_or_license": 0,
     "missing_rows": 0,
-    "public_rights_failures": 0
+    "public_rights_failures": 0,
+    "text_language_scope_failures": 0
   },
   "release_id": "garhwali-language-lab-v0.1.0",
   "status": "passed",
   "warnings": [
+    "audio_not_included",
     "inherited_source_audio_duplicates_collapsed",
     "empty_machine_drafts_retained_with_quality_flags"
   ]

@@ -1,0 +1,17 @@
+{
+  "device": "cpu",
+  "elapsed_seconds": 4.765,
+  "evaluation_records": 128,
+  "mask_rate": 0.15,
+  "masked_token_accuracy": 0.17786561,
+  "masked_token_cross_entropy": 6.977486,
+  "masked_token_perplexity": 1072.219001,
+  "masked_tokens": 506,
+  "max_length": 256,
+  "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+  "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+  "run_id": "indicbertv2-garhwali-masked-lm-v0.1",
+  "scope": "deterministic held-out pilot; masked positions selected by record hash",
+  "seed": 17,
+  "truncated_records": 0
+}

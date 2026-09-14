@@ -11,7 +11,7 @@ labels.
 The current release is `garhwali-language-lab-v0.1.0`. Every collected record
 remains active locally with quality and rights metadata retained. Its public
 Hugging Face package contains only records with compatible redistribution terms.
-The public package is available at
+The reserved Hugging Face repository is
 [`rushilrawat/garhwali-language-lab`](https://huggingface.co/datasets/rushilrawat/garhwali-language-lab).
 
 ## Current scale

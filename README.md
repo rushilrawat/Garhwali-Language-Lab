@@ -560,30 +560,25 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **185 passing tests**, **365 verified source
+The current verification result is **187 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release
 
 `scripts/build_huggingface_dataset.py` creates an upload-ready multi-config
-dataset with text, supervised ASR, SraVaani drafts, lexicon, and instruction
-splits. The public profile includes only records with explicit compatible
-redistribution evidence. Audio is hard-linked by SHA-256, so preparing the upload
-folder does not duplicate the 15 GB VAANI corpus on disk.
+transcript dataset with Garhwali text, human VAANI transcripts, SraVaani machine
+drafts, lexicon, and instruction splits. The public profile includes only records
+with explicit compatible redistribution evidence and Garhwali language scope.
+It omits audio, original audio filenames, and raw speaker identifiers.
 
 ```bash
-# Build and audit the complete metadata package without copying audio
+# Build and audit the transcript-only package
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
   --output data/huggingface/garhwali-language-lab
 .venv/bin/python scripts/audit_final_release.py
 
-# Attach audio immediately before the final upload
-PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
-  --output data/huggingface/garhwali-language-lab \
-  --include-audio
-
-# Run after choosing the final Hugging Face namespace/repository name
-HF_HOME=.cache/huggingface hf upload NAMESPACE/garhwali-language-lab \
+# Run after explicitly approving public transcript publication
+HF_HOME=.cache/huggingface hf upload rushilrawat/garhwali-language-lab \
   data/huggingface/garhwali-language-lab . --repo-type dataset
 ```
 
@@ -592,7 +587,9 @@ The generated `README.md` is the Hugging Face dataset card, while
 and whether audio was included. The complete experimental profile remains local
 because source access does not automatically grant public redistribution rights.
 The published rights-filtered release is versioned as `v0.1.0`; its tracked
-index is [`release/v0.1.0-manifest.json`](release/v0.1.0-manifest.json).
+index is [`release/v0.1.0-manifest.json`](release/v0.1.0-manifest.json). Compact
+generated reports and visual evidence are tracked under
+[`release/v0.1.0/`](release/v0.1.0/README.md).
 
 ## 🤝 Contributing
 

@@ -1,0 +1,19 @@
+{
+  "change_counts": {
+    "normalized_whitespace": 1,
+    "removed_invisible_characters": 821
+  },
+  "changed_records": 821,
+  "output": "data/processed/text/cleaned_all_garhwali.jsonl",
+  "records": 27987,
+  "review_flag_counts": {
+    "html_markup": 2597,
+    "mixed_latin_devanagari": 5427,
+    "no_devanagari": 1776,
+    "url": 8,
+    "very_short": 62
+  },
+  "review_output": "data/processed/review/text_cleanup_review.jsonl",
+  "review_records": 7237,
+  "source": "data/processed/text/all_garhwali.jsonl"
+}

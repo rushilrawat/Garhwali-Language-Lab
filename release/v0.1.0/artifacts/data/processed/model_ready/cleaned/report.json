@@ -1,0 +1,23 @@
+{
+  "audio_transcripts": {
+    "change:removed_markup_tags": 86,
+    "change:removed_truncation_marker": 917,
+    "changed_records": 983,
+    "flag:bengali_script": 8,
+    "flag:possibly_incomplete": 917,
+    "records": 5894,
+    "review_records": 920
+  },
+  "text": {
+    "change:decoded_html_entities": 3,
+    "change:removed_markup_tags": 143,
+    "change:removed_speech_annotations": 4779,
+    "change:removed_truncation_marker": 916,
+    "changed_records": 4979,
+    "flag:bengali_script": 8,
+    "flag:possibly_incomplete": 916,
+    "flag:url": 6,
+    "records": 27987,
+    "review_records": 925
+  }
+}

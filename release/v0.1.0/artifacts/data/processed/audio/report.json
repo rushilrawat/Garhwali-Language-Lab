@@ -1,0 +1,18 @@
+{
+  "channel_distribution": {
+    "1": 110436
+  },
+  "decoded_duration_hours": 135.50941314236178,
+  "high_clipping": 3,
+  "output": "data/processed/audio/quality.jsonl",
+  "readable": 110436,
+  "rows": 110436,
+  "sample_rate_distribution": {
+    "16000": 110436
+  },
+  "sample_width_distribution": {
+    "2": 110436
+  },
+  "subset_supervised": 5894,
+  "subset_untranscribed": 104542
+}

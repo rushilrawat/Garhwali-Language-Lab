@@ -1,0 +1,102 @@
+{
+  "configs": {
+    "asr/test": {
+      "files": [
+        "test-00000.jsonl"
+      ],
+      "records": 112,
+      "shards": 1
+    },
+    "asr/train": {
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 1621,
+      "shards": 1
+    },
+    "asr/validation": {
+      "files": [
+        "validation-00000.jsonl"
+      ],
+      "records": 269,
+      "shards": 1
+    },
+    "instructions/test": {
+      "files": [
+        "test-00000.jsonl"
+      ],
+      "records": 102,
+      "shards": 1
+    },
+    "instructions/train": {
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 888,
+      "shards": 1
+    },
+    "instructions/validation": {
+      "files": [
+        "validation-00000.jsonl"
+      ],
+      "records": 50,
+      "shards": 1
+    },
+    "lexicon/train": {
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 655,
+      "shards": 1
+    },
+    "sravaani_drafts/train": {
+      "files": [
+        "train-00000.jsonl",
+        "train-00001.jsonl",
+        "train-00002.jsonl",
+        "train-00003.jsonl",
+        "train-00004.jsonl",
+        "train-00005.jsonl",
+        "train-00006.jsonl",
+        "train-00007.jsonl",
+        "train-00008.jsonl",
+        "train-00009.jsonl",
+        "train-00010.jsonl"
+      ],
+      "records": 104534,
+      "shards": 11
+    },
+    "text/test": {
+      "files": [
+        "test-00000.jsonl"
+      ],
+      "records": 223,
+      "shards": 1
+    },
+    "text/train": {
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 3939,
+      "shards": 1
+    },
+    "text/validation": {
+      "files": [
+        "validation-00000.jsonl"
+      ],
+      "records": 208,
+      "shards": 1
+    }
+  },
+  "draft_inherited_duplicate_rows": 8,
+  "draft_queue_records": 104542,
+  "draft_records": 104542,
+  "draft_unique_audio": 104534,
+  "drafts_complete": true,
+  "include_audio": false,
+  "linked_audio_files": 0,
+  "newly_linked_audio_files": 0,
+  "profile": "public",
+  "release_id": "garhwali-language-lab-v0.1.0",
+  "removed_audio_files": 0
+}

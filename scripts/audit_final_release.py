@@ -62,6 +62,7 @@ def audit(index, dataset_root):
     asr_speakers = {}
     provenance_missing = 0
     rights_failures = 0
+    language_scope_failures = 0
     asr_metadata_missing = 0
     expected_audio = set()
     draft_hashes = set()
@@ -93,12 +94,22 @@ def audit(index, dataset_root):
                 not all(is_publishable_provenance(item) for item in row['provenance'])
                 for row in rows
             )
+            language_scope = sum(
+                row.get('language') != 'gbm' or any(
+                    item.get('iso_639_3') != 'gbm'
+                    for item in row.get('provenance') or []
+                )
+                for row in rows
+            )
             if missing:
                 errors.append(f'{key} has {missing} rows without provenance')
             if rights:
                 errors.append(f'{key} has {rights} rows without compatible public rights')
+            if language_scope:
+                errors.append(f'{key} has {language_scope} rows outside explicit Garhwali scope')
             provenance_missing += missing
             rights_failures += rights
+            language_scope_failures += language_scope
         elif group == 'asr':
             expected_audio.update(row.get('audio') for row in rows if row.get('audio'))
             asr_hashes[split] = {row.get('audio_sha256') for row in rows}
@@ -184,7 +195,7 @@ def audit(index, dataset_root):
         if manifest.get('linked_audio_files') != len(expected_audio):
             errors.append('linked audio count does not match referenced unique audio')
     else:
-        warnings.append('metadata_only_audio_paths')
+        warnings.append('audio_not_included')
     if manifest.get('draft_inherited_duplicate_rows'):
         warnings.append('inherited_source_audio_duplicates_collapsed')
     if empty_drafts:
@@ -209,6 +220,7 @@ def audit(index, dataset_root):
         'provenance': {
             'missing_rows': provenance_missing,
             'public_rights_failures': rights_failures,
+            'text_language_scope_failures': language_scope_failures,
             'asr_missing_transcript_source_or_license': asr_metadata_missing,
         },
         'leakage': {

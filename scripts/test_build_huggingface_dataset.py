@@ -12,6 +12,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'parents': [{'provenance': [{
                 'training_eligible': False,
                 'license': 'CC-BY-4.0',
+                'iso_639_3': 'gbm',
             }]}],
         }
         blocked = {
@@ -22,18 +23,33 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         }
         self.assertTrue(m.is_public_text_row(allowed))
         self.assertFalse(m.is_public_text_row(blocked))
+        self.assertTrue(m.is_public_garhwali_text_row(allowed))
+        allowed['parents'][0]['provenance'][0]['iso_639_3'] = 'eng'
+        self.assertFalse(m.is_public_garhwali_text_row(allowed))
+
+    def test_text_export_derives_script(self):
+        base = {'segment_sha256': 'a', 'split': 'train', 'quality_flags': []}
+        self.assertEqual(m.text_row({**base, 'text': 'गढ़वाली'})['script'], 'Deva')
+        self.assertEqual(m.text_row({**base, 'text': 'garhwali'})['script'], 'Latn')
 
     def test_audio_export_uses_content_addressed_relative_path(self):
         row = {
             'audio_sha256': 'ab' * 32,
             'local_audio_path': 'data/audio/source.wav',
+            'source': 'VAANI',
+            'speaker_id': 'raw-speaker-id',
             'asr_target_clean': 'गढ़वाली',
             'machine_transcript_quality': {'flags': ['mixed_script']},
+            'duplicate_source_audio_paths': ['private-1.wav', 'private-2.wav'],
         }
         exported = m.audio_row(row, transcript_field='asr_target_clean')
         self.assertEqual(exported['audio'], f'audio/ab/{"ab" * 32}.wav')
         self.assertEqual(exported['transcript'], 'गढ़वाली')
         self.assertEqual(exported['machine_transcript_quality']['flags'], ['mixed_script'])
+        self.assertTrue(exported['speaker_id'].startswith('speaker_'))
+        self.assertNotEqual(exported['speaker_id'], 'raw-speaker-id')
+        self.assertEqual(exported['source_audio_records'], 2)
+        self.assertNotIn('duplicate_source_audio_paths', exported)
         self.assertNotIn('local_audio_path', exported)
 
     def test_shards_are_deterministic_and_reported(self):
@@ -84,6 +100,15 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 m.ROOT = old_root
         self.assertEqual(first, {'new': 1, 'total': 1})
         self.assertEqual(second, {'new': 0, 'total': 1})
+
+    def test_transcript_only_cleanup_removes_packaged_audio(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            audio = root / 'audio/ab/file.wav'
+            audio.parent.mkdir(parents=True)
+            audio.write_bytes(b'audio')
+            self.assertEqual(m.remove_packaged_audio(root), 1)
+            self.assertFalse((root / 'audio').exists())
 
 
 if __name__ == '__main__':

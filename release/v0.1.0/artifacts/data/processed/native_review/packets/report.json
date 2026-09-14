@@ -1,0 +1,12 @@
+{
+  "packet_counts": {
+    "dialect": 10873,
+    "evaluation_asr": 112,
+    "evaluation_text": 2492,
+    "language_identity": 3284,
+    "lexicon": 1124,
+    "ocr": 892,
+    "transcript": 113
+  },
+  "required_independent_reviews": 2
+}

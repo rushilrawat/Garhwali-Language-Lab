@@ -1,0 +1,34 @@
+{
+  "integrity": {
+    "all_records_active_for_experiment": true,
+    "parent_cross_split": 0,
+    "previously_closed_test_reused": 0,
+    "prior_seen_parent_test_overlap": 0,
+    "provenance_preserved": true,
+    "rights_metadata_preserved": true,
+    "test_task_count": 6
+  },
+  "policy": {
+    "all_source_records_remain_active_in_versioned_views": true,
+    "new_test_frozen_before_mt0_training": true,
+    "new_test_source": "previous training split parents unseen by prior pilot",
+    "selection_split": "existing validation split"
+  },
+  "previously_closed_test_records_not_reused": 84,
+  "prior_pilot": {
+    "batch_size": 1,
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "seen_parent_count": 165,
+    "steps_per_seed": 64
+  },
+  "records": {
+    "test": 258,
+    "train": 2046,
+    "validation": 130
+  },
+  "run_id": "garhwali-instruction-accuracy-split-v0.2"
+}

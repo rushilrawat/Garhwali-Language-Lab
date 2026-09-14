@@ -1,0 +1,58 @@
+{
+  "baselines": {
+    "character_bigram": {
+      "evaluated_characters_with_boundaries": 203451,
+      "model": "add-one-smoothed_character_bigram",
+      "negative_log_likelihood_per_character": 2.801182,
+      "oov_character_rate": 4.98e-06,
+      "perplexity": 16.464093,
+      "train_character_vocabulary": 328
+    }
+  },
+  "internal_evaluation": {
+    "asr": {
+      "path": "data/processed/model_ready/splits/evaluation/asr_candidate.jsonl",
+      "sha256": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220"
+    },
+    "text": {
+      "path": "data/processed/model_ready/splits/evaluation/text_candidate.jsonl",
+      "sha256": "ec5a52883baa4df2d5893ac078dd335e9b623ae01cd3261fddf1ceb59c4397ac"
+    }
+  },
+  "leakage": {
+    "asr_speaker_overlap": 0,
+    "external_exact_train_text": 0,
+    "internal_text_exact_train_text": 0
+  },
+  "quality_policy": "All records are active for experimental evaluation; schema, overlap, and quality signals remain explicit.",
+  "records": {
+    "asr_evaluation": 112,
+    "external_total": 3847,
+    "text_evaluation": 2492
+  },
+  "release_id": "garhwali-bench-v0.1-experimental",
+  "status": "automated_experimental_baseline",
+  "tasks": {
+    "crosssum": {
+      "path": "benchmarks/indicgenbench_crosssum.jsonl",
+      "records": 699,
+      "schema_errors": 0,
+      "sha256": "fcb10709e25c9a7a174df3e97501dc59c061601687fa253f214dedeb44856e4b",
+      "usage": "evaluation_only"
+    },
+    "flores": {
+      "path": "benchmarks/indicgenbench_flores.jsonl",
+      "records": 2009,
+      "schema_errors": 0,
+      "sha256": "7c96d63be5f43e6a65fc229238c6d295d983fe46be032e9f8418d32150225097",
+      "usage": "evaluation_only"
+    },
+    "xorqa": {
+      "path": "benchmarks/indicgenbench_xorqa.jsonl",
+      "records": 1139,
+      "schema_errors": 0,
+      "sha256": "e69be06befb0227395ba0feb58220388134279d4f95659ba8442e0b8e3d13ed6",
+      "usage": "evaluation_only"
+    }
+  }
+}

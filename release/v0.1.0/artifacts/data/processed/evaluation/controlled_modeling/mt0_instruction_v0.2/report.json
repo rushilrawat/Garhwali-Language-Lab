@@ -1,0 +1,189 @@
+{
+  "adaptation_scope": "LoRA on encoder and decoder attention q/v projections",
+  "baseline_validation": {
+    "cross_entropy": 5.61435313,
+    "records": 130,
+    "target_tokens": 752
+  },
+  "configuration": {
+    "batch_size": 1,
+    "device": "cpu",
+    "generation_control_tokens_removed": true,
+    "learning_rate": 0.0002,
+    "lora_alpha": 8,
+    "lora_rank": 4,
+    "max_input_length": 96,
+    "max_new_tokens": 32,
+    "max_target_length": 72,
+    "model_path": ".cache/huggingface/hub/models--bigscience--mt0-small/snapshots/8116a34237e19160ec003147e758f065876d95f0",
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 256,
+    "target_modules": [
+      "q",
+      "v"
+    ],
+    "training_pool_records_per_seed": 2046
+  },
+  "dataset": {
+    "tasks": {
+      "english_to_garhwali": 431,
+      "english_to_garhwali_lexicon": 533,
+      "garhwali_to_english": 431,
+      "garhwali_to_english_lexicon": 533,
+      "garhwali_to_hindi_lexicon": 253,
+      "hindi_to_garhwali_lexicon": 253
+    },
+    "test_records": 258,
+    "test_sha256": "1555d0334d0d0b4c5223f0948fc096c670b0a478c9da922c199af2a825ce5eb6",
+    "train_records": 2046,
+    "train_sha256": "2d5ad24baabe544e6c1e0b11c7af4c8fa3ddce460b915799210acc630c9b0be7",
+    "validation_records": 130,
+    "validation_sha256": "4c9c5047d187a2338655e4f9e329936bf2ec7282740b213a0676d437567c0797"
+  },
+  "elapsed_seconds": 383.885,
+  "integrity": {
+    "all_records_active_for_experiment": true,
+    "selection_split": "validation",
+    "source_text_mutated": false,
+    "test_opened_after_training_and_selection": true,
+    "test_records_used_for_training": 0,
+    "training_split_only": true
+  },
+  "model_id": "bigscience/mt0-small",
+  "revision": "8116a34237e19160ec003147e758f065876d95f0",
+  "run_id": "garhwali-mt0-instruction-lora-v0.2",
+  "runs": [
+    {
+      "checkpoint": "models/controlled_modeling/mt0_instruction_v0.2/seed-17",
+      "seed": 17,
+      "test": {
+        "corpus_chrf2": 0.05692867,
+        "cross_entropy": 5.03823539,
+        "exact_match": 0.0,
+        "records": 258,
+        "target_tokens": 1508
+      },
+      "training": {
+        "examples_seen": 256,
+        "final_training_loss": 2.71308184,
+        "mean_training_loss": 5.69698994,
+        "steps": 256,
+        "target_tokens": 1473,
+        "unique_training_records": 256
+      },
+      "validation": {
+        "cross_entropy": 4.97246825,
+        "records": 130,
+        "target_tokens": 752
+      }
+    },
+    {
+      "checkpoint": "models/controlled_modeling/mt0_instruction_v0.2/seed-29",
+      "seed": 29,
+      "test": {
+        "corpus_chrf2": 0.05258826,
+        "cross_entropy": 5.00885879,
+        "exact_match": 0.0,
+        "records": 258,
+        "target_tokens": 1508
+      },
+      "training": {
+        "examples_seen": 256,
+        "final_training_loss": 6.1366744,
+        "mean_training_loss": 5.65003696,
+        "steps": 256,
+        "target_tokens": 1486,
+        "unique_training_records": 256
+      },
+      "validation": {
+        "cross_entropy": 4.95411128,
+        "records": 130,
+        "target_tokens": 752
+      }
+    },
+    {
+      "checkpoint": "models/controlled_modeling/mt0_instruction_v0.2/seed-43",
+      "seed": 43,
+      "test": {
+        "corpus_chrf2": 0.05302659,
+        "cross_entropy": 5.01171497,
+        "exact_match": 0.0,
+        "records": 258,
+        "target_tokens": 1508
+      },
+      "training": {
+        "examples_seen": 256,
+        "final_training_loss": 7.08039379,
+        "mean_training_loss": 6.01886081,
+        "steps": 256,
+        "target_tokens": 1433,
+        "unique_training_records": 256
+      },
+      "validation": {
+        "cross_entropy": 4.95938698,
+        "records": 130,
+        "target_tokens": 752
+      }
+    }
+  ],
+  "status": "completed_multi_seed_instruction_tuning",
+  "summary": {
+    "all_seed_test_cross_entropy_below_base": true,
+    "best_seed": 29,
+    "best_validation_cross_entropy": 4.95411128,
+    "generation_promotion_status": "not_promoted_for_generation",
+    "improved_seed_count": 3,
+    "mean_cross_entropy": 4.96198884,
+    "mean_cross_entropy_delta": -0.65236429,
+    "mean_test_cross_entropy": 5.01960305,
+    "selected_seed_test_corpus_chrf2": 0.05258826,
+    "selected_seed_test_cross_entropy": 5.00885879,
+    "selected_seed_test_exact_match": 0.0,
+    "std_cross_entropy": 0.00771673,
+    "std_test_cross_entropy": 0.01322655
+  },
+  "test_systems": {
+    "base": {
+      "test": {
+        "corpus_chrf2": 0.06998214,
+        "cross_entropy": 5.66737941,
+        "exact_match": 0.0,
+        "records": 258,
+        "target_tokens": 1508
+      }
+    },
+    "seed-17": {
+      "test": {
+        "corpus_chrf2": 0.05692867,
+        "cross_entropy": 5.03823539,
+        "exact_match": 0.0,
+        "records": 258,
+        "target_tokens": 1508
+      }
+    },
+    "seed-29": {
+      "test": {
+        "corpus_chrf2": 0.05258826,
+        "cross_entropy": 5.00885879,
+        "exact_match": 0.0,
+        "records": 258,
+        "target_tokens": 1508
+      }
+    },
+    "seed-43": {
+      "test": {
+        "corpus_chrf2": 0.05302659,
+        "cross_entropy": 5.01171497,
+        "exact_match": 0.0,
+        "records": 258,
+        "target_tokens": 1508
+      }
+    }
+  },
+  "total_parameters": 300176768,
+  "trainable_parameters": 172032
+}

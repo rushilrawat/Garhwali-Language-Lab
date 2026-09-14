@@ -1,0 +1,26 @@
+{
+  "source_files": 35,
+  "source_records": 30088,
+  "unique_texts": 27987,
+  "duplicate_rows": 2101,
+  "duplicate_groups": 2003,
+  "empty_records": 0,
+  "invalid_json_records": 0,
+  "characters": 7391666,
+  "layer_records": {
+    "corpus": 3560,
+    "data/extracted": 779,
+    "experimental": 23202,
+    "extracted": 1097,
+    "restricted": 1450
+  },
+  "split_unique_texts": {
+    "test": 1393,
+    "train": 25169,
+    "validation": 1425
+  },
+  "quality_bands": {
+    "low": 62,
+    "review": 27925
+  }
+}

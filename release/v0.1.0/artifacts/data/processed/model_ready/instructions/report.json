@@ -1,0 +1,31 @@
+{
+  "integrity": {
+    "all_records_active_for_experiment": true,
+    "benchmark_records_used_for_training": 0,
+    "duplicate_instruction_pairs": 0,
+    "exact_instruction_pair_cross_split": 0,
+    "missing_parent_split_records": 0,
+    "parent_cross_split": 0
+  },
+  "policy": {
+    "provenance_preserved": true,
+    "public_redistribution_requires_source_filtering": true,
+    "rights_metadata_preserved": true,
+    "split_source": "existing document-level parent split"
+  },
+  "records": {
+    "test": 84,
+    "total": 2518,
+    "train": 2304,
+    "validation": 130
+  },
+  "run_id": "garhwali-instruction-dataset-v0.1",
+  "tasks": {
+    "english_to_garhwali": 446,
+    "english_to_garhwali_lexicon": 553,
+    "garhwali_to_english": 446,
+    "garhwali_to_english_lexicon": 553,
+    "garhwali_to_hindi_lexicon": 260,
+    "hindi_to_garhwali_lexicon": 260
+  }
+}

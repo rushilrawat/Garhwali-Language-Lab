@@ -1,0 +1,302 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1975,
+      "path": "data/huggingface/garhwali-language-lab/README.md",
+      "sha256": "00eab454bbc4ff3bf256e460c001822bf44f0ede878c36a8b58102ae0a48630c"
+    },
+    {
+      "bytes": 2050,
+      "path": "data/huggingface/garhwali-language-lab/manifest.json",
+      "sha256": "28b0c3e2a9262c42855edcdbdea47cde418ed38534d8a9696ca34c6678a2f779"
+    },
+    {
+      "bytes": 386,
+      "path": "data/processed/audio/report.json",
+      "sha256": "2ad976f5770db3595dc2091aaf97312f763f2acb21d3634d284f3fa23efdffc1"
+    },
+    {
+      "bytes": 247,
+      "path": "data/processed/evaluation/asr/baseline_report.json",
+      "sha256": "13249c7c450a3df8b0e4d60bab5bd5454d90c4c4f10f03f8bf440074cdca67c5"
+    },
+    {
+      "bytes": 504,
+      "path": "data/processed/evaluation/asr/sravaani_1_0/full_draft_audit.json",
+      "sha256": "108513de9f094ec85523445af23ec7b8cd426a0403a4608df8e71fa1b73958a7"
+    },
+    {
+      "bytes": 709,
+      "path": "data/processed/evaluation/asr/sravaani_1_0/report.json",
+      "sha256": "91009cc9c42cd19b8fcae8ee7dbf2507d2a08c8c9d318541e35b509ef68f57cd"
+    },
+    {
+      "bytes": 641,
+      "path": "data/processed/evaluation/asr/whisper_small_zero_shot/report.json",
+      "sha256": "61492c7ba7c5366a7e54d659974e379cf8a12918e54ab4af6cb2e980a3080edb"
+    },
+    {
+      "bytes": 638,
+      "path": "data/processed/evaluation/asr/whisper_tiny_zero_shot/report.json",
+      "sha256": "9b4279d3b8ee1ce1c9a044d1e3669e0072b5dd29ebea2699a250efe052d133d9"
+    },
+    {
+      "bytes": 2771,
+      "path": "data/processed/evaluation/controlled_modeling/indicbert_head_adaptation.json",
+      "sha256": "6c032bd24a76ab3caf7ec89520c03f49c77746d889459c88eb513404aa4b7d3b"
+    },
+    {
+      "bytes": 2894,
+      "path": "data/processed/evaluation/controlled_modeling/indicbert_lora_adaptation.json",
+      "sha256": "64705e93d3fa4b0d1e81cbf1d27713f95fa5a723f36d15707dccc5333e059e27"
+    },
+    {
+      "bytes": 2917,
+      "path": "data/processed/evaluation/controlled_modeling/indicbert_lora_long.json",
+      "sha256": "19e80d430d2380643bb3999e2ca564af8a1849c5eace6b7191c87aee92b362d0"
+    },
+    {
+      "bytes": 3381,
+      "path": "data/processed/evaluation/controlled_modeling/indicbert_transfer_test.json",
+      "sha256": "ba66bc4d473a7405b0c8f6dd01d7e843646f26ede1caa19759a586272eaeb6c7"
+    },
+    {
+      "bytes": 5320,
+      "path": "data/processed/evaluation/controlled_modeling/mt0_instruction_v0.2/report.json",
+      "sha256": "3c403f26f1107a564a338510ae74d36865ac124794125444871949b8a187ded1"
+    },
+    {
+      "bytes": 5128,
+      "path": "data/processed/evaluation/controlled_modeling/mt5_instruction/report.json",
+      "sha256": "9f8a4b2ef2343ac6ecdcf82dc552134d0005b526feb781eb1dd6ac2e2eeff809"
+    },
+    {
+      "bytes": 22875,
+      "path": "data/processed/evaluation/controlled_modeling/text_scaling.json",
+      "sha256": "f1de94329718fbb928ccda7ed4edf2279ece4f1e7b13ab228b51c2ffec55745a"
+    },
+    {
+      "bytes": 1939,
+      "path": "data/processed/evaluation/garhwali_bench/manifest.json",
+      "sha256": "bf27ea58437fca6edf601b43da64d58c37ca452a275acfc4160c00c7522090be"
+    },
+    {
+      "bytes": 753,
+      "path": "data/processed/evaluation/garhwali_bench/report.md",
+      "sha256": "b1c1e67e49429905e856f5fc88bbdd7a956ee7613493cdea1e483fafc3fdac15"
+    },
+    {
+      "bytes": 550,
+      "path": "data/processed/evaluation/model_audit/indicbertv2_masked_lm.json",
+      "sha256": "db98e80c39882de746373134fa5bdea8166475c88cc2436afc418789cbcd98c2"
+    },
+    {
+      "bytes": 3766,
+      "path": "data/processed/evaluation/model_audit/tokenizer_report.json",
+      "sha256": "7b8e79f2a4819d921c3a81b03966f23da10e5c91f8bd19c323da67e707ec3252"
+    },
+    {
+      "bytes": 704,
+      "path": "data/processed/evaluation/retrieval/indicbertv2/report.json",
+      "sha256": "4b71985acddf422b5a65054d456f403a06e56dc026f76eb89ab0f085ecfe7a3f"
+    },
+    {
+      "bytes": 4390,
+      "path": "data/processed/evaluation/retrieval/report.json",
+      "sha256": "bfd97e27b7e841b300ecbfa2bef68a880906e09c6399910e2974ca941f806972"
+    },
+    {
+      "bytes": 2738,
+      "path": "data/processed/evaluation/text_cleanup_ablation/report.json",
+      "sha256": "4f0942747fcd305d30f031ac256cabc17d10f54fb3d9396040b745e75f2159a0"
+    },
+    {
+      "bytes": 711,
+      "path": "data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy/report.json",
+      "sha256": "601daca1d239056eb3ea6b2f9b43b7a03bd8428400f4a945e1dac14f35952306"
+    },
+    {
+      "bytes": 563,
+      "path": "data/processed/evaluation/translation/nllb_hindi_proxy/report.json",
+      "sha256": "600a760fb52ed402cdf799cce7fcf6aeb1723966b80771eb0f21b095345001ff"
+    },
+    {
+      "bytes": 636,
+      "path": "data/processed/evaluation/translation/report.json",
+      "sha256": "cb70be03e95e90db828a5fd7820801d72a991eaad0b10338dc8b9767f49c9312"
+    },
+    {
+      "bytes": 382,
+      "path": "data/processed/long_form_audio/report.json",
+      "sha256": "2c01e5559e4993e8d74fa91d8937479942c3dce9dec9672e0df862ce6e4b6887"
+    },
+    {
+      "bytes": 253,
+      "path": "data/processed/model_ready/asr_finetuning/report.json",
+      "sha256": "20dee7c85e8ca0b2f16c4b003b860ab2e28bb11ed5d5bf64b2c964a134e7d78a"
+    },
+    {
+      "bytes": 1395,
+      "path": "data/processed/model_ready/audio/normalization_report.json",
+      "sha256": "44ee853e0a3f598f17f2b9866328ffa52c2be2b58295dfa08f59f42115b25a3d"
+    },
+    {
+      "bytes": 424,
+      "path": "data/processed/model_ready/audio/report.json",
+      "sha256": "d4224d80ed49f9de9154a0114ddd109143dc23737fb4269cfefd489c21a42d01"
+    },
+    {
+      "bytes": 380,
+      "path": "data/processed/model_ready/audio_normalized/report.json",
+      "sha256": "cf9bf0c288b143b22315834b457c17fd562eab31a20654effe2aae47e6486401"
+    },
+    {
+      "bytes": 608,
+      "path": "data/processed/model_ready/cleaned/report.json",
+      "sha256": "eb86cb4b707cad8956ecfa51c16d1cca4954d552cf4bed44a9b38ed90e43316d"
+    },
+    {
+      "bytes": 862,
+      "path": "data/processed/model_ready/instructions/report.json",
+      "sha256": "53634d259880781cf67e2680c3239bc29064d585186a4e60be81443710d6e7ad"
+    },
+    {
+      "bytes": 880,
+      "path": "data/processed/model_ready/instructions_v0.2/report.json",
+      "sha256": "96c591656ba45e39e55ca134c8799f3101236d3ab36d1ce12a4403b27a3dfc2a"
+    },
+    {
+      "bytes": 3052,
+      "path": "data/processed/model_ready/language_quality/report.json",
+      "sha256": "cc20e7afbfffe224cd206959b862329f3bf423c242441ad1adc9294502e14e37"
+    },
+    {
+      "bytes": 329,
+      "path": "data/processed/model_ready/language_resources/report.json",
+      "sha256": "78779eaa6654095a7b8b5fa1c34365e9daada030e638dcc36c149ee0bc0218c4"
+    },
+    {
+      "bytes": 795,
+      "path": "data/processed/model_ready/segments/report.json",
+      "sha256": "ffccb370810ef107aac25e7bfdc3dff65f7dd098b8e5691ec21b72ac1ad39173"
+    },
+    {
+      "bytes": 4082,
+      "path": "data/processed/model_ready/splits/report.json",
+      "sha256": "357b5507351ab4917c6e44207bf182ccff9947dd3c99f31c81271fe7fdcae23d"
+    },
+    {
+      "bytes": 1491,
+      "path": "data/processed/model_ready/text_cleanup/report.json",
+      "sha256": "80f50278d9b4b9a2423c1787352325f451ee47b31dde16286ca93ed06b621f15"
+    },
+    {
+      "bytes": 1184,
+      "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_quality_report.json",
+      "sha256": "6c8ae7c1290b7d421057d394b4b919598b19ae7e5593969c0f3169589a5073fa"
+    },
+    {
+      "bytes": 346,
+      "path": "data/processed/model_ready/transcripts/report.json",
+      "sha256": "60af8ee1d198741e5b72a1ed5ab657526a7fbad3e2a4a29c40a1630087e35795"
+    },
+    {
+      "bytes": 234,
+      "path": "data/processed/native_review/packets/report.json",
+      "sha256": "b7eef829d85f0367cb2e5757e464782b07b30419bb97aaf9728b79b60c142f8d"
+    },
+    {
+      "bytes": 93,
+      "path": "data/processed/native_review/results/report.json",
+      "sha256": "e1f588a2642021ceb1e638aa118d5612a01737b50fcf4645ac4d9b152b300bfe"
+    },
+    {
+      "bytes": 86,
+      "path": "data/processed/native_review/reviewed/report.json",
+      "sha256": "8392941cf109cfbb58909b50a4301e1f1ebc91d807c1675bc2d0e2518901a8e8"
+    },
+    {
+      "bytes": 36102,
+      "path": "data/processed/release/manifest.json",
+      "sha256": "b0a75b2e4299e06a8f89c8e4f684dfd7cfdc72633ec5ea7f92b103f4a33fe580"
+    },
+    {
+      "bytes": 214,
+      "path": "data/processed/review/report.json",
+      "sha256": "58941e5a16140c486df1b687f4765b30ec1cc12ca83c10707ff4ba8849a222c4"
+    },
+    {
+      "bytes": 249,
+      "path": "data/processed/text/all_garhwali_report.json",
+      "sha256": "2b0dc402c559a887de663ef3381c9b056df6c0895fe3c8a8b11e63623ad1a532"
+    },
+    {
+      "bytes": 513,
+      "path": "data/processed/text/cleaned_all_garhwali_report.json",
+      "sha256": "7ede28249e994094bc424aeb42f2433e27f92fae5864214160b2c361873afbb0"
+    },
+    {
+      "bytes": 272,
+      "path": "data/processed/text/paharili_garhwali_report.json",
+      "sha256": "14844b27238339682435bb0a1452120da13820a929d185ae1aff567e6c2c8f4a"
+    },
+    {
+      "bytes": 506,
+      "path": "data/processed/text/report.json",
+      "sha256": "33656be7b7c432544aa59b5eb94b8515a6d8fa3766286de6a4b81a48444c4bd4"
+    },
+    {
+      "bytes": 480,
+      "path": "data/processed/vaani/report.json",
+      "sha256": "71454bb8de2c66a2489758bb2a381360f5192b063ff355aaf43ecb9b82b88106"
+    },
+    {
+      "bytes": 21413,
+      "path": "outputs/garhwali-corpus-inventory-2026-09-07/GarhwaliCorpus-source-inventory.xlsx",
+      "sha256": "2cbd8b1031c7288169447133f7e32a704c9d6f9efbaeaadfca6f1cbfe8d58ebe"
+    },
+    {
+      "bytes": 289590,
+      "path": "outputs/garhwali-corpus-inventory-2026-09-07/GarhwaliCorpus-source-inventory.xlsx.inspect.ndjson",
+      "sha256": "97bb823c5d6e925249fec3383823b1b4cfec41a6afeb67e6131e287ee24d8e88"
+    },
+    {
+      "bytes": 370970,
+      "path": "outputs/garhwali-corpus-inventory-2026-09-07/corpus-schema.png",
+      "sha256": "d4af87387a81c03099879e8e3e9095a158bcdfce7bf7e2acb3868bf6d9989131"
+    },
+    {
+      "bytes": 4014,
+      "path": "outputs/garhwali-corpus-inventory-2026-09-07/inspection.txt",
+      "sha256": "41d2ddb53666e58824f7b092bd8d6d31af6f1e1721a569590ce232c6da42c81d"
+    },
+    {
+      "bytes": 973487,
+      "path": "outputs/garhwali-corpus-inventory-2026-09-07/inventory.png",
+      "sha256": "1b90f8270298d93e919486a44e9542892b7ea1902ed477386011e8e22bba7bb3"
+    },
+    {
+      "bytes": 242294,
+      "path": "outputs/garhwali-corpus-inventory-2026-09-07/rights-guide.png",
+      "sha256": "b037c5ce89ed0b734836b3b58e74b20b9aa1aeffeb7a382397ee48774fe21712"
+    },
+    {
+      "bytes": 85512,
+      "path": "outputs/online-ingestion-2026-09-07/dedup-report.json",
+      "sha256": "6706f00ad7b9f25f4bd373b45e1a900cb25a3d14b324b6904fc65f5996103d5b"
+    },
+    {
+      "bytes": 227429,
+      "path": "outputs/online-ingestion-2026-09-07/lsi-page-check.png",
+      "sha256": "46e02a096b7a5fb3dcf84902acea9a4758fbaa7531dc35ed99228e0e5871511f"
+    },
+    {
+      "bytes": 6723,
+      "path": "outputs/online-ingestion-2026-09-07/report.md",
+      "sha256": "9136fe48ad247ce9faba204be32ddc70860095d992ba142a7ad4b9ea916d6af1"
+    }
+  ],
+  "bytes": 2345830,
+  "files": 59,
+  "release_id": "garhwali-language-lab-v0.1.0"
+}
