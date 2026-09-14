@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-239%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-247%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -159,7 +159,10 @@ not a defect in the dataset.
 - **Weighted-batch ablation:** the same examples were regrouped into 32 normalized
   65-record human/machine updates. WER rose further to 0.788153 and CER to
   0.463672, so the current machine-label curriculum recipe is closed.
-- **239 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **SraVaani adaptation package:** 2,002 human-reference clips are packaged into
+  deterministic NeMo train, validation, and held-out test archives totaling
+  412,037,120 bytes, with all audio hashes verified and zero split leakage.
+- **247 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
 These figures describe the preparation snapshot updated on 2026-09-14. Raw
@@ -467,6 +470,10 @@ selection rules, exclusions, counts, and leakage checks.
   and reject the configuration after both validation WER and CER worsened.
 - [x] Replace nominal one-record weighting with stratified normalized gradient
   accumulation, repeat the fixed pilot, and reject it after accuracy worsened.
+- [x] Package all strict human-reference speech for official SraVaani NeMo
+  adaptation and add a CUDA-guarded decoder/joint training launcher.
+- [ ] Run the 102-step SraVaani adaptation pilot once the separate NeMo checkpoint
+  and a CUDA NVIDIA GPU with approximately 16 GB VRAM are available.
 
 ### 9. Testing and review — High
 
@@ -556,6 +563,15 @@ selection rules, exclusions, counts, and leakage checks.
     optimizer update. Aggregate validation still worsens to 0.788153 WER and
     0.463672 CER. The result is rejected and the full machine-label curriculum is
     stopped under this recipe.
+14. [x] **SraVaani adaptation readiness — Xhigh:** all 1,621 train, 269 validation,
+    and 112 held-out test clips are exported in deterministic official NeMo
+    tar/manifest format. Every source hash and PCM property passes, all rows are
+    CC BY 4.0, and audio/speaker leakage is zero. The guarded two-epoch,
+    decoder-only 102-step launcher is ready.
+15. [ ] **SraVaani human-reference training — Xhigh:** execution requires the
+    separate 1.7 GB `SraVaani-nemo-checkpoint.nemo` and CUDA NVIDIA hardware. The
+    Hugging Face inference repository supplies a 909 MB TorchScript graph and
+    does not contain the trainable NeMo checkpoint.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
@@ -583,6 +599,8 @@ The bounded machine-label ablation and rejection decision are in
 [`research/asr-curriculum-stage1-pilot-2026-09-14.md`](research/asr-curriculum-stage1-pilot-2026-09-14.md).
 The normalized weighted-batch redesign and second rejection are in
 [`research/asr-weighted-batch-ablation-2026-09-14.md`](research/asr-weighted-batch-ablation-2026-09-14.md).
+The SraVaani training-package audit and exact external requirements are in
+[`research/sravaani-adaptation-readiness-2026-09-14.md`](research/sravaani-adaptation-readiness-2026-09-14.md).
 The reversible cleanup proposals and fixed-split ablation are in
 [`research/model-assisted-text-cleanup-2026-09-11.md`](research/model-assisted-text-cleanup-2026-09-11.md).
 The first controlled data-scaling curve is in
@@ -644,6 +662,8 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 .venv/bin/python scripts/register_asr_stage0.py
 .venv/bin/python scripts/register_asr_stage1_pilot.py
 .venv/bin/python scripts/register_asr_stage1_weighted_batch_pilot.py
+.venv/bin/python scripts/prepare_sravaani_finetune.py
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/train_sravaani_garhwali.py
 .venv/bin/python scripts/audit_final_release.py
 git diff --check
 ```
@@ -652,7 +672,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **239 passing tests**, **365 verified source
+The current verification result is **247 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release

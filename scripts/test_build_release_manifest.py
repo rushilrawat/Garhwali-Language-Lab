@@ -74,6 +74,16 @@ class ReleaseManifestTests(unittest.TestCase):
                     'run_id': 'asr-stage-1-weighted-batch-pilot-test',
                     'decision': 'rejected',
                 },
+                'data/processed/model_ready/sravaani_finetune/report.json': {
+                    'run_id': 'sravaani-finetune-package-test',
+                    'package_status': 'ready_for_nemo_cuda_training',
+                },
+                'data/processed/evaluation/asr/sravaani_finetune/plan.json': {
+                    'run_id': 'sravaani-finetune-plan-test',
+                    'external_dependencies': {
+                        'status': 'blocked_external_dependencies',
+                    },
+                },
                 'models/whisper-tiny-garhwali-v0.1/report.json': {'wer': 0.79},
                 'models/whisper-tiny-garhwali-v0.2/report.json': {'wer': 0.74},
             }
@@ -135,6 +145,14 @@ class ReleaseManifestTests(unittest.TestCase):
             self.assertEqual(
                 manifest['asr_curriculum_stage1_weighted_batch_pilot_report']['decision'],
                 'rejected',
+            )
+            self.assertEqual(
+                manifest['sravaani_finetune_package_report']['package_status'],
+                'ready_for_nemo_cuda_training',
+            )
+            self.assertEqual(
+                manifest['sravaani_finetune_plan']['external_dependencies']['status'],
+                'blocked_external_dependencies',
             )
             self.assertEqual(manifest['files']['asr_curriculum_train']['records'], 2)
             self.assertIn('vaani_sravaani_transcript_drafts', manifest['experimental_views'])

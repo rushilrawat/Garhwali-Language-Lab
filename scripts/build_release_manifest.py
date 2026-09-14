@@ -75,6 +75,12 @@ def main():
     asr_curriculum_stage1_weighted_batch_pilot_report = read_optional_json(
         ROOT/'data/processed/evaluation/asr/curriculum_stage_1_weighted_batch_pilot/report.json'
     )
+    sravaani_finetune_package_report = read_optional_json(
+        ROOT/'data/processed/model_ready/sravaani_finetune/report.json'
+    )
+    sravaani_finetune_plan = read_optional_json(
+        ROOT/'data/processed/evaluation/asr/sravaani_finetune/plan.json'
+    )
     asr_finetune_report = (
         read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
         or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
@@ -185,6 +191,8 @@ def main():
       'asr_curriculum_stage1_weighted_batch_pilot_report': (
           asr_curriculum_stage1_weighted_batch_pilot_report
       ),
+      'sravaani_finetune_package_report': sravaani_finetune_package_report,
+      'sravaani_finetune_plan': sravaani_finetune_plan,
       'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',

@@ -99,3 +99,7 @@ next speech-accuracy experiment should start from the substantially stronger
 SraVaani checkpoint and adapt it only with human references, or wait for new
 human transcripts. That keeps the strongest available speech model as the
 starting point and avoids another round of self-distillation into a weaker model.
+
+The human-reference SraVaani data package and guarded training plan are now ready.
+The remaining external dependencies are documented in
+[`sravaani-adaptation-readiness-2026-09-14.md`](sravaani-adaptation-readiness-2026-09-14.md).
