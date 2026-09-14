@@ -487,10 +487,15 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Add an intensive evidence-based quality gate across all text, supervised
   speech, and SraVaani drafts; preserve every value and attach explicit tier reasons.
 - [x] Refine all 1,818 public Garhwali text candidates with genre-aware surface
-  checks; remove seven unambiguous markup residues and promote 51 records, yielding
-  1,188 strict public candidates and 630 remaining review records.
+  checks; remove seven unambiguous markup residues, normalize 14 double-period
+  pause markers, and promote 65 records, yielding 1,202 strict public candidates.
+- [x] Replace the coarse public-text confidence queue with separate language,
+  orthography, alignment, source, and surface evidence; rank all 616 unresolved
+  records without discarding or guessing any value.
 - [ ] Correct and re-review the quality-gate queues, beginning with public
-  Garhwali text candidates, 13 supervised transcripts, and 1,188 risky drafts.
+  Garhwali text native-validation candidates, five ambiguous supervised
+  transcripts, and 1,188 risky drafts. Eight additional supervised rows are
+  already isolated as Bengali-script source-label conflicts.
 - [x] Publish a transparency catalog for every collected text record; rights-pending
   rows expose provenance and quality metadata while only the protected text is redacted.
 
@@ -681,7 +686,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **247 passing tests**, **365 verified source
+The current verification result is **267 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release
@@ -705,9 +710,10 @@ HF_HOME=.cache/huggingface hf upload rushilrawat/garhwali-language-lab \
 
 The generated `README.md` is the Hugging Face dataset card, while
 `manifest.json` records configuration counts, shard names, draft completeness,
-and whether audio was included. The complete experimental profile remains local
-because source access does not automatically grant public redistribution rights.
-The published rights-filtered release is versioned as `v0.1.0`; its tracked
+and whether audio was included. Every collected text record appears in the public
+catalog; when source rights do not permit republication, the catalog publishes its
+stable identity, provenance, quality evidence, and review state while redacting
+only the protected text value. The published release is versioned as `v0.1.0`; its tracked
 index is [`release/v0.1.0-manifest.json`](release/v0.1.0-manifest.json). Compact
 generated reports and visual evidence are tracked under
 [`release/v0.1.0/`](release/v0.1.0/README.md).

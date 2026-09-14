@@ -9,7 +9,7 @@ import re
 from collections import Counter
 from pathlib import Path
 
-from build_huggingface_dataset import is_public_garhwali_text_row
+from build_huggingface_dataset import is_public_garhwali_text_row, provenance_items
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,13 +17,16 @@ SOURCE = ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
 OUT = ROOT / 'data/processed/model_ready/text_quality_v2'
 PHONE = re.compile(r'(?<!\d)(?:\+91[- ]?)?[6-9]\d{9}(?!\d)')
 EDITORIAL_NASAL = re.compile(r'\([nm]\)', re.IGNORECASE)
-REPEATED_PUNCTUATION = re.compile(r'(?<!\.)\.\.(?!\.)|([!?,;:])\1+')
+EXACT_DOUBLE_PERIOD = re.compile(r'(?<!\.)\.\.(?!\.)')
+REPEATED_PUNCTUATION = re.compile(r'([!?,;:])\1+')
 URL = re.compile(r'https?://|www\.', re.IGNORECASE)
 WIKI_MARKUP = re.compile(r"'''|''|[=\[\]{}*#|]")
 REGIONAL_IDENTITY = re.compile(
     r'\b(kumaon|kumaoni|lohaghat|champawat|nainital)\b', re.IGNORECASE
 )
 LEXICON_GENRES = {'lexicon', 'thematic_lexicon', 'historical_lexicon', 'numeral_lexicon'}
+TRANSLATION_GENRES = {'software_localization', 'translated_example'}
+NATIVE_ACCURACY_FLAGS = {'native_accuracy_unverified', 'needs_native_review', 'community_edited'}
 
 
 def read_jsonl(path):
@@ -43,6 +46,130 @@ def clean_wiki_markup(text):
     return ' '.join(text.split())
 
 
+def build_quality_dimensions(row, release, changes, signals, remaining_flags):
+    language = row.get('language_quality') or {}
+    script = (language.get('script_profile') or {}).get('script') or 'unknown'
+    genres = set((row.get('genre_quality') or {}).get('tags') or [])
+    items = provenance_items(row)
+    source_ids = sorted({item.get('source_id') for item in items if item.get('source_id')})
+    source_flags = sorted({
+        flag for item in items for flag in item.get('quality_flags') or []
+    })
+    iso_codes = sorted({item.get('iso_639_3') for item in items if item.get('iso_639_3')})
+    language_needs_review = (
+        language.get('confidence') != 'high' or bool(language.get('review_required'))
+    )
+    language_status = (
+        'source_declared_garhwali_pending_native_validation'
+        if language_needs_review else 'existing_high_confidence_evidence'
+    )
+
+    if script == 'Latn':
+        orthography_status = 'romanized_source_form_pending_native_review'
+    elif 'double_period_normalized' in changes or 'wiki_markup_removed' in changes:
+        orthography_status = 'mechanically_normalized'
+    elif signals or remaining_flags:
+        orthography_status = 'source_form_with_surface_review_pending'
+    else:
+        orthography_status = 'source_form_preserved'
+
+    if genres & TRANSLATION_GENRES or 'native_accuracy_unverified' in source_flags:
+        semantic_status = 'translation_or_alignment_pending_native_validation'
+    else:
+        semantic_status = 'not_applicable_or_not_available'
+
+    if 'may_contain_scaffolding' in source_flags:
+        source_status = 'source_scaffolding_review_required'
+    elif set(source_flags) & NATIVE_ACCURACY_FLAGS:
+        source_status = 'native_accuracy_unverified'
+    elif 'structured_derivative_of_existing_lsi_ocr' in source_flags:
+        source_status = 'structured_historical_derivative'
+    elif len(source_ids) > 1:
+        source_status = 'multiple_source_records_observed'
+    else:
+        source_status = 'single_source_record'
+
+    surface_status = (
+        'review_required' if signals or remaining_flags else
+        'mechanically_normalized' if changes else 'no_detected_surface_issue'
+    )
+    return {
+        'language_identity': {
+            'status': language_status,
+            'source_confidence_label': language.get('confidence'),
+            'evidence': language.get('evidence') or [],
+            'iso_639_3_codes': iso_codes,
+            'native_validation_required': language_needs_review,
+        },
+        'orthography': {
+            'status': orthography_status,
+            'script': script,
+            'native_validation_required': script == 'Latn',
+        },
+        'semantic_alignment': {
+            'status': semantic_status,
+            'native_validation_required': semantic_status.endswith('native_validation'),
+        },
+        'source_evidence': {
+            'status': source_status,
+            'source_ids': source_ids,
+            'distinct_source_count': len(source_ids),
+            'quality_flags': source_flags,
+            'corroboration_is_accuracy_proof': False,
+        },
+        'surface_form': {
+            'status': surface_status,
+            'release_value_changed': release != (
+                row.get('text_model') or row.get('text_clean') or row.get('text') or ''
+            ),
+        },
+    }
+
+
+def build_review_priority(dimensions, signals, remaining_flags):
+    source_flags = set(dimensions['source_evidence']['quality_flags'])
+    substantive_signals = set(signals) - {'romanized_text_requires_native_review'}
+    if remaining_flags or substantive_signals or 'may_contain_scaffolding' in source_flags:
+        return {'rank': 1, 'label': 'surface_or_scaffolding', 'reasons': sorted(
+            set(remaining_flags) | substantive_signals | (source_flags & {'may_contain_scaffolding'})
+        )}
+    if source_flags & NATIVE_ACCURACY_FLAGS:
+        return {'rank': 2, 'label': 'source_accuracy', 'reasons': sorted(
+            source_flags & NATIVE_ACCURACY_FLAGS
+        )}
+    if dimensions['semantic_alignment']['native_validation_required']:
+        return {'rank': 3, 'label': 'semantic_alignment', 'reasons': [
+            'translation_or_alignment_pending_native_validation'
+        ]}
+    if dimensions['orthography']['native_validation_required']:
+        return {'rank': 4, 'label': 'romanized_orthography', 'reasons': [
+            'romanized_source_form_pending_native_review'
+        ]}
+    return {'rank': 5, 'label': 'language_identity', 'reasons': [
+        'source_declared_garhwali_pending_native_validation'
+    ]}
+
+
+def build_review_queue(rows):
+    unique = {}
+    for row in rows:
+        dimensions = row['quality_dimensions']
+        unresolved = (
+            row['manual_review_required']
+            or dimensions['language_identity']['native_validation_required']
+        )
+        if unresolved:
+            unique[row['text_sha256']] = row
+    return sorted(
+        unique.values(),
+        key=lambda row: (
+            row['review_priority']['rank'],
+            row['quality_dimensions']['source_evidence']['source_ids'],
+            row['text_sha256'],
+        ),
+    )
+
+
 def refine_row(row):
     original = row.get('text_model') or row.get('text_clean') or row.get('text') or ''
     genres = set((row.get('genre_quality') or {}).get('tags') or [])
@@ -60,6 +187,9 @@ def refine_row(row):
     if 'html_markup' in cleanup_flags and WIKI_MARKUP.search(release):
         release = clean_wiki_markup(release)
         changes.append('wiki_markup_removed')
+    if EXACT_DOUBLE_PERIOD.search(release):
+        release = EXACT_DOUBLE_PERIOD.sub('…', release)
+        changes.append('double_period_normalized')
     script = (row.get('language_quality') or {}).get('script_profile', {}).get('script')
     if script == 'Latn':
         signals.append('romanized_text_requires_native_review')
@@ -82,6 +212,12 @@ def refine_row(row):
         resolved_flags.add('html_markup')
     if 'mixed_latin_devanagari' in cleanup_flags and script not in {'Mixed', 'Mixed-Deva-Latn'}:
         resolved_flags.add('mixed_latin_devanagari')
+    if (
+        'no_devanagari' in cleanup_flags
+        and script == 'Latn'
+        and 'source_garhwali_label' in ((row.get('language_quality') or {}).get('evidence') or [])
+    ):
+        resolved_flags.add('no_devanagari')
     if 'very_short' in cleanup_flags and genres.intersection(LEXICON_GENRES):
         resolved_flags.add('very_short')
     if 'url' in cleanup_flags and not URL.search(release):
@@ -98,6 +234,10 @@ def refine_row(row):
     else:
         refinement_status = 'no_additional_issue'
 
+    dimensions = build_quality_dimensions(
+        row, release, changes, sorted(set(signals)), remaining_flags
+    )
+    priority = build_review_priority(dimensions, signals, remaining_flags)
     result = dict(row)
     result.update({
         'original_text': original,
@@ -111,6 +251,8 @@ def refine_row(row):
         'manual_review_required': manual_review_required,
         'language_decision': 'unchanged_pending_native_review' if signals or remaining_flags else 'unchanged',
         'quality_refinement_status': refinement_status,
+        'quality_dimensions': dimensions,
+        'review_priority': priority,
     })
     return result
 
@@ -125,6 +267,11 @@ def main():
     output = OUT / 'priority_text.jsonl'
     with output.open('w', encoding='utf-8') as handle:
         for row in rows:
+            handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n')
+
+    review_queue = build_review_queue(rows)
+    with (OUT / 'review_queue.jsonl').open('w', encoding='utf-8') as handle:
+        for row in review_queue:
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n')
 
     signals = Counter(
@@ -143,11 +290,24 @@ def main():
         source.get('source_id') or 'unknown'
         for row in rows for source in row.get('provenance') or []
     )
+    priority_counts = Counter(row['review_priority']['label'] for row in review_queue)
+    dimension_status_counts = {
+        dimension: dict(sorted(Counter(
+            row['quality_dimensions'][dimension]['status'] for row in rows
+        ).items()))
+        for dimension in (
+            'language_identity', 'orthography', 'semantic_alignment',
+            'source_evidence', 'surface_form',
+        )
+    }
     report = {
         'records': len(rows),
         'values_automatically_changed': sum(bool(row['automatic_changes']) for row in rows),
         'manual_review_required': sum(row['manual_review_required'] for row in rows),
         'no_additional_issue': sum(not row['manual_review_required'] for row in rows),
+        'review_queue_records': len(review_queue),
+        'review_priority_counts': dict(sorted(priority_counts.items())),
+        'quality_dimension_status_counts': dimension_status_counts,
         'review_signal_counts': dict(sorted(signals.items(), key=lambda item: (-item[1], item[0]))),
         'resolved_cleanup_flag_counts': dict(sorted(resolved.items(), key=lambda item: (-item[1], item[0]))),
         'remaining_cleanup_flag_counts': dict(sorted(remaining.items(), key=lambda item: (-item[1], item[0]))),
@@ -157,6 +317,7 @@ def main():
             'linguistic_values': 'No automatic spelling, transliteration, language, or dialect correction.',
             'privacy': 'High-confidence Indian phone-number patterns are redacted in release_text; original_text remains preserved locally.',
             'regional_terms': 'Regional place/language mentions trigger review but never automatic relabeling.',
+            'confidence': 'Dimensions report evidence and review state; they are not accuracy probabilities.',
         },
     }
     (OUT / 'report.json').write_text(

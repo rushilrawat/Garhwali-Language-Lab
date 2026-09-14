@@ -54,6 +54,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'quality_refinement_status': 'review_required',
             'release_text': 'protected corrected text',
             'release_text_sha256': 'c' * 64,
+            'quality_dimensions': {'language_identity': {'status': 'pending'}},
+            'review_priority': {'rank': 2, 'reasons': ['native_accuracy_unverified']},
         })
         self.assertIsNone(exported['text'])
         self.assertFalse(exported['text_publicly_available'])
@@ -65,6 +67,11 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             ['romanized_text_requires_native_review'],
         )
         self.assertNotIn('release_text', exported['text_refinement'])
+        self.assertEqual(
+            exported['text_refinement']['quality_dimensions']['language_identity']['status'],
+            'pending',
+        )
+        self.assertEqual(exported['text_refinement']['review_priority']['rank'], 2)
 
     def test_catalog_includes_open_text(self):
         row = {

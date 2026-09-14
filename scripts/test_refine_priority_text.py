@@ -26,8 +26,9 @@ class PriorityTextRefinementTests(unittest.TestCase):
         })
         self.assertIn('slash_separated_variants', result['review_signals'])
         self.assertIn('editorial_nasal_notation', result['review_signals'])
-        self.assertIn('repeated_punctuation', result['review_signals'])
-        self.assertEqual(result['automatic_changes'], [])
+        self.assertNotIn('repeated_punctuation', result['review_signals'])
+        self.assertEqual(result['release_text'], 'O… chalun/ hiton maa(n)')
+        self.assertIn('double_period_normalized', result['automatic_changes'])
 
     def test_flags_short_fragment_and_regional_identity_without_relabeling(self):
         result = m.refine_row({
@@ -106,6 +107,24 @@ class PriorityTextRefinementTests(unittest.TestCase):
         self.assertEqual(result['release_text'], text)
         self.assertNotIn('repeated_punctuation', result['review_signals'])
 
+    def test_romanized_source_form_resolves_no_devanagari_as_a_defect(self):
+        result = m.refine_row({
+            'text_sha256': '8' * 64,
+            'text_model': 'mero ghar',
+            'cleanup_review_flags': ['no_devanagari'],
+            'language_quality': {
+                'confidence': 'medium',
+                'evidence': ['source_garhwali_label'],
+                'review_required': True,
+                'script_profile': {'script': 'Latn'},
+            },
+            'genre_quality': {'tags': ['lexicon']},
+            'provenance': [{'source_id': 'romanized', 'iso_639_3': 'gbm'}],
+        })
+        self.assertIn('no_devanagari', result['resolved_cleanup_flags'])
+        self.assertNotIn('no_devanagari', result['remaining_cleanup_flags'])
+        self.assertIn('romanized_text_requires_native_review', result['review_signals'])
+
     def test_long_sentence_with_slash_is_not_treated_as_variant_list(self):
         result = m.refine_row({
             'text_sha256': '3' * 64,
@@ -115,6 +134,89 @@ class PriorityTextRefinementTests(unittest.TestCase):
             'provenance': [],
         })
         self.assertNotIn('slash_separated_variants', result['review_signals'])
+
+    def test_quality_dimensions_separate_identity_orthography_and_alignment(self):
+        result = m.refine_row({
+            'text_sha256': '9' * 64,
+            'text_model': 'mero ghar',
+            'language_quality': {
+                'confidence': 'medium',
+                'evidence': ['source_garhwali_label'],
+                'review_required': True,
+                'script_profile': {'script': 'Latn'},
+            },
+            'genre_quality': {'tags': ['translated_example']},
+            'provenance': [{
+                'source_id': 'example_parallel',
+                'iso_639_3': 'gbm',
+                'quality_flags': ['native_accuracy_unverified'],
+            }],
+        })
+        dimensions = result['quality_dimensions']
+        self.assertEqual(
+            dimensions['language_identity']['status'],
+            'source_declared_garhwali_pending_native_validation',
+        )
+        self.assertEqual(
+            dimensions['orthography']['status'],
+            'romanized_source_form_pending_native_review',
+        )
+        self.assertEqual(
+            dimensions['semantic_alignment']['status'],
+            'translation_or_alignment_pending_native_validation',
+        )
+        self.assertEqual(
+            dimensions['source_evidence']['status'],
+            'native_accuracy_unverified',
+        )
+        self.assertEqual(result['review_priority']['rank'], 2)
+
+    def test_multiple_source_ids_are_recorded_as_corroboration_not_accuracy(self):
+        result = m.refine_row({
+            'text_sha256': '5' * 64,
+            'text_model': 'गढ़वाली पाठ',
+            'language_quality': {
+                'confidence': 'medium',
+                'evidence': ['source_garhwali_label'],
+                'review_required': False,
+                'script_profile': {'script': 'Deva'},
+            },
+            'genre_quality': {'tags': ['lexicon']},
+            'provenance': [
+                {'source_id': 'source_a', 'iso_639_3': 'gbm'},
+                {'source_id': 'source_b', 'iso_639_3': 'gbm'},
+            ],
+        })
+        evidence = result['quality_dimensions']['source_evidence']
+        self.assertEqual(evidence['distinct_source_count'], 2)
+        self.assertEqual(evidence['source_ids'], ['source_a', 'source_b'])
+        self.assertFalse(evidence['corroboration_is_accuracy_proof'])
+
+    def test_review_queue_keeps_each_unresolved_public_candidate_once(self):
+        resolved = m.refine_row({
+            'text_sha256': '6' * 64,
+            'text_model': 'हां.. ठीक छ।',
+            'language_quality': {
+                'confidence': 'high', 'review_required': False,
+                'evidence': ['source_garhwali_label'],
+                'script_profile': {'script': 'Deva'},
+            },
+            'genre_quality': {'tags': ['prompted_speech']},
+            'provenance': [{'source_id': 'clean', 'iso_639_3': 'gbm'}],
+        })
+        unresolved = m.refine_row({
+            'text_sha256': '7' * 64,
+            'text_model': 'ma ghar',
+            'language_quality': {
+                'confidence': 'medium', 'review_required': True,
+                'evidence': ['source_garhwali_label'],
+                'script_profile': {'script': 'Latn'},
+            },
+            'genre_quality': {'tags': ['lexicon']},
+            'provenance': [{'source_id': 'romanized', 'iso_639_3': 'gbm'}],
+        })
+        queue = m.build_review_queue([resolved, unresolved, unresolved])
+        self.assertEqual([row['text_sha256'] for row in queue], ['7' * 64])
 
 
 if __name__ == '__main__':

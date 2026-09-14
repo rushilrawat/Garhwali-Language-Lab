@@ -4,8 +4,9 @@
 
 The intensive quality gate covers all **27,987 exact-unique text records**,
 **5,894 human-transcribed speech records**, and **104,542 SraVaani machine
-drafts**. It changes no linguistic value. Every tier includes explicit reasons,
-so later corrections remain reversible and auditable.
+drafts**. Original linguistic values remain immutable; release values contain only
+bounded mechanical normalization. Every tier includes explicit reasons, so later
+corrections remain reversible and auditable.
 
 ## Findings
 
@@ -13,32 +14,62 @@ so later corrections remain reversible and auditable.
 | --- | ---: | ---: | ---: | --- |
 | Human-transcribed speech | 5,881 strict candidates | 13 review | 0 | Existing transcript/training flags |
 | SraVaani machine drafts | 103,354 experimental | 1,188 review | 0 | Script, repetition, empty output, or weak cross-model agreement |
-| Text | 1,188 strict public + 3,653 high-quality local-only | 20,502 review | 2,644 non-strict context | Language confidence, cleanup evidence, and source rights |
+| Text | 1,202 strict public + 3,653 high-quality rights-pending | 20,488 review | 2,644 non-strict context | Language confidence, cleanup evidence, and source rights |
 
-The strict public text seed contains 1,188 records. Another 3,653 clean,
+The strict public text seed contains 1,202 records. Another 3,653 clean,
 high-confidence Garhwali candidates fail only the rights-cleared-source rule and
-remain useful for local research. The public Garhwali candidate pool contains
-1,818 records in total; 630 do not yet meet the strict quality gate.
+remain represented in the public catalog with protected text values redacted. The
+public Garhwali candidate pool contains 1,818 records in total; 616 require native
+or source-level validation before entering the strict tier.
 
 ## Public-text refinement
 
-The first value-focused pass inspected all 1,818 public Garhwali candidates.
-It identified 495 records with concrete review signals and 1,323 without an
+The value-focused pass inspected all 1,818 public Garhwali candidates. It now
+identifies 481 records with concrete review signals and 1,337 without an
 additional surface issue:
 
 | Signal | Records | Treatment |
 | --- | ---: | --- |
 | Romanized text requiring native spelling review | 441 | Preserve spelling; request native review |
 | Very short non-lexical fragment | 39 | Verify context before training use |
-| Accidental-looking double/repeated punctuation | 14 | Review as possible extraction noise; valid ellipses are exempt |
 | Short slash-separated variants | 3 | Review boundaries; long sentences containing slashes are exempt |
 
 Short lexicon forms and digits in numeral lexicons are explicitly exempt from
 fragment warnings. Seven release values had unambiguous orphan wiki markup removed,
-while their originals remain preserved. The pass resolved 24 HTML-markup, 96 stale
-mixed-script, 50 valid short-lexicon, and one stale URL flag. These evidence-backed
-resolutions promoted 51 records into the strict tier. No spelling, transliteration,
-language, or dialect value was guessed automatically.
+and 14 prompted-speech values had exact double-period pause markers normalized to
+the Unicode ellipsis; all originals remain preserved. The pass resolved 24 HTML
+markup, 96 stale mixed-script, 391 Romanized `no_devanagari`, 50 valid short-lexicon,
+and one stale URL flag. These evidence-backed resolutions promoted 65 records into
+the strict tier. No spelling, transliteration, language, or dialect value was
+guessed automatically.
+
+## Evidence dimensions and review order
+
+The 616 unresolved public candidates now have separate evidence for language
+identity, orthography, semantic alignment, source reliability, and surface form.
+The queue is deterministic and contains each stable text identity once:
+
+| Priority | Records | Reason |
+| --- | ---: | --- |
+| Surface or source scaffolding | 42 | Short fragments, variant boundaries, remaining flags, or scaffolding |
+| Source accuracy | 135 | Native accuracy or community review is explicitly unresolved |
+| Semantic alignment | 24 | Translation/example alignment needs native validation |
+| Romanized orthography | 415 | Source form is valid data but spelling has not been natively reviewed |
+
+These labels describe available evidence and the next review action. They are not
+accuracy probabilities. Multiple-source occurrence is recorded as corroboration
+evidence but never treated as proof that a value is correct.
+
+## Supervised-speech triage
+
+All 13 non-strict human-transcribed rows were inspected. Eight contain Bengali
+script and are consistently marked as source-label conflicts in the original,
+training, and transcript review fields. They remain preserved but excluded from
+Garhwali supervised training. The other five contain Devanagari Garhwali
+candidates with incomplete wording, unbalanced annotation characters, or unclear
+phonetic spelling. Their audio is readable, but changing the reference without
+listening evidence would invent ground truth, so they remain in the audio review
+queue. No supervised row was silently removed or promoted.
 
 ## Quality policy
 
@@ -52,12 +83,12 @@ language, or dialect value was guessed automatically.
 
 ## Next correction order
 
-1. Resolve the 630 non-strict public Garhwali candidates: 616 require source/native
-   language validation and 14 high-confidence records retain content anomalies.
-2. Resolve the 13 supervised-speech review records before freezing GarhwaliBench.
+1. Validate the ranked 616-record public queue by source and native review.
+2. Listen-review the five ambiguous supervised transcripts; retain the eight
+   Bengali-script source-label conflicts as excluded evidence.
 3. Review the 1,188 risky machine drafts using audio and model disagreement;
    never guess corrections from text alone.
-4. Audit the 3,653 high-quality local-only texts source by source for explicit
+4. Audit the 3,653 high-quality rights-pending texts source by source for explicit
    redistribution and model-training permission.
 5. Sample clean medium-confidence sources for native language validation and
    promote a source only when the evidence supports it.
@@ -76,10 +107,12 @@ exposes the public-text refinement signals without publishing private source tex
 ## Reproduction
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python -m unittest scripts/test_build_quality_tiers.py
-.venv/bin/python scripts/build_quality_tiers.py
 PYTHONPATH=scripts .venv/bin/python -m unittest scripts/test_refine_priority_text.py
-.venv/bin/python scripts/refine_priority_text.py
+PYTHONPATH=scripts .venv/bin/python scripts/refine_priority_text.py
+PYTHONPATH=scripts .venv/bin/python -m unittest scripts/test_build_quality_tiers.py
+PYTHONPATH=scripts .venv/bin/python scripts/build_quality_tiers.py
+.venv/bin/python scripts/build_huggingface_dataset.py
+.venv/bin/python scripts/audit_final_release.py
 ```
 
 Generated manifests and reports are under `data/processed/model_ready/quality_v2/`

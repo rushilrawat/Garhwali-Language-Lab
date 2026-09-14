@@ -185,7 +185,7 @@ def catalog_row(row, include_restricted_text=False, refinement=None):
             key: refinement.get(key) for key in (
                 'automatic_changes', 'review_signals', 'manual_review_required',
                 'language_decision', 'quality_refinement_status',
-                'release_text_sha256',
+                'release_text_sha256', 'quality_dimensions', 'review_priority',
             )
         }
         if text_is_public or include_restricted_text:
@@ -313,7 +313,7 @@ Release: **{report['release_id']}**
 Versioned Garhwali (`gbm`) text, speech, lexicon, and instruction resources built
 by the Garhwali Language Lab. Every row retains source and license evidence.
 
-This rights-filtered package contains **{exported_rows:,} records** across five
+This rights-filtered package contains **{exported_rows:,} records** across six
 configurations, including transcripts for **{report['draft_unique_audio']:,}
 unique SraVaani recordings**. {audio_summary}
 
