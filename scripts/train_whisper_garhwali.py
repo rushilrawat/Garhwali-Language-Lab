@@ -45,6 +45,37 @@ def resolve_evaluation_split(requested, curriculum_stage):
     return 'validation' if curriculum_stage is not None else 'test'
 
 
+def select_pilot_rows(rows, human_records, machine_records):
+    human = sorted(
+        (row for row in rows if row.get('target_type') == 'human_reference'),
+        key=lambda row: row['audio_sha256'],
+    )
+    machine = sorted(
+        (row for row in rows if row.get('target_type') == 'machine_pseudo_label'),
+        key=lambda row: row['audio_sha256'],
+    )
+    if len(human) < human_records:
+        raise ValueError(f'Pilot requested {human_records} human rows but only {len(human)} exist')
+    if len(machine) < machine_records:
+        raise ValueError(
+            f'Pilot requested {machine_records} machine rows but only {len(machine)} exist'
+        )
+    return sorted(
+        human[:human_records] + machine[:machine_records],
+        key=lambda row: row['audio_sha256'],
+    )
+
+
+def is_complete_stage_run(curriculum_stage, max_train, pilot_human, pilot_machine):
+    if curriculum_stage is None:
+        return True
+    return not max_train and not pilot_human and not pilot_machine
+
+
+def generation_kwargs():
+    return {'language': 'hi', 'task': 'transcribe', 'max_length': 128}
+
+
 def validate_previous_stage(output, current_stage):
     output = Path(output)
     sidecar = output / 'curriculum_stage_report.json'
@@ -120,6 +151,8 @@ def main():
     parser.add_argument('--curriculum-stage', type=int, choices=range(5))
     parser.add_argument('--eval-split', choices=('validation', 'test'))
     parser.add_argument('--resume-from', type=Path)
+    parser.add_argument('--pilot-human', type=int, default=0)
+    parser.add_argument('--pilot-machine', type=int, default=0)
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--dry-run-report', type=Path, default=DRY_RUN_REPORT)
     args = parser.parse_args()
@@ -128,13 +161,35 @@ def main():
     os.environ.setdefault('PYTORCH_ENABLE_MPS_FALLBACK', '1')
     split_dir = CURRICULUM_SPLITS if args.curriculum_stage is not None else SPLITS
     eval_split = resolve_evaluation_split(args.eval_split, args.curriculum_stage)
-    train_rows = load_rows(
-        split_dir / 'train.jsonl', args.max_train, max_stage=args.curriculum_stage
+    all_train_rows = load_rows(
+        split_dir / 'train.jsonl', max_stage=args.curriculum_stage
     )
+    pilot_requested = bool(args.pilot_human or args.pilot_machine)
+    if pilot_requested:
+        if args.curriculum_stage != 1:
+            parser.error('pilot selection currently requires --curriculum-stage 1')
+        if not args.pilot_human or not args.pilot_machine:
+            parser.error('--pilot-human and --pilot-machine must both be positive')
+        if args.max_train:
+            parser.error('--max-train cannot be combined with pilot selection')
+        train_rows = select_pilot_rows(
+            all_train_rows, args.pilot_human, args.pilot_machine
+        )
+    else:
+        train_rows = all_train_rows[:args.max_train] if args.max_train else all_train_rows
     eval_rows = load_rows(split_dir / f'{eval_split}.jsonl', args.max_eval)
     output = args.output
     if output == DEFAULT_OUTPUT and args.curriculum_stage is not None:
-        output = ROOT / f'models/whisper-tiny-garhwali-curriculum-stage-{args.curriculum_stage}'
+        suffix = f'curriculum-stage-{args.curriculum_stage}'
+        if pilot_requested:
+            suffix += f'-pilot-h{args.pilot_human}-m{args.pilot_machine}'
+        output = ROOT / f'models/whisper-tiny-garhwali-{suffix}'
+    complete_stage = is_complete_stage_run(
+        args.curriculum_stage,
+        args.max_train,
+        args.pilot_human,
+        args.pilot_machine,
+    )
     model_source = args.model
     previous_stage_report = None
     if args.resume_from:
@@ -163,6 +218,10 @@ def main():
             'run_id': 'garhwali-whisper-curriculum-dry-run-v0.1',
             'curriculum_stage': args.curriculum_stage,
             'evaluation_split': eval_split,
+            'full_stage_train_records': len(all_train_rows),
+            'pilot_human_records': args.pilot_human,
+            'pilot_machine_records': args.pilot_machine,
+            'training_complete': complete_stage,
             'model_source': model_source,
             'resume_from': str(args.resume_from) if args.resume_from else None,
             'previous_stage': previous_stage_report,
@@ -251,8 +310,12 @@ def main():
         for row in eval_rows:
             audio = read_audio(ROOT / row['local_audio_path'])
             features = processor(audio, sampling_rate=16000, return_tensors='pt').input_features.to(device)
-            generated = model.generate(features, language='hi', task='transcribe', max_new_tokens=128)
-            prediction = processor.batch_decode(generated, skip_special_tokens=True)[0].strip()
+            generated = model.generate(features, **generation_kwargs())
+            prediction = processor.batch_decode(
+                generated,
+                skip_special_tokens=True,
+                clean_up_tokenization_spaces=False,
+            )[0].strip()
             reference = training_target(row)
             metrics = score(reference, prediction)
             scores.append(metrics)
@@ -272,6 +335,9 @@ def main():
         'device': device,
         'epochs': args.epochs,
         'curriculum_stage': args.curriculum_stage,
+        'full_stage_train_records': len(all_train_rows),
+        'pilot_human_records': args.pilot_human,
+        'pilot_machine_records': args.pilot_machine,
         'resumed_from_stage': (
             previous_stage_report['curriculum_stage'] if previous_stage_report else None
         ),
@@ -284,7 +350,7 @@ def main():
         'mean_raw_training_loss': sum(raw_losses) / max(1, len(raw_losses)),
         'evaluation_records': len(eval_rows),
         'evaluation_split': eval_split,
-        'training_complete': True,
+        'training_complete': complete_stage,
         **evaluation,
     }
     (output / 'report.json').write_text(

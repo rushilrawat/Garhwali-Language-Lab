@@ -136,6 +136,31 @@ class WhisperTrainingTests(unittest.TestCase):
             self.assertEqual(plan['empty_targets'], 0)
             self.assertEqual(plan['empty_evaluation_targets'], 0)
 
+    def test_pilot_selection_keeps_requested_human_and_machine_rows(self):
+        rows = [
+            {'audio_sha256': 'd', 'target_type': 'machine_pseudo_label'},
+            {'audio_sha256': 'b', 'target_type': 'human_reference'},
+            {'audio_sha256': 'c', 'target_type': 'machine_pseudo_label'},
+            {'audio_sha256': 'a', 'target_type': 'human_reference'},
+        ]
+        selected = m.select_pilot_rows(rows, human_records=1, machine_records=2)
+        self.assertEqual([row['audio_sha256'] for row in selected], ['a', 'c', 'd'])
+
+    def test_pilot_selection_rejects_unavailable_record_count(self):
+        rows = [{'audio_sha256': 'a', 'target_type': 'human_reference'}]
+        with self.assertRaisesRegex(ValueError, 'machine'):
+            m.select_pilot_rows(rows, human_records=1, machine_records=1)
+
+    def test_bounded_curriculum_run_is_not_a_completed_stage(self):
+        self.assertTrue(m.is_complete_stage_run(1, max_train=0, pilot_human=0, pilot_machine=0))
+        self.assertFalse(m.is_complete_stage_run(1, max_train=0, pilot_human=32, pilot_machine=2048))
+        self.assertFalse(m.is_complete_stage_run(1, max_train=100, pilot_human=0, pilot_machine=0))
+
+    def test_generation_kwargs_use_one_length_control(self):
+        kwargs = m.generation_kwargs()
+        self.assertEqual(kwargs['max_length'], 128)
+        self.assertNotIn('max_new_tokens', kwargs)
+
 
 if __name__ == '__main__':
     unittest.main()

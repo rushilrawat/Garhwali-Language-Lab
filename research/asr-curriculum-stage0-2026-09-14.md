@@ -57,7 +57,7 @@ The command:
 The original checkpoint report and weights remain unchanged. No model weights
 are copied.
 
-## Stage-1 readiness
+## Stage-1 continuation
 
 A full dependency-free resume dry run passed with the selected checkpoint:
 
@@ -67,6 +67,7 @@ A full dependency-free resume dry run passed with the selected checkpoint:
 - 269 human-only validation records;
 - zero missing audio, empty targets, or duplicate training hashes.
 
-The next compute phase is a bounded stage-1 machine-label pilot. It should prove
-that weighted optimization and checkpoint output work end to end before the full
-103,346-record SraVaani tier is scheduled.
+The bounded stage-1 machine-label pilot subsequently completed end to end. It did
+not improve the human-only validation result, so the configuration was rejected
+and no full 103,346-record SraVaani-tier run was scheduled. See
+[`asr-curriculum-stage1-pilot-2026-09-14.md`](asr-curriculum-stage1-pilot-2026-09-14.md).
