@@ -85,6 +85,12 @@ validation records as stage 0, WER increased from 0.780522 to 0.784137 and CER
 increased from 0.462980 to 0.463038. The configuration is rejected, no machine
 labels are promoted, and curriculum stage 2 remains locked.
 
+The follow-up weighted-batch trainer distributed the same 2,080 records into 32
+normalized updates, each containing one human reference and 64 machine labels.
+WER increased further to 0.788153 and CER to 0.463672, adding 38 word and 12
+character errors relative to stage 0. The machine-label curriculum recipe is
+closed without running its full stage; all source and draft records remain active.
+
 GarhwaliBench v0.1 indexes 3,847 external task records, 2,492 held-out text segments, and 112 speaker-safe ASR rows. Exact train/evaluation text overlap and ASR speaker overlap are zero. Its deterministic character-bigram floor is 16.464093 perplexity with a 0.00000498 character OOV rate.
 
 The multilingual audit compares five pinned tokenizers on all 2,492 held-out texts. IndicBERTv2 has the lowest fertility at 1.531569 tokens per whitespace word. Its first 128-record masked-language pilot scores 17.786561% masked-token accuracy and 6.977486 cross-entropy over 506 deterministic masks, with zero truncation.
@@ -142,4 +148,4 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 231 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, controlled multi-seed text scaling, IndicBERTv2 head/encoder adaptation, instruction construction and mT5 tuning utilities, frozen transfer comparison, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, speech comparison, confidence-aware curriculum selection, bounded pilot registration, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
+The complete pipeline suite has 239 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, controlled multi-seed text scaling, IndicBERTv2 head/encoder adaptation, instruction construction and mT5 tuning utilities, frozen transfer comparison, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, speech comparison, confidence-aware curriculum selection, weighted-batch gradient accumulation, paired pilot registration, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.

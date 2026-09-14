@@ -81,3 +81,11 @@ bounded run `training_complete: false`, so it cannot unlock the next curriculum
 stage. The compact ignored report records hashes for the model, training report,
 predictions, and frozen validation manifest. Validation generation now uses one
 explicit length control to avoid ambiguous Transformers settings in later runs.
+
+## Weighted-batch follow-up
+
+The proposed accumulated-batch correction was implemented and tested on the same
+sample. It produced 32 normalized updates with one human and 64 machine examples
+per update, but worsened validation further to 0.788153 WER and 0.463672 CER.
+That separate ablation is documented in
+[`asr-weighted-batch-ablation-2026-09-14.md`](asr-weighted-batch-ablation-2026-09-14.md).

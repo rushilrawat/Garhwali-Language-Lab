@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-231%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-239%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -156,7 +156,10 @@ not a defect in the dataset.
 - **Stage-1 pilot:** a bounded 32-human + 2,048-machine-label run completed all
   2,080 updates, but validation WER rose from 0.780522 to 0.784137 and CER from
   0.462980 to 0.463038. The configuration was rejected and stage 2 remains locked.
-- **231 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **Weighted-batch ablation:** the same examples were regrouped into 32 normalized
+  65-record human/machine updates. WER rose further to 0.788153 and CER to
+  0.463672, so the current machine-label curriculum recipe is closed.
+- **239 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
 These figures describe the preparation snapshot updated on 2026-09-14. Raw
@@ -462,6 +465,8 @@ selection rules, exclusions, counts, and leakage checks.
   predecessor without duplicating model weights.
 - [x] Run a bounded stage-1 machine-label pilot, verify all 269 saved predictions,
   and reject the configuration after both validation WER and CER worsened.
+- [x] Replace nominal one-record weighting with stratified normalized gradient
+  accumulation, repeat the fixed pilot, and reject it after accuracy worsened.
 
 ### 9. Testing and review — High
 
@@ -546,6 +551,11 @@ selection rules, exclusions, counts, and leakage checks.
     269 validation records. WER worsened by 0.003614 and CER by 0.000058, so the
     run is registered as rejected, the human-only checkpoint stays selected, and
     stage 2 remains locked.
+13. [x] **Weighted-batch redesign and ablation — Xhigh:** the same data now forms
+    32 deterministic batches with one human and 64 machine records per normalized
+    optimizer update. Aggregate validation still worsens to 0.788153 WER and
+    0.463672 CER. The result is rejected and the full machine-label curriculum is
+    stopped under this recipe.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
@@ -571,6 +581,8 @@ The stage-0 equivalence proof and checkpoint comparison are in
 [`research/asr-curriculum-stage0-2026-09-14.md`](research/asr-curriculum-stage0-2026-09-14.md).
 The bounded machine-label ablation and rejection decision are in
 [`research/asr-curriculum-stage1-pilot-2026-09-14.md`](research/asr-curriculum-stage1-pilot-2026-09-14.md).
+The normalized weighted-batch redesign and second rejection are in
+[`research/asr-weighted-batch-ablation-2026-09-14.md`](research/asr-weighted-batch-ablation-2026-09-14.md).
 The reversible cleanup proposals and fixed-split ablation are in
 [`research/model-assisted-text-cleanup-2026-09-11.md`](research/model-assisted-text-cleanup-2026-09-11.md).
 The first controlled data-scaling curve is in
@@ -631,6 +643,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 .venv/bin/python scripts/train_whisper_garhwali.py --curriculum-stage 4 --dry-run
 .venv/bin/python scripts/register_asr_stage0.py
 .venv/bin/python scripts/register_asr_stage1_pilot.py
+.venv/bin/python scripts/register_asr_stage1_weighted_batch_pilot.py
 .venv/bin/python scripts/audit_final_release.py
 git diff --check
 ```
@@ -639,7 +652,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **231 passing tests**, **365 verified source
+The current verification result is **239 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release

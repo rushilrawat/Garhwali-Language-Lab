@@ -49,6 +49,48 @@ class RegisterAsrStage1PilotTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'same validation set'):
             m.compare_metrics(baseline, pilot)
 
+    def test_paired_outcomes_count_better_worse_ties_and_exact_predictions(self):
+        baseline = [
+            {
+                'audio_sha256': 'a', 'reference': 'एक', 'hypothesis': 'एक',
+                'wer': 0.0, 'cer': 0.0,
+            },
+            {
+                'audio_sha256': 'b', 'reference': 'दुई', 'hypothesis': 'एक',
+                'wer': 1.0, 'cer': 1.0,
+            },
+            {
+                'audio_sha256': 'c', 'reference': 'तीन', 'hypothesis': 'तीन',
+                'wer': 0.5, 'cer': 0.5,
+            },
+        ]
+        pilot = [
+            {
+                'audio_sha256': 'a', 'reference': 'एक', 'prediction': 'एक',
+                'wer': 0.0, 'cer': 0.0,
+            },
+            {
+                'audio_sha256': 'b', 'reference': 'दुई', 'prediction': 'दुई',
+                'wer': 0.0, 'cer': 0.0,
+            },
+            {
+                'audio_sha256': 'c', 'reference': 'तीन', 'prediction': 'चार',
+                'wer': 1.0, 'cer': 1.0,
+            },
+        ]
+        result = m.paired_outcomes(baseline, pilot, {'a', 'b', 'c'})
+        self.assertEqual(result['wer'], {'better': 1, 'worse': 1, 'tie': 1})
+        self.assertEqual(result['cer'], {'better': 1, 'worse': 1, 'tie': 1})
+        self.assertEqual(result['exact_same_predictions'], 1)
+
+    def test_paired_outcomes_require_matching_rows_and_references(self):
+        baseline = [{
+            'audio_sha256': 'a', 'reference': 'एक', 'hypothesis': 'एक',
+            'wer': 0.0, 'cer': 0.0,
+        }]
+        with self.assertRaisesRegex(ValueError, 'paired'):
+            m.paired_outcomes(baseline, [], {'a'})
+
 
 if __name__ == '__main__':
     unittest.main()

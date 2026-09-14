@@ -19,6 +19,13 @@ without changing its model architecture or human-only evaluation procedure.
 - Stage-specific defaults write to separate model directories, protecting the
   existing `whisper-tiny-garhwali-v0.1` checkpoint.
 
+The later `--weighted-batches` mode fixes the optimizer-level weakness found by
+the first stage-1 pilot. It distributes machine rows deterministically across
+human anchors, accumulates every record's gradient after normalizing by total
+batch weight, and takes one optimizer step per mixed batch. The original
+one-record behavior remains the default so the first pilot stays reproducible;
+weighted runs use a separate `-weighted-batches` output directory.
+
 For stages 1 through 4, a real training run must provide `--resume-from`. The
 trainer accepts only a completed immediate predecessor and verifies its report,
 model weights, model configuration, processor configuration, and tokenizer
@@ -95,3 +102,8 @@ data, so the stronger `whisper-tiny-garhwali-v0.2` checkpoint was selected by
 human-only validation CER rather than duplicating its training or weights. The
 equivalence proof, 269-record comparison, and stage-1 readiness check are in
 [`asr-curriculum-stage0-2026-09-14.md`](asr-curriculum-stage0-2026-09-14.md).
+
+The 32-batch controlled ablation is documented in
+[`asr-weighted-batch-ablation-2026-09-14.md`](asr-weighted-batch-ablation-2026-09-14.md).
+It verifies that the optimizer now receives normalized mixed gradients, but the
+result still worsens validation WER and CER, so the full stage is not promoted.

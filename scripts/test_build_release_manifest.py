@@ -70,6 +70,10 @@ class ReleaseManifestTests(unittest.TestCase):
                     'run_id': 'asr-stage-1-pilot-test',
                     'comparison': {'decision': 'rejected'},
                 },
+                'data/processed/evaluation/asr/curriculum_stage_1_weighted_batch_pilot/report.json': {
+                    'run_id': 'asr-stage-1-weighted-batch-pilot-test',
+                    'decision': 'rejected',
+                },
                 'models/whisper-tiny-garhwali-v0.1/report.json': {'wer': 0.79},
                 'models/whisper-tiny-garhwali-v0.2/report.json': {'wer': 0.74},
             }
@@ -126,6 +130,10 @@ class ReleaseManifestTests(unittest.TestCase):
             )
             self.assertEqual(
                 manifest['asr_curriculum_stage1_pilot_report']['comparison']['decision'],
+                'rejected',
+            )
+            self.assertEqual(
+                manifest['asr_curriculum_stage1_weighted_batch_pilot_report']['decision'],
                 'rejected',
             )
             self.assertEqual(manifest['files']['asr_curriculum_train']['records'], 2)

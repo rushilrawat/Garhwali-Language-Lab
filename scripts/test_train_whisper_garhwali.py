@@ -161,6 +161,58 @@ class WhisperTrainingTests(unittest.TestCase):
         self.assertEqual(kwargs['max_length'], 128)
         self.assertNotIn('max_new_tokens', kwargs)
 
+    def test_stratified_weighted_batches_mix_human_and_machine_rows(self):
+        rows = [
+            {'audio_sha256': 'h2', 'target_type': 'human_reference'},
+            {'audio_sha256': 'm4', 'target_type': 'machine_pseudo_label'},
+            {'audio_sha256': 'm2', 'target_type': 'machine_pseudo_label'},
+            {'audio_sha256': 'h1', 'target_type': 'human_reference'},
+            {'audio_sha256': 'm5', 'target_type': 'machine_pseudo_label'},
+            {'audio_sha256': 'm1', 'target_type': 'machine_pseudo_label'},
+            {'audio_sha256': 'm3', 'target_type': 'machine_pseudo_label'},
+        ]
+        batches = m.build_stratified_weighted_batches(rows)
+        self.assertEqual(len(batches), 2)
+        self.assertEqual([row['audio_sha256'] for row in batches[0]], ['h1', 'm1', 'm3', 'm5'])
+        self.assertEqual([row['audio_sha256'] for row in batches[1]], ['h2', 'm2', 'm4'])
+        self.assertTrue(all(
+            sum(row['target_type'] == 'human_reference' for row in batch) == 1
+            for batch in batches
+        ))
+
+    def test_stratified_weighted_batches_require_both_target_types(self):
+        with self.assertRaisesRegex(ValueError, 'human and machine'):
+            m.build_stratified_weighted_batches([
+                {'audio_sha256': 'h1', 'target_type': 'human_reference'},
+            ])
+
+    def test_weighted_batch_loss_normalizes_combined_gradient_mass(self):
+        rows = [
+            {'sample_weight': 1.0},
+            {'sample_weight': 0.25},
+        ]
+        self.assertAlmostEqual(m.weighted_batch_loss([8.0, 4.0], rows), 7.2)
+        self.assertEqual(m.normalized_batch_weights(rows), [0.8, 0.2])
+
+    def test_weighted_batch_summary_counts_optimizer_steps(self):
+        batches = [
+            [
+                {'target_type': 'human_reference', 'sample_weight': 1.0},
+                {'target_type': 'machine_pseudo_label', 'sample_weight': 0.2},
+            ],
+            [
+                {'target_type': 'human_reference', 'sample_weight': 1.0},
+                {'target_type': 'machine_pseudo_label', 'sample_weight': 0.2},
+                {'target_type': 'machine_pseudo_label', 'sample_weight': 0.2},
+            ],
+        ]
+        summary = m.summarize_weighted_batches(batches, epochs=3)
+        self.assertEqual(summary['batches_per_epoch'], 2)
+        self.assertEqual(summary['projected_optimizer_steps'], 6)
+        self.assertEqual(summary['records_per_batch'], {'minimum': 2, 'maximum': 3})
+        self.assertAlmostEqual(summary['human_weight_mass'], 2.0)
+        self.assertAlmostEqual(summary['machine_weight_mass'], 0.6)
+
 
 if __name__ == '__main__':
     unittest.main()

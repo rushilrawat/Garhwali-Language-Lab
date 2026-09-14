@@ -39,6 +39,64 @@ def weighted_training_loss(loss, row):
     return loss * training_weight(row)
 
 
+def normalized_batch_weights(rows):
+    weights = [training_weight(row) for row in rows]
+    total = sum(weights)
+    return [weight / total for weight in weights]
+
+
+def weighted_batch_loss(losses, rows):
+    return sum(
+        loss * weight
+        for loss, weight in zip(losses, normalized_batch_weights(rows))
+    )
+
+
+def build_stratified_weighted_batches(rows):
+    human = sorted(
+        (row for row in rows if row.get('target_type') == 'human_reference'),
+        key=lambda row: row['audio_sha256'],
+    )
+    machine = sorted(
+        (row for row in rows if row.get('target_type') == 'machine_pseudo_label'),
+        key=lambda row: row['audio_sha256'],
+    )
+    if len(human) + len(machine) != len(rows):
+        raise ValueError('Weighted batches found an unsupported target type')
+    if not human or not machine:
+        raise ValueError('Weighted batches require both human and machine records')
+    batches = [[row] for row in human]
+    for index, row in enumerate(machine):
+        batches[index % len(batches)].append(row)
+    return batches
+
+
+def summarize_weighted_batches(batches, epochs):
+    rows = [row for batch in batches for row in batch]
+    sizes = [len(batch) for batch in batches]
+    return {
+        'batches_per_epoch': len(batches),
+        'projected_optimizer_steps': len(batches) * epochs,
+        'records_per_batch': {'minimum': min(sizes), 'maximum': max(sizes)},
+        'human_records': sum(
+            row.get('target_type') == 'human_reference' for row in rows
+        ),
+        'machine_records': sum(
+            row.get('target_type') == 'machine_pseudo_label' for row in rows
+        ),
+        'human_weight_mass': sum(
+            training_weight(row)
+            for row in rows
+            if row.get('target_type') == 'human_reference'
+        ),
+        'machine_weight_mass': sum(
+            training_weight(row)
+            for row in rows
+            if row.get('target_type') == 'machine_pseudo_label'
+        ),
+    }
+
+
 def resolve_evaluation_split(requested, curriculum_stage):
     if requested:
         return requested
@@ -153,6 +211,7 @@ def main():
     parser.add_argument('--resume-from', type=Path)
     parser.add_argument('--pilot-human', type=int, default=0)
     parser.add_argument('--pilot-machine', type=int, default=0)
+    parser.add_argument('--weighted-batches', action='store_true')
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--dry-run-report', type=Path, default=DRY_RUN_REPORT)
     args = parser.parse_args()
@@ -177,12 +236,23 @@ def main():
         )
     else:
         train_rows = all_train_rows[:args.max_train] if args.max_train else all_train_rows
+    if args.weighted_batches:
+        if args.curriculum_stage is None or args.curriculum_stage < 1:
+            parser.error('--weighted-batches requires curriculum stage 1 or later')
+        try:
+            training_batches = build_stratified_weighted_batches(train_rows)
+        except ValueError as error:
+            parser.error(str(error))
+    else:
+        training_batches = [[row] for row in train_rows]
     eval_rows = load_rows(split_dir / f'{eval_split}.jsonl', args.max_eval)
     output = args.output
     if output == DEFAULT_OUTPUT and args.curriculum_stage is not None:
         suffix = f'curriculum-stage-{args.curriculum_stage}'
         if pilot_requested:
             suffix += f'-pilot-h{args.pilot_human}-m{args.pilot_machine}'
+        if args.weighted_batches:
+            suffix += '-weighted-batches'
         output = ROOT / f'models/whisper-tiny-garhwali-{suffix}'
     complete_stage = is_complete_stage_run(
         args.curriculum_stage,
@@ -204,6 +274,10 @@ def main():
 
     if args.dry_run:
         plan = build_dry_run_plan(train_rows, eval_rows, args.epochs)
+        if args.weighted_batches:
+            batch_plan = summarize_weighted_batches(training_batches, args.epochs)
+            plan['projected_training_steps'] = batch_plan['projected_optimizer_steps']
+            plan['weighted_batch_plan'] = batch_plan
         failures = [
             name for name in (
                 'empty_targets', 'empty_evaluation_targets',
@@ -221,6 +295,10 @@ def main():
             'full_stage_train_records': len(all_train_rows),
             'pilot_human_records': args.pilot_human,
             'pilot_machine_records': args.pilot_machine,
+            'batching_strategy': (
+                'stratified_normalized_weighted_gradient_accumulation'
+                if args.weighted_batches else 'one_record_per_optimizer_step'
+            ),
             'training_complete': complete_stage,
             'model_source': model_source,
             'resume_from': str(args.resume_from) if args.resume_from else None,
@@ -263,38 +341,58 @@ def main():
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate)
 
     raw_losses = []
-    weighted_losses = []
+    objective_losses = []
     step = 0
+    examples_seen = 0
     model.train()
     for epoch in range(args.epochs):
-        for row in train_rows:
-            audio = read_audio(ROOT / row['local_audio_path'])
-            features = processor(audio, sampling_rate=16000, return_tensors='pt').input_features.to(device)
-            labels = processor.tokenizer(training_target(row), return_tensors='pt').input_ids.to(device)
+        for batch in training_batches:
             optimizer.zero_grad(set_to_none=True)
-            raw_loss = model(input_features=features, labels=labels).loss
-            weight = training_weight(row)
-            weighted_loss = weighted_training_loss(raw_loss, row)
-            weighted_loss.backward()
+            factors = (
+                normalized_batch_weights(batch)
+                if args.weighted_batches
+                else [training_weight(batch[0])]
+            )
+            batch_objective = 0.0
+            for row, factor in zip(batch, factors):
+                audio = read_audio(ROOT / row['local_audio_path'])
+                features = processor(
+                    audio, sampling_rate=16000, return_tensors='pt'
+                ).input_features.to(device)
+                labels = processor.tokenizer(
+                    training_target(row), return_tensors='pt'
+                ).input_ids.to(device)
+                raw_loss = model(input_features=features, labels=labels).loss
+                objective_loss = raw_loss * factor
+                objective_loss.backward()
+                raw_losses.append(float(raw_loss.detach().cpu()))
+                batch_objective += float(objective_loss.detach().cpu())
+                examples_seen += 1
             optimizer.step()
             step += 1
-            raw_losses.append(float(raw_loss.detach().cpu()))
-            weighted_losses.append(float(weighted_loss.detach().cpu()))
+            objective_losses.append(batch_objective)
             state = {
                 'epoch': epoch + 1,
                 'step': step,
-                'last_audio_sha256': row['audio_sha256'],
+                'examples_seen': examples_seen,
+                'last_audio_sha256': batch[-1]['audio_sha256'],
+                'batch_records': len(batch),
+                'batch_weight_mass': sum(training_weight(row) for row in batch),
                 'device': device,
                 'curriculum_stage': args.curriculum_stage,
-                'sample_weight': weight,
+                'batching_strategy': (
+                    'stratified_normalized_weighted_gradient_accumulation'
+                    if args.weighted_batches else 'one_record_per_optimizer_step'
+                ),
             }
             (output / 'trainer_state.json').write_text(
                 json.dumps(state, indent=2) + '\n', encoding='utf-8'
             )
             if step == 1 or step % 25 == 0:
                 print(
-                    f"step={step}/{len(train_rows) * args.epochs} "
-                    f"raw_loss={raw_losses[-1]:.4f} weighted_loss={weighted_losses[-1]:.4f}",
+                    f"step={step}/{len(training_batches) * args.epochs} "
+                    f"examples={examples_seen} batch_records={len(batch)} "
+                    f"objective_loss={objective_losses[-1]:.4f}",
                     flush=True,
                 )
             if args.save_every and step % args.save_every == 0:
@@ -343,10 +441,19 @@ def main():
         ),
         'train_records': len(train_rows),
         'training_steps': step,
+        'training_examples': examples_seen,
+        'batching_strategy': (
+            'stratified_normalized_weighted_gradient_accumulation'
+            if args.weighted_batches else 'one_record_per_optimizer_step'
+        ),
+        'records_per_batch': {
+            'minimum': min(len(batch) for batch in training_batches),
+            'maximum': max(len(batch) for batch in training_batches),
+        },
         'effective_weight_mass': round(
             sum(training_weight(row) for row in train_rows), 6
         ),
-        'mean_training_loss': sum(weighted_losses) / max(1, len(weighted_losses)),
+        'mean_training_loss': sum(objective_losses) / max(1, len(objective_losses)),
         'mean_raw_training_loss': sum(raw_losses) / max(1, len(raw_losses)),
         'evaluation_records': len(eval_rows),
         'evaluation_split': eval_split,

@@ -59,6 +59,37 @@ def verify_report_metrics(report, metrics):
         raise ValueError('Pilot report metrics do not match its saved predictions')
 
 
+def paired_outcomes(baseline_rows, pilot_rows, allowed_hashes):
+    baseline = {
+        row['audio_sha256']: row
+        for row in baseline_rows
+        if row['audio_sha256'] in allowed_hashes
+    }
+    pilot = {
+        row['audio_sha256']: row
+        for row in pilot_rows
+        if row['audio_sha256'] in allowed_hashes
+    }
+    if baseline.keys() != pilot.keys() or baseline.keys() != allowed_hashes:
+        raise ValueError('Prediction rows cannot form a complete paired comparison')
+    if any(baseline[key]['reference'] != pilot[key]['reference'] for key in allowed_hashes):
+        raise ValueError('Prediction references differ in paired comparison')
+
+    result = {}
+    for metric in ('wer', 'cer'):
+        result[metric] = {
+            'better': sum(pilot[key][metric] < baseline[key][metric] for key in allowed_hashes),
+            'worse': sum(pilot[key][metric] > baseline[key][metric] for key in allowed_hashes),
+            'tie': sum(pilot[key][metric] == baseline[key][metric] for key in allowed_hashes),
+        }
+    result['exact_same_predictions'] = sum(
+        pilot[key].get('prediction', pilot[key].get('hypothesis'))
+        == baseline[key].get('prediction', baseline[key].get('hypothesis'))
+        for key in allowed_hashes
+    )
+    return result
+
+
 def run():
     stage0 = json.loads(STAGE0_REPORT.read_text(encoding='utf-8'))
     selected_name = stage0['selected_checkpoint']
