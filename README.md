@@ -141,10 +141,13 @@ not a defect in the dataset.
 - **104,542 SraVaani machine drafts** cover 104,534 unique recordings. Automated
   quality analysis marks 103,354 standard and 1,188 flagged rows while retaining
   every source row in the active experimental view.
-- **181 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **1,188 confidence-scored recovery alternatives** are integrated beside their
+  immutable SraVaani originals: 30 medium, 35 low, and 1,123 very-low review
+  confidence, with no quarantine or automatic promotion.
+- **207 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
-These figures describe the preparation snapshot updated on 2026-09-13. Raw
+These figures describe the preparation snapshot updated on 2026-09-14. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
 Git through `.gitignore`.
 
@@ -497,6 +500,10 @@ selection rules, exclusions, counts, and leakage checks.
    training-disjoint recordings show SraVaani has lower row-level CER on 369,
    Whisper on 8, with 4 ties. All 1,188 recovery rows now map to an observed
    agreement band; no row is promoted or removed.
+8. [x] **Confidence-aware manifest integration — Medium:** all 104,542 source
+   drafts remain active, with confidence evidence attached to exactly 1,188.
+   The local transcript package exports all 104,534 unique audios without raw
+   paths or audio files and preserves duplicate-source counts.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
@@ -512,6 +519,8 @@ The flagged-draft recovery plan and exact action counts are in
 [`research/sravaani-transcript-recovery-2026-09-13.md`](research/sravaani-transcript-recovery-2026-09-13.md).
 The human-reference audit, agreement calibration, and recovery confidence bands
 are in [`research/sravaani-recovery-confidence-2026-09-13.md`](research/sravaani-recovery-confidence-2026-09-13.md).
+The complete-draft merge and local package audit are in
+[`research/sravaani-confidence-integration-2026-09-14.md`](research/sravaani-confidence-integration-2026-09-14.md).
 The reversible cleanup proposals and fixed-split ablation are in
 [`research/model-assisted-text-cleanup-2026-09-11.md`](research/model-assisted-text-cleanup-2026-09-11.md).
 The first controlled data-scaling curve is in

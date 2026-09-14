@@ -40,12 +40,20 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'speaker_id': 'raw-speaker-id',
             'asr_target_clean': 'गढ़वाली',
             'machine_transcript_quality': {'flags': ['mixed_script']},
+            'recovery_status': 'confidence_scored_alternative_available',
+            'recovery_confidence': {
+                'confidence_band': 'very_low',
+                'confidence_is_accuracy_probability': False,
+                'whisper_candidate': 'गढ़वाली',
+            },
             'duplicate_source_audio_paths': ['private-1.wav', 'private-2.wav'],
         }
         exported = m.audio_row(row, transcript_field='asr_target_clean')
         self.assertEqual(exported['audio'], f'audio/ab/{"ab" * 32}.wav')
         self.assertEqual(exported['transcript'], 'गढ़वाली')
         self.assertEqual(exported['machine_transcript_quality']['flags'], ['mixed_script'])
+        self.assertEqual(exported['recovery_status'], 'confidence_scored_alternative_available')
+        self.assertEqual(exported['recovery_confidence']['confidence_band'], 'very_low')
         self.assertTrue(exported['speaker_id'].startswith('speaker_'))
         self.assertNotEqual(exported['speaker_id'], 'raw-speaker-id')
         self.assertEqual(exported['source_audio_records'], 2)

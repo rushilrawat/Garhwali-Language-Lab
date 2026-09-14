@@ -92,6 +92,7 @@ def audio_row(row, transcript_field, include_audio_reference=True):
         'training_quality_flags', 'review_status',
         'machine_transcript_model', 'machine_transcript_model_revision',
         'machine_transcript_quality',
+        'recovery_status', 'recovery_confidence',
         'experimental_training_eligible', 'training_eligible',
     )
     exported = {key: row.get(key) for key in keep if key in row}
@@ -275,7 +276,9 @@ The `asr` configuration contains human transcripts from VAANI. The
 `sravaani_drafts` configuration contains machine-generated hypotheses from
 `ARTPARK-IISc/SraVaani-1.0` revision
 `f5dd5358325a5208775b91dad98918e079ea2b27`; these are noisy experimental data,
-not human ground truth. Draft export status: **{draft_status}**.
+not human ground truth. Targeted rows also retain their local Whisper alternative,
+cross-model agreement, and bounded review-confidence evidence. Draft export
+status: **{draft_status}**.
 
 This package uses multiple upstream licenses. Inspect each row's provenance
 before redistribution or model release. Full documentation, limitations, and the
@@ -313,15 +316,20 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
         )
 
     queue_path = ROOT / 'data/processed/model_ready/transcripts/untranscribed_queue.jsonl'
+    confidence_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl'
     quality_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl'
-    drafts_path = quality_drafts_path if quality_drafts_path.exists() else (
-        ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl'
+    raw_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl'
+    drafts_path = next(
+        path for path in (
+            confidence_drafts_path, quality_drafts_path, raw_drafts_path
+        ) if path.exists()
     )
     queue = list(read_jsonl(queue_path))
     queue_count = len(queue)
     drafts = list(read_jsonl(drafts_path))
     unique_drafts = list(deduplicate_audio_rows(drafts, 'machine_transcript'))
     report['draft_queue_records'] = queue_count
+    report['draft_source'] = str(drafts_path.relative_to(ROOT))
     report['draft_records'] = len(drafts)
     report['draft_unique_audio'] = len(unique_drafts)
     report['draft_inherited_duplicate_rows'] = len(drafts) - len(unique_drafts)
