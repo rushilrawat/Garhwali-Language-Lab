@@ -488,6 +488,11 @@ selection rules, exclusions, counts, and leakage checks.
 5. [x] **Transcript recovery routing — High:** all 1,188 flagged drafts now have
    deterministic recovery actions; originals remain active, no rows are
    quarantined, and 17 repetition repairs are stored only as reversible candidates.
+6. [x] **Targeted transcript re-decoding — High:** the complete 1,188-record
+   recovery queue has local Whisper alternatives with exact hash coverage and
+   corpus-level failure checks. The comparison finds 1,154 structurally lower-risk
+   alternatives and retains the original as the structural preference for 34.
+   Nothing is automatically promoted; accuracy still requires human references.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
