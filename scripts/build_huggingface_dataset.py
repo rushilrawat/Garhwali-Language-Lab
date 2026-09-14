@@ -160,7 +160,7 @@ def catalog_provenance(item):
     return {key: item.get(key) for key in keep if item.get(key) not in (None, '', [])}
 
 
-def catalog_row(row, include_restricted_text=False):
+def catalog_row(row, include_restricted_text=False, refinement=None):
     items = provenance_items(row)
     text_is_public = bool(items) and all(is_publishable_provenance(item) for item in items)
     text = row.get('text_model') or row.get('text_clean') or row.get('text') or ''
@@ -180,6 +180,14 @@ def catalog_row(row, include_restricted_text=False):
         'quality_v2': row.get('quality_v2'),
         'sources': [catalog_provenance(item) for item in items],
     }
+    if refinement:
+        exported['text_refinement'] = {
+            key: refinement.get(key) for key in (
+                'automatic_changes', 'review_signals', 'manual_review_required',
+                'language_decision', 'quality_refinement_status',
+                'release_text_sha256',
+            )
+        }
     return exported
 
 
@@ -349,10 +357,21 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     quality_catalog = read_jsonl(
         ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
     )
+    refinement_path = ROOT / 'data/processed/model_ready/text_quality_v2/priority_text.jsonl'
+    refinements = {
+        row['text_sha256']: row for row in read_jsonl(refinement_path)
+    } if refinement_path.exists() else {}
     catalog_rows = [
-        catalog_row(row, include_restricted_text=profile == 'experimental-local')
+        catalog_row(
+            row,
+            include_restricted_text=profile == 'experimental-local',
+            refinement=refinements.get(row['text_sha256']),
+        )
         for row in quality_catalog
     ]
+    report['catalog_refined_text_records'] = sum(
+        'text_refinement' in row for row in catalog_rows
+    )
     report['catalog_records'] = len(catalog_rows)
     report['catalog_redacted_text_records'] = sum(
         row['text'] is None for row in catalog_rows

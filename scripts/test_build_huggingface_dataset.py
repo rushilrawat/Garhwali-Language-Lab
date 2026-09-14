@@ -46,12 +46,23 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'rights_status': 'public_webpage_no_open_license_stated',
             }],
         }
-        exported = m.catalog_row(row)
+        exported = m.catalog_row(row, refinement={
+            'automatic_changes': [],
+            'review_signals': ['romanized_text_requires_native_review'],
+            'manual_review_required': True,
+            'language_decision': 'unchanged_pending_native_review',
+            'quality_refinement_status': 'review_required',
+            'release_text_sha256': 'c' * 64,
+        })
         self.assertIsNone(exported['text'])
         self.assertFalse(exported['text_publicly_available'])
         self.assertEqual(exported['text_sha256'], row['text_sha256'])
         self.assertEqual(exported['sources'][0]['source_url'], 'https://example.test/garhwali')
         self.assertEqual(exported['quality_v2']['tier'], 'high_quality_local_only')
+        self.assertEqual(
+            exported['text_refinement']['review_signals'],
+            ['romanized_text_requires_native_review'],
+        )
 
     def test_catalog_includes_open_text(self):
         row = {

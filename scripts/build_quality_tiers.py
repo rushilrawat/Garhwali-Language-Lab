@@ -7,6 +7,8 @@ import json
 from collections import Counter
 from pathlib import Path
 
+from build_huggingface_dataset import is_public_text_row
+
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data/processed/model_ready/quality_v2"
@@ -43,7 +45,7 @@ def text_quality_decision(row):
         reasons.append("low_surface_quality")
     if row.get("cleanup_review_flags") or row.get("deep_cleanup_flags"):
         reasons.append("cleanup_review_required")
-    if not row.get("any_training_eligible_source"):
+    if not is_public_text_row(row):
         reasons.append("no_rights_cleared_training_source")
 
     if not reasons:

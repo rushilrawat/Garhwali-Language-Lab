@@ -13,6 +13,7 @@ class QualityTierTests(unittest.TestCase):
             "cleanup_review_flags": [],
             "deep_cleanup_flags": [],
             "any_training_eligible_source": True,
+            "provenance": [{"license": "CC-BY-4.0"}],
         }
         self.assertEqual(m.text_quality_decision(row)["tier"], "strict_gold_candidate")
         row["language_quality"]["confidence"] = "medium"
@@ -27,6 +28,7 @@ class QualityTierTests(unittest.TestCase):
             "cleanup_review_flags": [],
             "deep_cleanup_flags": [],
             "any_training_eligible_source": False,
+            "provenance": [{"rights_status": "public_webpage_no_open_license_stated"}],
         }
         result = m.text_quality_decision(row)
         self.assertEqual(result["tier"], "high_quality_local_only")

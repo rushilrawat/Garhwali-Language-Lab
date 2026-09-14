@@ -2,10 +2,10 @@
 
 ## Outcome
 
-The first intensive quality pass adds evidence-based tiers to all **27,987 text
-records**, **5,894 human-transcribed speech records**, and **104,542 SraVaani
-machine drafts**. It changes no text or transcript value. Every tier includes
-explicit reasons, so later corrections remain reversible and auditable.
+The intensive quality gate covers all **27,987 exact-unique text records**,
+**5,894 human-transcribed speech records**, and **104,542 SraVaani machine
+drafts**. It changes no linguistic value. Every tier includes explicit reasons,
+so later corrections remain reversible and auditable.
 
 ## Findings
 
@@ -13,14 +13,30 @@ explicit reasons, so later corrections remain reversible and auditable.
 | --- | ---: | ---: | ---: | --- |
 | Human-transcribed speech | 5,881 strict candidates | 13 review | 0 | Existing transcript/training flags |
 | SraVaani machine drafts | 103,354 experimental | 1,188 review | 0 | Script, repetition, empty output, or weak cross-model agreement |
-| Text | 4,790 high-quality local-only | 20,553 review | 2,644 non-strict context | Public-training rights and language confidence do not yet overlap |
+| Text | 1,137 strict public + 3,653 high-quality local-only | 20,553 review | 2,644 non-strict context | Language confidence, cleanup evidence, and source rights |
 
-No text currently satisfies every strict-public rule. This is a real release
-constraint, not a processing failure: only **188** text records report any
-training-eligible source, and all 188 still have medium language confidence;
-184 also carry cleanup-review signals. Conversely, 4,790 clean, high-confidence
-Garhwali candidates fail only the rights-cleared-source requirement and remain
-useful for local research.
+The strict public text seed contains 1,137 records. Another 3,653 clean,
+high-confidence Garhwali candidates fail only the rights-cleared-source rule and
+remain useful for local research. The public Garhwali candidate pool contains
+1,818 records in total; 681 do not yet meet the strict quality gate.
+
+## Public-text refinement
+
+The first value-focused pass inspected all 1,818 public Garhwali candidates.
+It identified 529 records with concrete review signals and 1,289 without an
+additional surface issue:
+
+| Signal | Records | Treatment |
+| --- | ---: | --- |
+| Romanized text requiring native spelling review | 441 | Preserve spelling; request native review |
+| Very short non-lexical fragment | 39 | Verify context before training use |
+| Repeated punctuation | 24 | Review as possible extraction noise |
+| Digits outside numeral resources | 23 | Verify examples and identifiers |
+| Slash-separated variants | 10 | Review boundaries; do not collapse variants |
+
+Short lexicon forms and digits in numeral lexicons are explicitly exempt from
+fragment/digit warnings. No spelling, transliteration, language, or dialect value
+was guessed automatically.
 
 ## Quality policy
 
@@ -34,33 +50,36 @@ useful for local research.
 
 ## Next correction order
 
-1. Review the 188 rights-eligible text records first; they are the shortest path
-   to a defensible public text seed.
+1. Resolve the 681 non-strict public Garhwali candidates, prioritizing the 529
+   records with concrete refinement signals.
 2. Resolve the 13 supervised-speech review records before freezing GarhwaliBench.
 3. Review the 1,188 risky machine drafts using audio and model disagreement;
    never guess corrections from text alone.
-4. Audit the 4,790 high-quality local-only texts source by source for explicit
+4. Audit the 3,653 high-quality local-only texts source by source for explicit
    redistribution and model-training permission.
-5. Sample the 15,160 clean medium-confidence Garhwali candidates by source and
-   promote a source only after native language validation.
+5. Sample clean medium-confidence sources for native language validation and
+   promote a source only when the evidence supports it.
 6. Rebuild tiers, evaluation data, and Hugging Face exports after each accepted
    correction batch.
+
+## Public transparency
+
+The Hugging Face package includes a complete `catalog` configuration for all
+27,987 exact-unique text records. Rights-pending records expose their stable hash,
+source URL, rights status, language evidence, quality tier, and review reasons.
+Only the protected text value is redacted. This makes the full collection visible
+and countable without falsely relicensing third-party content. The catalog also
+exposes the public-text refinement signals without publishing private source text.
 
 ## Reproduction
 
 ```bash
 PYTHONPATH=scripts .venv/bin/python -m unittest scripts/test_build_quality_tiers.py
 .venv/bin/python scripts/build_quality_tiers.py
+PYTHONPATH=scripts .venv/bin/python -m unittest scripts/test_refine_priority_text.py
+.venv/bin/python scripts/refine_priority_text.py
 ```
 
-Generated tiered manifests and the machine-readable report are under
-`data/processed/model_ready/quality_v2/` and remain Git-ignored with the other
-generated datasets.
-
-## Public transparency
-
-The Hugging Face package now includes a complete `catalog` configuration for all
-27,987 exact-unique text records. Rights-pending records expose their stable hash,
-source URL, rights status, language evidence, quality tier, and review reasons.
-Only the protected text value is redacted. This makes the full collection visible
-and countable without falsely relicensing third-party content.
+Generated manifests and reports are under `data/processed/model_ready/quality_v2/`
+and `data/processed/model_ready/text_quality_v2/`. They remain Git-ignored with
+the other generated datasets.

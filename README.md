@@ -486,8 +486,10 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Freeze held-out, automatically screened evaluation candidates before tuning.
 - [x] Add an intensive evidence-based quality gate across all text, supervised
   speech, and SraVaani drafts; preserve every value and attach explicit tier reasons.
-- [ ] Correct and re-review the quality-gate queues, beginning with 188
-  rights-eligible text records, 13 supervised transcripts, and 1,188 risky drafts.
+- [x] Refine all 1,818 public Garhwali text candidates with genre-aware surface
+  checks; identify 529 concrete review targets without guessing linguistic fixes.
+- [ ] Correct and re-review the quality-gate queues, beginning with public
+  Garhwali text candidates, 13 supervised transcripts, and 1,188 risky drafts.
 - [x] Publish a transparency catalog for every collected text record; rights-pending
   rows expose provenance and quality metadata while only the protected text is redacted.
 
