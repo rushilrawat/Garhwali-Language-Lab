@@ -484,6 +484,10 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Make the two-pass native workflow available as an optional future quality
   upgrade without blocking the current release.
 - [x] Freeze held-out, automatically screened evaluation candidates before tuning.
+- [x] Add an intensive evidence-based quality gate across all text, supervised
+  speech, and SraVaani drafts; preserve every value and attach explicit tier reasons.
+- [ ] Correct and re-review the quality-gate queues, beginning with 188
+  rights-eligible text records, 13 supervised transcripts, and 1,188 risky drafts.
 
 ### 10. Release — Medium
 
