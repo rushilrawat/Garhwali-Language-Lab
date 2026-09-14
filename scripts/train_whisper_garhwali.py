@@ -47,7 +47,8 @@ def resolve_evaluation_split(requested, curriculum_stage):
 
 def validate_previous_stage(output, current_stage):
     output = Path(output)
-    report_path = output / 'report.json'
+    sidecar = output / 'curriculum_stage_report.json'
+    report_path = sidecar if sidecar.exists() else output / 'report.json'
     if not report_path.exists():
         raise ValueError(f'Previous-stage report is missing: {report_path}')
     report = json.loads(report_path.read_text(encoding='utf-8'))

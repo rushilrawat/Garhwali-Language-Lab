@@ -66,6 +66,9 @@ def main():
     asr_curriculum_trainer_dry_run = read_optional_json(
         ROOT/'data/processed/model_ready/asr_curriculum/trainer_dry_run_report.json'
     )
+    asr_curriculum_stage0_report = read_optional_json(
+        ROOT/'data/processed/evaluation/asr/curriculum_stage_0/report.json'
+    )
     asr_finetune_report = (
         read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
         or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
@@ -171,6 +174,7 @@ def main():
       'sravaani_confidence_integration_report': sravaani_confidence_integration_report,
       'asr_training_curriculum_report': asr_training_curriculum_report,
       'asr_curriculum_trainer_dry_run': asr_curriculum_trainer_dry_run,
+      'asr_curriculum_stage0_report': asr_curriculum_stage0_report,
       'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',

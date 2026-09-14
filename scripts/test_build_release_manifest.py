@@ -62,6 +62,10 @@ class ReleaseManifestTests(unittest.TestCase):
                     'run_id': 'asr-curriculum-dry-run-test',
                     'status': 'passed',
                 },
+                'data/processed/evaluation/asr/curriculum_stage_0/report.json': {
+                    'run_id': 'asr-stage-0-test',
+                    'selected_checkpoint': 'whisper_tiny_v0.2',
+                },
                 'models/whisper-tiny-garhwali-v0.1/report.json': {'wer': 0.79},
                 'models/whisper-tiny-garhwali-v0.2/report.json': {'wer': 0.74},
             }
@@ -111,6 +115,10 @@ class ReleaseManifestTests(unittest.TestCase):
             self.assertEqual(
                 manifest['asr_curriculum_trainer_dry_run']['status'],
                 'passed',
+            )
+            self.assertEqual(
+                manifest['asr_curriculum_stage0_report']['selected_checkpoint'],
+                'whisper_tiny_v0.2',
             )
             self.assertEqual(manifest['files']['asr_curriculum_train']['records'], 2)
             self.assertIn('vaani_sravaani_transcript_drafts', manifest['experimental_views'])

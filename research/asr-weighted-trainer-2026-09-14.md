@@ -88,9 +88,10 @@ stage evaluates on the 269 human-reference validation recordings and writes a
 `training_complete` report for the next stage. The final 112-record test is run
 only after stage selection by passing `--eval-split test` explicitly.
 
-## Current boundary
+## Stage-0 continuation
 
-This phase validates data selection, weighting, stage continuation, and the
-complete local audio surface. It does not run 106,155 model updates. The next
-compute phase is a controlled stage-0 training run followed by the fixed
-human-only comparison; later stages proceed only when that result is healthy.
+The two existing local checkpoints were trained only on the exact stage-0 human
+data, so the stronger `whisper-tiny-garhwali-v0.2` checkpoint was selected by
+human-only validation CER rather than duplicating its training or weights. The
+equivalence proof, 269-record comparison, and stage-1 readiness check are in
+[`asr-curriculum-stage0-2026-09-14.md`](asr-curriculum-stage0-2026-09-14.md).

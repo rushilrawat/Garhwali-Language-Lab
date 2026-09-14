@@ -86,6 +86,22 @@ class WhisperTrainingTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'model checkpoint'):
                 m.validate_previous_stage(output, 1)
 
+    def test_previous_stage_accepts_explicit_curriculum_sidecar(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)
+            for name in ('config.json', 'processor_config.json', 'tokenizer.json'):
+                (output / name).write_text('{}', encoding='utf-8')
+            (output / 'model.safetensors').write_bytes(b'model')
+            (output / 'report.json').write_text(json.dumps({
+                'training_complete': False,
+            }), encoding='utf-8')
+            (output / 'curriculum_stage_report.json').write_text(json.dumps({
+                'training_complete': True,
+                'curriculum_stage': 0,
+            }), encoding='utf-8')
+            report = m.validate_previous_stage(output, 1)
+            self.assertEqual(report['curriculum_stage'], 0)
+
     def test_dry_run_plan_checks_audio_and_summarizes_tiers(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
