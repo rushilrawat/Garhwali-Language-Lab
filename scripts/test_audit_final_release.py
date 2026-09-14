@@ -21,10 +21,10 @@ class FinalReleaseAuditTests(unittest.TestCase):
             'text/train': [{'id': 'text-a', 'text': 'अ', 'language': 'gbm', 'provenance': provenance}],
             'text/validation': [{'id': 'text-b', 'text': 'ब', 'language': 'gbm', 'provenance': provenance}],
             'text/test': [{'id': 'text-c', 'text': 'क', 'language': 'gbm', 'provenance': provenance}],
-            'asr/train': [{'audio_sha256': 'audio-a', 'speaker_id': 'speaker-a', 'transcript': 'अ', 'source': 'VAANI', 'license': 'CC-BY-4.0'}],
-            'asr/validation': [{'audio_sha256': 'audio-b', 'speaker_id': 'speaker-b', 'transcript': 'ब', 'source': 'VAANI', 'license': 'CC-BY-4.0'}],
-            'asr/test': [{'audio_sha256': 'audio-c', 'speaker_id': 'speaker-c', 'transcript': 'क', 'source': 'VAANI', 'license': 'CC-BY-4.0'}],
-            'sravaani_drafts/train': [{'audio_sha256': 'draft-a', 'transcript': '', 'training_eligible': False, 'experimental_training_eligible': True, 'machine_transcript_quality': {'level': 'high_risk'}}],
+            'asr/train': [{'audio': 'audio/audio-a.wav', 'audio_sha256': 'audio-a', 'speaker_id': 'speaker-a', 'transcript': 'अ', 'source': 'VAANI', 'license': 'CC-BY-4.0'}],
+            'asr/validation': [{'audio': 'audio/audio-b.wav', 'audio_sha256': 'audio-b', 'speaker_id': 'speaker-b', 'transcript': 'ब', 'source': 'VAANI', 'license': 'CC-BY-4.0'}],
+            'asr/test': [{'audio': 'audio/audio-c.wav', 'audio_sha256': 'audio-c', 'speaker_id': 'speaker-c', 'transcript': 'क', 'source': 'VAANI', 'license': 'CC-BY-4.0'}],
+            'sravaani_drafts/train': [{'audio': 'audio/draft-a.wav', 'audio_sha256': 'draft-a', 'transcript': '', 'training_eligible': False, 'experimental_training_eligible': True, 'machine_transcript_quality': {'level': 'high_risk'}}],
             'lexicon/train': [{'form': 'अ', 'provenance': provenance}],
             'instructions/train': [{'instruction': 'a', 'response': 'b', 'provenance': provenance}],
             'instructions/validation': [{'instruction': 'c', 'response': 'd', 'provenance': provenance}],
@@ -36,6 +36,7 @@ class FinalReleaseAuditTests(unittest.TestCase):
             write_jsonl(root / 'data' / config / name, content)
             configs[key] = {'files': [name], 'records': len(content), 'shards': 1}
         manifest = {
+            'release_id': 'candidate',
             'configs': configs,
             'draft_queue_records': 1,
             'draft_records': 1,
@@ -82,6 +83,18 @@ class FinalReleaseAuditTests(unittest.TestCase):
         self.assertEqual(report['status'], 'failed')
         self.assertIn('text IDs overlap across train and test', report['errors'])
         self.assertIn('text/test has 1 rows without provenance', report['errors'])
+
+    def test_requires_every_audio_file_when_audio_is_included(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            manifest_path = root / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text())
+            manifest['include_audio'] = True
+            manifest_path.write_text(json.dumps(manifest))
+            report = m.audit(index, root)
+        self.assertEqual(report['status'], 'failed')
+        self.assertIn('4 referenced audio files are missing', report['errors'])
 
 
 if __name__ == '__main__':

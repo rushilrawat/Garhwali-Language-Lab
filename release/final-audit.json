@@ -1,4 +1,11 @@
 {
+  "audio": {
+    "included": true,
+    "missing_files": 0,
+    "present_files": 106536,
+    "referenced_unique_files": 106536,
+    "unexpected_files": 0
+  },
   "audit_id": "garhwali-final-release-audit-v0.1",
   "configs": {
     "asr/test": 112,
@@ -37,10 +44,9 @@
     "missing_rows": 0,
     "public_rights_failures": 0
   },
-  "release_id": "garhwali-language-lab-v0.1.0-candidate.1",
+  "release_id": "garhwali-language-lab-v0.1.0",
   "status": "passed",
   "warnings": [
-    "metadata_only_audio_paths",
     "inherited_source_audio_duplicates_collapsed",
     "empty_machine_drafts_retained_with_quality_flags"
   ]

@@ -560,7 +560,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **183 passing tests**, **365 verified source
+The current verification result is **185 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release
@@ -591,6 +591,8 @@ The generated `README.md` is the Hugging Face dataset card, while
 `manifest.json` records configuration counts, shard names, draft completeness,
 and whether audio was included. The complete experimental profile remains local
 because source access does not automatically grant public redistribution rights.
+The published rights-filtered release is versioned as `v0.1.0`; its tracked
+index is [`release/v0.1.0-manifest.json`](release/v0.1.0-manifest.json).
 
 ## 🤝 Contributing
 

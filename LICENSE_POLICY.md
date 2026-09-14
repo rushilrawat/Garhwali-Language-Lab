@@ -46,6 +46,7 @@ owner, contributor, or speaker can submit a removal request using the source or
 audio identifier; derived records and future releases must carry the resulting
 exclusion while preserving a private audit entry.
 
-The current `v0.1.0-candidate.1` release is an internal research candidate. Its
-evaluation rows and pronunciation/TTS resources retain optional native-review metadata, and
-it is not a blanket public redistribution grant for the local corpus.
+The public `v0.1.0` release contains only the rights-filtered Hugging Face export.
+Evaluation rows and pronunciation/TTS resources retain optional native-review
+metadata. This release does not grant redistribution rights for the complete
+local corpus.

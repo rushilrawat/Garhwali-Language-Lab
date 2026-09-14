@@ -13,7 +13,7 @@ from validate_release_index import validate
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX = ROOT / 'release/candidate-manifest.json'
+DEFAULT_INDEX = ROOT / 'release/v0.1.0-manifest.json'
 DEFAULT_DATASET = ROOT / 'data/huggingface/garhwali-language-lab'
 DEFAULT_OUTPUT = ROOT / 'release/final-audit.json'
 REQUIRED_CONFIGS = {
@@ -50,6 +50,8 @@ def audit(index, dataset_root):
         return {'status': 'failed', 'errors': errors + ['Hugging Face manifest is missing'], 'warnings': warnings}
 
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+    if manifest.get('release_id') != index.get('release_id'):
+        errors.append('Hugging Face release ID does not match release index')
     missing_configs = sorted(REQUIRED_CONFIGS - set(manifest.get('configs', {})))
     if missing_configs:
         errors.append(f'missing configs: {", ".join(missing_configs)}')
@@ -61,6 +63,7 @@ def audit(index, dataset_root):
     provenance_missing = 0
     rights_failures = 0
     asr_metadata_missing = 0
+    expected_audio = set()
     draft_hashes = set()
     draft_rows = 0
     empty_drafts = 0
@@ -97,6 +100,7 @@ def audit(index, dataset_root):
             provenance_missing += missing
             rights_failures += rights
         elif group == 'asr':
+            expected_audio.update(row.get('audio') for row in rows if row.get('audio'))
             asr_hashes[split] = {row.get('audio_sha256') for row in rows}
             asr_speakers[split] = {
                 row.get('speaker_id') for row in rows
@@ -123,6 +127,7 @@ def audit(index, dataset_root):
             provenance_missing += missing
             rights_failures += rights
         elif group == 'sravaani_drafts':
+            expected_audio.update(row.get('audio') for row in rows if row.get('audio'))
             draft_rows += len(rows)
             for row in rows:
                 digest = row.get('audio_sha256')
@@ -163,7 +168,22 @@ def audit(index, dataset_root):
         errors.append('exported draft rows do not match unique-audio count')
     if not manifest.get('drafts_complete'):
         errors.append('SraVaani draft coverage is incomplete')
-    if not manifest.get('include_audio'):
+    audio_files = set()
+    if (dataset_root / 'audio').exists():
+        audio_files = {
+            path.relative_to(dataset_root).as_posix()
+            for path in (dataset_root / 'audio').rglob('*.wav')
+        }
+    missing_audio = expected_audio - audio_files
+    unexpected_audio = audio_files - expected_audio
+    if manifest.get('include_audio'):
+        if missing_audio:
+            errors.append(f'{len(missing_audio)} referenced audio files are missing')
+        if unexpected_audio:
+            errors.append(f'{len(unexpected_audio)} unexpected audio files are present')
+        if manifest.get('linked_audio_files') != len(expected_audio):
+            errors.append('linked audio count does not match referenced unique audio')
+    else:
         warnings.append('metadata_only_audio_paths')
     if manifest.get('draft_inherited_duplicate_rows'):
         warnings.append('inherited_source_audio_duplicates_collapsed')
@@ -179,6 +199,13 @@ def audit(index, dataset_root):
         'warnings': warnings,
         'configs': actual_counts,
         'exported_rows': sum(actual_counts.values()),
+        'audio': {
+            'included': bool(manifest.get('include_audio')),
+            'referenced_unique_files': len(expected_audio),
+            'present_files': len(audio_files),
+            'missing_files': len(missing_audio),
+            'unexpected_files': len(unexpected_audio),
+        },
         'provenance': {
             'missing_rows': provenance_missing,
             'public_rights_failures': rights_failures,

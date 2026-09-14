@@ -13,6 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab'
+RELEASE_ID = 'garhwali-language-lab-v0.1.0'
 OPEN_LICENSE_MARKERS = (
     'cc0', 'creativecommons.org/publicdomain', 'cc-by-', 'cc_by_',
     '/licenses/by/', '/licenses/by-sa/', 'mit', 'apache-2.0',
@@ -160,7 +161,7 @@ def link_audio(rows, output):
         if not target.exists():
             os.link(source, target)
             linked += 1
-    return linked
+    return {'new': linked, 'total': len(seen)}
 
 
 def sha256_file(path):
@@ -173,6 +174,7 @@ def sha256_file(path):
 
 def dataset_card(report):
     draft_status = 'complete' if report['drafts_complete'] else 'partial'
+    exported_rows = sum(item['records'] for item in report['configs'].values())
     return f'''---
 language:
 - gbm
@@ -218,8 +220,15 @@ configs:
 
 # Garhwali Language Lab
 
+Release: **{report['release_id']}**
+
 Versioned Garhwali (`gbm`) text, speech, lexicon, and instruction resources built
 by the Garhwali Language Lab. Every row retains source and license evidence.
+
+This rights-filtered package contains **{exported_rows:,} records** across five
+configurations, including **{report['draft_unique_audio']:,} unique SraVaani
+draft recordings** and **{report['linked_audio_files']:,} content-addressed audio
+files** when audio is included.
 
 The `asr` configuration contains human transcripts from VAANI. The
 `sravaani_drafts` configuration contains machine-generated hypotheses from
@@ -227,15 +236,21 @@ The `asr` configuration contains human transcripts from VAANI. The
 `f5dd5358325a5208775b91dad98918e079ea2b27`; these are noisy experimental data,
 not human ground truth. Draft export status: **{draft_status}**.
 
-This package uses multiple upstream licenses. Inspect each row's provenance and
-the repository's full dataset card before redistribution or model release.
+This package uses multiple upstream licenses. Inspect each row's provenance
+before redistribution or model release. Full documentation, limitations, and the
+release audit are in the [source repository](https://github.com/rushilrawat/Garhwali-Language-Lab).
 '''
 
 
 def build(output, profile='public', include_audio=False, allow_partial_drafts=False,
           shard_rows=10_000):
     output = Path(output)
-    report = {'profile': profile, 'include_audio': include_audio, 'configs': {}}
+    report = {
+        'release_id': RELEASE_ID,
+        'profile': profile,
+        'include_audio': include_audio,
+        'configs': {},
+    }
 
     text_dir = ROOT / 'data/processed/model_ready/splits/text'
     for split in ('train', 'validation', 'test'):
@@ -299,7 +314,9 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
             rows, output / 'data/instructions', split, shard_rows,
         )
 
-    report['linked_audio_files'] = link_audio(audio_sources, output) if include_audio else 0
+    link_report = link_audio(audio_sources, output) if include_audio else {'new': 0, 'total': 0}
+    report['linked_audio_files'] = link_report['total']
+    report['newly_linked_audio_files'] = link_report['new']
     output.mkdir(parents=True, exist_ok=True)
     (output / 'README.md').write_text(dataset_card(report), encoding='utf-8')
     (output / 'manifest.json').write_text(

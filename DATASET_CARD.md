@@ -8,14 +8,15 @@ folklore, folk songs, educational material, historical linguistics, community
 writing, and cultural context without erasing source rights or uncertain language
 labels.
 
-The current release is `garhwali-language-lab-v0.1.0-candidate.1`, an integrated
-experimental release. Every collected record is active locally with quality and
-rights metadata retained. Public redistribution remains limited to compatible
-source terms.
+The current release is `garhwali-language-lab-v0.1.0`. Every collected record
+remains active locally with quality and rights metadata retained. Its public
+Hugging Face package contains only records with compatible redistribution terms.
+The public package is available at
+[`rushilrawat/garhwali-language-lab`](https://huggingface.co/datasets/rushilrawat/garhwali-language-lab).
 
 ## Current scale
 
-| Resource | Current candidate |
+| Resource | Current release |
 | --- | ---: |
 | Exact-unique parent texts | 27,987 |
 | Sentence segments | 86,215 |
@@ -83,7 +84,7 @@ Garhwali training text merely because they concern Garhwal.
 
 ## Intended uses
 
-The candidate supports corpus research, language correction, language identification,
+The release supports corpus research, language correction, language identification,
 tokenizer experiments, ASR/TTS preparation, lexicon building, and evaluation-set
 design. Public or production use must select only records allowed by
 [`LICENSE_POLICY.md`](LICENSE_POLICY.md) and must retain attribution.
@@ -142,7 +143,7 @@ publish raw caches, reference images, or private reviewer identities.
 
 Run the preparation commands in [`README.md`](README.md). Machine-generated data
 stays under `data/processed/`; the tracked release summary is
-[`release/candidate-manifest.json`](release/candidate-manifest.json). The full
+[`release/v0.1.0-manifest.json`](release/v0.1.0-manifest.json). The full
 test suite, release-index validator, leakage checks, and source-freshness workflow
 run in GitHub Actions.
 

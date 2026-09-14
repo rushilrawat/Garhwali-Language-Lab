@@ -69,6 +69,22 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertEqual(len(merged), 1)
         self.assertEqual(merged[0]['duplicate_source_audio_paths'], ['one.wav', 'two.wav'])
 
+    def test_audio_link_report_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'source.wav'
+            source.write_bytes(b'audio')
+            old_root = m.ROOT
+            try:
+                m.ROOT = root
+                row = {'audio_sha256': 'ab' * 32, 'local_audio_path': 'source.wav'}
+                first = m.link_audio([row], root / 'package')
+                second = m.link_audio([row], root / 'package')
+            finally:
+                m.ROOT = old_root
+        self.assertEqual(first, {'new': 1, 'total': 1})
+        self.assertEqual(second, {'new': 0, 'total': 1})
+
 
 if __name__ == '__main__':
     unittest.main()

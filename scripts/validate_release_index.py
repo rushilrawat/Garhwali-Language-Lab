@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX = ROOT / 'release/candidate-manifest.json'
+DEFAULT_INDEX = ROOT / 'release/v0.1.0-manifest.json'
 
 
 def validate(index):
