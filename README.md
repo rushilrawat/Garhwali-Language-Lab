@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-213%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-221%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -147,7 +147,10 @@ not a defect in the dataset.
 - **106,155-row confidence-aware ASR curriculum:** 1,621 human references plus
   all 104,534 unique machine-labelled recordings, with human-only validation and
   test sets, zero audio leakage, and zero empty targets.
-- **213 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **Full curriculum trainer dry run:** all 106,155 training rows and 269
+  validation rows resolve to local audio, with zero empty targets, duplicate
+  training hashes, or missing files and 3,241.999999 total effective loss mass.
+- **221 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
 These figures describe the preparation snapshot updated on 2026-09-14. Raw
@@ -445,6 +448,9 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Build a five-stage, confidence-weighted ASR curriculum that retains every
   unique machine-labelled recording while capping total machine loss mass at the
   human-reference training mass.
+- [x] Teach the Whisper trainer to select curriculum stages, optimize weighted
+  per-record loss, verify predecessor checkpoints, and run without model
+  dependencies in validation-only mode.
 
 ### 9. Testing and review — High
 
@@ -515,6 +521,11 @@ selection rules, exclusions, counts, and leakage checks.
    recordings across five stages. Machine loss mass equals the human-reference
    mass; validation and test remain human-only, with zero audio leakage and zero
    empty targets.
+10. [x] **Weighted trainer dry run — High:** stage selection, positive sample
+    weights, stage-to-stage checkpoint validation, and legacy strict-split
+    compatibility are implemented. The complete stage-4 dry run passes with no
+    missing audio, empty targets, or duplicate training hashes; curriculum runs
+    use human-only validation by default and reserve the final test split.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
@@ -534,6 +545,8 @@ The complete-draft merge and local package audit are in
 [`research/sravaani-confidence-integration-2026-09-14.md`](research/sravaani-confidence-integration-2026-09-14.md).
 The staged selection, weight budget, and leakage audit are in
 [`research/asr-training-curriculum-2026-09-14.md`](research/asr-training-curriculum-2026-09-14.md).
+The trainer behavior and full dependency-free dry run are in
+[`research/asr-weighted-trainer-2026-09-14.md`](research/asr-weighted-trainer-2026-09-14.md).
 The reversible cleanup proposals and fixed-split ablation are in
 [`research/model-assisted-text-cleanup-2026-09-11.md`](research/model-assisted-text-cleanup-2026-09-11.md).
 The first controlled data-scaling curve is in
@@ -591,6 +604,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 .venv/bin/python scripts/verify_ingestion.py
 .venv/bin/python scripts/build_huggingface_dataset.py
 .venv/bin/python scripts/build_asr_training_curriculum.py
+.venv/bin/python scripts/train_whisper_garhwali.py --curriculum-stage 4 --dry-run
 .venv/bin/python scripts/audit_final_release.py
 git diff --check
 ```
@@ -599,7 +613,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **213 passing tests**, **365 verified source
+The current verification result is **221 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release

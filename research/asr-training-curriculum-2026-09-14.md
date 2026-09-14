@@ -67,9 +67,10 @@ machine weight mass, or an audio record with no non-empty transcript candidate.
 Generated data remains outside Git; the builder, tests, report integration, and
 this methodology note are tracked.
 
-## Remaining step
+## Trainer integration
 
-The existing Whisper trainer still consumes the earlier strict supervised
-manifests. The next implementation phase must teach it to select curriculum
-stages, apply `sample_weight` to per-example loss, resume safely between stages,
-and complete a small dry run before any costly full-corpus training.
+The Whisper trainer now selects curriculum stages, applies `sample_weight` to
+each single-record loss, verifies immediate-predecessor checkpoints between
+stages, and provides a dependency-free full-manifest dry run. Implementation and
+validation results are documented in
+[`asr-weighted-trainer-2026-09-14.md`](asr-weighted-trainer-2026-09-14.md).
