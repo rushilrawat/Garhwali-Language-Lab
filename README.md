@@ -485,6 +485,9 @@ selection rules, exclusions, counts, and leakage checks.
    reducing WER by 42.45% relative to the best local Whisper checkpoint. The
    resumable full pass produced drafts for all 104,542 untranscribed source rows,
    covering 104,534 unique recordings with zero missing audio hashes.
+5. [x] **Transcript recovery routing — High:** all 1,188 flagged drafts now have
+   deterministic recovery actions; originals remain active, no rows are
+   quarantined, and 17 repetition repairs are stored only as reversible candidates.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
@@ -496,6 +499,8 @@ The XORQA lexical and IndicBERTv2 results are in
 [`research/retrieval-baseline-2026-09-11.md`](research/retrieval-baseline-2026-09-11.md).
 The complete local ASR comparison and SraVaani access status are in
 [`research/speech-baseline-comparison-2026-09-11.md`](research/speech-baseline-comparison-2026-09-11.md).
+The flagged-draft recovery plan and exact action counts are in
+[`research/sravaani-transcript-recovery-2026-09-13.md`](research/sravaani-transcript-recovery-2026-09-13.md).
 The reversible cleanup proposals and fixed-split ablation are in
 [`research/model-assisted-text-cleanup-2026-09-11.md`](research/model-assisted-text-cleanup-2026-09-11.md).
 The first controlled data-scaling curve is in
@@ -560,7 +565,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **187 passing tests**, **365 verified source
+The current verification result is **189 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release
