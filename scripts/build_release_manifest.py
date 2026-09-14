@@ -60,6 +60,9 @@ def main():
     sravaani_confidence_integration_report = read_optional_json(
         ROOT/'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware_report.json'
     )
+    asr_training_curriculum_report = read_optional_json(
+        ROOT/'data/processed/model_ready/asr_curriculum/report.json'
+    )
     asr_finetune_report = (
         read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.2/report.json')
         or read_optional_json(ROOT/'models/whisper-tiny-garhwali-v0.1/report.json')
@@ -130,6 +133,10 @@ def main():
       'vaani_sravaani_transcript_drafts': 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl',
       'vaani_sravaani_transcript_quality': 'data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl',
       'vaani_sravaani_confidence_aware': 'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl',
+      'asr_curriculum_train': 'data/processed/model_ready/asr_curriculum/train.jsonl',
+      'asr_curriculum_validation': 'data/processed/model_ready/asr_curriculum/validation.jsonl',
+      'asr_curriculum_test': 'data/processed/model_ready/asr_curriculum/test.jsonl',
+      'asr_curriculum_stage_plan': 'data/processed/model_ready/asr_curriculum/stage_plan.json',
     }
     entries = {}
     for name, rel in files.items():
@@ -159,6 +166,7 @@ def main():
       'sravaani_report': sravaani_report,
       'sravaani_draft_quality_report': sravaani_draft_quality_report,
       'sravaani_confidence_integration_report': sravaani_confidence_integration_report,
+      'asr_training_curriculum_report': asr_training_curriculum_report,
       'asr_finetune_report': asr_finetune_report,
       'files': entries,
       'raw_data_policy': 'raw downloads and caches remain gitignored',
@@ -176,6 +184,7 @@ def main():
         'vaani_sravaani_transcript_drafts',
         'vaani_sravaani_transcript_quality',
         'vaani_sravaani_confidence_aware',
+        'asr_curriculum_train',
       ],
     }
     out = ROOT/'data/processed/release'; out.mkdir(parents=True, exist_ok=True)

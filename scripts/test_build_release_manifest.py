@@ -55,6 +55,9 @@ class ReleaseManifestTests(unittest.TestCase):
                 'data/processed/evaluation/asr/whisper_small_zero_shot/report.json': {
                     'run_id': 'whisper-small-zero-shot-test',
                 },
+                'data/processed/model_ready/asr_curriculum/report.json': {
+                    'run_id': 'asr-curriculum-test',
+                },
                 'models/whisper-tiny-garhwali-v0.1/report.json': {'wer': 0.79},
                 'models/whisper-tiny-garhwali-v0.2/report.json': {'wer': 0.74},
             }
@@ -71,6 +74,9 @@ class ReleaseManifestTests(unittest.TestCase):
             long_form_path = root / 'data/processed/long_form_audio/manifest.jsonl'
             long_form_path.parent.mkdir(parents=True, exist_ok=True)
             long_form_path.write_text('{}\n{}\n{}\n', encoding='utf-8')
+            curriculum_path = root / 'data/processed/model_ready/asr_curriculum/train.jsonl'
+            curriculum_path.parent.mkdir(parents=True, exist_ok=True)
+            curriculum_path.write_text('{}\n{}\n', encoding='utf-8')
 
             with patch.object(m, 'ROOT', root):
                 with redirect_stdout(io.StringIO()):
@@ -94,8 +100,14 @@ class ReleaseManifestTests(unittest.TestCase):
             self.assertEqual(manifest['whisper_tiny_zero_shot_report']['run_id'], 'whisper-tiny-zero-shot-test')
             self.assertEqual(manifest['whisper_small_zero_shot_report']['run_id'], 'whisper-small-zero-shot-test')
             self.assertEqual(manifest['asr_finetune_report']['wer'], 0.74)
+            self.assertEqual(
+                manifest['asr_training_curriculum_report']['run_id'],
+                'asr-curriculum-test',
+            )
+            self.assertEqual(manifest['files']['asr_curriculum_train']['records'], 2)
             self.assertIn('vaani_sravaani_transcript_drafts', manifest['experimental_views'])
             self.assertIn('vaani_sravaani_transcript_quality', manifest['experimental_views'])
+            self.assertIn('asr_curriculum_train', manifest['experimental_views'])
 
 
 if __name__ == '__main__':
