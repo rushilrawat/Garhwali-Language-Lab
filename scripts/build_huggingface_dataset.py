@@ -188,6 +188,8 @@ def catalog_row(row, include_restricted_text=False, refinement=None):
                 'release_text_sha256',
             )
         }
+        if text_is_public or include_restricted_text:
+            exported['text_refinement']['release_text'] = refinement.get('release_text')
     return exported
 
 

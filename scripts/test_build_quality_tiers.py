@@ -34,6 +34,48 @@ class QualityTierTests(unittest.TestCase):
         self.assertEqual(result["tier"], "high_quality_local_only")
         self.assertFalse(result["value_changed"])
 
+    def test_resolved_cleanup_flags_allow_strict_promotion(self):
+        row = {
+            "text": "'''गढ़वाली'''",
+            "language_bucket": "garhwali_candidate",
+            "language_quality": {"confidence": "high", "review_required": False},
+            "quality": {"quality_band": "review"},
+            "cleanup_review_flags": ["html_markup"],
+            "deep_cleanup_flags": [],
+            "provenance": [{"license": "CC-BY-4.0"}],
+        }
+        refinement = {
+            "release_text": "गढ़वाली",
+            "remaining_cleanup_flags": [],
+            "review_signals": [],
+            "manual_review_required": False,
+        }
+        result = m.text_quality_decision(row, refinement)
+        self.assertEqual(result["tier"], "strict_gold_candidate")
+        self.assertTrue(result["value_changed"])
+
+    def test_resolved_short_lexicon_is_not_low_surface_quality(self):
+        row = {
+            "text": "तू",
+            "language_bucket": "garhwali_candidate",
+            "language_quality": {"confidence": "high", "review_required": False},
+            "quality": {"quality_band": "low"},
+            "cleanup_review_flags": ["very_short"],
+            "deep_cleanup_flags": [],
+            "provenance": [{"license": "CC-BY-4.0"}],
+        }
+        refinement = {
+            "release_text": "तू",
+            "resolved_cleanup_flags": ["very_short"],
+            "remaining_cleanup_flags": [],
+            "review_signals": [],
+            "manual_review_required": False,
+        }
+        self.assertEqual(
+            m.text_quality_decision(row, refinement)["tier"],
+            "strict_gold_candidate",
+        )
+
     def test_supervised_speech_rejects_flagged_or_bad_audio(self):
         row = {
             "asr_target": "गढ़वाली पाठ",

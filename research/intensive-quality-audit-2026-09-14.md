@@ -13,30 +13,32 @@ so later corrections remain reversible and auditable.
 | --- | ---: | ---: | ---: | --- |
 | Human-transcribed speech | 5,881 strict candidates | 13 review | 0 | Existing transcript/training flags |
 | SraVaani machine drafts | 103,354 experimental | 1,188 review | 0 | Script, repetition, empty output, or weak cross-model agreement |
-| Text | 1,137 strict public + 3,653 high-quality local-only | 20,553 review | 2,644 non-strict context | Language confidence, cleanup evidence, and source rights |
+| Text | 1,188 strict public + 3,653 high-quality local-only | 20,502 review | 2,644 non-strict context | Language confidence, cleanup evidence, and source rights |
 
-The strict public text seed contains 1,137 records. Another 3,653 clean,
+The strict public text seed contains 1,188 records. Another 3,653 clean,
 high-confidence Garhwali candidates fail only the rights-cleared-source rule and
 remain useful for local research. The public Garhwali candidate pool contains
-1,818 records in total; 681 do not yet meet the strict quality gate.
+1,818 records in total; 630 do not yet meet the strict quality gate.
 
 ## Public-text refinement
 
 The first value-focused pass inspected all 1,818 public Garhwali candidates.
-It identified 529 records with concrete review signals and 1,289 without an
+It identified 495 records with concrete review signals and 1,323 without an
 additional surface issue:
 
 | Signal | Records | Treatment |
 | --- | ---: | --- |
 | Romanized text requiring native spelling review | 441 | Preserve spelling; request native review |
 | Very short non-lexical fragment | 39 | Verify context before training use |
-| Repeated punctuation | 24 | Review as possible extraction noise |
-| Digits outside numeral resources | 23 | Verify examples and identifiers |
-| Slash-separated variants | 10 | Review boundaries; do not collapse variants |
+| Accidental-looking double/repeated punctuation | 14 | Review as possible extraction noise; valid ellipses are exempt |
+| Short slash-separated variants | 3 | Review boundaries; long sentences containing slashes are exempt |
 
 Short lexicon forms and digits in numeral lexicons are explicitly exempt from
-fragment/digit warnings. No spelling, transliteration, language, or dialect value
-was guessed automatically.
+fragment warnings. Seven release values had unambiguous orphan wiki markup removed,
+while their originals remain preserved. The pass resolved 24 HTML-markup, 96 stale
+mixed-script, 50 valid short-lexicon, and one stale URL flag. These evidence-backed
+resolutions promoted 51 records into the strict tier. No spelling, transliteration,
+language, or dialect value was guessed automatically.
 
 ## Quality policy
 
@@ -50,8 +52,8 @@ was guessed automatically.
 
 ## Next correction order
 
-1. Resolve the 681 non-strict public Garhwali candidates, prioritizing the 529
-   records with concrete refinement signals.
+1. Resolve the 630 non-strict public Garhwali candidates: 616 require source/native
+   language validation and 14 high-confidence records retain content anomalies.
 2. Resolve the 13 supervised-speech review records before freezing GarhwaliBench.
 3. Review the 1,188 risky machine drafts using audio and model disagreement;
    never guess corrections from text alone.

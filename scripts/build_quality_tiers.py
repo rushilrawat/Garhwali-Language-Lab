@@ -28,7 +28,7 @@ def write_jsonl(path, rows):
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
 
 
-def text_quality_decision(row):
+def text_quality_decision(row, refinement=None):
     reasons = []
     language = row.get("language_quality") or {}
     quality = row.get("quality") or {}
@@ -41,9 +41,23 @@ def text_quality_decision(row):
         reasons.append("language_confidence_not_high")
     if language.get("review_required"):
         reasons.append("language_review_required")
-    if quality.get("quality_band") == "low":
+    resolved_short_lexicon = bool(
+        refinement
+        and "very_short" in (refinement.get("resolved_cleanup_flags") or [])
+        and not refinement.get("manual_review_required")
+    )
+    if quality.get("quality_band") == "low" and not resolved_short_lexicon:
         reasons.append("low_surface_quality")
-    if row.get("cleanup_review_flags") or row.get("deep_cleanup_flags"):
+    cleanup_review_required = bool(
+        row.get("cleanup_review_flags") or row.get("deep_cleanup_flags")
+    )
+    if refinement is not None:
+        cleanup_review_required = bool(
+            refinement.get("remaining_cleanup_flags")
+            or refinement.get("review_signals")
+            or refinement.get("manual_review_required")
+        )
+    if cleanup_review_required:
         reasons.append("cleanup_review_required")
     if not is_public_text_row(row):
         reasons.append("no_rights_cleared_training_source")
@@ -58,7 +72,9 @@ def text_quality_decision(row):
         tier = "high_quality_local_only"
     else:
         tier = "experimental_review"
-    return {"tier": tier, "reasons": reasons, "value_changed": False}
+    original = row.get("text_model") or row.get("text_clean") or row.get("text") or ""
+    release = refinement.get("release_text", original) if refinement else original
+    return {"tier": tier, "reasons": reasons, "value_changed": release != original}
 
 
 def supervised_quality_decision(row):
@@ -128,8 +144,15 @@ def summarize(counts, reasons):
 
 
 def main():
+    refinement_path = ROOT / 'data/processed/model_ready/text_quality_v2/priority_text.jsonl'
+    refinements = {
+        row['text_sha256']: row for row in read_jsonl(refinement_path)
+    } if refinement_path.exists() else {}
     sources = {
-        "text": (ROOT / "data/processed/model_ready/language_quality/text.jsonl", text_quality_decision),
+        "text": (
+            ROOT / "data/processed/model_ready/language_quality/text.jsonl",
+            lambda row: text_quality_decision(row, refinements.get(row['text_sha256'])),
+        ),
         "supervised_speech": (ROOT / "data/processed/model_ready/transcripts/supervised.jsonl", supervised_quality_decision),
         "machine_drafts": (ROOT / "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl", draft_quality_decision),
     }

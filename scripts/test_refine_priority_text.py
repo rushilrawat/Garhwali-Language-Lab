@@ -77,6 +77,45 @@ class PriorityTextRefinementTests(unittest.TestCase):
         self.assertNotIn('very_short_fragment', lexical['review_signals'])
         self.assertNotIn('contains_digits', numeral['review_signals'])
 
+    def test_removes_wiki_markup_only_from_flagged_release_text(self):
+        result = m.refine_row({
+            'text_sha256': '1' * 64,
+            'text_model': "'''गढ़वाली''' =भाखा= * पाठ ] }",
+            'cleanup_review_flags': ['html_markup', 'mixed_latin_devanagari'],
+            'language_quality': {'script_profile': {'script': 'Deva'}},
+            'genre_quality': {'tags': ['encyclopedia']},
+            'provenance': [],
+        })
+        self.assertEqual(result['release_text'], 'गढ़वाली भाखा पाठ')
+        self.assertIn('wiki_markup_removed', result['automatic_changes'])
+        self.assertIn('html_markup', result['resolved_cleanup_flags'])
+        self.assertIn('mixed_latin_devanagari', result['resolved_cleanup_flags'])
+        self.assertEqual(result['remaining_cleanup_flags'], [])
+        self.assertEqual(result['quality_refinement_status'], 'mechanically_cleaned')
+
+    def test_does_not_strip_unflagged_apostrophes_or_ellipsis(self):
+        text = "हां... 'पाठ'"
+        result = m.refine_row({
+            'text_sha256': '2' * 64,
+            'text_model': text,
+            'cleanup_review_flags': [],
+            'language_quality': {'script_profile': {'script': 'Deva'}},
+            'genre_quality': {'tags': ['sentence']},
+            'provenance': [],
+        })
+        self.assertEqual(result['release_text'], text)
+        self.assertNotIn('repeated_punctuation', result['review_signals'])
+
+    def test_long_sentence_with_slash_is_not_treated_as_variant_list(self):
+        result = m.refine_row({
+            'text_sha256': '3' * 64,
+            'text_model': 'स्विम ट्रंक/शॉर्ट्स मर्दों खातिर अलग प्रकार का कपड़ा छन।',
+            'language_quality': {'script_profile': {'script': 'Deva'}},
+            'genre_quality': {'tags': ['sentence']},
+            'provenance': [],
+        })
+        self.assertNotIn('slash_separated_variants', result['review_signals'])
+
 
 if __name__ == '__main__':
     unittest.main()

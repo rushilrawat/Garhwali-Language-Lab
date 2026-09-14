@@ -487,7 +487,8 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Add an intensive evidence-based quality gate across all text, supervised
   speech, and SraVaani drafts; preserve every value and attach explicit tier reasons.
 - [x] Refine all 1,818 public Garhwali text candidates with genre-aware surface
-  checks; identify 529 concrete review targets without guessing linguistic fixes.
+  checks; remove seven unambiguous markup residues and promote 51 records, yielding
+  1,188 strict public candidates and 630 remaining review records.
 - [ ] Correct and re-review the quality-gate queues, beginning with public
   Garhwali text candidates, 13 supervised transcripts, and 1,188 risky drafts.
 - [x] Publish a transparency catalog for every collected text record; rights-pending
