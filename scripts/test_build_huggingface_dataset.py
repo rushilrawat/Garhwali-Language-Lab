@@ -102,6 +102,14 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'language_scope_status': 'source_label_conflict',
             'source_conflict_evidence': {'human_bengali_transcripts': 8},
             'active_for_source_error_analysis': True,
+            'recovery_adjudication': {
+                'evidence_status': 'related_checkpoint_consensus_clean',
+                'automatic_correction': False,
+            },
+            'recovery_third_checkpoint': {
+                'transcript': 'गढ़वाली',
+                'confidence_is_calibrated': False,
+            },
         }
         exported = m.audio_row(row, transcript_field='asr_target_clean')
         self.assertEqual(exported['audio'], f'audio/ab/{"ab" * 32}.wav')
@@ -116,6 +124,40 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertNotIn('local_audio_path', exported)
         self.assertEqual(exported['language_scope_status'], 'source_label_conflict')
         self.assertTrue(exported['active_for_source_error_analysis'])
+        self.assertFalse(exported['recovery_adjudication']['automatic_correction'])
+        self.assertFalse(exported['recovery_third_checkpoint']['confidence_is_calibrated'])
+
+    def test_recovery_adjudication_join_omits_local_review_paths(self):
+        rows = [{'audio_sha256': 'a', 'machine_transcript': 'मूल'}]
+        evidence = [{
+            'audio_sha256': 'a',
+            'local_audio_path': 'private/audio.wav',
+            'speaker_id': 'private-speaker',
+            'proposed_machine_transcript': 'प्रस्ताव',
+            'automatic_correction': False,
+        }]
+        result = m.attach_recovery_adjudication(rows, evidence)[0]
+        self.assertEqual(
+            result['recovery_adjudication']['proposed_machine_transcript'], 'प्रस्ताव'
+        )
+        self.assertNotIn('local_audio_path', result['recovery_adjudication'])
+        self.assertNotIn('speaker_id', result['recovery_adjudication'])
+
+    def test_third_checkpoint_join_exports_all_evidence_without_local_paths(self):
+        rows = [{'audio_sha256': 'a'}]
+        evidence = [{
+            'audio_sha256': 'a',
+            'local_audio_path': 'private/audio.wav',
+            'machine_transcript': 'गढ़वळि पाठ',
+            'mean_token_log_probability': -1.5,
+            'token_confidence_uncalibrated': 0.22,
+        }]
+        result = m.attach_recovery_third_checkpoint(rows, evidence)[0]
+        exported = result['recovery_third_checkpoint']
+        self.assertEqual(exported['transcript'], 'गढ़वळि पाठ')
+        self.assertFalse(exported['confidence_is_calibrated'])
+        self.assertFalse(exported['human_reference_available'])
+        self.assertNotIn('local_audio_path', exported)
 
     def test_shards_are_deterministic_and_reported(self):
         rows = [{'id': str(index)} for index in range(5)]

@@ -73,6 +73,10 @@ def audit(index, dataset_root):
     supervised_drafts = 0
     source_conflict_drafts = 0
     invalid_source_conflict_drafts = 0
+    recovery_adjudications = 0
+    invalid_recovery_adjudications = 0
+    third_checkpoint_records = 0
+    invalid_third_checkpoint_records = 0
     catalog_ids = set()
     catalog_redacted = 0
     catalog_missing_evidence = 0
@@ -161,6 +165,23 @@ def audit(index, dataset_root):
                         or row.get('experimental_training_eligible')
                         or not row.get('active_for_source_error_analysis')
                     )
+                adjudication = row.get('recovery_adjudication')
+                if adjudication:
+                    recovery_adjudications += 1
+                    invalid_recovery_adjudications += bool(
+                        adjudication.get('automatic_correction')
+                        or adjudication.get('human_reference_available')
+                        or adjudication.get('supervised_training_eligible')
+                        or adjudication.get('recommended_for_machine_label_training')
+                        or not adjudication.get('original_transcript_preserved')
+                    )
+                third_checkpoint = row.get('recovery_third_checkpoint')
+                if third_checkpoint:
+                    third_checkpoint_records += 1
+                    invalid_third_checkpoint_records += bool(
+                        third_checkpoint.get('confidence_is_calibrated')
+                        or third_checkpoint.get('human_reference_available')
+                    )
         elif group == 'catalog':
             for row in rows:
                 identity = row.get('id')
@@ -183,6 +204,16 @@ def audit(index, dataset_root):
         errors.append(
             f'{invalid_source_conflict_drafts} source-label conflict drafts are '
             'marked as Garhwali training data'
+        )
+    if invalid_recovery_adjudications:
+        errors.append(
+            f'{invalid_recovery_adjudications} recovery adjudications make an '
+            'unsupported training or accuracy claim'
+        )
+    if invalid_third_checkpoint_records:
+        errors.append(
+            f'{invalid_third_checkpoint_records} third-checkpoint records make '
+            'an unsupported confidence or reference claim'
         )
     expected_catalog_records = index.get('text', {}).get(
         'unique_parent_documents', index.get('text', {}).get('total')
@@ -214,6 +245,10 @@ def audit(index, dataset_root):
         errors.append('exported draft rows do not match unique-audio count')
     if source_conflict_drafts != manifest.get('draft_source_label_conflicts'):
         errors.append('source-label conflict count does not match manifest')
+    if recovery_adjudications != manifest.get('draft_three_checkpoint_review_records'):
+        errors.append('recovery adjudication count does not match manifest')
+    if third_checkpoint_records != manifest.get('draft_third_checkpoint_records'):
+        errors.append('third-checkpoint recovery count does not match manifest')
     if not manifest.get('drafts_complete'):
         errors.append('SraVaani draft coverage is incomplete')
     audio_files = set()
@@ -273,6 +308,10 @@ def audit(index, dataset_root):
             'supervised_training_eligible': supervised_drafts,
             'source_label_conflicts': source_conflict_drafts,
             'invalid_source_label_conflicts': invalid_source_conflict_drafts,
+            'recovery_adjudications': recovery_adjudications,
+            'invalid_recovery_adjudications': invalid_recovery_adjudications,
+            'third_checkpoint_records': third_checkpoint_records,
+            'invalid_third_checkpoint_records': invalid_third_checkpoint_records,
             'complete': bool(manifest.get('drafts_complete')),
         },
         'catalog': {

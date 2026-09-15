@@ -51,6 +51,8 @@ class FinalReleaseAuditTests(unittest.TestCase):
             'draft_unique_audio': 1,
             'draft_inherited_duplicate_rows': 0,
             'draft_source_label_conflicts': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_third_checkpoint_records': 0,
             'drafts_complete': True,
             'include_audio': False,
         }
@@ -123,6 +125,54 @@ class FinalReleaseAuditTests(unittest.TestCase):
         self.assertEqual(report['status'], 'failed')
         self.assertIn(
             '1 source-label conflict drafts are marked as Garhwali training data',
+            report['errors'],
+        )
+
+    def test_rejects_unsupported_recovery_accuracy_claim(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            path = root / 'data/sravaani_drafts/train-00000.jsonl'
+            rows = [json.loads(line) for line in path.read_text().splitlines()]
+            rows[0]['recovery_adjudication'] = {
+                'automatic_correction': True,
+                'human_reference_available': False,
+                'supervised_training_eligible': False,
+                'recommended_for_machine_label_training': False,
+                'original_transcript_preserved': True,
+            }
+            write_jsonl(path, rows)
+            manifest_path = root / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text())
+            manifest['draft_three_checkpoint_review_records'] = 1
+            manifest_path.write_text(json.dumps(manifest))
+            report = m.audit(index, root)
+        self.assertEqual(report['status'], 'failed')
+        self.assertIn(
+            '1 recovery adjudications make an unsupported training or accuracy claim',
+            report['errors'],
+        )
+
+    def test_rejects_calibrated_claim_for_third_checkpoint_score(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            path = root / 'data/sravaani_drafts/train-00000.jsonl'
+            rows = [json.loads(line) for line in path.read_text().splitlines()]
+            rows[0]['recovery_third_checkpoint'] = {
+                'transcript': 'गढ़वळि पाठ',
+                'confidence_is_calibrated': True,
+                'human_reference_available': False,
+            }
+            write_jsonl(path, rows)
+            manifest_path = root / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text())
+            manifest['draft_third_checkpoint_records'] = 1
+            manifest_path.write_text(json.dumps(manifest))
+            report = m.audit(index, root)
+        self.assertEqual(report['status'], 'failed')
+        self.assertIn(
+            '1 third-checkpoint records make an unsupported confidence or reference claim',
             report['errors'],
         )
 

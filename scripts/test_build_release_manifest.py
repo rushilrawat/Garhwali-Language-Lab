@@ -58,6 +58,10 @@ class ReleaseManifestTests(unittest.TestCase):
                 'data/processed/model_ready/asr_curriculum/report.json': {
                     'run_id': 'asr-curriculum-test',
                 },
+                'data/processed/model_ready/transcripts/sravaani_recovery_adjudication_report.json': {
+                    'run_id': 'sravaani-adjudication-test',
+                    'records': 1090,
+                },
                 'data/processed/model_ready/asr_curriculum/trainer_dry_run_report.json': {
                     'run_id': 'asr-curriculum-dry-run-test',
                     'status': 'passed',
@@ -103,6 +107,9 @@ class ReleaseManifestTests(unittest.TestCase):
             curriculum_path = root / 'data/processed/model_ready/asr_curriculum/train.jsonl'
             curriculum_path.parent.mkdir(parents=True, exist_ok=True)
             curriculum_path.write_text('{}\n{}\n', encoding='utf-8')
+            adjudication_path = root / 'data/processed/model_ready/transcripts/sravaani_recovery_adjudication.jsonl'
+            adjudication_path.parent.mkdir(parents=True, exist_ok=True)
+            adjudication_path.write_text('{}\n', encoding='utf-8')
 
             with patch.object(m, 'ROOT', root):
                 with redirect_stdout(io.StringIO()):
@@ -131,6 +138,9 @@ class ReleaseManifestTests(unittest.TestCase):
                 'asr-curriculum-test',
             )
             self.assertEqual(
+                manifest['sravaani_recovery_adjudication_report']['records'], 1090
+            )
+            self.assertEqual(
                 manifest['asr_curriculum_trainer_dry_run']['status'],
                 'passed',
             )
@@ -155,9 +165,15 @@ class ReleaseManifestTests(unittest.TestCase):
                 'blocked_external_dependencies',
             )
             self.assertEqual(manifest['files']['asr_curriculum_train']['records'], 2)
+            self.assertEqual(
+                manifest['files']['vaani_sravaani_recovery_adjudication']['records'], 1
+            )
             self.assertIn('vaani_sravaani_transcript_drafts', manifest['experimental_views'])
             self.assertIn('vaani_sravaani_transcript_quality', manifest['experimental_views'])
             self.assertIn('asr_curriculum_train', manifest['experimental_views'])
+            self.assertIn(
+                'vaani_sravaani_recovery_adjudication', manifest['experimental_views']
+            )
 
 
 if __name__ == '__main__':

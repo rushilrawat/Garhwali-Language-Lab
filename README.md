@@ -145,6 +145,11 @@ not a defect in the dataset.
 - **1,188 confidence-scored recovery alternatives** are integrated beside their
   immutable SraVaani originals: 30 medium, 35 low, and 1,123 very-low review
   confidence, with no quarantine or automatic promotion.
+- **1,090 three-checkpoint review records** now compare SraVaani and two local
+  Garhwali Whisper checkpoints. The pass yields 325 clean related-checkpoint
+  consensus proposals, 730 clean low-consensus proposals, and 35 structurally
+  unresolved records; every original remains preserved and none is promoted to
+  human ground truth.
 - **106,057-row confidence-aware ASR curriculum:** 1,621 human references plus
   104,436 machine-labelled recordings; the 98 source-conflict drafts remain in
   the dataset but contribute no Garhwali training loss.
@@ -498,8 +503,10 @@ selection rules, exclusions, counts, and leakage checks.
   and remove two unambiguous stray opening parentheses from release proposals.
 - [ ] Correct and re-review the quality-gate queues, beginning with public
   Garhwali text native-validation candidates, five ambiguous supervised
-  transcripts, and 1,188 risky drafts. Eight additional supervised rows are
-  already isolated as Bengali-script source-label conflicts.
+  transcripts, and risky drafts. The complete three-checkpoint machine review is
+  attached to all 1,090 Garhwali recovery records; audio-grounded human review
+  remains. Eight additional supervised rows are already isolated as Bengali-
+  script source-label conflicts.
 - [x] Publish a transparency catalog for every collected text record; rights-pending
   rows expose provenance and quality metadata while only the protected text is redacted.
 
@@ -589,7 +596,12 @@ selection rules, exclusions, counts, and leakage checks.
     tar/manifest format. Every source hash and PCM property passes, all rows are
     CC BY 4.0, and audio/speaker leakage is zero. The guarded two-epoch,
     decoder-only 102-step launcher is ready.
-16. [ ] **SraVaani human-reference training — Xhigh:** execution requires the
+16. [x] **Risky-draft three-checkpoint review — High:** a complete local pass
+    compares SraVaani with Garhwali Whisper `v0.1` and `v0.2` for all 1,090
+    eligible recovery recordings. It ranks reversible proposals, leaves only 35
+    with structural flags, preserves every original, and makes zero unsupported
+    accuracy or training promotions.
+17. [ ] **SraVaani human-reference training — Xhigh:** execution requires the
     separate 1.7 GB `SraVaani-nemo-checkpoint.nemo` and CUDA NVIDIA hardware. The
     Hugging Face inference repository supplies a 909 MB TorchScript graph and
     does not contain the trainable NeMo checkpoint.
@@ -610,6 +622,8 @@ The human-reference audit, agreement calibration, and recovery confidence bands
 are in [`research/sravaani-recovery-confidence-2026-09-13.md`](research/sravaani-recovery-confidence-2026-09-13.md).
 The complete-draft merge and local package audit are in
 [`research/sravaani-confidence-integration-2026-09-14.md`](research/sravaani-confidence-integration-2026-09-14.md).
+The three-checkpoint risky-draft review and calibration boundary are in
+[`research/sravaani-recovery-adjudication-2026-09-14.md`](research/sravaani-recovery-adjudication-2026-09-14.md).
 The staged selection, weight budget, and leakage audit are in
 [`research/asr-training-curriculum-2026-09-14.md`](research/asr-training-curriculum-2026-09-14.md).
 The trainer behavior and full dependency-free dry run are in
@@ -694,7 +708,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **281 passing tests**, **365 verified source
+The current verification result is **289 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release

@@ -34,10 +34,14 @@
     "draft_unique_audio": 104534,
     "empty_transcripts": 34,
     "exported_unique_audio": 104534,
+    "invalid_recovery_adjudications": 0,
     "invalid_source_label_conflicts": 0,
+    "invalid_third_checkpoint_records": 0,
     "quality_metadata_missing": 0,
+    "recovery_adjudications": 1090,
     "source_label_conflicts": 98,
-    "supervised_training_eligible": 0
+    "supervised_training_eligible": 0,
+    "third_checkpoint_records": 1188
   },
   "errors": [],
   "exported_rows": 140588,

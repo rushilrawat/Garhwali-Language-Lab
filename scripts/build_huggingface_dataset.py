@@ -96,6 +96,8 @@ def audio_row(row, transcript_field, include_audio_reference=True):
         'experimental_training_eligible', 'training_eligible',
         'language_scope_status', 'source_conflict_evidence',
         'active_for_source_error_analysis',
+        'recovery_adjudication',
+        'recovery_third_checkpoint',
     )
     exported = {key: row.get(key) for key in keep if key in row}
     if include_audio_reference:
@@ -106,6 +108,54 @@ def audio_row(row, transcript_field, include_audio_reference=True):
         1, len(row.get('duplicate_source_audio_paths') or [])
     )
     return exported
+
+
+def attach_recovery_adjudication(rows, adjudication_rows):
+    by_hash = {row['audio_sha256']: row for row in adjudication_rows}
+    if len(by_hash) != len(adjudication_rows):
+        raise ValueError('Recovery adjudication audio hashes are not unique')
+    safe_fields = (
+        'candidates', 'pairwise_character_agreement',
+        'whisper_v0.1_token_confidence_uncalibrated',
+        'proposed_machine_transcript', 'proposed_machine_transcript_model',
+        'proposed_machine_transcript_flags', 'proposal_basis',
+        'evidence_status', 'review_priority', 'human_review_status',
+        'automatic_correction', 'human_reference_available',
+        'supervised_training_eligible',
+        'recommended_for_machine_label_training',
+        'original_transcript_preserved',
+    )
+    result = []
+    for row in rows:
+        enriched = dict(row)
+        evidence = by_hash.get(row['audio_sha256'])
+        if evidence:
+            enriched['recovery_adjudication'] = {
+                field: evidence[field] for field in safe_fields if field in evidence
+            }
+        result.append(enriched)
+    return result
+
+
+def attach_recovery_third_checkpoint(rows, checkpoint_rows):
+    by_hash = {row['audio_sha256']: row for row in checkpoint_rows}
+    if len(by_hash) != len(checkpoint_rows):
+        raise ValueError('Third-checkpoint recovery audio hashes are not unique')
+    result = []
+    for row in rows:
+        enriched = dict(row)
+        evidence = by_hash.get(row['audio_sha256'])
+        if evidence:
+            enriched['recovery_third_checkpoint'] = {
+                'transcript': evidence.get('machine_transcript', ''),
+                'model': 'whisper-tiny-garhwali-v0.1',
+                'mean_token_log_probability': evidence.get('mean_token_log_probability'),
+                'token_confidence_uncalibrated': evidence.get('token_confidence_uncalibrated'),
+                'confidence_is_calibrated': False,
+                'human_reference_available': False,
+            }
+        result.append(enriched)
+    return result
 
 
 def draft_identity(row):
@@ -333,6 +383,12 @@ not human ground truth. Targeted rows also retain their local Whisper alternativ
 cross-model agreement, and bounded review-confidence evidence. Draft export
 status: **{draft_status}**.
 
+All **{report['draft_third_checkpoint_records']:,}** targeted recordings retain
+the third-checkpoint hypothesis. For the **{report['draft_three_checkpoint_review_records']:,}**
+Garhwali review records, the package also carries a structurally ranked machine
+proposal and its evidence limits. These proposals are pending audio review and
+are never represented as automatic corrections or human references.
+
 The draft layer also preserves **{report['draft_source_label_conflicts']:,}
 source-label conflict recordings**. These remain available for auditing but are
 explicitly ineligible for Garhwali training.
@@ -411,6 +467,22 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     queue_count = len(queue)
     drafts = list(read_jsonl(drafts_path))
     unique_drafts = list(deduplicate_audio_rows(drafts, 'machine_transcript'))
+    third_checkpoint_path = (
+        ROOT / 'data/processed/model_ready/transcripts/'
+        'sravaani_recovery_whisper_v0.1.jsonl'
+    )
+    third_checkpoint_rows = list(read_jsonl(third_checkpoint_path)) \
+        if third_checkpoint_path.exists() else []
+    unique_drafts = attach_recovery_third_checkpoint(
+        unique_drafts, third_checkpoint_rows
+    )
+    adjudication_path = (
+        ROOT / 'data/processed/model_ready/transcripts/'
+        'sravaani_recovery_adjudication.jsonl'
+    )
+    adjudication_rows = list(read_jsonl(adjudication_path)) \
+        if adjudication_path.exists() else []
+    unique_drafts = attach_recovery_adjudication(unique_drafts, adjudication_rows)
     report['draft_queue_records'] = queue_count
     report['draft_source'] = str(drafts_path.relative_to(ROOT))
     report['draft_records'] = len(drafts)
@@ -418,6 +490,12 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     report['draft_source_label_conflicts'] = sum(
         row.get('language_scope_status') == 'source_label_conflict'
         for row in unique_drafts
+    )
+    report['draft_three_checkpoint_review_records'] = sum(
+        bool(row.get('recovery_adjudication')) for row in unique_drafts
+    )
+    report['draft_third_checkpoint_records'] = sum(
+        bool(row.get('recovery_third_checkpoint')) for row in unique_drafts
     )
     report['draft_inherited_duplicate_rows'] = len(drafts) - len(unique_drafts)
     report['drafts_complete'] = drafts_cover_queue(queue, drafts)
