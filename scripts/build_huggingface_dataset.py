@@ -15,6 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab'
+ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
 RELEASE_ID = 'garhwali-language-lab-v0.1.0'
 OPEN_LICENSE_MARKERS = (
     'cc0', 'creativecommons.org/publicdomain', 'cc-by-', 'cc_by_',
@@ -30,6 +31,14 @@ BLOCKING_RIGHTS_MARKERS = (
     'license_not_stated', 'author_death_evidence_pending',
     'component_review', 'no_license',
 )
+
+
+def profile_includes_all_data(profile):
+    return profile == 'all-data'
+
+
+def asr_split_directory(profile):
+    return 'asr_experimental' if profile_includes_all_data(profile) else 'asr'
 
 
 def read_jsonl(path):
@@ -256,7 +265,7 @@ def catalog_provenance(item):
     return {key: item.get(key) for key in keep if item.get(key) not in (None, '', [])}
 
 
-def catalog_row(row, include_restricted_text=False, refinement=None):
+def catalog_row(row, include_all_text=False, refinement=None):
     items = provenance_items(row)
     rights_basis = publishable_provenance_items(row)
     text_is_public = bool(rights_basis)
@@ -264,11 +273,14 @@ def catalog_row(row, include_restricted_text=False, refinement=None):
     exported = {
         'id': row['text_sha256'],
         'split': row.get('split'),
-        'text': text if text_is_public or include_restricted_text else None,
+        'text': text if text_is_public or include_all_text else None,
         'text_sha256': row['text_sha256'],
         'text_character_count': len(text),
+        'content_included': text_is_public or include_all_text,
+        'active_for_quality_work': True,
         'text_publicly_available': text_is_public,
-        'redaction_reason': None if text_is_public or include_restricted_text else 'source_rights_do_not_permit_public_text_redistribution',
+        'redistribution_status': 'rights_cleared' if text_is_public else 'rights_pending',
+        'redaction_reason': None if text_is_public or include_all_text else 'source_rights_do_not_permit_public_text_redistribution',
         'language_bucket': row.get('language_bucket'),
         'language_quality': row.get('language_quality'),
         'dialect_quality': row.get('dialect_quality'),
@@ -286,7 +298,7 @@ def catalog_row(row, include_restricted_text=False, refinement=None):
                 'release_text_sha256', 'quality_dimensions', 'review_priority',
             )
         }
-        if text_is_public or include_restricted_text:
+        if text_is_public or include_all_text:
             exported['text_refinement']['release_text'] = refinement.get('release_text')
     return exported
 
@@ -357,6 +369,26 @@ def dataset_card(report):
         if report['include_audio'] else
         'This transcript-only package does not include audio files or source filenames.'
     )
+    if profile_includes_all_data(report['profile']):
+        package_summary = (
+            f'This complete all-data package contains **{exported_rows:,} records** '
+            'across six configurations'
+        )
+        catalog_summary = f'''The `catalog` configuration contains all
+**{report['catalog_records']:,} exact-unique collected text records with their full
+text values. No catalog text values are redacted. Source, license, rights status,
+quality tier, language evidence, and review state remain attached to every row so
+research use and any later redistribution decision can be audited.'''
+    else:
+        package_summary = (
+            f'This rights-filtered public package contains **{exported_rows:,} records** '
+            'across six configurations'
+        )
+        catalog_summary = f'''The `catalog` configuration publicly accounts for all
+**{report['catalog_records']:,} exact-unique collected text records**. Rows whose
+source terms do not permit redistribution retain their stable content hash,
+source URL, rights status, quality tier, language evidence, and review reasons;
+only the protected text value is redacted. Nothing is silently omitted.'''
     return f'''---
 language:
 - gbm
@@ -411,15 +443,10 @@ Release: **{report['release_id']}**
 Versioned Garhwali (`gbm`) text, speech, lexicon, and instruction resources built
 by the Garhwali Language Lab. Every row retains source and license evidence.
 
-This rights-filtered package contains **{exported_rows:,} records** across six
-configurations, including transcripts for **{report['draft_unique_audio']:,}
+{package_summary}, including transcripts for **{report['draft_unique_audio']:,}
 unique SraVaani recordings**. {audio_summary}
 
-The `catalog` configuration publicly accounts for all
-**{report['catalog_records']:,} exact-unique collected text records**. Rows whose
-source terms do not permit redistribution retain their stable content hash,
-source URL, rights status, quality tier, language evidence, and review reasons;
-only the protected text value is redacted. Nothing is silently omitted.
+{catalog_summary}
 
 The `asr` configuration contains human transcripts from VAANI. The
 `sravaani_drafts` configuration contains machine-generated hypotheses from
@@ -477,7 +504,7 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     catalog_rows = [
         catalog_row(
             row,
-            include_restricted_text=profile == 'experimental-local',
+            include_all_text=profile_includes_all_data(profile),
             refinement=refinements.get(row['text_sha256']),
         )
         for row in quality_catalog
@@ -489,12 +516,17 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     report['catalog_redacted_text_records'] = sum(
         row['text'] is None for row in catalog_rows
     )
+    report['all_collected_text_values_included'] = (
+        report['catalog_redacted_text_records'] == 0
+    )
+    if profile_includes_all_data(profile) and not report['all_collected_text_values_included']:
+        raise RuntimeError('All-data profile omitted one or more collected text values')
     report['configs']['catalog/train'] = write_shards(
         catalog_rows, output / 'data/catalog', 'train', shard_rows
     )
 
     audio_sources = []
-    asr_dir = ROOT / 'data/processed/model_ready/splits/asr'
+    asr_dir = ROOT / 'data/processed/model_ready/splits' / asr_split_directory(profile)
     for split in ('train', 'validation', 'test'):
         rows = list(read_jsonl(asr_dir / f'{split}.jsonl'))
         audio_sources.extend(rows)
@@ -606,14 +638,20 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--output', type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument('--profile', choices=('public', 'experimental-local'), default='public')
+    parser.add_argument('--output', type=Path)
+    parser.add_argument(
+        '--profile', choices=('public', 'all-data'),
+        default='public',
+    )
     parser.add_argument('--include-audio', action='store_true')
     parser.add_argument('--allow-partial-drafts', action='store_true')
     parser.add_argument('--shard-rows', type=int, default=10_000)
     args = parser.parse_args()
+    output = args.output or (
+        ALL_DATA_OUTPUT if profile_includes_all_data(args.profile) else DEFAULT_OUTPUT
+    )
     print(json.dumps(build(
-        args.output,
+        output,
         profile=args.profile,
         include_audio=args.include_audio,
         allow_partial_drafts=args.allow_partial_drafts,

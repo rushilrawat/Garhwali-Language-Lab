@@ -69,7 +69,7 @@ def text_quality_decision(row, refinement=None):
     elif "not_garhwali_candidate" in reasons:
         tier = "non_strict_context"
     elif reasons == ["no_rights_cleared_training_source"]:
-        tier = "high_quality_local_only"
+        tier = "high_quality_rights_pending"
     else:
         tier = "experimental_review"
     original = row.get("text_model") or row.get("text_clean") or row.get("text") or ""

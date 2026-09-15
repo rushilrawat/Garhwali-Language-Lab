@@ -76,7 +76,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'text': 'गढ़वाली पाठ',
             'split': 'train',
             'language_bucket': 'garhwali_candidate',
-            'quality_v2': {'tier': 'high_quality_local_only'},
+            'quality_v2': {'tier': 'high_quality_rights_pending'},
             'provenance': [{
                 'source_id': 'example',
                 'source_url': 'https://example.test/garhwali',
@@ -99,7 +99,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertFalse(exported['text_publicly_available'])
         self.assertEqual(exported['text_sha256'], row['text_sha256'])
         self.assertEqual(exported['sources'][0]['source_url'], 'https://example.test/garhwali')
-        self.assertEqual(exported['quality_v2']['tier'], 'high_quality_local_only')
+        self.assertEqual(exported['quality_v2']['tier'], 'high_quality_rights_pending')
         self.assertEqual(
             exported['text_refinement']['review_signals'],
             ['romanized_text_requires_native_review'],
@@ -110,6 +110,51 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'pending',
         )
         self.assertEqual(exported['text_refinement']['review_priority']['rank'], 2)
+
+    def test_all_data_catalog_keeps_full_text_and_rights_metadata(self):
+        row = {
+            'text_sha256': 'a' * 64,
+            'text': 'गढ़वाली पाठ',
+            'quality_v2': {'tier': 'high_quality_rights_pending'},
+            'provenance': [{
+                'source_id': 'example',
+                'rights_status': 'public_webpage_no_open_license_stated',
+            }],
+        }
+        exported = m.catalog_row(row, include_all_text=True)
+        self.assertEqual(exported['text'], 'गढ़वाली पाठ')
+        self.assertTrue(exported['content_included'])
+        self.assertTrue(exported['active_for_quality_work'])
+        self.assertFalse(exported['text_publicly_available'])
+        self.assertEqual(exported['redistribution_status'], 'rights_pending')
+        self.assertIsNone(exported['redaction_reason'])
+
+    def test_all_data_profile_is_first_class(self):
+        self.assertTrue(m.profile_includes_all_data('all-data'))
+        self.assertFalse(m.profile_includes_all_data('public'))
+        self.assertEqual(m.asr_split_directory('all-data'), 'asr_experimental')
+        self.assertEqual(m.asr_split_directory('public'), 'asr')
+
+    def test_all_data_card_states_that_no_text_is_redacted(self):
+        report = {
+            'release_id': 'test',
+            'profile': 'all-data',
+            'configs': {'text/train': {'records': 2}},
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'draft_unique_audio': 1,
+            'catalog_records': 2,
+            'catalog_redacted_text_records': 0,
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+        }
+        card = m.dataset_card(report)
+        self.assertIn('complete all-data package', card)
+        self.assertIn('No catalog text values are redacted', card)
+        self.assertNotIn('This rights-filtered package', card)
 
     def test_catalog_includes_open_text(self):
         row = {

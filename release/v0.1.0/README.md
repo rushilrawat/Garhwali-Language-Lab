@@ -5,13 +5,15 @@ evaluation reports, preparation reports, ingestion summaries, visual inventory
 artifacts, and the transcript-only Hugging Face card and manifest.
 
 Row-level datasets, audio, caches, and model weights remain outside Git. The
-public transcript dataset is published separately on Hugging Face, while the
-complete local corpus retains every collected record under its original rights
-and quality metadata.
+public transcript dataset is published separately on Hugging Face. The complete
+all-data package contains every collected text value with its original source,
+rights, and quality metadata.
 
-The current transcript-only package contains **145,497 rows**. Its catalog
-accounts for all **27,986 exact-unique texts**: 4,195 have a named public rights
-basis and 23,791 retain redacted text with full source and review evidence. The
+The complete transcript-only all-data package contains **228,312 rows**. Its
+catalog includes all **27,986 exact-unique texts with zero redactions**. The
+separate **145,497-row public redistribution package** exposes full text for the
+4,195 records with a named public rights basis and preserves catalog metadata for
+the remaining 23,791. The
 source audit also records 1,913 exact duplicates with both open and blocked
 provenance instead of discarding either history. Source-grounded cleanup reduced
 the public text review queue from 628 to 176 while preserving every original.

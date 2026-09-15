@@ -13,6 +13,17 @@
     },
     "unique_parent_documents": 27986
   },
+  "all_data_package": {
+    "profile": "all-data",
+    "transcript_only_package_rows": 228312,
+    "full_text_segments": 86216,
+    "exact_unique_texts": 27986,
+    "redacted_text_values": 0,
+    "human_vaani_transcript_rows": 5894,
+    "lexicon_rows": 1114,
+    "instruction_rows": 2568,
+    "all_collected_text_values_included": true
+  },
   "public_text_release": {
     "exact_unique_with_public_rights_basis": 4195,
     "rights_pending_catalog_records": 23791,

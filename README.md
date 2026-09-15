@@ -87,7 +87,7 @@ language as it is actually used.
 | Living part of Garhwali | What is represented now | Why it matters |
 | --- | --- | --- |
 | **Voices** | 110,436 VAANI recordings, 135.5 hours, 5,894 supervised transcripts, and speaker/district metadata | Speech gives models pronunciation, rhythm, variation, and everyday language that books cannot provide. |
-| **Words in daily life** | 1,124 lexicon candidates; 666 thematic vocabulary records covering animals, birds, plants, food, tools, occupations, instruments, kinship, land, and ritual life; 99 idiom/proverb records | Local words carry the environment, work, humour, relationships, and worldview of Garhwal. |
+| **Words in daily life** | 1,114 lexicon candidates; 666 thematic vocabulary records covering animals, birds, plants, food, tools, occupations, instruments, kinship, land, and ritual life; 99 idiom/proverb records | Local words carry the environment, work, humour, relationships, and worldview of Garhwal. |
 | **Folklore, songs, and performance** | 370 OCR pages from Govind Chatak’s *Gadwali Lokgeet*; 298 pages from Shanti Chaudhary’s folk-art study; 592 UOU pages on folk songs, ballads, tales, literature, and theatre; 66 narrated folktale episodes catalogued | Songs and stories preserve memory, metaphor, history, and forms of speech that ordinary sentence datasets miss. |
 | **Stories and cultural memory** | 440 pages from Upreti’s *Proverbs & Folklore*; 317 public-domain historical cultural-reference records; 50 Garhwali Open Bible Stories | Historical and translated narratives provide context, while their source and language status stay explicit. |
 | **Community usage** | Learning pages, Reddit and YouTube records, social vocabulary, and web idioms with URLs and review flags | Community material captures living spellings and new usage, including Romanized and mixed-language forms. |
@@ -137,7 +137,7 @@ not a defect in the dataset.
   masks from 128 held-out records, with no truncation.
 - **Controlled continuation:** a 1,024-step, three-seed IndicBERTv2 LoRA run
   lowers mean validation cross-entropy from 6.678 to 5.624.
-- **Instruction resource:** 2,518 split-safe Garhwali translation and lexicon
+- **Instruction resource:** 2,568 split-safe Garhwali translation and lexicon
   instructions; a first three-seed mT5 LoRA baseline improves validation
   loss but remains unfit for generation.
 - **Accuracy continuation:** mT0-small reaches **4.961989** mean validation and
@@ -451,7 +451,7 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Export lexicon and parallel-example candidates.
 - [x] Run and document a zero-shot ASR baseline.
 - [x] Build a 332-symbol Unicode tokenizer resource from train-only text.
-- [x] Build 1,124 pronunciation candidates, including 293 with source phonetic
+- [x] Build 1,114 pronunciation candidates, including 293 with source phonetic
   evidence; native pronunciation validation remains pending.
 - [x] Prepare 1,736 normalized, speaker-safe TTS candidate pairs; public TTS use
   remains gated on transcript review and voice consent.
@@ -468,7 +468,7 @@ selection rules, exclusions, counts, and leakage checks.
   and evaluate pinned IndicBERTv2 semantic retrieval on all 539 test questions.
 - [x] Compare zero-shot Whisper-tiny, zero-shot Whisper-small, and both local
   fine-tuned checkpoints on the identical 112-row speaker-safe test set.
-- [x] Build 2,518 provenance-preserving instruction records with parent-disjoint
+- [x] Build 2,568 provenance-preserving instruction records with parent-disjoint
   splits and run three-seed mT5 LoRA instruction tuning.
 - [x] Extend IndicBERTv2 LoRA continuation to 1,024 steps per seed and evaluate
   the full instruction-tuning seed set after validation selection.
@@ -527,8 +527,10 @@ selection rules, exclusions, counts, and leakage checks.
   attached to all 1,090 Garhwali recovery records; audio-grounded human review
   remains. Eight additional supervised rows are already isolated as Bengali-
   script source-label conflicts.
-- [x] Publish a transparency catalog for every collected text record; rights-pending
-  rows expose provenance and quality metadata while only the protected text is redacted.
+- [x] Build the complete all-data package with every one of the 27,986 collected
+  text values present and active for quality work; zero catalog texts are redacted.
+- [x] Keep a separate public redistribution catalog with provenance and quality
+  metadata for records whose source terms remain unresolved.
 
 ### 10. Release — Medium
 
@@ -743,37 +745,48 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **301 passing tests**, **365 verified source
+The current verification result is **327 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release
 
-`scripts/build_huggingface_dataset.py` creates an upload-ready multi-config
-transcript dataset with Garhwali text, human VAANI transcripts, SraVaani machine
-drafts, lexicon, and instruction splits. The public profile includes only records
-with explicit compatible redistribution evidence and Garhwali language scope.
-It omits audio, original audio filenames, and raw speaker identifiers.
+`scripts/build_huggingface_dataset.py` creates two upload-ready multi-config
+datasets with Garhwali text, human VAANI transcripts, SraVaani machine drafts,
+lexicon, and instruction splits. The **all-data profile is the complete model and
+research package**: it includes every collected text value and every prepared
+text, lexicon, and instruction row. Each row keeps its source, quality, and rights
+metadata. The public profile is a separate redistribution view for records with
+explicit compatible source terms. Both omit original audio filenames and raw
+speaker identifiers.
 
 ```bash
-# Build and audit the transcript-only package
+# Build the complete transcript-only all-data package (228,312 rows)
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
+  --profile all-data
+
+# Build and audit the separate public redistribution package
+PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
+  --profile public \
   --output data/huggingface/garhwali-language-lab
 .venv/bin/python scripts/audit_final_release.py
 
-# Run after explicitly approving public transcript publication
+# Upload the complete package after the final release review
 HF_HOME=.cache/huggingface hf upload rushilrawat/garhwali-language-lab \
-  data/huggingface/garhwali-language-lab . --repo-type dataset
+  data/huggingface/garhwali-language-lab-all-data . --repo-type dataset
 ```
 
 The generated `README.md` is the Hugging Face dataset card, while
 `manifest.json` records configuration counts, shard names, draft completeness,
-and whether audio was included. Every collected text record appears in the public
-catalog; when source rights do not permit republication, the catalog publishes its
-stable identity, provenance, quality evidence, and review state while redacting
-only the protected text value. When an exact duplicate has both open and blocked
-provenance, `public_rights_basis` identifies the open copy while retaining both
-source histories. The source-level audit is documented in
+and whether audio was included. The all-data catalog includes all **27,986**
+exact-unique text values with **zero redactions**. The package also contains all
+**86,216** prepared text segments, **1,114** lexicon rows, and **2,568**
+instruction rows. The public catalog remains a transparent redistribution view.
+When an exact duplicate has both open and blocked provenance,
+`public_rights_basis` identifies the open copy while retaining both source
+histories. The source-level audit is documented in
 [`research/text-source-rights-audit-2026-09-15.md`](research/text-source-rights-audit-2026-09-15.md).
+The all-data package report is
+[`research/all-data-package-2026-09-15.md`](research/all-data-package-2026-09-15.md).
 The published release is versioned as `v0.1.0`; its tracked
 index is [`release/v0.1.0-manifest.json`](release/v0.1.0-manifest.json). Compact
 generated reports and visual evidence are tracked under

@@ -19,7 +19,7 @@ class QualityTierTests(unittest.TestCase):
         row["language_quality"]["confidence"] = "medium"
         self.assertEqual(m.text_quality_decision(row)["tier"], "experimental_review")
 
-    def test_rights_only_failure_is_kept_as_high_quality_local(self):
+    def test_rights_only_failure_is_kept_as_high_quality_rights_pending(self):
         row = {
             "text": "मि ठीक छौं।",
             "language_bucket": "garhwali_candidate",
@@ -31,7 +31,7 @@ class QualityTierTests(unittest.TestCase):
             "provenance": [{"rights_status": "public_webpage_no_open_license_stated"}],
         }
         result = m.text_quality_decision(row)
-        self.assertEqual(result["tier"], "high_quality_local_only")
+        self.assertEqual(result["tier"], "high_quality_rights_pending")
         self.assertFalse(result["value_changed"])
 
     def test_resolved_cleanup_flags_allow_strict_promotion(self):

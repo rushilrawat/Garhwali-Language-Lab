@@ -1,8 +1,9 @@
 # Corpus redistribution and model-use policy
 
-This policy separates local research retention from public redistribution. The
-project keeps every acquired record in its active experimental layer, including
-restricted and rights-pending material. Retention does not change the source's
+This policy separates the complete all-data research package from the public
+redistribution profile. The project keeps every acquired record active in the
+all-data package, including records with restricted or rights-pending source
+terms. Retention does not change the source's
 copyright, license, consent scope, or attribution requirements.
 
 ## Public dataset releases
@@ -21,14 +22,15 @@ required share-alike or noncommercial condition. Records with conflicting source
 terms take the most restrictive applicable treatment until the conflict is
 resolved.
 
-## Local research layers
+## Complete all-data research package
 
-`restricted/`, `experimental/`, historical rights-pending material, public social
-posts, modern books, podcasts, and source components without a verified license
-remain local research inputs. They may be analyzed in the complete experimental
-view but are excluded from public dataset payloads and public model-training
-claims. Raw VAANI audio, reference images, caches, PDFs, and generated datasets
-remain Git-ignored.
+Historical rights-pending material, public social posts, modern books, podcasts,
+and source components without a verified license remain full-value research
+inputs. They are included in the complete all-data dataset with their original
+source and rights fields. The public redistribution profile filters these rows
+unless their source terms are verified. Raw VAANI audio, reference images,
+caches, PDFs, and generated datasets remain Git-ignored because GitHub is the
+code repository; the dataset package is built separately for Hugging Face.
 
 ## Models
 
@@ -46,7 +48,7 @@ owner, contributor, or speaker can submit a removal request using the source or
 audio identifier; derived records and future releases must carry the resulting
 exclusion while preserving a private audit entry.
 
-The public `v0.1.0` release contains only the rights-filtered Hugging Face export.
+The public `v0.1.0` release contains the rights-filtered Hugging Face profile.
 Evaluation rows and pronunciation/TTS resources retain optional native-review
-metadata. This release does not grant redistribution rights for the complete
-local corpus.
+metadata. The complete all-data profile keeps full values and their original
+source terms together.

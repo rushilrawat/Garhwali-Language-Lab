@@ -20,7 +20,7 @@ class TextSourceAuditTests(unittest.TestCase):
             },
             {
                 'text_sha256': 'b',
-                'quality_v2': {'tier': 'high_quality_local_only'},
+                'quality_v2': {'tier': 'high_quality_rights_pending'},
                 'provenance': [{
                     'source_id': 'web',
                     'rights_status': 'public_webpage_no_open_license_stated',

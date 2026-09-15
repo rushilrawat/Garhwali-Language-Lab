@@ -8,9 +8,10 @@ folklore, folk songs, educational material, historical linguistics, community
 writing, and cultural context without erasing source rights or uncertain language
 labels.
 
-The current release is `garhwali-language-lab-v0.1.0`. Every collected record
-remains active locally with quality and rights metadata retained. Its public
-Hugging Face package contains only records with compatible redistribution terms.
+The current release is `garhwali-language-lab-v0.1.0`. Every collected text value
+is present in the complete all-data Hugging Face package with quality, source,
+and rights metadata retained. A separate public redistribution profile contains
+only records with compatible source terms.
 The reserved Hugging Face repository is
 [`rushilrawat/garhwali-language-lab`](https://huggingface.co/datasets/rushilrawat/garhwali-language-lab).
 
@@ -18,8 +19,9 @@ The reserved Hugging Face repository is
 
 | Resource | Current release |
 | --- | ---: |
-| Exact-unique parent texts | 27,987 |
-| Sentence segments | 86,215 |
+| Exact-unique parent texts | 27,986 |
+| Sentence segments | 86,216 |
+| All-data package | 228,312 rows / 0 redacted texts |
 | All supervised speech rows | 5,894 / 8.803724 hours |
 | Strict identified-speaker comparison rows | 2,002 / 3.562395 hours |
 | Normalized training-candidate WAVs | 1,736 |
@@ -27,7 +29,7 @@ The reserved Hugging Face repository is
 | Segmented folktale audio | 1,204 clips / 8.928764 hours |
 | Identified speakers in strict speech splits | 248 |
 | Untranscribed VAANI rows retained | 104,542 |
-| Lexicon/pronunciation candidates | 1,124 |
+| Lexicon/pronunciation candidates | 1,114 |
 | Pronunciations with source phonetic segments | 293 |
 | Normalized TTS candidate pairs | 1,736 |
 | Current SraVaani baseline | 0.428 WER / 0.176 CER |
@@ -51,19 +53,20 @@ The reserved Hugging Face repository is
 | IndicBERTv2 head adaptation | 6.678164 → 6.578552 validation cross-entropy |
 | IndicBERTv2 encoder LoRA | 6.659330 → 6.014093 frozen-test cross-entropy |
 | Longer IndicBERTv2 LoRA | 6.678164 → 5.624498 mean validation cross-entropy |
-| Instruction examples | 2,518 total / 2,304 train / 130 validation / 84 test |
+| Instruction examples | 2,568 total / 2,178 train / 134 validation / 256 test |
 | mT5 instruction LoRA | 28.201385 → 27.569880 mean validation cross-entropy |
 | mT0-small accuracy LoRA | 5.614353 → 4.961989 mean validation cross-entropy |
 
-Text segments use connected-document splitting: 80,926 train, 2,488 validation,
-and 2,801 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.
+Text segments use connected-document splitting: 80,881 train, 2,499 validation,
+and 2,836 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.
 No exact text hash or identified speaker crosses these partitions.
 GarhwaliBench additionally reports zero exact train/evaluation text overlap and
 zero ASR speaker overlap.
 
 The instruction split inherits document-level parent partitions and has zero
-parent or exact instruction-pair crossing. All 2,518 records are active for local
-experiments. The first mT5 run remains a negative baseline; the later mT0-small
+parent or exact instruction-pair crossing. All 2,568 records are active in the
+all-data package for experiments. The first mT5 run remains a negative baseline;
+the later mT0-small
 run improves teacher-forced accuracy on a new 258-record test but still requires
 native-reference evaluation before application use.
 
@@ -95,11 +98,11 @@ Each record keeps source URL or repository, source identifier, retrieval metadat
 checksum, attribution, license evidence, rights status, and transformation flags.
 The corpus contains CC BY, CC BY-SA, CC BY-NC-SA, public-domain, restricted,
 rights-pending, and unresolved components. There is therefore no single license
-covering the complete local corpus.
+covering the complete all-data package.
 
 VAANI is recorded as CC BY 4.0 in its source metadata. Modern books, podcast
 episodes, community pages, social posts, and dataset components whose repository
-license does not clear underlying content remain active local experimental data
+license does not clear underlying content remain active all-data research inputs
 with their rights flags attached.
 
 ## Personal and speaker data

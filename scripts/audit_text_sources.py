@@ -56,7 +56,7 @@ def audit_rows(rows, review_rows):
             mixed += 1
         if mixed_row and tier == 'strict_gold_candidate':
             strict_overlap += 1
-        if not public_row and tier == 'high_quality_local_only':
+        if not public_row and tier == 'high_quality_rights_pending':
             high_pending += 1
 
         for item in items:
