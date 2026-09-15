@@ -1,22 +1,25 @@
 # SraVaani Garhwali adaptation readiness
 
-Date: 2026-09-14  
+Updated: 2026-09-15
 Package: `garhwali-sravaani-nemo-finetune-package-v0.1`  
 Training plan: `garhwali-sravaani-decoder-only-adaptation-pilot-v0.1`
 
 ## Current status
 
-The human-reference data package and guarded training launcher are complete.
-Actual fine-tuning is blocked by two external requirements: the trainable
-`SraVaani-nemo-checkpoint.nemo` and a CUDA-capable NVIDIA GPU. The current Mac
-has Apple Metal rather than CUDA.
+The human-reference package and guarded training launcher are complete. The
+official ARTPARK fine-tuning guide now provides a direct download for the
+1,796,208,640-byte `SraVaani-nemo-checkpoint.nemo`; an HTTP preflight returned
+the expected file and size on 2026-09-15. The launcher can download it directly
+on the training host and validates its exact size and tar structure before NeMo
+loads. No 1.8 GB checkpoint was stored on this Mac.
 
-The authenticated Hugging Face repository is useful for inference but cannot
-serve as this training checkpoint. At pinned revision
-`f5dd5358325a5208775b91dad98918e079ea2b27`, it publishes a 908,846,278-byte
-FP16 TorchScript graph and inference wrapper. It does not publish a `.nemo` or
-raw Lightning checkpoint. The official fine-tuning repository separately links
-the approximately 1.7 GB NeMo checkpoint and recommends about 16 GB GPU memory.
+Local execution still cannot run because this Mac has Apple Metal rather than
+CUDA. Hugging Face authentication is confirmed, but a Jobs preflight returned
+HTTP 402 because the account has no positive compute-credit balance. The
+preflight stopped before creating a job, so it incurred no charge. The bounded
+plan uses one `t4-small` GPU at $0.40/hour with an eight-hour hard timeout, for a
+maximum compute charge of $3.20. Hugging Face Jobs requires a positive credit
+balance; a Pro subscription is not required for this launch.
 
 ## Verified data package
 
@@ -78,8 +81,28 @@ PYTHONPATH=scripts .venv/bin/python scripts/prepare_sravaani_finetune.py
 # Inspect the plan and external dependencies without importing NeMo
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/train_sravaani_garhwali.py
 
-# On the CUDA host, after placing the checkpoint at the default path
-python scripts/train_sravaani_garhwali.py --execute
+# On a CUDA host: download, validate, train, and write outputs to explicit paths
+python scripts/train_sravaani_garhwali.py \
+  --package-report /data/report.json \
+  --data /data \
+  --checkpoint /workspace/SraVaani-nemo-checkpoint.nemo \
+  --download-checkpoint \
+  --output /output/sravaani-garhwali-decoder-pilot-v0.1.nemo \
+  --experiments /output/experiments \
+  --plan-output /output/plan.json \
+  --execute
+
+# From the repository root after Hugging Face credit is available
+mkdir -p data/processed/evaluation/asr/sravaani_finetune/cloud_output
+HF_HOME=.cache/huggingface hf jobs run \
+  --name garhwali-sravaani-adaptation-v0-1 \
+  --flavor t4-small \
+  --timeout 8h \
+  -v ./scripts:/workspace/scripts \
+  -v ./data/processed/model_ready/sravaani_finetune:/data \
+  -v ./data/processed/evaluation/asr/sravaani_finetune/cloud_output:/output:rw \
+  pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime \
+  bash /workspace/scripts/run_sravaani_hf_job.sh
 ```
 
 Default checkpoint path:
@@ -88,14 +111,18 @@ Default checkpoint path:
 .cache/sravaani-finetune/SraVaani-nemo-checkpoint.nemo
 ```
 
-The execution path validates that the checkpoint is a readable tar archive and
-that CUDA is available before importing NeMo or starting training. The generated
-plan is included in the local release manifest.
+The execution path validates the official byte count and tar structure, then
+checks CUDA before importing NeMo or starting training. The generated plan is
+included in the local release manifest.
 
-## Exact remaining access
+## Exact remaining action
 
-Hugging Face model access is already confirmed. The remaining model access is to
-the NeMo checkpoint linked by the official training repository. Training then
-needs either a user-provided CUDA host or explicit authorization to launch a
-paid cloud GPU job. No additional Garhwali data or manual labeling is required
-for this pilot.
+Add at least $5 of Hugging Face compute credit, then rerun the bounded Jobs
+launch. The pilot itself is fully prepared and needs no additional Garhwali data
+or manual labeling. After training, the selected checkpoint must be evaluated
+once on the existing 112-record held-out test split before any promotion.
+
+The local-directory mounts are uploaded to Hugging Face's private transient
+`jobs-artifacts` storage for the run. The CLI prints the exact sync command for
+retrieving the writable output directory. The complete corpus release remains a
+separate later upload task.

@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-301%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-328%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -487,8 +487,9 @@ selection rules, exclusions, counts, and leakage checks.
   accumulation, repeat the fixed pilot, and reject it after accuracy worsened.
 - [x] Package all strict human-reference speech for official SraVaani NeMo
   adaptation and add a CUDA-guarded decoder/joint training launcher.
-- [ ] Run the 102-step SraVaani adaptation pilot once the separate NeMo checkpoint
-  and a CUDA NVIDIA GPU with approximately 16 GB VRAM are available.
+- [ ] Run the 102-step SraVaani adaptation pilot after adding positive Hugging
+  Face Jobs credit. Official checkpoint access is verified; the bounded
+  `t4-small` launch is capped at eight hours and $3.20 of compute.
 
 ### 9. Testing and review — High
 
@@ -632,10 +633,12 @@ selection rules, exclusions, counts, and leakage checks.
     have exact stronger-checkpoint re-decodes, waveform activity measurements,
     and scores calibrated on 112 human-referenced clips. Raw confidence is only
     weakly related to CER, so every case remains pending listening review.
-19. [ ] **SraVaani human-reference training — Xhigh:** execution requires the
-    separate 1.7 GB `SraVaani-nemo-checkpoint.nemo` and CUDA NVIDIA hardware. The
-    Hugging Face inference repository supplies a 909 MB TorchScript graph and
-    does not contain the trainable NeMo checkpoint.
+19. [ ] **SraVaani human-reference training — Xhigh:** the official 1.796 GB NeMo
+    checkpoint URL and exact size are verified, the cloud-ready launcher can
+    fetch and validate it without storing it locally, and the 394 MiB Garhwali
+    package is ready. A Hugging Face Jobs preflight stopped before launch with
+    HTTP 402; add positive compute credit to run the eight-hour, $3.20-capped T4
+    pilot.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
@@ -736,6 +739,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 .venv/bin/python scripts/register_asr_stage1_weighted_batch_pilot.py
 .venv/bin/python scripts/prepare_sravaani_finetune.py
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/train_sravaani_garhwali.py
+bash -n scripts/run_sravaani_hf_job.sh
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/redecode_supervised_review.py
 .venv/bin/python scripts/audit_final_release.py
 git diff --check
@@ -745,7 +749,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **327 passing tests**, **365 verified source
+The current verification result is **328 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release

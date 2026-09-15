@@ -1,4 +1,5 @@
 import tempfile
+import tarfile
 import unittest
 from pathlib import Path
 
@@ -39,6 +40,11 @@ class TrainSraVaaniGarhwaliTests(unittest.TestCase):
         self.assertEqual(plan['training_records'], 1621)
         self.assertEqual(plan['validation_records'], 269)
         self.assertEqual(plan['held_out_test_records'], 112)
+        self.assertEqual(plan['base_checkpoint']['bytes'], 1796208640)
+        self.assertEqual(plan['base_checkpoint']['availability'], 'official_direct_download')
+        self.assertEqual(plan['cloud_job']['hardware'], 't4-small')
+        self.assertEqual(plan['cloud_job']['timeout_hours'], 8)
+        self.assertEqual(plan['cloud_job']['maximum_compute_cost_usd'], 3.2)
 
     def test_external_dependency_audit_names_missing_checkpoint_and_cuda(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -58,6 +64,24 @@ class TrainSraVaaniGarhwaliTests(unittest.TestCase):
             checkpoint.write_bytes(b'checkpoint')
             status = m.external_dependency_status(checkpoint, cuda_available=True)
         self.assertEqual(status, {'status': 'ready', 'missing': []})
+
+    def test_checkpoint_validation_requires_exact_size_and_tar_structure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            payload = root / 'weights.bin'
+            payload.write_bytes(b'weights')
+            checkpoint = root / 'model.nemo'
+            with tarfile.open(checkpoint, 'w') as archive:
+                archive.add(payload, arcname='model_weights.ckpt')
+            result = m.validate_checkpoint_file(
+                checkpoint, expected_bytes=checkpoint.stat().st_size
+            )
+            self.assertEqual(result['bytes'], checkpoint.stat().st_size)
+            self.assertTrue(result['tar_valid'])
+            with self.assertRaises(ValueError):
+                m.validate_checkpoint_file(
+                    checkpoint, expected_bytes=checkpoint.stat().st_size + 1
+                )
 
 
 if __name__ == '__main__':

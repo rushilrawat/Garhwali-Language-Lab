@@ -7,6 +7,7 @@ import argparse
 import json
 import math
 import tarfile
+import urllib.request
 from pathlib import Path
 
 
@@ -19,6 +20,14 @@ EXPERIMENTS = ROOT / 'models/sravaani-garhwali-decoder-pilot-v0.1'
 PLAN_OUTPUT = ROOT / 'data/processed/evaluation/asr/sravaani_finetune/plan.json'
 TRAINING_REPOSITORY = 'https://github.com/ARTPARK-Speech-Models/SraVaani'
 TRAINING_REVISION = '11026fa0f97386ae05270872d899800151b2a8ef'
+OFFICIAL_CHECKPOINT_URL = (
+    'https://drive.usercontent.google.com/download?'
+    'id=1v5VaYibAaDSFuWvROsPbCzeG3iM6VbxY&export=download&confirm=t'
+)
+OFFICIAL_CHECKPOINT_BYTES = 1_796_208_640
+CLOUD_HARDWARE = 't4-small'
+CLOUD_HOURLY_USD = 0.40
+CLOUD_TIMEOUT_HOURS = 8
 
 BATCH_SIZE = 4
 ACCUMULATE_GRAD_BATCHES = 8
@@ -73,6 +82,22 @@ def build_training_plan(package):
         'selection_metric': 'validation_wer',
         'final_test_policy': 'run_once_after_validation_selection',
         'machine_labels_used': False,
+        'base_checkpoint': {
+            'url': OFFICIAL_CHECKPOINT_URL,
+            'bytes': OFFICIAL_CHECKPOINT_BYTES,
+            'availability': 'official_direct_download',
+            'local_copy_required': False,
+        },
+        'cloud_job': {
+            'hardware': CLOUD_HARDWARE,
+            'gpu_memory_gb': 16,
+            'timeout_hours': CLOUD_TIMEOUT_HOURS,
+            'hourly_compute_cost_usd': CLOUD_HOURLY_USD,
+            'maximum_compute_cost_usd': round(
+                CLOUD_HOURLY_USD * CLOUD_TIMEOUT_HOURS, 2
+            ),
+            'billing_status': 'positive_huggingface_credit_required',
+        },
     }
 
 
@@ -105,10 +130,49 @@ def write_plan(plan, output=PLAN_OUTPUT):
     )
 
 
-def execute_training(plan, checkpoint=CHECKPOINT, data=DATA, output=OUTPUT):
+def validate_checkpoint_file(checkpoint, expected_bytes=OFFICIAL_CHECKPOINT_BYTES):
     checkpoint = Path(checkpoint)
-    if not checkpoint.is_file() or not tarfile.is_tarfile(checkpoint):
-        raise ValueError('SraVaani NeMo checkpoint is missing or invalid')
+    if not checkpoint.is_file():
+        raise ValueError('SraVaani NeMo checkpoint is missing')
+    size = checkpoint.stat().st_size
+    if expected_bytes is not None and size != expected_bytes:
+        raise ValueError(
+            f'SraVaani NeMo checkpoint size is {size}; expected {expected_bytes}'
+        )
+    if not tarfile.is_tarfile(checkpoint):
+        raise ValueError('SraVaani NeMo checkpoint is not a readable tar archive')
+    return {'path': str(checkpoint), 'bytes': size, 'tar_valid': True}
+
+
+def download_checkpoint(
+    checkpoint=CHECKPOINT,
+    url=OFFICIAL_CHECKPOINT_URL,
+    expected_bytes=OFFICIAL_CHECKPOINT_BYTES,
+):
+    checkpoint = Path(checkpoint)
+    checkpoint.parent.mkdir(parents=True, exist_ok=True)
+    partial = checkpoint.with_suffix(checkpoint.suffix + '.partial')
+    try:
+        with urllib.request.urlopen(url) as response, partial.open('wb') as target:
+            while chunk := response.read(8 * 1024 * 1024):
+                target.write(chunk)
+        validation = validate_checkpoint_file(partial, expected_bytes)
+        partial.replace(checkpoint)
+    except Exception:
+        partial.unlink(missing_ok=True)
+        raise
+    return {**validation, 'path': str(checkpoint), 'source_url': url}
+
+
+def execute_training(
+    plan,
+    checkpoint=CHECKPOINT,
+    data=DATA,
+    output=OUTPUT,
+    experiments=EXPERIMENTS,
+):
+    checkpoint = Path(checkpoint)
+    validate_checkpoint_file(checkpoint)
     if not cuda_available():
         raise RuntimeError('SraVaani fine-tuning requires a CUDA-capable NVIDIA GPU')
 
@@ -119,6 +183,7 @@ def execute_training(plan, checkpoint=CHECKPOINT, data=DATA, output=OUTPUT):
 
     data = Path(data)
     output = Path(output)
+    experiments = Path(experiments)
     model = EncDecHybridRNNTCTCBPEModel.restore_from(str(checkpoint))
     model.encoder.freeze()
     with open_dict(model.cfg):
@@ -165,7 +230,7 @@ def execute_training(plan, checkpoint=CHECKPOINT, data=DATA, output=OUTPUT):
         enable_checkpointing=False,
     )
     exp_manager(trainer, {
-        'exp_dir': str(EXPERIMENTS),
+        'exp_dir': str(experiments),
         'name': 'training',
         'create_tensorboard_logger': True,
         'create_checkpoint_callback': True,
@@ -181,14 +246,28 @@ def execute_training(plan, checkpoint=CHECKPOINT, data=DATA, output=OUTPUT):
     return {
         **plan,
         'status': 'training_completed',
-        'output_checkpoint': str(output.relative_to(ROOT)),
+        'output_checkpoint': str(output),
         'global_step': trainer.global_step,
     }
 
 
-def run(package_report=PACKAGE_REPORT, checkpoint=CHECKPOINT, execute=False):
+def run(
+    package_report=PACKAGE_REPORT,
+    checkpoint=CHECKPOINT,
+    execute=False,
+    data=DATA,
+    output=OUTPUT,
+    experiments=EXPERIMENTS,
+    plan_output=PLAN_OUTPUT,
+    download_checkpoint_requested=False,
+):
     package = json.loads(Path(package_report).read_text(encoding='utf-8'))
     plan = build_training_plan(package)
+    if download_checkpoint_requested:
+        if Path(checkpoint).is_file():
+            validate_checkpoint_file(checkpoint)
+        else:
+            download_checkpoint(checkpoint)
     dependencies = external_dependency_status(checkpoint, cuda_available())
     result = {**plan, 'external_dependencies': dependencies}
     if execute:
@@ -197,8 +276,8 @@ def run(package_report=PACKAGE_REPORT, checkpoint=CHECKPOINT, execute=False):
                 'Missing SraVaani training dependencies: '
                 + ', '.join(dependencies['missing'])
             )
-        result = execute_training(plan, checkpoint)
-    write_plan(result)
+        result = execute_training(plan, checkpoint, data, output, experiments)
+    write_plan(result, plan_output)
     return result
 
 
@@ -206,10 +285,24 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--package-report', type=Path, default=PACKAGE_REPORT)
     parser.add_argument('--checkpoint', type=Path, default=CHECKPOINT)
+    parser.add_argument('--data', type=Path, default=DATA)
+    parser.add_argument('--output', type=Path, default=OUTPUT)
+    parser.add_argument('--experiments', type=Path, default=EXPERIMENTS)
+    parser.add_argument('--plan-output', type=Path, default=PLAN_OUTPUT)
+    parser.add_argument('--download-checkpoint', action='store_true')
     parser.add_argument('--execute', action='store_true')
     args = parser.parse_args()
     print(json.dumps(
-        run(args.package_report, args.checkpoint, args.execute),
+        run(
+            args.package_report,
+            args.checkpoint,
+            args.execute,
+            args.data,
+            args.output,
+            args.experiments,
+            args.plan_output,
+            args.download_checkpoint,
+        ),
         ensure_ascii=False,
         indent=2,
         sort_keys=True,

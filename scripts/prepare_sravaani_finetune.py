@@ -18,6 +18,10 @@ OUTPUT = ROOT / 'data/processed/model_ready/sravaani_finetune'
 SPLITS = ('train', 'validation', 'test')
 TRAINING_REPOSITORY = 'https://github.com/ARTPARK-Speech-Models/SraVaani'
 TRAINING_REVISION = '11026fa0f97386ae05270872d899800151b2a8ef'
+CHECKPOINT_URL = (
+    'https://drive.usercontent.google.com/download?'
+    'id=1v5VaYibAaDSFuWvROsPbCzeG3iM6VbxY&export=download&confirm=t'
+)
 
 
 def read_jsonl(path):
@@ -186,6 +190,8 @@ def run(input_dir=INPUT, output=OUTPUT, root=ROOT):
         'external_requirements': {
             'checkpoint': 'SraVaani-nemo-checkpoint.nemo (~1.7 GB)',
             'checkpoint_in_huggingface_inference_repo': False,
+            'checkpoint_source': CHECKPOINT_URL,
+            'checkpoint_access': 'official_direct_download_verified_2026-09-15',
             'runtime': 'NVIDIA NeMo ASR with matching CUDA extra',
             'hardware': 'CUDA-capable NVIDIA GPU; 16 GB VRAM recommended',
         },

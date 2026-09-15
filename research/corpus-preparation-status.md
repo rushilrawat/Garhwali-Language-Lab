@@ -100,9 +100,11 @@ SraVaani NeMo adaptation: 1,621 train, 269 validation, and 112 held-out test
 records in deterministic tar/manifest pairs totaling 412,037,120 archive bytes.
 All audio hashes and 16 kHz mono 16-bit PCM properties pass, every row retains
 CC BY 4.0 evidence, and cross-split audio/speaker leakage is zero. The decoder-only
-102-step plan is ready; execution requires the separate trainable NeMo checkpoint
-and CUDA NVIDIA hardware, neither of which is supplied by the inference Hub repo
-or this Mac.
+102-step plan is ready. The official 1,796,208,640-byte NeMo checkpoint download
+and archive format are verified, and the launcher can fetch it on the CUDA host.
+The local Mac has no CUDA. An authenticated Hugging Face Jobs preflight returned
+HTTP 402 before job creation because the account has no positive compute-credit
+balance. The planned `t4-small` run is capped at eight hours and $3.20.
 
 GarhwaliBench v0.1 indexes 3,847 external task records, 2,492 held-out text segments, and 112 speaker-safe ASR rows. Exact train/evaluation text overlap and ASR speaker overlap are zero. Its deterministic character-bigram floor is 16.464093 perplexity with a 0.00000498 character OOV rate.
 
@@ -161,4 +163,4 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 301 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, source-level rights-basis accounting, controlled multi-seed text scaling, IndicBERTv2 head/encoder adaptation, instruction construction and mT5 tuning utilities, frozen transfer comparison, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, speech comparison, confidence-aware curriculum selection, source-label conflict isolation, three-checkpoint risky-draft review, audio-grounded structural-outlier review, weighted-batch gradient accumulation, SraVaani NeMo packaging and launch planning, paired pilot registration, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
+The complete pipeline suite has 328 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, source-level rights-basis accounting, controlled multi-seed text scaling, IndicBERTv2 head/encoder adaptation, instruction construction and mT5 tuning utilities, frozen transfer comparison, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, speech comparison, confidence-aware curriculum selection, source-label conflict isolation, three-checkpoint risky-draft review, audio-grounded structural-outlier review, weighted-batch gradient accumulation, SraVaani NeMo packaging, exact checkpoint validation and launch planning, paired pilot registration, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
