@@ -84,6 +84,23 @@ class AsrTrainingCurriculumTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             m.deduplicate_machine_rows(rows)
 
+    def test_source_conflict_is_preserved_outside_training_candidates(self):
+        rows = [
+            {
+                'audio_sha256': 'a', 'machine_transcript': 'गढ़वाली',
+                'experimental_training_eligible': True,
+            },
+            {
+                'audio_sha256': 'b', 'machine_transcript': 'বাংলা',
+                'experimental_training_eligible': False,
+                'language_scope_status': 'source_label_conflict',
+            },
+        ]
+        self.assertEqual(
+            [row['audio_sha256'] for row in m.machine_training_rows(rows)],
+            ['a'],
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -6,21 +6,21 @@ Run: `garhwali-asr-confidence-curriculum-v0.1`
 ## Outcome
 
 The project now has a deterministic ASR curriculum that combines the strict
-human-reference training split with every unique SraVaani machine-labelled
-recording. It retains all machine audio in the experimental training view while
-keeping the human validation and test sets isolated.
+human-reference training split with every eligible unique SraVaani machine-labelled
+recording. It preserves all machine audio while excluding 98 source-label-conflict
+records from Garhwali loss and keeping the human validation and test sets isolated.
 
 | Split | Records | Labels | Use |
 | --- | ---: | --- | --- |
-| Train | 106,155 | 1,621 human + 104,534 machine | staged, confidence weighted |
+| Train | 106,057 | 1,621 human + 104,436 machine | staged, confidence weighted |
 | Validation | 269 | human only | model selection |
 | Test | 112 | human only | final comparison |
 
-The train manifest covers 129.564 hours: 2.870 human-reference hours and 126.693
+The train manifest covers 129.310 hours: 2.870 human-reference hours and 126.440
 machine-labelled hours. The 104,542 machine source rows reduce to 104,534 unique
-audio hashes because eight source rows repeat an existing recording. No unique
-audio was removed, and no audio hash overlaps the human train, validation, or
-test manifests.
+audio hashes because eight source rows repeat an existing recording. The 98
+source-conflict audios remain preserved outside Garhwali training. No training
+audio hash overlaps the human train, validation, or test manifests.
 
 ## Curriculum
 
@@ -28,7 +28,7 @@ test manifests.
 2. Stage 1: add 103,346 standard SraVaani rows.
 3. Stage 2: add 30 medium-confidence recovery rows.
 4. Stage 3: add 35 low-confidence recovery rows.
-5. Stage 4: add 1,123 very-low-confidence recovery rows.
+5. Stage 4: add 1,025 very-low-confidence recovery rows.
 
 All machine rows receive a positive `sample_weight`. Standard SraVaani rows use
 the expanded 381-reference character-accuracy calibration score of 0.814594.
@@ -36,11 +36,11 @@ Recovery rows use their conservative cross-model confidence score. These scores
 rank evidence; they are not calibrated probabilities that a transcript is
 correct.
 
-The weights are normalized so the entire 104,534-row machine collection has the
+The weights are normalized so the eligible 104,436-row machine collection has the
 same effective loss mass as the 1,621 human training references. This prevents
 the much larger pseudo-labelled set from overwhelming human labels while still
 using every recording. The resulting mass is 1,621.000 for human references and
-1,620.999999 for machine labels after per-row rounding.
+1,620.999996 for machine labels after per-row rounding.
 
 One 1.923-second recovery row had an empty preferred SraVaani hypothesis. The
 builder uses its non-empty Whisper alternative, marks the choice as

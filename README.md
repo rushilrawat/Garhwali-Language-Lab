@@ -139,17 +139,18 @@ not a defect in the dataset.
   **5.019603** mean new-test cross-entropy after 256-step three-seed LoRA; all
   seeds improve the held-out loss, while exact-match generation remains 0%.
 - **104,542 SraVaani machine drafts** cover 104,534 unique recordings. Automated
-  quality analysis marks 103,354 standard and 1,188 flagged rows while retaining
-  every source row in the active experimental view.
+  quality analysis marks 103,354 standard and 1,188 flagged rows. A cross-layer
+  audit links 98 flagged drafts and 8 human transcripts to one repeated Bengali-
+  script source-label conflict; all 106 records remain visible for source analysis.
 - **1,188 confidence-scored recovery alternatives** are integrated beside their
   immutable SraVaani originals: 30 medium, 35 low, and 1,123 very-low review
   confidence, with no quarantine or automatic promotion.
-- **106,155-row confidence-aware ASR curriculum:** 1,621 human references plus
-  all 104,534 unique machine-labelled recordings, with human-only validation and
-  test sets, zero audio leakage, and zero empty targets.
-- **Full curriculum trainer dry run:** all 106,155 training rows and 269
+- **106,057-row confidence-aware ASR curriculum:** 1,621 human references plus
+  104,436 machine-labelled recordings; the 98 source-conflict drafts remain in
+  the dataset but contribute no Garhwali training loss.
+- **Full curriculum trainer dry run:** all 106,057 training rows and 269
   validation rows resolve to local audio, with zero empty targets, duplicate
-  training hashes, or missing files and 3,241.999999 total effective loss mass.
+  training hashes, or missing files and 3,241.999996 total effective loss mass.
 - **Stage-0 checkpoint:** the stronger human-only Whisper-tiny `v0.2` scores
   0.781 WER / 0.463 CER on all 269 validation rows and is registered for stage 1
   without copying its weights; SraVaani remains ahead at 0.434 / 0.189.
@@ -553,39 +554,42 @@ selection rules, exclusions, counts, and leakage checks.
    Whisper on 8, with 4 ties. All 1,188 recovery rows now map to an observed
    agreement band; no row is promoted or removed.
 8. [x] **Confidence-aware manifest integration — Medium:** all 104,542 source
-   drafts remain active, with confidence evidence attached to exactly 1,188.
+   drafts remain preserved, with confidence evidence attached to exactly 1,188.
    The local transcript package exports all 104,534 unique audios without raw
    paths or audio files and preserves duplicate-source counts.
-9. [x] **Confidence-aware ASR curriculum — High:** the 106,155-row training view
-   combines 1,621 human references with all 104,534 unique machine-labelled
+9. [x] **Source-label conflict isolation — High:** eight human Bengali-script
+   transcripts and 98 machine drafts resolve to one source speaker key. All 106
+   records remain visible, while the 98 drafts are ineligible for Garhwali loss.
+10. [x] **Confidence-aware ASR curriculum — High:** the 106,057-row training view
+   combines 1,621 human references with 104,436 eligible machine-labelled
    recordings across five stages. Machine loss mass equals the human-reference
    mass; validation and test remain human-only, with zero audio leakage and zero
    empty targets.
-10. [x] **Weighted trainer dry run — High:** stage selection, positive sample
+11. [x] **Weighted trainer dry run — High:** stage selection, positive sample
     weights, stage-to-stage checkpoint validation, and legacy strict-split
     compatibility are implemented. The complete stage-4 dry run passes with no
     missing audio, empty targets, or duplicate training hashes; curriculum runs
     use human-only validation by default and reserve the final test split.
-11. [x] **Stage-0 checkpoint selection — High:** curriculum stage 0 exactly
+12. [x] **Stage-0 checkpoint selection — High:** curriculum stage 0 exactly
     matches the original 1,621 human training records. The existing `v0.2`
     checkpoint beats `v0.1` on the 269-row validation split and passes the full
     104,967-row stage-1 resume dry run without copying weights.
-12. [x] **Stage-1 machine-label pilot — Xhigh:** 32 human anchors and 2,048
+13. [x] **Stage-1 machine-label pilot — Xhigh:** 32 human anchors and 2,048
     standard SraVaani labels completed 2,080 Metal updates and evaluation on all
     269 validation records. WER worsened by 0.003614 and CER by 0.000058, so the
     run is registered as rejected, the human-only checkpoint stays selected, and
     stage 2 remains locked.
-13. [x] **Weighted-batch redesign and ablation — Xhigh:** the same data now forms
+14. [x] **Weighted-batch redesign and ablation — Xhigh:** the same data now forms
     32 deterministic batches with one human and 64 machine records per normalized
     optimizer update. Aggregate validation still worsens to 0.788153 WER and
     0.463672 CER. The result is rejected and the full machine-label curriculum is
     stopped under this recipe.
-14. [x] **SraVaani adaptation readiness — Xhigh:** all 1,621 train, 269 validation,
+15. [x] **SraVaani adaptation readiness — Xhigh:** all 1,621 train, 269 validation,
     and 112 held-out test clips are exported in deterministic official NeMo
     tar/manifest format. Every source hash and PCM property passes, all rows are
     CC BY 4.0, and audio/speaker leakage is zero. The guarded two-epoch,
     decoder-only 102-step launcher is ready.
-15. [ ] **SraVaani human-reference training — Xhigh:** execution requires the
+16. [ ] **SraVaani human-reference training — Xhigh:** execution requires the
     separate 1.7 GB `SraVaani-nemo-checkpoint.nemo` and CUDA NVIDIA hardware. The
     Hugging Face inference repository supplies a 909 MB TorchScript graph and
     does not contain the trainable NeMo checkpoint.
@@ -690,7 +694,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **273 passing tests**, **365 verified source
+The current verification result is **281 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release

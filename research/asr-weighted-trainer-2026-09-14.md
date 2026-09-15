@@ -42,10 +42,10 @@ prevents a later stage from silently starting from the wrong checkpoint.
 
 | Check | Result |
 | --- | ---: |
-| Training records | 106,155 |
+| Training records | 106,057 |
 | Validation records | 269 |
-| Training audio | 129.563564 hours |
-| Effective loss mass | 3,241.999999 |
+| Training audio | 129.310351 hours |
+| Effective loss mass | 3,241.999996 |
 | Empty training targets | 0 |
 | Empty evaluation targets | 0 |
 | Duplicate training audio hashes | 0 |
@@ -57,8 +57,9 @@ which keeps the 112-row final test set out of stage decisions. An explicit
 `--eval-split test` dry run also confirms that all 112 final-test records and
 audio paths are complete.
 
-The effective mass is 1,621.0 from human references plus 1,620.999999 from the
-entire machine-labelled collection after per-row rounding. Stage 0 was also run
+The effective mass is 1,621.0 from human references plus 1,620.999996 from the
+104,436 eligible machine-labelled recordings after per-row rounding. The 98
+source-label-conflict drafts remain preserved outside Garhwali loss. Stage 0 was also run
 independently and selected exactly 1,621 human-reference rows, 2.870413 hours,
 and 1,621.0 effective weight.
 

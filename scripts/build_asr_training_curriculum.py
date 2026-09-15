@@ -181,6 +181,14 @@ def deduplicate_machine_rows(rows):
     return [groups[key] for key in sorted(groups)]
 
 
+def machine_training_rows(rows):
+    return [
+        row for row in rows
+        if row.get('language_scope_status') != 'source_label_conflict'
+        and row.get('experimental_training_eligible', True)
+    ]
+
+
 def summarize_rows(rows):
     tiers = Counter(row['curriculum_tier'] for row in rows)
     weight_mass = Counter()
@@ -212,7 +220,12 @@ def run(human_splits=HUMAN_SPLITS, machine_path=MACHINE,
     confidence_report = json.loads(confidence_report_path.read_text())
     standard_score = 1.0 - confidence_report['calibration']['all']['sravaani']['cer']
     machine_source_rows = read_jsonl(machine_path)
-    machine_unique = deduplicate_machine_rows(machine_source_rows)
+    machine_unique_all = deduplicate_machine_rows(machine_source_rows)
+    machine_unique = machine_training_rows(machine_unique_all)
+    source_conflicts = [
+        row for row in machine_unique_all
+        if row.get('language_scope_status') == 'source_label_conflict'
+    ]
 
     human_hashes = {
         split: {row['audio_sha256'] for row in rows}
@@ -269,8 +282,10 @@ def run(human_splits=HUMAN_SPLITS, machine_path=MACHINE,
         'test_records': len(test),
         'human_train_records': len(human['train']),
         'machine_source_records': len(machine_source_rows),
-        'machine_unique_audio_records': len(machine_unique),
-        'inherited_machine_duplicate_rows': len(machine_source_rows) - len(machine_unique),
+        'machine_unique_audio_records': len(machine_unique_all),
+        'machine_training_audio_records': len(machine_unique),
+        'source_conflict_audio_records': len(source_conflicts),
+        'inherited_machine_duplicate_rows': len(machine_source_rows) - len(machine_unique_all),
         'machine_weight_ratio': machine_weight_ratio,
         'machine_weight_scale': scale,
         'human_effective_weight_mass': float(len(human['train'])),
@@ -286,7 +301,9 @@ def run(human_splits=HUMAN_SPLITS, machine_path=MACHINE,
             row['target_selection'] == 'nonempty_candidate_fallback' for row in train
         ),
         'records_removed_or_quarantined': 0,
-        'all_unique_machine_audio_active': len(machine_unique),
+        'all_unique_machine_audio_preserved': len(machine_unique_all),
+        'machine_audio_active_for_garhwali_training': len(machine_unique),
+        'source_conflicts_active_for_source_error_analysis': len(source_conflicts),
         'validation_and_test_human_only': True,
         'inputs': {
             'machine': {'path': str(machine_path), 'sha256': sha256_file(machine_path)},

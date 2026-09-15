@@ -94,6 +94,8 @@ def audio_row(row, transcript_field, include_audio_reference=True):
         'machine_transcript_quality',
         'recovery_status', 'recovery_confidence',
         'experimental_training_eligible', 'training_eligible',
+        'language_scope_status', 'source_conflict_evidence',
+        'active_for_source_error_analysis',
     )
     exported = {key: row.get(key) for key in keep if key in row}
     if include_audio_reference:
@@ -331,6 +333,10 @@ not human ground truth. Targeted rows also retain their local Whisper alternativ
 cross-model agreement, and bounded review-confidence evidence. Draft export
 status: **{draft_status}**.
 
+The draft layer also preserves **{report['draft_source_label_conflicts']:,}
+source-label conflict recordings**. These remain available for auditing but are
+explicitly ineligible for Garhwali training.
+
 This package uses multiple upstream licenses. Inspect each row's provenance
 before redistribution or model release. Full documentation, limitations, and the
 release audit are in the [source repository](https://github.com/rushilrawat/Garhwali-Language-Lab).
@@ -409,6 +415,10 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     report['draft_source'] = str(drafts_path.relative_to(ROOT))
     report['draft_records'] = len(drafts)
     report['draft_unique_audio'] = len(unique_drafts)
+    report['draft_source_label_conflicts'] = sum(
+        row.get('language_scope_status') == 'source_label_conflict'
+        for row in unique_drafts
+    )
     report['draft_inherited_duplicate_rows'] = len(drafts) - len(unique_drafts)
     report['drafts_complete'] = drafts_cover_queue(queue, drafts)
     if not report['drafts_complete'] and not allow_partial_drafts:

@@ -122,7 +122,11 @@ def draft_quality_decision(row):
     confidence = row.get("recovery_confidence") or {}
     if confidence and confidence.get("confidence_band") in {"low", "very_low"}:
         reasons.append("low_cross_model_confidence")
-    tier = "machine_draft_review" if reasons else "machine_draft_experimental"
+    if row.get("language_scope_status") == "source_label_conflict":
+        reasons.append("source_label_conflict")
+        tier = "source_label_conflict_preserved"
+    else:
+        tier = "machine_draft_review" if reasons else "machine_draft_experimental"
     return {"tier": tier, "reasons": sorted(set(reasons)), "value_changed": False}
 
 

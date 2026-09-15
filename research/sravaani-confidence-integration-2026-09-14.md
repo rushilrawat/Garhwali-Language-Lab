@@ -1,7 +1,7 @@
 # SraVaani confidence-aware manifest integration
 
-Confidence v0.2 is integrated into the complete SraVaani experimental draft
-layer without replacing a source hypothesis or excluding a recording.
+Confidence v0.2 is integrated into the complete SraVaani draft layer without
+replacing a source hypothesis or removing a recording.
 
 | Full local manifest | Records |
 | --- | ---: |
@@ -10,6 +10,7 @@ layer without replacing a source hypothesis or excluding a recording.
 | Inherited duplicate-audio source rows | 8 |
 | Confidence-scored recovery alternatives attached | 1,188 |
 | Untargeted SraVaani drafts preserved | 103,354 |
+| Source-label conflicts preserved outside Garhwali training | 98 |
 | Removed or quarantined | 0 |
 | Promoted to supervised training | 0 |
 
@@ -21,13 +22,15 @@ as a review signal rather than a correctness probability.
 
 The transcript-only Hugging Face package now reads this enriched source. Its
 SraVaani configuration contains 104,534 content-deduplicated rows, including all
-1,188 confidence-scored records. It records the eight duplicate source paths as
+1,188 confidence-scored records. It marks 98 source-conflict rows as ineligible
+for Garhwali training while retaining them for audit. It records the eight duplicate source paths as
 source-record counts, contains no raw filenames or local paths, and packages no
 audio. Public upload remains deferred.
 
 ## Reproduction
 
 ```bash
+.venv/bin/python scripts/build_vaani_source_conflicts.py
 .venv/bin/python scripts/integrate_sravaani_confidence.py
 .venv/bin/python scripts/build_huggingface_dataset.py \
   --output data/huggingface/garhwali-language-lab --profile public

@@ -50,6 +50,7 @@ class FinalReleaseAuditTests(unittest.TestCase):
             'draft_records': 1,
             'draft_unique_audio': 1,
             'draft_inherited_duplicate_rows': 0,
+            'draft_source_label_conflicts': 0,
             'drafts_complete': True,
             'include_audio': False,
         }
@@ -103,6 +104,27 @@ class FinalReleaseAuditTests(unittest.TestCase):
             report = m.audit(index, root)
         self.assertEqual(report['status'], 'failed')
         self.assertIn('4 referenced audio files are missing', report['errors'])
+
+    def test_rejects_source_conflict_as_garhwali_training_data(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            path = root / 'data/sravaani_drafts/train-00000.jsonl'
+            write_jsonl(path, [{
+                'audio_sha256': 'draft-a',
+                'transcript': 'বাংলা পাঠ',
+                'training_eligible': False,
+                'experimental_training_eligible': True,
+                'machine_transcript_quality': {'level': 'high_risk'},
+                'language_scope_status': 'source_label_conflict',
+                'active_for_source_error_analysis': True,
+            }])
+            report = m.audit(index, root)
+        self.assertEqual(report['status'], 'failed')
+        self.assertIn(
+            '1 source-label conflict drafts are marked as Garhwali training data',
+            report['errors'],
+        )
 
 
 if __name__ == '__main__':

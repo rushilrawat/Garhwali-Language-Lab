@@ -13,7 +13,7 @@ corrections remain reversible and auditable.
 | Dataset | Strict/high-quality | Experimental/review | Context | Main risk |
 | --- | ---: | ---: | ---: | --- |
 | Human-transcribed speech | 5,881 strict candidates | 13 review | 0 | Existing transcript/training flags |
-| SraVaani machine drafts | 103,354 experimental | 1,188 review | 0 | Script, repetition, empty output, or weak cross-model agreement |
+| SraVaani machine drafts | 103,354 experimental | 1,090 review | 98 source-label conflicts | Script, repetition, empty output, or weak cross-model agreement |
 | Text | 1,202 strict public + 3,653 high-quality rights-pending | 20,488 review | 2,644 non-strict context | Language confidence, cleanup evidence, and source rights |
 
 The strict public text seed contains 1,202 records. Another 3,653 clean,
@@ -74,6 +74,17 @@ for human text. Two release proposals remove a single unmatched opening parenthe
 the immutable references remain unchanged. All five still require listening review.
 No supervised row was silently removed or promoted.
 
+## Cross-layer source conflict
+
+All eight Bengali-script human transcripts and 98 Bengali-script machine drafts
+map to the same stable VAANI source speaker key, `Uttarkashi:98459`. Every human
+transcript and every machine draft observed for that key uses Bengali script, and
+the source metadata lists Bengali among the speaker's known languages. The 106
+records are preserved with a source-label-conflict status. The 98 machine drafts
+remain in the public dataset for auditing but are excluded from Garhwali training
+loss. This is a source-scope decision, not a claim that script alone proves the
+audio language.
+
 ## Quality policy
 
 - Preserve original, cleaned, and proposed values independently.
@@ -89,7 +100,7 @@ No supervised row was silently removed or promoted.
 1. Validate the ranked 616-record public queue by source and native review.
 2. Listen-review the five ambiguous supervised transcripts; retain the eight
    Bengali-script source-label conflicts as excluded evidence.
-3. Review the 1,188 risky machine drafts using audio and model disagreement;
+3. Review the remaining 1,090 risky machine drafts using audio and model disagreement;
    never guess corrections from text alone.
 4. Audit the 3,653 high-quality rights-pending texts source by source for explicit
    redistribution and model-training permission.

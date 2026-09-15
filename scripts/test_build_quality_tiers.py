@@ -123,6 +123,18 @@ class QualityTierTests(unittest.TestCase):
         self.assertEqual(m.draft_quality_decision(standard)["tier"], "machine_draft_experimental")
         self.assertEqual(m.draft_quality_decision(risky)["tier"], "machine_draft_review")
 
+    def test_source_conflict_draft_has_a_separate_preserved_tier(self):
+        row = {
+            "machine_transcript": "বাংলা পাঠ",
+            "machine_transcript_quality": {
+                "level": "high_risk", "flags": ["bengali_script"],
+            },
+            "language_scope_status": "source_label_conflict",
+        }
+        result = m.draft_quality_decision(row)
+        self.assertEqual(result["tier"], "source_label_conflict_preserved")
+        self.assertIn("source_label_conflict", result["reasons"])
+
 
 if __name__ == "__main__":
     unittest.main()

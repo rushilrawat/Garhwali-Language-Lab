@@ -34,7 +34,9 @@
     "draft_unique_audio": 104534,
     "empty_transcripts": 34,
     "exported_unique_audio": 104534,
+    "invalid_source_label_conflicts": 0,
     "quality_metadata_missing": 0,
+    "source_label_conflicts": 98,
     "supervised_training_eligible": 0
   },
   "errors": [],

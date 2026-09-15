@@ -50,6 +50,22 @@ class SraVaaniConfidenceIntegrationTests(unittest.TestCase):
         self.assertFalse(merged['training_eligible'])
         self.assertTrue(merged['experimental_training_eligible'])
 
+    def test_source_conflict_is_preserved_but_not_garhwali_training_eligible(self):
+        base = {
+            'audio_sha256': 'a',
+            'machine_transcript': 'বাংলা পাঠ',
+            'training_eligible': False,
+            'experimental_training_eligible': True,
+        }
+        conflict = {
+            'language_scope_status': 'source_label_conflict',
+            'source_conflict_evidence': {'human_bengali_transcripts': 8},
+        }
+        merged = m.merge_row(base, None, conflict)
+        self.assertFalse(merged['experimental_training_eligible'])
+        self.assertTrue(merged['active_for_source_error_analysis'])
+        self.assertEqual(merged['language_scope_status'], 'source_label_conflict')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -71,6 +71,8 @@ def audit(index, dataset_root):
     empty_drafts = 0
     draft_quality_missing = 0
     supervised_drafts = 0
+    source_conflict_drafts = 0
+    invalid_source_conflict_drafts = 0
     catalog_ids = set()
     catalog_redacted = 0
     catalog_missing_evidence = 0
@@ -152,6 +154,13 @@ def audit(index, dataset_root):
                 empty_drafts += not bool(row.get('transcript'))
                 draft_quality_missing += not bool(row.get('machine_transcript_quality'))
                 supervised_drafts += row.get('training_eligible') is True
+                if row.get('language_scope_status') == 'source_label_conflict':
+                    source_conflict_drafts += 1
+                    invalid_source_conflict_drafts += bool(
+                        row.get('training_eligible')
+                        or row.get('experimental_training_eligible')
+                        or not row.get('active_for_source_error_analysis')
+                    )
         elif group == 'catalog':
             for row in rows:
                 identity = row.get('id')
@@ -170,6 +179,11 @@ def audit(index, dataset_root):
         errors.append(f'{draft_quality_missing} SraVaani drafts lack quality metadata')
     if supervised_drafts:
         errors.append(f'{supervised_drafts} machine drafts are marked supervised-training eligible')
+    if invalid_source_conflict_drafts:
+        errors.append(
+            f'{invalid_source_conflict_drafts} source-label conflict drafts are '
+            'marked as Garhwali training data'
+        )
     expected_catalog_records = index.get('text', {}).get(
         'unique_parent_documents', index.get('text', {}).get('total')
     )
@@ -198,6 +212,8 @@ def audit(index, dataset_root):
             errors.append(f'{name} does not match release index')
     if draft_rows != manifest.get('draft_unique_audio'):
         errors.append('exported draft rows do not match unique-audio count')
+    if source_conflict_drafts != manifest.get('draft_source_label_conflicts'):
+        errors.append('source-label conflict count does not match manifest')
     if not manifest.get('drafts_complete'):
         errors.append('SraVaani draft coverage is incomplete')
     audio_files = set()
@@ -255,6 +271,8 @@ def audit(index, dataset_root):
             'empty_transcripts': empty_drafts,
             'quality_metadata_missing': draft_quality_missing,
             'supervised_training_eligible': supervised_drafts,
+            'source_label_conflicts': source_conflict_drafts,
+            'invalid_source_label_conflicts': invalid_source_conflict_drafts,
             'complete': bool(manifest.get('drafts_complete')),
         },
         'catalog': {

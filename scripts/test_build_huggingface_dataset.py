@@ -99,6 +99,9 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'whisper_candidate': 'गढ़वाली',
             },
             'duplicate_source_audio_paths': ['private-1.wav', 'private-2.wav'],
+            'language_scope_status': 'source_label_conflict',
+            'source_conflict_evidence': {'human_bengali_transcripts': 8},
+            'active_for_source_error_analysis': True,
         }
         exported = m.audio_row(row, transcript_field='asr_target_clean')
         self.assertEqual(exported['audio'], f'audio/ab/{"ab" * 32}.wav')
@@ -111,6 +114,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertEqual(exported['source_audio_records'], 2)
         self.assertNotIn('duplicate_source_audio_paths', exported)
         self.assertNotIn('local_audio_path', exported)
+        self.assertEqual(exported['language_scope_status'], 'source_label_conflict')
+        self.assertTrue(exported['active_for_source_error_analysis'])
 
     def test_shards_are_deterministic_and_reported(self):
         rows = [{'id': str(index)} for index in range(5)]
