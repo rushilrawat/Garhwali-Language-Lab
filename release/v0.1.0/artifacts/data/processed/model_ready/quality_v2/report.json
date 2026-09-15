@@ -45,7 +45,7 @@
     },
     "text": {
       "reason_counts": {
-        "cleanup_review_required": 6844,
+        "cleanup_review_required": 6843,
         "language_confidence_not_high": 18011,
         "language_review_required": 2837,
         "low_surface_quality": 11,
@@ -54,16 +54,16 @@
       },
       "records": 27986,
       "tier_rates": {
-        "experimental_review": 0.715894,
+        "experimental_review": 0.715858,
         "high_quality_local_only": 0.06246,
         "non_strict_context": 0.094512,
-        "strict_gold_candidate": 0.127135
+        "strict_gold_candidate": 0.127171
       },
       "tiers": {
-        "experimental_review": 20035,
+        "experimental_review": 20034,
         "high_quality_local_only": 1748,
         "non_strict_context": 2645,
-        "strict_gold_candidate": 3558
+        "strict_gold_candidate": 3559
       }
     }
   },

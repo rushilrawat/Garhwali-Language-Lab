@@ -14,12 +14,12 @@ corrections remain reversible and auditable.
 | --- | ---: | ---: | ---: | --- |
 | Human-transcribed speech | 5,881 strict candidates | 13 review | 0 | Existing transcript/training flags |
 | SraVaani machine drafts | 103,354 experimental | 1,090 three-checkpoint review records | 98 source-label conflicts | 325 clean related-checkpoint consensus proposals, 730 clean low-consensus proposals, and 35 machine-audio-reviewed outliers pending listening |
-| Text | 3,558 strict public + 1,748 high-quality rights-pending | 20,035 review | 2,645 non-strict context | Language confidence, cleanup evidence, and source rights |
+| Text | 3,559 strict public + 1,748 high-quality rights-pending | 20,034 review | 2,645 non-strict context | Language confidence, cleanup evidence, and source rights |
 
-The strict public text seed now contains 3,558 records. Another 1,748 clean,
+The strict public text seed now contains 3,559 records. Another 1,748 clean,
 high-confidence Garhwali candidates fail only the rights-cleared-source rule and
 remain represented in the public catalog with protected text values redacted. The
-public Garhwali candidate pool contains 3,735 records in total; 177 require native
+public Garhwali candidate pool contains 3,735 records in total; 176 require native
 or source-level validation before entering the strict tier.
 
 ## Public-text refinement
@@ -47,13 +47,13 @@ guessed automatically.
 
 ## Evidence dimensions and review order
 
-The 177 unresolved public candidates now have separate evidence for language
+The 176 unresolved public candidates now have separate evidence for language
 identity, orthography, semantic alignment, source reliability, and surface form.
 The queue is deterministic and contains each stable text identity once:
 
 | Priority | Records | Reason |
 | --- | ---: | --- |
-| Surface or source scaffolding | 10 | Short fragments, variant boundaries, or remaining flags |
+| Surface or source scaffolding | 9 | Short fragments, variant boundaries, or remaining flags |
 | Source accuracy | 163 | Native accuracy or community review is explicitly unresolved |
 | Romanized orthography | 4 | Source form is valid data but spelling has not been natively reviewed |
 
@@ -98,7 +98,7 @@ audio language.
 
 ## Next correction order
 
-1. Validate the ranked 177-record public queue by source and native review.
+1. Validate the ranked 176-record public queue by source and native review.
 2. Listen-review the five ambiguous supervised transcripts; retain the eight
    Bengali-script source-label conflicts as excluded evidence.
 3. Listening-review the 35 machine-audio-reviewed outliers: 11 common short-form

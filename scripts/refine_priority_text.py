@@ -187,6 +187,9 @@ def refine_row(row):
     cleanup_flags = set(row.get('cleanup_review_flags') or []) | set(
         row.get('deep_cleanup_flags') or []
     )
+    source_attested_transcription = 'source_linguistic_transcription' in (
+        (row.get('language_quality') or {}).get('evidence') or []
+    )
 
     if PHONE.search(original):
         signals.append('contains_phone_number')
@@ -199,13 +202,11 @@ def refine_row(row):
         release = EXACT_DOUBLE_PERIOD.sub('…', release)
         changes.append('double_period_normalized')
     script = (row.get('language_quality') or {}).get('script_profile', {}).get('script')
-    if script == 'Latn' and 'source_linguistic_transcription' not in (
-        (row.get('language_quality') or {}).get('evidence') or []
-    ):
+    if script == 'Latn' and not source_attested_transcription:
         signals.append('romanized_text_requires_native_review')
     if '/' in original and (
         len(original.split()) <= 6 or genres.intersection(LEXICON_GENRES)
-    ):
+    ) and not source_attested_transcription:
         signals.append('slash_separated_variants')
     if EDITORIAL_NASAL.search(original):
         signals.append('editorial_nasal_notation')

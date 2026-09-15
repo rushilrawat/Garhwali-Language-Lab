@@ -2,8 +2,8 @@
   "automatic_change_counts": {
     "double_period_normalized": 29
   },
-  "manual_review_required": 14,
-  "no_additional_issue": 3721,
+  "manual_review_required": 13,
+  "no_additional_issue": 3722,
   "policy": {
     "confidence": "Dimensions report evidence and review state; they are not accuracy probabilities.",
     "linguistic_values": "No automatic spelling, transliteration, language, or dialect correction.",
@@ -35,8 +35,8 @@
     },
     "surface_form": {
       "mechanically_normalized": 29,
-      "no_detected_surface_issue": 3692,
-      "review_required": 14
+      "no_detected_surface_issue": 3693,
+      "review_required": 13
     }
   },
   "records": 3735,
@@ -52,12 +52,12 @@
   "review_priority_counts": {
     "romanized_orthography": 4,
     "source_accuracy": 163,
-    "surface_or_scaffolding": 10
+    "surface_or_scaffolding": 9
   },
-  "review_queue_records": 177,
+  "review_queue_records": 176,
   "review_signal_counts": {
     "romanized_text_requires_native_review": 4,
-    "slash_separated_variants": 2,
+    "slash_separated_variants": 1,
     "very_short_fragment": 8
   },
   "source_record_counts": {

@@ -184,6 +184,28 @@ class PriorityTextRefinementTests(unittest.TestCase):
         self.assertEqual(alignment['status'], 'source_attested_parallel_alignment')
         self.assertFalse(alignment['native_validation_required'])
 
+    def test_source_attested_transcription_slash_is_published_not_scaffolding(self):
+        result = m.refine_row({
+            'text_sha256': 'b3' * 32,
+            'text_model': 'mem/mjɑr pɑs ek bɛɡ čə',
+            'cleanup_review_flags': ['no_devanagari'],
+            'language_quality': {
+                'status': 'source_attested_garhwali_transcription',
+                'confidence': 'high',
+                'evidence': ['source_garhwali_label', 'source_linguistic_transcription'],
+                'review_required': False,
+                'script_profile': {'script': 'Latn'},
+            },
+            'genre_quality': {'tags': ['translated_example']},
+            'provenance': [{
+                'source_id': 'mamta_southasia_examples',
+                'iso_639_3': 'gbm',
+                'linguistic_metadata': {'translation': 'I have one bag.'},
+            }],
+        })
+        self.assertNotIn('slash_separated_variants', result['review_signals'])
+        self.assertFalse(result['manual_review_required'])
+
     def test_long_sentence_with_slash_is_not_treated_as_variant_list(self):
         result = m.refine_row({
             'text_sha256': '3' * 64,

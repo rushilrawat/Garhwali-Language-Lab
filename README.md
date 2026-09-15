@@ -110,7 +110,7 @@ not a defect in the dataset.
   preserved; current VAANI coverage is Uttarkashi and Tehri Garhwal.
 - **25,341 likely Garhwali text candidates**, 1,468 source-declared mixed-language
   records, 860 unresolved records, and 317 non-Garhwali cultural-context records.
-- **4,195 exact-unique texts with a public rights basis**, including 3,558 strict
+- **4,195 exact-unique texts with a public rights basis**, including 3,559 strict
   public candidates; 1,748 additional high-quality candidates remain active with
   rights-pending provenance.
 - **1,913 mixed-rights exact duplicates** retain every source warning; 1,906
@@ -177,7 +177,7 @@ not a defect in the dataset.
 - **SraVaani adaptation package:** 2,002 human-reference clips are packaged into
   deterministic NeMo train, validation, and held-out test archives totaling
   412,037,120 bytes, with all audio hashes verified and zero split leakage.
-- **317 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **324 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
 These figures describe the preparation snapshot updated on 2026-09-15. Raw
@@ -498,14 +498,18 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Verify source snapshots and release-manifest line counts.
 - [x] Make the two-pass native workflow available as an optional future quality
   upgrade without blocking the current release.
+- [x] Package all 176 remaining text-accuracy cases and all 113 transcript-review
+  cases as JSONL plus flat two-reviewer CSV templates; include English alignments
+  for 172 Translatewiki rows and two model hypotheses for five ambiguous human
+  transcripts.
 - [x] Freeze held-out, automatically screened evaluation candidates before tuning.
 - [x] Add an intensive evidence-based quality gate across all text, supervised
   speech, and SraVaani drafts; preserve every value and attach explicit tier reasons.
 - [x] Refine all 3,735 public Garhwali text candidates with genre-aware surface
   checks; preserve originals, remove seven unambiguous markup residues, normalize
-  29 double-period pause markers, and yield 3,558 strict public candidates.
+  29 double-period pause markers, and yield 3,559 strict public candidates.
 - [x] Replace the coarse public-text confidence queue with separate language,
-  orthography, alignment, source, and surface evidence; rank all 177 unresolved
+  orthography, alignment, source, and surface evidence; rank all 176 unresolved
   records without discarding or guessing any value.
 - [x] Audit all 27,986 exact-unique texts by source; restore lost license IDs,
   normalize rights-warning syntax, and attach an explicit public rights basis to
@@ -517,8 +521,8 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Re-decode all five ambiguous human transcripts with the two strongest local
   Garhwali Whisper checkpoints; preserve every reference, attach both hypotheses,
   and remove two unambiguous stray opening parentheses from release proposals.
-- [ ] Complete human adjudication for the remaining 177 public text candidates
-  (172 Translatewiki, four PanLex, and one Mamta alignment), five ambiguous supervised
+- [ ] Complete human adjudication for the remaining 176 public text candidates
+  (172 Translatewiki and four PanLex), five ambiguous supervised
   transcripts, and risky drafts. The complete three-checkpoint machine review is
   attached to all 1,090 Garhwali recovery records; audio-grounded human review
   remains. Eight additional supervised rows are already isolated as Bengali-
@@ -569,7 +573,9 @@ selection rules, exclusions, counts, and leakage checks.
    quarantined, and 17 repetition repairs are stored only as reversible candidates.
 6. [x] **Source-grounded text accuracy — Xhigh:** structured Wiktionary and
    Wikimedia extraction plus source-aware linguistic notation reduced the public
-   review queue from 628 to 177 without automatic spelling or translation guesses.
+   review queue from 628 to 176 without automatic spelling or translation guesses.
+   All 176 cases and the five ambiguous supervised transcripts now have flat,
+   independently fillable review templates with source and model context.
 7. [x] **Targeted transcript re-decoding — High:** the complete 1,188-record
    recovery queue has local Whisper alternatives with exact hash coverage and
    corpus-level failure checks. The comparison finds 1,154 structurally lower-risk
@@ -663,8 +669,10 @@ The SraVaani training-package audit and exact external requirements are in
 [`research/sravaani-adaptation-readiness-2026-09-14.md`](research/sravaani-adaptation-readiness-2026-09-14.md).
 The reversible cleanup proposals and fixed-split ablation are in
 [`research/model-assisted-text-cleanup-2026-09-11.md`](research/model-assisted-text-cleanup-2026-09-11.md).
-The structured source extraction and remaining 177-record accuracy boundary are
+The structured source extraction and remaining 176-record accuracy boundary are
 in [`research/text-accuracy-review-2026-09-15.md`](research/text-accuracy-review-2026-09-15.md).
+The independently fillable review packets and import path are in
+[`research/native-reference-review-readiness-2026-09-15.md`](research/native-reference-review-readiness-2026-09-15.md).
 The first controlled data-scaling curve is in
 [`research/controlled-text-scaling-2026-09-11.md`](research/controlled-text-scaling-2026-09-11.md).
 The longer continuation and instruction-tuning results are in

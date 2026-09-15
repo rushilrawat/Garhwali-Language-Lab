@@ -14,7 +14,7 @@ Updated 2026-09-15 from the checked-in preparation scripts. Raw and downloaded m
 - Deterministic document-aware partitions: train 25,287; validation 1,367; test 1,331. Only 131 documents moved from their original hash split to keep connected documents together.
 - Quality signals: 70 low quality; 27,916 review band.
 - Structured Wiktionary extraction now yields 77 Garhwali lemmas, alternative forms, and examples in place of 56 flattened raw page blobs. Conservative wikitext rendering removes page scaffolding while preserving source prose.
-- Source-aware treatment preserves 392 scholarly Garhwali transcriptions in their published notation. The public accuracy queue fell from 628 to 177; none of these source-grounded resolutions is described as native review.
+- Source-aware treatment preserves 392 scholarly Garhwali transcriptions in their published notation. The public accuracy queue fell from 628 to 176; none of these source-grounded resolutions is described as native review.
 
 ## VAANI Garhwali
 

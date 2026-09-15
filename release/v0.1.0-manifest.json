@@ -16,13 +16,21 @@
   "public_text_release": {
     "exact_unique_with_public_rights_basis": 4195,
     "rights_pending_catalog_records": 23791,
-    "strict_public_candidates": 3558,
+    "strict_public_candidates": 3559,
     "high_quality_rights_pending_candidates": 1748,
     "mixed_rights_exact_duplicates": 1913,
     "strict_records_using_open_overlap": 1906,
-    "native_or_source_review_queue": 177,
+    "native_or_source_review_queue": 176,
     "source_attested_linguistic_transcriptions": 392,
     "transcript_only_package_rows": 145497
+  },
+  "native_review": {
+    "text_accuracy_packets": 176,
+    "transcript_packets": 113,
+    "ambiguous_supervised_transcripts_with_model_evidence": 5,
+    "required_independent_reviews": 2,
+    "adjudicated_records": 0,
+    "status": "reviewer_ready"
   },
   "speech": {
     "total": 5894,

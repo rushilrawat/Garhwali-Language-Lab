@@ -21,9 +21,9 @@ promotes content only when an identical open copy is already in the corpus.
 | Texts with only rights-pending provenance | 23,791 |
 | Mixed-rights exact duplicates | 1,913 |
 | Strict records using an open exact duplicate | 1,906 |
-| Strict public candidates | 3,558 |
+| Strict public candidates | 3,559 |
 | High-quality rights-pending candidates | 1,748 |
-| Public source/native review queue | 177 |
+| Public source/native review queue | 176 |
 
 The largest resolved group is the strict text overlap shared by Meta Omnilingual
 and the Indic Dialect ASR mirror. Meta's pinned corpus declares CC BY 4.0 and the
@@ -56,9 +56,9 @@ the public catalog by stable hash, source, rights state, and quality evidence.
 An open license and an upstream `gbm` label establish release provenance and
 source scope. They do not prove native spelling, semantic alignment, dialect, or
 transcription accuracy. After the source-grounded accuracy pass, the
-**177-record** public review queue remains separate: 163 source-accuracy reviews,
-10 surface/scaffolding reviews, and four Romanized-orthography reviews. These are
-172 Translatewiki records, four PanLex records, and one Mamta alignment.
+**176-record** public review queue remains separate: 163 source-accuracy reviews,
+nine surface/scaffolding reviews, and four Romanized-orthography reviews. These
+are 172 Translatewiki records and four PanLex records.
 
 ## Public package
 

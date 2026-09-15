@@ -2,12 +2,12 @@
 
 ## Outcome
 
-This pass reduced the public text review queue from **628 to 177 records** without
+This pass reduced the public text review queue from **628 to 176 records** without
 inventing Garhwali spellings, translations, or dialect labels. All 27,986
 exact-unique texts remain active in the complete experimental corpus, and every
 changed release view retains its immutable source value and provenance.
 
-The 451 resolved records were closed through better extraction or explicit
+The 452 resolved records were closed through better extraction or explicit
 scholarly source evidence. They were not marked as native-reviewed.
 
 ## Measured changes
@@ -15,11 +15,11 @@ scholarly source evidence. They were not marked as native-reviewed.
 | Measure | Before | After |
 | --- | ---: | ---: |
 | Public Garhwali candidates | 3,734 | 3,735 |
-| Strict public candidates | 3,106 | 3,558 |
-| Public review queue | 628 | 177 |
+| Strict public candidates | 3,106 | 3,559 |
+| Public review queue | 628 | 176 |
 | Romanized-orthography queue | 426 | 4 |
 | Source-accuracy queue | 135 | 163 |
-| Surface/scaffolding queue | 42 | 10 |
+| Surface/scaffolding queue | 42 | 9 |
 | Semantic-alignment queue | 24 | 0 |
 | Language-identity queue | 1 | 0 |
 
@@ -35,6 +35,9 @@ scholarly source evidence. They were not marked as native-reviewed.
   language data.
 - Preserved extraction fields such as `text_format`, `source_text_format`,
   `relation`, and `headword` through canonical preparation.
+- Recognized the slash in `mem/mjɑr pɑs ek bɛɡ čə` as published scholarly
+  notation rather than a broken field boundary, resolving its false-positive
+  surface warning without rewriting the source form.
 - Fixed Unicode length checks so Devanagari combining marks count as linguistic
   characters rather than causing valid short words to be flagged.
 - Removed complete nested MediaWiki placeholders such as `{{SITENAME}}` without
@@ -58,18 +61,24 @@ a preferred Devanagari transliteration.
 
 ## Remaining human boundary
 
-The remaining **177 records** are all present in the active experimental layer:
+The remaining **176 records** are all present in the active experimental layer:
 
 | Source | Records | Main decision still needed |
 | --- | ---: | --- |
 | Translatewiki | 172 | Native accuracy and short interface-context review |
 | PanLex | 4 | Romanized form and sense review |
-| Mamta South Asia examples | 1 | Slash-separated alignment boundary |
 
 No native-speaker decisions were available during this pass. These records stay
 out of the strict public candidate tier until source context or human evidence
 supports promotion. Nothing is quarantined or hidden from the local all-data
 view.
+
+The workflow now exports these cases to
+`data/processed/native_review/templates/text_accuracy.csv`. Every row includes
+the source form, English alignment when available, source ID, review priority,
+reason, allowed decisions, and empty reviewer fields. Two independently completed
+copies can be imported and adjudicated reproducibly with
+`scripts/native_review_workflow.py --import-decisions`.
 
 ## Reproduction
 

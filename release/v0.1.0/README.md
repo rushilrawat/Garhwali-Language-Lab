@@ -14,7 +14,7 @@ accounts for all **27,986 exact-unique texts**: 4,195 have a named public rights
 basis and 23,791 retain redacted text with full source and review evidence. The
 source audit also records 1,913 exact duplicates with both open and blocked
 provenance instead of discarding either history. Source-grounded cleanup reduced
-the public text review queue from 628 to 177 while preserving every original.
+the public text review queue from 628 to 176 while preserving every original.
 
 Run `python3 scripts/build_release_bundle.py` to rebuild `artifacts/` and its
 SHA-256 index.

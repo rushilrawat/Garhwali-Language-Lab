@@ -1700,20 +1700,19 @@
     },
     "public_text_records": 4195,
     "quality_tier_counts": {
-      "experimental_review": 20035,
+      "experimental_review": 20034,
       "high_quality_local_only": 1748,
       "non_strict_context": 2645,
-      "strict_gold_candidate": 3558
+      "strict_gold_candidate": 3559
     },
     "records": 27986,
     "review_priority_counts": {
       "romanized_orthography": 4,
       "source_accuracy": 163,
-      "surface_or_scaffolding": 10
+      "surface_or_scaffolding": 9
     },
-    "review_queue_records": 177,
+    "review_queue_records": 176,
     "review_source_counts": {
-      "mamta_southasia_examples": 1,
       "opus_translatewiki_gbm": 172,
       "panlex_gbm": 4
     },

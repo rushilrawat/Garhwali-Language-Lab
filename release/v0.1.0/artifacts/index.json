@@ -233,7 +233,7 @@
     {
       "bytes": 2296,
       "path": "data/processed/model_ready/quality_v2/report.json",
-      "sha256": "e296fc9c2ceddea35182c842a60083bf44f153eaecf5613c5ec98321d59d719e"
+      "sha256": "fafa670bd29563f35669dfdc24647d90e6e292d7f0e024998b635615940ed407"
     },
     {
       "bytes": 795,
@@ -256,14 +256,14 @@
       "sha256": "80f50278d9b4b9a2423c1787352325f451ee47b31dde16286ca93ed06b621f15"
     },
     {
-      "bytes": 2688,
+      "bytes": 2687,
       "path": "data/processed/model_ready/text_quality_v2/report.json",
-      "sha256": "078a3a0a203b3d206777efcee6861d13159ead32174aa9df2f216ed05ecb95ce"
+      "sha256": "4420d3d8e79ed3cf176699df00e39aa3e6ab5018a143eb88ec9ff8241ba60ba2"
     },
     {
-      "bytes": 8073,
+      "bytes": 8037,
       "path": "data/processed/model_ready/text_source_audit/report.json",
-      "sha256": "8f83fab405e8e2620a9c591d1c526d17de15488beb2230f747cc924a139e0c64"
+      "sha256": "6f0149eb0283b868db6fa90e9196b46a1df8b7e79f4fef2d7a74c49b06ba131b"
     },
     {
       "bytes": 1857,
@@ -311,9 +311,9 @@
       "sha256": "c8be0781f3453b5917e36c645a2d46265d7d329c1a549b994a44d5b3aed5d808"
     },
     {
-      "bytes": 234,
+      "bytes": 260,
       "path": "data/processed/native_review/packets/report.json",
-      "sha256": "b7eef829d85f0367cb2e5757e464782b07b30419bb97aaf9728b79b60c142f8d"
+      "sha256": "ebc36bb6aef87123b1270b162493bae87987fa09336a6c48313c7cb651229913"
     },
     {
       "bytes": 93,
@@ -326,9 +326,14 @@
       "sha256": "8392941cf109cfbb58909b50a4301e1f1ebc91d807c1675bc2d0e2518901a8e8"
     },
     {
-      "bytes": 70970,
+      "bytes": 256,
+      "path": "data/processed/native_review/templates/report.json",
+      "sha256": "752cd0352789dd79ef946ce9fe835f373bf6f1272b3357c708ba9ea8b9c9aaad"
+    },
+    {
+      "bytes": 70932,
       "path": "data/processed/release/manifest.json",
-      "sha256": "902391f3711c3e1d687f217e1f15eddb7a2d36b619b806e57e7e6c5d944fe9d5"
+      "sha256": "dc99edcbaf647f72a203027a025e5cfdf18685bee8b62ac6f79d8188ffa9afb1"
     },
     {
       "bytes": 214,
@@ -406,7 +411,7 @@
       "sha256": "9136fe48ad247ce9faba204be32ddc70860095d992ba142a7ad4b9ea916d6af1"
     }
   ],
-  "bytes": 2431748,
-  "files": 81,
+  "bytes": 2431955,
+  "files": 82,
   "release_id": "garhwali-language-lab-v0.1.0"
 }
