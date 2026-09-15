@@ -77,7 +77,7 @@ def text_quality_decision(row, refinement=None):
     return {"tier": tier, "reasons": reasons, "value_changed": release != original}
 
 
-def supervised_quality_decision(row):
+def supervised_quality_decision(row, refinement=None):
     reasons = []
     target = (row.get("asr_target") or "").strip()
     audio = row.get("audio_quality") or {}
@@ -97,10 +97,17 @@ def supervised_quality_decision(row):
         reasons.append("not_recommended_for_supervised_training")
     if not row.get("license"):
         reasons.append("missing_license")
+    if refinement:
+        if refinement.get("automatic_changes"):
+            reasons.append("mechanical_cleanup_applied")
+        if not (refinement.get("model_evidence") or {}).get("models_agree"):
+            reasons.append("model_disagreement_requires_listening")
+    original = row.get("asr_target") or ""
+    release = refinement.get("release_text", original) if refinement else original
     return {
         "tier": "strict_gold_candidate" if not reasons else "experimental_review",
         "reasons": reasons,
-        "value_changed": False,
+        "value_changed": release != original,
     }
 
 
@@ -148,12 +155,24 @@ def main():
     refinements = {
         row['text_sha256']: row for row in read_jsonl(refinement_path)
     } if refinement_path.exists() else {}
+    supervised_refinement_path = (
+        ROOT / 'data/processed/model_ready/transcripts/'
+        'supervised_review_model_evidence.jsonl'
+    )
+    supervised_refinements = {
+        row['audio_sha256']: row for row in read_jsonl(supervised_refinement_path)
+    } if supervised_refinement_path.exists() else {}
     sources = {
         "text": (
             ROOT / "data/processed/model_ready/language_quality/text.jsonl",
             lambda row: text_quality_decision(row, refinements.get(row['text_sha256'])),
         ),
-        "supervised_speech": (ROOT / "data/processed/model_ready/transcripts/supervised.jsonl", supervised_quality_decision),
+        "supervised_speech": (
+            ROOT / "data/processed/model_ready/transcripts/supervised.jsonl",
+            lambda row: supervised_quality_decision(
+                row, supervised_refinements.get(row['audio_sha256'])
+            ),
+        ),
         "machine_drafts": (ROOT / "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl", draft_quality_decision),
     }
     report = {

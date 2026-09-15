@@ -91,6 +91,32 @@ class QualityTierTests(unittest.TestCase):
         row["transcript_review_flags"] = ["mixed_script"]
         self.assertEqual(m.supervised_quality_decision(row)["tier"], "experimental_review")
 
+    def test_supervised_refinement_adds_model_and_value_evidence(self):
+        row = {
+            "asr_target": "एक ( पाठ",
+            "language": "Garhwali",
+            "quality_flags": ["manual-transcript-review"],
+            "training_quality_flags": ["manual-transcript-review"],
+            "transcript_review_flags": ["manual-transcript-review"],
+            "audio_quality": {
+                "readable": True, "sample_rate_hz": 16000,
+                "channels": 1, "clipped_sample_share": 0,
+            },
+            "recommended_for_supervised_training": False,
+            "license": "CC-BY-4.0",
+        }
+        refinement = {
+            "release_text": "एक पाठ",
+            "automatic_changes": ["unmatched_open_parenthesis_removed"],
+            "review_status": "listening_review_required",
+            "model_evidence": {"models_agree": False},
+        }
+        result = m.supervised_quality_decision(row, refinement)
+        self.assertEqual(result["tier"], "experimental_review")
+        self.assertTrue(result["value_changed"])
+        self.assertIn("mechanical_cleanup_applied", result["reasons"])
+        self.assertIn("model_disagreement_requires_listening", result["reasons"])
+
     def test_machine_drafts_never_enter_gold_tier(self):
         standard = {"machine_transcript": "गढ़वाली पाठ", "machine_transcript_quality": {"level": "standard", "flags": []}}
         risky = {"machine_transcript": "", "machine_transcript_quality": {"level": "high_risk", "flags": ["no_devanagari_letters"]}}

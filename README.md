@@ -492,6 +492,9 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Replace the coarse public-text confidence queue with separate language,
   orthography, alignment, source, and surface evidence; rank all 616 unresolved
   records without discarding or guessing any value.
+- [x] Re-decode all five ambiguous human transcripts with the two strongest local
+  Garhwali Whisper checkpoints; preserve every reference, attach both hypotheses,
+  and remove two unambiguous stray opening parentheses from release proposals.
 - [ ] Correct and re-review the quality-gate queues, beginning with public
   Garhwali text native-validation candidates, five ambiguous supervised
   transcripts, and 1,188 risky drafts. Eight additional supervised rows are
@@ -678,6 +681,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 .venv/bin/python scripts/register_asr_stage1_weighted_batch_pilot.py
 .venv/bin/python scripts/prepare_sravaani_finetune.py
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/train_sravaani_garhwali.py
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/redecode_supervised_review.py
 .venv/bin/python scripts/audit_final_release.py
 git diff --check
 ```
@@ -686,7 +690,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **267 passing tests**, **365 verified source
+The current verification result is **273 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release

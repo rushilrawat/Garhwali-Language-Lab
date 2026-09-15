@@ -67,9 +67,12 @@ script and are consistently marked as source-label conflicts in the original,
 training, and transcript review fields. They remain preserved but excluded from
 Garhwali supervised training. The other five contain Devanagari Garhwali
 candidates with incomplete wording, unbalanced annotation characters, or unclear
-phonetic spelling. Their audio is readable, but changing the reference without
-listening evidence would invent ground truth, so they remain in the audio review
-queue. No supervised row was silently removed or promoted.
+phonetic spelling. Both local human-trained Garhwali Whisper checkpoints were run
+on all five clips. The models disagreed with each other and with the full reference
+in every case, so their hypotheses are retained as evidence and never substituted
+for human text. Two release proposals remove a single unmatched opening parenthesis;
+the immutable references remain unchanged. All five still require listening review.
+No supervised row was silently removed or promoted.
 
 ## Quality policy
 
@@ -111,6 +114,7 @@ PYTHONPATH=scripts .venv/bin/python -m unittest scripts/test_refine_priority_tex
 PYTHONPATH=scripts .venv/bin/python scripts/refine_priority_text.py
 PYTHONPATH=scripts .venv/bin/python -m unittest scripts/test_build_quality_tiers.py
 PYTHONPATH=scripts .venv/bin/python scripts/build_quality_tiers.py
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/redecode_supervised_review.py
 .venv/bin/python scripts/build_huggingface_dataset.py
 .venv/bin/python scripts/audit_final_release.py
 ```
