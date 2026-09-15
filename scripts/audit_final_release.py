@@ -42,6 +42,15 @@ def overlap_error(label, split_values):
     return errors
 
 
+def public_rights_basis(row):
+    if 'public_rights_basis' in row:
+        return row.get('public_rights_basis') or []
+    return [
+        item for item in row.get('provenance') or []
+        if is_publishable_provenance(item)
+    ]
+
+
 def audit(index, dataset_root):
     dataset_root = Path(dataset_root)
     errors = list(validate(index))
@@ -102,14 +111,17 @@ def audit(index, dataset_root):
             text_ids[split] = {row.get('id') for row in rows}
             missing = sum(not row.get('provenance') for row in rows)
             rights = sum(
-                bool(row.get('provenance')) and
-                not all(is_publishable_provenance(item) for item in row['provenance'])
+                not public_rights_basis(row)
+                or not all(
+                    is_publishable_provenance(item)
+                    for item in public_rights_basis(row)
+                )
                 for row in rows
             )
             language_scope = sum(
                 row.get('language') != 'gbm' or any(
                     item.get('iso_639_3') != 'gbm'
-                    for item in row.get('provenance') or []
+                    for item in public_rights_basis(row)
                 )
                 for row in rows
             )
@@ -139,8 +151,11 @@ def audit(index, dataset_root):
         elif group in ('lexicon', 'instructions'):
             missing = sum(not row.get('provenance') for row in rows)
             rights = sum(
-                bool(row.get('provenance')) and
-                not all(is_publishable_provenance(item) for item in row['provenance'])
+                not public_rights_basis(row)
+                or not all(
+                    is_publishable_provenance(item)
+                    for item in public_rights_basis(row)
+                )
                 for row in rows
             )
             if missing:

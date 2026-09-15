@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-247%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-301%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -110,6 +110,11 @@ not a defect in the dataset.
   preserved; current VAANI coverage is Uttarkashi and Tehri Garhwal.
 - **25,343 likely Garhwali text candidates**, 1,468 source-declared mixed-language
   records, 859 unresolved records, and 317 non-Garhwali cultural-context records.
+- **4,193 exact-unique texts with a public rights basis**, including 3,106 strict
+  public candidates; 1,751 additional high-quality candidates remain active with
+  rights-pending provenance.
+- **1,910 mixed-rights exact duplicates** retain every source warning; 1,902
+  strict records are publishable through a separately retained open copy.
 - **1,124 lexicon candidates**, 446 unique English–Garhwali pairs, and 1,187
   grammar-source candidates.
 - **2,002 strict speaker-identified ASR/TTS candidates** across 248 speakers,
@@ -172,10 +177,10 @@ not a defect in the dataset.
 - **SraVaani adaptation package:** 2,002 human-reference clips are packaged into
   deterministic NeMo train, validation, and held-out test archives totaling
   412,037,120 bytes, with all audio hashes verified and zero split leakage.
-- **247 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **301 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
-These figures describe the preparation snapshot updated on 2026-09-14. Raw
+These figures describe the preparation snapshot updated on 2026-09-15. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
 Git through `.gitignore`.
 
@@ -496,12 +501,15 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Freeze held-out, automatically screened evaluation candidates before tuning.
 - [x] Add an intensive evidence-based quality gate across all text, supervised
   speech, and SraVaani drafts; preserve every value and attach explicit tier reasons.
-- [x] Refine all 1,818 public Garhwali text candidates with genre-aware surface
-  checks; remove seven unambiguous markup residues, normalize 14 double-period
-  pause markers, and promote 65 records, yielding 1,202 strict public candidates.
+- [x] Refine all 3,734 public Garhwali text candidates with genre-aware surface
+  checks; preserve originals, remove seven unambiguous markup residues, normalize
+  29 double-period pause markers, and yield 3,106 strict public candidates.
 - [x] Replace the coarse public-text confidence queue with separate language,
-  orthography, alignment, source, and surface evidence; rank all 616 unresolved
+  orthography, alignment, source, and surface evidence; rank all 628 unresolved
   records without discarding or guessing any value.
+- [x] Audit all 27,987 exact-unique texts by source; restore lost license IDs,
+  normalize rights-warning syntax, and attach an explicit public rights basis to
+  1,910 mixed-rights exact duplicates without dropping blocked provenance.
 - [x] Re-decode all five ambiguous human transcripts with the two strongest local
   Garhwali Whisper checkpoints; preserve every reference, attach both hypotheses,
   and remove two unambiguous stray opening parentheses from release proposals.
@@ -718,7 +726,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **295 passing tests**, **365 verified source
+The current verification result is **301 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release
@@ -745,7 +753,11 @@ The generated `README.md` is the Hugging Face dataset card, while
 and whether audio was included. Every collected text record appears in the public
 catalog; when source rights do not permit republication, the catalog publishes its
 stable identity, provenance, quality evidence, and review state while redacting
-only the protected text value. The published release is versioned as `v0.1.0`; its tracked
+only the protected text value. When an exact duplicate has both open and blocked
+provenance, `public_rights_basis` identifies the open copy while retaining both
+source histories. The source-level audit is documented in
+[`research/text-source-rights-audit-2026-09-15.md`](research/text-source-rights-audit-2026-09-15.md).
+The published release is versioned as `v0.1.0`; its tracked
 index is [`release/v0.1.0-manifest.json`](release/v0.1.0-manifest.json). Compact
 generated reports and visual evidence are tracked under
 [`release/v0.1.0/`](release/v0.1.0/README.md).

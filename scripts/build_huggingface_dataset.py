@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 from collections import Counter
 from pathlib import Path
@@ -27,6 +28,7 @@ BLOCKING_RIGHTS_MARKERS = (
     'not_sublicensed', 'review_pending', 'review_required',
     'no_open_license', 'copyrights_not_cleared', 'license_link_missing',
     'license_not_stated', 'author_death_evidence_pending',
+    'component_review', 'no_license',
 )
 
 
@@ -41,7 +43,9 @@ def is_publishable_provenance(item):
     flags = set(item.get('quality_flags') or [])
     if flags & BLOCKING_FLAGS:
         return False
-    rights = str(item.get('rights_status') or '').casefold()
+    rights = re.sub(
+        r'[^a-z0-9]+', '_', str(item.get('rights_status') or '').casefold()
+    ).strip('_')
     if any(marker in rights for marker in BLOCKING_RIGHTS_MARKERS):
         return False
     license_text = ' '.join(str(item.get(key) or '') for key in (
@@ -60,14 +64,17 @@ def provenance_items(row):
     return direct + nested
 
 
+def publishable_provenance_items(row):
+    return [item for item in provenance_items(row) if is_publishable_provenance(item)]
+
+
 def is_public_text_row(row):
-    items = provenance_items(row)
-    return bool(items) and all(is_publishable_provenance(item) for item in items)
+    return bool(publishable_provenance_items(row))
 
 
 def is_public_garhwali_text_row(row):
-    items = provenance_items(row)
-    return is_public_text_row(row) and all(
+    items = publishable_provenance_items(row)
+    return bool(items) and all(
         item.get('iso_639_3') == 'gbm' for item in items
     )
 
@@ -226,20 +233,33 @@ def text_row(row):
         'split': row['split'],
         'quality_flags': row.get('quality_flags') or [],
         'provenance': provenance_items(row),
+        'public_rights_basis': [
+            catalog_provenance(item) for item in publishable_provenance_items(row)
+        ],
     }
+
+
+def with_public_rights_basis(row):
+    enriched = dict(row)
+    enriched['public_rights_basis'] = [
+        catalog_provenance(item) for item in publishable_provenance_items(row)
+    ]
+    return enriched
 
 
 def catalog_provenance(item):
     keep = (
         'source_id', 'source_url', 'record_id', 'iso_639_3', 'genre', 'script',
         'license', 'license_id', 'license_url', 'rights_status', 'quality_flags',
+        'rights_evidence', 'attribution',
     )
     return {key: item.get(key) for key in keep if item.get(key) not in (None, '', [])}
 
 
 def catalog_row(row, include_restricted_text=False, refinement=None):
     items = provenance_items(row)
-    text_is_public = bool(items) and all(is_publishable_provenance(item) for item in items)
+    rights_basis = publishable_provenance_items(row)
+    text_is_public = bool(rights_basis)
     text = row.get('text_model') or row.get('text_clean') or row.get('text') or ''
     exported = {
         'id': row['text_sha256'],
@@ -256,6 +276,7 @@ def catalog_row(row, include_restricted_text=False, refinement=None):
         'surface_quality': row.get('quality'),
         'quality_v2': row.get('quality_v2'),
         'sources': [catalog_provenance(item) for item in items],
+        'public_rights_basis': [catalog_provenance(item) for item in rights_basis],
     }
     if refinement:
         exported['text_refinement'] = {
@@ -554,7 +575,8 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     if profile == 'public':
         lexicon = (row for row in lexicon if is_public_text_row(row))
     report['configs']['lexicon/train'] = write_shards(
-        lexicon, output / 'data/lexicon', 'train', shard_rows,
+        (with_public_rights_basis(row) for row in lexicon),
+        output / 'data/lexicon', 'train', shard_rows,
     )
 
     instructions_dir = ROOT / 'data/processed/model_ready/instructions_v0.2'
@@ -563,7 +585,8 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
         if profile == 'public':
             rows = (row for row in rows if is_public_text_row(row))
         report['configs'][f'instructions/{split}'] = write_shards(
-            rows, output / 'data/instructions', split, shard_rows,
+            (with_public_rights_basis(row) for row in rows),
+            output / 'data/instructions', split, shard_rows,
         )
 
     removed_audio_files = 0 if include_audio else remove_packaged_audio(output)

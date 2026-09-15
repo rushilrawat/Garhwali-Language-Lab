@@ -7,7 +7,7 @@ import build_huggingface_dataset as m
 
 
 class HuggingFaceDatasetBuilderTests(unittest.TestCase):
-    def test_public_text_requires_every_component_to_be_publishable(self):
+    def test_public_text_requires_at_least_one_publishable_exact_source(self):
         allowed = {
             'parents': [{'provenance': [{
                 'training_eligible': False,
@@ -27,9 +27,47 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         allowed['parents'][0]['provenance'][0]['iso_639_3'] = 'eng'
         self.assertFalse(m.is_public_garhwali_text_row(allowed))
 
+        exact_duplicate = {
+            'provenance': [
+                {
+                    'source_id': 'open', 'iso_639_3': 'gbm',
+                    'license_id': 'CC-BY-4.0',
+                },
+                {
+                    'source_id': 'mirror', 'iso_639_3': 'gbm',
+                    'license_id': 'CC-BY-4.0',
+                    'rights_status': 'source_component_and_consent_review_pending',
+                },
+            ],
+        }
+        self.assertTrue(m.is_public_text_row(exact_duplicate))
+        self.assertTrue(m.is_public_garhwali_text_row(exact_duplicate))
+        self.assertEqual(
+            [item['source_id'] for item in m.publishable_provenance_items(exact_duplicate)],
+            ['open'],
+        )
+
+    def test_rights_warnings_are_blocked_across_separator_styles(self):
+        for rights_status in (
+            'upstream component review required',
+            'quoted_works_require_component_review',
+            'catalog footer CC BY; item page has no license block',
+        ):
+            with self.subTest(rights_status=rights_status):
+                self.assertFalse(m.is_publishable_provenance({
+                    'license_id': 'CC-BY-NC-SA-4.0',
+                    'rights_status': rights_status,
+                }))
+
     def test_text_export_derives_script(self):
         base = {'segment_sha256': 'a', 'split': 'train', 'quality_flags': []}
-        self.assertEqual(m.text_row({**base, 'text': 'गढ़वाली'})['script'], 'Deva')
+        open_row = {
+            **base, 'text': 'गढ़वाली',
+            'provenance': [{'source_id': 'open', 'license_id': 'CC-BY-4.0'}],
+        }
+        exported = m.text_row(open_row)
+        self.assertEqual(exported['script'], 'Deva')
+        self.assertEqual(exported['public_rights_basis'][0]['source_id'], 'open')
         self.assertEqual(m.text_row({**base, 'text': 'garhwali'})['script'], 'Latn')
 
     def test_catalog_keeps_every_identity_but_redacts_unlicensed_text(self):
@@ -83,6 +121,27 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertEqual(exported['text'], 'गढ़वाली पाठ')
         self.assertTrue(exported['text_publicly_available'])
         self.assertIsNone(exported['redaction_reason'])
+        self.assertEqual(exported['public_rights_basis'][0]['license'], 'CC-BY-4.0')
+
+    def test_catalog_names_open_basis_when_other_exact_source_is_blocked(self):
+        row = {
+            'text_sha256': 'c' * 64,
+            'text': 'गढ़वाली पाठ',
+            'provenance': [
+                {'source_id': 'open', 'iso_639_3': 'gbm', 'license_id': 'CC-BY-4.0'},
+                {
+                    'source_id': 'mirror', 'iso_639_3': 'gbm',
+                    'license_id': 'CC-BY-4.0',
+                    'rights_status': 'component_rights_review_required',
+                },
+            ],
+        }
+        exported = m.catalog_row(row)
+        self.assertEqual(exported['text'], 'गढ़वाली पाठ')
+        self.assertEqual(
+            [item['source_id'] for item in exported['public_rights_basis']], ['open']
+        )
+        self.assertEqual(len(exported['sources']), 2)
 
     def test_audio_export_uses_content_addressed_relative_path(self):
         row = {

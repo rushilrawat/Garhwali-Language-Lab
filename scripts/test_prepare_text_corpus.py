@@ -55,6 +55,29 @@ class TextPreparationTests(unittest.TestCase):
             self.assertEqual(provenance.get("linguistic_metadata", {}).get("english_gloss"), "dog")
             self.assertEqual(provenance.get("linguistic_metadata", {}).get("semantic_domain"), "animal")
 
+    def test_prepare_preserves_rights_evidence_and_license_id(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "corpus" / "licensed.jsonl"
+            source.parent.mkdir()
+            source.write_text(json.dumps({
+                "record_id": "licensed:1",
+                "text_normalized": "गढ़वाली पाठ",
+                "iso_639_3": "gbm",
+                "license_id": "CC-BY-4.0",
+                "license_url": "https://creativecommons.org/licenses/by/4.0/",
+                "rights_evidence": "https://example.test/dataset-card",
+                "attribution": "Example contributors",
+            }) + "\n")
+            m.prepare([source], root / "out", root=root)
+            record = json.loads((root / "out/canonical.jsonl").read_text())
+            provenance = record["provenance"][0]
+            self.assertEqual(provenance["license_id"], "CC-BY-4.0")
+            self.assertEqual(
+                provenance["rights_evidence"], "https://example.test/dataset-card"
+            )
+            self.assertEqual(provenance["attribution"], "Example contributors")
+
     def test_split_assignment_is_stable(self):
         digest = "a" * 64
         self.assertEqual(m.split_for_hash(digest), m.split_for_hash(digest))

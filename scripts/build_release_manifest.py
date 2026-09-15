@@ -19,6 +19,9 @@ def main():
     audio_report = json.loads((ROOT/'data/processed/audio/report.json').read_text())
     dataset_split_report = json.loads((ROOT/'data/processed/model_ready/splits/report.json').read_text())
     language_resources_report = read_optional_json(ROOT/'data/processed/model_ready/language_resources/report.json')
+    text_source_audit_report = read_optional_json(
+        ROOT/'data/processed/model_ready/text_source_audit/report.json'
+    )
     native_review_report = read_optional_json(ROOT/'data/processed/native_review/results/report.json')
     long_form_audio_report = read_optional_json(ROOT/'data/processed/long_form_audio/report.json')
     garhwali_benchmark_report = read_optional_json(
@@ -177,6 +180,7 @@ def main():
       'audio_report': audio_report,
       'dataset_split_report': dataset_split_report,
       'language_resources_report': language_resources_report,
+      'text_source_audit_report': text_source_audit_report,
       'native_review_report': native_review_report,
       'long_form_audio_report': long_form_audio_report,
       'garhwali_benchmark_report': garhwali_benchmark_report,

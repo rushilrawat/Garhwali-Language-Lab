@@ -1,14 +1,14 @@
 {
   "artifacts": [
     {
-      "bytes": 1975,
+      "bytes": 3190,
       "path": "data/huggingface/garhwali-language-lab/README.md",
-      "sha256": "00eab454bbc4ff3bf256e460c001822bf44f0ede878c36a8b58102ae0a48630c"
+      "sha256": "df347bf0b5cff9e857cb7b346a122d9c15756d47be6112deab747b727f75fbbf"
     },
     {
-      "bytes": 2050,
+      "bytes": 2625,
       "path": "data/huggingface/garhwali-language-lab/manifest.json",
-      "sha256": "28b0c3e2a9262c42855edcdbdea47cde418ed38534d8a9696ca34c6678a2f779"
+      "sha256": "afe903af326dc8e5ba11f44e60d768dfafa07947a04c78bc35a4cda0cfa34a84"
     },
     {
       "bytes": 386,
@@ -19,6 +19,46 @@
       "bytes": 247,
       "path": "data/processed/evaluation/asr/baseline_report.json",
       "sha256": "13249c7c450a3df8b0e4d60bab5bd5454d90c4c4f10f03f8bf440074cdca67c5"
+    },
+    {
+      "bytes": 730,
+      "path": "data/processed/evaluation/asr/confidence_calibration/sravaani/report.json",
+      "sha256": "19998b7cd405ef17e73b212d49aaaa1acd0559f358e5b35ff899c5750806c964"
+    },
+    {
+      "bytes": 641,
+      "path": "data/processed/evaluation/asr/confidence_calibration/whisper_v0.2/report.json",
+      "sha256": "24f5d1b969b04b99924d92537e9e9c6b44a34c506dbed3b0a7d43648cd240674"
+    },
+    {
+      "bytes": 2570,
+      "path": "data/processed/evaluation/asr/curriculum_stage_0/report.json",
+      "sha256": "60309d3ca8497fed3ab9d5a67ef7d918364d6ea81aa82e583fd99df59bcb1ace"
+    },
+    {
+      "bytes": 670,
+      "path": "data/processed/evaluation/asr/curriculum_stage_0_validation/report.json",
+      "sha256": "c612d0b36cff8763ec9f98ba8107fbbdcaa6455fb0238f1d4dea133e55ea6193"
+    },
+    {
+      "bytes": 1538,
+      "path": "data/processed/evaluation/asr/curriculum_stage_1_pilot/dry_run_report.json",
+      "sha256": "a12070e6b15d17385e5636a17f86b1101d43e4b9b503e1a446cbd28ffb277848"
+    },
+    {
+      "bytes": 2216,
+      "path": "data/processed/evaluation/asr/curriculum_stage_1_pilot/report.json",
+      "sha256": "a4bdabc85cb5bb4201fdc21e6cd41aa240f7f8983a09dc82e6fefdf4186dc859"
+    },
+    {
+      "bytes": 1858,
+      "path": "data/processed/evaluation/asr/curriculum_stage_1_weighted_batch_pilot/dry_run_report.json",
+      "sha256": "9a8cf5dd3ce926269d379c238c42f646b0e29f74ee6bdae6e97b3c447ff97e16"
+    },
+    {
+      "bytes": 3129,
+      "path": "data/processed/evaluation/asr/curriculum_stage_1_weighted_batch_pilot/report.json",
+      "sha256": "8cabaff12c4818de6d1e6d7e12e0bd951f5ceb46780772607624ed76cdd7ee56"
     },
     {
       "bytes": 504,
@@ -131,6 +171,16 @@
       "sha256": "2c01e5559e4993e8d74fa91d8937479942c3dce9dec9672e0df862ce6e4b6887"
     },
     {
+      "bytes": 3049,
+      "path": "data/processed/model_ready/asr_curriculum/report.json",
+      "sha256": "3bd23da5b5996140e0e9c19b418485449a108f3386c85abce6820716f1fe5879"
+    },
+    {
+      "bytes": 879,
+      "path": "data/processed/model_ready/asr_curriculum/trainer_dry_run_report.json",
+      "sha256": "7602454217bf490e831a06abddc79365080c044d009a7ce8b5a0af05d939f861"
+    },
+    {
       "bytes": 253,
       "path": "data/processed/model_ready/asr_finetuning/report.json",
       "sha256": "20dee7c85e8ca0b2f16c4b003b860ab2e28bb11ed5d5bf64b2c964a134e7d78a"
@@ -171,9 +221,19 @@
       "sha256": "cc20e7afbfffe224cd206959b862329f3bf423c242441ad1adc9294502e14e37"
     },
     {
+      "bytes": 840,
+      "path": "data/processed/model_ready/language_quality/vaani_source_conflicts_report.json",
+      "sha256": "8957ab60a8fdc73d0358e6a4f59a4ab9d59bcf41f853f002ebe0063beecd87bc"
+    },
+    {
       "bytes": 329,
       "path": "data/processed/model_ready/language_resources/report.json",
       "sha256": "78779eaa6654095a7b8b5fa1c34365e9daada030e638dcc36c149ee0bc0218c4"
+    },
+    {
+      "bytes": 2296,
+      "path": "data/processed/model_ready/quality_v2/report.json",
+      "sha256": "9ede3047752d422004a616858630eff81d35ab6e5e75639ae53d54f0380ca246"
     },
     {
       "bytes": 795,
@@ -183,12 +243,32 @@
     {
       "bytes": 4082,
       "path": "data/processed/model_ready/splits/report.json",
-      "sha256": "357b5507351ab4917c6e44207bf182ccff9947dd3c99f31c81271fe7fdcae23d"
+      "sha256": "04ce77865bb323142fd77bc5faa5f182ec83e064613c3801fcf0c677858a891f"
+    },
+    {
+      "bytes": 3058,
+      "path": "data/processed/model_ready/sravaani_finetune/report.json",
+      "sha256": "901a0048d66fa5b35e22ce92c57c1dbe1ad50285ad402867157a801c0d62d1d3"
     },
     {
       "bytes": 1491,
       "path": "data/processed/model_ready/text_cleanup/report.json",
       "sha256": "80f50278d9b4b9a2423c1787352325f451ee47b31dde16286ca93ed06b621f15"
+    },
+    {
+      "bytes": 2749,
+      "path": "data/processed/model_ready/text_quality_v2/report.json",
+      "sha256": "e3eb991ef4a3391c6263e20c4b9378d85ab393179882df879bf2d239b8da624d"
+    },
+    {
+      "bytes": 8387,
+      "path": "data/processed/model_ready/text_source_audit/report.json",
+      "sha256": "c391d280f8741b4e8ed58208d85f47a69ea6e119f02b33c4e6e2c4851c9dfef9"
+    },
+    {
+      "bytes": 1857,
+      "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware_report.json",
+      "sha256": "43102750decbd750d0424583731768175cd1b43e389d378a8ef074a9703a2dc3"
     },
     {
       "bytes": 1184,
@@ -199,6 +279,36 @@
       "bytes": 346,
       "path": "data/processed/model_ready/transcripts/report.json",
       "sha256": "60af8ee1d198741e5b72a1ed5ab657526a7fbad3e2a4a29c40a1630087e35795"
+    },
+    {
+      "bytes": 2055,
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_adjudication_report.json",
+      "sha256": "700d563006e842f4615917caa75b2e05875411513f6c92792d46a2a0635d5ed5"
+    },
+    {
+      "bytes": 3177,
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_audio_grounded_review_report.json",
+      "sha256": "4d49ddf9156255efb1f09b1efb35090ce0bbea13e3930d315198335223f3f2fa"
+    },
+    {
+      "bytes": 5673,
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_confidence_report.json",
+      "sha256": "de02974b491d02a639c726b281b86bbe569eb59d2015967c66754f9c81e4b00e"
+    },
+    {
+      "bytes": 618,
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_report.json",
+      "sha256": "7e29ef37c71a258c39f8022305b5df57bb80dc798039c27844ae19dc31c2be09"
+    },
+    {
+      "bytes": 1175,
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_whisper_v0.2_report.json",
+      "sha256": "ad3b2825f6d5246e8b8407b20cd0706bdbf8d023500a50b23b93a2c34c480372"
+    },
+    {
+      "bytes": 375,
+      "path": "data/processed/model_ready/transcripts/supervised_review_model_evidence_report.json",
+      "sha256": "c8be0781f3453b5917e36c645a2d46265d7d329c1a549b994a44d5b3aed5d808"
     },
     {
       "bytes": 234,
@@ -216,9 +326,9 @@
       "sha256": "8392941cf109cfbb58909b50a4301e1f1ebc91d807c1675bc2d0e2518901a8e8"
     },
     {
-      "bytes": 36102,
+      "bytes": 71308,
       "path": "data/processed/release/manifest.json",
-      "sha256": "b0a75b2e4299e06a8f89c8e4f684dfd7cfdc72633ec5ea7f92b103f4a33fe580"
+      "sha256": "3ebea3914f2c96bfd3580a08fd5266709bc0ed3438c0bef4967185f7e3c5bdb9"
     },
     {
       "bytes": 214,
@@ -296,7 +406,7 @@
       "sha256": "9136fe48ad247ce9faba204be32ddc70860095d992ba142a7ad4b9ea916d6af1"
     }
   ],
-  "bytes": 2345830,
-  "files": 59,
+  "bytes": 2432366,
+  "files": 81,
   "release_id": "garhwali-language-lab-v0.1.0"
 }

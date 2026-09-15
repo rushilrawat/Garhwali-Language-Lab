@@ -10,21 +10,21 @@
   "catalog": {
     "missing_evidence": 0,
     "records": 27987,
-    "redacted_text_records": 25717
+    "redacted_text_records": 23794
   },
   "configs": {
     "asr/test": 112,
     "asr/train": 1621,
     "asr/validation": 269,
     "catalog/train": 27987,
-    "instructions/test": 102,
-    "instructions/train": 888,
-    "instructions/validation": 50,
-    "lexicon/train": 655,
+    "instructions/test": 106,
+    "instructions/train": 902,
+    "instructions/validation": 60,
+    "lexicon/train": 668,
     "sravaani_drafts/train": 104534,
-    "text/test": 223,
-    "text/train": 3939,
-    "text/validation": 208
+    "text/test": 441,
+    "text/train": 8242,
+    "text/validation": 417
   },
   "drafts": {
     "audio_grounded_review_records": 35,
@@ -46,8 +46,8 @@
     "third_checkpoint_records": 1188
   },
   "errors": [],
-  "exported_rows": 140588,
-  "generated": "2026-09-14",
+  "exported_rows": 145359,
+  "generated": "2026-09-15",
   "leakage": {
     "asr_audio_cross_split": 0,
     "asr_speaker_cross_split": 0,

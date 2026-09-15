@@ -1,4 +1,7 @@
 {
+  "catalog_records": 27987,
+  "catalog_redacted_text_records": 23794,
+  "catalog_refined_text_records": 3734,
   "configs": {
     "asr/test": {
       "files": [
@@ -21,32 +24,41 @@
       "records": 269,
       "shards": 1
     },
+    "catalog/train": {
+      "files": [
+        "train-00000.jsonl",
+        "train-00001.jsonl",
+        "train-00002.jsonl"
+      ],
+      "records": 27987,
+      "shards": 3
+    },
     "instructions/test": {
       "files": [
         "test-00000.jsonl"
       ],
-      "records": 102,
+      "records": 106,
       "shards": 1
     },
     "instructions/train": {
       "files": [
         "train-00000.jsonl"
       ],
-      "records": 888,
+      "records": 902,
       "shards": 1
     },
     "instructions/validation": {
       "files": [
         "validation-00000.jsonl"
       ],
-      "records": 50,
+      "records": 60,
       "shards": 1
     },
     "lexicon/train": {
       "files": [
         "train-00000.jsonl"
       ],
-      "records": 655,
+      "records": 668,
       "shards": 1
     },
     "sravaani_drafts/train": {
@@ -70,27 +82,32 @@
       "files": [
         "test-00000.jsonl"
       ],
-      "records": 223,
+      "records": 441,
       "shards": 1
     },
     "text/train": {
       "files": [
         "train-00000.jsonl"
       ],
-      "records": 3939,
+      "records": 8242,
       "shards": 1
     },
     "text/validation": {
       "files": [
         "validation-00000.jsonl"
       ],
-      "records": 208,
+      "records": 417,
       "shards": 1
     }
   },
+  "draft_audio_grounded_review_records": 35,
   "draft_inherited_duplicate_rows": 8,
   "draft_queue_records": 104542,
   "draft_records": 104542,
+  "draft_source": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+  "draft_source_label_conflicts": 98,
+  "draft_third_checkpoint_records": 1188,
+  "draft_three_checkpoint_review_records": 1090,
   "draft_unique_audio": 104534,
   "drafts_complete": true,
   "include_audio": false,

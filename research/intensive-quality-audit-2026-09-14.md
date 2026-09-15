@@ -14,38 +14,39 @@ corrections remain reversible and auditable.
 | --- | ---: | ---: | ---: | --- |
 | Human-transcribed speech | 5,881 strict candidates | 13 review | 0 | Existing transcript/training flags |
 | SraVaani machine drafts | 103,354 experimental | 1,090 three-checkpoint review records | 98 source-label conflicts | 325 clean related-checkpoint consensus proposals, 730 clean low-consensus proposals, and 35 machine-audio-reviewed outliers pending listening |
-| Text | 1,202 strict public + 3,653 high-quality rights-pending | 20,488 review | 2,644 non-strict context | Language confidence, cleanup evidence, and source rights |
+| Text | 3,106 strict public + 1,751 high-quality rights-pending | 20,486 review | 2,644 non-strict context | Language confidence, cleanup evidence, and source rights |
 
-The strict public text seed contains 1,202 records. Another 3,653 clean,
+The strict public text seed now contains 3,106 records. Another 1,751 clean,
 high-confidence Garhwali candidates fail only the rights-cleared-source rule and
 remain represented in the public catalog with protected text values redacted. The
-public Garhwali candidate pool contains 1,818 records in total; 616 require native
+public Garhwali candidate pool contains 3,734 records in total; 628 require native
 or source-level validation before entering the strict tier.
 
 ## Public-text refinement
 
-The value-focused pass inspected all 1,818 public Garhwali candidates. It now
-identifies 481 records with concrete review signals and 1,337 without an
+The value-focused pass inspected all 3,734 public Garhwali candidates. It now
+identifies 492 records with concrete review signals and 3,242 without an
 additional surface issue:
 
 | Signal | Records | Treatment |
 | --- | ---: | --- |
-| Romanized text requiring native spelling review | 441 | Preserve spelling; request native review |
+| Romanized text requiring native spelling review | 452 | Preserve spelling; request native review |
 | Very short non-lexical fragment | 39 | Verify context before training use |
 | Short slash-separated variants | 3 | Review boundaries; long sentences containing slashes are exempt |
 
 Short lexicon forms and digits in numeral lexicons are explicitly exempt from
 fragment warnings. Seven release values had unambiguous orphan wiki markup removed,
-and 14 prompted-speech values had exact double-period pause markers normalized to
-the Unicode ellipsis; all originals remain preserved. The pass resolved 24 HTML
-markup, 96 stale mixed-script, 391 Romanized `no_devanagari`, 50 valid short-lexicon,
+and 29 prompted-speech values had exact double-period pause markers normalized to
+the Unicode ellipsis; all originals remain preserved. The pass resolved 26 HTML
+markup, 98 stale mixed-script, 402 Romanized `no_devanagari`, 51 valid short-lexicon,
 and one stale URL flag. These evidence-backed resolutions promoted 65 records into
-the strict tier. No spelling, transliteration, language, or dialect value was
-guessed automatically.
+the strict tier in the original pass. The later source-rights audit raised the
+strict total through exact matches to separately licensed sources. No spelling,
+transliteration, language, or dialect value was guessed automatically.
 
 ## Evidence dimensions and review order
 
-The 616 unresolved public candidates now have separate evidence for language
+The 628 unresolved public candidates now have separate evidence for language
 identity, orthography, semantic alignment, source reliability, and surface form.
 The queue is deterministic and contains each stable text identity once:
 
@@ -54,7 +55,8 @@ The queue is deterministic and contains each stable text identity once:
 | Surface or source scaffolding | 42 | Short fragments, variant boundaries, remaining flags, or scaffolding |
 | Source accuracy | 135 | Native accuracy or community review is explicitly unresolved |
 | Semantic alignment | 24 | Translation/example alignment needs native validation |
-| Romanized orthography | 415 | Source form is valid data but spelling has not been natively reviewed |
+| Romanized orthography | 426 | Source form is valid data but spelling has not been natively reviewed |
+| Language identity | 1 | Source scope still needs direct validation |
 
 These labels describe available evidence and the next review action. They are not
 accuracy probabilities. Multiple-source occurrence is recorded as corroboration
@@ -97,15 +99,15 @@ audio language.
 
 ## Next correction order
 
-1. Validate the ranked 616-record public queue by source and native review.
+1. Validate the ranked 628-record public queue by source and native review.
 2. Listen-review the five ambiguous supervised transcripts; retain the eight
    Bengali-script source-label conflicts as excluded evidence.
 3. Listening-review the 35 machine-audio-reviewed outliers: 11 common short-form
    spot checks, 17 decoder loops, three decoding corruptions, one empty output,
    and three other unresolved records. Never treat model agreement as a human
    reference.
-4. Audit the 3,653 high-quality rights-pending texts source by source for explicit
-   redistribution and model-training permission.
+4. Continue permission work for the 1,751 high-quality texts that remain
+   rights-pending after the completed source-level audit.
 5. Sample clean medium-confidence sources for native language validation and
    promote a source only when the evidence supports it.
 6. Rebuild tiers, evaluation data, and Hugging Face exports after each accepted
@@ -114,7 +116,8 @@ audio language.
 ## Public transparency
 
 The Hugging Face package includes a complete `catalog` configuration for all
-27,987 exact-unique text records. Rights-pending records expose their stable hash,
+27,987 exact-unique text records. Of these, 4,193 have a public rights basis and
+23,794 remain rights-pending. Pending records expose their stable hash,
 source URL, rights status, language evidence, quality tier, and review reasons.
 Only the protected text value is redacted. This makes the full collection visible
 and countable without falsely relicensing third-party content. The catalog also

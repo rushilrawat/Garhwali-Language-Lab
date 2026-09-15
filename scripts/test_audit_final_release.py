@@ -85,6 +85,25 @@ class FinalReleaseAuditTests(unittest.TestCase):
         self.assertEqual(report['drafts']['empty_transcripts'], 1)
         self.assertIn('audio_not_included', report['warnings'])
 
+    def test_accepts_explicit_open_basis_with_blocked_mirror_provenance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            path = root / 'data/text/train-00000.jsonl'
+            row = json.loads(path.read_text())
+            open_source = row['provenance'][0]
+            row['provenance'].append({
+                'license_id': 'CC-BY-4.0',
+                'iso_639_3': 'gbm',
+                'rights_status': 'component_rights_review_required',
+            })
+            row['public_rights_basis'] = [open_source]
+            write_jsonl(path, [row])
+            report = m.audit(index, root)
+        self.assertEqual(report['status'], 'passed')
+        self.assertEqual(report['provenance']['public_rights_failures'], 0)
+        self.assertEqual(report['provenance']['text_language_scope_failures'], 0)
+
     def test_rejects_shard_mismatch_and_split_leakage(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

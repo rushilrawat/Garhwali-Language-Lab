@@ -118,8 +118,11 @@ def prepare(paths: list[Path], output_dir: Path, root: Path = ROOT) -> dict:
                     "source_id": row.get("source_id"),
                     "source_url": row.get("source_url"),
                     "license": row.get("license") or row.get("license_name"),
+                    "license_id": row.get("license_id"),
                     "license_url": row.get("license_url"),
                     "rights_status": row.get("rights_status"),
+                    "rights_evidence": row.get("rights_evidence"),
+                    "attribution": row.get("attribution"),
                     "training_eligible": bool(row.get("training_eligible", False)),
                     "experimental_training_eligible": bool(
                         row.get("experimental_training_eligible", True)

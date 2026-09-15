@@ -1,0 +1,95 @@
+{
+  "all_originals_preserved": true,
+  "automatic_corrections": 0,
+  "calibration": {
+    "whisper_v0.1": {
+      "confidence_to_cer_pearson": -0.163638,
+      "empirical_bins": [
+        {
+          "maximum_score_exclusive": 0.3,
+          "mean_row_cer": 0.34704,
+          "minimum_score": 0.0,
+          "records": 5
+        },
+        {
+          "maximum_score_exclusive": 0.4,
+          "mean_row_cer": 0.444221,
+          "minimum_score": 0.3,
+          "records": 22
+        },
+        {
+          "maximum_score_exclusive": 0.5,
+          "mean_row_cer": 0.45367,
+          "minimum_score": 0.4,
+          "records": 42
+        },
+        {
+          "maximum_score_exclusive": 1.01,
+          "mean_row_cer": 0.365435,
+          "minimum_score": 0.5,
+          "records": 43
+        }
+      ],
+      "records": 112,
+      "scope": "review_ranking_only_not_accuracy_probability",
+      "unique_audio_hashes": 112
+    },
+    "whisper_v0.2": {
+      "confidence_to_cer_pearson": -0.231576,
+      "empirical_bins": [
+        {
+          "maximum_score_exclusive": 0.3,
+          "mean_row_cer": 0.377193,
+          "minimum_score": 0.0,
+          "records": 4
+        },
+        {
+          "maximum_score_exclusive": 0.4,
+          "mean_row_cer": 0.473009,
+          "minimum_score": 0.3,
+          "records": 13
+        },
+        {
+          "maximum_score_exclusive": 0.5,
+          "mean_row_cer": 0.415913,
+          "minimum_score": 0.4,
+          "records": 39
+        },
+        {
+          "maximum_score_exclusive": 1.01,
+          "mean_row_cer": 0.355014,
+          "minimum_score": 0.5,
+          "records": 56
+        }
+      ],
+      "records": 112,
+      "scope": "review_ranking_only_not_accuracy_probability",
+      "unique_audio_hashes": 112
+    }
+  },
+  "duration_seconds": 97.307,
+  "evidence_limit": "Waveform energy is not speech or language ground truth, raw model scores are weak review-ranking signals, and no target has a human reference.",
+  "human_listening_review_required": 35,
+  "inputs": {
+    "adjudication_sha256": "19e125684593af093aa4f037cccc589164ac37727b3bdf1e3a804a725cf2a30f",
+    "whisper_v0.1_calibration_sha256": "0883acb403f99b98752f7934524db2a1b420d1058eb465990df227a833df4562",
+    "whisper_v0.2_calibration_sha256": "8214c3c7838970a04b9bc23753f4d70b76e9b2036b5c947b20a48b750a7a5e64",
+    "whisper_v0.2_scores_sha256": "14d013c80d874c650c7d42c73bf3823830dd91085d3c73c72ff22a1810641151"
+  },
+  "machine_audio_review_complete": 35,
+  "output": "data/processed/model_ready/transcripts/sravaani_recovery_audio_grounded_review.jsonl",
+  "recommended_machine_label_training_records": 0,
+  "records": 35,
+  "review_categories": {
+    "common_short_exact_consensus_requires_spot_check": 11,
+    "decoder_loop_requires_listening": 17,
+    "decoding_corruption_requires_listening": 3,
+    "empty_output_requires_new_transcription": 1,
+    "unresolved_audio_review": 3
+  },
+  "review_queue": "data/processed/review/sravaani_recovery_audio_grounded_review.jsonl",
+  "run_id": "sravaani-unresolved-audio-grounded-review-v0.1",
+  "supervised_training_promotions": 0,
+  "unique_audio_hashes": 35,
+  "v0.2_exact_redecode_matches": 35
+}

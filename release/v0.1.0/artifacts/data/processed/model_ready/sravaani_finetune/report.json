@@ -1,0 +1,80 @@
+{
+  "external_requirements": {
+    "checkpoint": "SraVaani-nemo-checkpoint.nemo (~1.7 GB)",
+    "checkpoint_in_huggingface_inference_repo": false,
+    "hardware": "CUDA-capable NVIDIA GPU; 16 GB VRAM recommended",
+    "runtime": "NVIDIA NeMo ASR with matching CUDA extra"
+  },
+  "leakage": {
+    "audio_hash_cross_split": 0,
+    "identified_speaker_cross_split": 0
+  },
+  "model_id": "ARTPARK-IISc/SraVaani-1.0",
+  "package_status": "ready_for_nemo_cuda_training",
+  "run_id": "garhwali-sravaani-nemo-finetune-package-v0.1",
+  "source_audio_unchanged": true,
+  "source_split_manifests": {
+    "test": {
+      "path": "data/processed/model_ready/splits/asr/test.jsonl",
+      "sha256": "2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52"
+    },
+    "train": {
+      "path": "data/processed/model_ready/splits/asr/train.jsonl",
+      "sha256": "87ea08229a3a445460043127a2296112a131e914ea0d507c4a35ee0f5ee33ec8"
+    },
+    "validation": {
+      "path": "data/processed/model_ready/splits/asr/validation.jsonl",
+      "sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66"
+    }
+  },
+  "splits": {
+    "test": {
+      "archive": "test/shard_0000.tar",
+      "archive_bytes": 25528320,
+      "archive_sha256": "8eb4d109e9fb70e6f04d6b699f5190e3ba3d668a61411e78cdbb8f37e8901d10",
+      "audio_format": "WAV PCM 16-bit mono 16000 Hz",
+      "duration_seconds": 794.870312,
+      "identified_speakers": 19,
+      "licenses": {
+        "CC-BY-4.0": 112
+      },
+      "manifest": "test/shard_0000.json",
+      "manifest_sha256": "d9202d6c8e659aef86a1170409a726f42a65b4ae87825c3cd82a0530d55483a1",
+      "records": 112,
+      "source_audio_hashes_verified": 112
+    },
+    "train": {
+      "archive": "train/shard_0000.tar",
+      "archive_bytes": 332001280,
+      "archive_sha256": "1a32c4fced1670b29a781f073b597f99d787d59896e89a7a52eea00a798a16fc",
+      "audio_format": "WAV PCM 16-bit mono 16000 Hz",
+      "duration_seconds": 10333.446375,
+      "identified_speakers": 198,
+      "licenses": {
+        "CC-BY-4.0": 1621
+      },
+      "manifest": "train/shard_0000.json",
+      "manifest_sha256": "8b453c814e4a02f7fa0f7e9b5febd5e25322ad56bd5d854f99a95aca2124a242",
+      "records": 1621,
+      "source_audio_hashes_verified": 1621
+    },
+    "validation": {
+      "archive": "validation/shard_0000.tar",
+      "archive_bytes": 54507520,
+      "archive_sha256": "ce58974c38180bc74faba5978623fb24e94ec39cd93409c5d1a02f6312efbc01",
+      "audio_format": "WAV PCM 16-bit mono 16000 Hz",
+      "duration_seconds": 1696.268188,
+      "identified_speakers": 31,
+      "licenses": {
+        "CC-BY-4.0": 269
+      },
+      "manifest": "validation/shard_0000.json",
+      "manifest_sha256": "ec346aeddcfd794d08b3f28a07545cd7e6da652cd32a77f86f37929f9437a422",
+      "records": 269,
+      "source_audio_hashes_verified": 269
+    }
+  },
+  "test_split_held_out_from_training": true,
+  "training_repository": "https://github.com/ARTPARK-Speech-Models/SraVaani",
+  "training_repository_revision": "11026fa0f97386ae05270872d899800151b2a8ef"
+}

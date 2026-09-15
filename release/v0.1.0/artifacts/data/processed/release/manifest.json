@@ -1,4 +1,248 @@
 {
+  "asr_curriculum_stage0_report": {
+    "checkpoint_weights_copied": false,
+    "curriculum_stage": 0,
+    "human_checkpoint_candidates": {
+      "whisper_tiny_v0.1": {
+        "model_sha256": "d4b4ebeb5f7ffde5aae9268b5723110dc690a05776d5fbf759be21554fdce096",
+        "path": "models/whisper-tiny-garhwali-v0.1",
+        "training_report": "models/whisper-tiny-garhwali-v0.1/report.json",
+        "training_report_sha256": "29b8c26bcf6f07f092a63dbc67ee94a336b9b37770e834b4df4036544b3cc42d",
+        "validation": {
+          "cer": 0.49596355668319686,
+          "character_errors": 8601,
+          "records": 269,
+          "reference_characters": 17342,
+          "reference_words": 4980,
+          "wer": 0.8751004016064257,
+          "word_errors": 4358
+        }
+      },
+      "whisper_tiny_v0.2": {
+        "model_sha256": "598546b068c3aa509ef5036ee4ff12502fbb3c0dc507096a56d1a2a3143d6225",
+        "path": "models/whisper-tiny-garhwali-v0.2",
+        "training_report": "models/whisper-tiny-garhwali-v0.2/report.json",
+        "training_report_sha256": "6bcf74ae50e85bcc87af32f8cb00c9297d71f8e65ea8724804809a8291745351",
+        "validation": {
+          "cer": 0.4629800484373198,
+          "character_errors": 8029,
+          "records": 269,
+          "reference_characters": 17342,
+          "reference_words": 4980,
+          "wer": 0.7805220883534136,
+          "word_errors": 3887
+        }
+      }
+    },
+    "run_id": "garhwali-whisper-curriculum-stage-0-selection-v0.1",
+    "selected_checkpoint": "whisper_tiny_v0.2",
+    "selected_checkpoint_path": "models/whisper-tiny-garhwali-v0.2",
+    "selection_criterion": "lowest_validation_cer_among_human_only_checkpoints",
+    "sravaani_comparator": {
+      "cer": 0.1892515280821128,
+      "character_errors": 3282,
+      "records": 269,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.43393574297188753,
+      "word_errors": 2161
+    },
+    "training_equivalence": {
+      "curriculum_manifest": "data/processed/model_ready/asr_curriculum/train.jsonl",
+      "curriculum_manifest_sha256": "8d2ee398a27362a55a028c5f46c712c1b735d85f999700318bfe6e064f49a6fb",
+      "duplicate_audio_hashes": 0,
+      "records": 1621,
+      "same_audio_hashes": true,
+      "same_targets": true,
+      "strict_manifest": "data/processed/model_ready/splits/asr/train.jsonl",
+      "strict_manifest_sha256": "87ea08229a3a445460043127a2296112a131e914ea0d507c4a35ee0f5ee33ec8"
+    },
+    "training_scope": "human_reference_only",
+    "validation_manifest": "data/processed/model_ready/splits/asr/validation.jsonl",
+    "validation_manifest_sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66",
+    "validation_records": 269
+  },
+  "asr_curriculum_stage1_pilot_report": {
+    "artifacts": {
+      "model_sha256": "8bde3ac6e0a715230bb3f6895d34fcf3cb00552996ebbef25996d2206b036a94",
+      "pilot_checkpoint": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048",
+      "predictions": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048/evaluation_predictions.jsonl",
+      "predictions_sha256": "f12c0828b587e7c7f7551fcf0548d5a76985cb93c6ff634547088ef868553e56",
+      "training_report": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048/report.json",
+      "training_report_sha256": "425996c737e1f604658b53899f9fc14a257aadab6f56824faf5623ce9c77ba5d",
+      "validation_manifest": "data/processed/model_ready/splits/asr/validation.jsonl",
+      "validation_manifest_sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66"
+    },
+    "baseline": {
+      "cer": 0.4629800484373198,
+      "character_errors": 8029,
+      "records": 269,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.7805220883534136,
+      "word_errors": 3887
+    },
+    "baseline_checkpoint": "whisper_tiny_v0.2",
+    "comparison": {
+      "cer_delta": 5.766347595431709e-05,
+      "character_error_delta": 1,
+      "decision": "rejected",
+      "promotion_rule": "pilot_wer_and_cer_must_both_be_lower_than_stage_0",
+      "relative_cer_change": 0.0001245485116452568,
+      "relative_wer_change": 0.004630820684332391,
+      "wer_delta": 0.0036144578313253017,
+      "word_error_delta": 18
+    },
+    "curriculum_stage": 1,
+    "next_action": "retain_stage_0_and_do_not_run_full_stage_1_with_this_configuration",
+    "pilot": {
+      "cer": 0.46303771191327414,
+      "character_errors": 8030,
+      "records": 269,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.7841365461847389,
+      "word_errors": 3905
+    },
+    "run_id": "garhwali-whisper-curriculum-stage-1-pilot-h32-m2048-v0.1",
+    "stage_2_unlocked": false,
+    "status": "completed",
+    "training": {
+      "effective_weight_mass": 64.071795,
+      "epochs": 1,
+      "full_stage_records": 104967,
+      "human_records": 32,
+      "machine_records": 2048,
+      "mean_raw_loss": 0.661673211485434,
+      "mean_weighted_loss": 0.018369638629015892,
+      "steps": 2080,
+      "total_records": 2080
+    },
+    "training_complete": false
+  },
+  "asr_curriculum_stage1_weighted_batch_pilot_report": {
+    "artifacts": {
+      "model_sha256": "54ecf8a4215af0e19a6100a2303b942f17ddde933217f65d39c28eb1ca81c3cb",
+      "pilot_checkpoint": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048-weighted-batches",
+      "predictions": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048-weighted-batches/evaluation_predictions.jsonl",
+      "predictions_sha256": "cea515ef6843cb0e981913e7d1bcee07696b89fc12492ba13fdb0154dc6a04b0",
+      "training_report": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048-weighted-batches/report.json",
+      "training_report_sha256": "e18ee19af6874704f7ad114e477d24a96a4acc7458e8bbfe9178d359c3914b96",
+      "validation_manifest": "data/processed/model_ready/splits/asr/validation.jsonl",
+      "validation_manifest_sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66"
+    },
+    "baseline": {
+      "cer": 0.4629800484373198,
+      "character_errors": 8029,
+      "records": 269,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.7805220883534136,
+      "word_errors": 3887
+    },
+    "baseline_checkpoint": "whisper_tiny_v0.2",
+    "comparison_to_original_stage_1_pilot": {
+      "cer_delta": 0.000634298235497599,
+      "character_error_delta": 11,
+      "wer_delta": 0.004016064257028162,
+      "word_error_delta": 20
+    },
+    "comparison_to_stage_0": {
+      "cer_delta": 0.0006919617114519161,
+      "character_error_delta": 12,
+      "decision": "rejected",
+      "promotion_rule": "pilot_wer_and_cer_must_both_be_lower_than_stage_0",
+      "relative_cer_change": 0.0014945821397433215,
+      "relative_wer_change": 0.009776177000257333,
+      "wer_delta": 0.007630522088353464,
+      "word_error_delta": 38
+    },
+    "curriculum_stage": 1,
+    "decision": "rejected",
+    "next_action": "retain_stage_0_and_stop_this_machine_label_curriculum_recipe",
+    "original_stage_1_pilot": {
+      "cer": 0.46303771191327414,
+      "character_errors": 8030,
+      "records": 269,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.7841365461847389,
+      "word_errors": 3905
+    },
+    "paired_validation_against_stage_0": {
+      "cer": {
+        "better": 131,
+        "tie": 41,
+        "worse": 97
+      },
+      "exact_same_predictions": 0,
+      "wer": {
+        "better": 89,
+        "tie": 87,
+        "worse": 93
+      }
+    },
+    "run_id": "garhwali-whisper-stage-1-weighted-batch-pilot-h32-m2048-v0.1",
+    "stage_2_unlocked": false,
+    "status": "completed",
+    "training": {
+      "batching_strategy": "stratified_normalized_weighted_gradient_accumulation",
+      "effective_weight_mass": 64.071795,
+      "epochs": 1,
+      "human_records": 32,
+      "machine_records": 2048,
+      "mean_objective_loss": 0.523636828823328,
+      "mean_raw_loss": 0.6338293121966462,
+      "optimizer_steps": 32,
+      "records_per_batch": {
+        "maximum": 65,
+        "minimum": 65
+      },
+      "total_records": 2080,
+      "training_examples": 2080
+    },
+    "training_complete": false,
+    "weighted_batch_pilot": {
+      "cer": 0.46367201014877174,
+      "character_errors": 8041,
+      "records": 269,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.7881526104417671,
+      "word_errors": 3925
+    }
+  },
+  "asr_curriculum_trainer_dry_run": {
+    "audio_hours": 129.310351,
+    "batching_strategy": "one_record_per_optimizer_step",
+    "curriculum_stage": 4,
+    "duplicate_audio_hashes": 0,
+    "effective_weight_mass": 3241.999996,
+    "empty_evaluation_targets": 0,
+    "empty_targets": 0,
+    "evaluation_records": 269,
+    "evaluation_split": "validation",
+    "failures": [],
+    "full_stage_train_records": 106057,
+    "missing_audio_files": 0,
+    "model_source": "openai/whisper-tiny",
+    "pilot_human_records": 0,
+    "pilot_machine_records": 0,
+    "previous_stage": null,
+    "projected_training_steps": 106057,
+    "records_by_tier": {
+      "human_reference": 1621,
+      "recovery_low": 35,
+      "recovery_medium": 30,
+      "recovery_very_low": 1025,
+      "standard_sravaani": 103346
+    },
+    "resume_from": null,
+    "run_id": "garhwali-whisper-curriculum-dry-run-v0.1",
+    "status": "passed",
+    "train_records": 106057,
+    "training_complete": true
+  },
   "asr_finetune_report": {
     "base_model": "models/whisper-tiny-garhwali-v0.1",
     "cer": 0.40440145780768155,
@@ -13,6 +257,85 @@
     "training_steps": 3242,
     "wer": 0.7430488974113135,
     "word_errors": 1550
+  },
+  "asr_training_curriculum_report": {
+    "all_unique_machine_audio_preserved": 104534,
+    "audio_hash_leakage": {
+      "human_cross_split": 0,
+      "machine_to_human": 0
+    },
+    "curriculum": {
+      "effective_weight_mass": {
+        "human_reference": 1621.0,
+        "recovery_low": 0.318823,
+        "recovery_medium": 0.421284,
+        "recovery_very_low": 1.73954,
+        "standard_sravaani": 1618.52035
+      },
+      "hours": {
+        "human_reference": 2.870413,
+        "recovery_low": 0.019046,
+        "recovery_medium": 0.014432,
+        "recovery_very_low": 0.582671,
+        "standard_sravaani": 125.823789
+      },
+      "records": {
+        "human_reference": 1621,
+        "recovery_low": 35,
+        "recovery_medium": 30,
+        "recovery_very_low": 1025,
+        "standard_sravaani": 103346
+      }
+    },
+    "empty_training_targets": 0,
+    "human_effective_weight_mass": 1621.0,
+    "human_train_records": 1621,
+    "inherited_machine_duplicate_rows": 8,
+    "inputs": {
+      "confidence_report": {
+        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/sravaani_recovery_confidence_report.json",
+        "sha256": "de02974b491d02a639c726b281b86bbe569eb59d2015967c66754f9c81e4b00e"
+      },
+      "machine": {
+        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+        "sha256": "2356e9070d6f849e7e868430b720fb7b7956a5a105ea68c26f647a47f212e8bc"
+      }
+    },
+    "machine_audio_active_for_garhwali_training": 104436,
+    "machine_effective_weight_mass": 1620.999996,
+    "machine_source_records": 104542,
+    "machine_training_audio_records": 104436,
+    "machine_unique_audio_records": 104534,
+    "machine_weight_ratio": 1.0,
+    "machine_weight_scale": 0.019225752447776467,
+    "nonempty_candidate_fallbacks": 1,
+    "outputs": {
+      "stage_plan.json": {
+        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/stage_plan.json",
+        "sha256": "517fabccf6dce1f7945f5cd3c6c8518e25017b0cdf35226529668c07eeadc62b"
+      },
+      "test.jsonl": {
+        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/test.jsonl",
+        "sha256": "9c4d2547f37a89b0e2e5ee2bc3224743d53b4711565c4cecd5bbeec53de9ba82"
+      },
+      "train.jsonl": {
+        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/train.jsonl",
+        "sha256": "1fd46372acd738e310b80acca3324a7aba218a26f948bdc47a13248e4270538b"
+      },
+      "validation.jsonl": {
+        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/validation.jsonl",
+        "sha256": "5d2a45ceffa8c5e8c31691ed411ce765ca928ae6f0e817daf8eb05774ac97659"
+      }
+    },
+    "records_removed_or_quarantined": 0,
+    "run_id": "garhwali-asr-confidence-curriculum-v0.1",
+    "source_conflict_audio_records": 98,
+    "source_conflicts_active_for_source_error_analysis": 98,
+    "standard_sravaani_raw_score": 0.8145938878901782,
+    "test_records": 112,
+    "train_records": 106057,
+    "validation_and_test_human_only": true,
+    "validation_records": 269
   },
   "audio_report": {
     "channel_distribution": {
@@ -64,19 +387,19 @@
       },
       "evaluation/text_candidate.jsonl": {
         "records": 2492,
-        "sha256": "ec5a52883baa4df2d5893ac078dd335e9b623ae01cd3261fddf1ceb59c4397ac"
+        "sha256": "455063394ec1203c0ab110870345926e37fa5a51a312fbb38631e8968e46dcc5"
       },
       "text/test.jsonl": {
         "records": 2801,
-        "sha256": "507ca97cd9ffdd070442c4b6d862722b92e0ffcdcf069a8defe99123aa967954"
+        "sha256": "5a808168cb8ade0193119a8c70a893e479fb541f63b761729b9051ee17d1bd3a"
       },
       "text/train.jsonl": {
         "records": 80926,
-        "sha256": "8ad6f62861db7b3cfcc0b516585d250bfb58d1c532f5528d218d7b2e1116504c"
+        "sha256": "b16dcd42d84a5879c8f9e3d0838129f85ee06ddc3e8892898e1e6385007db472"
       },
       "text/validation.jsonl": {
         "records": 2488,
-        "sha256": "285f25efa91bd5cdc86e9aa130748e6b3fa6acb85e007cac193dfcf4cafe0f29"
+        "sha256": "e0daf28c11b0baa1a42cc5215cf396d3e998dfd34fa072246186cba285c848be"
       },
       "tts/test.jsonl": {
         "records": 112,
@@ -191,13 +514,37 @@
     "vaani_untranscribed",
     "vaani_machine_transcript_drafts",
     "vaani_sravaani_transcript_drafts",
-    "vaani_sravaani_transcript_quality"
+    "vaani_sravaani_transcript_quality",
+    "vaani_sravaani_confidence_aware",
+    "vaani_sravaani_recovery_adjudication",
+    "vaani_sravaani_audio_grounded_review",
+    "asr_curriculum_train"
   ],
   "files": {
     "asr_baseline_predictions": {
       "exists": true,
       "path": "data/processed/evaluation/asr/baseline_predictions.jsonl",
       "records": 20
+    },
+    "asr_curriculum_stage_plan": {
+      "exists": true,
+      "path": "data/processed/model_ready/asr_curriculum/stage_plan.json",
+      "records": 40
+    },
+    "asr_curriculum_test": {
+      "exists": true,
+      "path": "data/processed/model_ready/asr_curriculum/test.jsonl",
+      "records": 112
+    },
+    "asr_curriculum_train": {
+      "exists": true,
+      "path": "data/processed/model_ready/asr_curriculum/train.jsonl",
+      "records": 106057
+    },
+    "asr_curriculum_validation": {
+      "exists": true,
+      "path": "data/processed/model_ready/asr_curriculum/validation.jsonl",
+      "records": 269
     },
     "asr_finetune_predictions": {
       "exists": true,
@@ -489,6 +836,21 @@
       "path": "data/processed/model_ready/transcripts/machine_drafts.jsonl",
       "records": 100
     },
+    "vaani_sravaani_audio_grounded_review": {
+      "exists": true,
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_audio_grounded_review.jsonl",
+      "records": 35
+    },
+    "vaani_sravaani_confidence_aware": {
+      "exists": true,
+      "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+      "records": 104542
+    },
+    "vaani_sravaani_recovery_adjudication": {
+      "exists": true,
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_adjudication.jsonl",
+      "records": 1090
+    },
     "vaani_sravaani_transcript_drafts": {
       "exists": true,
       "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl",
@@ -573,7 +935,7 @@
       }
     }
   },
-  "generated": "2026-09-13",
+  "generated": "2026-09-15",
   "indicbertv2_masked_lm_report": {
     "device": "cpu",
     "elapsed_seconds": 4.765,
@@ -948,6 +1310,145 @@
     "test_pilot_records": 128,
     "training_use": "none; train-labelled queries are indexed as passages but not evaluated"
   },
+  "sravaani_audio_grounded_review_report": {
+    "all_originals_preserved": true,
+    "automatic_corrections": 0,
+    "calibration": {
+      "whisper_v0.1": {
+        "confidence_to_cer_pearson": -0.163638,
+        "empirical_bins": [
+          {
+            "maximum_score_exclusive": 0.3,
+            "mean_row_cer": 0.34704,
+            "minimum_score": 0.0,
+            "records": 5
+          },
+          {
+            "maximum_score_exclusive": 0.4,
+            "mean_row_cer": 0.444221,
+            "minimum_score": 0.3,
+            "records": 22
+          },
+          {
+            "maximum_score_exclusive": 0.5,
+            "mean_row_cer": 0.45367,
+            "minimum_score": 0.4,
+            "records": 42
+          },
+          {
+            "maximum_score_exclusive": 1.01,
+            "mean_row_cer": 0.365435,
+            "minimum_score": 0.5,
+            "records": 43
+          }
+        ],
+        "records": 112,
+        "scope": "review_ranking_only_not_accuracy_probability",
+        "unique_audio_hashes": 112
+      },
+      "whisper_v0.2": {
+        "confidence_to_cer_pearson": -0.231576,
+        "empirical_bins": [
+          {
+            "maximum_score_exclusive": 0.3,
+            "mean_row_cer": 0.377193,
+            "minimum_score": 0.0,
+            "records": 4
+          },
+          {
+            "maximum_score_exclusive": 0.4,
+            "mean_row_cer": 0.473009,
+            "minimum_score": 0.3,
+            "records": 13
+          },
+          {
+            "maximum_score_exclusive": 0.5,
+            "mean_row_cer": 0.415913,
+            "minimum_score": 0.4,
+            "records": 39
+          },
+          {
+            "maximum_score_exclusive": 1.01,
+            "mean_row_cer": 0.355014,
+            "minimum_score": 0.5,
+            "records": 56
+          }
+        ],
+        "records": 112,
+        "scope": "review_ranking_only_not_accuracy_probability",
+        "unique_audio_hashes": 112
+      }
+    },
+    "duration_seconds": 97.307,
+    "evidence_limit": "Waveform energy is not speech or language ground truth, raw model scores are weak review-ranking signals, and no target has a human reference.",
+    "human_listening_review_required": 35,
+    "inputs": {
+      "adjudication_sha256": "19e125684593af093aa4f037cccc589164ac37727b3bdf1e3a804a725cf2a30f",
+      "whisper_v0.1_calibration_sha256": "0883acb403f99b98752f7934524db2a1b420d1058eb465990df227a833df4562",
+      "whisper_v0.2_calibration_sha256": "8214c3c7838970a04b9bc23753f4d70b76e9b2036b5c947b20a48b750a7a5e64",
+      "whisper_v0.2_scores_sha256": "14d013c80d874c650c7d42c73bf3823830dd91085d3c73c72ff22a1810641151"
+    },
+    "machine_audio_review_complete": 35,
+    "output": "data/processed/model_ready/transcripts/sravaani_recovery_audio_grounded_review.jsonl",
+    "recommended_machine_label_training_records": 0,
+    "records": 35,
+    "review_categories": {
+      "common_short_exact_consensus_requires_spot_check": 11,
+      "decoder_loop_requires_listening": 17,
+      "decoding_corruption_requires_listening": 3,
+      "empty_output_requires_new_transcription": 1,
+      "unresolved_audio_review": 3
+    },
+    "review_queue": "data/processed/review/sravaani_recovery_audio_grounded_review.jsonl",
+    "run_id": "sravaani-unresolved-audio-grounded-review-v0.1",
+    "supervised_training_promotions": 0,
+    "unique_audio_hashes": 35,
+    "v0.2_exact_redecode_matches": 35
+  },
+  "sravaani_confidence_integration_report": {
+    "all_non_conflict_records_active_experimentally": true,
+    "all_records_active_experimentally": false,
+    "all_records_preserved": true,
+    "all_supervised_training_eligible": false,
+    "automatic_promotions": 0,
+    "base_records": 104542,
+    "base_unique_audio_hashes": 104534,
+    "confidence_bands": {
+      "low": 35,
+      "medium": 30,
+      "very_low": 1123
+    },
+    "confidence_records": 1188,
+    "confidence_unique_audio_hashes": 1188,
+    "data_grain": "one row per original SraVaani source recording row",
+    "inherited_duplicate_audio_rows": 8,
+    "inputs": {
+      "base": {
+        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl",
+        "sha256": "41041b8cfdfb50a2457efa79899e6a1addf09c67d5daab4b98b86cb4788cf91d"
+      },
+      "confidence": {
+        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/sravaani_recovery_confidence.jsonl",
+        "sha256": "cd693937a045216084651eefb5977ec01f040578845545890c5b964dce06342d"
+      },
+      "source_conflicts": {
+        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/language_quality/vaani_source_conflicts.jsonl",
+        "sha256": "45729fa8188beae0dd76f8d02a39a955d8ca05bfe02ba63f2ce77a244277bfa8"
+      }
+    },
+    "machine_transcripts_replaced": 0,
+    "missing_confidence_hashes": 0,
+    "not_targeted_rows": 103354,
+    "output": {
+      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+      "sha256": "2356e9070d6f849e7e868430b720fb7b7956a5a105ea68c26f647a47f212e8bc"
+    },
+    "records_removed_or_quarantined": 0,
+    "recovery_attached_rows": 1188,
+    "run_id": "sravaani-confidence-aware-integration-v0.1",
+    "source_conflict_registry_records": 106,
+    "source_conflicts_attached_to_machine_rows": 98
+  },
   "sravaani_draft_quality_report": {
     "all_records_active_experimentally": true,
     "automatic_promotion_to_human_transcript": false,
@@ -980,6 +1481,170 @@
     },
     "unique_audio_hashes": 104534,
     "unique_hypotheses": 103996
+  },
+  "sravaani_finetune_package_report": {
+    "external_requirements": {
+      "checkpoint": "SraVaani-nemo-checkpoint.nemo (~1.7 GB)",
+      "checkpoint_in_huggingface_inference_repo": false,
+      "hardware": "CUDA-capable NVIDIA GPU; 16 GB VRAM recommended",
+      "runtime": "NVIDIA NeMo ASR with matching CUDA extra"
+    },
+    "leakage": {
+      "audio_hash_cross_split": 0,
+      "identified_speaker_cross_split": 0
+    },
+    "model_id": "ARTPARK-IISc/SraVaani-1.0",
+    "package_status": "ready_for_nemo_cuda_training",
+    "run_id": "garhwali-sravaani-nemo-finetune-package-v0.1",
+    "source_audio_unchanged": true,
+    "source_split_manifests": {
+      "test": {
+        "path": "data/processed/model_ready/splits/asr/test.jsonl",
+        "sha256": "2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52"
+      },
+      "train": {
+        "path": "data/processed/model_ready/splits/asr/train.jsonl",
+        "sha256": "87ea08229a3a445460043127a2296112a131e914ea0d507c4a35ee0f5ee33ec8"
+      },
+      "validation": {
+        "path": "data/processed/model_ready/splits/asr/validation.jsonl",
+        "sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66"
+      }
+    },
+    "splits": {
+      "test": {
+        "archive": "test/shard_0000.tar",
+        "archive_bytes": 25528320,
+        "archive_sha256": "8eb4d109e9fb70e6f04d6b699f5190e3ba3d668a61411e78cdbb8f37e8901d10",
+        "audio_format": "WAV PCM 16-bit mono 16000 Hz",
+        "duration_seconds": 794.870312,
+        "identified_speakers": 19,
+        "licenses": {
+          "CC-BY-4.0": 112
+        },
+        "manifest": "test/shard_0000.json",
+        "manifest_sha256": "d9202d6c8e659aef86a1170409a726f42a65b4ae87825c3cd82a0530d55483a1",
+        "records": 112,
+        "source_audio_hashes_verified": 112
+      },
+      "train": {
+        "archive": "train/shard_0000.tar",
+        "archive_bytes": 332001280,
+        "archive_sha256": "1a32c4fced1670b29a781f073b597f99d787d59896e89a7a52eea00a798a16fc",
+        "audio_format": "WAV PCM 16-bit mono 16000 Hz",
+        "duration_seconds": 10333.446375,
+        "identified_speakers": 198,
+        "licenses": {
+          "CC-BY-4.0": 1621
+        },
+        "manifest": "train/shard_0000.json",
+        "manifest_sha256": "8b453c814e4a02f7fa0f7e9b5febd5e25322ad56bd5d854f99a95aca2124a242",
+        "records": 1621,
+        "source_audio_hashes_verified": 1621
+      },
+      "validation": {
+        "archive": "validation/shard_0000.tar",
+        "archive_bytes": 54507520,
+        "archive_sha256": "ce58974c38180bc74faba5978623fb24e94ec39cd93409c5d1a02f6312efbc01",
+        "audio_format": "WAV PCM 16-bit mono 16000 Hz",
+        "duration_seconds": 1696.268188,
+        "identified_speakers": 31,
+        "licenses": {
+          "CC-BY-4.0": 269
+        },
+        "manifest": "validation/shard_0000.json",
+        "manifest_sha256": "ec346aeddcfd794d08b3f28a07545cd7e6da652cd32a77f86f37929f9437a422",
+        "records": 269,
+        "source_audio_hashes_verified": 269
+      }
+    },
+    "test_split_held_out_from_training": true,
+    "training_repository": "https://github.com/ARTPARK-Speech-Models/SraVaani",
+    "training_repository_revision": "11026fa0f97386ae05270872d899800151b2a8ef"
+  },
+  "sravaani_finetune_plan": {
+    "accumulate_grad_batches": 8,
+    "adaptation_scope": "decoder_and_joint_only_encoder_frozen",
+    "batch_size": 4,
+    "effective_batch_size": 32,
+    "epochs": 2,
+    "external_dependencies": {
+      "missing": [
+        "sravaani_nemo_checkpoint",
+        "cuda_capable_nvidia_gpu"
+      ],
+      "status": "blocked_external_dependencies"
+    },
+    "final_test_policy": "run_once_after_validation_selection",
+    "gradient_clip": 1.0,
+    "held_out_test_audio_hours": 0.2207973088888889,
+    "held_out_test_records": 112,
+    "learning_rate": 0.0001,
+    "machine_labels_used": false,
+    "minimum_learning_rate": 1e-06,
+    "model_id": "ARTPARK-IISc/SraVaani-1.0",
+    "optimizer": "AdamW",
+    "optimizer_steps": 102,
+    "run_id": "garhwali-sravaani-decoder-only-adaptation-pilot-v0.1",
+    "scheduler": "CosineAnnealing",
+    "selection_metric": "validation_wer",
+    "training_audio_hours": 2.8704017708333334,
+    "training_records": 1621,
+    "training_repository": "https://github.com/ARTPARK-Speech-Models/SraVaani",
+    "training_repository_revision": "11026fa0f97386ae05270872d899800151b2a8ef",
+    "validation_audio_hours": 0.4711856077777778,
+    "validation_records": 269,
+    "warmup_steps": 10,
+    "weight_decay": 0.001
+  },
+  "sravaani_recovery_adjudication_report": {
+    "all_originals_preserved": true,
+    "automatic_corrections": 0,
+    "calibration": {
+      "calibration_records_with_flagged_sravaani_output": 0,
+      "failure_pattern_has_direct_calibration_support": false,
+      "lowest_row_cer_counts_including_ties": {
+        "ARTPARK-IISc/SraVaani-1.0": 108,
+        "whisper-tiny-garhwali-v0.1": 2,
+        "whisper-tiny-garhwali-v0.2": 3
+      },
+      "row_mean_cer": {
+        "ARTPARK-IISc/SraVaani-1.0": 0.183524,
+        "whisper-tiny-garhwali-v0.1": 0.413177,
+        "whisper-tiny-garhwali-v0.2": 0.390708
+      },
+      "shared_human_reference_records": 112
+    },
+    "evidence_limit": "The two Whisper checkpoints are related, no target record has a human reference, and the shared calibration set contains no SraVaani output with this failure pattern. Proposals improve reviewability, not proven accuracy.",
+    "evidence_status": {
+      "clean_candidate_low_consensus": 730,
+      "related_checkpoint_consensus_clean": 325,
+      "unresolved_structural_risk": 35
+    },
+    "inputs": {
+      "confidence_aware_drafts": {
+        "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+        "sha256": "2356e9070d6f849e7e868430b720fb7b7956a5a105ea68c26f647a47f212e8bc"
+      },
+      "whisper_v0.1_recovery": {
+        "path": "data/processed/model_ready/transcripts/sravaani_recovery_whisper_v0.1.jsonl",
+        "sha256": "69711d5119acc64e831376952d11fca281e5960a7f286ecd0eff3e5734b95661"
+      }
+    },
+    "output": "data/processed/model_ready/transcripts/sravaani_recovery_adjudication.jsonl",
+    "proposals_with_structural_flags": 35,
+    "proposed_models": {
+      "ARTPARK-IISc/SraVaani-1.0": 18,
+      "whisper-tiny-garhwali-v0.1": 33,
+      "whisper-tiny-garhwali-v0.2": 1039
+    },
+    "recommended_machine_label_training_records": 0,
+    "records": 1090,
+    "review_queue": "data/processed/review/sravaani_recovery_adjudication.jsonl",
+    "run_id": "sravaani-risky-draft-three-checkpoint-review-v0.1",
+    "source_label_conflicts_handled_separately": 98,
+    "supervised_training_promotions": 0,
+    "unique_audio_hashes": 1090
   },
   "sravaani_report": {
     "batch_size": 4,
@@ -1024,6 +1689,314 @@
       "validation": 1425
     },
     "unique_texts": 27987
+  },
+  "text_source_audit_report": {
+    "high_quality_rights_pending_records": 1751,
+    "mixed_rights_exact_duplicate_records": 1910,
+    "policy": {
+      "accuracy": "A source language label or open license is not evidence of native orthographic, semantic, or transcription accuracy.",
+      "blocked_only_text": "Text with no publishable provenance remains rights-pending; its identity and source evidence remain present in the public catalog.",
+      "exact_duplicate_rights": "An exact-unique text is publishable when at least one retained provenance record supplies compatible redistribution evidence. Blocked mirror provenance remains attached and does not revoke the open source grant."
+    },
+    "public_text_records": 4193,
+    "quality_tier_counts": {
+      "experimental_review": 20486,
+      "high_quality_local_only": 1751,
+      "non_strict_context": 2644,
+      "strict_gold_candidate": 3106
+    },
+    "records": 27987,
+    "review_priority_counts": {
+      "language_identity": 1,
+      "romanized_orthography": 426,
+      "semantic_alignment": 24,
+      "source_accuracy": 135,
+      "surface_or_scaffolding": 42
+    },
+    "review_queue_records": 628,
+    "review_source_counts": {
+      "asjp": 89,
+      "chan_numerals_garhwali": 24,
+      "incubator_wt": 1,
+      "lsi_cldf_garhwali": 170,
+      "mamta_southasia_examples": 25,
+      "opus_translatewiki_gbm": 175,
+      "paharili_gbm": 1,
+      "panlex_gbm": 11,
+      "sand_garhwali": 90,
+      "tatoeba": 1,
+      "wikimedia": 1,
+      "wiktionary_en": 54,
+      "wiktionary_swadesh_thematic": 3
+    },
+    "rights_pending_text_records": 23794,
+    "source_summary": {
+      "archive_1865": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 1,
+        "records": 1
+      },
+      "archive_folksong_thesis": {
+        "blocked_records": 1,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 1
+      },
+      "asjp": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 89,
+        "records": 89
+      },
+      "atkinson_himalayan_gazetteer": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 302,
+        "records": 302
+      },
+      "chan_numerals_garhwali": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 40,
+        "records": 40
+      },
+      "crooke_northern_india_folklore": {
+        "blocked_records": 13,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 13
+      },
+      "dcad_gbm": {
+        "blocked_records": 119,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 119
+      },
+      "dhyani_occupations": {
+        "blocked_records": 65,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 65
+      },
+      "emagazine_animals": {
+        "blocked_records": 104,
+        "mixed_rights_overlap_records": 2,
+        "open_basis_records": 0,
+        "records": 104
+      },
+      "euttaranchal_1": {
+        "blocked_records": 23,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 23
+      },
+      "euttaranchal_2": {
+        "blocked_records": 34,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 34
+      },
+      "euttaranchal_3": {
+        "blocked_records": 38,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 38
+      },
+      "garhwalilanguage_dictionary": {
+        "blocked_records": 35,
+        "mixed_rights_overlap_records": 3,
+        "open_basis_records": 0,
+        "records": 35
+      },
+      "hikinegi_garhwali": {
+        "blocked_records": 53,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 53
+      },
+      "hill_dialects_1900": {
+        "blocked_records": 25,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 25
+      },
+      "hindialect_gbm": {
+        "blocked_records": 128,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 128
+      },
+      "incubator_wt": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 4,
+        "records": 4
+      },
+      "indic_dialect_asr_gbm": {
+        "blocked_records": 7796,
+        "mixed_rights_overlap_records": 1903,
+        "open_basis_records": 0,
+        "records": 7796
+      },
+      "kellogg_1893": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 34,
+        "records": 34
+      },
+      "languageshome": {
+        "blocked_records": 89,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 89
+      },
+      "lsi": {
+        "blocked_records": 93,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 93
+      },
+      "lsi_cldf_garhwali": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 170,
+        "records": 170
+      },
+      "madlad400_gbm_clean": {
+        "blocked_records": 18,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 18
+      },
+      "mamta_southasia_examples": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 67,
+        "records": 67
+      },
+      "meta_omni": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 1903,
+        "open_basis_records": 2864,
+        "records": 2864
+      },
+      "mountainvoices_local_glossary": {
+        "blocked_records": 193,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 193
+      },
+      "obs_garhwali": {
+        "blocked_records": 50,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 50
+      },
+      "omniglot": {
+        "blocked_records": 4,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 4
+      },
+      "opus_translatewiki_gbm": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 181,
+        "records": 181
+      },
+      "paharili_gbm": {
+        "blocked_records": 15000,
+        "mixed_rights_overlap_records": 1,
+        "open_basis_records": 0,
+        "records": 15000
+      },
+      "panlex_gbm": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 13,
+        "records": 13
+      },
+      "pib_ramman_instruments": {
+        "blocked_records": 5,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 5
+      },
+      "proverbs1894": {
+        "blocked_records": 440,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 440
+      },
+      "sand_garhwali": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 123,
+        "records": 123
+      },
+      "tatoeba": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 1,
+        "open_basis_records": 36,
+        "records": 36
+      },
+      "unknown": {
+        "blocked_records": 779,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 779
+      },
+      "uou_cgl": {
+        "blocked_records": 436,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 436
+      },
+      "uou_more": {
+        "blocked_records": 156,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 156
+      },
+      "uttarakhandiwords_animals": {
+        "blocked_records": 60,
+        "mixed_rights_overlap_records": 1,
+        "open_basis_records": 0,
+        "records": 60
+      },
+      "walton_gazetteer_1910": {
+        "blocked_records": 2,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 0,
+        "records": 2
+      },
+      "wikimedia": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 35,
+        "records": 35
+      },
+      "wikisource_garhwal_culture": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 2,
+        "records": 2
+      },
+      "wiktionary_en": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 0,
+        "open_basis_records": 56,
+        "records": 56
+      },
+      "wiktionary_swadesh_thematic": {
+        "blocked_records": 0,
+        "mixed_rights_overlap_records": 6,
+        "open_basis_records": 192,
+        "records": 192
+      }
+    },
+    "strict_records_using_open_overlap": 1902
   },
   "translation_floor_report": {
     "baselines": {
