@@ -22,5 +22,11 @@ class DeepCleanupTests(unittest.TestCase):
         self.assertEqual(text, 'गढ़वाली भाषा')
         self.assertIn('removed_markup_tags', changes)
 
+    def test_removes_complete_nested_mediawiki_placeholder(self):
+        text, changes, flags = m.clean_model_text('खोजा {{SITENAME}}')
+        self.assertEqual(text, 'खोजा')
+        self.assertNotIn('}', text)
+        self.assertIn('removed_speech_annotations', changes)
+
 
 if __name__ == '__main__': unittest.main()

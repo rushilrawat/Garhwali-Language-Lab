@@ -13,6 +13,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlencode
 
+from wikitext_plain import to_plain_text
+
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / 'sources' / 'web'
 OUT = ROOT / 'corpus'
@@ -100,15 +102,19 @@ def wiki():
         assert 'error' not in payload, payload.get('error')
         for item in payload.get('query', {}).get('pages', {}).values():
             revision = item['revisions'][0]
-            text = revision['slots']['main']['*']
-            if not text.strip() or re.match(r'^\s*#redirect', text, re.I):
+            raw_text = revision['slots']['main']['*']
+            if not raw_text.strip() or re.match(r'^\s*#redirect', raw_text, re.I):
+                continue
+            text = to_plain_text(raw_text)
+            if not text:
                 continue
             rows.append(record('wikimedia', item['pageid'], text, 'CC-BY-SA-4.0', SA,
                 f'Wikimedia Incubator contributors to {item["title"]}; attribution history at https://incubator.wikimedia.org/w/index.php?title={item["title"]}&action=history',
                 info, title=item['title'], revision_id=revision['revid'],
                 item_url=f'https://incubator.wikimedia.org/w/index.php?oldid={revision["revid"]}',
-                script='Deva', genre='encyclopedia', text_format='wikitext',
-                corpus_layer='extended_sa_raw'))
+                script='Deva', genre='encyclopedia', text_format='plain_text_from_wikitext',
+                source_text_format='wikitext', quality_flags=['mechanically_rendered_wikitext'],
+                corpus_layer='core_open'))
         if 'continue' not in payload:
             break
         params.update(payload['continue'])

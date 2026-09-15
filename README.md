@@ -99,23 +99,23 @@ not a defect in the dataset.
 
 ## ✨ Current snapshot
 
-- **30,088 source text records** from 35 files, deduplicated to **27,987 unique
-  texts** and 7.39 million characters.
-- **91,536 sentence-like occurrences** exposed from page-sized and long records,
-  producing **86,215 exact-unique segments** with parent provenance retained.
+- **30,109 source text records** from 35 files, deduplicated to **27,986 unique
+  texts** and 7.37 million characters.
+- **91,490 sentence-like occurrences** exposed from page-sized and long records,
+  producing **86,216 exact-unique segments** with parent provenance retained.
 - **110,436 VAANI Garhwali recordings** totaling **135.509 hours**; 5,894 have
   human transcripts and all 104,542 previously untranscribed rows now have
   revision-pinned SraVaani experimental drafts.
 - **363 identified speaker IDs**, with district, gender, and speaker-status fields
   preserved; current VAANI coverage is Uttarkashi and Tehri Garhwal.
-- **25,343 likely Garhwali text candidates**, 1,468 source-declared mixed-language
-  records, 859 unresolved records, and 317 non-Garhwali cultural-context records.
-- **4,193 exact-unique texts with a public rights basis**, including 3,106 strict
-  public candidates; 1,751 additional high-quality candidates remain active with
+- **25,341 likely Garhwali text candidates**, 1,468 source-declared mixed-language
+  records, 860 unresolved records, and 317 non-Garhwali cultural-context records.
+- **4,195 exact-unique texts with a public rights basis**, including 3,558 strict
+  public candidates; 1,748 additional high-quality candidates remain active with
   rights-pending provenance.
-- **1,910 mixed-rights exact duplicates** retain every source warning; 1,902
+- **1,913 mixed-rights exact duplicates** retain every source warning; 1,906
   strict records are publishable through a separately retained open copy.
-- **1,124 lexicon candidates**, 446 unique English–Garhwali pairs, and 1,187
+- **1,114 lexicon candidates**, 455 parallel examples, and 1,187
   grammar-source candidates.
 - **2,002 strict speaker-identified ASR/TTS candidates** across 248 speakers,
   totaling 3.562 hours with zero identified-speaker split leakage.
@@ -177,7 +177,7 @@ not a defect in the dataset.
 - **SraVaani adaptation package:** 2,002 human-reference clips are packaged into
   deterministic NeMo train, validation, and held-out test archives totaling
   412,037,120 bytes, with all audio hashes verified and zero split leakage.
-- **301 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **317 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
 These figures describe the preparation snapshot updated on 2026-09-15. Raw
@@ -188,15 +188,15 @@ Git through `.gitignore`.
 
 <div align="center">
 
-| `~34 GB` | `110,436` | `135.5 h` | `27,987` |
+| `~34 GB` | `110,436` | `135.5 h` | `27,986` |
 | --- | ---: | ---: | ---: |
 | local corpus data | recordings | audio duration | unique text lines |
 
-| `7.39M` | `1.44M` | `86,215` | `1,124` |
+| `7.37M` | `1.44M` | `86,216` | `1,114` |
 | ---: | ---: | ---: | ---: |
 | text characters | whitespace tokens* | unique segments | lexicon candidates |
 
-| `446` | `1,187` | `5,894` | `104,542` |
+| `455` | `1,187` | `5,894` | `104,542` |
 | ---: | ---: | ---: | ---: |
 | English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
 
@@ -363,7 +363,7 @@ OCR, transcription, or native-speaker review.
 - [x] Keep spelling, meaning, and dialect uncertainty as metadata rather than a
   data exclusion gate; later native corrections can be merged non-destructively.
 - [x] Score 4,096 priority texts with pinned IndicBERTv2 and attach reversible
-  OCR, spelling, language-ambiguity, and dialect-evidence proposals to all 27,987
+  OCR, spelling, language-ambiguity, and dialect-evidence proposals to all 27,986
   parent texts without excluding or overwriting any record.
 - [x] Ablate mechanical and bulk spelling variants on the fixed document split;
   neither variant was promoted into canonical text.
@@ -501,20 +501,24 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Freeze held-out, automatically screened evaluation candidates before tuning.
 - [x] Add an intensive evidence-based quality gate across all text, supervised
   speech, and SraVaani drafts; preserve every value and attach explicit tier reasons.
-- [x] Refine all 3,734 public Garhwali text candidates with genre-aware surface
+- [x] Refine all 3,735 public Garhwali text candidates with genre-aware surface
   checks; preserve originals, remove seven unambiguous markup residues, normalize
-  29 double-period pause markers, and yield 3,106 strict public candidates.
+  29 double-period pause markers, and yield 3,558 strict public candidates.
 - [x] Replace the coarse public-text confidence queue with separate language,
-  orthography, alignment, source, and surface evidence; rank all 628 unresolved
+  orthography, alignment, source, and surface evidence; rank all 177 unresolved
   records without discarding or guessing any value.
-- [x] Audit all 27,987 exact-unique texts by source; restore lost license IDs,
+- [x] Audit all 27,986 exact-unique texts by source; restore lost license IDs,
   normalize rights-warning syntax, and attach an explicit public rights basis to
-  1,910 mixed-rights exact duplicates without dropping blocked provenance.
+  1,913 mixed-rights exact duplicates without dropping blocked provenance.
+- [x] Replace 56 flattened Wiktionary page blobs with 77 structured Garhwali
+  lemmas, alternative forms, and examples; remove MediaWiki scaffolding from
+  cached Wikimedia sources and recognize 392 source-attested linguistic
+  transcriptions without inventing Devanagari spellings.
 - [x] Re-decode all five ambiguous human transcripts with the two strongest local
   Garhwali Whisper checkpoints; preserve every reference, attach both hypotheses,
   and remove two unambiguous stray opening parentheses from release proposals.
-- [ ] Correct and re-review the quality-gate queues, beginning with public
-  Garhwali text native-validation candidates, five ambiguous supervised
+- [ ] Complete human adjudication for the remaining 177 public text candidates
+  (172 Translatewiki, four PanLex, and one Mamta alignment), five ambiguous supervised
   transcripts, and risky drafts. The complete three-checkpoint machine review is
   attached to all 1,090 Garhwali recovery records; audio-grounded human review
   remains. Eight additional supervised rows are already isolated as Bengali-
@@ -547,7 +551,7 @@ selection rules, exclusions, counts, and leakage checks.
 
 ### Next execution cycle
 
-1. [x] **Model-assisted text cleanup — High:** 27,987 immutable originals now
+1. [x] **Model-assisted text cleanup — High:** the historical 27,987-record run
    carry reversible proposals; 4,096 priority records have pinned-model scores.
 2. [x] **Cleanup ablation — Medium:** fixed-split evaluation rejected automatic
    promotion of both mechanical and bulk spelling variants.
@@ -563,61 +567,64 @@ selection rules, exclusions, counts, and leakage checks.
 5. [x] **Transcript recovery routing — High:** all 1,188 flagged drafts now have
    deterministic recovery actions; originals remain active, no rows are
    quarantined, and 17 repetition repairs are stored only as reversible candidates.
-6. [x] **Targeted transcript re-decoding — High:** the complete 1,188-record
+6. [x] **Source-grounded text accuracy — Xhigh:** structured Wiktionary and
+   Wikimedia extraction plus source-aware linguistic notation reduced the public
+   review queue from 628 to 177 without automatic spelling or translation guesses.
+7. [x] **Targeted transcript re-decoding — High:** the complete 1,188-record
    recovery queue has local Whisper alternatives with exact hash coverage and
    corpus-level failure checks. The comparison finds 1,154 structurally lower-risk
    alternatives and retains the original as the structural preference for 34.
    Nothing is automatically promoted; accuracy still requires human references.
-7. [x] **Recovery confidence calibration — High:** 381 human-referenced,
+8. [x] **Recovery confidence calibration — High:** 381 human-referenced,
    training-disjoint recordings show SraVaani has lower row-level CER on 369,
    Whisper on 8, with 4 ties. All 1,188 recovery rows now map to an observed
    agreement band; no row is promoted or removed.
-8. [x] **Confidence-aware manifest integration — Medium:** all 104,542 source
+9. [x] **Confidence-aware manifest integration — Medium:** all 104,542 source
    drafts remain preserved, with confidence evidence attached to exactly 1,188.
    The local transcript package exports all 104,534 unique audios without raw
    paths or audio files and preserves duplicate-source counts.
-9. [x] **Source-label conflict isolation — High:** eight human Bengali-script
+10. [x] **Source-label conflict isolation — High:** eight human Bengali-script
    transcripts and 98 machine drafts resolve to one source speaker key. All 106
    records remain visible, while the 98 drafts are ineligible for Garhwali loss.
-10. [x] **Confidence-aware ASR curriculum — High:** the 106,057-row training view
+11. [x] **Confidence-aware ASR curriculum — High:** the 106,057-row training view
    combines 1,621 human references with 104,436 eligible machine-labelled
    recordings across five stages. Machine loss mass equals the human-reference
    mass; validation and test remain human-only, with zero audio leakage and zero
    empty targets.
-11. [x] **Weighted trainer dry run — High:** stage selection, positive sample
+12. [x] **Weighted trainer dry run — High:** stage selection, positive sample
     weights, stage-to-stage checkpoint validation, and legacy strict-split
     compatibility are implemented. The complete stage-4 dry run passes with no
     missing audio, empty targets, or duplicate training hashes; curriculum runs
     use human-only validation by default and reserve the final test split.
-12. [x] **Stage-0 checkpoint selection — High:** curriculum stage 0 exactly
+13. [x] **Stage-0 checkpoint selection — High:** curriculum stage 0 exactly
     matches the original 1,621 human training records. The existing `v0.2`
     checkpoint beats `v0.1` on the 269-row validation split and passes the full
     104,967-row stage-1 resume dry run without copying weights.
-13. [x] **Stage-1 machine-label pilot — Xhigh:** 32 human anchors and 2,048
+14. [x] **Stage-1 machine-label pilot — Xhigh:** 32 human anchors and 2,048
     standard SraVaani labels completed 2,080 Metal updates and evaluation on all
     269 validation records. WER worsened by 0.003614 and CER by 0.000058, so the
     run is registered as rejected, the human-only checkpoint stays selected, and
     stage 2 remains locked.
-14. [x] **Weighted-batch redesign and ablation — Xhigh:** the same data now forms
+15. [x] **Weighted-batch redesign and ablation — Xhigh:** the same data now forms
     32 deterministic batches with one human and 64 machine records per normalized
     optimizer update. Aggregate validation still worsens to 0.788153 WER and
     0.463672 CER. The result is rejected and the full machine-label curriculum is
     stopped under this recipe.
-15. [x] **SraVaani adaptation readiness — Xhigh:** all 1,621 train, 269 validation,
+16. [x] **SraVaani adaptation readiness — Xhigh:** all 1,621 train, 269 validation,
     and 112 held-out test clips are exported in deterministic official NeMo
     tar/manifest format. Every source hash and PCM property passes, all rows are
     CC BY 4.0, and audio/speaker leakage is zero. The guarded two-epoch,
     decoder-only 102-step launcher is ready.
-16. [x] **Risky-draft three-checkpoint review — High:** a complete local pass
+17. [x] **Risky-draft three-checkpoint review — High:** a complete local pass
     compares SraVaani with Garhwali Whisper `v0.1` and `v0.2` for all 1,090
     eligible recovery recordings. It ranks reversible proposals, leaves only 35
     with structural flags, preserves every original, and makes zero unsupported
     accuracy or training promotions.
-17. [x] **Structural-outlier audio evidence — High:** all 35 remaining outliers
+18. [x] **Structural-outlier audio evidence — High:** all 35 remaining outliers
     have exact stronger-checkpoint re-decodes, waveform activity measurements,
     and scores calibrated on 112 human-referenced clips. Raw confidence is only
     weakly related to CER, so every case remains pending listening review.
-18. [ ] **SraVaani human-reference training — Xhigh:** execution requires the
+19. [ ] **SraVaani human-reference training — Xhigh:** execution requires the
     separate 1.7 GB `SraVaani-nemo-checkpoint.nemo` and CUDA NVIDIA hardware. The
     Hugging Face inference repository supplies a 909 MB TorchScript graph and
     does not contain the trainable NeMo checkpoint.
@@ -656,6 +663,8 @@ The SraVaani training-package audit and exact external requirements are in
 [`research/sravaani-adaptation-readiness-2026-09-14.md`](research/sravaani-adaptation-readiness-2026-09-14.md).
 The reversible cleanup proposals and fixed-split ablation are in
 [`research/model-assisted-text-cleanup-2026-09-11.md`](research/model-assisted-text-cleanup-2026-09-11.md).
+The structured source extraction and remaining 177-record accuracy boundary are
+in [`research/text-accuracy-review-2026-09-15.md`](research/text-accuracy-review-2026-09-15.md).
 The first controlled data-scaling curve is in
 [`research/controlled-text-scaling-2026-09-11.md`](research/controlled-text-scaling-2026-09-11.md).
 The longer continuation and instruction-tuning results are in

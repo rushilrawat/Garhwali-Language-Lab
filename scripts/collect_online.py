@@ -22,6 +22,8 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlencode, quote
 
+from wikitext_plain import to_plain_text
+
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / 'sources' / 'online'
 CORPUS = ROOT / 'corpus'
@@ -429,6 +431,110 @@ def garhwali_section(text):
     return match.group(1).strip() if match else ''
 
 
+def plain_wikitext(text):
+    """Render the small Wiktionary subset used for glosses and examples."""
+    previous = None
+    while text != previous:
+        previous = text
+        text = re.sub(r'\{\{[^{}]*\}\}', ' ', text)
+    text = re.sub(r'\[\[(?:[^\]|]*\|)?([^\]]+)\]\]', r'\1', text)
+    text = re.sub(r'<[^>]*>', ' ', text)
+    text = text.replace("'''", '').replace("''", '')
+    return re.sub(r'\s+', ' ', html.unescape(text)).strip(' ;,')
+
+
+def wiktionary_page_records(page, info):
+    """Extract Garhwali values instead of treating English wikitext as corpus text."""
+    title = page['title']
+    if not re.search(r'[\u0900-\u097f]', title):
+        return []
+    revision = page['revisions'][0]
+    section = garhwali_section(revision['slots']['main']['*'])
+    if not section:
+        return []
+    source_url = f'https://en.wiktionary.org/w/index.php?oldid={revision["revid"]}'
+    attribution = (
+        'English Wiktionary contributors; '
+        f'https://en.wiktionary.org/w/index.php?title={quote(title)}&action=history'
+    )
+    glosses = []
+    for line in section.splitlines():
+        if line.startswith('# ') and not line.startswith('#:'):
+            gloss = plain_wikitext(line[2:])
+            if gloss and gloss not in glosses:
+                glosses.append(gloss)
+    common = dict(
+        corpus_layer='core_open', modality='text',
+        source_url=source_url, rights_evidence=source_url,
+        revision_id=revision['revid'], text_format='structured_wiktionary',
+    )
+    rows = [make_record(
+        'wiktionary_en', f'{page["pageid"]}:lemma', title, info,
+        'CC-BY-SA-4.0', SA, attribution,
+        genre='lexicon', english_gloss='; '.join(glosses), **common,
+    )]
+    seen_values = {title}
+    alternative_sections = re.findall(
+        r'^=+Alternative forms=+\s*\n(.*?)(?=^={3,}[^=]|\Z)',
+        section, re.M | re.S,
+    )
+    alternative_index = 0
+    for alternative_section in alternative_sections:
+        for match in re.finditer(r'\{\{(?:alter|l)\|gbm\|([^{}]+)\}\}', alternative_section):
+            for value in match.group(1).split('|'):
+                value = plain_wikitext(value)
+                if ('=' in value or value in seen_values
+                        or not re.search(r'[\u0900-\u097f]', value)):
+                    continue
+                seen_values.add(value)
+                alternative_index += 1
+                rows.append(make_record(
+                    'wiktionary_en', f'{page["pageid"]}:alternative:{alternative_index}',
+                    value, info, 'CC-BY-SA-4.0', SA, attribution,
+                    genre='lexicon', english_gloss='; '.join(glosses),
+                    relation='alternative_form', headword=title, **common,
+                ))
+    usage_index = 0
+    for line in section.splitlines():
+        match = re.search(r'\{\{(?:ux|usex)\|gbm\|(.+)\}\}', line)
+        if not match:
+            continue
+        fields = match.group(1).split('|', 1)
+        example = plain_wikitext(fields[0])
+        translation = plain_wikitext(fields[1]) if len(fields) > 1 else ''
+        if not example or not re.search(r'[\u0900-\u097f]', example):
+            continue
+        usage_index += 1
+        rows.append(make_record(
+            'wiktionary_en', f'{page["pageid"]}:usage:{usage_index}', example, info,
+            'CC-BY-SA-4.0', SA, attribution,
+            genre='sentence', translation=translation, **common,
+        ))
+    return rows
+
+
+def incubator_wiktionary_records(payload, info):
+    rows = []
+    for page in payload['query']['pages'].values():
+        revision = page['revisions'][0]
+        raw = revision['slots']['main']['*']
+        if not raw.strip() or re.match(r'^\s*#redirect', raw, re.I):
+            continue
+        text = to_plain_text(raw)
+        if not text:
+            continue
+        rows.append(make_record(
+            'incubator_wt', page['pageid'], text, info, 'CC-BY-SA-4.0', SA,
+            'Wikimedia Incubator contributors; '
+            f'https://incubator.wikimedia.org/w/index.php?title={quote(page["title"])}&action=history',
+            title=page['title'], revision_id=revision['revid'], corpus_layer='core_open',
+            item_url=f'https://incubator.wikimedia.org/w/index.php?oldid={revision["revid"]}',
+            text_format='plain_text_from_wikitext', source_text_format='wikitext',
+            genre='lexicon', modality='text', quality_flags=['mechanically_rendered_wikitext'],
+        ))
+    return rows
+
+
 def meta_record(row, split, index, info):
     if row.get('iso_639_3') != 'gbm':
         raise ValueError('Non-Garhwali row in Garhwali configuration')
@@ -562,16 +668,7 @@ def wiktionary():
         for p in payload['query']['pages'].values():
             if 'missing' in p:
                 continue
-            title = p['title']
-            revision = p['revisions'][0]
-            raw = revision['slots']['main']['*']
-            text = raw if title.startswith('Appendix:') else garhwali_section(raw)
-            if not text:
-                continue
-            rows.append(make_record(source, p['pageid'], text, info, 'CC-BY-SA-4.0', SA,
-                f'English Wiktionary contributors; https://en.wiktionary.org/w/index.php?title={quote(title)}&action=history',
-                title=title, revision_id=revision['revid'], item_url=f'https://en.wiktionary.org/w/index.php?oldid={revision["revid"]}',
-                corpus_layer='extended_sa_raw', genre='lexicon', modality='text', text_format='wikitext'))
+            rows.extend(wiktionary_page_records(p, info))
         print('wiktionary', min(n+20, len(titles)), '/', len(titles), flush=True)
     save_records(CORPUS / 'wiktionary_en.jsonl', rows)
     return len(rows)
@@ -650,17 +747,7 @@ def extract():
     data = json.loads(raw)
     if 'continue' in data:
         raise ValueError('Unprocessed Incubator pagination')
-    rows = []
-    for p in data['query']['pages'].values():
-        rev = p['revisions'][0]
-        text = rev['slots']['main']['*']
-        if not text.strip() or re.match(r'^\s*#redirect', text, re.I):
-            continue
-        rows.append(make_record('incubator_wt', p['pageid'], text, info, 'CC-BY-SA-4.0', SA,
-            f'Wikimedia Incubator contributors; https://incubator.wikimedia.org/w/index.php?title={quote(p["title"])}&action=history',
-            title=p['title'], revision_id=rev['revid'], corpus_layer='extended_sa_raw',
-            item_url=f'https://incubator.wikimedia.org/w/index.php?oldid={rev["revid"]}',
-            text_format='wikitext', genre='lexicon', modality='text', quality_flags=['may_contain_scaffolding']))
+    rows = incubator_wiktionary_records(data, info)
     save_records(CORPUS / 'incubator_wt.jsonl', rows)
     counts['incubator_wt'] = len(rows)
     for source in ['lsi', 'proverbs1894']:

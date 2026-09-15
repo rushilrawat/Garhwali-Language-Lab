@@ -1,18 +1,20 @@
 # Corpus preparation status
 
-Updated 2026-09-12 from the checked-in preparation scripts. Raw and downloaded material remains under gitignore.
+Updated 2026-09-15 from the checked-in preparation scripts. Raw and downloaded material remains under gitignore. Model-result paragraphs retain the exact dataset snapshot used by each historical experiment.
 
 ## Text
 
-- 30,088 source records from 35 files; 27,987 unique normalized texts / 7,391,666 characters.
-- 2,101 duplicate rows retained in 2,003 provenance groups.
+- 30,109 source records from 35 files; 27,986 unique normalized texts / 7,371,364 characters.
+- 2,123 duplicate rows retained in 2,022 provenance groups.
 - PahariLI's 15,000 records explicitly labeled `gbm` are active in the complete experimental corpus and in `data/processed/text/paharili_garhwali.jsonl`; source provenance remains unchanged.
 - The final web-learning pass archived 189 phrase or example rows from three eUttaranchal lessons, LanguagesHome, and Omniglot. Exact deduplication contributed 139 new unique texts; all 189 are active for local experiments and retain source URLs and no-open-license flags.
-- All 27,987 canonical normalized texts, including experimental and restricted provenance, are active in `data/processed/text/all_garhwali.jsonl`.
-- Conservative cleanup retained all 27,987 texts, removed invisible formatting characters from 821 records, and routed 7,237 records to `data/processed/review/text_cleanup_review.jsonl` without rewriting spelling or dialect forms.
-- Sentence-like re-extraction exposes 91,536 occurrences / 86,215 exact-unique segments while retaining every parent and provenance chain. Connected-component assignment resolves all 332 prior cross-document conflicts; zero exact segment now crosses train, validation and test.
-- Deterministic document-aware partitions: train 25,293; validation 1,364; test 1,330. Only 136 documents moved from their original hash split to keep connected documents together.
-- Quality signals: 62 low quality; 27,925 review band.
+- All 27,986 canonical normalized texts, including experimental and restricted provenance, are active in `data/processed/text/all_garhwali.jsonl`.
+- Conservative cleanup retained all 27,986 texts without rewriting spelling or dialect forms.
+- Sentence-like re-extraction exposes 91,490 occurrences / 86,216 exact-unique segments while retaining every parent and provenance chain. Connected-component assignment resolves all 325 prior cross-document conflicts; zero exact segment now crosses train, validation and test.
+- Deterministic document-aware partitions: train 25,287; validation 1,367; test 1,331. Only 131 documents moved from their original hash split to keep connected documents together.
+- Quality signals: 70 low quality; 27,916 review band.
+- Structured Wiktionary extraction now yields 77 Garhwali lemmas, alternative forms, and examples in place of 56 flattened raw page blobs. Conservative wikitext rendering removes page scaffolding while preserving source prose.
+- Source-aware treatment preserves 392 scholarly Garhwali transcriptions in their published notation. The public accuracy queue fell from 628 to 177; none of these source-grounded resolutions is described as native review.
 
 ## VAANI Garhwali
 
@@ -26,7 +28,7 @@ Updated 2026-09-12 from the checked-in preparation scripts. Raw and downloaded m
 - No supervised speaker appears across partitions.
 - Model-ready audio manifests retain all 5,894 supervised and 104,542 untranscribed rows, with quality flags attached rather than excluded.
 - Transcript preparation derives 5,894 non-empty ASR targets and divides all 104,542 untranscribed rows into 105 reproducible batches; 13 supervised rows remain in the transcript review queue.
-- A second reversible cleanup pass retains all 27,987 text and 5,894 supervised audio-transcript rows. It cleans annotation/markup artifacts and flags 925 text plus 920 audio-transcript rows for truncation, URLs, or script review.
+- A second reversible cleanup pass retains all 27,986 text and 5,894 supervised audio-transcript rows. It cleans annotation/markup artifacts and flags 926 text plus 920 audio-transcript rows for truncation, URLs, or script review.
 - Whisper-small zero-shot evaluation on 20 validation rows scored 134.3% WER and 94.8% CER. A speaker-safe Whisper-tiny fine-tune improved the 112-row strict speaker-disjoint candidate result to 74.3% WER and 40.4% CER after the initial pass plus two lower-learning-rate passes. Because this candidate set informed iteration, it is not the future frozen native benchmark, and the model remains unsafe for automatic pseudo-label promotion.
 - A resumable 100-record draft-transcription pilot completed with file-level provenance and uncalibrated token confidence. Median confidence is 0.174; every draft is marked `machine_draft_noisy_experimental` and remains active only in the noisy experimental view.
 - A fair five-checkpoint comparison uses the same 112 speaker-safe test rows and normalization. Zero-shot Whisper-tiny scores 147.939% WER / 136.810% CER; zero-shot Whisper-small scores 97.172% / 57.822%; the two local tiny fine-tunes reach 79.051% / 42.907% and 74.305% / 40.440%. Provider-approved SraVaani 1.0 is strongest at 42.761% WER / 17.606% CER, a 42.45% relative WER reduction from the best local Whisper checkpoint.
@@ -36,7 +38,7 @@ Updated 2026-09-12 from the checked-in preparation scripts. Raw and downloaded m
 
 ## Model-assisted text cleanup
 
-- All 27,987 parent texts now have immutable original/current fields in a reversible cleanup-proposal manifest; zero records are excluded.
+- The original model-assisted cleanup run covered 27,987 parent texts before the source-grounded re-extraction. Its immutable proposal artifact remains a historical model snapshot; the current canonical corpus contains 27,986 texts.
 - Pinned IndicBERTv2 scored 4,096 OCR-, language-, spelling-, and dialect-priority records over 81,116 deterministic masked tokens. The 90th-percentile loss threshold identifies 410 model/source disagreements for inspection without changing source labels.
 - Train-only corpus frequencies produced 35,864 low-confidence one-edit spelling pairs across 10,200 records. These remain suggestions because frequent neighbors can be semantically wrong or valid competing dialect forms.
 - The fixed document-split ablation compared 25,169 train and 1,393 test parent texts. Mechanical cleanup changed 108 records and moved character-bigram perplexity from 16.88499549 to 16.88726214, so it was not promoted.
@@ -64,12 +66,12 @@ Updated 2026-09-12 from the checked-in preparation scripts. Raw and downloaded m
 
 ## Language quality
 
-- All 27,987 cleaned texts have source-backed language, Unicode-script, genre, explicit-dialect, and geographic-evidence fields.
-- Separate views contain 25,343 likely Garhwali candidates, 1,468 declared mixed-language records, 859 unresolved script/language records, and 317 non-Garhwali cultural-context records. The tagged all-data view retains all four groups.
-- Language-identity confidence is high for 9,525 texts, medium for 15,818, and low for 2,644. The medium group is dominated by 14,999 PahariLI texts whose Garhwali label is useful but whose component lineage remains missing.
-- Every text has a genre; 1,917 exact-duplicate groups carry multiple source genres. Resource views expose 1,124 lexicon candidates, 446 unique English–Garhwali pairs, and 1,187 grammar-source candidates.
-- Train-only language resources include a 332-symbol Unicode character tokenizer, 203,706 observed word types, 1,124 pronunciation candidates (293 with source phonetic evidence), and 1,736 normalized TTS candidate pairs.
-- Only 29 text records carry explicit dialect labels. District names are never converted into dialect labels; 10,873 conversational, lexical, or folk records are prioritized for dialect review.
+- All 27,986 cleaned texts have source-backed language, Unicode-script, genre, explicit-dialect, and geographic-evidence fields.
+- Separate views contain 25,341 likely Garhwali candidates, 1,468 declared mixed-language records, 860 unresolved script/language records, and 317 non-Garhwali cultural-context records. The tagged all-data view retains all four groups.
+- Language-identity confidence is high for 9,975 texts, medium for 15,366, and low for 2,645. The medium group is dominated by 14,999 PahariLI texts whose Garhwali label is useful but whose component lineage remains missing.
+- Every text has a genre. Resource views expose 1,114 lexicon candidates, 455 parallel examples, and 1,187 grammar-source candidates.
+- Train-only language resources include a 330-symbol Unicode character tokenizer, 203,539 observed word types, 1,114 pronunciation candidates (293 with source phonetic evidence), and 1,736 normalized TTS candidate pairs.
+- Only 29 text records carry explicit dialect labels. District names are never converted into dialect labels; 10,872 conversational, lexical, or folk records are prioritized for dialect review.
 - All 110,436 VAANI recordings carry district, gender, speaker-status, and language-evidence tags. Nine supervised transcripts need language/script review. The untranscribed 104,542 remain medium-confidence source-labelled Garhwali audio until transcription verifies their content.
 - VAANI has 363 distinct non-placeholder speaker IDs across 21,023 rows; 89,413 rows use an unidentified speaker placeholder. Geographic coverage is limited to Uttarkashi (74,552) and Tehri Garhwal (35,884).
 
@@ -112,10 +114,10 @@ The XORQA retrieval audit deduplicates 1,139 source rows into 1,059 passages and
 
 ## Dataset splits
 
-- Document-aware text partitions contain 80,926 train, 2,488 validation, and 2,801 test segments. Exact segment hashes do not cross partitions.
+- Document-aware text partitions contain 80,881 train, 2,499 validation, and 2,836 test segments. Exact segment hashes do not cross partitions.
 - Strict ASR and TTS candidate partitions retain 2,002 clean transcript/audio rows from 248 identified speakers: 1,621 train, 269 validation, and 112 test. No identified speaker crosses a partition.
 - The broader 5,894-row supervised ASR export remains available. The strict view excludes 3,886 placeholder-speaker rows and six transcript/language-review rows rather than deleting them.
-- Candidate evaluation manifests contain 2,492 unflagged test text segments and 112 strict test audio rows. They are checksum-addressed, automatically screened, and active for experimental evaluation; later native corrections remain optional versioned improvements.
+- Candidate evaluation manifests contain 2,527 unflagged test text segments and 112 strict test audio rows. They are checksum-addressed, automatically screened, and active for experimental evaluation; GarhwaliBench v0.1 remains frozen at its original 2,492-record snapshot.
 - Reproduce these outputs with `python3 scripts/build_dataset_splits.py`. The release manifest records every split artifact, row count, and SHA-256 digest.
 
 ## Reproduction

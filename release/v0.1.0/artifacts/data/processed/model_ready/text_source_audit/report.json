@@ -1,43 +1,31 @@
 {
-  "high_quality_rights_pending_records": 1751,
-  "mixed_rights_exact_duplicate_records": 1910,
+  "high_quality_rights_pending_records": 1748,
+  "mixed_rights_exact_duplicate_records": 1913,
   "policy": {
     "accuracy": "A source language label or open license is not evidence of native orthographic, semantic, or transcription accuracy.",
     "blocked_only_text": "Text with no publishable provenance remains rights-pending; its identity and source evidence remain present in the public catalog.",
     "exact_duplicate_rights": "An exact-unique text is publishable when at least one retained provenance record supplies compatible redistribution evidence. Blocked mirror provenance remains attached and does not revoke the open source grant."
   },
-  "public_text_records": 4193,
+  "public_text_records": 4195,
   "quality_tier_counts": {
-    "experimental_review": 20486,
-    "high_quality_local_only": 1751,
-    "non_strict_context": 2644,
-    "strict_gold_candidate": 3106
+    "experimental_review": 20035,
+    "high_quality_local_only": 1748,
+    "non_strict_context": 2645,
+    "strict_gold_candidate": 3558
   },
-  "records": 27987,
+  "records": 27986,
   "review_priority_counts": {
-    "language_identity": 1,
-    "romanized_orthography": 426,
-    "semantic_alignment": 24,
-    "source_accuracy": 135,
-    "surface_or_scaffolding": 42
+    "romanized_orthography": 4,
+    "source_accuracy": 163,
+    "surface_or_scaffolding": 10
   },
-  "review_queue_records": 628,
+  "review_queue_records": 177,
   "review_source_counts": {
-    "asjp": 89,
-    "chan_numerals_garhwali": 24,
-    "incubator_wt": 1,
-    "lsi_cldf_garhwali": 170,
-    "mamta_southasia_examples": 25,
-    "opus_translatewiki_gbm": 175,
-    "paharili_gbm": 1,
-    "panlex_gbm": 11,
-    "sand_garhwali": 90,
-    "tatoeba": 1,
-    "wikimedia": 1,
-    "wiktionary_en": 54,
-    "wiktionary_swadesh_thematic": 3
+    "mamta_southasia_examples": 1,
+    "opus_translatewiki_gbm": 172,
+    "panlex_gbm": 4
   },
-  "rights_pending_text_records": 23794,
+  "rights_pending_text_records": 23791,
   "source_summary": {
     "archive_1865": {
       "blocked_records": 0,
@@ -113,7 +101,7 @@
     },
     "garhwalilanguage_dictionary": {
       "blocked_records": 35,
-      "mixed_rights_overlap_records": 3,
+      "mixed_rights_overlap_records": 5,
       "open_basis_records": 0,
       "records": 35
     },
@@ -269,7 +257,7 @@
     },
     "uttarakhandiwords_animals": {
       "blocked_records": 60,
-      "mixed_rights_overlap_records": 1,
+      "mixed_rights_overlap_records": 2,
       "open_basis_records": 0,
       "records": 60
     },
@@ -293,9 +281,9 @@
     },
     "wiktionary_en": {
       "blocked_records": 0,
-      "mixed_rights_overlap_records": 0,
-      "open_basis_records": 56,
-      "records": 56
+      "mixed_rights_overlap_records": 3,
+      "open_basis_records": 76,
+      "records": 76
     },
     "wiktionary_swadesh_thematic": {
       "blocked_records": 0,
@@ -304,5 +292,5 @@
       "records": 192
     }
   },
-  "strict_records_using_open_overlap": 1902
+  "strict_records_using_open_overlap": 1906
 }

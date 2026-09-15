@@ -45,25 +45,25 @@
     },
     "text": {
       "reason_counts": {
-        "cleanup_review_required": 7321,
-        "language_confidence_not_high": 18462,
-        "language_review_required": 3284,
-        "low_surface_quality": 36,
-        "no_rights_cleared_training_source": 23794,
-        "not_garhwali_candidate": 2644
+        "cleanup_review_required": 6844,
+        "language_confidence_not_high": 18011,
+        "language_review_required": 2837,
+        "low_surface_quality": 11,
+        "no_rights_cleared_training_source": 23791,
+        "not_garhwali_candidate": 2645
       },
-      "records": 27987,
+      "records": 27986,
       "tier_rates": {
-        "experimental_review": 0.731983,
-        "high_quality_local_only": 0.062565,
-        "non_strict_context": 0.094472,
-        "strict_gold_candidate": 0.11098
+        "experimental_review": 0.715894,
+        "high_quality_local_only": 0.06246,
+        "non_strict_context": 0.094512,
+        "strict_gold_candidate": 0.127135
       },
       "tiers": {
-        "experimental_review": 20486,
-        "high_quality_local_only": 1751,
-        "non_strict_context": 2644,
-        "strict_gold_candidate": 3106
+        "experimental_review": 20035,
+        "high_quality_local_only": 1748,
+        "non_strict_context": 2645,
+        "strict_gold_candidate": 3558
       }
     }
   },

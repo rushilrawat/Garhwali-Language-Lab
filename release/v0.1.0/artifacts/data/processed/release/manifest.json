@@ -386,20 +386,20 @@
         "sha256": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220"
       },
       "evaluation/text_candidate.jsonl": {
-        "records": 2492,
-        "sha256": "455063394ec1203c0ab110870345926e37fa5a51a312fbb38631e8968e46dcc5"
+        "records": 2527,
+        "sha256": "2b75b3e7558d93520533f299d70e80b6dd649b06b6ff0b643ec9080ce6642a67"
       },
       "text/test.jsonl": {
-        "records": 2801,
-        "sha256": "5a808168cb8ade0193119a8c70a893e479fb541f63b761729b9051ee17d1bd3a"
+        "records": 2836,
+        "sha256": "fc6cef0e680846d81b74691a56839e3b831c3b98164b7a29982ef4f69b83c73e"
       },
       "text/train.jsonl": {
-        "records": 80926,
-        "sha256": "b16dcd42d84a5879c8f9e3d0838129f85ee06ddc3e8892898e1e6385007db472"
+        "records": 80881,
+        "sha256": "c6da19a64001bdf1c09b773b5dfed4458e8646bc1585a5ce3bc9cc3f5cb31f94"
       },
       "text/validation.jsonl": {
-        "records": 2488,
-        "sha256": "e0daf28c11b0baa1a42cc5215cf396d3e998dfd34fa072246186cba285c848be"
+        "records": 2499,
+        "sha256": "738acfe14f4b3442e606e46a4ea58baa96f8842a469adc06100aa6e222b923aa"
       },
       "tts/test.jsonl": {
         "records": 112,
@@ -456,7 +456,7 @@
       "asr_records": 112,
       "native_review_optional": true,
       "review_status": "automated_quality_screened",
-      "text_records": 2492
+      "text_records": 2527
     },
     "excluded_audio": {
       "transcript_or_language_review": 6,
@@ -470,9 +470,9 @@
     "release_status": "integrated_experimental_candidate",
     "text": {
       "records": {
-        "test": 2801,
-        "train": 80926,
-        "validation": 2488
+        "test": 2836,
+        "train": 80881,
+        "validation": 2499
       }
     },
     "tts_candidate": {
@@ -619,7 +619,7 @@
     "deep_cleaned_text": {
       "exists": true,
       "path": "data/processed/model_ready/cleaned/text.jsonl",
-      "records": 27987
+      "records": 27986
     },
     "language_quality_audio_supervised": {
       "exists": true,
@@ -639,7 +639,7 @@
     "language_quality_lexicon_candidates": {
       "exists": true,
       "path": "data/processed/model_ready/language_quality/lexicon_candidates.jsonl",
-      "records": 1124
+      "records": 1114
     },
     "language_quality_non_garhwali_context": {
       "exists": true,
@@ -649,17 +649,17 @@
     "language_quality_parallel_examples": {
       "exists": true,
       "path": "data/processed/model_ready/language_quality/parallel_examples.jsonl",
-      "records": 446
+      "records": 455
     },
     "language_quality_text_all": {
       "exists": true,
       "path": "data/processed/model_ready/language_quality/text.jsonl",
-      "records": 27987
+      "records": 27986
     },
     "language_quality_text_garhwali_candidates": {
       "exists": true,
       "path": "data/processed/model_ready/language_quality/text_garhwali_candidates.jsonl",
-      "records": 25343
+      "records": 25341
     },
     "language_quality_text_mixed": {
       "exists": true,
@@ -669,7 +669,7 @@
     "language_quality_text_review": {
       "exists": true,
       "path": "data/processed/model_ready/language_quality/text_language_review.jsonl",
-      "records": 859
+      "records": 860
     },
     "long_form_audio_segments": {
       "exists": true,
@@ -694,7 +694,7 @@
     "pronunciation_candidates": {
       "exists": true,
       "path": "data/processed/model_ready/language_resources/pronunciation/lexicon.jsonl",
-      "records": 1124
+      "records": 1114
     },
     "split_asr_evaluation_candidate": {
       "exists": true,
@@ -734,22 +734,22 @@
     "split_text_evaluation_candidate": {
       "exists": true,
       "path": "data/processed/model_ready/splits/evaluation/text_candidate.jsonl",
-      "records": 2492
+      "records": 2527
     },
     "split_text_test": {
       "exists": true,
       "path": "data/processed/model_ready/splits/text/test.jsonl",
-      "records": 2801
+      "records": 2836
     },
     "split_text_train": {
       "exists": true,
       "path": "data/processed/model_ready/splits/text/train.jsonl",
-      "records": 80926
+      "records": 80881
     },
     "split_text_validation": {
       "exists": true,
       "path": "data/processed/model_ready/splits/text/validation.jsonl",
-      "records": 2488
+      "records": 2499
     },
     "split_tts_experimental_test": {
       "exists": true,
@@ -784,22 +784,22 @@
     "text_all_experimental": {
       "exists": true,
       "path": "data/processed/text/all_garhwali.jsonl",
-      "records": 27987
+      "records": 27986
     },
     "text_canonical": {
       "exists": true,
       "path": "data/processed/text/canonical.jsonl",
-      "records": 27987
+      "records": 27986
     },
     "text_cleaned_all": {
       "exists": true,
       "path": "data/processed/text/cleaned_all_garhwali.jsonl",
-      "records": 27987
+      "records": 27986
     },
     "text_segments_all": {
       "exists": true,
       "path": "data/processed/model_ready/segments/all_segments.jsonl",
-      "records": 86215
+      "records": 86216
     },
     "transcripts_supervised_model_ready": {
       "exists": true,
@@ -978,18 +978,18 @@
   },
   "language": "Garhwali (gbm)",
   "language_resources_report": {
-    "pronunciation_candidates": 1124,
+    "pronunciation_candidates": 1114,
     "pronunciation_with_source_phonetics": 293,
-    "tokenizer_training_texts": 80926,
+    "tokenizer_training_texts": 80881,
     "tokenizer_type": "unicode_character",
-    "tokenizer_vocabulary_size": 332,
+    "tokenizer_vocabulary_size": 330,
     "tts_pairs": 1736,
     "tts_split_pairs": {
       "test": 89,
       "train": 1422,
       "validation": 225
     },
-    "word_types": 203706
+    "word_types": 203539
   },
   "long_form_audio_report": {
     "clips": 1204,
@@ -1665,71 +1665,59 @@
     "word_errors": 892
   },
   "text_report": {
-    "characters": 7391666,
-    "duplicate_groups": 2003,
-    "duplicate_rows": 2101,
+    "characters": 7371364,
+    "duplicate_groups": 2022,
+    "duplicate_rows": 2123,
     "empty_records": 0,
     "invalid_json_records": 0,
     "layer_records": {
-      "corpus": 3560,
+      "corpus": 3581,
       "data/extracted": 779,
       "experimental": 23202,
       "extracted": 1097,
       "restricted": 1450
     },
     "quality_bands": {
-      "low": 62,
-      "review": 27925
+      "low": 70,
+      "review": 27916
     },
     "source_files": 35,
-    "source_records": 30088,
+    "source_records": 30109,
     "split_unique_texts": {
-      "test": 1393,
+      "test": 1394,
       "train": 25169,
-      "validation": 1425
+      "validation": 1423
     },
-    "unique_texts": 27987
+    "unique_texts": 27986
   },
   "text_source_audit_report": {
-    "high_quality_rights_pending_records": 1751,
-    "mixed_rights_exact_duplicate_records": 1910,
+    "high_quality_rights_pending_records": 1748,
+    "mixed_rights_exact_duplicate_records": 1913,
     "policy": {
       "accuracy": "A source language label or open license is not evidence of native orthographic, semantic, or transcription accuracy.",
       "blocked_only_text": "Text with no publishable provenance remains rights-pending; its identity and source evidence remain present in the public catalog.",
       "exact_duplicate_rights": "An exact-unique text is publishable when at least one retained provenance record supplies compatible redistribution evidence. Blocked mirror provenance remains attached and does not revoke the open source grant."
     },
-    "public_text_records": 4193,
+    "public_text_records": 4195,
     "quality_tier_counts": {
-      "experimental_review": 20486,
-      "high_quality_local_only": 1751,
-      "non_strict_context": 2644,
-      "strict_gold_candidate": 3106
+      "experimental_review": 20035,
+      "high_quality_local_only": 1748,
+      "non_strict_context": 2645,
+      "strict_gold_candidate": 3558
     },
-    "records": 27987,
+    "records": 27986,
     "review_priority_counts": {
-      "language_identity": 1,
-      "romanized_orthography": 426,
-      "semantic_alignment": 24,
-      "source_accuracy": 135,
-      "surface_or_scaffolding": 42
+      "romanized_orthography": 4,
+      "source_accuracy": 163,
+      "surface_or_scaffolding": 10
     },
-    "review_queue_records": 628,
+    "review_queue_records": 177,
     "review_source_counts": {
-      "asjp": 89,
-      "chan_numerals_garhwali": 24,
-      "incubator_wt": 1,
-      "lsi_cldf_garhwali": 170,
-      "mamta_southasia_examples": 25,
-      "opus_translatewiki_gbm": 175,
-      "paharili_gbm": 1,
-      "panlex_gbm": 11,
-      "sand_garhwali": 90,
-      "tatoeba": 1,
-      "wikimedia": 1,
-      "wiktionary_en": 54,
-      "wiktionary_swadesh_thematic": 3
+      "mamta_southasia_examples": 1,
+      "opus_translatewiki_gbm": 172,
+      "panlex_gbm": 4
     },
-    "rights_pending_text_records": 23794,
+    "rights_pending_text_records": 23791,
     "source_summary": {
       "archive_1865": {
         "blocked_records": 0,
@@ -1805,7 +1793,7 @@
       },
       "garhwalilanguage_dictionary": {
         "blocked_records": 35,
-        "mixed_rights_overlap_records": 3,
+        "mixed_rights_overlap_records": 5,
         "open_basis_records": 0,
         "records": 35
       },
@@ -1961,7 +1949,7 @@
       },
       "uttarakhandiwords_animals": {
         "blocked_records": 60,
-        "mixed_rights_overlap_records": 1,
+        "mixed_rights_overlap_records": 2,
         "open_basis_records": 0,
         "records": 60
       },
@@ -1985,9 +1973,9 @@
       },
       "wiktionary_en": {
         "blocked_records": 0,
-        "mixed_rights_overlap_records": 0,
-        "open_basis_records": 56,
-        "records": 56
+        "mixed_rights_overlap_records": 3,
+        "open_basis_records": 76,
+        "records": 76
       },
       "wiktionary_swadesh_thematic": {
         "blocked_records": 0,
@@ -1996,7 +1984,7 @@
         "records": 192
       }
     },
-    "strict_records_using_open_overlap": 1902
+    "strict_records_using_open_overlap": 1906
   },
   "translation_floor_report": {
     "baselines": {

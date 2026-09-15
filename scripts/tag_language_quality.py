@@ -22,6 +22,10 @@ DIALECT_REVIEW_GENRES = LEXICON_GENRES | {
     'speech_transcript', 'prompted_speech', 'folk_text', 'folk_literature',
     'phrase_translation', 'sentence', 'idiom_or_proverb', 'social_media',
 }
+SOURCE_ATTESTED_TRANSCRIPTION_SOURCES = {
+    'asjp', 'chan_numerals_garhwali', 'lsi_cldf_garhwali',
+    'mamta_southasia_examples', 'mamta_southasia_values', 'sand_garhwali',
+}
 
 
 def script_profile(text):
@@ -71,6 +75,10 @@ def assess_language(text, provenance):
     quality_flags = {str(value).casefold() for value in _values(provenance, 'quality_flags')}
     garhwali_label = ('gbm' in iso_labels or any('garhwali' in value or 'gadwali' in value
                                                 for value in language_labels + scopes))
+    source_ids = {str(value).casefold() for value in _values(provenance, 'source_id')}
+    source_attested_transcription = bool(
+        garhwali_label and source_ids & SOURCE_ATTESTED_TRANSCRIPTION_SOURCES
+    )
     non_garhwali_label = bool(iso_labels - {'gbm', 'mul'} or any(
         'garhwali' not in value and 'gadwali' not in value for value in language_labels))
     mixed_declared = ('mul' in iso_labels or (garhwali_label and non_garhwali_label) or
@@ -94,6 +102,9 @@ def assess_language(text, provenance):
         status = 'language_review_required'; reasons.append('bengali_script_under_garhwali_scope')
     elif profile['script'].startswith('Mixed'):
         status = 'mixed_script_review'; reasons.append('multiple_scripts')
+    elif profile['script'] == 'Latn' and source_attested_transcription:
+        status = 'source_attested_garhwali_transcription'
+        evidence.append('source_linguistic_transcription')
     elif profile['script'] == 'Latn':
         status = 'romanized_garhwali_candidate'
         reasons.append('romanized_spelling_unverified')
@@ -103,11 +114,26 @@ def assess_language(text, provenance):
         if not garhwali_label: reasons.append('no_explicit_garhwali_label')
     else:
         status = 'language_review_required'; reasons.append('no_supported_script')
-    uncertain_source = any(flag in quality_flags for flag in {
+    uncertainty_flags = {
         'source_lineage_missing', 'native_accuracy_unverified', 'language_identity_requires_native_review',
         'unlicensed', 'community_upload',
-    })
-    if status == 'garhwali_candidate':
+    }
+    garhwali_sources = []
+    for source in provenance:
+        source_iso = str(source.get('iso_639_3') or '').casefold()
+        source_language = str(source.get('language') or '').casefold()
+        source_scope = str(source.get('language_scope') or '').casefold()
+        if (source_iso == 'gbm' or 'garhwali' in source_language
+                or 'gadwali' in source_language or 'garhwali' in source_scope
+                or 'gadwali' in source_scope):
+            garhwali_sources.append(source)
+    clean_garhwali_source = any(
+        not ({str(flag).casefold() for flag in source.get('quality_flags') or []}
+             & uncertainty_flags)
+        for source in garhwali_sources
+    )
+    uncertain_source = bool(garhwali_sources) and not clean_garhwali_source
+    if status in {'garhwali_candidate', 'source_attested_garhwali_transcription'}:
         confidence = 'medium' if uncertain_source else 'high'
     elif status == 'romanized_garhwali_candidate' and garhwali_label:
         confidence = 'medium'
@@ -119,7 +145,10 @@ def assess_language(text, provenance):
 
 def language_bucket(language_quality):
     status = language_quality.get('status')
-    if status in {'garhwali_candidate', 'romanized_garhwali_candidate'}:
+    if status in {
+        'garhwali_candidate', 'romanized_garhwali_candidate',
+        'source_attested_garhwali_transcription',
+    }:
         return 'garhwali_candidate'
     if status == 'mixed_language_source':
         return 'mixed_language'

@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import unicodedata
 from collections import Counter
 from pathlib import Path
 
@@ -13,7 +14,7 @@ from build_huggingface_dataset import is_public_garhwali_text_row, provenance_it
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
+SOURCE = ROOT / 'data/processed/model_ready/language_quality/text.jsonl'
 OUT = ROOT / 'data/processed/model_ready/text_quality_v2'
 PHONE = re.compile(r'(?<!\d)(?:\+91[- ]?)?[6-9]\d{9}(?!\d)')
 EDITORIAL_NASAL = re.compile(r'\([nm]\)', re.IGNORECASE)
@@ -59,12 +60,17 @@ def build_quality_dimensions(row, release, changes, signals, remaining_flags):
     language_needs_review = (
         language.get('confidence') != 'high' or bool(language.get('review_required'))
     )
+    source_attested_transcription = (
+        'source_linguistic_transcription' in (language.get('evidence') or [])
+    )
     language_status = (
         'source_declared_garhwali_pending_native_validation'
         if language_needs_review else 'existing_high_confidence_evidence'
     )
 
-    if script == 'Latn':
+    if script == 'Latn' and source_attested_transcription:
+        orthography_status = 'source_attested_linguistic_notation'
+    elif script == 'Latn':
         orthography_status = 'romanized_source_form_pending_native_review'
     elif 'double_period_normalized' in changes or 'wiki_markup_removed' in changes:
         orthography_status = 'mechanically_normalized'
@@ -73,7 +79,9 @@ def build_quality_dimensions(row, release, changes, signals, remaining_flags):
     else:
         orthography_status = 'source_form_preserved'
 
-    if genres & TRANSLATION_GENRES or 'native_accuracy_unverified' in source_flags:
+    if genres & TRANSLATION_GENRES and source_attested_transcription:
+        semantic_status = 'source_attested_parallel_alignment'
+    elif genres & TRANSLATION_GENRES or 'native_accuracy_unverified' in source_flags:
         semantic_status = 'translation_or_alignment_pending_native_validation'
     else:
         semantic_status = 'not_applicable_or_not_available'
@@ -104,7 +112,7 @@ def build_quality_dimensions(row, release, changes, signals, remaining_flags):
         'orthography': {
             'status': orthography_status,
             'script': script,
-            'native_validation_required': script == 'Latn',
+            'native_validation_required': script == 'Latn' and not source_attested_transcription,
         },
         'semantic_alignment': {
             'status': semantic_status,
@@ -191,7 +199,9 @@ def refine_row(row):
         release = EXACT_DOUBLE_PERIOD.sub('…', release)
         changes.append('double_period_normalized')
     script = (row.get('language_quality') or {}).get('script_profile', {}).get('script')
-    if script == 'Latn':
+    if script == 'Latn' and 'source_linguistic_transcription' not in (
+        (row.get('language_quality') or {}).get('evidence') or []
+    ):
         signals.append('romanized_text_requires_native_review')
     if '/' in original and (
         len(original.split()) <= 6 or genres.intersection(LEXICON_GENRES)
@@ -203,8 +213,10 @@ def refine_row(row):
         signals.append('repeated_punctuation')
     if REGIONAL_IDENTITY.search(original):
         signals.append('regional_identity_review')
-    alphanumeric = sum(character.isalnum() for character in original)
-    if alphanumeric <= 2 and not genres.intersection(LEXICON_GENRES):
+    semantic_characters = sum(
+        unicodedata.category(character)[0] in {'L', 'M', 'N'} for character in original
+    )
+    if semantic_characters <= 2 and not genres.intersection(LEXICON_GENRES):
         signals.append('very_short_fragment')
 
     resolved_flags = set()

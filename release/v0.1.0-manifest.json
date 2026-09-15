@@ -5,21 +5,24 @@
   "language": "Garhwali (gbm)",
   "local_storage_gb_approx": 34,
   "text": {
-    "total": 86215,
+    "total": 86216,
     "splits": {
-      "train": 80926,
-      "validation": 2488,
-      "test": 2801
+      "train": 80881,
+      "validation": 2499,
+      "test": 2836
     },
-    "unique_parent_documents": 27987
+    "unique_parent_documents": 27986
   },
   "public_text_release": {
-    "exact_unique_with_public_rights_basis": 4193,
-    "rights_pending_catalog_records": 23794,
-    "strict_public_candidates": 3106,
-    "high_quality_rights_pending_candidates": 1751,
-    "mixed_rights_exact_duplicates": 1910,
-    "transcript_only_package_rows": 145359
+    "exact_unique_with_public_rights_basis": 4195,
+    "rights_pending_catalog_records": 23791,
+    "strict_public_candidates": 3558,
+    "high_quality_rights_pending_candidates": 1748,
+    "mixed_rights_exact_duplicates": 1913,
+    "strict_records_using_open_overlap": 1906,
+    "native_or_source_review_queue": 177,
+    "source_attested_linguistic_transcriptions": 392,
+    "transcript_only_package_rows": 145497
   },
   "speech": {
     "total": 5894,
@@ -54,16 +57,16 @@
   },
   "language_resources": {
     "tokenizer_type": "unicode_character",
-    "tokenizer_vocabulary_size": 332,
-    "tokenizer_training_texts": 80926,
-    "word_types": 203706,
-    "lexicon_candidates": 1124,
-    "pronunciation_candidates": 1124,
+    "tokenizer_vocabulary_size": 330,
+    "tokenizer_training_texts": 80881,
+    "word_types": 203539,
+    "lexicon_candidates": 1114,
+    "pronunciation_candidates": 1114,
     "pronunciations_with_source_phonetics": 293,
     "tts_pairs": 1736
   },
   "evaluation_candidates": {
-    "text": 2492,
+    "text": 2527,
     "speech": 112,
     "review_status": "automated_quality_screened",
     "native_review_optional": true
@@ -169,6 +172,7 @@
     "promotion_status": "rejected_for_automatic_pseudolabeling"
   },
   "model_assisted_text_cleanup": {
+    "snapshot_status": "historical_pre_source_accuracy_pass",
     "total_records": 27987,
     "active_for_experiment": 27987,
     "excluded": 0,
@@ -269,10 +273,10 @@
     "frozen_test_records_used": 0
   },
   "instruction_dataset": {
-    "total_records": 2518,
-    "train_records": 2304,
-    "validation_records": 130,
-    "test_records": 84,
+    "total_records": 2654,
+    "train_records": 2434,
+    "validation_records": 134,
+    "test_records": 86,
     "tasks": 6,
     "parent_cross_split": 0,
     "exact_instruction_pair_cross_split": 0,
@@ -280,6 +284,7 @@
     "provenance_preserved": true
   },
   "mt5_instruction_tuning": {
+    "dataset_snapshot_status": "historical_pre_source_accuracy_pass",
     "status": "not_promoted_for_generation",
     "model": "google/mt5-small",
     "revision": "73fb5dbe4756edadc8fbe8c769b0a109493acf7a",
@@ -297,17 +302,19 @@
     "test_records_used_for_training": 0
   },
   "instruction_accuracy_split_v2": {
+    "snapshot_status": "current_regenerated_dataset",
     "run_id": "garhwali-instruction-accuracy-split-v0.2",
-    "train_records": 2046,
-    "validation_records": 130,
-    "test_records": 258,
-    "test_sha256": "1555d0334d0d0b4c5223f0948fc096c670b0a478c9da922c199af2a825ce5eb6",
+    "train_records": 2178,
+    "validation_records": 134,
+    "test_records": 256,
+    "test_sha256": "ef6e31256ec711a63f73f1adf8f44eeb27d430ba2c13fa7dea46aba726cd9a11",
     "previously_closed_test_reused": 0,
     "prior_seen_parent_test_overlap": 0,
     "parent_cross_split": 0,
     "all_records_active_experimentally": true
   },
   "mt0_instruction_tuning_v2": {
+    "dataset_snapshot_status": "historical_pre_source_accuracy_pass",
     "status": "accuracy_baseline_not_promoted",
     "model": "bigscience/mt0-small",
     "revision": "8116a34237e19160ec003147e758f065876d95f0",
@@ -328,7 +335,7 @@
     "text_hash_cross_split": 0,
     "identified_speaker_cross_split": 0
   },
-  "release_policy": "Every collected record is active for local experiments. Public redistribution is limited to records with verified compatible source terms; restricted, rights-pending, and personal review data remain local.",
+  "release_policy": "Every collected record is active for experiments and represented in the public catalog by stable identity, provenance, rights, and quality evidence. Text and audio values are redistributed when verified source terms permit it; protected values remain catalogued with the content field redacted.",
   "machine_manifest": "data/processed/release/manifest.json",
   "final_audit": "release/final-audit.json"
 }

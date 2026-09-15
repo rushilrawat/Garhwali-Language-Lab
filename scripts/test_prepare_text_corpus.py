@@ -78,6 +78,28 @@ class TextPreparationTests(unittest.TestCase):
             )
             self.assertEqual(provenance["attribution"], "Example contributors")
 
+    def test_prepare_preserves_structured_extraction_metadata(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / 'corpus' / 'dictionary.jsonl'
+            source.parent.mkdir()
+            source.write_text(json.dumps({
+                'record_id': 'dictionary:1',
+                'text_normalized': 'रिक',
+                'iso_639_3': 'gbm',
+                'text_format': 'structured_wiktionary',
+                'source_text_format': 'wikitext',
+                'relation': 'alternative_form',
+                'headword': 'रिख',
+            }) + '\n', encoding='utf-8')
+            m.prepare([source], root / 'out', root=root)
+            record = json.loads((root / 'out/canonical.jsonl').read_text())
+            provenance = record['provenance'][0]
+            self.assertEqual(provenance['text_format'], 'structured_wiktionary')
+            self.assertEqual(provenance['source_text_format'], 'wikitext')
+            self.assertEqual(provenance['linguistic_metadata']['relation'], 'alternative_form')
+            self.assertEqual(provenance['linguistic_metadata']['headword'], 'रिख')
+
     def test_split_assignment_is_stable(self):
         digest = "a" * 64
         self.assertEqual(m.split_for_hash(digest), m.split_for_hash(digest))

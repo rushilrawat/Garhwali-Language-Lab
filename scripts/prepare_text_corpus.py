@@ -19,11 +19,12 @@ ID_FIELDS = ("record_id", "id", "utterance_id", "audio_path")
 QUALITY_METADATA_FIELDS = (
     "iso_639_3", "language", "language_scope", "language_candidates", "script",
     "genre", "modality", "dialect", "district", "speaker_id", "gender", "languages_known",
+    "text_format", "source_text_format",
 )
 LINGUISTIC_METADATA_FIELDS = (
     "english_gloss", "gloss_en", "gloss_hi", "gloss", "translation", "parallel_english",
     "english_prompt", "english_alignments", "semantic_domain", "concept_id", "parameter_id",
-    "segments", "value", "other_form", "cultural_genres",
+    "segments", "value", "other_form", "cultural_genres", "relation", "headword",
 )
 
 

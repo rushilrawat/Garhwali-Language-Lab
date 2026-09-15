@@ -1,10 +1,9 @@
 {
   "automatic_change_counts": {
-    "double_period_normalized": 29,
-    "wiki_markup_removed": 7
+    "double_period_normalized": 29
   },
-  "manual_review_required": 492,
-  "no_additional_issue": 3242,
+  "manual_review_required": 14,
+  "no_additional_issue": 3721,
   "policy": {
     "confidence": "Dimensions report evidence and review state; they are not accuracy probabilities.",
     "linguistic_values": "No automatic spelling, transliteration, language, or dialect correction.",
@@ -13,62 +12,60 @@
   },
   "quality_dimension_status_counts": {
     "language_identity": {
-      "existing_high_confidence_evidence": 3106,
-      "source_declared_garhwali_pending_native_validation": 628
+      "existing_high_confidence_evidence": 3559,
+      "source_declared_garhwali_pending_native_validation": 176
     },
     "orthography": {
-      "mechanically_normalized": 31,
-      "romanized_source_form_pending_native_review": 452,
-      "source_form_preserved": 3211,
-      "source_form_with_surface_review_pending": 40
+      "mechanically_normalized": 29,
+      "romanized_source_form_pending_native_review": 4,
+      "source_attested_linguistic_notation": 392,
+      "source_form_preserved": 3301,
+      "source_form_with_surface_review_pending": 9
     },
     "semantic_alignment": {
-      "not_applicable_or_not_available": 3534,
-      "translation_or_alignment_pending_native_validation": 200
+      "not_applicable_or_not_available": 3535,
+      "source_attested_parallel_alignment": 25,
+      "translation_or_alignment_pending_native_validation": 175
     },
     "source_evidence": {
       "multiple_source_records_observed": 1900,
-      "native_accuracy_unverified": 364,
-      "single_source_record": 1297,
-      "source_scaffolding_review_required": 3,
+      "native_accuracy_unverified": 367,
+      "single_source_record": 1298,
       "structured_historical_derivative": 170
     },
     "surface_form": {
-      "mechanically_normalized": 31,
-      "no_detected_surface_issue": 3211,
-      "review_required": 492
+      "mechanically_normalized": 29,
+      "no_detected_surface_issue": 3692,
+      "review_required": 14
     }
   },
-  "records": 3734,
+  "records": 3735,
   "remaining_cleanup_flag_counts": {
     "very_short": 7
   },
   "resolved_cleanup_flag_counts": {
-    "html_markup": 26,
-    "mixed_latin_devanagari": 98,
-    "no_devanagari": 402,
-    "url": 1,
-    "very_short": 51
+    "html_markup": 19,
+    "mixed_latin_devanagari": 23,
+    "no_devanagari": 396,
+    "very_short": 59
   },
   "review_priority_counts": {
-    "language_identity": 1,
-    "romanized_orthography": 426,
-    "semantic_alignment": 24,
-    "source_accuracy": 135,
-    "surface_or_scaffolding": 42
+    "romanized_orthography": 4,
+    "source_accuracy": 163,
+    "surface_or_scaffolding": 10
   },
-  "review_queue_records": 628,
+  "review_queue_records": 177,
   "review_signal_counts": {
-    "romanized_text_requires_native_review": 452,
-    "slash_separated_variants": 3,
-    "very_short_fragment": 39
+    "romanized_text_requires_native_review": 4,
+    "slash_separated_variants": 2,
+    "very_short_fragment": 8
   },
   "source_record_counts": {
     "asjp": 91,
     "chan_numerals_garhwali": 24,
     "emagazine_animals": 2,
-    "garhwalilanguage_dictionary": 3,
-    "incubator_wt": 3,
+    "garhwalilanguage_dictionary": 5,
+    "incubator_wt": 2,
     "indic_dialect_asr_gbm": 1922,
     "lsi_cldf_garhwali": 185,
     "mamta_southasia_examples": 25,
@@ -78,10 +75,10 @@
     "panlex_gbm": 13,
     "sand_garhwali": 90,
     "tatoeba": 36,
-    "uttarakhandiwords_animals": 1,
-    "wikimedia": 26,
-    "wiktionary_en": 54,
+    "uttarakhandiwords_animals": 2,
+    "wikimedia": 24,
+    "wiktionary_en": 77,
     "wiktionary_swadesh_thematic": 203
   },
-  "values_automatically_changed": 36
+  "values_automatically_changed": 29
 }

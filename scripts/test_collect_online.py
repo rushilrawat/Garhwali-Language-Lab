@@ -39,6 +39,96 @@ class CollectionTests(unittest.TestCase):
         text = '==Hindi==\nHindi text\n==Garhwali==\n===Noun===\n# water\n==Nepali==\nNepali text'
         self.assertEqual(mod.garhwali_section(text), '===Noun===\n# water')
 
+    def test_wiktionary_page_extracts_lemma_and_garhwali_usage(self):
+        mod = self.load()
+        page = {
+            'pageid': 7375122,
+            'title': 'उंदु',
+            'revisions': [{
+                'revid': 60343378,
+                'slots': {'main': {'*': (
+                    '==Garhwali==\n===Adverb===\n{{head|gbm|adverb}}\n\n'
+                    '# [[down]]\n'
+                    "#: {{ux|gbm| किताब '''उंदु''' पोड़ि ग्याई।|Book is fallen down.}}\n"
+                    '==Hindi==\nHindi text'
+                )}},
+            }],
+        }
+        records = mod.wiktionary_page_records(
+            page, {'raw_path': 'snapshot.json', 'sha256': 'abc'}
+        )
+        self.assertEqual(
+            [record['text_normalized'] for record in records],
+            ['उंदु', 'किताब उंदु पोड़ि ग्याई।'],
+        )
+        self.assertEqual(records[0]['english_gloss'], 'down')
+        self.assertEqual(records[1]['translation'], 'Book is fallen down.')
+        self.assertTrue(all(record['text_format'] == 'structured_wiktionary' for record in records))
+
+    def test_wiktionary_page_never_emits_template_scaffolding(self):
+        mod = self.load()
+        page = {
+            'pageid': 1,
+            'title': 'पाणि',
+            'revisions': [{
+                'revid': 2,
+                'slots': {'main': {'*': (
+                    '==Garhwali==\n===Etymology===\n{{inh|gbm|sa|पानीय}}\n'
+                    '===Noun===\n{{head|gbm|noun|tr=pāṇi}}\n# [[water]]'
+                )}},
+            }],
+        }
+        records = mod.wiktionary_page_records(
+            page, {'raw_path': 'snapshot.json', 'sha256': 'abc'}
+        )
+        self.assertEqual([record['text_normalized'] for record in records], ['पाणि'])
+        self.assertNotIn('Etymology', records[0]['text_normalized'])
+        self.assertNotIn('{{', records[0]['text_normalized'])
+
+    def test_wiktionary_page_keeps_garhwali_alternative_forms(self):
+        mod = self.load()
+        page = {
+            'pageid': 3,
+            'title': 'रिख',
+            'revisions': [{
+                'revid': 4,
+                'slots': {'main': {'*': (
+                    '==Garhwali==\n===Alternative forms===\n'
+                    '* {{alter|gbm|रिक|रिख}}\n'
+                    '===Etymology===\nFrom {{inh|gbm|sa|ऋक्ष}}.\n'
+                    '===Noun===\n{{head|gbm|noun}}\n# a [[bear]]'
+                )}},
+            }],
+        }
+        records = mod.wiktionary_page_records(
+            page, {'raw_path': 'snapshot.json', 'sha256': 'abc'}
+        )
+        self.assertEqual(
+            [record['text_normalized'] for record in records],
+            ['रिख', 'रिक'],
+        )
+        self.assertEqual(records[1]['relation'], 'alternative_form')
+        self.assertEqual(records[1]['headword'], 'रिख')
+
+    def test_incubator_dictionary_records_render_plain_text(self):
+        mod = self.load()
+        payload = {'query': {'pages': {'1': {
+            'pageid': 1,
+            'title': 'Wt/gbm/अ',
+            'revisions': [{
+                'revid': 2,
+                'slots': {'main': {'*': (
+                    '{{-gbm-}}\n# इ छौ [[Wt/gbm/देओनागिरी|देबनागिरी]] लिपिऽ पैल बोळ।\n'
+                    '[[Category:Wt/gbm]]'
+                )}},
+            }],
+        }}}}
+        records = mod.incubator_wiktionary_records(
+            payload, {'raw_path': 'snapshot.json', 'sha256': 'abc'}
+        )
+        self.assertEqual(records[0]['text_normalized'], 'इ छौ देबनागिरी लिपिऽ पैल बोळ।')
+        self.assertEqual(records[0]['text_format'], 'plain_text_from_wikitext')
+
     def test_transcript_keeps_upstream_split_and_is_unreviewed(self):
         mod = self.load()
         row = {'iso_639_3': 'gbm', 'raw_text': 'मि ठीक छौं।', 'speaker_id': '12',

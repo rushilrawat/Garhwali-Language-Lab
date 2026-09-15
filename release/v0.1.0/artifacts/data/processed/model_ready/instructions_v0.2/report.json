@@ -14,7 +14,7 @@
     "new_test_source": "previous training split parents unseen by prior pilot",
     "selection_split": "existing validation split"
   },
-  "previously_closed_test_records_not_reused": 84,
+  "previously_closed_test_records_not_reused": 86,
   "prior_pilot": {
     "batch_size": 1,
     "seeds": [
@@ -22,13 +22,13 @@
       29,
       43
     ],
-    "seen_parent_count": 165,
+    "seen_parent_count": 177,
     "steps_per_seed": 64
   },
   "records": {
-    "test": 258,
-    "train": 2046,
-    "validation": 130
+    "test": 256,
+    "train": 2178,
+    "validation": 134
   },
   "run_id": "garhwali-instruction-accuracy-split-v0.2"
 }

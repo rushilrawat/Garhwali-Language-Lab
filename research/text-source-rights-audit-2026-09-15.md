@@ -2,7 +2,7 @@
 
 ## Outcome
 
-This pass audited all **27,987 exact-unique text records** and fixed two release
+This pass audited all **27,986 exact-unique text records** and fixed two release
 errors. Canonical provenance now preserves `license_id`, `rights_evidence`, and
 attribution. Rights warnings are normalized before matching, so spaces, hyphens,
 and underscores cannot change a source decision.
@@ -16,16 +16,16 @@ promotes content only when an identical open copy is already in the corpus.
 
 | Measure | Records |
 | --- | ---: |
-| Exact-unique collected texts | 27,987 |
-| Texts with at least one public rights basis | 4,193 |
-| Texts with only rights-pending provenance | 23,794 |
-| Mixed-rights exact duplicates | 1,910 |
-| Strict records using an open exact duplicate | 1,902 |
-| Strict public candidates | 3,106 |
-| High-quality rights-pending candidates | 1,751 |
-| Public source/native review queue | 628 |
+| Exact-unique collected texts | 27,986 |
+| Texts with at least one public rights basis | 4,195 |
+| Texts with only rights-pending provenance | 23,791 |
+| Mixed-rights exact duplicates | 1,913 |
+| Strict records using an open exact duplicate | 1,906 |
+| Strict public candidates | 3,558 |
+| High-quality rights-pending candidates | 1,748 |
+| Public source/native review queue | 177 |
 
-The largest resolved group is **1,896 strict texts** shared by Meta Omnilingual
+The largest resolved group is the strict text overlap shared by Meta Omnilingual
 and the Indic Dialect ASR mirror. Meta's pinned corpus declares CC BY 4.0 and the
 community mirror identifies Meta as the upstream source. Six additional strict
 forms have an open Wiktionary copy plus a rights-pending community copy. The full
@@ -48,24 +48,24 @@ source-level counts are generated in
 | PIB Ramman instrument terms | 5 | Government hosting alone does not establish reusable-content terms |
 | UOU quoted material | 2 | Module terms do not automatically license quoted works |
 
-All **1,751** rows remain active in the complete experimental view and visible in
+All **1,748** rows remain active in the complete experimental view and visible in
 the public catalog by stable hash, source, rights state, and quality evidence.
 
 ## Accuracy boundary
 
 An open license and an upstream `gbm` label establish release provenance and
 source scope. They do not prove native spelling, semantic alignment, dialect, or
-transcription accuracy. The **628-record** public review queue therefore remains
-separate: 426 Romanized orthography reviews, 135 source-accuracy reviews, 42
-surface/scaffolding reviews, 24 semantic-alignment reviews, and one language-
-identity review.
+transcription accuracy. After the source-grounded accuracy pass, the
+**177-record** public review queue remains separate: 163 source-accuracy reviews,
+10 surface/scaffolding reviews, and four Romanized-orthography reviews. These are
+172 Translatewiki records, four PanLex records, and one Mamta alignment.
 
 ## Public package
 
 Every public text, lexicon, and instruction row now carries
 `public_rights_basis` alongside its complete provenance. The final release audit
 checks the named basis and still requires explicit Garhwali scope. The rebuilt
-transcript-only package contains **145,359 rows**, accounts for all 27,987 text
+transcript-only package contains **145,497 rows**, accounts for all 27,986 text
 identities, and passes with zero rights, provenance, language-scope, or leakage
 errors.
 

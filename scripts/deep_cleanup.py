@@ -15,7 +15,10 @@ REVIEW = ROOT / 'data/processed/review'
 def clean_model_text(source):
     text = unicodedata.normalize('NFC', source)
     changes = []
-    cleaned = re.sub(r'<\/?(?:noise|pause)>|\[[^\]]*\]|\{[^}]*\}', ' ', text, flags=re.I)
+    cleaned = re.sub(
+        r'<\/?(?:noise|pause)>|\[[^\]]*\]|\{\{[^{}]*\}\}|\{[^{}]*\}',
+        ' ', text, flags=re.I,
+    )
     if cleaned != text: changes.append('removed_speech_annotations')
     decoded = html.unescape(cleaned)
     if decoded != cleaned: changes.append('decoded_html_entities')

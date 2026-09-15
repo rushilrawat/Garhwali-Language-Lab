@@ -1,7 +1,7 @@
 {
-  "catalog_records": 27987,
-  "catalog_redacted_text_records": 23794,
-  "catalog_refined_text_records": 3734,
+  "catalog_records": 27986,
+  "catalog_redacted_text_records": 23791,
+  "catalog_refined_text_records": 3735,
   "configs": {
     "asr/test": {
       "files": [
@@ -30,35 +30,35 @@
         "train-00001.jsonl",
         "train-00002.jsonl"
       ],
-      "records": 27987,
+      "records": 27986,
       "shards": 3
     },
     "instructions/test": {
       "files": [
         "test-00000.jsonl"
       ],
-      "records": 106,
+      "records": 126,
       "shards": 1
     },
     "instructions/train": {
       "files": [
         "train-00000.jsonl"
       ],
-      "records": 902,
+      "records": 1020,
       "shards": 1
     },
     "instructions/validation": {
       "files": [
         "validation-00000.jsonl"
       ],
-      "records": 60,
+      "records": 64,
       "shards": 1
     },
     "lexicon/train": {
       "files": [
         "train-00000.jsonl"
       ],
-      "records": 668,
+      "records": 667,
       "shards": 1
     },
     "sravaani_drafts/train": {
@@ -82,21 +82,21 @@
       "files": [
         "test-00000.jsonl"
       ],
-      "records": 441,
+      "records": 476,
       "shards": 1
     },
     "text/train": {
       "files": [
         "train-00000.jsonl"
       ],
-      "records": 8242,
+      "records": 8194,
       "shards": 1
     },
     "text/validation": {
       "files": [
         "validation-00000.jsonl"
       ],
-      "records": 417,
+      "records": 428,
       "shards": 1
     }
   },

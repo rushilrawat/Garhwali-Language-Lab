@@ -78,6 +78,20 @@ class PriorityTextRefinementTests(unittest.TestCase):
         self.assertNotIn('very_short_fragment', lexical['review_signals'])
         self.assertNotIn('contains_digits', numeral['review_signals'])
 
+    def test_devanagari_marks_count_toward_localization_fragment_length(self):
+        result = m.refine_row({
+            'text_sha256': 'a1' * 32,
+            'text_model': 'जुन',
+            'language_quality': {'script_profile': {'script': 'Deva'}},
+            'genre_quality': {'tags': ['software_localization']},
+            'provenance': [{
+                'source_id': 'localization',
+                'linguistic_metadata': {'english_alignments': ['June']},
+                'quality_flags': ['native_accuracy_unverified'],
+            }],
+        })
+        self.assertNotIn('very_short_fragment', result['review_signals'])
+
     def test_removes_wiki_markup_only_from_flagged_release_text(self):
         result = m.refine_row({
             'text_sha256': '1' * 64,
@@ -124,6 +138,51 @@ class PriorityTextRefinementTests(unittest.TestCase):
         self.assertIn('no_devanagari', result['resolved_cleanup_flags'])
         self.assertNotIn('no_devanagari', result['remaining_cleanup_flags'])
         self.assertIn('romanized_text_requires_native_review', result['review_signals'])
+
+    def test_source_attested_transcription_does_not_request_devanagari_rewrite(self):
+        result = m.refine_row({
+            'text_sha256': 'b1' * 32,
+            'text_model': 'hat, hath~',
+            'cleanup_review_flags': ['no_devanagari'],
+            'language_quality': {
+                'status': 'source_attested_garhwali_transcription',
+                'confidence': 'high',
+                'evidence': ['source_garhwali_label', 'source_linguistic_transcription'],
+                'review_required': False,
+                'script_profile': {'script': 'Latn'},
+            },
+            'genre_quality': {'tags': ['lexicon']},
+            'provenance': [{'source_id': 'asjp', 'iso_639_3': 'gbm'}],
+        })
+        self.assertNotIn('romanized_text_requires_native_review', result['review_signals'])
+        self.assertFalse(result['quality_dimensions']['orthography']['native_validation_required'])
+        self.assertEqual(
+            result['quality_dimensions']['orthography']['status'],
+            'source_attested_linguistic_notation',
+        )
+
+    def test_source_attested_parallel_example_keeps_alignment_as_published(self):
+        result = m.refine_row({
+            'text_sha256': 'b2' * 32,
+            'text_model': 'ek ləɖki',
+            'cleanup_review_flags': ['no_devanagari'],
+            'language_quality': {
+                'status': 'source_attested_garhwali_transcription',
+                'confidence': 'high',
+                'evidence': ['source_garhwali_label', 'source_linguistic_transcription'],
+                'review_required': False,
+                'script_profile': {'script': 'Latn'},
+            },
+            'genre_quality': {'tags': ['translated_example']},
+            'provenance': [{
+                'source_id': 'mamta_southasia_examples',
+                'iso_639_3': 'gbm',
+                'linguistic_metadata': {'translation': 'one girl'},
+            }],
+        })
+        alignment = result['quality_dimensions']['semantic_alignment']
+        self.assertEqual(alignment['status'], 'source_attested_parallel_alignment')
+        self.assertFalse(alignment['native_validation_required'])
 
     def test_long_sentence_with_slash_is_not_treated_as_variant_list(self):
         result = m.refine_row({

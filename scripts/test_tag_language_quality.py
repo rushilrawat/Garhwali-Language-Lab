@@ -26,6 +26,19 @@ class LanguageQualityTests(unittest.TestCase):
         self.assertTrue(result['review_required'])
         self.assertIn('romanized_spelling_unverified', result['review_reasons'])
 
+    def test_published_linguistic_transcription_keeps_source_notation(self):
+        result = m.assess_language('hat, hath~', [{
+            'iso_639_3': 'gbm',
+            'script': 'ASJPcode',
+            'source_id': 'asjp',
+            'genre': 'lexicon',
+        }])
+        self.assertEqual(result['status'], 'source_attested_garhwali_transcription')
+        self.assertEqual(result['confidence'], 'high')
+        self.assertFalse(result['review_required'])
+        self.assertIn('source_linguistic_transcription', result['evidence'])
+        self.assertEqual(m.language_bucket(result), 'garhwali_candidate')
+
     def test_mixed_language_scope_requires_review(self):
         result = self.call('assess_language', 'गढ़वाली और हिंदी', [
             {'iso_639_3': 'mul', 'language_scope': 'Garhwali and Hindi'}])
@@ -49,6 +62,17 @@ class LanguageQualityTests(unittest.TestCase):
             'iso_639_3': 'gbm', 'quality_flags': ['source_lineage_missing']}])
         self.assertEqual(verified.get('confidence'), 'high')
         self.assertEqual(uncertain.get('confidence'), 'medium')
+
+    def test_clean_source_evidence_is_not_downgraded_by_uncertain_duplicate(self):
+        result = m.assess_language('मि ठीक छौं।', [
+            {'iso_639_3': 'gbm', 'source_id': 'tatoeba'},
+            {
+                'iso_639_3': 'gbm',
+                'source_id': 'mirror',
+                'quality_flags': ['source_lineage_missing'],
+            },
+        ])
+        self.assertEqual(result['confidence'], 'high')
 
     def test_medium_language_confidence_enters_review_queue(self):
         self.assertTrue(self.call('needs_confidence_review', {'confidence': 'medium'}))

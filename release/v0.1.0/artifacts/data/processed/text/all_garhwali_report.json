@@ -1,6 +1,6 @@
 {
   "source": "/Users/rushilrawat/Garhwali Language Lab/data/processed/text/canonical.jsonl",
   "output": "/Users/rushilrawat/Garhwali Language Lab/data/processed/text/all_garhwali.jsonl",
-  "records": 27987,
+  "records": 27986,
   "includes_all_canonical_rows": true
 }
