@@ -150,6 +150,10 @@ not a defect in the dataset.
   consensus proposals, 730 clean low-consensus proposals, and 35 structurally
   unresolved records; every original remains preserved and none is promoted to
   human ground truth.
+- **35 audio-grounded outlier reviews** add deterministic re-decoding, calibrated
+  score percentiles, and waveform activity: 11 common short-form spot checks,
+  17 decoder loops, three decoding corruptions, one empty output, and three other
+  unresolved cases. Machine review is complete; listening remains required.
 - **106,057-row confidence-aware ASR curriculum:** 1,621 human references plus
   104,436 machine-labelled recordings; the 98 source-conflict drafts remain in
   the dataset but contribute no Garhwali training loss.
@@ -601,7 +605,11 @@ selection rules, exclusions, counts, and leakage checks.
     eligible recovery recordings. It ranks reversible proposals, leaves only 35
     with structural flags, preserves every original, and makes zero unsupported
     accuracy or training promotions.
-17. [ ] **SraVaani human-reference training — Xhigh:** execution requires the
+17. [x] **Structural-outlier audio evidence — High:** all 35 remaining outliers
+    have exact stronger-checkpoint re-decodes, waveform activity measurements,
+    and scores calibrated on 112 human-referenced clips. Raw confidence is only
+    weakly related to CER, so every case remains pending listening review.
+18. [ ] **SraVaani human-reference training — Xhigh:** execution requires the
     separate 1.7 GB `SraVaani-nemo-checkpoint.nemo` and CUDA NVIDIA hardware. The
     Hugging Face inference repository supplies a 909 MB TorchScript graph and
     does not contain the trainable NeMo checkpoint.
@@ -624,6 +632,8 @@ The complete-draft merge and local package audit are in
 [`research/sravaani-confidence-integration-2026-09-14.md`](research/sravaani-confidence-integration-2026-09-14.md).
 The three-checkpoint risky-draft review and calibration boundary are in
 [`research/sravaani-recovery-adjudication-2026-09-14.md`](research/sravaani-recovery-adjudication-2026-09-14.md).
+The 35-record waveform and audio-score review is in
+[`research/sravaani-audio-grounded-review-2026-09-14.md`](research/sravaani-audio-grounded-review-2026-09-14.md).
 The staged selection, weight budget, and leakage audit are in
 [`research/asr-training-curriculum-2026-09-14.md`](research/asr-training-curriculum-2026-09-14.md).
 The trainer behavior and full dependency-free dry run are in
@@ -708,7 +718,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **289 passing tests**, **365 verified source
+The current verification result is **295 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release

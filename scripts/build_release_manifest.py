@@ -63,6 +63,9 @@ def main():
     sravaani_recovery_adjudication_report = read_optional_json(
         ROOT/'data/processed/model_ready/transcripts/sravaani_recovery_adjudication_report.json'
     )
+    sravaani_audio_grounded_review_report = read_optional_json(
+        ROOT/'data/processed/model_ready/transcripts/sravaani_recovery_audio_grounded_review_report.json'
+    )
     asr_training_curriculum_report = read_optional_json(
         ROOT/'data/processed/model_ready/asr_curriculum/report.json'
     )
@@ -155,6 +158,7 @@ def main():
       'vaani_sravaani_transcript_quality': 'data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl',
       'vaani_sravaani_confidence_aware': 'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl',
       'vaani_sravaani_recovery_adjudication': 'data/processed/model_ready/transcripts/sravaani_recovery_adjudication.jsonl',
+      'vaani_sravaani_audio_grounded_review': 'data/processed/model_ready/transcripts/sravaani_recovery_audio_grounded_review.jsonl',
       'asr_curriculum_train': 'data/processed/model_ready/asr_curriculum/train.jsonl',
       'asr_curriculum_validation': 'data/processed/model_ready/asr_curriculum/validation.jsonl',
       'asr_curriculum_test': 'data/processed/model_ready/asr_curriculum/test.jsonl',
@@ -189,6 +193,7 @@ def main():
       'sravaani_draft_quality_report': sravaani_draft_quality_report,
       'sravaani_confidence_integration_report': sravaani_confidence_integration_report,
       'sravaani_recovery_adjudication_report': sravaani_recovery_adjudication_report,
+      'sravaani_audio_grounded_review_report': sravaani_audio_grounded_review_report,
       'asr_training_curriculum_report': asr_training_curriculum_report,
       'asr_curriculum_trainer_dry_run': asr_curriculum_trainer_dry_run,
       'asr_curriculum_stage0_report': asr_curriculum_stage0_report,
@@ -216,6 +221,7 @@ def main():
         'vaani_sravaani_transcript_quality',
         'vaani_sravaani_confidence_aware',
         'vaani_sravaani_recovery_adjudication',
+        'vaani_sravaani_audio_grounded_review',
         'asr_curriculum_train',
       ],
     }

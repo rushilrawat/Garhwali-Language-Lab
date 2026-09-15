@@ -27,6 +27,7 @@
     "text/validation": 208
   },
   "drafts": {
+    "audio_grounded_review_records": 35,
     "complete": true,
     "draft_inherited_duplicate_rows": 8,
     "draft_queue_records": 104542,
@@ -34,6 +35,7 @@
     "draft_unique_audio": 104534,
     "empty_transcripts": 34,
     "exported_unique_audio": 104534,
+    "invalid_audio_grounded_review_records": 0,
     "invalid_recovery_adjudications": 0,
     "invalid_source_label_conflicts": 0,
     "invalid_third_checkpoint_records": 0,

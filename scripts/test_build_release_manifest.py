@@ -62,6 +62,10 @@ class ReleaseManifestTests(unittest.TestCase):
                     'run_id': 'sravaani-adjudication-test',
                     'records': 1090,
                 },
+                'data/processed/model_ready/transcripts/sravaani_recovery_audio_grounded_review_report.json': {
+                    'run_id': 'sravaani-audio-review-test',
+                    'records': 35,
+                },
                 'data/processed/model_ready/asr_curriculum/trainer_dry_run_report.json': {
                     'run_id': 'asr-curriculum-dry-run-test',
                     'status': 'passed',
@@ -110,6 +114,8 @@ class ReleaseManifestTests(unittest.TestCase):
             adjudication_path = root / 'data/processed/model_ready/transcripts/sravaani_recovery_adjudication.jsonl'
             adjudication_path.parent.mkdir(parents=True, exist_ok=True)
             adjudication_path.write_text('{}\n', encoding='utf-8')
+            audio_review_path = root / 'data/processed/model_ready/transcripts/sravaani_recovery_audio_grounded_review.jsonl'
+            audio_review_path.write_text('{}\n', encoding='utf-8')
 
             with patch.object(m, 'ROOT', root):
                 with redirect_stdout(io.StringIO()):
@@ -141,6 +147,9 @@ class ReleaseManifestTests(unittest.TestCase):
                 manifest['sravaani_recovery_adjudication_report']['records'], 1090
             )
             self.assertEqual(
+                manifest['sravaani_audio_grounded_review_report']['records'], 35
+            )
+            self.assertEqual(
                 manifest['asr_curriculum_trainer_dry_run']['status'],
                 'passed',
             )
@@ -168,11 +177,17 @@ class ReleaseManifestTests(unittest.TestCase):
             self.assertEqual(
                 manifest['files']['vaani_sravaani_recovery_adjudication']['records'], 1
             )
+            self.assertEqual(
+                manifest['files']['vaani_sravaani_audio_grounded_review']['records'], 1
+            )
             self.assertIn('vaani_sravaani_transcript_drafts', manifest['experimental_views'])
             self.assertIn('vaani_sravaani_transcript_quality', manifest['experimental_views'])
             self.assertIn('asr_curriculum_train', manifest['experimental_views'])
             self.assertIn(
                 'vaani_sravaani_recovery_adjudication', manifest['experimental_views']
+            )
+            self.assertIn(
+                'vaani_sravaani_audio_grounded_review', manifest['experimental_views']
             )
 
 

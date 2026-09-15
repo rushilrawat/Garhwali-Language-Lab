@@ -98,6 +98,7 @@ def audio_row(row, transcript_field, include_audio_reference=True):
         'active_for_source_error_analysis',
         'recovery_adjudication',
         'recovery_third_checkpoint',
+        'audio_grounded_review',
     )
     exported = {key: row.get(key) for key in keep if key in row}
     if include_audio_reference:
@@ -153,6 +154,30 @@ def attach_recovery_third_checkpoint(rows, checkpoint_rows):
                 'token_confidence_uncalibrated': evidence.get('token_confidence_uncalibrated'),
                 'confidence_is_calibrated': False,
                 'human_reference_available': False,
+            }
+        result.append(enriched)
+    return result
+
+
+def attach_audio_grounded_review(rows, review_rows):
+    by_hash = {row['audio_sha256']: row for row in review_rows}
+    if len(by_hash) != len(review_rows):
+        raise ValueError('Audio-grounded review hashes are not unique')
+    safe_fields = (
+        'audio_grounded_evidence', 'audio_review_category',
+        'audio_review_priority', 'machine_audio_review_complete',
+        'human_listening_review_required', 'automatic_correction',
+        'human_reference_available', 'supervised_training_eligible',
+        'recommended_for_machine_label_training',
+        'original_transcript_preserved',
+    )
+    result = []
+    for row in rows:
+        enriched = dict(row)
+        evidence = by_hash.get(row['audio_sha256'])
+        if evidence:
+            enriched['audio_grounded_review'] = {
+                field: evidence[field] for field in safe_fields if field in evidence
             }
         result.append(enriched)
     return result
@@ -388,6 +413,9 @@ the third-checkpoint hypothesis. For the **{report['draft_three_checkpoint_revie
 Garhwali review records, the package also carries a structurally ranked machine
 proposal and its evidence limits. These proposals are pending audio review and
 are never represented as automatic corrections or human references.
+The remaining **{report['draft_audio_grounded_review_records']:,}** structural
+outliers also include deterministic re-decoding, waveform activity, and
+human-reference calibration evidence. They still require listening review.
 
 The draft layer also preserves **{report['draft_source_label_conflicts']:,}
 source-label conflict recordings**. These remain available for auditing but are
@@ -483,6 +511,13 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     adjudication_rows = list(read_jsonl(adjudication_path)) \
         if adjudication_path.exists() else []
     unique_drafts = attach_recovery_adjudication(unique_drafts, adjudication_rows)
+    audio_review_path = (
+        ROOT / 'data/processed/model_ready/transcripts/'
+        'sravaani_recovery_audio_grounded_review.jsonl'
+    )
+    audio_review_rows = list(read_jsonl(audio_review_path)) \
+        if audio_review_path.exists() else []
+    unique_drafts = attach_audio_grounded_review(unique_drafts, audio_review_rows)
     report['draft_queue_records'] = queue_count
     report['draft_source'] = str(drafts_path.relative_to(ROOT))
     report['draft_records'] = len(drafts)
@@ -496,6 +531,9 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     )
     report['draft_third_checkpoint_records'] = sum(
         bool(row.get('recovery_third_checkpoint')) for row in unique_drafts
+    )
+    report['draft_audio_grounded_review_records'] = sum(
+        bool(row.get('audio_grounded_review')) for row in unique_drafts
     )
     report['draft_inherited_duplicate_rows'] = len(drafts) - len(unique_drafts)
     report['drafts_complete'] = drafts_cover_queue(queue, drafts)

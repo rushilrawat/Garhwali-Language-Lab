@@ -53,6 +53,7 @@ class FinalReleaseAuditTests(unittest.TestCase):
             'draft_source_label_conflicts': 0,
             'draft_three_checkpoint_review_records': 0,
             'draft_third_checkpoint_records': 0,
+            'draft_audio_grounded_review_records': 0,
             'drafts_complete': True,
             'include_audio': False,
         }
@@ -173,6 +174,33 @@ class FinalReleaseAuditTests(unittest.TestCase):
         self.assertEqual(report['status'], 'failed')
         self.assertIn(
             '1 third-checkpoint records make an unsupported confidence or reference claim',
+            report['errors'],
+        )
+
+    def test_audio_grounded_review_must_remain_pending_human_listening(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            path = root / 'data/sravaani_drafts/train-00000.jsonl'
+            rows = [json.loads(line) for line in path.read_text().splitlines()]
+            rows[0]['audio_grounded_review'] = {
+                'machine_audio_review_complete': True,
+                'human_listening_review_required': False,
+                'automatic_correction': False,
+                'human_reference_available': False,
+                'supervised_training_eligible': False,
+                'recommended_for_machine_label_training': False,
+                'original_transcript_preserved': True,
+            }
+            write_jsonl(path, rows)
+            manifest_path = root / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text())
+            manifest['draft_audio_grounded_review_records'] = 1
+            manifest_path.write_text(json.dumps(manifest))
+            report = m.audit(index, root)
+        self.assertEqual(report['status'], 'failed')
+        self.assertIn(
+            '1 audio-grounded reviews make an unsupported completion, training, or accuracy claim',
             report['errors'],
         )
 

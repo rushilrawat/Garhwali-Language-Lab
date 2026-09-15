@@ -13,7 +13,7 @@ corrections remain reversible and auditable.
 | Dataset | Strict/high-quality | Experimental/review | Context | Main risk |
 | --- | ---: | ---: | ---: | --- |
 | Human-transcribed speech | 5,881 strict candidates | 13 review | 0 | Existing transcript/training flags |
-| SraVaani machine drafts | 103,354 experimental | 1,090 three-checkpoint review records | 98 source-label conflicts | 325 clean related-checkpoint consensus proposals, 730 clean low-consensus proposals, and 35 unresolved structural risks |
+| SraVaani machine drafts | 103,354 experimental | 1,090 three-checkpoint review records | 98 source-label conflicts | 325 clean related-checkpoint consensus proposals, 730 clean low-consensus proposals, and 35 machine-audio-reviewed outliers pending listening |
 | Text | 1,202 strict public + 3,653 high-quality rights-pending | 20,488 review | 2,644 non-strict context | Language confidence, cleanup evidence, and source rights |
 
 The strict public text seed contains 1,202 records. Another 3,653 clean,
@@ -100,9 +100,10 @@ audio language.
 1. Validate the ranked 616-record public queue by source and native review.
 2. Listen-review the five ambiguous supervised transcripts; retain the eight
    Bengali-script source-label conflicts as excluded evidence.
-3. Audio-review the 1,090 three-checkpoint machine proposals, starting with the
-   35 records whose best proposal still has a structural flag; never treat model
-   agreement as a human reference.
+3. Listening-review the 35 machine-audio-reviewed outliers: 11 common short-form
+   spot checks, 17 decoder loops, three decoding corruptions, one empty output,
+   and three other unresolved records. Never treat model agreement as a human
+   reference.
 4. Audit the 3,653 high-quality rights-pending texts source by source for explicit
    redistribution and model-training permission.
 5. Sample clean medium-confidence sources for native language validation and

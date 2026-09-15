@@ -110,6 +110,11 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'transcript': 'गढ़वाली',
                 'confidence_is_calibrated': False,
             },
+            'audio_grounded_review': {
+                'machine_audio_review_complete': True,
+                'human_listening_review_required': True,
+                'automatic_correction': False,
+            },
         }
         exported = m.audio_row(row, transcript_field='asr_target_clean')
         self.assertEqual(exported['audio'], f'audio/ab/{"ab" * 32}.wav')
@@ -126,6 +131,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertTrue(exported['active_for_source_error_analysis'])
         self.assertFalse(exported['recovery_adjudication']['automatic_correction'])
         self.assertFalse(exported['recovery_third_checkpoint']['confidence_is_calibrated'])
+        self.assertTrue(exported['audio_grounded_review']['human_listening_review_required'])
 
     def test_recovery_adjudication_join_omits_local_review_paths(self):
         rows = [{'audio_sha256': 'a', 'machine_transcript': 'मूल'}]
@@ -157,6 +163,22 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertEqual(exported['transcript'], 'गढ़वळि पाठ')
         self.assertFalse(exported['confidence_is_calibrated'])
         self.assertFalse(exported['human_reference_available'])
+        self.assertNotIn('local_audio_path', exported)
+
+    def test_audio_grounded_review_join_omits_local_paths(self):
+        rows = [{'audio_sha256': 'a'}]
+        evidence = [{
+            'audio_sha256': 'a',
+            'local_audio_path': 'private/audio.wav',
+            'audio_grounded_evidence': {'waveform': {'duration_seconds': 1.0}},
+            'machine_audio_review_complete': True,
+            'human_listening_review_required': True,
+            'automatic_correction': False,
+        }]
+        result = m.attach_audio_grounded_review(rows, evidence)[0]
+        exported = result['audio_grounded_review']
+        self.assertTrue(exported['machine_audio_review_complete'])
+        self.assertTrue(exported['human_listening_review_required'])
         self.assertNotIn('local_audio_path', exported)
 
     def test_shards_are_deterministic_and_reported(self):

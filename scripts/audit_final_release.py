@@ -77,6 +77,8 @@ def audit(index, dataset_root):
     invalid_recovery_adjudications = 0
     third_checkpoint_records = 0
     invalid_third_checkpoint_records = 0
+    audio_grounded_review_records = 0
+    invalid_audio_grounded_review_records = 0
     catalog_ids = set()
     catalog_redacted = 0
     catalog_missing_evidence = 0
@@ -182,6 +184,18 @@ def audit(index, dataset_root):
                         third_checkpoint.get('confidence_is_calibrated')
                         or third_checkpoint.get('human_reference_available')
                     )
+                audio_review = row.get('audio_grounded_review')
+                if audio_review:
+                    audio_grounded_review_records += 1
+                    invalid_audio_grounded_review_records += bool(
+                        not audio_review.get('machine_audio_review_complete')
+                        or not audio_review.get('human_listening_review_required')
+                        or audio_review.get('automatic_correction')
+                        or audio_review.get('human_reference_available')
+                        or audio_review.get('supervised_training_eligible')
+                        or audio_review.get('recommended_for_machine_label_training')
+                        or not audio_review.get('original_transcript_preserved')
+                    )
         elif group == 'catalog':
             for row in rows:
                 identity = row.get('id')
@@ -214,6 +228,11 @@ def audit(index, dataset_root):
         errors.append(
             f'{invalid_third_checkpoint_records} third-checkpoint records make '
             'an unsupported confidence or reference claim'
+        )
+    if invalid_audio_grounded_review_records:
+        errors.append(
+            f'{invalid_audio_grounded_review_records} audio-grounded reviews make '
+            'an unsupported completion, training, or accuracy claim'
         )
     expected_catalog_records = index.get('text', {}).get(
         'unique_parent_documents', index.get('text', {}).get('total')
@@ -249,6 +268,8 @@ def audit(index, dataset_root):
         errors.append('recovery adjudication count does not match manifest')
     if third_checkpoint_records != manifest.get('draft_third_checkpoint_records'):
         errors.append('third-checkpoint recovery count does not match manifest')
+    if audio_grounded_review_records != manifest.get('draft_audio_grounded_review_records'):
+        errors.append('audio-grounded review count does not match manifest')
     if not manifest.get('drafts_complete'):
         errors.append('SraVaani draft coverage is incomplete')
     audio_files = set()
@@ -312,6 +333,8 @@ def audit(index, dataset_root):
             'invalid_recovery_adjudications': invalid_recovery_adjudications,
             'third_checkpoint_records': third_checkpoint_records,
             'invalid_third_checkpoint_records': invalid_third_checkpoint_records,
+            'audio_grounded_review_records': audio_grounded_review_records,
+            'invalid_audio_grounded_review_records': invalid_audio_grounded_review_records,
             'complete': bool(manifest.get('drafts_complete')),
         },
         'catalog': {
