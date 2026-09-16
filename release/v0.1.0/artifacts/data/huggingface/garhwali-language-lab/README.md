@@ -43,21 +43,45 @@ configs:
   data_files:
   - split: train
     path: data/catalog/train-*.jsonl
+- config_name: geography
+  data_files:
+  - split: train
+    path: data/geography/train-*.jsonl
+- config_name: historical_terms
+  data_files:
+  - split: train
+    path: data/historical_terms/train-*.jsonl
+- config_name: literary_people
+  data_files:
+  - split: train
+    path: data/literary_people/train-*.jsonl
+- config_name: literary_works
+  data_files:
+  - split: train
+    path: data/literary_works/train-*.jsonl
+- config_name: popular_songs
+  data_files:
+  - split: train
+    path: data/popular_songs/train-*.jsonl
+- config_name: university_research
+  data_files:
+  - split: train
+    path: data/university_research/train-*.jsonl
 ---
 
 # Garhwali Language Lab
 
 Release: **garhwali-language-lab-v0.1.0**
 
-Versioned Garhwali (`gbm`) text, speech, lexicon, and instruction resources built
-by the Garhwali Language Lab. Every row retains source and license evidence.
+Versioned Garhwali (`gbm`) text, speech, lexicon, instruction, geographic,
+historical, literary, music, and university-research resources built by the
+Garhwali Language Lab. Every row retains its available source and review evidence.
 
-This rights-filtered package contains **145,497 records** across six
-configurations, including transcripts for **104,534
+This rights-filtered public package contains **146,482 records** across 12 configurations, including transcripts for **104,534
 unique SraVaani recordings**. This transcript-only package does not include audio files or source filenames.
 
 The `catalog` configuration publicly accounts for all
-**27,986 exact-unique collected text records**. Rows whose
+**28,755 exact-unique collected text records**. Rows whose
 source terms do not permit redistribution retain their stable content hash,
 source URL, rights status, quality tier, language evidence, and review reasons;
 only the protected text value is redacted. Nothing is silently omitted.

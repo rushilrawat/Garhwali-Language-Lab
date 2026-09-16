@@ -1485,7 +1485,9 @@
   "sravaani_finetune_package_report": {
     "external_requirements": {
       "checkpoint": "SraVaani-nemo-checkpoint.nemo (~1.7 GB)",
+      "checkpoint_access": "official_direct_download_verified_2026-09-15",
       "checkpoint_in_huggingface_inference_repo": false,
+      "checkpoint_source": "https://drive.usercontent.google.com/download?id=1v5VaYibAaDSFuWvROsPbCzeG3iM6VbxY&export=download&confirm=t",
       "hardware": "CUDA-capable NVIDIA GPU; 16 GB VRAM recommended",
       "runtime": "NVIDIA NeMo ASR with matching CUDA extra"
     },
@@ -1565,7 +1567,21 @@
   "sravaani_finetune_plan": {
     "accumulate_grad_batches": 8,
     "adaptation_scope": "decoder_and_joint_only_encoder_frozen",
+    "base_checkpoint": {
+      "availability": "official_direct_download",
+      "bytes": 1796208640,
+      "local_copy_required": false,
+      "url": "https://drive.usercontent.google.com/download?id=1v5VaYibAaDSFuWvROsPbCzeG3iM6VbxY&export=download&confirm=t"
+    },
     "batch_size": 4,
+    "cloud_job": {
+      "billing_status": "positive_huggingface_credit_required",
+      "gpu_memory_gb": 16,
+      "hardware": "t4-small",
+      "hourly_compute_cost_usd": 0.4,
+      "maximum_compute_cost_usd": 3.2,
+      "timeout_hours": 8
+    },
     "effective_batch_size": 32,
     "epochs": 2,
     "external_dependencies": {
@@ -1701,7 +1717,7 @@
     "public_text_records": 4195,
     "quality_tier_counts": {
       "experimental_review": 20034,
-      "high_quality_local_only": 1748,
+      "high_quality_rights_pending": 1748,
       "non_strict_context": 2645,
       "strict_gold_candidate": 3559
     },

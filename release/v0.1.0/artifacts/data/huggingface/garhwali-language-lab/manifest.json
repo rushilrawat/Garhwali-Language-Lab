@@ -1,6 +1,7 @@
 {
-  "catalog_records": 27986,
-  "catalog_redacted_text_records": 23791,
+  "all_collected_text_values_included": false,
+  "catalog_records": 28755,
+  "catalog_redacted_text_records": 24560,
   "catalog_refined_text_records": 3735,
   "configs": {
     "asr/test": {
@@ -30,8 +31,22 @@
         "train-00001.jsonl",
         "train-00002.jsonl"
       ],
-      "records": 27986,
+      "records": 28755,
       "shards": 3
+    },
+    "geography/train": {
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 50,
+      "shards": 1
+    },
+    "historical_terms/train": {
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 36,
+      "shards": 1
     },
     "instructions/test": {
       "files": [
@@ -59,6 +74,27 @@
         "train-00000.jsonl"
       ],
       "records": 667,
+      "shards": 1
+    },
+    "literary_people/train": {
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 26,
+      "shards": 1
+    },
+    "literary_works/train": {
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 66,
+      "shards": 1
+    },
+    "popular_songs/train": {
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 30,
       "shards": 1
     },
     "sravaani_drafts/train": {
@@ -97,6 +133,13 @@
         "validation-00000.jsonl"
       ],
       "records": 428,
+      "shards": 1
+    },
+    "university_research/train": {
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 8,
       "shards": 1
     }
   },

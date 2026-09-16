@@ -38,6 +38,10 @@ bypassed, and no remote audio or video was bulk downloaded.
 | `extracted/historical/` | Atkinson's six-part *Himalayan Gazetteer*, Crooke's two folklore volumes, and two Wikisource articles | 317 Garhwal cultural records / 1,501,195 characters | Public-domain historical research context; exact-deduplicated, keyword-selected, OCR and colonial-source flags retained |
 | `research/` | Five rights-audited Garhwali scholarly works | 4 full PDFs plus 1 licensed catalogue record | Research evidence only; zero paper-prose corpus rows. The Heidelberg host returned an Anubis access challenge, which is recorded rather than mislabelled as the chapter |
 | `research/` | Wikimedia Commons `Garhwali people` media index | 754 unique media records | Item URLs, authorship and licenses retained; binaries not bulk downloaded |
+| `research/` | Garhwali geography catalog | 50 place and feature records across all seven Garhwal districts | Hindi names, place types, district relationships, Wikipedia and OpenStreetMap pointers; coordinates await authoritative gazetteer enrichment |
+| `research/` | Garhwali historical terms catalog | 36 terms across 25 historical, administrative, political, military, and cultural categories | Hindi forms, period, original context summaries, and source references; metadata layer only, with historical context kept separate from dialect labels |
+| `research/` | Garhwali poetry and plays inventory | Named poetry collections, folk-song literature, plays, and radio-geet-natika | Bibliographic and excerpt-level evidence; complete modern editions remain edition-rights sensitive |
+| `research/` | Garhwali literary works catalog | 61 named works plus 3 named oral genres and 2 explicit untitled mentions | Complete coverage of the supplied Itihaas history capture; bibliographic status is distinguished from locally extracted text or audio |
 | `restricted/` + `research/` | Web thematic lexicon | 666 source records / 642 distinct normalized written forms | Birds, animals, insects, instruments, occupations, nature, food and regional cultural terms; source-level rights, confidence and native-review flags retained |
 | Git-ignored `data/extracted/garhwali_idioms_dhyani/` | Balakrishna D. Dhyani, *Garhwali Muhavare Aur Kahavaten* | 99 exact-unique records | 69 standalone proverbs plus 30 Garhwali comparison entries; Hindi/English notes retained; no exact overlap across 33,807 existing text records |
 
@@ -187,6 +191,7 @@ Garhwali, were extracted; the following Marchha section was left out.
 
 ```text
 python3 -m unittest discover -s scripts -p 'test_*.py'
+PYTHONPATH=scripts .venv/bin/python scripts/ingest_literary_works.py
 python3 scripts/ingest_open.py
 python3 scripts/collect_online.py meta
 python3 scripts/collect_online.py wiktionary

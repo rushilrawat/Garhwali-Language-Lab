@@ -1,23 +1,23 @@
 {
   "release_id": "garhwali-language-lab-v0.1.0",
   "status": "release_ready_with_public_rights_filtered_export",
-  "generated": "2026-09-15",
+  "generated": "2026-09-16",
   "language": "Garhwali (gbm)",
   "local_storage_gb_approx": 34,
   "text": {
-    "total": 86216,
+    "total": 114082,
     "splits": {
-      "train": 80881,
-      "validation": 2499,
-      "test": 2836
+      "test": 4164,
+      "train": 106804,
+      "validation": 3114
     },
-    "unique_parent_documents": 27986
+    "unique_parent_documents": 28755
   },
   "all_data_package": {
     "profile": "all-data",
-    "transcript_only_package_rows": 228312,
-    "full_text_segments": 86216,
-    "exact_unique_texts": 27986,
+    "transcript_only_package_rows": 257163,
+    "full_text_segments": 114082,
+    "exact_unique_texts": 28755,
     "redacted_text_values": 0,
     "human_vaani_transcript_rows": 5894,
     "lexicon_rows": 1114,
@@ -26,14 +26,14 @@
   },
   "public_text_release": {
     "exact_unique_with_public_rights_basis": 4195,
-    "rights_pending_catalog_records": 23791,
+    "rights_pending_catalog_records": 24560,
     "strict_public_candidates": 3559,
     "high_quality_rights_pending_candidates": 1748,
     "mixed_rights_exact_duplicates": 1913,
     "strict_records_using_open_overlap": 1906,
     "native_or_source_review_queue": 176,
     "source_attested_linguistic_transcriptions": 392,
-    "transcript_only_package_rows": 145497
+    "transcript_only_package_rows": 146482
   },
   "native_review": {
     "text_accuracy_packets": 176,
@@ -85,7 +85,7 @@
     "tts_pairs": 1736
   },
   "evaluation_candidates": {
-    "text": 2527,
+    "text": 3668,
     "speech": 112,
     "review_status": "automated_quality_screened",
     "native_review_optional": true
@@ -96,7 +96,7 @@
     "held_out_text_records": 2492,
     "speaker_safe_asr_records": 112,
     "character_bigram_perplexity": 16.464093,
-    "character_oov_rate": 0.00000498,
+    "character_oov_rate": 4.98e-06,
     "external_exact_train_text": 0,
     "internal_exact_train_text": 0,
     "asr_speaker_overlap": 0
@@ -224,9 +224,23 @@
     "training_records": 80926,
     "validation_records": 2488,
     "frozen_test_records": 2492,
-    "fractions": [0.01, 0.05, 0.1, 0.25, 0.5, 1.0],
-    "seeds": [17, 29, 43],
-    "orders": [2, 3],
+    "fractions": [
+      0.01,
+      0.05,
+      0.1,
+      0.25,
+      0.5,
+      1.0
+    ],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "orders": [
+      2,
+      3
+    ],
     "validation_runs": 36,
     "selected_order": 3,
     "selected_fraction": 1.0,
@@ -237,7 +251,11 @@
   },
   "indicbertv2_head_adaptation": {
     "status": "advance_to_encoder_adaptation",
-    "seeds": [17, 29, 43],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
     "steps_per_seed": 64,
     "training_pool_records_per_seed": 512,
     "validation_records": 128,
@@ -252,7 +270,11 @@
   },
   "indicbertv2_encoder_lora": {
     "status": "selected_for_longer_continued_pretraining",
-    "seeds": [17, 29, 43],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
     "steps_per_seed": 256,
     "training_pool_records_per_seed": 2048,
     "validation_records": 128,
@@ -277,7 +299,11 @@
   },
   "indicbertv2_encoder_lora_long": {
     "status": "validated_longer_continued_pretraining",
-    "seeds": [17, 29, 43],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
     "steps_per_seed": 1024,
     "training_pool_records_per_seed": 8192,
     "unique_training_records_per_seed": 1024,
@@ -307,7 +333,11 @@
     "status": "not_promoted_for_generation",
     "model": "google/mt5-small",
     "revision": "73fb5dbe4756edadc8fbe8c769b0a109493acf7a",
-    "seeds": [17, 29, 43],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
     "steps_per_seed": 64,
     "trainable_parameters": 172032,
     "baseline_validation_cross_entropy": 28.2013851,
@@ -337,7 +367,11 @@
     "status": "accuracy_baseline_not_promoted",
     "model": "bigscience/mt0-small",
     "revision": "8116a34237e19160ec003147e758f065876d95f0",
-    "seeds": [17, 29, 43],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
     "steps_per_seed": 256,
     "trainable_parameters": 172032,
     "baseline_validation_cross_entropy": 5.61435313,
@@ -356,5 +390,17 @@
   },
   "release_policy": "Every collected record is active for experiments and represented in the public catalog by stable identity, provenance, rights, and quality evidence. Text and audio values are redistributed when verified source terms permit it; protected values remain catalogued with the content field redacted.",
   "machine_manifest": "data/processed/release/manifest.json",
-  "final_audit": "release/final-audit.json"
+  "final_audit": "release/final-audit.json",
+  "structured_knowledge": {
+    "records": 216,
+    "configs": {
+      "geography": 50,
+      "historical_terms": 36,
+      "literary_people": 26,
+      "literary_works": 66,
+      "popular_songs": 30,
+      "university_research": 8
+    },
+    "included_in_public_and_all_data_packages": true
+  }
 }

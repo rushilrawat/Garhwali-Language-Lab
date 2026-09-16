@@ -1,19 +1,19 @@
 {
   "change_counts": {
     "normalized_whitespace": 1,
-    "removed_invisible_characters": 820
+    "removed_invisible_characters": 1323
   },
-  "changed_records": 820,
+  "changed_records": 1323,
   "output": "data/processed/text/cleaned_all_garhwali.jsonl",
-  "records": 27986,
+  "records": 28755,
   "review_flag_counts": {
-    "html_markup": 2587,
-    "mixed_latin_devanagari": 5353,
-    "no_devanagari": 1770,
-    "url": 6,
-    "very_short": 70
+    "html_markup": 2609,
+    "mixed_latin_devanagari": 6007,
+    "no_devanagari": 1881,
+    "url": 7,
+    "very_short": 71
   },
   "review_output": "data/processed/review/text_cleanup_review.jsonl",
-  "review_records": 7165,
+  "review_records": 7930,
   "source": "data/processed/text/all_garhwali.jsonl"
 }

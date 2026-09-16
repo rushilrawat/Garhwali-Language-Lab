@@ -1,31 +1,31 @@
 {
-  "document_components": 26660,
+  "document_components": 27193,
   "document_split_records": {
-    "test": 1331,
-    "train": 25287,
-    "validation": 1367
+    "test": 1372,
+    "train": 25991,
+    "validation": 1391
   },
-  "documents_remapped_from_provisional_split": 131,
-  "duplicate_segment_occurrences": 5274,
-  "parent_records": 27986,
-  "parent_split_conflict_segments": 325,
+  "documents_remapped_from_provisional_split": 151,
+  "duplicate_segment_occurrences": 5615,
+  "parent_records": 28755,
+  "parent_split_conflict_segments": 342,
   "provisional_segment_split_records": {
-    "test": 4308,
-    "train": 77555,
-    "validation": 4353
+    "test": 5699,
+    "train": 102632,
+    "validation": 5751
   },
   "quality_flags": {
-    "no_devanagari": 30743,
-    "very_long": 31,
-    "very_short": 2338
+    "no_devanagari": 34217,
+    "very_long": 35,
+    "very_short": 2555
   },
   "remaining_cross_split_segments": 0,
   "segment_split_records": {
-    "test": 2836,
-    "train": 80881,
-    "validation": 2499
+    "test": 4164,
+    "train": 106804,
+    "validation": 3114
   },
-  "source_segments": 91490,
+  "source_segments": 119697,
   "split_note": "Connected documents sharing any exact segment receive one deterministic component split.",
-  "unique_segments": 86216
+  "unique_segments": 114082
 }

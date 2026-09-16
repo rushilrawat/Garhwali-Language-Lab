@@ -26,6 +26,10 @@ LINGUISTIC_METADATA_FIELDS = (
     "english_prompt", "english_alignments", "semantic_domain", "concept_id", "parameter_id",
     "segments", "value", "other_form", "cultural_genres", "relation", "headword",
 )
+DOCUMENT_PROVENANCE_FIELDS = (
+    "source_pdf", "source_pdf_sha256", "pdf_page", "title", "author",
+    "publication_year", "extraction_method", "modifications",
+)
 
 
 def normalize_text(text: str) -> str:
@@ -129,6 +133,10 @@ def prepare(paths: list[Path], output_dir: Path, root: Path = ROOT) -> dict:
                         row.get("experimental_training_eligible", True)
                     ),
                     "quality_flags": row.get("quality_flags", []),
+                    **{
+                        name: row[name] for name in DOCUMENT_PROVENANCE_FIELDS
+                        if row.get(name) not in (None, "", [])
+                    },
                     **{name: row[name] for name in QUALITY_METADATA_FIELDS if row.get(name) not in (None, "", [])},
                     "linguistic_metadata": {
                         name: row[name] for name in LINGUISTIC_METADATA_FIELDS

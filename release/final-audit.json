@@ -9,22 +9,28 @@
   "audit_id": "garhwali-final-release-audit-v0.1",
   "catalog": {
     "missing_evidence": 0,
-    "records": 27986,
-    "redacted_text_records": 23791
+    "records": 28755,
+    "redacted_text_records": 24560
   },
   "configs": {
     "asr/test": 112,
     "asr/train": 1621,
     "asr/validation": 269,
-    "catalog/train": 27986,
+    "catalog/train": 28755,
+    "geography/train": 50,
+    "historical_terms/train": 36,
     "instructions/test": 126,
     "instructions/train": 1020,
     "instructions/validation": 64,
     "lexicon/train": 667,
+    "literary_people/train": 26,
+    "literary_works/train": 66,
+    "popular_songs/train": 30,
     "sravaani_drafts/train": 104534,
     "text/test": 476,
     "text/train": 8194,
-    "text/validation": 428
+    "text/validation": 428,
+    "university_research/train": 8
   },
   "drafts": {
     "audio_grounded_review_records": 35,
@@ -46,8 +52,8 @@
     "third_checkpoint_records": 1188
   },
   "errors": [],
-  "exported_rows": 145497,
-  "generated": "2026-09-15",
+  "exported_rows": 146482,
+  "generated": "2026-09-16",
   "leakage": {
     "asr_audio_cross_split": 0,
     "asr_speaker_cross_split": 0,
@@ -61,6 +67,17 @@
   },
   "release_id": "garhwali-language-lab-v0.1.0",
   "status": "passed",
+  "structured_knowledge": {
+    "configs": [
+      "geography",
+      "historical_terms",
+      "literary_people",
+      "literary_works",
+      "popular_songs",
+      "university_research"
+    ],
+    "records": 216
+  },
   "warnings": [
     "audio_not_included",
     "inherited_source_audio_duplicates_collapsed",

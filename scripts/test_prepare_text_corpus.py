@@ -100,6 +100,32 @@ class TextPreparationTests(unittest.TestCase):
             self.assertEqual(provenance['linguistic_metadata']['relation'], 'alternative_form')
             self.assertEqual(provenance['linguistic_metadata']['headword'], 'रिख')
 
+    def test_prepare_preserves_pdf_page_provenance(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / 'experimental' / 'incoming_pdfs.jsonl'
+            source.parent.mkdir()
+            source.write_text(json.dumps({
+                'record_id': 'book:page:7',
+                'text': 'गढ़वाली पाठ',
+                'source_pdf': 'incoming/pdfs/book.pdf',
+                'source_pdf_sha256': 'a' * 64,
+                'pdf_page': 7,
+                'title': 'Garhwali Book',
+                'author': 'Example Author',
+                'publication_year': 1954,
+                'extraction_method': 'tesseract_hin_eng',
+            }) + '\n', encoding='utf-8')
+            m.prepare([source], root / 'out', root=root)
+            row = json.loads((root / 'out/canonical.jsonl').read_text())
+            provenance = row['provenance'][0]
+            self.assertEqual(provenance['source_pdf_sha256'], 'a' * 64)
+            self.assertEqual(provenance['pdf_page'], 7)
+            self.assertEqual(provenance['title'], 'Garhwali Book')
+            self.assertEqual(provenance['author'], 'Example Author')
+            self.assertEqual(provenance['publication_year'], 1954)
+            self.assertEqual(provenance['extraction_method'], 'tesseract_hin_eng')
+
     def test_split_assignment_is_stable(self):
         digest = "a" * 64
         self.assertEqual(m.split_for_hash(digest), m.split_for_hash(digest))

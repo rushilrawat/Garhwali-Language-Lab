@@ -141,6 +141,26 @@ training.
 5. **Release milestone:** dataset card, consent statement, source manifest,
    license matrix, deduplication report and documented exclusions.
 
+## Priority 6: publish a versioned developer API
+
+After the corpus and benchmark release candidate freezes, expose the reviewed
+data through a text-first service. The first stable endpoints cover provenance-
+backed search, lexicon lookup, reversible normalization, transliteration, and
+cultural records. Every response carries dataset version, source identifiers,
+confidence, and known review limits.
+
+Add API keys, quotas, usage metering, correction intake, monitoring, and a small
+free tier before charging applications. Ship translation and ASR as beta only
+after frozen native-referenced evaluations meet published thresholds. Do not use
+an API to redistribute third-party source files outside their terms; serve
+licensed records or derived model outputs with attribution.
+
+Expected effort from the current state is 20–40 focused hours for the corpus v1
+release candidate, another 30–60 hours for a production-minded text API MVP, and
+2–6 additional weeks for credible translation and ASR beta quality. The complete
+research-and-product platform is a 2–4 month program, chiefly limited by native
+review and production evaluation rather than code generation.
+
 ## Decisions requiring the project owner
 
 - Accept the VAANI/Hugging Face access conditions using the owner's account.

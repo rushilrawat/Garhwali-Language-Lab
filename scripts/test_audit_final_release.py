@@ -37,6 +37,12 @@ class FinalReleaseAuditTests(unittest.TestCase):
                 {'id': 'text-b', 'text': None, 'redaction_reason': 'rights_pending', 'sources': provenance},
                 {'id': 'text-c', 'text': 'क', 'sources': provenance},
             ],
+            'geography/train': [{'id': 'place-a', 'knowledge_family': 'geography'}],
+            'historical_terms/train': [{'id': 'term-a', 'knowledge_family': 'historical_terms'}],
+            'literary_people/train': [{'id': 'person-a', 'knowledge_family': 'literary_people'}],
+            'literary_works/train': [{'id': 'work-a', 'knowledge_family': 'literary_works'}],
+            'popular_songs/train': [{'id': 'song-a', 'knowledge_family': 'popular_songs'}],
+            'university_research/train': [{'id': 'research-a', 'knowledge_family': 'university_research'}],
         }
         for key, content in rows.items():
             config, split = key.split('/')
@@ -114,6 +120,19 @@ class FinalReleaseAuditTests(unittest.TestCase):
         self.assertEqual(report['status'], 'failed')
         self.assertIn('text IDs overlap across train and test', report['errors'])
         self.assertIn('text/test has 1 rows without provenance', report['errors'])
+
+    def test_rejects_duplicate_knowledge_ids(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            path = root / 'data/geography/train-00000.jsonl'
+            write_jsonl(path, [
+                {'id': 'place-a', 'knowledge_family': 'geography'},
+                {'id': 'place-a', 'knowledge_family': 'geography'},
+            ])
+            report = m.audit(index, root)
+        self.assertEqual(report['status'], 'failed')
+        self.assertIn('geography contains a missing or duplicate stable ID', report['errors'])
 
     def test_requires_every_audio_file_when_audio_is_included(self):
         with tempfile.TemporaryDirectory() as directory:

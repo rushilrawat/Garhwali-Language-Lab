@@ -1,14 +1,14 @@
 {
   "pronunciation_candidates": 1114,
   "pronunciation_with_source_phonetics": 293,
-  "tokenizer_training_texts": 80881,
+  "tokenizer_training_texts": 106804,
   "tokenizer_type": "unicode_character",
-  "tokenizer_vocabulary_size": 330,
+  "tokenizer_vocabulary_size": 331,
   "tts_pairs": 1736,
   "tts_split_pairs": {
     "test": 89,
     "train": 1422,
     "validation": 225
   },
-  "word_types": 203539
+  "word_types": 262190
 }

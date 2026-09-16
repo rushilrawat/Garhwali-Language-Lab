@@ -1,0 +1,1318 @@
+{
+  "catalog_id": "garhwali-literary-works-v0.1",
+  "updated": "2026-09-16",
+  "scope": "Every named literary, periodical, linguistic-reference, and language-resource work in the user-supplied Itihaas Garhwali Language capture.",
+  "content_policy": "Catalog records preserve names, creators, dates, types, provenance, and acquisition status. A bibliographic record does not imply that the full text, recording, or copyrighted payload is locally held.",
+  "sources": [
+    {
+      "source_id": "itihaas-garhwali-capture",
+      "title": "Itihaas — Garhwali Language",
+      "source_kind": "user_provided_web_capture",
+      "canonical_url": null,
+      "local_capture": "/Users/rushilrawat/.codex/attachments/a72b1e27-d441-4dd3-80c6-ccd2b87a0a58/pasted-text.txt",
+      "sha256": "f1f5870478d5f290509606f9c6d05f4bd86925b7d9080a80735cfbf05c756ae5",
+      "captured_text_bytes": 33166,
+      "notes": "The capture identifies the breadcrumb as Home / languages / Garhwali Language but does not contain a canonical URL."
+    },
+    {
+      "source_id": "freebibles-garhwali",
+      "title": "Free Bibles India — Garhwali New Testament",
+      "source_kind": "existing_project_source",
+      "url": "https://www.freebiblesindia.in/bible/gbm/index.html"
+    },
+    {
+      "source_id": "lsi-ix-4",
+      "title": "Linguistic Survey of India, Volume IX, Part IV",
+      "source_kind": "existing_project_source",
+      "url": "https://commons.wikimedia.org/wiki/File:Linguistic_Survey_of_India_Vol_9_Part_4.djvu"
+    },
+    {
+      "source_id": "kellogg-1893",
+      "title": "Kellogg, A Grammar of the Hindí Language (1893)",
+      "source_kind": "existing_project_source",
+      "url": "https://archive.org/details/grammarofhindl00kell"
+    },
+    {
+      "source_id": "user-literature-writers-2026-09-16",
+      "title": "User-supplied Garhwali literature and writers list",
+      "source_kind": "user_provided_bibliographic_leads",
+      "url": null,
+      "local_capture": "sources/manual/garhwali-literature-writers-2026-09-16.md",
+      "notes": "Names and work titles are retained as leads. Spellings and attributions that conflict with stronger sources remain explicitly marked for verification."
+    }
+  ],
+  "works": [
+    {
+      "record_id": "literary-work:jagatpal-dev-prayag-grant-1335",
+      "title": "1335 Dev Prayag temple grant inscription",
+      "title_variants": [],
+      "creators": [
+        "King Jagatpal"
+      ],
+      "work_type": "inscription",
+      "date_or_period": "1335 CE",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Temple-grant inscription at Dev Prayag; catalogued as a named historical witness, not a modern literary edition."
+    },
+    {
+      "record_id": "literary-work:jayadev-bahuguna-ranch-judya",
+      "title": "Ranch Judya Judige Ghimsaan Ji",
+      "title_variants": [],
+      "creators": [
+        "Pt. Jayadev Bahuguna"
+      ],
+      "work_type": "manuscript_poem",
+      "date_or_period": "sixteenth century",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "The supplied capture describes this as the oldest identified Garhwali manuscript."
+    },
+    {
+      "record_id": "literary-work:sudarshan-shah-sabhaasaar",
+      "title": "Sabhaasaar",
+      "title_variants": [],
+      "creators": [
+        "Maharaja Sudarshan Shah"
+      ],
+      "work_type": "literary_work",
+      "date_or_period": "1828",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:garhwali-new-testament-1830",
+      "title": "Garhwali New Testament",
+      "title_variants": [],
+      "creators": [
+        "American missionaries"
+      ],
+      "work_type": "religious_translation",
+      "date_or_period": "1830",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "source_catalogued_no_payload",
+      "source_ids": [
+        "itihaas-garhwali-capture",
+        "freebibles-garhwali"
+      ],
+      "notes": "The project already catalogs a modern source-native Garhwali New Testament edition; no chapter payload was added by this literary-history pass."
+    },
+    {
+      "record_id": "literary-work:matthew-garhwali-1876",
+      "title": "Gospel of St. Matthew in Garhwali",
+      "title_variants": [],
+      "creators": [
+        "translator not stated"
+      ],
+      "work_type": "religious_translation",
+      "date_or_period": "1876",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "The supplied capture says this edition was printed at Lucknow."
+    },
+    {
+      "record_id": "literary-work:bachan-singh-negi-mahabharata",
+      "title": "Mahabharata (Garhwali translation)",
+      "title_variants": [],
+      "creators": [
+        "Bachan Singh Negi"
+      ],
+      "work_type": "epic_translation",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:bachan-singh-negi-ramayana",
+      "title": "Ramayana (Garhwali translation)",
+      "title_variants": [],
+      "creators": [
+        "Bachan Singh Negi"
+      ],
+      "work_type": "epic_translation",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:bachan-singh-negi-ramcharitmanas",
+      "title": "Ramcharitmanas (Garhwali translation)",
+      "title_variants": [],
+      "creators": [
+        "Bachan Singh Negi"
+      ],
+      "work_type": "religious_translation",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:bachan-singh-negi-bhagwat-geeta",
+      "title": "Shreemad Bhagwat Geeta (Garhwali translation)",
+      "title_variants": [
+        "Shrimad Bhagavad Gita (Garhwali translation)"
+      ],
+      "creators": [
+        "Bachan Singh Negi"
+      ],
+      "work_type": "religious_translation",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:lsi-prodigal-son-garhwali",
+      "title": "Parable of the Prodigal Son (Garhwali)",
+      "title_variants": [],
+      "creators": [
+        "speaker and translator not stated"
+      ],
+      "work_type": "survey_recording_text",
+      "date_or_period": "recorded 1894–1928",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "existing_extracted_evidence",
+      "source_ids": [
+        "itihaas-garhwali-capture",
+        "lsi-ix-4"
+      ],
+      "notes": "Named recording/text item in the Linguistic Survey of India; the existing LSI historical extraction is retained."
+    },
+    {
+      "record_id": "literary-work:lsi-bundle-of-sticks-garhwali",
+      "title": "Bundle of Sticks (Garhwali folk tale)",
+      "title_variants": [],
+      "creators": [
+        "speaker and collector not stated"
+      ],
+      "work_type": "survey_recording_text",
+      "date_or_period": "recorded 1894–1928",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "existing_extracted_evidence",
+      "source_ids": [
+        "itihaas-garhwali-capture",
+        "lsi-ix-4"
+      ],
+      "notes": "Named folk-tale recording/text item in the Linguistic Survey of India; the existing LSI historical extraction is retained."
+    },
+    {
+      "record_id": "literary-work:kellogg-hindi-grammar",
+      "title": "A Grammar of the Hindí Language",
+      "title_variants": [],
+      "creators": [
+        "Samuel H. Kellogg"
+      ],
+      "work_type": "linguistic_reference",
+      "date_or_period": "1893",
+      "language_scope": [
+        "English",
+        "Hindi",
+        "Garhwali reference"
+      ],
+      "ingestion_status": "existing_extracted_evidence",
+      "source_ids": [
+        "itihaas-garhwali-capture",
+        "kellogg-1893"
+      ],
+      "notes": "The existing historical layer contains 34 OCR pages that mention Garhwali."
+    },
+    {
+      "record_id": "literary-work:lsi-volume-ix-part-iv",
+      "title": "Linguistic Survey of India, Volume IX, Part IV: Pahari Languages & Gujuri",
+      "title_variants": [],
+      "creators": [
+        "George Abraham Grierson"
+      ],
+      "work_type": "linguistic_survey",
+      "date_or_period": "1916",
+      "language_scope": [
+        "English",
+        "Garhwali",
+        "other Pahari languages",
+        "Gujuri"
+      ],
+      "ingestion_status": "existing_extracted_evidence",
+      "source_ids": [
+        "itihaas-garhwali-capture",
+        "lsi-ix-4"
+      ],
+      "notes": "The project's historical layer already contains the Garhwali-relevant LSI extraction."
+    },
+    {
+      "record_id": "literary-work:gairola-sadei",
+      "title": "Sadei",
+      "title_variants": [],
+      "creators": [
+        "Tara Dutt Gairola"
+      ],
+      "work_type": "poem",
+      "date_or_period": "early twentieth century",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:raturi-phyunli",
+      "title": "Phyunli",
+      "title_variants": [],
+      "creators": [
+        "Chandramohan Raturi"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:raturi-utha-garhwalyun",
+      "title": "Utha Garhwalyun!",
+      "title_variants": [],
+      "creators": [
+        "Satyasharan Raturi"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:premi-agyaal",
+      "title": "Agyaal",
+      "title_variants": [],
+      "creators": [
+        "Sudaama Prasad Premi"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:bhatt-umaal",
+      "title": "Umaal",
+      "title_variants": [],
+      "creators": [
+        "Premlal Bhatt"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:gairola-parbati",
+      "title": "Parbati",
+      "title_variants": [],
+      "creators": [
+        "Mahaveer Prasad Gairola"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:shikhar-kuredi-phategi",
+      "title": "Kuredi phategi",
+      "title_variants": [],
+      "creators": [
+        "Pratap Shikhar"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:dandriyal-anjwaal",
+      "title": "Anjwaal",
+      "title_variants": [],
+      "creators": [
+        "Kanhaiyyalal Dandriyal"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:dandriyal-mangtu",
+      "title": "Mangtu",
+      "title_variants": [],
+      "creators": [
+        "Kanhaiyyalal Dandriyal"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:dandriyal-nagraja",
+      "title": "Nagraja",
+      "title_variants": [],
+      "creators": [
+        "Kanhaiyyalal Dandriyal"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kutaj-khigtaat",
+      "title": "Khigtaat",
+      "title_variants": [],
+      "creators": [
+        "Harish Juyal ‘Kutaj’"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture",
+        "user-literature-writers-2026-09-16"
+      ],
+      "notes": "The existing capture attributes this work to Harish Juyal ‘Kutaj’. The later user list says Gireesh Juyal ‘Kutaj’; that conflicting spelling/attribution is preserved in the people catalog pending a primary bibliographic source."
+    },
+    {
+      "record_id": "literary-work:parvatiya-gainika-nau-par",
+      "title": "Gainika nau par",
+      "title_variants": [],
+      "creators": [
+        "Harsh Parvatiya"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:keshwan-hari-hindwaan",
+      "title": "Hari Hindwaan",
+      "title_variants": [],
+      "creators": [
+        "Lalit Keshwan"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:panwar-inma-kankwei-aan-basant",
+      "title": "Inma kankwei aan basant",
+      "title_variants": [],
+      "creators": [
+        "Virendra Panwar"
+      ],
+      "work_type": "poetry_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:bahuguna-gaad",
+      "title": "Gaad",
+      "title_variants": [],
+      "creators": [
+        "Abodh Bandhu Bahuguna"
+      ],
+      "work_type": "drama",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:bahuguna-myateki-ganga",
+      "title": "Myateki Ganga",
+      "title_variants": [],
+      "creators": [
+        "Abodh Bandhu Bahuguna"
+      ],
+      "work_type": "drama",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:bahuguna-bhumyal",
+      "title": "Bhumyal",
+      "title_variants": [],
+      "creators": [
+        "Abodh Bandhu Bahuguna"
+      ],
+      "work_type": "drama",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:thapliyal-pralhad",
+      "title": "Pralhad",
+      "title_variants": [],
+      "creators": [
+        "Bhawanidutt Thapliyal"
+      ],
+      "work_type": "drama",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:bahuguna-mochhang",
+      "title": "Mochhang",
+      "title_variants": [],
+      "creators": [
+        "Chakradhar Bahuguna"
+      ],
+      "work_type": "drama",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:ghildiyal-bwari",
+      "title": "Bwari",
+      "title_variants": [],
+      "creators": [
+        "Durga Prasad Ghildiyal"
+      ],
+      "work_type": "drama",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:ghildiyal-mwari",
+      "title": "Mwari",
+      "title_variants": [],
+      "creators": [
+        "Durga Prasad Ghildiyal"
+      ],
+      "work_type": "drama",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:ghildiyal-gaari",
+      "title": "Gaari",
+      "title_variants": [],
+      "creators": [
+        "Durga Prasad Ghildiyal"
+      ],
+      "work_type": "drama",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-dr-asaram",
+      "title": "Dr. Asaram",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "drama",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-panch-parani",
+      "title": "Panch Parani Pachis Chhawin",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "drama",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:chatak-kya-gori",
+      "title": "Kya Gori Kya Saunli",
+      "title_variants": [],
+      "creators": [
+        "Govind Chatak"
+      ],
+      "work_type": "prose_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:naithani-ristaun",
+      "title": "Ristaun ki Ahmiyat",
+      "title_variants": [],
+      "creators": [
+        "Bijendra Prasad Naithani"
+      ],
+      "work_type": "prose_work",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:naithani-chithi-patri",
+      "title": "Chithi-Patri-Collection",
+      "title_variants": [],
+      "creators": [
+        "Bijendra Prasad Naithani"
+      ],
+      "work_type": "prose_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-tabari",
+      "title": "Tabari Ar Abari",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "poetry_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-tup-tap",
+      "title": "Tup-Tap",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "poetry_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-pani",
+      "title": "Pani",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "poetry_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-kulla-pichkari",
+      "title": "Kulla Pichkari",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "satire_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-lagyan-chhaan",
+      "title": "Lagyan Chhaan",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "satire_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-ados-pados",
+      "title": "Ados-Pados",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "satire_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-hari-singho",
+      "title": "Hari Singho Baggi Fast",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "satire_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-aar-parai",
+      "title": "Aar-Parai Ladai",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "satire_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-samsya-khadi",
+      "title": "Samsya Khadi Cha",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "satire_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-naaraz",
+      "title": "Naaraz Ni Huyaan",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "satire_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:kathait-bakki-tumari",
+      "title": "Bakki Tumari Marji",
+      "title_variants": [],
+      "creators": [
+        "Narendra Kathait"
+      ],
+      "work_type": "satire_collection",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named in the supplied Garhwali-language history capture."
+    },
+    {
+      "record_id": "literary-work:uttarakhand-khabarsar",
+      "title": "Uttarakhand Khabarsar",
+      "title_variants": [],
+      "creators": [
+        "editor or publisher not stated"
+      ],
+      "work_type": "newspaper",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named as a contemporary newspaper published entirely in Garhwali."
+    },
+    {
+      "record_id": "literary-work:rant-raibar",
+      "title": "Rant Raibar",
+      "title_variants": [
+        "Rant Raibaar"
+      ],
+      "creators": [
+        "editor or publisher not stated"
+      ],
+      "work_type": "newspaper",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Monthly Garhwali newspaper associated with Akhil Garhwal Sabha; both spellings in the capture are preserved."
+    },
+    {
+      "record_id": "literary-work:baduli",
+      "title": "Baduli",
+      "title_variants": [],
+      "creators": [
+        "editor or publisher not stated"
+      ],
+      "work_type": "magazine",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named as a magazine contributing to Garhwali literary development."
+    },
+    {
+      "record_id": "literary-work:hilaans",
+      "title": "Hilaans",
+      "title_variants": [],
+      "creators": [
+        "editor or publisher not stated"
+      ],
+      "work_type": "magazine",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named as a magazine contributing to Garhwali literary development."
+    },
+    {
+      "record_id": "literary-work:chitthi-patri-magazine",
+      "title": "Chitthi-patri",
+      "title_variants": [],
+      "creators": [
+        "editor or publisher not stated"
+      ],
+      "work_type": "magazine",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named as a magazine; kept distinct from Bijendra Prasad Naithani's Chithi-Patri-Collection."
+    },
+    {
+      "record_id": "literary-work:dhaad",
+      "title": "Dhaad",
+      "title_variants": [],
+      "creators": [
+        "editor or publisher not stated"
+      ],
+      "work_type": "magazine",
+      "date_or_period": "not_stated",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named as a magazine contributing to Garhwali literary development."
+    },
+    {
+      "record_id": "literary-work:bedu-pako-radio",
+      "title": "Bedu Pako Baro Masa",
+      "title_variants": [],
+      "creators": [
+        "non-resident Uttarakhandis in New York"
+      ],
+      "work_type": "internet_radio_service",
+      "date_or_period": "launched 2008",
+      "language_scope": [
+        "Garhwali",
+        "Kumaoni",
+        "Jaunsari",
+        "Uttarakhand folk music"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named internet-radio service; the capture says its name comes from a well-known Himalayan melody."
+    },
+    {
+      "record_id": "literary-work:chakhul-dictionary",
+      "title": "Chakhul Garhwali Dictionary",
+      "title_variants": [],
+      "creators": [
+        "developer not stated"
+      ],
+      "work_type": "dictionary_app",
+      "date_or_period": "launched 2015",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named Garhwali-language app with vocabulary and cultural information."
+    },
+    {
+      "record_id": "literary-work:garhpedia",
+      "title": "Garhpedia",
+      "title_variants": [],
+      "creators": [
+        "community contributors"
+      ],
+      "work_type": "community_encyclopedia",
+      "date_or_period": "launched 2025",
+      "language_scope": [
+        "Garhwali"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named community-driven encyclopedia for Garhwali preservation."
+    },
+    {
+      "record_id": "literary-work:himlingo-dictionary",
+      "title": "HimLingo Garhwali Dictionary",
+      "title_variants": [],
+      "creators": [
+        "HimLingo community contributors"
+      ],
+      "work_type": "online_dictionary",
+      "date_or_period": "launched late 2025",
+      "language_scope": [
+        "Garhwali",
+        "Kumaoni",
+        "Jaunsari"
+      ],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": [
+        "itihaas-garhwali-capture"
+      ],
+      "notes": "Named community dictionary; catalog metadata only. The project does not bypass the site's stated limits on automated collection."
+    },
+    {
+      "record_id": "literary-work:thapalyal-achhryun-ku-taal",
+      "title": "Achhryun ku Taal",
+      "title_variants": ["Achhryun Ku Taal"],
+      "creators": ["Lalit Mohan Thapalyal"],
+      "work_type": "literary_work",
+      "date_or_period": "not_stated",
+      "language_scope": ["Garhwali"],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": ["user-literature-writers-2026-09-16"],
+      "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
+    },
+    {
+      "record_id": "literary-work:nawani-phanchi",
+      "title": "Phanchi",
+      "title_variants": [],
+      "creators": ["Lokesh Nawani"],
+      "work_type": "literary_work",
+      "date_or_period": "not_stated",
+      "language_scope": ["Garhwali"],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": ["user-literature-writers-2026-09-16"],
+      "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
+    },
+    {
+      "record_id": "literary-work:duklaan-aandi-jaandi-saans",
+      "title": "Aandi-jaandi saans",
+      "title_variants": ["Aandi Jaandi Saans"],
+      "creators": ["Madan Mohan Duklaan"],
+      "work_type": "literary_work",
+      "date_or_period": "not_stated",
+      "language_scope": ["Garhwali"],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": ["user-literature-writers-2026-09-16"],
+      "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
+    },
+    {
+      "record_id": "literary-work:sayar-aunar",
+      "title": "Aunar",
+      "title_variants": [],
+      "creators": ["Chinmay Sayar"],
+      "work_type": "literary_work",
+      "date_or_period": "not_stated",
+      "language_scope": ["Garhwali"],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": ["user-literature-writers-2026-09-16"],
+      "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
+    },
+    {
+      "record_id": "literary-work:gauniyal-dheet",
+      "title": "Dheet",
+      "title_variants": [],
+      "creators": ["Dr. Narendra Gauniyal"],
+      "work_type": "literary_work",
+      "date_or_period": "not_stated",
+      "language_scope": ["Garhwali"],
+      "ingestion_status": "bibliographic_metadata",
+      "source_ids": ["user-literature-writers-2026-09-16"],
+      "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
+    }
+  ],
+  "capture_coverage": {
+    "resolved_work_ids": [
+      "literary-work:jagatpal-dev-prayag-grant-1335",
+      "literary-work:jayadev-bahuguna-ranch-judya",
+      "literary-work:sudarshan-shah-sabhaasaar",
+      "literary-work:garhwali-new-testament-1830",
+      "literary-work:matthew-garhwali-1876",
+      "literary-work:bachan-singh-negi-mahabharata",
+      "literary-work:bachan-singh-negi-ramayana",
+      "literary-work:bachan-singh-negi-ramcharitmanas",
+      "literary-work:bachan-singh-negi-bhagwat-geeta",
+      "literary-work:lsi-prodigal-son-garhwali",
+      "literary-work:lsi-bundle-of-sticks-garhwali",
+      "literary-work:kellogg-hindi-grammar",
+      "literary-work:lsi-volume-ix-part-iv",
+      "literary-work:gairola-sadei",
+      "literary-work:raturi-phyunli",
+      "literary-work:raturi-utha-garhwalyun",
+      "literary-work:premi-agyaal",
+      "literary-work:bhatt-umaal",
+      "literary-work:gairola-parbati",
+      "literary-work:shikhar-kuredi-phategi",
+      "literary-work:dandriyal-anjwaal",
+      "literary-work:dandriyal-mangtu",
+      "literary-work:dandriyal-nagraja",
+      "literary-work:kutaj-khigtaat",
+      "literary-work:parvatiya-gainika-nau-par",
+      "literary-work:keshwan-hari-hindwaan",
+      "literary-work:panwar-inma-kankwei-aan-basant",
+      "literary-work:bahuguna-gaad",
+      "literary-work:bahuguna-myateki-ganga",
+      "literary-work:bahuguna-bhumyal",
+      "literary-work:thapliyal-pralhad",
+      "literary-work:bahuguna-mochhang",
+      "literary-work:ghildiyal-bwari",
+      "literary-work:ghildiyal-mwari",
+      "literary-work:ghildiyal-gaari",
+      "literary-work:kathait-dr-asaram",
+      "literary-work:kathait-panch-parani",
+      "literary-work:chatak-kya-gori",
+      "literary-work:naithani-ristaun",
+      "literary-work:naithani-chithi-patri",
+      "literary-work:kathait-tabari",
+      "literary-work:kathait-tup-tap",
+      "literary-work:kathait-pani",
+      "literary-work:kathait-kulla-pichkari",
+      "literary-work:kathait-lagyan-chhaan",
+      "literary-work:kathait-ados-pados",
+      "literary-work:kathait-hari-singho",
+      "literary-work:kathait-aar-parai",
+      "literary-work:kathait-samsya-khadi",
+      "literary-work:kathait-naaraz",
+      "literary-work:kathait-bakki-tumari",
+      "literary-work:uttarakhand-khabarsar",
+      "literary-work:rant-raibar",
+      "literary-work:baduli",
+      "literary-work:hilaans",
+      "literary-work:chitthi-patri-magazine",
+      "literary-work:dhaad",
+      "literary-work:bedu-pako-radio",
+      "literary-work:chakhul-dictionary",
+      "literary-work:garhpedia",
+      "literary-work:himlingo-dictionary",
+      "literary-work:thapalyal-achhryun-ku-taal",
+      "literary-work:nawani-phanchi",
+      "literary-work:duklaan-aandi-jaandi-saans",
+      "literary-work:sayar-aunar",
+      "literary-work:gauniyal-dheet"
+    ],
+    "named_genres": [
+      "Mangal",
+      "Bhadiyali",
+      "Panwara"
+    ],
+    "unresolved_mentions": [
+      {
+        "mention_id": "unresolved:pineflix-first-garhwali-short-film",
+        "description": "Pineflix's first Garhwali short film, released 19 August 2018",
+        "reason": "The supplied capture names the platform and release date but gives no film title.",
+        "next_action": "Locate a primary Pineflix filmography or archived release announcement before creating a titled work record."
+      },
+      {
+        "mention_id": "unresolved:uttarakhand-culture-department-garhwali-dictionary",
+        "description": "Comprehensive Garhwali dictionary published by the Uttarakhand state department of culture and compiled by a team led by Achalanand Jakhmola and BP Nautiyal",
+        "reason": "The supplied capture describes the dictionary but gives no title or publication date.",
+        "next_action": "Locate the government catalogue or title page before creating a titled edition record."
+      }
+    ],
+    "excluded_nonworks": [
+      "unnamed writers and singers",
+      "institutions, workshops, education initiatives, and legislative proposals",
+      "generic media forms and unnamed early newspapers"
+    ]
+  }
+}

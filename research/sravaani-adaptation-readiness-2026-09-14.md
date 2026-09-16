@@ -14,12 +14,16 @@ on the training host and validates its exact size and tar structure before NeMo
 loads. No 1.8 GB checkpoint was stored on this Mac.
 
 Local execution still cannot run because this Mac has Apple Metal rather than
-CUDA. Hugging Face authentication is confirmed, but a Jobs preflight returned
-HTTP 402 because the account has no positive compute-credit balance. The
-preflight stopped before creating a job, so it incurred no charge. The bounded
-plan uses one `t4-small` GPU at $0.40/hour with an eight-hour hard timeout, for a
-maximum compute charge of $3.20. Hugging Face Jobs requires a positive credit
-balance; a Pro subscription is not required for this launch.
+CUDA. After compute credit was added, Hugging Face Job
+[`6aa9e33af76d6a098a70ec01`](https://huggingface.co/jobs/rushilrawat/6aa9e33af76d6a098a70ec01)
+was launched on 2026-09-16. It uses one `l4x1` GPU at $0.80/hour with a six-hour
+hard timeout, for a maximum compute charge of $4.80. Its initial state was
+`SCHEDULING` while the container image was pulled; it reached `RUNNING` at
+2026-09-16 00:32:04 UTC, installed NeMo successfully, and initialized the
+5,000-token SentencePiece tokenizer. Training completed all 102 steps and wrote
+the verified checkpoint. Evaluation Job
+[`6aa9ff28f76d6a098a70f025`](https://huggingface.co/jobs/rushilrawat/6aa9ff28f76d6a098a70f025)
+then completed the one-time 112-record held-out test.
 
 ## Verified data package
 
@@ -96,8 +100,8 @@ python scripts/train_sravaani_garhwali.py \
 mkdir -p data/processed/evaluation/asr/sravaani_finetune/cloud_output
 HF_HOME=.cache/huggingface hf jobs run \
   --name garhwali-sravaani-adaptation-v0-1 \
-  --flavor t4-small \
-  --timeout 8h \
+  --flavor l4x1 \
+  --timeout 6h \
   -v ./scripts:/workspace/scripts \
   -v ./data/processed/model_ready/sravaani_finetune:/data \
   -v ./data/processed/evaluation/asr/sravaani_finetune/cloud_output:/output:rw \
@@ -115,12 +119,13 @@ The execution path validates the official byte count and tar structure, then
 checks CUDA before importing NeMo or starting training. The generated plan is
 included in the local release manifest.
 
-## Exact remaining action
+## Final result
 
-Add at least $5 of Hugging Face compute credit, then rerun the bounded Jobs
-launch. The pilot itself is fully prepared and needs no additional Garhwali data
-or manual labeling. After training, the selected checkpoint must be evaluated
-once on the existing 112-record held-out test split before any promotion.
+The adapted checkpoint scores 43.5283% WER and 17.4516% CER on the frozen test,
+compared with 42.7613% WER and 17.6058% CER for the original SraVaani model.
+Because the primary WER metric worsened by 0.7670 percentage points, the adapted
+checkpoint remains experimental and the original checkpoint stays preferred.
+See [`sravaani-adaptation-evaluation-2026-09-16.md`](sravaani-adaptation-evaluation-2026-09-16.md).
 
 The local-directory mounts are uploaded to Hugging Face's private transient
 `jobs-artifacts` storage for the run. The CLI prints the exact sync command for

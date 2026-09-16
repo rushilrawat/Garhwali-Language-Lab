@@ -45,6 +45,14 @@ Folktales* RSS feed and all 66 exposed audio episodes were also archived with
 checksums. These payloads retain rights-pending markers and live only under the
 ignored `data/` tree.
 
+The follow-up historical-term layer adds 36 metadata records across 25
+categories, including Garhwal's older regional names, kingdoms and capitals,
+administrative and labour vocabulary, political movements, and ritual
+traditions. Its [catalog](garhwali-historical-terms.json) and generated view
+keep Hindi forms, periods, variants, source references, and original context
+summaries; they do not copy source passages or silently convert historical
+references into dialect labels.
+
 ## Public discoveries retained as rights leads
 
 The machine-readable register is

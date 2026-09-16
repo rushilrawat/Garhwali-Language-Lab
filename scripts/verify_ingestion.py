@@ -18,7 +18,7 @@ def rights_are_documented(row):
         return False
     if row.get('license_url'):
         return True
-    return bool(row.get('source_url') and row.get('rights_status'))
+    return bool((row.get('source_url') or row.get('source_pdf')) and row.get('rights_status'))
 
 
 def main():

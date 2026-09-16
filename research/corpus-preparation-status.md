@@ -1,18 +1,19 @@
 # Corpus preparation status
 
-Updated 2026-09-15 from the checked-in preparation scripts. Raw and downloaded material remains under gitignore. Model-result paragraphs retain the exact dataset snapshot used by each historical experiment.
+Updated 2026-09-16 from the checked-in preparation scripts. Raw and downloaded material remains under gitignore. Model-result paragraphs retain the exact dataset snapshot used by each historical experiment.
 
 ## Text
 
-- 30,109 source records from 35 files; 27,986 unique normalized texts / 7,371,364 characters.
+- 31,055 source records from 40 files; 28,755 unique normalized texts / 9,146,061 characters.
 - 2,123 duplicate rows retained in 2,022 provenance groups.
 - PahariLI's 15,000 records explicitly labeled `gbm` are active in the complete experimental corpus and in `data/processed/text/paharili_garhwali.jsonl`; source provenance remains unchanged.
 - The final web-learning pass archived 189 phrase or example rows from three eUttaranchal lessons, LanguagesHome, and Omniglot. Exact deduplication contributed 139 new unique texts; all 189 are active for local experiments and retain source URLs and no-open-license flags.
-- All 27,986 canonical normalized texts, including experimental and restricted provenance, are active in `data/processed/text/all_garhwali.jsonl`.
-- Conservative cleanup retained all 27,986 texts without rewriting spelling or dialect forms.
-- Sentence-like re-extraction exposes 91,490 occurrences / 86,216 exact-unique segments while retaining every parent and provenance chain. Connected-component assignment resolves all 325 prior cross-document conflicts; zero exact segment now crosses train, validation and test.
-- Deterministic document-aware partitions: train 25,287; validation 1,367; test 1,331. Only 131 documents moved from their original hash split to keep connected documents together.
-- Quality signals: 70 low quality; 27,916 review band.
+- All 28,755 canonical normalized texts, including experimental and restricted provenance, are active in `data/processed/text/all_garhwali.jsonl`.
+- Conservative cleanup retained all 28,755 texts without rewriting spelling or dialect forms.
+- Sentence-like re-extraction exposes 119,697 occurrences / 114,082 exact-unique segments while retaining every parent and provenance chain. Connected-component assignment leaves zero exact segment crossing train, validation and test.
+- Deterministic document-aware partitions: train 25,991; validation 1,391; test 1,372. Only 151 documents moved from their original hash split to keep connected documents together.
+- Quality signals: 71 low quality; 28,684 review band.
+- Seven incoming PDFs were hash-checked. Six unique books yielded 769 active page records and 1,774,697 characters; the seventh exactly matches the already ingested 370-record *Gadwali LokGeet* scan. The new pages contribute 27,926 Hugging Face text segment identities with full book, page, hash, OCR, rights, and quality provenance.
 - Structured Wiktionary extraction now yields 77 Garhwali lemmas, alternative forms, and examples in place of 56 flattened raw page blobs. Conservative wikitext rendering removes page scaffolding while preserving source prose.
 - Source-aware treatment preserves 392 scholarly Garhwali transcriptions in their published notation. The public accuracy queue fell from 628 to 176; none of these source-grounded resolutions is described as native review.
 
@@ -28,17 +29,18 @@ Updated 2026-09-15 from the checked-in preparation scripts. Raw and downloaded m
 - No supervised speaker appears across partitions.
 - Model-ready audio manifests retain all 5,894 supervised and 104,542 untranscribed rows, with quality flags attached rather than excluded.
 - Transcript preparation derives 5,894 non-empty ASR targets and divides all 104,542 untranscribed rows into 105 reproducible batches; 13 supervised rows remain in the transcript review queue.
-- A second reversible cleanup pass retains all 27,986 text and 5,894 supervised audio-transcript rows. It cleans annotation/markup artifacts and flags 926 text plus 920 audio-transcript rows for truncation, URLs, or script review.
+- A second reversible cleanup pass retains all 28,755 text and 5,894 supervised audio-transcript rows. It cleans annotation/markup artifacts and flags 928 text plus 920 audio-transcript rows for truncation, URLs, or script review.
 - Whisper-small zero-shot evaluation on 20 validation rows scored 134.3% WER and 94.8% CER. A speaker-safe Whisper-tiny fine-tune improved the 112-row strict speaker-disjoint candidate result to 74.3% WER and 40.4% CER after the initial pass plus two lower-learning-rate passes. Because this candidate set informed iteration, it is not the future frozen native benchmark, and the model remains unsafe for automatic pseudo-label promotion.
 - A resumable 100-record draft-transcription pilot completed with file-level provenance and uncalibrated token confidence. Median confidence is 0.174; every draft is marked `machine_draft_noisy_experimental` and remains active only in the noisy experimental view.
 - A fair five-checkpoint comparison uses the same 112 speaker-safe test rows and normalization. Zero-shot Whisper-tiny scores 147.939% WER / 136.810% CER; zero-shot Whisper-small scores 97.172% / 57.822%; the two local tiny fine-tunes reach 79.051% / 42.907% and 74.305% / 40.440%. Provider-approved SraVaani 1.0 is strongest at 42.761% WER / 17.606% CER, a 42.45% relative WER reduction from the best local Whisper checkpoint.
+- The human-reference SraVaani decoder/joint adaptation completed 102 steps on 1,621 training clips and was evaluated once on the same frozen 112-record test. It scores 43.528% WER / 17.452% CER: 16 more word errors but 11 fewer character errors than base SraVaani. Because primary WER worsened, the adapted checkpoint remains experimental and base SraVaani stays preferred.
 - The resumable SraVaani path completed all 104,542 untranscribed source rows, covering 104,534 unique audio hashes with zero missing or unexpected hashes. Eight duplicate hashes are inherited from distinct VAANI source filenames and produce identical drafts. Thirty-four drafts are empty. All rows remain preserved; 98 source-label-conflict drafts are active for source analysis but excluded from Garhwali training.
 - A second local Whisper checkpoint now supplies a third hypothesis and uncalibrated acoustic score for every one of the 1,188 recovery recordings. The resulting 1,090-record Garhwali review layer has 325 clean related-checkpoint consensus proposals, 730 clean low-consensus proposals, and 35 structurally unresolved proposals. It preserves every source value and makes no human-reference or training promotion.
 - The 35 structural outliers now carry waveform activity, deterministic Whisper `v0.2` re-decoding, and score percentiles calibrated on 112 human-referenced clips. All re-decodes match exactly. The score-to-CER correlations are only -0.164 for `v0.1` and -0.232 for `v0.2`, so these rows remain pending listening review and outside recommended machine-label training.
 
 ## Model-assisted text cleanup
 
-- The original model-assisted cleanup run covered 27,987 parent texts before the source-grounded re-extraction. Its immutable proposal artifact remains a historical model snapshot; the current canonical corpus contains 27,986 texts.
+- The original model-assisted cleanup run covered 27,987 parent texts before the source-grounded re-extraction. Its immutable proposal artifact remains a historical model snapshot; the current canonical corpus contains 28,755 texts.
 - Pinned IndicBERTv2 scored 4,096 OCR-, language-, spelling-, and dialect-priority records over 81,116 deterministic masked tokens. The 90th-percentile loss threshold identifies 410 model/source disagreements for inspection without changing source labels.
 - Train-only corpus frequencies produced 35,864 low-confidence one-edit spelling pairs across 10,200 records. These remain suggestions because frequent neighbors can be semantically wrong or valid competing dialect forms.
 - The fixed document-split ablation compared 25,169 train and 1,393 test parent texts. Mechanical cleanup changed 108 records and moved character-bigram perplexity from 16.88499549 to 16.88726214, so it was not promoted.
@@ -64,16 +66,91 @@ Updated 2026-09-15 from the checked-in preparation scripts. Raw and downloaded m
 - All 66 locally archived Garhwali Folktales podcast episodes were segmented with silence-aware, 29.5-second target boundaries into 1,204 mono 16 kHz PCM WAV clips covering 8.928764 hours.
 - Each clip retains episode GUID, title, source URL and hash, time bounds, derived hash, and rights status. All clips are active for local experiments; creator copyright keeps them outside public redistribution.
 
+## Popular music discovery
+
+- The tracked catalog [`garhwali-popular-song-catalog.json`](garhwali-popular-song-catalog.json)
+  contains 30 Garhwali song metadata records, with 16 added in the second pass;
+  21 records include Narendra Singh Negi and the set also covers Jeet Singh Negi,
+  Chander Singh Rahi, Gajender Rana, Preetam Bhartwan, Meena Rana, and traditional
+  performers.
+- Five records point to lyric pages and three point to meaning or translation
+  discussions. Six linked YouTube recordings were checked for public timed text;
+  none exposed a caption track on 2026-09-15. No audio, full modern lyrics, or
+  third-party translation bodies were copied.
+- The generated metadata view is reproducible with
+  `PYTHONPATH=scripts .venv/bin/python scripts/ingest_popular_songs.py`; its
+  ignored JSONL/report are source-review inputs for a future permissioned
+  transcription pass.
+
+## Literary works and geography
+
+- Poetry and theatre are already present through the UOU CGL/MAHL study units,
+  Govind Chatak's *Gadwali Lokgeet* pages, and bibliographic records for Tara Dutt
+  Gairola, Chander Singh Rahi, and Jeet Singh Negi. The named poems, plays, and
+  radio-geet-natika works are inventoried in
+  [`garhwali-poetry-plays-inventory-2026-09-15.md`](garhwali-poetry-plays-inventory-2026-09-15.md);
+  complete modern editions remain rights-sensitive.
+- [`garhwali-literary-works-catalog.json`](garhwali-literary-works-catalog.json)
+  includes every named work in the user-supplied Itihaas history plus the later
+  writers list: 66 records spanning early manuscripts, religious translations, survey texts,
+  poetry, drama, prose, satire, periodicals, and digital language resources.
+  Three named oral genres are retained separately. The only two unresolved
+  mentions are an untitled Pineflix short film and an untitled government
+  dictionary; both are explicit in the coverage audit rather than silently
+  dropped. Run `PYTHONPATH=scripts .venv/bin/python
+  scripts/ingest_literary_works.py` to reproduce the ignored JSONL and report.
+- [`garhwali-literary-people-catalog.json`](garhwali-literary-people-catalog.json)
+  preserves 26 named writers, historians, translators, poets, and playwrights.
+  Three uncertain names and the Harish/Gireesh Juyal `Khigtaat` attribution
+  conflict remain explicit.
+- [`garhwali-university-research-catalog.json`](garhwali-university-research-catalog.json)
+  contains eight deduplicated records from seven institutions. The Hugging Face
+  packages expose this catalog together with geography, history, works, people,
+  and songs as six first-class configurations totaling 216 records.
+- The geography catalog
+  [`garhwali-geography-catalog.json`](garhwali-geography-catalog.json) adds 50
+  place and feature records across all seven Garhwal districts: 36 settlements
+  and 14 rivers, peaks, parks, protected areas, reservoirs, and pilgrimage sites.
+  Each record keeps Hindi naming, place type, district relationship, Wikipedia
+  and OpenStreetMap pointers, and a clear separation between geography and
+  dialect labels. Coordinates are left unset until an authoritative gazetteer
+  export is added.
+
+## Historical terms
+
+- [`garhwali-historical-terms.json`](garhwali-historical-terms.json) contains 36
+  unique terms across 25 categories: historical region names, kingdoms and
+  capitals, dynasties and rulers, administrative and labour institutions,
+  political events and movements, military history, and living ritual/media
+  traditions.
+- The materialized view is generated with
+  `PYTHONPATH=scripts python3 scripts/ingest_historical_terms.py` and writes
+  `data/extracted/historical_terms/records.jsonl` plus `report.json`.
+- Every row retains Hindi form, period, variants, context, and source references.
+  Context is an original research summary; no source passage is copied into this
+  metadata layer, and historical references are never treated as dialect labels.
+
 ## Language quality
 
-- All 27,986 cleaned texts have source-backed language, Unicode-script, genre, explicit-dialect, and geographic-evidence fields.
-- Separate views contain 25,341 likely Garhwali candidates, 1,468 declared mixed-language records, 860 unresolved script/language records, and 317 non-Garhwali cultural-context records. The tagged all-data view retains all four groups.
+- All 28,755 cleaned texts have source-backed language, Unicode-script, genre, explicit-dialect, and geographic-evidence fields.
+- Separate views contain 25,456 likely Garhwali candidates, 1,468 declared mixed-language records, 1,514 unresolved script/language records, and 317 non-Garhwali cultural-context records. The tagged all-data view retains all four groups.
 - Language-identity confidence is high for 9,975 texts, medium for 15,366, and low for 2,645. The medium group is dominated by 14,999 PahariLI texts whose Garhwali label is useful but whose component lineage remains missing.
 - Every text has a genre. Resource views expose 1,114 lexicon candidates, 455 parallel examples, and 1,187 grammar-source candidates.
 - Train-only language resources include a 330-symbol Unicode character tokenizer, 203,539 observed word types, 1,114 pronunciation candidates (293 with source phonetic evidence), and 1,736 normalized TTS candidate pairs.
 - Only 29 text records carry explicit dialect labels. District names are never converted into dialect labels; 10,872 conversational, lexical, or folk records are prioritized for dialect review.
 - All 110,436 VAANI recordings carry district, gender, speaker-status, and language-evidence tags. Nine supervised transcripts need language/script review. The untranscribed 104,542 remain medium-confidence source-labelled Garhwali audio until transcription verifies their content.
 - VAANI has 363 distinct non-placeholder speaker IDs across 21,023 rows; 89,413 rows use an unidentified speaker placeholder. Geographic coverage is limited to Uttarkashi (74,552) and Tehri Garhwal (35,884).
+
+## SraVaani quality sweep
+
+- Hugging Face Job [`6aaa08ed5527934177ee7c78`](https://huggingface.co/jobs/rushilrawat/6aaa08ed5527934177ee7c78)
+  was launched on 2026-09-16 on one `l4x1` GPU with a six-hour / $4.80 hard
+  ceiling. It compares 61 ordered decoder/joint and cautious full-model trials,
+  stopping when the remaining runtime is needed for result persistence.
+- Selection uses the 269-record validation split. Only the selected checkpoint,
+  and only if it improves original-model validation WER, receives one evaluation
+  on the 112-record held-out test. See
+  [`sravaani-budget-sweep-2026-09-16.md`](sravaani-budget-sweep-2026-09-16.md).
 
 ## Review queues
 
@@ -100,11 +177,11 @@ SraVaani NeMo adaptation: 1,621 train, 269 validation, and 112 held-out test
 records in deterministic tar/manifest pairs totaling 412,037,120 archive bytes.
 All audio hashes and 16 kHz mono 16-bit PCM properties pass, every row retains
 CC BY 4.0 evidence, and cross-split audio/speaker leakage is zero. The decoder-only
-102-step plan is ready. The official 1,796,208,640-byte NeMo checkpoint download
-and archive format are verified, and the launcher can fetch it on the CUDA host.
-The local Mac has no CUDA. An authenticated Hugging Face Jobs preflight returned
-HTTP 402 before job creation because the account has no positive compute-credit
-balance. The planned `t4-small` run is capped at eight hours and $3.20.
+102-step plan and official 1,796,208,640-byte NeMo checkpoint were verified. The
+`l4x1` Hugging Face Job completed training, persisted a 1,796,198,400-byte
+adapted checkpoint, and completed the closed held-out evaluation. The resulting
+43.528% WER / 17.452% CER does not displace base SraVaani because its primary
+WER is worse.
 
 GarhwaliBench v0.1 indexes 3,847 external task records, 2,492 held-out text segments, and 112 speaker-safe ASR rows. Exact train/evaluation text overlap and ASR speaker overlap are zero. Its deterministic character-bigram floor is 16.464093 perplexity with a 0.00000498 character OOV rate.
 
@@ -163,4 +240,4 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 328 passing tests in the project `.venv`, including LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, source-level rights-basis accounting, controlled multi-seed text scaling, IndicBERTv2 head/encoder adaptation, instruction construction and mT5 tuning utilities, frozen transfer comparison, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, speech comparison, confidence-aware curriculum selection, source-label conflict isolation, three-checkpoint risky-draft review, audio-grounded structural-outlier review, weighted-batch gradient accumulation, SraVaani NeMo packaging, exact checkpoint validation and launch planning, paired pilot registration, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, and release validation.
+The complete pipeline suite has 359 passing tests in the project `.venv`, including resumable PDF ingestion and page-provenance export, LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, source-level rights-basis accounting, controlled multi-seed text scaling, IndicBERTv2 head/encoder adaptation, instruction construction and mT5 tuning utilities, frozen transfer comparison, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, speech comparison, confidence-aware curriculum selection, source-label conflict isolation, three-checkpoint risky-draft review, audio-grounded structural-outlier review, weighted-batch gradient accumulation, SraVaani NeMo packaging, checkpoint launch, budget-capped validation-first sweep planning, held-out evaluation, paired pilot registration, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, popular-song metadata validation, geography metadata validation, historical-term metadata validation, literary-work and people coverage, university-research ingestion, Hugging Face knowledge configurations, release-index synchronization, and release validation.

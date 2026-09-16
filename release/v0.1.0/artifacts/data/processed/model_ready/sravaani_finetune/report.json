@@ -1,7 +1,9 @@
 {
   "external_requirements": {
     "checkpoint": "SraVaani-nemo-checkpoint.nemo (~1.7 GB)",
+    "checkpoint_access": "official_direct_download_verified_2026-09-15",
     "checkpoint_in_huggingface_inference_repo": false,
+    "checkpoint_source": "https://drive.usercontent.google.com/download?id=1v5VaYibAaDSFuWvROsPbCzeG3iM6VbxY&export=download&confirm=t",
     "hardware": "CUDA-capable NVIDIA GPU; 16 GB VRAM recommended",
     "runtime": "NVIDIA NeMo ASR with matching CUDA extra"
   },

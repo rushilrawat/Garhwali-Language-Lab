@@ -22,6 +22,12 @@ REQUIRED_CONFIGS = {
     'sravaani_drafts/train', 'lexicon/train',
     'instructions/train', 'instructions/validation', 'instructions/test',
     'catalog/train',
+    'geography/train', 'historical_terms/train', 'literary_people/train',
+    'literary_works/train', 'popular_songs/train', 'university_research/train',
+}
+KNOWLEDGE_GROUPS = {
+    'geography', 'historical_terms', 'literary_people',
+    'literary_works', 'popular_songs', 'university_research',
 }
 
 
@@ -91,6 +97,7 @@ def audit(index, dataset_root):
     catalog_ids = set()
     catalog_redacted = 0
     catalog_missing_evidence = 0
+    knowledge_records = 0
 
     for key, config in sorted(manifest.get('configs', {}).items()):
         group, split = key.split('/', 1)
@@ -221,6 +228,13 @@ def audit(index, dataset_root):
                     catalog_redacted += 1
                     if not row.get('redaction_reason') or not row.get('sources'):
                         catalog_missing_evidence += 1
+        elif group in KNOWLEDGE_GROUPS:
+            ids = [row.get('id') for row in rows]
+            if not all(ids) or len(ids) != len(set(ids)):
+                errors.append(f'{group} contains a missing or duplicate stable ID')
+            if any(row.get('knowledge_family') != group for row in rows):
+                errors.append(f'{group} contains a mismatched knowledge family')
+            knowledge_records += len(rows)
 
     errors.extend(overlap_error('text IDs', text_ids))
     errors.extend(overlap_error('ASR audio hashes', asr_hashes))
@@ -356,6 +370,10 @@ def audit(index, dataset_root):
             'records': len(catalog_ids),
             'redacted_text_records': catalog_redacted,
             'missing_evidence': catalog_missing_evidence,
+        },
+        'structured_knowledge': {
+            'records': knowledge_records,
+            'configs': sorted(KNOWLEDGE_GROUPS),
         },
     }
 

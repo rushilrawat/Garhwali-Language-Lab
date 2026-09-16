@@ -15,5 +15,13 @@ class VerifyIngestionTests(unittest.TestCase):
         self.assertTrue(m.rights_are_documented(row))
         self.assertFalse(m.rights_are_documented({'attribution': 'publisher'}))
 
+    def test_user_supplied_pdf_can_document_rights_with_local_source_path(self):
+        row = {
+            'attribution': 'Example Author',
+            'source_pdf': 'incoming/pdfs/book.pdf',
+            'rights_status': 'user_supplied_source_rights_unverified',
+        }
+        self.assertTrue(m.rights_are_documented(row))
+
 
 if __name__ == '__main__': unittest.main()

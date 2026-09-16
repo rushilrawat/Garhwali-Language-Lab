@@ -1,0 +1,48 @@
+{
+  "catalog_id": "garhwali-literary-people-v0.1",
+  "updated": "2026-09-16",
+  "scope": "Named Garhwali writers, historians, translators, and literary contributors supplied by the user or already represented in the literary works catalog.",
+  "sources": [
+    {
+      "source_id": "user-literature-writers-2026-09-16",
+      "title": "User-supplied Garhwali literature and writers list",
+      "source_kind": "user_provided_bibliographic_leads",
+      "local_capture": "sources/manual/garhwali-literature-writers-2026-09-16.md"
+    },
+    {
+      "source_id": "itihaas-garhwali-capture",
+      "title": "Itihaas — Garhwali Language",
+      "source_kind": "user_provided_web_capture",
+      "local_capture": "/Users/rushilrawat/.codex/attachments/a72b1e27-d441-4dd3-80c6-ccd2b87a0a58/pasted-text.txt"
+    }
+  ],
+  "people": [
+    {"person_id":"literary-person:sudarshan-shah","canonical_name":"Maharaja Sudarshan Shah","aliases":["Sudarsan Shah"],"roles":["writer","patron"],"associated_works":["Sabhaasaar"],"source_ids":["itihaas-garhwali-capture","user-literature-writers-2026-09-16"],"verification_status":"corroborated_in_project","notes":"Spelling variant retained."},
+    {"person_id":"literary-person:kumdanand-bahuguna","canonical_name":"Kumdanand Bahuguna","aliases":["Kumdanand Bahguna"],"roles":["writer"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"name_uncertain","notes":"User spelling retained; requires an authority record."},
+    {"person_id":"literary-person:hari-dutt-sharma-nautiyal","canonical_name":"Hari Dutt Sharma (Nautiyal)","aliases":[],"roles":["writer"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"Bibliographic identity requires confirmation."},
+    {"person_id":"literary-person:hari-krishna-daurga-dutti-rudra","canonical_name":"Hari Krishna Daurga Dutti Rudra","aliases":[],"roles":["writer"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"name_uncertain","notes":"The supplied phrase may combine more than one person; preserved intact until a primary source resolves it."},
+    {"person_id":"literary-person:urvi-dutt-shastri","canonical_name":"Urvi Dutt Shastri","aliases":[],"roles":["writer"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"name_uncertain","notes":"User spelling retained; requires an authority record."},
+    {"person_id":"literary-person:mahidhar-dangwal","canonical_name":"Mahidhar Dangwal","aliases":[],"roles":["writer"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"No work title was supplied."},
+    {"person_id":"literary-person:satyasharan-raturi","canonical_name":"Satyasharan Raturi","aliases":["Satyasaran Raturi"],"roles":["writer","poet"],"associated_works":["Utha Garhwalyun!"],"source_ids":["itihaas-garhwali-capture","user-literature-writers-2026-09-16"],"verification_status":"corroborated_in_project","notes":"Spelling variant retained."},
+    {"person_id":"literary-person:atma-ram-gairola","canonical_name":"Atma Ram Gairola","aliases":[],"roles":["writer"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"No work title was supplied."},
+    {"person_id":"literary-person:devendra-dutt-raturi","canonical_name":"Devendra Dutt Raturi","aliases":[],"roles":["writer"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"No work title was supplied."},
+    {"person_id":"literary-person:suradutt-saklani","canonical_name":"Suradutt Saklani","aliases":[],"roles":["writer"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"No work title was supplied."},
+    {"person_id":"literary-person:mola-ram","canonical_name":"Mola Ram","aliases":[],"roles":["historian","poet","artist"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"Named as a historian in the supplied list."},
+    {"person_id":"literary-person:miya-prem-singh","canonical_name":"Miya Prem Singh","aliases":[],"roles":["historian"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"No work title was supplied."},
+    {"person_id":"literary-person:hari-dutt-shastri","canonical_name":"Hari Dutt Shastri","aliases":[],"roles":["historian"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"No work title was supplied."},
+    {"person_id":"literary-person:hari-krishna-raturi","canonical_name":"Hari Krishna Raturi","aliases":[],"roles":["historian"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"No work title was supplied."},
+    {"person_id":"literary-person:vijaya-ram-raturi","canonical_name":"Vijaya Ram Raturi","aliases":[],"roles":["historian"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"No work title was supplied."},
+    {"person_id":"literary-person:abodh-bandhu-bahuguna","canonical_name":"Abodh Bandhu Bahuguna","aliases":[],"roles":["writer","playwright"],"associated_works":["Gaad","Myateki Ganga","Bhumyal"],"source_ids":["itihaas-garhwali-capture","user-literature-writers-2026-09-16"],"verification_status":"corroborated_in_project","notes":"Dates supplied by user: 1927–2004."},
+    {"person_id":"literary-person:bachan-singh-negi","canonical_name":"Bachan Singh Negi","aliases":[],"roles":["translator","writer"],"associated_works":["Mahabharata (Garhwali translation)","Ramayana (Garhwali translation)"],"source_ids":["itihaas-garhwali-capture","user-literature-writers-2026-09-16"],"verification_status":"corroborated_in_project","notes":"Project catalog also records Ramcharitmanas and Bhagavad Gita translations."},
+    {"person_id":"literary-person:lalit-mohan-thapalyal","canonical_name":"Lalit Mohan Thapalyal","aliases":["Lalit Mohan Thapliyal"],"roles":["writer","playwright"],"associated_works":["Achhryun ku Taal"],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"Variant spelling retained."},
+    {"person_id":"literary-person:leeladhar-jagudi","canonical_name":"Leeladhar Jagudi","aliases":[],"roles":["writer","poet"],"associated_works":[],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"Born 1944 and Padma Shri status supplied by user; no Garhwali work title was supplied."},
+    {"person_id":"literary-person:lokesh-nawani","canonical_name":"Lokesh Nawani","aliases":[],"roles":["writer"],"associated_works":["Phanchi"],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"Edition details remain to be verified."},
+    {"person_id":"literary-person:madan-mohan-duklaan","canonical_name":"Madan Mohan Duklaan","aliases":[],"roles":["writer"],"associated_works":["Aandi-jaandi saans"],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"Edition details remain to be verified."},
+    {"person_id":"literary-person:chandramohan-raturi","canonical_name":"Chandramohan Raturi","aliases":[],"roles":["writer","poet"],"associated_works":["Phyunli"],"source_ids":["itihaas-garhwali-capture","user-literature-writers-2026-09-16"],"verification_status":"corroborated_in_project","notes":"Work already present in literary catalog."},
+    {"person_id":"literary-person:chinmay-sayar","canonical_name":"Chinmay Sayar","aliases":[],"roles":["writer"],"associated_works":["Aunar"],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"Edition details remain to be verified."},
+    {"person_id":"literary-person:narendra-gauniyal","canonical_name":"Dr. Narendra Gauniyal","aliases":[],"roles":["writer"],"associated_works":["Dheet"],"source_ids":["user-literature-writers-2026-09-16"],"verification_status":"user_supplied","notes":"Edition details remain to be verified."},
+    {"person_id":"literary-person:durga-prasad-ghildiyal","canonical_name":"Durga Prasad Ghildiyal","aliases":[],"roles":["writer","playwright"],"associated_works":["Bwari","Mwari","Gaari"],"source_ids":["itihaas-garhwali-capture","user-literature-writers-2026-09-16"],"verification_status":"corroborated_in_project","notes":"Works already present in literary catalog."},
+    {"person_id":"literary-person:harish-juyal-kutaj","canonical_name":"Harish Juyal ‘Kutaj’","aliases":["Gireesh Juyal ‘Kutaj’"],"roles":["writer","poet"],"associated_works":["Khigtaat"],"source_ids":["itihaas-garhwali-capture","user-literature-writers-2026-09-16"],"verification_status":"attribution_conflict","notes":"Existing capture says Harish; later user list says Gireesh. Both are visible pending a primary bibliographic source."
+    }
+  ]
+}

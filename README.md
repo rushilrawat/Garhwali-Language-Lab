@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-328%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-359%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -51,8 +51,9 @@ Garhwali Language Lab
 ├── Research Suite       tokenizer, quality, transfer, scaling, and ablations
 ├── Garhwali Models      LM, translation, retrieval, ASR, and TTS baselines
 ├── Community Layer      transcription, correction, and dialect contribution
+├── Garhwali API         search, lexicon, normalization, culture, and model access
 └── Public Infrastructure
-                         datasets, model cards, leaderboard, API, and demos
+                         datasets, model cards, leaderboard, explorer, and demos
 ```
 
 This direction reflects the current field. [SraVaani 1.0](https://vaani.iisc.ac.in/models/sravaani)
@@ -88,9 +89,12 @@ language as it is actually used.
 | --- | --- | --- |
 | **Voices** | 110,436 VAANI recordings, 135.5 hours, 5,894 supervised transcripts, and speaker/district metadata | Speech gives models pronunciation, rhythm, variation, and everyday language that books cannot provide. |
 | **Words in daily life** | 1,114 lexicon candidates; 666 thematic vocabulary records covering animals, birds, plants, food, tools, occupations, instruments, kinship, land, and ritual life; 99 idiom/proverb records | Local words carry the environment, work, humour, relationships, and worldview of Garhwal. |
-| **Folklore, songs, and performance** | 370 OCR pages from Govind Chatak’s *Gadwali Lokgeet*; 298 pages from Shanti Chaudhary’s folk-art study; 592 UOU pages on folk songs, ballads, tales, literature, and theatre; 66 narrated folktale episodes catalogued | Songs and stories preserve memory, metaphor, history, and forms of speech that ordinary sentence datasets miss. |
+| **Poetry, plays, and performance** | 370 OCR pages from Govind Chatak’s *Gadwali Lokgeet*; 298 pages from Shanti Chaudhary’s folk-art study; 592 UOU pages on poetry, prose, folk songs, ballads, tales, literature, and theatre; 66 narrated folktale episodes; 30 famous and classic song metadata records; 66 named literary, periodical, linguistic, and language-resource works; 26 named writers, historians, translators, and playwrights | Songs, poems, and plays preserve memory, metaphor, history, and forms of speech that ordinary sentence datasets miss. |
 | **Stories and cultural memory** | 440 pages from Upreti’s *Proverbs & Folklore*; 317 public-domain historical cultural-reference records; 50 Garhwali Open Bible Stories | Historical and translated narratives provide context, while their source and language status stay explicit. |
 | **Community usage** | Learning pages, Reddit and YouTube records, social vocabulary, and web idioms with URLs and review flags | Community material captures living spellings and new usage, including Romanized and mixed-language forms. |
+| **Places and landscape** | 50 Garhwal place and feature records: 36 settlements plus 14 rivers, peaks, parks, protected areas, reservoirs, and pilgrimage sites, with Hindi names and map/Wikipedia pointers | Geography grounds place-based vocabulary, migration references, folklore, songs, and dialect evidence without turning a district into a dialect label. |
+| **History and historical terms** | 36 historical terms across 25 categories: old region names, kingdoms, capitals, dynasties, administrative and labour institutions, political events, movements, military and ritual traditions | Historical vocabulary lets models interpret references in songs, folklore, poetry, plays, and place narratives while keeping period and source context attached. |
+| **University and research record** | 8 deduplicated institutional records from HNBGU, Doon University, UOU, SGRR University, the University of Kashmir, TUFS, and the University of Burdwan, spanning theses, curricula, syntax, ergativity, folklore, idioms, and proverbs | Scholarship supplies linguistic analysis and an acquisition map without pretending that a catalogue entry contains a complete book or thesis. |
 
 These materials do not all have the same status. Some are open and ready for
 research use; some are restricted, rights-pending, experimental, or awaiting a
@@ -99,24 +103,37 @@ not a defect in the dataset.
 
 ## ✨ Current snapshot
 
-- **30,109 source text records** from 35 files, deduplicated to **27,986 unique
-  texts** and 7.37 million characters.
-- **91,490 sentence-like occurrences** exposed from page-sized and long records,
-  producing **86,216 exact-unique segments** with parent provenance retained.
+- **31,055 source text records** from 40 files, deduplicated to **28,755 unique
+  texts** and 9.15 million characters.
+- **119,697 sentence-like occurrences** exposed from page-sized and long records,
+  producing **114,082 exact-unique segments** with parent provenance retained.
+- **769 active page records from six newly supplied PDFs**, including two
+  dictionaries, grammar and syntax research, literature, and cultural material;
+  one exact duplicate PDF reuses its existing 370-record extraction.
 - **110,436 VAANI Garhwali recordings** totaling **135.509 hours**; 5,894 have
   human transcripts and all 104,542 previously untranscribed rows now have
   revision-pinned SraVaani experimental drafts.
 - **363 identified speaker IDs**, with district, gender, and speaker-status fields
   preserved; current VAANI coverage is Uttarkashi and Tehri Garhwal.
-- **25,341 likely Garhwali text candidates**, 1,468 source-declared mixed-language
-  records, 860 unresolved records, and 317 non-Garhwali cultural-context records.
+- **25,456 likely Garhwali text candidates**, 1,468 source-declared mixed-language
+  records, 1,514 review records, and 317 non-Garhwali cultural-context records.
 - **4,195 exact-unique texts with a public rights basis**, including 3,559 strict
   public candidates; 1,748 additional high-quality candidates remain active with
   rights-pending provenance.
 - **1,913 mixed-rights exact duplicates** retain every source warning; 1,906
   strict records are publishable through a separately retained open copy.
-- **1,114 lexicon candidates**, 455 parallel examples, and 1,187
+- **1,114 structured lexicon candidates**, 455 parallel examples, and 1,187
   grammar-source candidates.
+- **66 named works and 26 literary people** are now visible in deduplicated
+  catalogs; uncertain spellings and the `Khigtaat` attribution conflict remain
+  explicit instead of being silently merged.
+- **8 university and research records** preserve institution, access level,
+  topics, and deduplication status; the existing UOU materials are linked rather
+  than ingested twice.
+- **257,163 upload-ready all-data rows** span text, human and machine speech
+  transcripts, lexicon, instructions, and six structured knowledge
+  configurations. The separately audited public package contains **146,482
+  rows**.
 - **2,002 strict speaker-identified ASR/TTS candidates** across 248 speakers,
   totaling 3.562 hours with zero identified-speaker split leakage.
 - **1,736 normalized derived WAVs** rendered from unflagged strict candidates;
@@ -177,10 +194,13 @@ not a defect in the dataset.
 - **SraVaani adaptation package:** 2,002 human-reference clips are packaged into
   deterministic NeMo train, validation, and held-out test archives totaling
   412,037,120 bytes, with all audio hashes verified and zero split leakage.
-- **324 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **SraVaani adaptation result:** the 102-step human-reference run scores 43.528%
+  WER / 17.452% CER on the frozen 112-record test. Original SraVaani remains
+  preferred at 42.761% / 17.606% because WER is the primary metric.
+- **359 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
-These figures describe the preparation snapshot updated on 2026-09-15. Raw
+These figures describe the preparation snapshot updated on 2026-09-16. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
 Git through `.gitignore`.
 
@@ -188,17 +208,21 @@ Git through `.gitignore`.
 
 <div align="center">
 
-| `~34 GB` | `110,436` | `135.5 h` | `27,986` |
+| `~34 GB` | `110,436` | `135.5 h` | `28,755` |
 | --- | ---: | ---: | ---: |
 | local corpus data | recordings | audio duration | unique text lines |
 
-| `7.37M` | `1.44M` | `86,216` | `1,114` |
+| `9.15M` | `1.76M` | `114,082` | `1,114` |
 | ---: | ---: | ---: | ---: |
 | text characters | whitespace tokens* | unique segments | lexicon candidates |
 
 | `455` | `1,187` | `5,894` | `104,542` |
 | ---: | ---: | ---: | ---: |
 | English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
+
+| `257,163` | `146,482` | `216` | `359` |
+| ---: | ---: | ---: | ---: |
+| all-data package rows | public package rows | structured knowledge records | passing tests |
 
 </div>
 
@@ -363,7 +387,7 @@ OCR, transcription, or native-speaker review.
 - [x] Keep spelling, meaning, and dialect uncertainty as metadata rather than a
   data exclusion gate; later native corrections can be merged non-destructively.
 - [x] Score 4,096 priority texts with pinned IndicBERTv2 and attach reversible
-  OCR, spelling, language-ambiguity, and dialect-evidence proposals to all 27,986
+  OCR, spelling, language-ambiguity, and dialect-evidence proposals to all 28,755
   parent texts without excluding or overwriting any record.
 - [x] Ablate mechanical and bulk spelling variants on the fixed document split;
   neither variant was promoted into canonical text.
@@ -487,9 +511,10 @@ selection rules, exclusions, counts, and leakage checks.
   accumulation, repeat the fixed pilot, and reject it after accuracy worsened.
 - [x] Package all strict human-reference speech for official SraVaani NeMo
   adaptation and add a CUDA-guarded decoder/joint training launcher.
-- [ ] Run the 102-step SraVaani adaptation pilot after adding positive Hugging
-  Face Jobs credit. Official checkpoint access is verified; the bounded
-  `t4-small` launch is capped at eight hours and $3.20 of compute.
+- [x] Complete and evaluate the 102-step SraVaani adaptation pilot. Hugging Face Job
+  [`6aa9e33af76d6a098a70ec01`](https://huggingface.co/jobs/rushilrawat/6aa9e33af76d6a098a70ec01)
+  produced a valid checkpoint; the closed test scores 43.528% WER / 17.452% CER.
+  Its higher WER keeps the original SraVaani checkpoint preferred.
 
 ### 9. Testing and review — High
 
@@ -512,7 +537,7 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Replace the coarse public-text confidence queue with separate language,
   orthography, alignment, source, and surface evidence; rank all 176 unresolved
   records without discarding or guessing any value.
-- [x] Audit all 27,986 exact-unique texts by source; restore lost license IDs,
+- [x] Audit all 28,755 exact-unique texts by source; restore lost license IDs,
   normalize rights-warning syntax, and attach an explicit public rights basis to
   1,913 mixed-rights exact duplicates without dropping blocked provenance.
 - [x] Replace 56 flattened Wiktionary page blobs with 77 structured Garhwali
@@ -528,7 +553,7 @@ selection rules, exclusions, counts, and leakage checks.
   attached to all 1,090 Garhwali recovery records; audio-grounded human review
   remains. Eight additional supervised rows are already isolated as Bengali-
   script source-label conflicts.
-- [x] Build the complete all-data package with every one of the 27,986 collected
+- [x] Build the complete all-data package with every one of the 28,755 collected
   text values present and active for quality work; zero catalog texts are redacted.
 - [x] Keep a separate public redistribution catalog with provenance and quality
   metadata for records whose source terms remain unresolved.
@@ -546,15 +571,56 @@ selection rules, exclusions, counts, and leakage checks.
 
 ## 🔭 Research platform roadmap
 
-| Stage | Primary artifact | Success condition |
-| --- | --- | --- |
-| **1. Corpus v1.0** | `GarhwaliCorpus` | Clean, deduplicated, rights-aware, source-versioned text and audio with raw and normalized forms |
-| **2. Benchmark v1.0** | `GarhwaliBench` | Frozen, checksum-addressed experimental evaluation for language quality, translation, generation, dialects, code-switching, retrieval, and speech; later corrections are versioned |
-| **3. Baseline audit** | `Garhwali Model Report` | Evaluate current multilingual, Indic, MT, tokenizer, retrieval, and speech systems before selecting new training runs |
-| **4. Controlled modeling** | `GarhwaliGPT` plus adapted models | Treat a small scratch LM as a scientific control; build practical systems through multilingual continued pretraining, translation, retrieval, and speech adaptation |
-| **5. Research experiments** | Reproducible ablation suite | Quantify which changes survive multiple seeds and which apparent gains disappear |
-| **6. Community expansion** | Corpus v1.x/v2 | Native corrections, additional varieties and districts, conversations, parallel data, and corrected historical text |
-| **7. Public platform** | Dataset, models, leaderboard, API, explorer | Reproducible releases another researcher can inspect, run, compare, and extend |
+| Stage | Status | Primary artifact | Remaining success condition |
+| --- | --- | --- | --- |
+| **1. Corpus v1.0** | Local release candidate complete | `GarhwaliCorpus` | Import the active SraVaani result, freeze final manifests, then publish the selected package |
+| **2. Benchmark v1.0** | Experimental benchmark complete | `GarhwaliBench` | Add native judgments and version later corrections instead of changing the frozen baseline |
+| **3. Baseline audit** | Complete | `Garhwali Model Report` | Keep comparisons pinned as new models are added |
+| **4. Controlled modeling** | Active | `GarhwaliGPT` plus adapted models | Finish the refined SraVaani sweep and retain only validation-supported gains |
+| **5. Research experiments** | Active | Reproducible ablation suite | Extend multi-seed quality, transfer, and scaling experiments after the release freeze |
+| **6. Community expansion** | Planned | Corpus v1.x/v2 | Add native corrections, more varieties and districts, conversations, parallel data, and corrected historical text |
+| **7. Public platform** | Planned | Dataset, models, leaderboard, versioned API, explorer | Upload the final dataset, then ship stable search, lexicon, normalization, transliteration, and cultural endpoints |
+
+### Garhwali API and commercial path
+
+The first useful API should expose the strongest reviewed assets before offering
+generation as if it were solved. The planned text-first MVP is:
+
+1. `GET /v1/search` — provenance-backed corpus and cultural search.
+2. `GET /v1/lexicon` — Garhwali forms, variants, meanings, examples, dialect
+   evidence, sources, and confidence.
+3. `POST /v1/normalize` — reversible Unicode, punctuation, and spelling
+   normalization with every change returned.
+4. `POST /v1/transliterate` — Devanagari/Roman conversion with alternatives.
+5. `GET /v1/culture` — cited people, works, places, history, folklore, and
+   university-research records.
+6. `POST /v1/asr` and `POST /v1/translate` — beta endpoints only after their
+   frozen evaluations meet published quality thresholds.
+
+The service plan includes API keys, per-key quotas, usage metering, versioned
+responses, confidence fields, source citations, a correction endpoint, privacy
+controls, and a small free tier. Paid plans can sell hosted search, normalization,
+and model inference. Raw third-party PDFs, audio, and other source payloads stay
+governed by their own terms; the API returns licensed data or derived results
+with provenance.
+
+### Realistic delivery horizon
+
+| Deliverable | Focused effort from the current state | Main dependency |
+| --- | ---: | --- |
+| Literary, cultural, and university additions | Complete | Automated validation |
+| Local Corpus v1 release candidate | Complete: 257,163 all-data / 146,482 public rows | Final audit passes; SraVaani result remains external |
+| SraVaani refined sweep and integration | Current active job plus 2–4 hours of local evaluation | Hugging Face job completion |
+| Final Hugging Face dataset publication | 2–4 focused hours after model integration | Final upload decision and network transfer |
+| Quality-focused dataset and benchmark v1 | 40–80 hours / 1–2 working weeks | Native review remains the accuracy bottleneck |
+| Sellable text-first API MVP | 30–60 additional hours / 1–2 weeks | Dataset freeze, hosting, authentication, billing, monitoring |
+| Translation and ASR beta | 2–6 additional weeks | Better native references and measured quality gains |
+| Full corpus, benchmark, models, community layer, API, and demos | 2–4 months of sustained work | Native participation, evaluation, and production operations |
+
+“Finished” for the first public release means a reproducible dataset, frozen
+benchmark, documentation, and text-first API. Strong production speech,
+translation, and TTS remain later releases because their accuracy cannot be
+established from machine scores alone.
 
 ### Next execution cycle
 
@@ -633,12 +699,27 @@ selection rules, exclusions, counts, and leakage checks.
     have exact stronger-checkpoint re-decodes, waveform activity measurements,
     and scores calibrated on 112 human-referenced clips. Raw confidence is only
     weakly related to CER, so every case remains pending listening review.
-19. [ ] **SraVaani human-reference training — Xhigh:** the official 1.796 GB NeMo
-    checkpoint URL and exact size are verified, the cloud-ready launcher can
-    fetch and validate it without storing it locally, and the 394 MiB Garhwali
-    package is ready. A Hugging Face Jobs preflight stopped before launch with
-    HTTP 402; add positive compute credit to run the eight-hour, $3.20-capped T4
-    pilot.
+19. [x] **SraVaani human-reference training — Xhigh:** Hugging Face Job
+    [`6aa9e33af76d6a098a70ec01`](https://huggingface.co/jobs/rushilrawat/6aa9e33af76d6a098a70ec01)
+    completed the 102-step decoder/joint adaptation on `l4x1`. The one-time
+    112-record test scores 43.528% WER / 17.452% CER versus the base model's
+    42.761% / 17.606%. The experimental checkpoint is retained but not promoted.
+20. [x] **Structured knowledge packaging — Medium:** geography, historical terms,
+    literary people, literary works, popular songs, and university research are
+    first-class Hugging Face configurations with 216 records and stable IDs.
+21. [x] **Release reconciliation — High:** the 257,163-row all-data package and
+    146,482-row public package are rebuilt, the tracked release index is synced,
+    and the public export passes provenance, count, and leakage validation.
+22. [ ] **Refined SraVaani decision — Xhigh:** Job
+    [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768)
+    is running a validation-first refined experiment. Import its persisted
+    artifacts, compare against base SraVaani, and promote only a verified WER gain.
+23. [ ] **Final dataset publication — High:** rebuild the manifests after the
+    model decision, run the final audit again, and upload the selected all-data
+    package and its dataset card to Hugging Face.
+24. [ ] **Text-first API MVP — High:** implement versioned search, lexicon,
+    normalization, transliteration, and cultural-record endpoints with API keys,
+    quotas, citations, confidence, and correction intake.
 
 The first benchmark index and deterministic character baseline are complete. See
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
@@ -749,22 +830,24 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **328 passing tests**, **365 verified source
+The current verification result is **359 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release
 
 `scripts/build_huggingface_dataset.py` creates two upload-ready multi-config
 datasets with Garhwali text, human VAANI transcripts, SraVaani machine drafts,
-lexicon, and instruction splits. The **all-data profile is the complete model and
-research package**: it includes every collected text value and every prepared
-text, lexicon, and instruction row. Each row keeps its source, quality, and rights
-metadata. The public profile is a separate redistribution view for records with
-explicit compatible source terms. Both omit original audio filenames and raw
-speaker identifiers.
+lexicon, instruction splits, geography, historical terms, literary people,
+literary works, popular-song metadata, and university research. The **all-data
+profile is the complete model and research package**: it contains **257,163
+rows**, including every collected text value and all **216 structured cultural
+and scholarly records**. Each row keeps its source, quality, rights, and review
+metadata. The **146,482-row public profile** is a separate redistribution view
+for records with explicit compatible source terms. Both omit original audio
+filenames and raw speaker identifiers.
 
 ```bash
-# Build the complete transcript-only all-data package (228,312 rows)
+# Build the complete transcript-only all-data package (257,163 rows)
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
   --profile all-data
 
@@ -781,9 +864,9 @@ HF_HOME=.cache/huggingface hf upload rushilrawat/garhwali-language-lab \
 
 The generated `README.md` is the Hugging Face dataset card, while
 `manifest.json` records configuration counts, shard names, draft completeness,
-and whether audio was included. The all-data catalog includes all **27,986**
+and whether audio was included. The all-data catalog includes all **28,755**
 exact-unique text values with **zero redactions**. The package also contains all
-**86,216** prepared text segments, **1,114** lexicon rows, and **2,568**
+**114,082** prepared text segments, **1,114** lexicon rows, and **2,568**
 instruction rows. The public catalog remains a transparent redistribution view.
 When an exact duplicate has both open and blocked provenance,
 `public_rights_basis` identifies the open copy while retaining both source

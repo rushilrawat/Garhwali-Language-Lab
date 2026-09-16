@@ -19,12 +19,22 @@ For each PDF, add a neighboring JSON file with the same base name:
 }
 ```
 
-Prioritize PDFs with an explicit Creative Commons license, a reliable
-public-domain basis, or written permission. Prefer original scans and stable
-institutional or archive landing pages. Keep uncertain-rights PDFs: they can be
-hashed and reviewed, but their text will stay outside the training pool.
+Prefer original scans and stable institutional or archive landing pages. Every
+non-empty page is retained in the active experimental corpus with source,
+rights, extraction, and quality fields. Public redistribution remains a
+separate decision recorded in those fields.
 
 Useful first downloads are Garhwali dictionaries with clear reuse terms,
 pre-1931 books or periodicals, institutional grammars and wordlists, and
 permissioned Garhwali transcripts. Avoid downloading a second mirror when the
 same edition and scan already exists in `sources/online/`.
+
+Run the resumable intake with:
+
+```bash
+PYTHONPATH=scripts .venv/bin/python scripts/ingest_incoming_pdfs.py
+```
+
+The command checks exact PDF hashes before extraction, uses an existing PDF
+text layer when it is substantive, OCRs image-only pages with Tesseract
+`hin+eng`, and caches each completed page under `data/extracted/`.

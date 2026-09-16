@@ -29,20 +29,20 @@
       "sha256": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220"
     },
     "evaluation/text_candidate.jsonl": {
-      "records": 2527,
-      "sha256": "2b75b3e7558d93520533f299d70e80b6dd649b06b6ff0b643ec9080ce6642a67"
+      "records": 3668,
+      "sha256": "33aa347208b8534960b1fa5367752879325111c2af3286974407b3848eaf5464"
     },
     "text/test.jsonl": {
-      "records": 2836,
-      "sha256": "fc6cef0e680846d81b74691a56839e3b831c3b98164b7a29982ef4f69b83c73e"
+      "records": 4164,
+      "sha256": "ca2377e458d87016cbf47742e29ec0f721d0e064fd43b761d58efef07f82a183"
     },
     "text/train.jsonl": {
-      "records": 80881,
-      "sha256": "c6da19a64001bdf1c09b773b5dfed4458e8646bc1585a5ce3bc9cc3f5cb31f94"
+      "records": 106804,
+      "sha256": "efad866221fe9f576b2ad834d81085839b292888738f594922248fcd9b7d649e"
     },
     "text/validation.jsonl": {
-      "records": 2499,
-      "sha256": "738acfe14f4b3442e606e46a4ea58baa96f8842a469adc06100aa6e222b923aa"
+      "records": 3114,
+      "sha256": "b0588197e74fc9c8e07c68c5f1d0e5d52f3a46ebf3f90290d581726c0d2891f3"
     },
     "tts/test.jsonl": {
       "records": 112,
@@ -99,7 +99,7 @@
     "asr_records": 112,
     "native_review_optional": true,
     "review_status": "automated_quality_screened",
-    "text_records": 2527
+    "text_records": 3668
   },
   "excluded_audio": {
     "transcript_or_language_review": 6,
@@ -113,9 +113,9 @@
   "release_status": "integrated_experimental_candidate",
   "text": {
     "records": {
-      "test": 2836,
-      "train": 80881,
-      "validation": 2499
+      "test": 4164,
+      "train": 106804,
+      "validation": 3114
     }
   },
   "tts_candidate": {

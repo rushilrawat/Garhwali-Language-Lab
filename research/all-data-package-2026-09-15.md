@@ -9,14 +9,14 @@ tier.
 
 | Layer | Rows |
 | --- | ---: |
-| Full prepared text segments | 86,216 |
-| Exact-unique source-text catalog | 27,986 |
+| Full prepared text segments | 114,082 |
+| Exact-unique source-text catalog | 28,755 |
 | Catalog texts redacted | 0 |
 | Human VAANI ASR split | 5,894 |
 | SraVaani machine-draft audio identities | 104,534 |
 | Lexicon | 1,114 |
 | Instructions | 2,568 |
-| Total exported rows | 228,312 |
+| Total exported rows | 256,947 |
 
 The eight repeated SraVaani source rows are represented once per identical audio
 hash and retain `source_audio_records`, so the package does not train twice on an

@@ -17,6 +17,14 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab'
 ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
 RELEASE_ID = 'garhwali-language-lab-v0.1.0'
+KNOWLEDGE_CONFIGS = {
+    'geography': ROOT / 'data/extracted/geography/records.jsonl',
+    'historical_terms': ROOT / 'data/extracted/historical_terms/records.jsonl',
+    'literary_people': ROOT / 'data/extracted/literary_people/records.jsonl',
+    'literary_works': ROOT / 'data/extracted/literary_works/records.jsonl',
+    'popular_songs': ROOT / 'data/extracted/popular_songs/records.jsonl',
+    'university_research': ROOT / 'data/extracted/university_research/records.jsonl',
+}
 OPEN_LICENSE_MARKERS = (
     'cc0', 'creativecommons.org/publicdomain', 'cc-by-', 'cc_by_',
     '/licenses/by/', '/licenses/by-sa/', 'mit', 'apache-2.0',
@@ -261,6 +269,8 @@ def catalog_provenance(item):
         'source_id', 'source_url', 'record_id', 'iso_639_3', 'genre', 'script',
         'license', 'license_id', 'license_url', 'rights_status', 'quality_flags',
         'rights_evidence', 'attribution',
+        'source_pdf', 'source_pdf_sha256', 'pdf_page', 'title', 'author',
+        'publication_year', 'extraction_method', 'modifications',
     )
     return {key: item.get(key) for key in keep if item.get(key) not in (None, '', [])}
 
@@ -301,6 +311,17 @@ def catalog_row(row, include_all_text=False, refinement=None):
         if text_is_public or include_all_text:
             exported['text_refinement']['release_text'] = refinement.get('release_text')
     return exported
+
+
+def knowledge_row(row, family):
+    """Add a common identity and family while preserving catalog metadata."""
+    identity = next(
+        (row.get(key) for key in ('id', 'record_id', 'person_id', 'term_id') if row.get(key)),
+        None,
+    )
+    if not identity:
+        raise ValueError(f'{family} knowledge record has no stable ID')
+    return {**row, 'id': identity, 'knowledge_family': family}
 
 
 def write_shards(rows, directory, split, shard_rows=10_000):
@@ -369,10 +390,11 @@ def dataset_card(report):
         if report['include_audio'] else
         'This transcript-only package does not include audio files or source filenames.'
     )
+    config_count = len({key.split('/', 1)[0] for key in report['configs']})
     if profile_includes_all_data(report['profile']):
         package_summary = (
             f'This complete all-data package contains **{exported_rows:,} records** '
-            'across six configurations'
+            f'across {config_count} configurations'
         )
         catalog_summary = f'''The `catalog` configuration contains all
 **{report['catalog_records']:,} exact-unique collected text records with their full
@@ -382,7 +404,7 @@ research use and any later redistribution decision can be audited.'''
     else:
         package_summary = (
             f'This rights-filtered public package contains **{exported_rows:,} records** '
-            'across six configurations'
+            f'across {config_count} configurations'
         )
         catalog_summary = f'''The `catalog` configuration publicly accounts for all
 **{report['catalog_records']:,} exact-unique collected text records**. Rows whose
@@ -434,14 +456,39 @@ configs:
   data_files:
   - split: train
     path: data/catalog/train-*.jsonl
+- config_name: geography
+  data_files:
+  - split: train
+    path: data/geography/train-*.jsonl
+- config_name: historical_terms
+  data_files:
+  - split: train
+    path: data/historical_terms/train-*.jsonl
+- config_name: literary_people
+  data_files:
+  - split: train
+    path: data/literary_people/train-*.jsonl
+- config_name: literary_works
+  data_files:
+  - split: train
+    path: data/literary_works/train-*.jsonl
+- config_name: popular_songs
+  data_files:
+  - split: train
+    path: data/popular_songs/train-*.jsonl
+- config_name: university_research
+  data_files:
+  - split: train
+    path: data/university_research/train-*.jsonl
 ---
 
 # Garhwali Language Lab
 
 Release: **{report['release_id']}**
 
-Versioned Garhwali (`gbm`) text, speech, lexicon, and instruction resources built
-by the Garhwali Language Lab. Every row retains source and license evidence.
+Versioned Garhwali (`gbm`) text, speech, lexicon, instruction, geographic,
+historical, literary, music, and university-research resources built by the
+Garhwali Language Lab. Every row retains its available source and review evidence.
 
 {package_summary}, including transcripts for **{report['draft_unique_audio']:,}
 unique SraVaani recordings**. {audio_summary}
@@ -524,6 +571,17 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     report['configs']['catalog/train'] = write_shards(
         catalog_rows, output / 'data/catalog', 'train', shard_rows
     )
+
+    for family, path in KNOWLEDGE_CONFIGS.items():
+        if not path.exists():
+            raise FileNotFoundError(f'Missing structured knowledge catalog: {path}')
+        rows = [knowledge_row(row, family) for row in read_jsonl(path)]
+        ids = [row['id'] for row in rows]
+        if len(ids) != len(set(ids)):
+            raise ValueError(f'Duplicate stable IDs in {family}')
+        report['configs'][f'{family}/train'] = write_shards(
+            rows, output / f'data/{family}', 'train', shard_rows
+        )
 
     audio_sources = []
     asr_dir = ROOT / 'data/processed/model_ready/splits' / asr_split_directory(profile)

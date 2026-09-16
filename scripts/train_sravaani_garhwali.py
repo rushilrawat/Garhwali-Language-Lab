@@ -25,9 +25,9 @@ OFFICIAL_CHECKPOINT_URL = (
     'id=1v5VaYibAaDSFuWvROsPbCzeG3iM6VbxY&export=download&confirm=t'
 )
 OFFICIAL_CHECKPOINT_BYTES = 1_796_208_640
-CLOUD_HARDWARE = 't4-small'
-CLOUD_HOURLY_USD = 0.40
-CLOUD_TIMEOUT_HOURS = 8
+CLOUD_HARDWARE = 'l4x1'
+CLOUD_HOURLY_USD = 0.80
+CLOUD_TIMEOUT_HOURS = 6
 
 BATCH_SIZE = 4
 ACCUMULATE_GRAD_BATCHES = 8
@@ -90,7 +90,7 @@ def build_training_plan(package):
         },
         'cloud_job': {
             'hardware': CLOUD_HARDWARE,
-            'gpu_memory_gb': 16,
+            'gpu_memory_gb': 24,
             'timeout_hours': CLOUD_TIMEOUT_HOURS,
             'hourly_compute_cost_usd': CLOUD_HOURLY_USD,
             'maximum_compute_cost_usd': round(

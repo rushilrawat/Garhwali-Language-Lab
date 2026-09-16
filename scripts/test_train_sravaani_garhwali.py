@@ -42,9 +42,9 @@ class TrainSraVaaniGarhwaliTests(unittest.TestCase):
         self.assertEqual(plan['held_out_test_records'], 112)
         self.assertEqual(plan['base_checkpoint']['bytes'], 1796208640)
         self.assertEqual(plan['base_checkpoint']['availability'], 'official_direct_download')
-        self.assertEqual(plan['cloud_job']['hardware'], 't4-small')
-        self.assertEqual(plan['cloud_job']['timeout_hours'], 8)
-        self.assertEqual(plan['cloud_job']['maximum_compute_cost_usd'], 3.2)
+        self.assertEqual(plan['cloud_job']['hardware'], 'l4x1')
+        self.assertEqual(plan['cloud_job']['timeout_hours'], 6)
+        self.assertEqual(plan['cloud_job']['maximum_compute_cost_usd'], 4.8)
 
     def test_external_dependency_audit_names_missing_checkpoint_and_cuda(self):
         with tempfile.TemporaryDirectory() as directory:

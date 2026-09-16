@@ -1,0 +1,132 @@
+{
+  "generated_at": "2026-09-16",
+  "policy": "Every non-empty unique-PDF page is active experimental data; quality and rights signals do not remove it.",
+  "input_pdfs": 7,
+  "unique_pdfs_extracted": 6,
+  "exact_duplicate_pdfs": 1,
+  "records": 769,
+  "characters": 1774697,
+  "duplicate_text_records_within_batch": 0,
+  "text_records_already_in_corpus": 0,
+  "all_nonempty_records_active_experimentally": true,
+  "output": "experimental/incoming_pdfs.jsonl",
+  "documents": [
+    {
+      "file": "incoming/pdfs/Dictionary of English hindi Garhwali.pdf",
+      "sha256": "ec3553e7973466464f75b76e2163fe72455917426af33d345ac0fa2575421cdc",
+      "bytes": 76780146,
+      "pages": 124,
+      "source_id": "incoming_english_hindi_garhwali_dictionary",
+      "title": "Dictionary: English-Garhwali-Hindi",
+      "author": "Achlanand Jakhmola",
+      "publication_year": 2016,
+      "exact_duplicate_of": null,
+      "already_ingested_as": null,
+      "status": "extracted_active_experimental",
+      "extraction_method": "tesseract_hin_eng",
+      "extracted_records": 123,
+      "blank_or_no_text_pages": [
+        124
+      ]
+    },
+    {
+      "file": "incoming/pdfs/Gadwali LokGeet.pdf",
+      "sha256": "6a1028710506a4dd2f2695953ad538a1152b2b8b4efd58e95e64109fafbfb34e",
+      "bytes": 6878808,
+      "pages": 376,
+      "source_id": "incoming_gadwali_lokgeet",
+      "title": "Gadwali LokGeet",
+      "author": "Govind Chatak",
+      "publication_year": 1956,
+      "exact_duplicate_of": "data/downloads/folklore/internet_archive/govind_chatak_gadwali_lokgeet_1956.pdf",
+      "already_ingested_as": "data/extracted/folklore/govind_chatak_gadwali_lokgeet_1956.jsonl",
+      "status": "exact_duplicate_not_reextracted",
+      "extracted_records": 0
+    },
+    {
+      "file": "incoming/pdfs/Gadwali Sahitya.pdf",
+      "sha256": "0747bd323deb1c25a4577e6bba38a55648906a17525c1881394c8531469bcc62",
+      "bytes": 3887790,
+      "pages": 75,
+      "source_id": "incoming_gadwali_sahitya",
+      "title": "Garhwali Sahitya ki Bhumika",
+      "author": "Damodar Prasad Thapliyal; Shyam Chand Negi",
+      "publication_year": 1954,
+      "exact_duplicate_of": null,
+      "already_ingested_as": null,
+      "status": "extracted_active_experimental",
+      "extraction_method": "tesseract_hin_eng",
+      "extracted_records": 74,
+      "blank_or_no_text_pages": [
+        2
+      ]
+    },
+    {
+      "file": "incoming/pdfs/Garhwali Bhasha_ Ek Bhashashashtriya Aur Vyakarnik Adhyayan.pdf",
+      "sha256": "b0eb9d2b2621bd220991f1355dc1c0a1d6b8c11bd72b3ad30cc692f99680b1de",
+      "bytes": 14698675,
+      "pages": 147,
+      "source_id": "incoming_garhwali_bhasha_linguistic_grammatical_study",
+      "title": "Garhwali Bhasha: Ek Bhashashastriya Aur Vyakaranik Adhyayan",
+      "author": "Govind Chatak",
+      "publication_year": null,
+      "exact_duplicate_of": null,
+      "already_ingested_as": null,
+      "status": "extracted_active_experimental",
+      "extraction_method": "tesseract_hin_eng",
+      "extracted_records": 147,
+      "blank_or_no_text_pages": []
+    },
+    {
+      "file": "incoming/pdfs/Garhwali Hindi Dictionary Uttarakhand Garwali Gadwali.pdf",
+      "sha256": "ea4d71133ee802ebf7df0dd1f913e5feab15ef5b826600294655f513a972cc87",
+      "bytes": 24308443,
+      "pages": 239,
+      "source_id": "incoming_garhwali_hindi_dictionary",
+      "title": "Garhwali-Hindi Dictionary",
+      "author": "Arvind Purohit; Beena Benzwal",
+      "publication_year": 2007,
+      "exact_duplicate_of": null,
+      "already_ingested_as": null,
+      "status": "extracted_active_experimental",
+      "extraction_method": "tesseract_hin_eng",
+      "extracted_records": 239,
+      "blank_or_no_text_pages": []
+    },
+    {
+      "file": "incoming/pdfs/Garhwali language and culture.pdf",
+      "sha256": "58368f43b6a0f1ba6f5d087e099f14df4b5bf640efc9bb900dd74c94e73302d5",
+      "bytes": 35895099,
+      "pages": 78,
+      "source_id": "incoming_garhwali_language_and_culture",
+      "title": "Garhwal: Bhasha, Sahitya aur Sanskriti",
+      "author": "Govind Chatak",
+      "publication_year": 2008,
+      "exact_duplicate_of": null,
+      "already_ingested_as": null,
+      "status": "extracted_active_experimental",
+      "extraction_method": "tesseract_hin_eng",
+      "extracted_records": 76,
+      "blank_or_no_text_pages": [
+        38,
+        77
+      ]
+    },
+    {
+      "file": "incoming/pdfs/Garhwali, A Syntactic Sketch of (Chandola).pdf",
+      "sha256": "07faaf18f527620905c727d23583bc6926ddc9ee3996c03243f7fc93c6709e89",
+      "bytes": 2864311,
+      "pages": 110,
+      "source_id": "incoming_chandola_syntactic_sketch",
+      "title": "A Syntactic Sketch of Garhwali",
+      "author": "Anang Chandra Chandola",
+      "publication_year": null,
+      "exact_duplicate_of": null,
+      "already_ingested_as": null,
+      "status": "extracted_active_experimental",
+      "extraction_method": "embedded_pdf_text_layer",
+      "extracted_records": 110,
+      "blank_or_no_text_pages": []
+    }
+  ]
+}

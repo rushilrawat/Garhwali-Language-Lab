@@ -7,6 +7,27 @@ import build_huggingface_dataset as m
 
 
 class HuggingFaceDatasetBuilderTests(unittest.TestCase):
+    def test_knowledge_configs_cover_every_structured_cultural_catalog(self):
+        self.assertEqual(
+            set(m.KNOWLEDGE_CONFIGS),
+            {
+                'geography', 'historical_terms', 'literary_people',
+                'literary_works', 'popular_songs', 'university_research',
+            },
+        )
+
+    def test_knowledge_row_adds_a_stable_common_id_without_losing_metadata(self):
+        exported = m.knowledge_row(
+            {'person_id': 'literary-person:example', 'canonical_name': 'Example'},
+            'literary_people',
+        )
+        self.assertEqual(exported['id'], 'literary-person:example')
+        self.assertEqual(exported['knowledge_family'], 'literary_people')
+        self.assertEqual(exported['canonical_name'], 'Example')
+
+        with self.assertRaisesRegex(ValueError, 'stable ID'):
+            m.knowledge_row({'title': 'No identifier'}, 'literary_works')
+
     def test_public_text_requires_at_least_one_publishable_exact_source(self):
         allowed = {
             'parents': [{'provenance': [{
@@ -129,6 +150,29 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertEqual(exported['redistribution_status'], 'rights_pending')
         self.assertIsNone(exported['redaction_reason'])
 
+    def test_catalog_preserves_pdf_page_provenance(self):
+        row = {
+            'text_sha256': 'd' * 64,
+            'text': 'गढ़वाली पाठ',
+            'provenance': [{
+                'source_id': 'incoming_book',
+                'source_pdf_sha256': 'a' * 64,
+                'pdf_page': 7,
+                'title': 'Garhwali Book',
+                'author': 'Example Author',
+                'publication_year': 1954,
+                'extraction_method': 'tesseract_hin_eng',
+            }],
+        }
+        exported = m.catalog_row(row, include_all_text=True)
+        source = exported['sources'][0]
+        self.assertEqual(source['source_pdf_sha256'], 'a' * 64)
+        self.assertEqual(source['pdf_page'], 7)
+        self.assertEqual(source['title'], 'Garhwali Book')
+        self.assertEqual(source['author'], 'Example Author')
+        self.assertEqual(source['publication_year'], 1954)
+        self.assertEqual(source['extraction_method'], 'tesseract_hin_eng')
+
     def test_all_data_profile_is_first_class(self):
         self.assertTrue(m.profile_includes_all_data('all-data'))
         self.assertFalse(m.profile_includes_all_data('public'))
@@ -155,6 +199,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIn('complete all-data package', card)
         self.assertIn('No catalog text values are redacted', card)
         self.assertNotIn('This rights-filtered package', card)
+        self.assertIn('config_name: literary_works', card)
+        self.assertIn('config_name: university_research', card)
 
     def test_catalog_includes_open_text(self):
         row = {

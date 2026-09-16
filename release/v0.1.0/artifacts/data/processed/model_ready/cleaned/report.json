@@ -10,15 +10,15 @@
   },
   "text": {
     "change:decoded_html_entities": 3,
-    "change:removed_markup_tags": 137,
-    "change:removed_speech_annotations": 4686,
-    "change:removed_truncation_marker": 916,
-    "changed_records": 4886,
+    "change:removed_markup_tags": 159,
+    "change:removed_speech_annotations": 4966,
+    "change:removed_truncation_marker": 917,
+    "changed_records": 5187,
     "flag:bengali_script": 8,
     "flag:empty_after_cleanup": 1,
-    "flag:possibly_incomplete": 916,
-    "flag:url": 6,
-    "records": 27986,
-    "review_records": 926
+    "flag:possibly_incomplete": 917,
+    "flag:url": 7,
+    "records": 28755,
+    "review_records": 928
   }
 }
