@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-359%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-383%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -103,8 +103,8 @@ not a defect in the dataset.
 
 ## ✨ Current snapshot
 
-- **31,055 source text records** from 40 files, deduplicated to **28,755 unique
-  texts** and 9.15 million characters.
+- **31,094 source text records** from 42 files, deduplicated to **28,755 unique
+  texts** and 9,145,955 characters.
 - **119,679 sentence-like occurrences** exposed from page-sized and long records,
   producing **114,064 exact-unique segments** with parent provenance retained.
 - **769 active page records from six newly supplied PDFs**, including two
@@ -115,8 +115,8 @@ not a defect in the dataset.
   revision-pinned SraVaani experimental drafts.
 - **363 identified speaker IDs**, with district, gender, and speaker-status fields
   preserved; current VAANI coverage is Uttarkashi and Tehri Garhwal.
-- **25,456 likely Garhwali text candidates**, 1,468 source-declared mixed-language
-  records, 1,514 review records, and 317 non-Garhwali cultural-context records.
+- **25,459 likely Garhwali text candidates**, 1,468 source-declared mixed-language
+  records, 1,511 review records, and 317 non-Garhwali cultural-context records.
 - **4,195 exact-unique texts with a public rights basis**, including 3,559 strict
   public candidates; 1,748 additional high-quality candidates remain active with
   rights-pending provenance.
@@ -164,6 +164,12 @@ not a defect in the dataset.
   quality analysis marks 103,354 standard and 1,188 flagged rows. A cross-layer
   audit links 98 flagged drafts and 8 human transcripts to one repeated Bengali-
   script source-label conflict; all 106 records remain visible for source analysis.
+- **65,000 independent Whisper-large-v3-turbo checks** are attached to the
+  corresponding machine drafts as evidence, including 157 exact agreements;
+  no source or machine transcript was overwritten.
+- **659 incoming PDF pages** completed four-layout OCR comparison. Strong
+  consensus promoted 69 reversible corrections while retaining each original
+  OCR value, page identity, source hash, and confidence evidence.
 - **1,188 confidence-scored recovery alternatives** are integrated beside their
   immutable SraVaani originals: 30 medium, 35 low, and 1,123 very-low review
   confidence, with no quarantine or automatic promotion.
@@ -197,10 +203,10 @@ not a defect in the dataset.
 - **SraVaani adaptation result:** the 102-step human-reference run scores 43.528%
   WER / 17.452% CER on the frozen 112-record test. Original SraVaani remains
   preferred at 42.761% / 17.606% because WER is the primary metric.
-- **359 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **383 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
-These figures describe the preparation snapshot updated on 2026-09-16. Raw
+These figures describe the preparation snapshot updated on 2026-09-18. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
 Git through `.gitignore`.
 
@@ -707,7 +713,7 @@ established from machine scores alone.
 20. [x] **Structured knowledge packaging — Medium:** geography, historical terms,
     literary people, literary works, popular songs, and university research are
     first-class Hugging Face configurations with 216 records and stable IDs.
-21. [x] **Release reconciliation — High:** the 256,947-row all-data package and
+21. [x] **Release reconciliation — High:** the 257,145-row all-data package and
     146,482-row public package are rebuilt, the tracked release index is synced,
     and the public export passes provenance, count, and leakage validation.
 22. [x] **Refined SraVaani decision — Xhigh:** Job
@@ -747,8 +753,8 @@ established from machine scores alone.
 29. [x] **Balanced text/book continuation — Xhigh:** every seed improved both
     validation domains. General loss fell from 6.729359 to a 5.316585 mean;
     PDF-domain accuracy rose from 24.473% to approximately 32.29%.
-30. [x] **Semantic duplicate and leakage audit — High:** all 114,082 text
-    segments in the pre-OCR-correction snapshot were embedded. The audit found 29,903 high-similarity candidate
+30. [x] **Semantic duplicate and leakage audit — High:** the complete
+    pre-OCR-correction segment snapshot was embedded. The audit found 29,903 high-similarity candidate
     pairs, including 2,839 cross-split candidates requiring review; no source
     record was automatically deleted or changed.
 31. [x] **Release metadata completeness — High:** profile all 114,064 current split rows,

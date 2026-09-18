@@ -4,14 +4,14 @@ Updated 2026-09-18 from the checked-in preparation scripts. Raw and downloaded m
 
 ## Text
 
-- 31,055 source records from 40 files; 28,755 unique normalized texts / 9,146,061 characters.
+- 31,094 source records from 42 files; 28,755 unique normalized texts / 9,145,955 characters.
 - 2,123 duplicate rows retained in 2,022 provenance groups.
 - PahariLI's 15,000 records explicitly labeled `gbm` are active in the complete experimental corpus and in `data/processed/text/paharili_garhwali.jsonl`; source provenance remains unchanged.
 - The final web-learning pass archived 189 phrase or example rows from three eUttaranchal lessons, LanguagesHome, and Omniglot. Exact deduplication contributed 139 new unique texts; all 189 are active for local experiments and retain source URLs and no-open-license flags.
 - All 28,755 canonical normalized texts, including experimental and restricted provenance, are active in `data/processed/text/all_garhwali.jsonl`.
 - Conservative cleanup retained all 28,755 texts without rewriting spelling or dialect forms.
 - Sentence-like re-extraction exposes 119,679 occurrences / 114,064 exact-unique segments while retaining every parent and provenance chain. Connected-component assignment leaves zero exact segment crossing train, validation and test.
-- Deterministic document-aware partitions: train 25,991; validation 1,391; test 1,372. Only 151 documents moved from their original hash split to keep connected documents together.
+- Deterministic document-aware parent partitions: train 25,862; validation 1,452; test 1,441. Connected-component assignment keeps related documents together.
 - Quality signals: 71 low quality; 28,684 review band.
 - Seven incoming PDFs were hash-checked. Six unique books yielded 769 active page records and 1,774,697 characters; the seventh exactly matches the already ingested 370-record *Gadwali LokGeet* scan. The new pages contribute 27,926 Hugging Face text segment identities with full book, page, hash, OCR, rights, and quality provenance. Seven neighboring JSON records now preserve verified title-page and catalog bibliography, including roles, editions, publication dates and places, publishers, identifiers, extent, subjects, source links, duplicate relationships, and rights evidence.
 - Structured Wiktionary extraction now yields 77 Garhwali lemmas, alternative forms, and examples in place of 56 flattened raw page blobs. Conservative wikitext rendering removes page scaffolding while preserving source prose.
@@ -143,8 +143,8 @@ The rebuilt complete package contains 257,145 rows and the separate public redis
 ## Language quality
 
 - All 28,755 cleaned texts have source-backed language, Unicode-script, genre, explicit-dialect, and geographic-evidence fields.
-- Separate views contain 25,456 likely Garhwali candidates, 1,468 declared mixed-language records, 1,514 unresolved script/language records, and 317 non-Garhwali cultural-context records. The tagged all-data view retains all four groups.
-- Language-identity confidence is high for 9,975 texts, medium for 15,366, and low for 2,645. The medium group is dominated by 14,999 PahariLI texts whose Garhwali label is useful but whose component lineage remains missing.
+- Separate views contain 25,459 likely Garhwali candidates, 1,468 declared mixed-language records, 1,511 unresolved script/language records, and 317 non-Garhwali cultural-context records. The tagged all-data view retains all four groups.
+- Language-identity confidence is high for 9,981 texts, medium for 15,478, and low for 3,296. The medium group is dominated by 14,999 PahariLI texts whose Garhwali label is useful but whose component lineage remains missing.
 - Every text has a genre. Resource views expose 1,114 lexicon candidates, 455 parallel examples, and 1,187 grammar-source candidates.
 - Train-only language resources include a 330-symbol Unicode character tokenizer, 203,539 observed word types, 1,114 pronunciation candidates (293 with source phonetic evidence), and 1,736 normalized TTS candidate pairs.
 - Only 29 text records carry explicit dialect labels. District names are never converted into dialect labels; 10,872 conversational, lexical, or folk records are prioritized for dialect review.
