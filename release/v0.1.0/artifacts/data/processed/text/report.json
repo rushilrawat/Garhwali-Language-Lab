@@ -1,15 +1,15 @@
 {
-  "source_files": 40,
-  "source_records": 31055,
+  "source_files": 42,
+  "source_records": 31094,
   "unique_texts": 28755,
   "duplicate_rows": 2123,
   "duplicate_groups": 2022,
-  "empty_records": 177,
+  "empty_records": 216,
   "invalid_json_records": 0,
   "characters": 9146061,
   "layer_records": {
     "corpus": 3581,
-    "data/extracted": 956,
+    "data/extracted": 995,
     "experimental": 23971,
     "extracted": 1097,
     "restricted": 1450

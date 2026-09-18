@@ -57,7 +57,7 @@ and no full lyric or translation text was copied in this pass.
 
 ```bash
 PYTHONPATH=scripts .venv/bin/python scripts/ingest_popular_songs.py
-PYTHONPATH=scripts .venv/bin/python -m unittest scripts.test_ingest_popular_songs
+PYTHONPATH=scripts .venv/bin/python -m unittest tests.test_ingest_popular_songs
 ```
 
 The generated `data/extracted/popular_songs/records.jsonl` and `report.json`

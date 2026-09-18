@@ -1,0 +1,28 @@
+{
+  "source_id": "incoming_garhwali_bhasha_linguistic_grammatical_study",
+  "title": "Garhwali Bhasha: Ek Bhashashastriya Aur Vyakaranik Adhyayan",
+  "title_original": "गढ़वाली भाषा: एक भाषाशास्त्रीय और व्याकरणिक अध्ययन",
+  "author": "Govind Chatak",
+  "foreword_author": "Dhirendra Varma",
+  "publication_year": 1959,
+  "publication_date": "1959-09",
+  "edition": "First edition",
+  "publisher": "Lok Bharati",
+  "distributor": "Mohini Prakashan",
+  "publication_place": "Dehradun, India",
+  "physical_pages": 147,
+  "pdf_pages": 147,
+  "languages": ["Hindi", "Garhwali"],
+  "script": ["Devanagari"],
+  "genre": "grammar_linguistics",
+  "subjects": ["Garhwali grammar", "phonology", "morphology", "dialectology", "lexicon"],
+  "landing_page": "https://epustakalay.com/book/28579-garhwali-bhasha-by-dr-govind-chatak-dheerendra-verma/",
+  "catalog_records": [
+    "https://epustakalay.com/book/17024-gadhwali-bhasha-1959-by-dr-govind-chatak/"
+  ],
+  "license_or_rights_statement": "No open-content license or explicit reuse permission was identified in the scan or catalog records.",
+  "rights_status": "publicly_accessible_rights_unresolved",
+  "rights_evidence_url": "https://epustakalay.com/book/28579-garhwali-bhasha-by-dr-govind-chatak-dheerendra-verma/",
+  "extraction_note": "Image-only scan; Tesseract hin+eng OCR used.",
+  "notes": "The publication page names Lok Bharati at 108-A Rajpur Road as publisher, Mohini Prakashan as distributor, and September 1959 as the publication date."
+}

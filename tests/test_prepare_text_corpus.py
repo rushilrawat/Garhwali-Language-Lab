@@ -36,6 +36,17 @@ class TextPreparationTests(unittest.TestCase):
             self.assertEqual(report["empty_records"], 1)
             self.assertEqual(report["unique_texts"], 1)
 
+    def test_prepare_fills_missing_source_id_from_filename(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "corpus" / "garhwali_folklore.jsonl"
+            source.parent.mkdir()
+            source.write_text(json.dumps({"record_id": "page:1", "text": "गढ़वाली कथा"}) + "\n")
+            m.prepare([source], root / "out", root=root)
+            record = json.loads((root / "out/canonical.jsonl").read_text())
+            self.assertEqual(record["provenance"][0]["source_id"], "garhwali_folklore")
+            self.assertEqual(record["provenance"][0]["rights_status"], "not_recorded")
+
     def test_prepare_preserves_language_quality_metadata(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

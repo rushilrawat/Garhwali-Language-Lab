@@ -19,9 +19,9 @@ The reserved Hugging Face repository is
 
 | Resource | Current release |
 | --- | ---: |
-| Exact-unique parent texts | 27,986 |
-| Sentence segments | 86,216 |
-| All-data package | 228,312 rows / 0 redacted texts |
+| Exact-unique parent texts | 28,755 |
+| Sentence segments | 114,064 |
+| All-data package | 257,145 rows / 0 redacted texts |
 | All supervised speech rows | 5,894 / 8.803724 hours |
 | Strict identified-speaker comparison rows | 2,002 / 3.562395 hours |
 | Normalized training-candidate WAVs | 1,736 |
@@ -37,6 +37,8 @@ The reserved Hugging Face repository is
 | Zero-shot Whisper-small, same 112 rows | 0.972 WER / 0.578 CER |
 | SraVaani experimental drafts | 104,542 source rows / 104,534 unique audio |
 | SraVaani draft quality | 103,354 standard / 1,188 flagged |
+| Independent Whisper agreement evidence | 65,000 rows / 157 exact agreements |
+| Incoming PDF OCR consensus | 659 pages checked / 69 corrected |
 | GarhwaliBench external task records | 3,847 |
 | GarhwaliBench held-out text / ASR | 2,492 / 112 |
 | Character bigram baseline | 16.464 perplexity |

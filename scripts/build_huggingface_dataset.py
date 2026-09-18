@@ -595,11 +595,13 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
 
     queue_path = ROOT / 'data/processed/model_ready/transcripts/untranscribed_queue.jsonl'
     confidence_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl'
+    verified_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_verified.jsonl'
     quality_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl'
     raw_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl'
     drafts_path = next(
         path for path in (
-            confidence_drafts_path, quality_drafts_path, raw_drafts_path
+            verified_drafts_path, confidence_drafts_path,
+            quality_drafts_path, raw_drafts_path
         ) if path.exists()
     )
     queue = list(read_jsonl(queue_path))

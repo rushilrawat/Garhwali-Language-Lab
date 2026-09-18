@@ -88,6 +88,28 @@ SOURCE_METADATA = {
 }
 
 
+def source_metadata_for(pdf: Path) -> dict:
+    """Combine built-in metadata with an optional neighboring JSON sidecar."""
+    fallback_id = "incoming_" + re.sub(
+        r"[^a-z0-9]+", "_", pdf.stem.casefold()
+    ).strip("_")
+    metadata = dict(SOURCE_METADATA.get(pdf.name, {
+        "source_id": fallback_id,
+        "title": pdf.stem,
+        "genre": "reference_material",
+    }))
+    sidecar = pdf.with_suffix(".json")
+    if sidecar.is_file():
+        value = json.loads(sidecar.read_text(encoding="utf-8"))
+        if not isinstance(value, dict):
+            raise ValueError(f"PDF metadata sidecar must contain an object: {sidecar}")
+        metadata.update({key: item for key, item in value.items() if item is not None})
+    metadata.setdefault("source_id", fallback_id)
+    metadata.setdefault("title", pdf.stem)
+    metadata.setdefault("genre", "reference_material")
+    return metadata
+
+
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -133,15 +155,19 @@ def page_record(*, source_id: str, source_pdf: Path, source_sha256: str,
                 page_number: int, text: str, extraction_method: str,
                 title: str, author: str | None = None,
                 publication_year: int | None = None,
-                genre: str = "reference_material") -> dict:
+                genre: str = "reference_material",
+                source_metadata: dict | None = None) -> dict:
     text = normalized_text(text)
-    flags = ["needs_native_review", "user_supplied_pdf", "rights_unknown"]
+    source_metadata = source_metadata or {}
+    flags = ["needs_native_review", "user_supplied_pdf"]
+    if not source_metadata.get("license_or_rights_statement"):
+        flags.append("rights_unknown")
     if extraction_method.startswith("tesseract"):
         flags.append("machine_ocr")
     else:
         flags.append("embedded_pdf_text_layer")
     text_sha256 = hashlib.sha256(text.encode("utf-8")).hexdigest()
-    return {
+    record = {
         "record_id": f"{source_id}:page:{page_number}",
         "source_id": source_id,
         "source_pdf": str(source_pdf),
@@ -173,6 +199,17 @@ def page_record(*, source_id: str, source_pdf: Path, source_sha256: str,
             else "PDF page rendered to image; Tesseract hin+eng OCR; Unicode NFC; whitespace normalization"
         ),
     }
+    for field in (
+        "download_url", "landing_page", "license_or_rights_statement",
+        "rights_evidence_url", "suspected_garhwali_pages", "notes", "subtitle",
+        "edition", "publisher", "publication_place", "isbn", "lccn",
+        "physical_pages", "languages", "subjects", "catalog_records",
+        "persistent_identifier", "work_type", "degree", "institution",
+        "department", "dialect_scope", "editor", "compiler", "volume",
+    ):
+        if source_metadata.get(field) is not None:
+            record[field] = source_metadata[field]
+    return record
 
 
 def locate_tessdata(work_dir: Path) -> Path:
@@ -263,11 +300,7 @@ def ingest(input_dir: Path, output: Path, report_path: Path, cache_dir: Path,
         digest = sha256_file(pdf)
         duplicate = find_exact_duplicate(pdf, all_pdfs)
         reader = PdfReader(pdf)
-        metadata = SOURCE_METADATA.get(pdf.name, {
-            "source_id": "incoming_" + re.sub(r"[^a-z0-9]+", "_", pdf.stem.casefold()).strip("_"),
-            "title": pdf.stem,
-            "genre": "reference_material",
-        })
+        metadata = source_metadata_for(pdf)
         document = {
             "file": str(pdf.relative_to(ROOT)),
             "sha256": digest,
@@ -277,6 +310,11 @@ def ingest(input_dir: Path, output: Path, report_path: Path, cache_dir: Path,
             "title": metadata["title"],
             "author": metadata.get("author"),
             "publication_year": metadata.get("publication_year"),
+            "metadata_sidecar": (
+                str(pdf.with_suffix(".json").relative_to(ROOT))
+                if pdf.with_suffix(".json").is_file() else None
+            ),
+            "bibliographic_metadata": metadata,
             "exact_duplicate_of": str(duplicate.relative_to(ROOT)) if duplicate else None,
             "already_ingested_as": KNOWN_DUPLICATE_OUTPUTS.get(digest),
         }
@@ -328,6 +366,7 @@ def ingest(input_dir: Path, output: Path, report_path: Path, cache_dir: Path,
                 author=metadata.get("author"),
                 publication_year=metadata.get("publication_year"),
                 genre=metadata["genre"],
+                source_metadata=metadata,
             ))
         document.update(
             status="extracted_active_experimental",

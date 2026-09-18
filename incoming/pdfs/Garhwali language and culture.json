@@ -1,0 +1,26 @@
+{
+  "source_id": "incoming_garhwali_language_and_culture",
+  "title": "Garhwal: Bhasha, Sahitya aur Sanskriti",
+  "title_original": "गढ़वाल: भाषा, साहित्य और संस्कृति",
+  "author": "Govind Chatak",
+  "publication_year": 2008,
+  "edition": "First edition",
+  "publisher": "Takshila Prakashan",
+  "publication_place": "New Delhi, India",
+  "isbn": "978-81-7965-157-5",
+  "physical_pages": 152,
+  "pdf_pages": 78,
+  "languages": ["Hindi", "Garhwali"],
+  "script": ["Devanagari"],
+  "genre": "language_culture_research",
+  "subjects": ["Garhwal history", "Garhwali language", "written literature", "oral literature", "folk music", "folk dance", "folk theatre"],
+  "landing_page": "https://www.retailmaharaj.com/products/garhwal-language-literature-and-culture-1",
+  "catalog_records": [
+    "https://www.exoticindiaart.com/book-author/govind%20chatak/"
+  ],
+  "license_or_rights_statement": "All rights reserved. The scan states that reproduction or transmission by any means requires written permission from the publisher.",
+  "rights_status": "copyright_all_rights_reserved",
+  "rights_evidence_url": "scan:page:2",
+  "extraction_note": "Two book pages per PDF page; image scan OCRed with Tesseract hin+eng.",
+  "notes": "The contents cover the Central Himalaya/Garhwal, people and life, Garhwali language, written and oral literature, folk instruments and music, dance, and theatre."
+}

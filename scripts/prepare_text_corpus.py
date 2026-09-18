@@ -29,6 +29,12 @@ LINGUISTIC_METADATA_FIELDS = (
 DOCUMENT_PROVENANCE_FIELDS = (
     "source_pdf", "source_pdf_sha256", "pdf_page", "title", "author",
     "publication_year", "extraction_method", "modifications",
+    "subtitle", "edition", "publisher", "publication_place", "isbn", "lccn",
+    "physical_pages", "languages", "subjects", "catalog_records",
+    "persistent_identifier", "work_type", "degree", "institution", "department",
+    "dialect_scope", "editor", "compiler", "volume", "landing_page",
+    "original_ocr_text", "original_ocr_text_sha256", "reocr_evidence",
+    "license_or_rights_statement", "rights_evidence_url", "notes",
 )
 
 
@@ -120,12 +126,12 @@ def prepare(paths: list[Path], output_dir: Path, root: Path = ROOT) -> dict:
                     "line": line_number,
                     "record_id": record_id(row, f"line:{line_number}"),
                     "text_field": field,
-                    "source_id": row.get("source_id"),
+                    "source_id": row.get("source_id") or path.stem,
                     "source_url": row.get("source_url"),
                     "license": row.get("license") or row.get("license_name"),
                     "license_id": row.get("license_id"),
                     "license_url": row.get("license_url"),
-                    "rights_status": row.get("rights_status"),
+                    "rights_status": row.get("rights_status") or "not_recorded",
                     "rights_evidence": row.get("rights_evidence"),
                     "attribution": row.get("attribution"),
                     "training_eligible": bool(row.get("training_eligible", False)),

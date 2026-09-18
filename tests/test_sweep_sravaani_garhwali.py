@@ -40,6 +40,15 @@ class SraVaaniSweepTests(unittest.TestCase):
         self.assertEqual({row.seed for row in trials}, {17, 29, 41, 53, 71})
         self.assertIn(3e-5, {row.learning_rate for row in trials})
 
+    def test_builds_single_validation_selected_expanded_human_trial(self):
+        trials = m.build_expanded_human_plan()
+        self.assertEqual(len(trials), 1)
+        trial = trials[0]
+        self.assertEqual(trial.scope, "decoder_joint")
+        self.assertEqual(trial.learning_rate, 5e-5)
+        self.assertEqual(trial.epochs, 2)
+        self.assertEqual(trial.seed, 17)
+
 
 if __name__ == "__main__":
     unittest.main()

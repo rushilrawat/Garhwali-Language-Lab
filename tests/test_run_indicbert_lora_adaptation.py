@@ -21,6 +21,27 @@ class IndicBertLoraAdaptationTests(unittest.TestCase):
     def test_target_modules_are_narrow_and_explicit(self):
         self.assertEqual(m.LORA_TARGET_MODULES, ('query', 'value'))
 
+    def test_auto_device_prefers_cuda_then_mps(self):
+        class Available:
+            @staticmethod
+            def is_available():
+                return True
+
+        class Unavailable:
+            @staticmethod
+            def is_available():
+                return False
+
+        cuda = type('Torch', (), {
+            'cuda': Available(), 'backends': type('Backends', (), {'mps': Available()})(),
+        })()
+        mps = type('Torch', (), {
+            'cuda': Unavailable(), 'backends': type('Backends', (), {'mps': Available()})(),
+        })()
+        self.assertEqual(m.resolve_device('auto', cuda), 'cuda')
+        self.assertEqual(m.resolve_device('auto', mps), 'mps')
+        self.assertEqual(m.resolve_device('cpu', cuda), 'cpu')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -111,6 +111,19 @@ def build_refined_decoder_plan() -> list[Trial]:
     return trials
 
 
+def build_expanded_human_plan() -> list[Trial]:
+    """Use the validation-selected decoder recipe on the expanded human set."""
+    return [Trial(
+        "expanded-human-decoder-lr5e-5-e2-s17",
+        "decoder_joint",
+        5e-5,
+        2,
+        4,
+        8,
+        17,
+    )]
+
+
 def conservative_prior_cost_usd(job_durations_seconds: list[float]) -> float:
     return round(sum(job_durations_seconds) / 3600 * HOURLY_COST_USD, 6)
 
@@ -303,6 +316,8 @@ def run(
         trials = build_trial_plan()
     elif plan_mode == "refined_decoder":
         trials = build_refined_decoder_plan()
+    elif plan_mode == "expanded_human":
+        trials = build_expanded_human_plan()
     else:
         raise ValueError(f"Unknown plan mode: {plan_mode}")
     if max_trials is not None:
@@ -449,7 +464,7 @@ def main() -> None:
     parser.add_argument("--max-trials", type=int)
     parser.add_argument(
         "--plan-mode",
-        choices=("broad", "refined_decoder"),
+        choices=("broad", "refined_decoder", "expanded_human"),
         default="broad",
     )
     args = parser.parse_args()

@@ -1,0 +1,28 @@
+{
+  "source_id": "incoming_gadwali_lokgeet",
+  "title": "Garhwali Lokgeet",
+  "title_original": "गढ़वाली लोकगीत",
+  "author": "Govind Chatak",
+  "role": "Compiler and Hindi translator",
+  "publication_year": 1956,
+  "volume": "Volume 1: Laghu Geet",
+  "publisher": "Jugal Kishore and Company",
+  "publication_place": "Dehradun, India",
+  "pdf_pages": 376,
+  "languages": ["Garhwali", "Hindi"],
+  "script": ["Devanagari"],
+  "genre": "folk_literature",
+  "subjects": ["Garhwali folk songs", "oral literature", "Hindi translations"],
+  "landing_page": "https://archive.org/details/in.ernet.dli.2015.404620",
+  "catalog_records": [
+    "https://cir.nii.ac.jp/crid/1970867909812516797",
+    "https://tufs.repo.nii.ac.jp/records/10123"
+  ],
+  "persistent_identifier": "https://doi.org/10.15026/8727",
+  "license_or_rights_statement": "The located archive and catalog records provide public access but do not identify an open-content license for this 1956 edition.",
+  "rights_status": "publicly_accessible_rights_unresolved",
+  "rights_evidence_url": "https://archive.org/details/in.ernet.dli.2015.404620",
+  "exact_duplicate_of": "data/downloads/folklore/internet_archive/govind_chatak_gadwali_lokgeet_1956.pdf",
+  "already_ingested_as": "data/extracted/folklore/govind_chatak_gadwali_lokgeet_1956.jsonl",
+  "notes": "This user-supplied file is byte-identical to the earlier Internet Archive/Digital Library of India scan and is not extracted twice."
+}

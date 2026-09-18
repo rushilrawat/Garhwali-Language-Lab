@@ -127,6 +127,54 @@ def metric_summary(references, hypotheses):
     }
 
 
+def generation_diagnostics(rows, hypotheses):
+    """Summarize generation failure modes globally and by instruction task."""
+    grouped = defaultdict(list)
+    details = []
+    for row, hypothesis in zip(rows, hypotheses):
+        normalized_hypothesis = normalize(hypothesis)
+        normalized_instruction = normalize(row['instruction'])
+        tokens = normalized_hypothesis.split()
+        repeated_adjacent = sum(
+            left == right for left, right in zip(tokens, tokens[1:])
+        )
+        detail = {
+            'instruction_sha256': row['instruction_sha256'],
+            'task': row['task'],
+            'reference': row['response'],
+            'hypothesis': hypothesis,
+            'empty': not bool(normalized_hypothesis),
+            'copies_instruction': bool(normalized_hypothesis) and (
+                normalized_hypothesis == normalized_instruction
+            ),
+            'has_control_token': bool(re.search(r'<extra_id_\d+>', hypothesis)),
+            'adjacent_repetition_rate': round(
+                repeated_adjacent / max(1, len(tokens) - 1), 8
+            ),
+        }
+        details.append(detail)
+        grouped[row['task']].append(detail)
+
+    def summarize(items):
+        return metric_summary(
+            [item['reference'] for item in items],
+            [item['hypothesis'] for item in items],
+        ) | {
+            'records': len(items),
+            'empty_outputs': sum(item['empty'] for item in items),
+            'instruction_copies': sum(item['copies_instruction'] for item in items),
+            'control_token_outputs': sum(item['has_control_token'] for item in items),
+            'mean_adjacent_repetition_rate': round(statistics.mean(
+                item['adjacent_repetition_rate'] for item in items
+            ), 8) if items else 0.0,
+        }
+
+    return {
+        'overall': summarize(details),
+        'by_task': {task: summarize(items) for task, items in sorted(grouped.items())},
+    }, details
+
+
 def summarize_runs(baseline, runs):
     losses = [run['validation']['cross_entropy'] for run in runs]
     best = min(runs, key=lambda run: (run['validation']['cross_entropy'], run['seed']))
@@ -149,6 +197,8 @@ def resolve_device(requested):
 
     if requested != 'auto':
         return requested
+    if torch.cuda.is_available():
+        return 'cuda'
     return 'mps' if torch.backends.mps.is_available() else 'cpu'
 
 
@@ -322,7 +372,8 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
         validation_records=130, learning_rate=2e-4, batch_size=1,
         evaluation_batch_size=4, max_input_length=96, max_target_length=72,
         max_new_tokens=32, rank=4, alpha=8, device='auto',
-        model_path=MODEL, model_id=MODEL_ID, revision=REVISION,
+        model_path=MODEL, model_id=MODEL_ID, revision=REVISION, skip_test=False,
+        evaluate_validation_generation=False,
         run_id='garhwali-mt5-instruction-lora-v0.1'):
     os.environ.setdefault('TOKENIZERS_PARALLELISM', 'false')
     import torch
@@ -343,6 +394,16 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
         base, tokenizer, validation_rows, max_input_length, max_target_length,
         evaluation_batch_size, device,
     )
+    baseline_validation_generation = None
+    validation_predictions = []
+    if evaluate_validation_generation:
+        baseline_validation_generation, hypotheses = evaluate_test_model(
+            base, tokenizer, validation_rows, max_input_length, max_target_length,
+            max_new_tokens, evaluation_batch_size, device,
+        )
+        diagnostics, details = generation_diagnostics(validation_rows, hypotheses)
+        baseline_validation_generation['diagnostics'] = diagnostics
+        validation_predictions.extend({'system': 'base'} | item for item in details)
     del base
     gc.collect()
 
@@ -378,12 +439,24 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
             model, tokenizer, validation_rows, max_input_length,
             max_target_length, evaluation_batch_size, device,
         )
+        validation_generation = None
+        if evaluate_validation_generation:
+            validation_generation, hypotheses = evaluate_test_model(
+                model, tokenizer, validation_rows, max_input_length,
+                max_target_length, max_new_tokens, evaluation_batch_size, device,
+            )
+            diagnostics, details = generation_diagnostics(validation_rows, hypotheses)
+            validation_generation['diagnostics'] = diagnostics
+            validation_predictions.extend(
+                {'system': f'seed-{seed}'} | item for item in details
+            )
         checkpoint = checkpoint_dir / f'seed-{seed}'
         model.save_pretrained(checkpoint, safe_serialization=True)
         runs.append({
             'seed': seed,
             'training': training,
             'validation': validation,
+            'validation_generation': validation_generation,
             'checkpoint': display_path(checkpoint),
         })
         print(
@@ -395,50 +468,71 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
         gc.collect()
 
     summary = summarize_runs(baseline_validation, runs)
-    print('opening fixed instruction test split for final evaluation', flush=True)
-    base = load_base_model(device, model_path)
-    base_test, base_hypotheses = evaluate_test_model(
-        base, tokenizer, test_rows, max_input_length, max_target_length,
-        max_new_tokens, evaluation_batch_size, device,
-    )
-    del base
-    gc.collect()
-    systems = {'base': {'test': base_test}}
+    systems = {}
     predictions = []
-    for row, hypothesis in zip(test_rows, base_hypotheses):
-        predictions.append({
-            'instruction_sha256': row['instruction_sha256'],
-            'task': row['task'],
-            'reference': row['response'],
-            'system': 'base',
-            'hypothesis': hypothesis,
-        })
-    for run_record in runs:
-        seed = run_record['seed']
-        base = load_base_model('cpu', model_path)
-        model = PeftModel.from_pretrained(
-            base, checkpoint_dir / f'seed-{seed}', local_files_only=True,
-        ).to(device)
-        test_metrics, hypotheses = evaluate_test_model(
-            model, tokenizer, test_rows, max_input_length, max_target_length,
+    test_summary = {
+        'test_evaluation_status': 'skipped_for_validation_only_continuation',
+        'generation_promotion_status': 'not_evaluated',
+    }
+    if not skip_test:
+        print('opening fixed instruction test split for final evaluation', flush=True)
+        base = load_base_model(device, model_path)
+        base_test, base_hypotheses = evaluate_test_model(
+            base, tokenizer, test_rows, max_input_length, max_target_length,
             max_new_tokens, evaluation_batch_size, device,
         )
-        run_record['test'] = test_metrics
-        systems[f'seed-{seed}'] = {'test': test_metrics}
-        for row, hypothesis in zip(test_rows, hypotheses):
+        del base
+        gc.collect()
+        systems = {'base': {'test': base_test}}
+        for row, hypothesis in zip(test_rows, base_hypotheses):
             predictions.append({
                 'instruction_sha256': row['instruction_sha256'],
                 'task': row['task'],
                 'reference': row['response'],
-                'system': f'seed-{seed}',
+                'system': 'base',
                 'hypothesis': hypothesis,
             })
-        del model, base
-        gc.collect()
+        for run_record in runs:
+            seed = run_record['seed']
+            base = load_base_model('cpu', model_path)
+            model = PeftModel.from_pretrained(
+                base, checkpoint_dir / f'seed-{seed}', local_files_only=True,
+            ).to(device)
+            test_metrics, hypotheses = evaluate_test_model(
+                model, tokenizer, test_rows, max_input_length, max_target_length,
+                max_new_tokens, evaluation_batch_size, device,
+            )
+            run_record['test'] = test_metrics
+            systems[f'seed-{seed}'] = {'test': test_metrics}
+            for row, hypothesis in zip(test_rows, hypotheses):
+                predictions.append({
+                    'instruction_sha256': row['instruction_sha256'],
+                    'task': row['task'],
+                    'reference': row['response'],
+                    'system': f'seed-{seed}',
+                    'hypothesis': hypothesis,
+                })
+            del model, base
+            gc.collect()
 
-    test_losses = [run['test']['cross_entropy'] for run in runs]
-    selected_run = next(run for run in runs if run['seed'] == summary['best_seed'])
-    selected_test = selected_run['test']
+        test_losses = [run['test']['cross_entropy'] for run in runs]
+        selected_run = next(run for run in runs if run['seed'] == summary['best_seed'])
+        selected_test = selected_run['test']
+        test_summary = {
+            'mean_test_cross_entropy': round(statistics.mean(test_losses), 8),
+            'std_test_cross_entropy': round(statistics.pstdev(test_losses), 8),
+            'selected_seed_test_cross_entropy': selected_test['cross_entropy'],
+            'selected_seed_test_exact_match': selected_test['exact_match'],
+            'selected_seed_test_corpus_chrf2': selected_test['corpus_chrf2'],
+            'all_seed_test_cross_entropy_below_base': all(
+                loss < base_test['cross_entropy'] for loss in test_losses
+            ),
+            'test_evaluation_status': 'completed_after_validation_selection',
+            'generation_promotion_status': (
+                'candidate_for_extended_evaluation'
+                if selected_test['exact_match'] > 0 else 'not_promoted_for_generation'
+            ),
+        }
     report = {
         'run_id': run_id,
         'status': 'completed_multi_seed_instruction_tuning',
@@ -475,26 +569,16 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
             'model_path': str(model_path),
         },
         'baseline_validation': baseline_validation,
+        'baseline_validation_generation': baseline_validation_generation,
         'runs': runs,
-        'summary': summary | {
-            'mean_test_cross_entropy': round(statistics.mean(test_losses), 8),
-            'std_test_cross_entropy': round(statistics.pstdev(test_losses), 8),
-            'selected_seed_test_cross_entropy': selected_test['cross_entropy'],
-            'selected_seed_test_exact_match': selected_test['exact_match'],
-            'selected_seed_test_corpus_chrf2': selected_test['corpus_chrf2'],
-            'all_seed_test_cross_entropy_below_base': all(
-                loss < base_test['cross_entropy'] for loss in test_losses
-            ),
-            'generation_promotion_status': (
-                'candidate_for_extended_evaluation'
-                if selected_test['exact_match'] > 0 else 'not_promoted_for_generation'
-            ),
-        },
+        'summary': summary | test_summary,
         'test_systems': systems,
         'integrity': {
             'training_split_only': True,
             'selection_split': 'validation',
-            'test_opened_after_training_and_selection': True,
+            'test_opened_after_training_and_selection': not skip_test,
+            'test_evaluation_skipped': skip_test,
+            'validation_generation_evaluated': evaluate_validation_generation,
             'test_records_used_for_training': 0,
             'source_text_mutated': False,
             'all_records_active_for_experiment': True,
@@ -507,7 +591,10 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
         encoding='utf-8',
     )
-    write_jsonl(output_dir / 'test_predictions.jsonl', predictions)
+    if not skip_test:
+        write_jsonl(output_dir / 'test_predictions.jsonl', predictions)
+    if evaluate_validation_generation:
+        write_jsonl(output_dir / 'validation_predictions.jsonl', validation_predictions)
     return report
 
 
@@ -528,11 +615,13 @@ def main():
     parser.add_argument('--max-new-tokens', type=int, default=32)
     parser.add_argument('--rank', type=int, default=4)
     parser.add_argument('--alpha', type=int, default=8)
-    parser.add_argument('--device', choices=('auto', 'mps', 'cpu'), default='auto')
+    parser.add_argument('--device', choices=('auto', 'cuda', 'mps', 'cpu'), default='auto')
     parser.add_argument('--model-path', type=Path, default=MODEL)
     parser.add_argument('--model-id', default=MODEL_ID)
     parser.add_argument('--revision', default=REVISION)
     parser.add_argument('--run-id', default='garhwali-mt5-instruction-lora-v0.1')
+    parser.add_argument('--skip-test', action='store_true')
+    parser.add_argument('--evaluate-validation-generation', action='store_true')
     args = parser.parse_args()
     report = run(
         data_dir=args.data_dir,
@@ -555,6 +644,8 @@ def main():
         model_id=args.model_id,
         revision=args.revision,
         run_id=args.run_id,
+        skip_test=args.skip_test,
+        evaluate_validation_generation=args.evaluate_validation_generation,
     )
     print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
 

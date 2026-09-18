@@ -1,10 +1,20 @@
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 import run_mt5_instruction_tuning as m
 
 
 class InstructionTuningTests(unittest.TestCase):
+    def test_auto_device_prefers_cuda(self):
+        fake_torch = SimpleNamespace(
+            cuda=SimpleNamespace(is_available=lambda: True),
+            backends=SimpleNamespace(mps=SimpleNamespace(is_available=lambda: False)),
+        )
+        with patch.dict('sys.modules', {'torch': fake_torch}):
+            self.assertEqual(m.resolve_device('auto'), 'cuda')
+
     def test_model_metadata_preserves_pinned_override(self):
         metadata = m.model_metadata(
             'bigscience/mt0-small', 'revision-sha', Path('/tmp/mt0'),
@@ -44,6 +54,19 @@ class InstructionTuningTests(unittest.TestCase):
     def test_clean_generated_text_removes_mt5_sentinels(self):
         self.assertEqual(m.clean_generated_text('<extra_id_0>'), '')
         self.assertEqual(m.clean_generated_text('उत्तर <extra_id_1>'), 'उत्तर')
+
+    def test_generation_diagnostics_breaks_down_failure_modes_by_task(self):
+        rows = [
+            {'instruction_sha256': 'a', 'task': 'translate',
+             'instruction': 'Translate this', 'response': 'उत्तर'},
+            {'instruction_sha256': 'b', 'task': 'lexicon',
+             'instruction': 'word word', 'response': 'शब्द'},
+        ]
+        summary, details = m.generation_diagnostics(rows, ['उत्तर', 'word word'])
+        self.assertEqual(summary['overall']['exact_match'], 0.5)
+        self.assertEqual(summary['overall']['instruction_copies'], 1)
+        self.assertEqual(summary['by_task']['translate']['exact_match'], 1.0)
+        self.assertEqual(len(details), 2)
 
     def test_summarize_runs_selects_validation_winner(self):
         runs = [

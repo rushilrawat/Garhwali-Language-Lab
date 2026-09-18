@@ -23,6 +23,16 @@ LORA_TARGET_MODULES = ('query', 'value')
 DEFAULT_SEEDS = (17, 29, 43)
 
 
+def resolve_device(requested, torch_module):
+    if requested != 'auto':
+        return requested
+    if torch_module.cuda.is_available():
+        return 'cuda'
+    if torch_module.backends.mps.is_available():
+        return 'mps'
+    return 'cpu'
+
+
 def summarize_lora(baseline, runs):
     losses = [run['validation']['cross_entropy'] for run in runs]
     accuracies = [run['validation']['accuracy'] for run in runs]
@@ -125,27 +135,39 @@ def train_seed(model, tokenizer, rows, seed, steps, learning_rate, max_length,
 def run(train_path=TRAIN, validation_path=VALIDATION, output_path=OUTPUT,
         checkpoint_dir=CHECKPOINTS, seeds=DEFAULT_SEEDS, steps=32,
         training_records=256, evaluation_records=128, learning_rate=1e-4,
-        max_length=128, mask_rate=0.15, rank=4, alpha=8, device='auto'):
+        max_length=128, mask_rate=0.15, rank=4, alpha=8, device='auto',
+        model_path=head.MODEL, secondary_validation_path=None,
+        secondary_evaluation_records=0):
     os.environ.setdefault('TOKENIZERS_PARALLELISM', 'false')
     import torch
     from peft import LoraConfig, get_peft_model
     from transformers import AutoModelForMaskedLM, AutoTokenizer
 
-    if device == 'auto':
-        device = 'mps' if torch.backends.mps.is_available() else 'cpu'
+    device = resolve_device(device, torch)
     train_rows = head.read_jsonl(train_path)
     validation_rows = head.select_rows(
         head.read_jsonl(validation_path), evaluation_records, 101,
     )
+    secondary_validation_rows = []
+    if secondary_validation_path:
+        secondary_validation_rows = head.select_rows(
+            head.read_jsonl(secondary_validation_path),
+            secondary_evaluation_records, 103,
+        )
     tokenizer = AutoTokenizer.from_pretrained(
-        head.MODEL, local_files_only=True, fix_mistral_regex=True,
+        model_path, local_files_only=True, fix_mistral_regex=True,
     )
     base = AutoModelForMaskedLM.from_pretrained(
-        head.MODEL, local_files_only=True,
+        model_path, local_files_only=True,
     ).to(device)
     baseline = score_model(
         base, tokenizer, validation_rows, max_length, mask_rate, 101, device,
     )
+    baseline_secondary_validation = None
+    if secondary_validation_rows:
+        baseline_secondary_validation = score_model(
+            base, tokenizer, secondary_validation_rows, max_length, mask_rate, 103, device,
+        )
     total_parameters = sum(parameter.numel() for parameter in base.parameters())
     del base
     gc.collect()
@@ -158,7 +180,7 @@ def run(train_path=TRAIN, validation_path=VALIDATION, output_path=OUTPUT,
     for seed in seeds:
         torch.manual_seed(seed)
         base = AutoModelForMaskedLM.from_pretrained(
-            head.MODEL, local_files_only=True,
+            model_path, local_files_only=True,
         )
         config = LoraConfig(
             r=rank,
@@ -181,12 +203,19 @@ def run(train_path=TRAIN, validation_path=VALIDATION, output_path=OUTPUT,
         validation = score_model(
             model, tokenizer, validation_rows, max_length, mask_rate, 101, device,
         )
+        secondary_validation = None
+        if secondary_validation_rows:
+            secondary_validation = score_model(
+                model, tokenizer, secondary_validation_rows, max_length,
+                mask_rate, 103, device,
+            )
         checkpoint = checkpoint_dir / f'seed-{seed}'
         model.save_pretrained(checkpoint, safe_serialization=True)
         runs.append({
             'seed': seed,
             'training': training,
             'validation': validation,
+            'secondary_validation': secondary_validation,
             'checkpoint': head.display_path(checkpoint),
         })
         print(
@@ -230,6 +259,7 @@ def run(train_path=TRAIN, validation_path=VALIDATION, output_path=OUTPUT,
             'device': device,
         },
         'baseline_validation': baseline,
+        'baseline_secondary_validation': baseline_secondary_validation,
         'runs': runs,
         'summary': summary,
         'integrity': {
@@ -237,6 +267,7 @@ def run(train_path=TRAIN, validation_path=VALIDATION, output_path=OUTPUT,
             'selection_split': 'validation',
             'frozen_test_records_used': 0,
             'source_text_mutated': False,
+            'secondary_validation_records': len(secondary_validation_rows),
         },
         'elapsed_seconds': round(time.monotonic() - started, 3),
     }
@@ -264,13 +295,17 @@ def main():
     parser.add_argument('--mask-rate', type=float, default=0.15)
     parser.add_argument('--rank', type=int, default=4)
     parser.add_argument('--alpha', type=int, default=8)
-    parser.add_argument('--device', choices=('auto', 'mps', 'cpu'), default='auto')
+    parser.add_argument('--device', choices=('auto', 'cuda', 'mps', 'cpu'), default='auto')
+    parser.add_argument('--model-path', type=Path, default=head.MODEL)
+    parser.add_argument('--secondary-validation', type=Path)
+    parser.add_argument('--secondary-evaluation-records', type=int, default=0)
     args = parser.parse_args()
     print(json.dumps(run(
         args.train, args.validation, args.output, args.checkpoint_dir,
         head.parse_ints(args.seeds), args.steps, args.training_records,
         args.evaluation_records, args.learning_rate, args.max_length,
-        args.mask_rate, args.rank, args.alpha, args.device,
+        args.mask_rate, args.rank, args.alpha, args.device, args.model_path,
+        args.secondary_validation, args.secondary_evaluation_records,
     ), ensure_ascii=False, indent=2, sort_keys=True))
 
 

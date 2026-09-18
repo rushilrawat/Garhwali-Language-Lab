@@ -1,0 +1,229 @@
+{
+  "release_id": "garhwali-language-lab-v0.1.0",
+  "generated": "2026-09-16",
+  "target_repo": "rushilrawat/garhwali-language-lab-all-data",
+  "repo_type": "dataset",
+  "planned_visibility": "public",
+  "publication_status": "ready_for_final_approval",
+  "profile": "all-data",
+  "include_audio": false,
+  "records": 257163,
+  "configurations": 12,
+  "catalog_records": 28755,
+  "catalog_redacted_text_records": 0,
+  "files": 42,
+  "bytes": 448122082,
+  "aggregate_sha256": "7878c5cdf6218ab82d8fcf9268b79b89e512257e80279e9c3cefc19f137b55a7",
+  "artifacts": [
+    {
+      "path": "README.md",
+      "bytes": 3892,
+      "sha256": "a170138d7c1ec90eaa0d8258f479ba275ccefed916da21c5cdf2ed054529fdd1"
+    },
+    {
+      "path": "data/asr/test-00000.jsonl",
+      "bytes": 306071,
+      "sha256": "3aa382895c7f199adfc1030a24ea0d34b43d009e768769a0d06535f7b01a5b7b"
+    },
+    {
+      "path": "data/asr/train-00000.jsonl",
+      "bytes": 3313328,
+      "sha256": "b8fa7124c31c0520170c57e5fcb53b056bc374e3e3ff8aed2f70ce3857257a7d"
+    },
+    {
+      "path": "data/asr/validation-00000.jsonl",
+      "bytes": 466171,
+      "sha256": "42b77ff8a532ee83b8213f2c391118004e1bf15efa460c42ae58d5af37af352f"
+    },
+    {
+      "path": "data/catalog/train-00000.jsonl",
+      "bytes": 31663631,
+      "sha256": "420f4d60589490ded7d1e26d16272d37b98103b1df7b4ace5546911d5c412a82"
+    },
+    {
+      "path": "data/catalog/train-00001.jsonl",
+      "bytes": 31506179,
+      "sha256": "0fa0ed8c2ee69f8bc31ef296b6d8edc70516c2ede0928059ef15a5aa60b6d67a"
+    },
+    {
+      "path": "data/catalog/train-00002.jsonl",
+      "bytes": 27464700,
+      "sha256": "79a85b0b5fdbb3e4664f7714ab12ba84f5526b6e3b5e487003949b29094ec453"
+    },
+    {
+      "path": "data/geography/train-00000.jsonl",
+      "bytes": 36494,
+      "sha256": "247f1209f490f3bad45c3b4de1284e16d3a2c6ce74b84f7aac8e38bf35c2c71b"
+    },
+    {
+      "path": "data/historical_terms/train-00000.jsonl",
+      "bytes": 15851,
+      "sha256": "e0909ce62cbf7353c7897a56b168c977809984f5f4af2340a7a08dd9b73552b0"
+    },
+    {
+      "path": "data/instructions/test-00000.jsonl",
+      "bytes": 430138,
+      "sha256": "883321e5bb8fa598591ee113579be779008905835cc4691615ffdc7372bdc493"
+    },
+    {
+      "path": "data/instructions/train-00000.jsonl",
+      "bytes": 3649900,
+      "sha256": "32c22ce3484abcd60468b62b911f3a5147dc6c99b6aca670d1bce2279b450bc5"
+    },
+    {
+      "path": "data/instructions/validation-00000.jsonl",
+      "bytes": 235864,
+      "sha256": "b668f6e5626c0c687d087c68a47bc3035802d97d27a0431d9fd5bf7ac1c64f31"
+    },
+    {
+      "path": "data/lexicon/train-00000.jsonl",
+      "bytes": 2107307,
+      "sha256": "79f093a87c3fb260bae7b1899fe3187189330464e17009c25d1ae35ce5f2efe8"
+    },
+    {
+      "path": "data/literary_people/train-00000.jsonl",
+      "bytes": 10779,
+      "sha256": "e8ab8fb2c3d560cd6450560ab0e455eaa9792a442145f4be25efdee99d791135"
+    },
+    {
+      "path": "data/literary_works/train-00000.jsonl",
+      "bytes": 32737,
+      "sha256": "412b619665a554b1ee4e7dde992014136e9ae847a0b311c2f018ee84d0136f9f"
+    },
+    {
+      "path": "data/popular_songs/train-00000.jsonl",
+      "bytes": 23785,
+      "sha256": "1cf12681163ce76a511a0f7853ce53e60907bc40560902ccbe86081bd959befc"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00000.jsonl",
+      "bytes": 13132609,
+      "sha256": "7ad297db5ffa28a5479e39a317c4ff459ea6f3688b4dad74c3d5ba51bffe070a"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00001.jsonl",
+      "bytes": 13508504,
+      "sha256": "5dbad13fac1cf2f4473a633c5bee1cbbd29f4a7af534941a46a38b448d2e40d9"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00002.jsonl",
+      "bytes": 13858692,
+      "sha256": "45083cd6940c8ec806e798c9bc85a07f306cccc13178b96d1be608619a248378"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00003.jsonl",
+      "bytes": 13481067,
+      "sha256": "da5705931966fc2785bb4708f0dc91f662914316323610702e957ac6b44e8791"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00004.jsonl",
+      "bytes": 12860230,
+      "sha256": "0e6c87fe1f60703090a5e9b7391f300a89624b4e6d2e70a11b58ec34fa5c06d4"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00005.jsonl",
+      "bytes": 13689430,
+      "sha256": "520b3d4aa160abf02e6cd165ad048875a3dff500e308c2d8cef3506ca6f5ae0b"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00006.jsonl",
+      "bytes": 13023679,
+      "sha256": "f4ee90bd6ba5eb6387fc03f3293e2c3d616a716497fc0df1c23b709d6c9c39c2"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00007.jsonl",
+      "bytes": 12859837,
+      "sha256": "5399ece85dccd5bc27f7720150d801be38b65eb2c935ed6a3d9379690a821efa"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00008.jsonl",
+      "bytes": 13116920,
+      "sha256": "33ab00d3b94557c2d05ce3ee2320165917bdafc89eb6d9da5b4220262c593e48"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00009.jsonl",
+      "bytes": 13838556,
+      "sha256": "db9bf08a066ae6f103313171488487733ae4efc9186418d61ca11de0a3a8672c"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00010.jsonl",
+      "bytes": 6994038,
+      "sha256": "68ff4695456e961511f4ef3106b9353a8c2f0ed4baa013fca5d1f23978c71031"
+    },
+    {
+      "path": "data/text/test-00000.jsonl",
+      "bytes": 7631285,
+      "sha256": "28a3ca6af3c167e2d1bda1fa3d794fa7ff95b55227fa843af0d9233349c216b4"
+    },
+    {
+      "path": "data/text/train-00000.jsonl",
+      "bytes": 17881491,
+      "sha256": "f26c07c0b880557f2d189c9755bf1ff7ff4e05a1766a46a8ef8f1af2a73a48ac"
+    },
+    {
+      "path": "data/text/train-00001.jsonl",
+      "bytes": 17841066,
+      "sha256": "dc23d459fa45284b142eee53a83edb5b0dbfeecd3c59cf8d03771cbbbcf885c2"
+    },
+    {
+      "path": "data/text/train-00002.jsonl",
+      "bytes": 17953806,
+      "sha256": "836a60346d663549fc00faf06aa1c5ea4148efc32479ce96906e4cc6a680bb7e"
+    },
+    {
+      "path": "data/text/train-00003.jsonl",
+      "bytes": 18204563,
+      "sha256": "fa42727c614d6ca45029478e4336b16fa230d7f29bb4788451f9fa7d0668c8c1"
+    },
+    {
+      "path": "data/text/train-00004.jsonl",
+      "bytes": 17910219,
+      "sha256": "d3f7cd6e0bd4ddc1fb9c51cc546b026f296ba4fff8b79ac66b09ebd74337b1dd"
+    },
+    {
+      "path": "data/text/train-00005.jsonl",
+      "bytes": 18062045,
+      "sha256": "8f3e0e6db3924185fd312a82f0c028639d05de0b026784d3ddf414eddc71b940"
+    },
+    {
+      "path": "data/text/train-00006.jsonl",
+      "bytes": 17810518,
+      "sha256": "c9c65e672909bed8d4c130fa8b58c63e23479f063b742e51ec82a0f2bc2edcdc"
+    },
+    {
+      "path": "data/text/train-00007.jsonl",
+      "bytes": 18595576,
+      "sha256": "e0b538df503930f1978704825d84c9102e81d550e96d16ed6a9f45c0e942bd5e"
+    },
+    {
+      "path": "data/text/train-00008.jsonl",
+      "bytes": 18797351,
+      "sha256": "758e2bfc2ec081a2c9a273718bd76e5834989878c3af33c3f448e91b4389aaf5"
+    },
+    {
+      "path": "data/text/train-00009.jsonl",
+      "bytes": 18043587,
+      "sha256": "52ff13401f9fa4d65c730c74d2dac6845c13822a5bfac04becf2b30c33f9e3ef"
+    },
+    {
+      "path": "data/text/train-00010.jsonl",
+      "bytes": 12311924,
+      "sha256": "8744131184b12837a547a2e60cd0f4d24874a7fca26b435ff7500f5c22ae1241"
+    },
+    {
+      "path": "data/text/validation-00000.jsonl",
+      "bytes": 5436698,
+      "sha256": "5adbc7a1fd5e3956448424d8689b92fd2c8ceb901e475b3efe9acb7a9b1fb745"
+    },
+    {
+      "path": "data/university_research/train-00000.jsonl",
+      "bytes": 7816,
+      "sha256": "483c465f8377c50b49f113584b5a8736d032683ded551775f60ca0a175810031"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 3748,
+      "sha256": "baba1db73598c65590e018061199d8b1fa0057f3b41506a97cd3463269582060"
+    }
+  ]
+}

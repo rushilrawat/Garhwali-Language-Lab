@@ -2,14 +2,15 @@
 
 Updated: 2026-09-16  
 Job: [`6aaa08ed5527934177ee7c78`](https://huggingface.co/jobs/rushilrawat/6aaa08ed5527934177ee7c78)  
-Status at launch: `SCHEDULING`
+Final status: canceled before the refined replacement run
 
 ## Budget
 
-The prior L4 training and evaluation jobs occupied 651.545 seconds from creation
-through completion. At $0.80/hour, that is a conservative upper estimate of
-$0.144788. This sweep has a six-hour hard timeout and therefore a maximum new
-compute charge of $4.80. The combined conservative ceiling is $4.944788.
+This launch was replaced by the refined 61-trial decoder sweep in Job
+[`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768).
+The replacement completed all trials in 10,072 seconds at an estimated $2.2382.
+The full result and promotion decision are documented in
+[`sravaani-refined-61-result-2026-09-16.md`](sravaani-refined-61-result-2026-09-16.md).
 
 ## Experiment
 

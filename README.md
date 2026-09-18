@@ -105,8 +105,8 @@ not a defect in the dataset.
 
 - **31,055 source text records** from 40 files, deduplicated to **28,755 unique
   texts** and 9.15 million characters.
-- **119,697 sentence-like occurrences** exposed from page-sized and long records,
-  producing **114,082 exact-unique segments** with parent provenance retained.
+- **119,679 sentence-like occurrences** exposed from page-sized and long records,
+  producing **114,064 exact-unique segments** with parent provenance retained.
 - **769 active page records from six newly supplied PDFs**, including two
   dictionaries, grammar and syntax research, literature, and cultural material;
   one exact duplicate PDF reuses its existing 370-record extraction.
@@ -130,7 +130,7 @@ not a defect in the dataset.
 - **8 university and research records** preserve institution, access level,
   topics, and deduplication status; the existing UOU materials are linked rather
   than ingested twice.
-- **257,163 upload-ready all-data rows** span text, human and machine speech
+- **257,145 upload-ready all-data rows** span text, human and machine speech
   transcripts, lexicon, instructions, and six structured knowledge
   configurations. The separately audited public package contains **146,482
   rows**.
@@ -212,7 +212,7 @@ Git through `.gitignore`.
 | --- | ---: | ---: | ---: |
 | local corpus data | recordings | audio duration | unique text lines |
 
-| `9.15M` | `1.76M` | `114,082` | `1,114` |
+| `9.15M` | `1.76M` | `114,064` | `1,114` |
 | ---: | ---: | ---: | ---: |
 | text characters | whitespace tokens* | unique segments | lexicon candidates |
 
@@ -220,7 +220,7 @@ Git through `.gitignore`.
 | ---: | ---: | ---: | ---: |
 | English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
 
-| `257,163` | `146,482` | `216` | `359` |
+| `257,145` | `146,482` | `216` | `383` |
 | ---: | ---: | ---: | ---: |
 | all-data package rows | public package rows | structured knowledge records | passing tests |
 
@@ -287,7 +287,7 @@ gated, mirrored, copyrighted, and permission-dependent material.
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements-pipeline.txt
-.venv/bin/python -m unittest discover -s scripts -p 'test_*.py'
+PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
 ### Rebuild the prepared text and audio views
@@ -609,7 +609,7 @@ with provenance.
 | Deliverable | Focused effort from the current state | Main dependency |
 | --- | ---: | --- |
 | Literary, cultural, and university additions | Complete | Automated validation |
-| Local Corpus v1 release candidate | Complete: 257,163 all-data / 146,482 public rows | Final audit passes; SraVaani result remains external |
+| Local Corpus v1 release candidate | Complete: 257,145 all-data / 146,482 public rows | Final audit and package validation pass |
 | SraVaani refined sweep and integration | Current active job plus 2–4 hours of local evaluation | Hugging Face job completion |
 | Final Hugging Face dataset publication | 2–4 focused hours after model integration | Final upload decision and network transfer |
 | Quality-focused dataset and benchmark v1 | 40–80 hours / 1–2 working weeks | Native review remains the accuracy bottleneck |
@@ -707,17 +707,81 @@ established from machine scores alone.
 20. [x] **Structured knowledge packaging — Medium:** geography, historical terms,
     literary people, literary works, popular songs, and university research are
     first-class Hugging Face configurations with 216 records and stable IDs.
-21. [x] **Release reconciliation — High:** the 257,163-row all-data package and
+21. [x] **Release reconciliation — High:** the 256,947-row all-data package and
     146,482-row public package are rebuilt, the tracked release index is synced,
     and the public export passes provenance, count, and leakage validation.
-22. [ ] **Refined SraVaani decision — Xhigh:** Job
+22. [x] **Refined SraVaani decision — Xhigh:** Job
     [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768)
-    is running a validation-first refined experiment. Import its persisted
-    artifacts, compare against base SraVaani, and promote only a verified WER gain.
-23. [ ] **Final dataset publication — High:** rebuild the manifests after the
+    completed all 61 trials. The selected checkpoint improved validation WER to
+    42.711% but worsened frozen-test WER to 43.528% versus the base model's
+    42.761%, so it is retained for research and not promoted.
+23. [x] **Expanded human-transcript SraVaani — Xhigh:** train on 5,513 human
+    transcripts (8.112 hours) after excluding every fixed validation/test audio
+    hash and every known benchmark speaker; select on the unchanged 269-record
+    validation set and evaluate the frozen 112-record test at most once. Job
+    [`6aaaa754f76d6a098a70f2f`](https://huggingface.co/jobs/rushilrawat/6aaaa754f76d6a098a70f2f)
+    completed 346 steps. Validation WER improved to 42.209%, but frozen-test WER
+    was 43.289% versus base SraVaani's 42.761%; the checkpoint remains experimental.
+24. [x] **IndicBERTv2 continuation — Xhigh:** Job
+    [`6aaaad62f76d6a098a71100f`](https://huggingface.co/jobs/rushilrawat/6aaaad62f76d6a098a71100f)
+    completed three 4,096-step seeds against the current 106,804-record training
+    split. Mean validation cross-entropy improved from 6.395484 to 5.089108 and
+    masked-token accuracy rose from 24.299% to 28.287%; the test split stayed closed.
+25. [x] **Longer mT0 instruction continuation — Xhigh:** Job
+    [`6aaab2465527934177eea964`](https://huggingface.co/jobs/rushilrawat/6aaab2465527934177eea964)
+    completed three validation-only 2,048-step seeds on `l4x1`. All seeds beat
+    the current base validation loss; seed 29 reached 4.625628 and the fixed
+    test remained unopened.
+26. [x] **Extended mT0 generation evaluation — Xhigh:** three 8,192-step seeds
+    reduced best validation cross-entropy to 4.476975 and achieved the first
+    nonzero exact matches (up to 2.308%). chrF2 remains below the zero-shot base,
+    and the fixed test stayed closed.
+27. [x] **PDF-domain IndicBERT continuation — Xhigh:** Job
+    [`6aaabf3e5527934177eeac89`](https://huggingface.co/jobs/rushilrawat/6aaabf3e5527934177eeac89)
+    trained only on 25,983 incoming-book segments and selected on 615 book
+    validation segments. Mean loss fell from 6.190638 to 4.665097 and masked-token
+    accuracy rose from 25.198% to 33.920%; all 1,328 PDF test segments stayed closed.
+28. [x] **Extended PDF-domain continuation — Xhigh:** all three 32,768-step seeds
+    covered the full training pool. Mean validation loss improved to 4.553516
+    and accuracy to 35.605%; the PDF test split remained unopened.
+29. [x] **Balanced text/book continuation — Xhigh:** every seed improved both
+    validation domains. General loss fell from 6.729359 to a 5.316585 mean;
+    PDF-domain accuracy rose from 24.473% to approximately 32.29%.
+30. [x] **Semantic duplicate and leakage audit — High:** all 114,082 text
+    segments in the pre-OCR-correction snapshot were embedded. The audit found 29,903 high-similarity candidate
+    pairs, including 2,839 cross-split candidates requiring review; no source
+    record was automatically deleted or changed.
+31. [x] **Release metadata completeness — High:** profile all 114,064 current split rows,
+    restore stable source identifiers for 9,774 segments from their originating
+    filenames, rebuild the package, and verify zero empty text, duplicate IDs,
+    exact cross-split overlap, or missing source identifiers. Missing rights
+    assertions are now represented explicitly as `not_recorded` rather than null.
+32. [x] **Model-backed text noise audit — High:** pinned IndicBERTv2 scored all
+    28,755 canonical texts, yielding 2,876 model/source disagreements, 2,987
+    OCR priorities, and 47,165 reversible spelling candidates without changing
+    or excluding any original record.
+33. [x] **OCR proposal validation — High:** one deterministic mask seed scored
+    10,856 candidate-bearing records: 2,431 supported, 3,079 rejected, and 5,346
+    inconclusive. Three-seed consensus narrows this to 1,781 supported, 2,448
+    rejected, and 6,627 inconclusive; nothing is auto-applied.
+    The book-adapted three-seed audit further narrows OCR-source material to 103
+    supported, 491 rejected, and 1,300 inconclusive correction records.
+34. [x] **Final mT0 continuation — Xhigh:** three 16,384-step seeds reduced the
+    best validation cross-entropy from 4.476975 to 4.315077. Seed 43 reached
+    2.308% exact match and 0.073709 chrF2, but adapted chrF2 remains below the
+    base model; the fixed test stayed closed.
+35. [x] **Semantic candidate refinement — High:** a multilingual cross-encoder
+    re-scored all 29,903 embedding candidates, supporting 1,624 near-duplicate
+    pairs and narrowing cross-split review to 92 supported pairs. No record was
+    automatically removed or changed.
+36. [x] **Budget-bounded 32,768-step mT0 continuation — Xhigh:** seeds 17 and
+    29 completed and improved validation cross-entropy to 4.266280 and 4.219282.
+    Seed 43 and the combined generation diagnostics were stopped when the
+    reported Hugging Face balance became insufficient; the fixed test stayed closed.
+37. [ ] **Final dataset publication — High:** rebuild the manifests after the
     model decision, run the final audit again, and upload the selected all-data
     package and its dataset card to Hugging Face.
-24. [ ] **Text-first API MVP — High:** implement versioned search, lexicon,
+38. [ ] **Text-first API MVP — High:** implement versioned search, lexicon,
     normalization, transliteration, and cultural-record endpoints with API keys,
     quotas, citations, confidence, and correction intake.
 
@@ -809,7 +873,7 @@ and the known access blockers are [`research/garhwali-access-blockers-2026-09-10
 ## 🧪 Verification commands
 
 ```bash
-.venv/bin/python -m unittest discover -s scripts -p 'test_*.py'
+PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 .venv/bin/python scripts/dedup_report.py
 .venv/bin/python scripts/verify_ingestion.py
 .venv/bin/python scripts/build_huggingface_dataset.py
@@ -830,16 +894,22 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **359 passing tests**, **365 verified source
+The current verification result is **383 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release
+
+Future PDFs go in `incoming/pdfs/` with a same-name JSON metadata sidecar. Run
+`bash scripts/refresh_incoming_pdfs.sh` to hash and deduplicate the files,
+extract embedded text or OCR scan pages, rebuild cleaned and segmented corpus
+views, and regenerate the upload-ready all-data package. This local pipeline
+does not consume Hugging Face GPU credit.
 
 `scripts/build_huggingface_dataset.py` creates two upload-ready multi-config
 datasets with Garhwali text, human VAANI transcripts, SraVaani machine drafts,
 lexicon, instruction splits, geography, historical terms, literary people,
 literary works, popular-song metadata, and university research. The **all-data
-profile is the complete model and research package**: it contains **257,163
+profile is the complete model and research package**: it contains **257,145
 rows**, including every collected text value and all **216 structured cultural
 and scholarly records**. Each row keeps its source, quality, rights, and review
 metadata. The **146,482-row public profile** is a separate redistribution view
@@ -847,7 +917,7 @@ for records with explicit compatible source terms. Both omit original audio
 filenames and raw speaker identifiers.
 
 ```bash
-# Build the complete transcript-only all-data package (257,163 rows)
+# Build the complete transcript-only all-data package (257,145 rows)
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
   --profile all-data
 
@@ -866,7 +936,7 @@ The generated `README.md` is the Hugging Face dataset card, while
 `manifest.json` records configuration counts, shard names, draft completeness,
 and whether audio was included. The all-data catalog includes all **28,755**
 exact-unique text values with **zero redactions**. The package also contains all
-**114,082** prepared text segments, **1,114** lexicon rows, and **2,568**
+**114,064** prepared text segments, **1,114** lexicon rows, and **2,568**
 instruction rows. The public catalog remains a transparent redistribution view.
 When an exact duplicate has both open and blocked provenance,
 `public_rights_basis` identifies the open copy while retaining both source

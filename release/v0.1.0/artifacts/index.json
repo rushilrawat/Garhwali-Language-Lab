@@ -76,9 +76,19 @@
       "sha256": "c0fa940696b65116d615b0acdacdbfb00a3d2c78835c180a6b11504f519d4025"
     },
     {
+      "bytes": 1597,
+      "path": "data/processed/evaluation/asr/sravaani_expanded_human/cloud_output/report.json",
+      "sha256": "3f8bff1427879892cf9e7d2561ae4d11022d9cd196f2ab9f79f42401e1d2de06"
+    },
+    {
       "bytes": 838,
       "path": "data/processed/evaluation/asr/sravaani_finetune/cloud_output/held_out_evaluation/report.json",
       "sha256": "13e7b6a6fa46e4486b570d1eeffd80aa8e77f92547ffa1ff9814395519dd07ff"
+    },
+    {
+      "bytes": 1587,
+      "path": "data/processed/evaluation/asr/sravaani_refined_61/cloud_output/report.json",
+      "sha256": "66fd72f1fac9f366833b2160592148c84f7fb48d8f8b23b077a0575dc028b359"
     },
     {
       "bytes": 1548,
@@ -96,6 +106,16 @@
       "sha256": "9b4279d3b8ee1ce1c9a044d1e3669e0072b5dd29ebea2699a250efe052d133d9"
     },
     {
+      "bytes": 3535,
+      "path": "data/processed/evaluation/controlled_modeling/indicbert_balanced_v0_1/cloud_output/report.json",
+      "sha256": "c904ce679b8df865d96fe163e92ee722f6fd5fe459505c29648ca6913c68b6d4"
+    },
+    {
+      "bytes": 2844,
+      "path": "data/processed/evaluation/controlled_modeling/indicbert_cloud_v0_3/cloud_output/report.json",
+      "sha256": "1c2f59714923a925e8157d8972ba10f90c70e9065004159d74ec03c25b572381"
+    },
+    {
       "bytes": 2771,
       "path": "data/processed/evaluation/controlled_modeling/indicbert_head_adaptation.json",
       "sha256": "6c032bd24a76ab3caf7ec89520c03f49c77746d889459c88eb513404aa4b7d3b"
@@ -111,9 +131,34 @@
       "sha256": "19e80d430d2380643bb3999e2ca564af8a1849c5eace6b7191c87aee92b362d0"
     },
     {
+      "bytes": 2852,
+      "path": "data/processed/evaluation/controlled_modeling/indicbert_pdf_domain_extended_v0_2/cloud_output/report.json",
+      "sha256": "61918a676a7d3da5ff01dfd5e58ce541b2d7169ae4e06afcf3eb6fb9234ba0a0"
+    },
+    {
+      "bytes": 2843,
+      "path": "data/processed/evaluation/controlled_modeling/indicbert_pdf_domain_v0_1/cloud_output/report.json",
+      "sha256": "0e0966dd5253f429008322d64adc06e801aae85b038da274562eb924f686ec0b"
+    },
+    {
       "bytes": 3381,
       "path": "data/processed/evaluation/controlled_modeling/indicbert_transfer_test.json",
       "sha256": "ba66bc4d473a7405b0c8f6dd01d7e843646f26ede1caa19759a586272eaeb6c7"
+    },
+    {
+      "bytes": 4466,
+      "path": "data/processed/evaluation/controlled_modeling/mt0_instruction_16384_v0_5/cloud_output/report.json",
+      "sha256": "ade199c9c1e9212945b44ca23b3820c568562d214fad52ffe763b03d44878c45"
+    },
+    {
+      "bytes": 3630,
+      "path": "data/processed/evaluation/controlled_modeling/mt0_instruction_cloud_v0_3/cloud_output/report.json",
+      "sha256": "d3ef1e4bb39584b89c8098097db4b7f3ed499ddb0e23ce4fd5d9b93dc19834e8"
+    },
+    {
+      "bytes": 4466,
+      "path": "data/processed/evaluation/controlled_modeling/mt0_instruction_extended_v0_4/cloud_output/report.json",
+      "sha256": "ca50f93c6a0d1b29958a690a3aa70439c3964ce843e79a3dfc2dcc4e1b105e23"
     },
     {
       "bytes": 5320,
@@ -129,6 +174,36 @@
       "bytes": 22875,
       "path": "data/processed/evaluation/controlled_modeling/text_scaling.json",
       "sha256": "f1de94329718fbb928ccda7ed4edf2279ece4f1e7b13ab228b51c2ffec55745a"
+    },
+    {
+      "bytes": 3068,
+      "path": "data/processed/evaluation/data_quality/ocr_pdf_adapter_v0_3/cloud_output/report.json",
+      "sha256": "af9c4cdb41632eb381f5135f06ea69250638403af0ed1f98406e1c0a1c6bd031"
+    },
+    {
+      "bytes": 2822,
+      "path": "data/processed/evaluation/data_quality/ocr_validation_multiseed_v0_2/cloud_output/report.json",
+      "sha256": "9244cf4a722bc8b7022c0f4116dc9002e13f842f65d0bb254bbf599c6f9bcc33"
+    },
+    {
+      "bytes": 1054,
+      "path": "data/processed/evaluation/data_quality/ocr_validation_v0_1/cloud_output/report.json",
+      "sha256": "8ec22c336b6b30a133ae5877f279fa818a4b34c042db0a97d157835bf605823d"
+    },
+    {
+      "bytes": 450,
+      "path": "data/processed/evaluation/data_quality/semantic_duplicates_refined_v0_2/cloud_output/report.json",
+      "sha256": "fd5c44c4286e7b28054c10941045e8c3db17bdb4719ff2af9c68a91926b01c0e"
+    },
+    {
+      "bytes": 449,
+      "path": "data/processed/evaluation/data_quality/semantic_duplicates_v0_1/cloud_output/report.json",
+      "sha256": "8dcf1d02b500c5864564c2e07acb20d6ab0f5e290e64cae33c2ce8fd1f3f5de4"
+    },
+    {
+      "bytes": 1338,
+      "path": "data/processed/evaluation/data_quality/text_noise_audit_v0_2/cloud_output/report.json",
+      "sha256": "e6e90d06da06df15bb1355a5063b0eed4c35a24bd75e530e796f7409b79c89d6"
     },
     {
       "bytes": 1939,
@@ -221,6 +296,16 @@
       "sha256": "1bdbe139e85f4fcf4d3d43813e5e362f804d1274853c9d213c67aaf1a2a863a9"
     },
     {
+      "bytes": 293,
+      "path": "data/processed/model_ready/indicbert_balanced_domain/report.json",
+      "sha256": "d0244b385bf0db04327e793d753903f35ec235fdca5baa97826e2b6498a86e45"
+    },
+    {
+      "bytes": 579,
+      "path": "data/processed/model_ready/indicbert_pdf_domain/report.json",
+      "sha256": "f04aa1568a09889199dd110a2aef19c98ba93eebc3bce668a199f6d11ca00c96"
+    },
+    {
       "bytes": 862,
       "path": "data/processed/model_ready/instructions/report.json",
       "sha256": "e8e40649496d58b4ee0d5a43ab4757b68468b5fa8f334ab4beea877523a9973b"
@@ -258,7 +343,12 @@
     {
       "bytes": 4084,
       "path": "data/processed/model_ready/splits/report.json",
-      "sha256": "6eec3766530863d31dd2aec395361cf28d6488173555f5aa28077b3ad1c4e317"
+      "sha256": "4b96587b69d70d2c25838fd98d404863d9dc5c84c84c27341e15fbc7f4450abd"
+    },
+    {
+      "bytes": 4053,
+      "path": "data/processed/model_ready/sravaani_expanded_human_finetune/report.json",
+      "sha256": "8916c8e65577e867b6ab0a74997d38938a25897d3c93fcbaae2bb6de91e7ecc5"
     },
     {
       "bytes": 3268,
@@ -373,7 +463,7 @@
     {
       "bytes": 508,
       "path": "data/processed/text/report.json",
-      "sha256": "32b5a99ebbb16bc333ff209715138aa4354c865eed48efb6333222c9a3daf52a"
+      "sha256": "c0dcf8d2a52be5ca2c0d71616dd9c402ebb2c9d42b38623b5346f8b823a76c07"
     },
     {
       "bytes": 480,
@@ -426,7 +516,7 @@
       "sha256": "9136fe48ad247ce9faba204be32ddc70860095d992ba142a7ad4b9ea916d6af1"
     }
   ],
-  "bytes": 2440144,
-  "files": 85,
+  "bytes": 2482070,
+  "files": 103,
   "release_id": "garhwali-language-lab-v0.1.0"
 }

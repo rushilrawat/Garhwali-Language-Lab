@@ -134,7 +134,7 @@ training.
 1. **Access milestone achieved (2026-09-09):** official VAANI manifests acquired and reconciled; see `research/vaani-audit-2026-09-09.md`.
 2. **Lexicon milestone:** 5,000 native-reviewed concepts/forms with dialect and
    example fields.
-3. **Text milestone:** 50,000 clean, rights-cleared Garhwali sentences spanning
+3. **Text milestone:** asentences spanning
    conversational, informational and literary genres.
 4. **Speech milestone:** at least 25–50 transcribed hours balanced across major
    districts and speaker groups, plus a separate immutable test set.

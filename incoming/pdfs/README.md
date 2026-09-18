@@ -38,3 +38,13 @@ PYTHONPATH=scripts .venv/bin/python scripts/ingest_incoming_pdfs.py
 The command checks exact PDF hashes before extraction, uses an existing PDF
 text layer when it is substantive, OCRs image-only pages with Tesseract
 `hin+eng`, and caches each completed page under `data/extracted/`.
+
+To assimilate every new PDF through normalization, segmentation, quality tags,
+splits, and the upload-ready Hugging Face all-data package, run:
+
+```bash
+bash scripts/refresh_incoming_pdfs.sh
+```
+
+The refresh is local and resumable; it does not spend Hugging Face GPU credit.
+Upload happens only when the completed dataset package is explicitly published.

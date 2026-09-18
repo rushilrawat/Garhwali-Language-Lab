@@ -125,9 +125,9 @@ exposes the public-text refinement signals without publishing private source tex
 ## Reproduction
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python -m unittest scripts/test_refine_priority_text.py
+PYTHONPATH=scripts .venv/bin/python -m unittest tests/test_refine_priority_text.py
 PYTHONPATH=scripts .venv/bin/python scripts/refine_priority_text.py
-PYTHONPATH=scripts .venv/bin/python -m unittest scripts/test_build_quality_tiers.py
+PYTHONPATH=scripts .venv/bin/python -m unittest tests/test_build_quality_tiers.py
 PYTHONPATH=scripts .venv/bin/python scripts/build_quality_tiers.py
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/redecode_supervised_review.py
 .venv/bin/python scripts/build_huggingface_dataset.py

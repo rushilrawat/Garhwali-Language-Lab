@@ -10,7 +10,8 @@ class LanguageQualityTests(unittest.TestCase):
         return function(*args) if function else None
 
     def test_language_quality_module_exists(self):
-        self.assertTrue((Path(__file__).parent / 'tag_language_quality.py').exists())
+        module = Path(__file__).resolve().parents[1] / 'scripts' / 'tag_language_quality.py'
+        self.assertTrue(module.exists())
 
     def test_script_profile_marks_real_mixed_script(self):
         result = self.call('script_profile', 'गढ़वाली abc')

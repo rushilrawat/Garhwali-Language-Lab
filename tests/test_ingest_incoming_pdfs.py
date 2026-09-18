@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+import json
 from pathlib import Path
 
 import ingest_incoming_pdfs as m
@@ -44,6 +45,45 @@ class IncomingPdfIngestionTests(unittest.TestCase):
         text = "A Syntactic Sketch of Garhwali " * 20
         self.assertTrue(m.has_substantive_embedded_text(text))
         self.assertFalse(m.has_substantive_embedded_text("page 1"))
+
+    def test_neighboring_json_sidecar_supplies_future_pdf_metadata(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pdf = Path(tmp) / "New Grammar.pdf"
+            pdf.write_bytes(b"pdf")
+            pdf.with_suffix(".json").write_text(json.dumps({
+                "title": "A New Garhwali Grammar",
+                "author": "Example Author",
+                "publication_year": 2026,
+                "genre": "grammar_linguistics",
+                "landing_page": "https://example.org/catalog",
+                "license_or_rights_statement": "CC BY 4.0",
+            }))
+
+            metadata = m.source_metadata_for(pdf)
+
+        self.assertEqual(metadata["source_id"], "incoming_new_grammar")
+        self.assertEqual(metadata["title"], "A New Garhwali Grammar")
+        self.assertEqual(metadata["author"], "Example Author")
+        self.assertEqual(metadata["landing_page"], "https://example.org/catalog")
+
+    def test_sidecar_rights_and_source_fields_reach_page_record(self):
+        record = m.page_record(
+            source_id="incoming_example",
+            source_pdf=Path("incoming/pdfs/example.pdf"),
+            source_sha256="a" * 64,
+            page_number=1,
+            text="गढ़वाली भाषा",
+            extraction_method="embedded_pdf_text_layer",
+            title="Example",
+            source_metadata={
+                "download_url": "https://example.org/book.pdf",
+                "rights_evidence_url": "https://example.org/rights",
+                "license_or_rights_statement": "CC BY 4.0",
+            },
+        )
+        self.assertEqual(record["download_url"], "https://example.org/book.pdf")
+        self.assertEqual(record["license_or_rights_statement"], "CC BY 4.0")
+        self.assertNotIn("rights_unknown", record["quality_flags"])
 
 
 if __name__ == "__main__":

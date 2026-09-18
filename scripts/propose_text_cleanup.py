@@ -266,7 +266,7 @@ def select_mask_positions(token_ids, attention_mask, special_ids, record_key, ra
 
 
 def score_with_masked_lm(rows, model_path=MODEL_PATH, max_length=256, mask_rate=0.15,
-                         seed=29, device='auto'):
+                         seed=29, device='auto', adapter_path=None):
     os.environ.setdefault('TOKENIZERS_PARALLELISM', 'false')
     import torch
     import torch.nn.functional as functional
@@ -275,11 +275,19 @@ def score_with_masked_lm(rows, model_path=MODEL_PATH, max_length=256, mask_rate=
     if not rows:
         return {}, {'scored_records': 0}
     if device == 'auto':
-        device = 'mps' if torch.backends.mps.is_available() else 'cpu'
+        if torch.cuda.is_available():
+            device = 'cuda'
+        else:
+            device = 'mps' if torch.backends.mps.is_available() else 'cpu'
     tokenizer = AutoTokenizer.from_pretrained(
         model_path, local_files_only=True, fix_mistral_regex=True,
     )
     model = AutoModelForMaskedLM.from_pretrained(model_path, local_files_only=True).to(device)
+    if adapter_path:
+        from peft import PeftModel
+        model = PeftModel.from_pretrained(
+            model, adapter_path, local_files_only=True,
+        ).to(device)
     model.eval()
     special_ids = set(tokenizer.all_special_ids)
     scores = {}
@@ -317,6 +325,7 @@ def score_with_masked_lm(rows, model_path=MODEL_PATH, max_length=256, mask_rate=
         'max_length': max_length,
         'truncated_records': truncated,
         'device': device,
+        'adapter_path': str(adapter_path) if adapter_path else None,
         'elapsed_seconds': round(time.monotonic() - started, 3),
     }
     return scores, metadata
@@ -331,7 +340,7 @@ def percentile(values, fraction):
 
 
 def run(input_path=INPUT, output_dir=OUTPUT, model_scores=None, model_records=0,
-        device='auto'):
+        device='auto', model_path=MODEL_PATH):
     rows = list(read_jsonl(input_path))
     frequencies = build_token_frequencies(rows)
     deletion_index = build_deletion_index(frequencies)
@@ -339,7 +348,9 @@ def run(input_path=INPUT, output_dir=OUTPUT, model_scores=None, model_records=0,
     model_metadata = {'scored_records': len(model_scores or {}), 'source': 'provided'}
     if model_scores is None:
         selected = select_model_rows(rows, preliminary, min(model_records, len(rows)))
-        model_scores, model_metadata = score_with_masked_lm(selected, device=device)
+        model_scores, model_metadata = score_with_masked_lm(
+            selected, model_path=model_path, device=device,
+        )
     threshold = percentile(list(model_scores.values()), 0.9)
     proposals = [
         build_proposal(row, frequencies, deletion_index, model_scores.get(row.get('text_sha256')),
@@ -405,10 +416,12 @@ def main():
     parser.add_argument('--input', type=Path, default=INPUT)
     parser.add_argument('--output-dir', type=Path, default=OUTPUT)
     parser.add_argument('--model-records', type=int, default=4096)
-    parser.add_argument('--device', choices=('auto', 'mps', 'cpu'), default='auto')
+    parser.add_argument('--device', choices=('auto', 'cuda', 'mps', 'cpu'), default='auto')
+    parser.add_argument('--model-path', type=Path, default=MODEL_PATH)
     args = parser.parse_args()
     print(json.dumps(run(args.input, args.output_dir, model_records=args.model_records,
-                         device=args.device), ensure_ascii=False, indent=2, sort_keys=True))
+                         device=args.device, model_path=args.model_path),
+                     ensure_ascii=False, indent=2, sort_keys=True))
 
 
 if __name__ == '__main__':

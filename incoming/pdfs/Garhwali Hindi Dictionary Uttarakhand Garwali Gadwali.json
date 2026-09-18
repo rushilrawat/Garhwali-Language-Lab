@@ -1,0 +1,30 @@
+{
+  "source_id": "incoming_garhwali_hindi_dictionary",
+  "title": "Garhwali-Hindi Shabdkosh",
+  "title_original": "गढ़वाली-हिंदी शब्दकोश",
+  "author": "Arvind Purohit; Beena Benjwal",
+  "compiler": ["Arvind Purohit", "Beena Benjwal"],
+  "editor": ["Ramakant Benjwal"],
+  "publication_year": 2007,
+  "publication_date": "2007-06",
+  "edition": "First edition",
+  "publisher": "Winsar Publishing Company",
+  "publication_place": "Dehradun, Uttarakhand, India",
+  "isbn": "81-86844-53-8",
+  "lccn": "2007431146",
+  "physical_pages": 472,
+  "pdf_pages": 239,
+  "languages": ["Garhwali", "Hindi"],
+  "script": ["Devanagari"],
+  "genre": "dictionary_lexicon",
+  "subjects": ["Garhwali-Hindi dictionary", "regional vocabulary", "proverbs", "semantic domains"],
+  "landing_page": "https://ci.nii.ac.jp/ncid/BB02193697",
+  "catalog_records": [
+    "https://ci.nii.ac.jp/ncid/BB02193697"
+  ],
+  "license_or_rights_statement": "Copyrighted publication; no open-content license was identified in the scan or catalog record.",
+  "rights_status": "copyright_no_open_license_identified",
+  "rights_evidence_url": "https://ci.nii.ac.jp/ncid/BB02193697",
+  "extraction_note": "Two book pages per PDF page; image scan OCRed with Tesseract hin+eng.",
+  "notes": "The scan is the June 2007 first edition. A later second edition is reported separately and must not be conflated with this file."
+}

@@ -177,7 +177,13 @@ def main():
                 row, supervised_refinements.get(row['audio_sha256'])
             ),
         ),
-        "machine_drafts": (ROOT / "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl", draft_quality_decision),
+        "machine_drafts": (
+            next(path for path in (
+                ROOT / "data/processed/model_ready/transcripts/machine_drafts_sravaani_verified.jsonl",
+                ROOT / "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+            ) if path.exists()),
+            draft_quality_decision,
+        ),
     }
     report = {
         "method": "Evidence-only tiering; original and cleaned values are preserved byte-for-byte.",

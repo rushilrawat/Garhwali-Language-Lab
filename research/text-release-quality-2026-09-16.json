@@ -1,0 +1,152 @@
+{
+  "run_id": "garhwali-text-release-quality-v0.1",
+  "grain": "one exact-unique text segment per split row",
+  "records": 114082,
+  "splits": {
+    "train": 106804,
+    "validation": 3114,
+    "test": 4164
+  },
+  "incoming_pdf_records": 27926,
+  "length_characters": {
+    "min": 1,
+    "median": 56.0,
+    "p95": 209,
+    "max": 2193
+  },
+  "distinct_sources": 53,
+  "largest_sources": [
+    [
+      "paharili_gbm",
+      15269
+    ],
+    [
+      "atkinson_himalayan_gazetteer",
+      13026
+    ],
+    [
+      "incoming_garhwali_hindi_dictionary",
+      12453
+    ],
+    [
+      "indic_dialect_asr_gbm",
+      10988
+    ],
+    [
+      "uou_cgl",
+      9245
+    ],
+    [
+      "incoming_english_hindi_garhwali_dictionary",
+      9214
+    ],
+    [
+      "proverbs1894",
+      8229
+    ],
+    [
+      "meta_omni",
+      7964
+    ],
+    [
+      "shanti_chaudhary_garhwali_lokkala_loksahitya_1994",
+      5514
+    ],
+    [
+      "govind_chatak_gadwali_lokgeet_1956",
+      4163
+    ],
+    [
+      "incoming_garhwali_language_and_culture",
+      3329
+    ],
+    [
+      "dcad_gbm",
+      3190
+    ],
+    [
+      "lsi",
+      2622
+    ],
+    [
+      "uou_more",
+      2603
+    ],
+    [
+      "hindialect_gbm",
+      2357
+    ],
+    [
+      "incoming_garhwali_bhasha_linguistic_grammatical_study",
+      1682
+    ],
+    [
+      "obs_garhwali",
+      1502
+    ],
+    [
+      "kellogg_1893",
+      1288
+    ],
+    [
+      "incoming_chandola_syntactic_sketch",
+      720
+    ],
+    [
+      "hill_dialects_1900",
+      666
+    ]
+  ],
+  "checks": {
+    "empty_text": 0,
+    "duplicate_segment_ids_within_splits": 0,
+    "train_validation_overlap": 0,
+    "train_test_overlap": 0,
+    "validation_test_overlap": 0,
+    "missing_source_id": 0,
+    "missing_rights_status": 0
+  },
+  "findings": [
+    {
+      "check": "empty_text",
+      "count": 0,
+      "severity": "pass"
+    },
+    {
+      "check": "duplicate_segment_ids_within_splits",
+      "count": 0,
+      "severity": "pass"
+    },
+    {
+      "check": "train_validation_overlap",
+      "count": 0,
+      "severity": "pass"
+    },
+    {
+      "check": "train_test_overlap",
+      "count": 0,
+      "severity": "pass"
+    },
+    {
+      "check": "validation_test_overlap",
+      "count": 0,
+      "severity": "pass"
+    },
+    {
+      "check": "missing_source_id",
+      "count": 0,
+      "rate": 0.0,
+      "severity": "pass"
+    },
+    {
+      "check": "missing_rights_status",
+      "count": 0,
+      "rate": 0.0,
+      "severity": "pass"
+    }
+  ],
+  "policy": {
+    "records_mutated": 0,
+    "records_deleted": 0
+  }
+}

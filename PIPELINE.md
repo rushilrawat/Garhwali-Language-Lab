@@ -51,7 +51,7 @@ Add a new wave by defining `<name>_wave_acquire` and `<name>_wave_extract` in
 ## Verification
 
 ```bash
-.venv/bin/python -m unittest discover -s scripts -p 'test_*.py'
+PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 .venv/bin/python scripts/dedup_report.py
 .venv/bin/python scripts/verify_ingestion.py
 .venv/bin/python scripts/tag_language_quality.py

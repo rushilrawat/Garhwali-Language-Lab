@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-MODULE = Path(__file__).with_name('collect_online.py')
+MODULE = Path(__file__).resolve().parents[1] / 'scripts' / 'collect_online.py'
 
 
 class CollectionTests(unittest.TestCase):

@@ -20,6 +20,45 @@
       "title": "Dictionary: English-Garhwali-Hindi",
       "author": "Achlanand Jakhmola",
       "publication_year": 2016,
+      "metadata_sidecar": "incoming/pdfs/Dictionary of English hindi Garhwali.json",
+      "bibliographic_metadata": {
+        "source_id": "incoming_english_hindi_garhwali_dictionary",
+        "title": "Dictionary: English-Garhwali-Hindi",
+        "author": "Achlanand Jakhmola",
+        "publication_year": 2016,
+        "genre": "dictionary_lexicon",
+        "subtitle": "Contains about 8,000 English and around 40,000 Garhwali and 32,000 Hindi equivalents",
+        "edition": "First edition",
+        "publisher": "Samaya Sakshaya Prakashan",
+        "publication_place": "Dehradun, Uttarakhand, India",
+        "isbn": "978-81-86810-16-1",
+        "physical_pages": 246,
+        "pdf_pages": 124,
+        "languages": [
+          "English",
+          "Garhwali",
+          "Hindi"
+        ],
+        "script": [
+          "Latin",
+          "Devanagari"
+        ],
+        "subjects": [
+          "Garhwali dictionaries",
+          "English-Garhwali lexicography",
+          "Hindi equivalents"
+        ],
+        "landing_page": "https://gsl.lbsnaa.gov.in/cgi-bin/koha/opac-detail.pl?biblionumber=346621",
+        "catalog_records": [
+          "https://books.google.com/books?id=pFmJzwEACAAJ",
+          "https://ci.nii.ac.jp/ncid/BB27355212"
+        ],
+        "license_or_rights_statement": "Copyright work; no open-content license was identified in the scan or catalog records.",
+        "rights_status": "copyright_no_open_license_identified",
+        "rights_evidence_url": "https://books.google.com/books?id=pFmJzwEACAAJ",
+        "extraction_note": "Image scan arranged as two book pages per PDF page; Tesseract hin+eng OCR used.",
+        "notes": "The author states that the dictionary records Garhwali words in spoken form because the language was not standardized. Catalog data confirms the ISBN, publisher, year, extent, and trilingual scope."
+      },
       "exact_duplicate_of": null,
       "already_ingested_as": null,
       "status": "extracted_active_experimental",
@@ -35,9 +74,47 @@
       "bytes": 6878808,
       "pages": 376,
       "source_id": "incoming_gadwali_lokgeet",
-      "title": "Gadwali LokGeet",
+      "title": "Garhwali Lokgeet",
       "author": "Govind Chatak",
       "publication_year": 1956,
+      "metadata_sidecar": "incoming/pdfs/Gadwali LokGeet.json",
+      "bibliographic_metadata": {
+        "source_id": "incoming_gadwali_lokgeet",
+        "title": "Garhwali Lokgeet",
+        "author": "Govind Chatak",
+        "publication_year": 1956,
+        "genre": "folk_literature",
+        "title_original": "गढ़वाली लोकगीत",
+        "role": "Compiler and Hindi translator",
+        "volume": "Volume 1: Laghu Geet",
+        "publisher": "Jugal Kishore and Company",
+        "publication_place": "Dehradun, India",
+        "pdf_pages": 376,
+        "languages": [
+          "Garhwali",
+          "Hindi"
+        ],
+        "script": [
+          "Devanagari"
+        ],
+        "subjects": [
+          "Garhwali folk songs",
+          "oral literature",
+          "Hindi translations"
+        ],
+        "landing_page": "https://archive.org/details/in.ernet.dli.2015.404620",
+        "catalog_records": [
+          "https://cir.nii.ac.jp/crid/1970867909812516797",
+          "https://tufs.repo.nii.ac.jp/records/10123"
+        ],
+        "persistent_identifier": "https://doi.org/10.15026/8727",
+        "license_or_rights_statement": "The located archive and catalog records provide public access but do not identify an open-content license for this 1956 edition.",
+        "rights_status": "publicly_accessible_rights_unresolved",
+        "rights_evidence_url": "https://archive.org/details/in.ernet.dli.2015.404620",
+        "exact_duplicate_of": "data/downloads/folklore/internet_archive/govind_chatak_gadwali_lokgeet_1956.pdf",
+        "already_ingested_as": "data/extracted/folklore/govind_chatak_gadwali_lokgeet_1956.jsonl",
+        "notes": "This user-supplied file is byte-identical to the earlier Internet Archive/Digital Library of India scan and is not extracted twice."
+      },
       "exact_duplicate_of": "data/downloads/folklore/internet_archive/govind_chatak_gadwali_lokgeet_1956.pdf",
       "already_ingested_as": "data/extracted/folklore/govind_chatak_gadwali_lokgeet_1956.jsonl",
       "status": "exact_duplicate_not_reextracted",
@@ -52,6 +129,44 @@
       "title": "Garhwali Sahitya ki Bhumika",
       "author": "Damodar Prasad Thapliyal; Shyam Chand Negi",
       "publication_year": 1954,
+      "metadata_sidecar": "incoming/pdfs/Gadwali Sahitya.json",
+      "bibliographic_metadata": {
+        "source_id": "incoming_gadwali_sahitya",
+        "title": "Garhwali Sahitya ki Bhumika",
+        "author": "Damodar Prasad Thapliyal; Shyam Chand Negi",
+        "publication_year": 1954,
+        "genre": "literature_language_culture",
+        "title_original": "गढ़वाली साहित्य की भूमिका",
+        "editor": [
+          "Damodar Prasad Thapliyal",
+          "Shyam Chand Negi"
+        ],
+        "publication_date": "1954-01-26",
+        "edition": "First edition; 1,000 copies",
+        "publisher": "Garhwali Jan Sahitya Parishad",
+        "printer": "Yugvani Press; Acharya Gopeshwar Kothiyal",
+        "publication_place": "Dehradun, India",
+        "physical_pages": 75,
+        "pdf_pages": 75,
+        "languages": [
+          "Garhwali",
+          "Hindi"
+        ],
+        "script": [
+          "Devanagari"
+        ],
+        "subjects": [
+          "Garhwali literature",
+          "literary history",
+          "regional-language advocacy"
+        ],
+        "landing_page": "https://epustakalay.com/book/27441-gadwali-sahitya-ki-bhumika-by-damodar-prasad-thapliyal-shyam-chand-negi/",
+        "license_or_rights_statement": "No open-content license or explicit reuse permission was identified in the scan or catalog page.",
+        "rights_status": "publicly_accessible_rights_unresolved",
+        "rights_evidence_url": "https://epustakalay.com/book/27441-gadwali-sahitya-ki-bhumika-by-damodar-prasad-thapliyal-shyam-chand-negi/",
+        "extraction_note": "Image-only scan; Tesseract hin+eng OCR used.",
+        "notes": "The publication page identifies both editors, the Parishad as publisher, the press, exact publication date, edition size, and original price of one rupee."
+      },
       "exact_duplicate_of": null,
       "already_ingested_as": null,
       "status": "extracted_active_experimental",
@@ -69,7 +184,47 @@
       "source_id": "incoming_garhwali_bhasha_linguistic_grammatical_study",
       "title": "Garhwali Bhasha: Ek Bhashashastriya Aur Vyakaranik Adhyayan",
       "author": "Govind Chatak",
-      "publication_year": null,
+      "publication_year": 1959,
+      "metadata_sidecar": "incoming/pdfs/Garhwali Bhasha_ Ek Bhashashashtriya Aur Vyakarnik Adhyayan.json",
+      "bibliographic_metadata": {
+        "source_id": "incoming_garhwali_bhasha_linguistic_grammatical_study",
+        "title": "Garhwali Bhasha: Ek Bhashashastriya Aur Vyakaranik Adhyayan",
+        "author": "Govind Chatak",
+        "genre": "grammar_linguistics",
+        "title_original": "गढ़वाली भाषा: एक भाषाशास्त्रीय और व्याकरणिक अध्ययन",
+        "foreword_author": "Dhirendra Varma",
+        "publication_year": 1959,
+        "publication_date": "1959-09",
+        "edition": "First edition",
+        "publisher": "Lok Bharati",
+        "distributor": "Mohini Prakashan",
+        "publication_place": "Dehradun, India",
+        "physical_pages": 147,
+        "pdf_pages": 147,
+        "languages": [
+          "Hindi",
+          "Garhwali"
+        ],
+        "script": [
+          "Devanagari"
+        ],
+        "subjects": [
+          "Garhwali grammar",
+          "phonology",
+          "morphology",
+          "dialectology",
+          "lexicon"
+        ],
+        "landing_page": "https://epustakalay.com/book/28579-garhwali-bhasha-by-dr-govind-chatak-dheerendra-verma/",
+        "catalog_records": [
+          "https://epustakalay.com/book/17024-gadhwali-bhasha-1959-by-dr-govind-chatak/"
+        ],
+        "license_or_rights_statement": "No open-content license or explicit reuse permission was identified in the scan or catalog records.",
+        "rights_status": "publicly_accessible_rights_unresolved",
+        "rights_evidence_url": "https://epustakalay.com/book/28579-garhwali-bhasha-by-dr-govind-chatak-dheerendra-verma/",
+        "extraction_note": "Image-only scan; Tesseract hin+eng OCR used.",
+        "notes": "The publication page names Lok Bharati at 108-A Rajpur Road as publisher, Mohini Prakashan as distributor, and September 1959 as the publication date."
+      },
       "exact_duplicate_of": null,
       "already_ingested_as": null,
       "status": "extracted_active_experimental",
@@ -83,9 +238,55 @@
       "bytes": 24308443,
       "pages": 239,
       "source_id": "incoming_garhwali_hindi_dictionary",
-      "title": "Garhwali-Hindi Dictionary",
-      "author": "Arvind Purohit; Beena Benzwal",
+      "title": "Garhwali-Hindi Shabdkosh",
+      "author": "Arvind Purohit; Beena Benjwal",
       "publication_year": 2007,
+      "metadata_sidecar": "incoming/pdfs/Garhwali Hindi Dictionary Uttarakhand Garwali Gadwali.json",
+      "bibliographic_metadata": {
+        "source_id": "incoming_garhwali_hindi_dictionary",
+        "title": "Garhwali-Hindi Shabdkosh",
+        "author": "Arvind Purohit; Beena Benjwal",
+        "publication_year": 2007,
+        "genre": "dictionary_lexicon",
+        "title_original": "गढ़वाली-हिंदी शब्दकोश",
+        "compiler": [
+          "Arvind Purohit",
+          "Beena Benjwal"
+        ],
+        "editor": [
+          "Ramakant Benjwal"
+        ],
+        "publication_date": "2007-06",
+        "edition": "First edition",
+        "publisher": "Winsar Publishing Company",
+        "publication_place": "Dehradun, Uttarakhand, India",
+        "isbn": "81-86844-53-8",
+        "lccn": "2007431146",
+        "physical_pages": 472,
+        "pdf_pages": 239,
+        "languages": [
+          "Garhwali",
+          "Hindi"
+        ],
+        "script": [
+          "Devanagari"
+        ],
+        "subjects": [
+          "Garhwali-Hindi dictionary",
+          "regional vocabulary",
+          "proverbs",
+          "semantic domains"
+        ],
+        "landing_page": "https://ci.nii.ac.jp/ncid/BB02193697",
+        "catalog_records": [
+          "https://ci.nii.ac.jp/ncid/BB02193697"
+        ],
+        "license_or_rights_statement": "Copyrighted publication; no open-content license was identified in the scan or catalog record.",
+        "rights_status": "copyright_no_open_license_identified",
+        "rights_evidence_url": "https://ci.nii.ac.jp/ncid/BB02193697",
+        "extraction_note": "Two book pages per PDF page; image scan OCRed with Tesseract hin+eng.",
+        "notes": "The scan is the June 2007 first edition. A later second edition is reported separately and must not be conflated with this file."
+      },
       "exact_duplicate_of": null,
       "already_ingested_as": null,
       "status": "extracted_active_experimental",
@@ -102,6 +303,46 @@
       "title": "Garhwal: Bhasha, Sahitya aur Sanskriti",
       "author": "Govind Chatak",
       "publication_year": 2008,
+      "metadata_sidecar": "incoming/pdfs/Garhwali language and culture.json",
+      "bibliographic_metadata": {
+        "source_id": "incoming_garhwali_language_and_culture",
+        "title": "Garhwal: Bhasha, Sahitya aur Sanskriti",
+        "author": "Govind Chatak",
+        "publication_year": 2008,
+        "genre": "language_culture_research",
+        "title_original": "गढ़वाल: भाषा, साहित्य और संस्कृति",
+        "edition": "First edition",
+        "publisher": "Takshila Prakashan",
+        "publication_place": "New Delhi, India",
+        "isbn": "978-81-7965-157-5",
+        "physical_pages": 152,
+        "pdf_pages": 78,
+        "languages": [
+          "Hindi",
+          "Garhwali"
+        ],
+        "script": [
+          "Devanagari"
+        ],
+        "subjects": [
+          "Garhwal history",
+          "Garhwali language",
+          "written literature",
+          "oral literature",
+          "folk music",
+          "folk dance",
+          "folk theatre"
+        ],
+        "landing_page": "https://www.retailmaharaj.com/products/garhwal-language-literature-and-culture-1",
+        "catalog_records": [
+          "https://www.exoticindiaart.com/book-author/govind%20chatak/"
+        ],
+        "license_or_rights_statement": "All rights reserved. The scan states that reproduction or transmission by any means requires written permission from the publisher.",
+        "rights_status": "copyright_all_rights_reserved",
+        "rights_evidence_url": "scan:page:2",
+        "extraction_note": "Two book pages per PDF page; image scan OCRed with Tesseract hin+eng.",
+        "notes": "The contents cover the Central Himalaya/Garhwal, people and life, Garhwali language, written and oral literature, folk instruments and music, dance, and theatre."
+      },
       "exact_duplicate_of": null,
       "already_ingested_as": null,
       "status": "extracted_active_experimental",
@@ -119,8 +360,50 @@
       "pages": 110,
       "source_id": "incoming_chandola_syntactic_sketch",
       "title": "A Syntactic Sketch of Garhwali",
-      "author": "Anang Chandra Chandola",
-      "publication_year": null,
+      "author": "Anoop Chandra Chandola",
+      "publication_year": 1966,
+      "metadata_sidecar": "incoming/pdfs/Garhwali, A Syntactic Sketch of (Chandola).json",
+      "bibliographic_metadata": {
+        "source_id": "incoming_chandola_syntactic_sketch",
+        "title": "A Syntactic Sketch of Garhwali",
+        "author": "Anoop Chandra Chandola",
+        "genre": "grammar_linguistics",
+        "publication_year": 1966,
+        "publication_date": "1966-06",
+        "work_type": "PhD dissertation",
+        "degree": "Doctor of Philosophy",
+        "institution": "University of Chicago",
+        "department": "Department of Linguistics",
+        "publication_place": "Chicago, Illinois, United States",
+        "physical_pages": 103,
+        "pdf_pages": 110,
+        "languages": [
+          "English",
+          "Garhwali"
+        ],
+        "script": [
+          "Latin"
+        ],
+        "dialect_scope": "Pauri and adjacent Garhwal varieties spoken by the author",
+        "subjects": [
+          "Garhwali syntax",
+          "generative grammar",
+          "verb phrases",
+          "transformations",
+          "phonemes",
+          "text samples",
+          "verb paradigm"
+        ],
+        "landing_page": "https://wacl.clld.org/sources/chandolaanoopchandrasyntactic1966",
+        "catalog_records": [
+          "https://www.bibliovault.org/p/bopen/9780472902323/pdf"
+        ],
+        "license_or_rights_statement": "The signed dissertation permission page authorizes the University of Chicago to make copies at its discretion on request and at requesters' expense; extensive quotation or further reproduction by others requires the writer's express permission.",
+        "rights_status": "dissertation_copy_permission_limited_reproduction",
+        "rights_evidence_url": "scan:page:1",
+        "extraction_note": "The PDF contains a substantive ABBYY text layer; no OCR rerun was needed.",
+        "notes": "The dissertation states that it is the first study of Garhwali syntax and is based on the author's Pauri dialect. The front matter lists phrase-structure rules, transformations, phonemes, texts, and a sample verb paradigm."
+      },
       "exact_duplicate_of": null,
       "already_ingested_as": null,
       "status": "extracted_active_experimental",

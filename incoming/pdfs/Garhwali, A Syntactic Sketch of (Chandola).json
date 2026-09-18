@@ -1,0 +1,28 @@
+{
+  "source_id": "incoming_chandola_syntactic_sketch",
+  "title": "A Syntactic Sketch of Garhwali",
+  "author": "Anoop Chandra Chandola",
+  "publication_year": 1966,
+  "publication_date": "1966-06",
+  "work_type": "PhD dissertation",
+  "degree": "Doctor of Philosophy",
+  "institution": "University of Chicago",
+  "department": "Department of Linguistics",
+  "publication_place": "Chicago, Illinois, United States",
+  "physical_pages": 103,
+  "pdf_pages": 110,
+  "languages": ["English", "Garhwali"],
+  "script": ["Latin"],
+  "genre": "grammar_linguistics",
+  "dialect_scope": "Pauri and adjacent Garhwal varieties spoken by the author",
+  "subjects": ["Garhwali syntax", "generative grammar", "verb phrases", "transformations", "phonemes", "text samples", "verb paradigm"],
+  "landing_page": "https://wacl.clld.org/sources/chandolaanoopchandrasyntactic1966",
+  "catalog_records": [
+    "https://www.bibliovault.org/p/bopen/9780472902323/pdf"
+  ],
+  "license_or_rights_statement": "The signed dissertation permission page authorizes the University of Chicago to make copies at its discretion on request and at requesters' expense; extensive quotation or further reproduction by others requires the writer's express permission.",
+  "rights_status": "dissertation_copy_permission_limited_reproduction",
+  "rights_evidence_url": "scan:page:1",
+  "extraction_note": "The PDF contains a substantive ABBYY text layer; no OCR rerun was needed.",
+  "notes": "The dissertation states that it is the first study of Garhwali syntax and is based on the author's Pauri dialect. The front matter lists phrase-structure rules, transformations, phonemes, texts, and a sample verb paradigm."
+}

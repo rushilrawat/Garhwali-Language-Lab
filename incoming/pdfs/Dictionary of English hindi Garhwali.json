@@ -1,0 +1,27 @@
+{
+  "source_id": "incoming_english_hindi_garhwali_dictionary",
+  "title": "Dictionary: English-Garhwali-Hindi",
+  "subtitle": "Contains about 8,000 English and around 40,000 Garhwali and 32,000 Hindi equivalents",
+  "author": "Achlanand Jakhmola",
+  "publication_year": 2016,
+  "edition": "First edition",
+  "publisher": "Samaya Sakshaya Prakashan",
+  "publication_place": "Dehradun, Uttarakhand, India",
+  "isbn": "978-81-86810-16-1",
+  "physical_pages": 246,
+  "pdf_pages": 124,
+  "languages": ["English", "Garhwali", "Hindi"],
+  "script": ["Latin", "Devanagari"],
+  "genre": "dictionary_lexicon",
+  "subjects": ["Garhwali dictionaries", "English-Garhwali lexicography", "Hindi equivalents"],
+  "landing_page": "https://gsl.lbsnaa.gov.in/cgi-bin/koha/opac-detail.pl?biblionumber=346621",
+  "catalog_records": [
+    "https://books.google.com/books?id=pFmJzwEACAAJ",
+    "https://ci.nii.ac.jp/ncid/BB27355212"
+  ],
+  "license_or_rights_statement": "Copyright work; no open-content license was identified in the scan or catalog records.",
+  "rights_status": "copyright_no_open_license_identified",
+  "rights_evidence_url": "https://books.google.com/books?id=pFmJzwEACAAJ",
+  "extraction_note": "Image scan arranged as two book pages per PDF page; Tesseract hin+eng OCR used.",
+  "notes": "The author states that the dictionary records Garhwali words in spoken form because the language was not standardized. Catalog data confirms the ISBN, publisher, year, extent, and trilingual scope."
+}
