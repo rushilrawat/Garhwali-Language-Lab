@@ -35,6 +35,7 @@ class IncomingPdfIngestionTests(unittest.TestCase):
 
         self.assertEqual(record["text"], "गढ़वाली भाषा")
         self.assertEqual(record["corpus_layer"], "experimental")
+        self.assertEqual(record["iso_639_3"], "mul")
         self.assertEqual(record["usage"], "all_data_experimental_user_approved")
         self.assertTrue(record["experimental_training_eligible"])
         self.assertEqual(record["attribution"], "Example")

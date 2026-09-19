@@ -51,6 +51,7 @@ def main():
     split_ids = defaultdict(lambda: defaultdict(set))
     global_stats = Counter()
     source_ids = Counter()
+    instruction_prompts = defaultdict(lambda: defaultdict(set))
     file_hashes = []
     for key, expected in sorted(manifest["configs"].items()):
         config, split = key.split("/", 1)
@@ -95,10 +96,36 @@ def main():
                         source = item.get("source_id")
                         if source:
                             source_ids[source] += 1
+                    if config == 'text':
+                        source_languages = set(row.get('source_languages') or [])
+                        if row.get('language') == 'gbm' and source_languages & {'eng', 'hin', 'mul'}:
+                            stats['unsupported_garhwali_label'] += 1
+                        if any(
+                            field not in row for field in (
+                                'language_buckets', 'quality_tiers',
+                                'recommended_for_training',
+                            )
+                        ):
+                            stats['missing_admission_metadata'] += 1
+                    elif config == 'instructions':
+                        prompt = ' '.join(
+                            str(row.get('instruction') or '').casefold().split()
+                        )
+                        instruction_prompts[config][split].add(prompt)
+                        if not row.get('acceptable_responses'):
+                            stats['missing_acceptable_responses'] += 1
         if stats["records"] != expected["records"]:
             errors.append(f"record_count:{key}:{stats['records']}!={expected['records']}")
         if stats["missing_identity"]:
             errors.append(f"missing_identity:{key}:{stats['missing_identity']}")
+        if stats['duplicate_identity']:
+            errors.append(f"duplicate_identity:{key}:{stats['duplicate_identity']}")
+        for field in (
+            'unsupported_garhwali_label', 'missing_admission_metadata',
+            'missing_acceptable_responses',
+        ):
+            if stats[field]:
+                errors.append(f'{field}:{key}:{stats[field]}')
         configs[key] = {**dict(stats), "scripts": dict(sorted(scripts.items()))}
         global_stats.update(stats)
 
@@ -111,6 +138,35 @@ def main():
                 leakage[f"{config}:{left}:{right}"] = count
                 if count:
                     errors.append(f"cross_split_identity:{config}:{left}:{right}:{count}")
+    for config, splits in instruction_prompts.items():
+        names = sorted(splits)
+        for index, left in enumerate(names):
+            for right in names[index + 1:]:
+                count = len(splits[left] & splits[right])
+                leakage[f'{config}_prompt:{left}:{right}'] = count
+                if count:
+                    errors.append(
+                        f'cross_split_instruction_prompt:{left}:{right}:{count}'
+                    )
+
+    expected_files = {
+        'README.md', 'manifest.json', 'LICENSE_POLICY.md',
+        'ATTRIBUTION.md', 'REMOVAL_POLICY.md',
+    }
+    for key, config in manifest['configs'].items():
+        group, _ = key.split('/', 1)
+        expected_files.update(
+            f'data/{group}/{filename}' for filename in config.get('files', [])
+        )
+    actual_files = {
+        path.relative_to(args.package).as_posix()
+        for path in args.package.rglob('*') if path.is_file() or path.is_symlink()
+    }
+    for path in sorted(actual_files - expected_files):
+        if not (manifest.get('include_audio') and path.startswith('audio/')):
+            errors.append(f'unexpected_file:{path}')
+    for path in sorted(path for path in args.package.rglob('*') if path.is_symlink()):
+        errors.append(f'symlink:{path.relative_to(args.package).as_posix()}')
 
     report = {
         "run_id": "garhwali-hf-all-data-cloud-validation-v0.1",
@@ -126,11 +182,16 @@ def main():
         "errors": errors,
         "records_deleted_or_mutated": 0,
     }
-    args.output.mkdir(parents=True, exist_ok=True)
-    (args.output / "report.json").write_text(
+    output_path = (
+        args.output if args.output.suffix == '.json' else args.output / 'report.json'
+    )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     print(json.dumps(report, ensure_ascii=False, indent=2))
+    if errors:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

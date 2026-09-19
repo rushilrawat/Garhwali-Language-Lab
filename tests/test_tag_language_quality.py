@@ -157,6 +157,31 @@ class LanguageQualityTests(unittest.TestCase):
         self.assertEqual(result and result['glosses']['english'], ['dog'])
         self.assertEqual(result and result['semantic_domains'], ['animal'])
 
+    def test_lexicon_candidate_derives_chan_numeric_parameter_gloss(self):
+        row = {
+            'text_sha256': 'abc', 'text_model': 'chār',
+            'genre_quality': {'tags': ['historical_lexicon']},
+            'language_quality': {'status': 'source_attested_garhwali_transcription'},
+            'provenance': [{
+                'source_id': 'chan_numerals_garhwali',
+                'linguistic_metadata': {'parameter_id': '4'},
+            }],
+        }
+        result = m.lexicon_candidate(row)
+        self.assertEqual(result['glosses']['english'], ['4'])
+
+    def test_lexicon_candidate_does_not_guess_lsi_gloss_from_slug(self):
+        row = {
+            'text_sha256': 'abc', 'text_model': 'form',
+            'genre_quality': {'tags': ['historical_lexicon']},
+            'language_quality': {'status': 'source_attested_garhwali_transcription'},
+            'provenance': [{
+                'source_id': 'lsi_cldf_garhwali',
+                'linguistic_metadata': {'parameter_id': '62_ofafather'},
+            }],
+        }
+        self.assertEqual(m.lexicon_candidate(row)['glosses']['english'], [])
+
     def test_parallel_entries_expand_multiple_english_alignments(self):
         row = {'text_sha256': 'abc', 'text_model': 'भासा', 'provenance': [{
             'record_id': 'translation:1', 'source_id': 'translatewiki',

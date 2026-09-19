@@ -1,0 +1,53 @@
+{
+  "base_checkpoint_sha256": "cb206f88afbe179d10229a8002e92c74789eed77557ef38a33533e26b69067af",
+  "base_validation": {
+    "cer": 0.18948218198593011,
+    "character_errors": 3286,
+    "reference_characters": 17342,
+    "reference_words": 4980,
+    "wer": 0.43453815261044176,
+    "word_errors": 2164
+  },
+  "best_checkpoint_sha256": "ef36e6f747d1a0a70d8a2bab1955fd7f6f1828623838fdbce97741cfae41cd68",
+  "best_trial": {
+    "accumulate_grad_batches": 8,
+    "batch_size": 4,
+    "epochs": 1,
+    "learning_rate": 3e-05,
+    "optimizer_steps_completed": 51,
+    "optimizer_steps_planned": 51,
+    "scope": "decoder_joint",
+    "seed": 17,
+    "status": "completed",
+    "trainable_parameters": 15883671,
+    "trial_id": "decoder-lr3e-5-e1-s17",
+    "validation": {
+      "cer": 0.18711797947180256,
+      "character_errors": 3245,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.43012048192771085,
+      "word_errors": 2142
+    }
+  },
+  "elapsed_seconds": 1477.233,
+  "hard_timeout_hours": 6.0,
+  "hardware": "NVIDIA L4",
+  "held_out_test": {
+    "cer": 0.1770395290159798,
+    "character_errors": 1263,
+    "reference_characters": 7134,
+    "reference_words": 2086,
+    "wer": 0.43528283796740175,
+    "word_errors": 908
+  },
+  "held_out_test_run": true,
+  "hourly_cost_usd": 0.8,
+  "max_new_job_cost_usd": 4.800000000000001,
+  "run_id": "garhwali-sravaani-budget-sweep-v0.2",
+  "selection_used_test_split": false,
+  "trials_attempted": 6,
+  "trials_completed": 6,
+  "trials_failed": 0,
+  "trials_planned": 6
+}

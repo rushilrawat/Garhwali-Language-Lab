@@ -66,10 +66,14 @@ def parse_tsv(tsv: str) -> tuple[str, float | None, int]:
 
 
 def render_page(pdf: Path, page: int, dpi: int, output: Path) -> None:
+    if not PDFTOPPM:
+        raise FileNotFoundError(
+            "pdftoppm is required; install Poppler or set PDFTOPPM_BIN"
+        )
     env = os.environ.copy()
-    if FONTCONFIG.exists():
+    if FONTCONFIG and FONTCONFIG.exists():
         env["FONTCONFIG_FILE"] = str(FONTCONFIG)
-    env["XDG_CACHE_HOME"] = "/private/tmp/garhwali-font-cache"
+    env.setdefault("XDG_CACHE_HOME", str(Path(tempfile.gettempdir()) / "garhwali-font-cache"))
     subprocess.run(
         [PDFTOPPM, "-f", str(page), "-l", str(page), "-r", str(dpi),
          "-png", "-singlefile", str(pdf), str(output.with_suffix(""))],
@@ -78,6 +82,10 @@ def render_page(pdf: Path, page: int, dpi: int, output: Path) -> None:
 
 
 def ocr_variant(image: Path, tessdata: Path, psm: int) -> dict:
+    if not TESSERACT:
+        raise FileNotFoundError(
+            "tesseract is required; install it or set TESSERACT_BIN"
+        )
     result = subprocess.run(
         [TESSERACT, str(image), "stdout", "--tessdata-dir", str(tessdata),
          "-l", "hin+eng", "--psm", str(psm), "-c", "tessedit_create_tsv=1"],

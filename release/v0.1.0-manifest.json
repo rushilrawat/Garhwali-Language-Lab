@@ -1,27 +1,27 @@
 {
   "release_id": "garhwali-language-lab-v0.1.0",
   "status": "release_ready_with_public_rights_filtered_export",
-  "generated": "2026-09-18",
+  "generated": "2026-09-19",
   "language": "Garhwali (gbm)",
   "local_storage_gb_approx": 34,
   "text": {
     "total": 114064,
     "splits": {
-      "test": 4154,
-      "train": 106796,
-      "validation": 3114
+      "test": 4086,
+      "train": 106915,
+      "validation": 3063
     },
     "unique_parent_documents": 28755
   },
   "all_data_package": {
     "profile": "all-data",
-    "transcript_only_package_rows": 257145,
+    "transcript_only_package_rows": 257807,
     "full_text_segments": 114064,
     "exact_unique_texts": 28755,
     "redacted_text_values": 0,
     "human_vaani_transcript_rows": 5894,
     "lexicon_rows": 1114,
-    "instruction_rows": 2568,
+    "instruction_rows": 3230,
     "all_collected_text_values_included": true
   },
   "public_text_release": {
@@ -33,7 +33,7 @@
     "strict_records_using_open_overlap": 1906,
     "native_or_source_review_queue": 176,
     "source_attested_linguistic_transcriptions": 392,
-    "transcript_only_package_rows": 146482
+    "transcript_only_package_rows": 146912
   },
   "native_review": {
     "text_accuracy_packets": 176,
@@ -76,30 +76,33 @@
   },
   "language_resources": {
     "tokenizer_type": "unicode_character",
-    "tokenizer_vocabulary_size": 330,
-    "tokenizer_training_texts": 80881,
-    "word_types": 203539,
+    "tokenizer_vocabulary_size": 331,
+    "tokenizer_training_texts": 106915,
+    "word_types": 262231,
     "lexicon_candidates": 1114,
     "pronunciation_candidates": 1114,
     "pronunciations_with_source_phonetics": 293,
     "tts_pairs": 1736
   },
   "evaluation_candidates": {
-    "text": 3658,
+    "text": 398,
     "speech": 112,
-    "review_status": "automated_quality_screened",
-    "native_review_optional": true
+    "review_status": "strict_automated_candidate_pending_native_review",
+    "native_review_optional": false
   },
   "garhwali_bench": {
     "release_id": "garhwali-bench-v0.1-experimental",
     "external_records": 3847,
-    "held_out_text_records": 2492,
+    "held_out_text_records": 398,
     "speaker_safe_asr_records": 112,
-    "character_bigram_perplexity": 16.464093,
-    "character_oov_rate": 4.98e-06,
+    "character_bigram_perplexity": 17.000058,
+    "character_oov_rate": 0.0,
     "external_exact_train_text": 0,
     "internal_exact_train_text": 0,
-    "asr_speaker_overlap": 0
+    "asr_speaker_overlap": 0,
+    "native_reviewed": false,
+    "dialect_aware": false,
+    "status": "strict_automated_candidate_pending_native_review"
   },
   "multilingual_model_audit": {
     "tokenizers_evaluated": 5,

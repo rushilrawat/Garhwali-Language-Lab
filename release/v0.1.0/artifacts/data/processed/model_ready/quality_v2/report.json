@@ -45,24 +45,24 @@
     },
     "text": {
       "reason_counts": {
-        "cleanup_review_required": 7608,
-        "language_confidence_not_high": 18776,
-        "language_review_required": 3602,
+        "cleanup_review_required": 7606,
+        "language_confidence_not_high": 18780,
+        "language_review_required": 3606,
         "low_surface_quality": 12,
         "no_rights_cleared_training_source": 24560,
-        "not_garhwali_candidate": 3299
+        "not_garhwali_candidate": 3414
       },
       "records": 28755,
       "tier_rates": {
-        "experimental_review": 0.700574,
-        "high_quality_rights_pending": 0.060929,
-        "non_strict_context": 0.114728,
+        "experimental_review": 0.696714,
+        "high_quality_rights_pending": 0.060789,
+        "non_strict_context": 0.118727,
         "strict_gold_candidate": 0.12377
       },
       "tiers": {
-        "experimental_review": 20145,
-        "high_quality_rights_pending": 1752,
-        "non_strict_context": 3299,
+        "experimental_review": 20034,
+        "high_quality_rights_pending": 1748,
+        "non_strict_context": 3414,
         "strict_gold_candidate": 3559
       }
     }

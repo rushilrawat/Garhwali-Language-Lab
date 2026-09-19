@@ -1,6 +1,4 @@
-import tempfile
 import unittest
-from pathlib import Path
 
 
 class IngestionGraphTests(unittest.TestCase):

@@ -74,13 +74,30 @@ class TrainSraVaaniGarhwaliTests(unittest.TestCase):
             with tarfile.open(checkpoint, 'w') as archive:
                 archive.add(payload, arcname='model_weights.ckpt')
             result = m.validate_checkpoint_file(
-                checkpoint, expected_bytes=checkpoint.stat().st_size
+                checkpoint, expected_bytes=checkpoint.stat().st_size,
+                expected_sha256=None,
             )
             self.assertEqual(result['bytes'], checkpoint.stat().st_size)
             self.assertTrue(result['tar_valid'])
             with self.assertRaises(ValueError):
                 m.validate_checkpoint_file(
-                    checkpoint, expected_bytes=checkpoint.stat().st_size + 1
+                    checkpoint, expected_bytes=checkpoint.stat().st_size + 1,
+                    expected_sha256=None,
+                )
+
+    def test_checkpoint_validation_rejects_wrong_digest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            payload = root / 'weights.bin'
+            payload.write_bytes(b'weights')
+            checkpoint = root / 'model.nemo'
+            with tarfile.open(checkpoint, 'w') as archive:
+                archive.add(payload, arcname='model_weights.ckpt')
+            with self.assertRaisesRegex(ValueError, 'SHA-256'):
+                m.validate_checkpoint_file(
+                    checkpoint,
+                    expected_bytes=checkpoint.stat().st_size,
+                    expected_sha256='0' * 64,
                 )
 
 

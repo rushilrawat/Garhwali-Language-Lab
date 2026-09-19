@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-383%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-409%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -47,7 +47,7 @@ The finished contribution is a research platform rather than a single model:
 ```text
 Garhwali Language Lab
 ├── GarhwaliCorpus       rights-cleared, versioned, provenance-preserving data
-├── GarhwaliBench        frozen, native-reviewed, dialect-aware evaluation
+├── GarhwaliBench        strict automated candidate; native/dialect review pending
 ├── Research Suite       tokenizer, quality, transfer, scaling, and ablations
 ├── Garhwali Models      LM, translation, retrieval, ASR, and TTS baselines
 ├── Community Layer      transcription, correction, and dialect contribution
@@ -115,8 +115,8 @@ not a defect in the dataset.
   revision-pinned SraVaani experimental drafts.
 - **363 identified speaker IDs**, with district, gender, and speaker-status fields
   preserved; current VAANI coverage is Uttarkashi and Tehri Garhwal.
-- **25,459 likely Garhwali text candidates**, 1,468 source-declared mixed-language
-  records, 1,511 review records, and 317 non-Garhwali cultural-context records.
+- **25,341 likely Garhwali text candidates**, 2,237 mixed-language
+  records, 860 review records, and 317 non-Garhwali cultural-context records.
 - **4,195 exact-unique texts with a public rights basis**, including 3,559 strict
   public candidates; 1,748 additional high-quality candidates remain active with
   rights-pending provenance.
@@ -130,9 +130,9 @@ not a defect in the dataset.
 - **8 university and research records** preserve institution, access level,
   topics, and deduplication status; the existing UOU materials are linked rather
   than ingested twice.
-- **257,145 upload-ready all-data rows** span text, human and machine speech
+- **257,807 upload-ready all-data rows** span text, human and machine speech
   transcripts, lexicon, instructions, and six structured knowledge
-  configurations. The separately audited public package contains **146,482
+  configurations. The separately audited public package contains **146,912
   rows**.
 - **2,002 strict speaker-identified ASR/TTS candidates** across 248 speakers,
   totaling 3.562 hours with zero identified-speaker split leakage.
@@ -144,17 +144,18 @@ not a defect in the dataset.
 - **Speaker-safe ASR comparison:** SraVaani leads at 0.428 WER / 0.176 CER,
   ahead of the controlled Whisper-tiny fine-tune at 0.743 / 0.404 on the same
   112 recordings.
-- **GarhwaliBench v0.1:** 3,847 external task records, 2,492 held-out text
-  segments, and 112 speaker-safe ASR rows, with zero measured training overlap.
-- **Character bigram floor:** 16.464 held-out perplexity and 0.000498% character
-  OOV rate for reproducible comparison with later language models.
+- **GarhwaliBench v0.1 candidate:** 3,847 external task records, 398 strict
+  automated held-out text segments, and 112 speaker-safe ASR rows, with zero
+  measured training overlap. It is not yet native-reviewed or dialect-aware.
+- **Current character bigram floor:** 17.000058 held-out perplexity and zero
+  observed character OOV on the 398-record candidate benchmark.
 - **Multilingual tokenizer audit:** IndicBERTv2 leads five candidates at 1.532
   tokens per Garhwali word; the Garhwali OpenLLaMA adapter tokenizer needs 5.327.
 - **IndicBERTv2 baseline:** 17.79% masked-token accuracy on 506 deterministic
   masks from 128 held-out records, with no truncation.
 - **Controlled continuation:** a 1,024-step, three-seed IndicBERTv2 LoRA run
   lowers mean validation cross-entropy from 6.678 to 5.624.
-- **Instruction resource:** 2,568 split-safe Garhwali translation and lexicon
+- **Instruction resource:** 3,230 split-safe Garhwali translation and lexicon
   instructions; a first three-seed mT5 LoRA baseline improves validation
   loss but remains unfit for generation.
 - **Accuracy continuation:** mT0-small reaches **4.961989** mean validation and
@@ -167,9 +168,10 @@ not a defect in the dataset.
 - **65,000 independent Whisper-large-v3-turbo checks** are attached to the
   corresponding machine drafts as evidence, including 157 exact agreements;
   no source or machine transcript was overwritten.
-- **659 incoming PDF pages** completed four-layout OCR comparison. Strong
-  consensus promoted 69 reversible corrections while retaining each original
-  OCR value, page identity, source hash, and confidence evidence.
+- **659 incoming PDF pages** completed four-layout OCR comparison. The process
+  retained 69 reversible same-engine layout-consensus variants beside each
+  original OCR value, page identity, source hash, and confidence signal. These
+  variants are not human-validated corrections.
 - **1,188 confidence-scored recovery alternatives** are integrated beside their
   immutable SraVaani originals: 30 medium, 35 low, and 1,123 very-low review
   confidence, with no quarantine or automatic promotion.
@@ -203,10 +205,10 @@ not a defect in the dataset.
 - **SraVaani adaptation result:** the 102-step human-reference run scores 43.528%
   WER / 17.452% CER on the frozen 112-record test. Original SraVaani remains
   preferred at 42.761% / 17.606% because WER is the primary metric.
-- **383 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **409 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
-These figures describe the preparation snapshot updated on 2026-09-18. Raw
+These figures describe the preparation snapshot updated on 2026-09-19. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
 Git through `.gitignore`.
 
@@ -226,7 +228,7 @@ Git through `.gitignore`.
 | ---: | ---: | ---: | ---: |
 | English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
 
-| `257,145` | `146,482` | `216` | `383` |
+| `257,807` | `146,912` | `216` | `409` |
 | ---: | ---: | ---: | ---: |
 | all-data package rows | public package rows | structured knowledge records | passing tests |
 
@@ -498,7 +500,7 @@ selection rules, exclusions, counts, and leakage checks.
   and evaluate pinned IndicBERTv2 semantic retrieval on all 539 test questions.
 - [x] Compare zero-shot Whisper-tiny, zero-shot Whisper-small, and both local
   fine-tuned checkpoints on the identical 112-row speaker-safe test set.
-- [x] Build 2,568 provenance-preserving instruction records with parent-disjoint
+- [x] Build 3,230 provenance-preserving instruction records with parent- and prompt-disjoint
   splits and run three-seed mT5 LoRA instruction tuning.
 - [x] Extend IndicBERTv2 LoRA continuation to 1,024 steps per seed and evaluate
   the full instruction-tuning seed set after validation selection.
@@ -615,7 +617,7 @@ with provenance.
 | Deliverable | Focused effort from the current state | Main dependency |
 | --- | ---: | --- |
 | Literary, cultural, and university additions | Complete | Automated validation |
-| Local Corpus v1 release candidate | Complete: 257,145 all-data / 146,482 public rows | Final audit and package validation pass |
+| Local Corpus v1 release candidate | Complete: 257,807 all-data / 146,912 public rows | Final audit and package validation pass |
 | SraVaani refined sweep and integration | Current active job plus 2–4 hours of local evaluation | Hugging Face job completion |
 | Final Hugging Face dataset publication | 2–4 focused hours after model integration | Final upload decision and network transfer |
 | Quality-focused dataset and benchmark v1 | 40–80 hours / 1–2 working weeks | Native review remains the accuracy bottleneck |
@@ -713,8 +715,8 @@ established from machine scores alone.
 20. [x] **Structured knowledge packaging — Medium:** geography, historical terms,
     literary people, literary works, popular songs, and university research are
     first-class Hugging Face configurations with 216 records and stable IDs.
-21. [x] **Release reconciliation — High:** the 257,145-row all-data package and
-    146,482-row public package are rebuilt, the tracked release index is synced,
+21. [x] **Release reconciliation — High:** the 257,807-row all-data package and
+    146,912-row public package are rebuilt, the tracked release index is synced,
     and the public export passes provenance, count, and leakage validation.
 22. [x] **Refined SraVaani decision — Xhigh:** Job
     [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768)
@@ -900,7 +902,7 @@ The final audit checks the tracked release index against every generated Hugging
 Face shard, including actual row counts, provenance, transcript/source/license
 metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
 machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **383 passing tests**, **365 verified source
+The current verification result is **409 passing tests**, **365 verified source
 snapshots**, and zero release-index, export-count, provenance, or leakage errors.
 
 ## 🤗 Hugging Face release
@@ -915,15 +917,15 @@ does not consume Hugging Face GPU credit.
 datasets with Garhwali text, human VAANI transcripts, SraVaani machine drafts,
 lexicon, instruction splits, geography, historical terms, literary people,
 literary works, popular-song metadata, and university research. The **all-data
-profile is the complete model and research package**: it contains **257,145
+profile is the complete model and research package**: it contains **257,807
 rows**, including every collected text value and all **216 structured cultural
 and scholarly records**. Each row keeps its source, quality, rights, and review
-metadata. The **146,482-row public profile** is a separate redistribution view
+metadata. The **146,912-row public profile** is a separate redistribution view
 for records with explicit compatible source terms. Both omit original audio
 filenames and raw speaker identifiers.
 
 ```bash
-# Build the complete transcript-only all-data package (257,145 rows)
+# Build the complete transcript-only all-data package (257,807 rows)
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
   --profile all-data
 
@@ -933,23 +935,27 @@ PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
   --output data/huggingface/garhwali-language-lab
 .venv/bin/python scripts/audit_final_release.py
 
-# Upload the complete package after the final release review
+# Upload the rights-filtered public package after the final release review
 HF_HOME=.cache/huggingface hf upload rushilrawat/garhwali-language-lab \
-  data/huggingface/garhwali-language-lab-all-data . --repo-type dataset
+  data/huggingface/garhwali-language-lab . --repo-type dataset
 ```
+
+The all-data package is for local or access-controlled research. It contains
+rights-pending and restricted components and must not be uploaded to a public
+repository unless every included source has first been cleared for redistribution.
 
 The generated `README.md` is the Hugging Face dataset card, while
 `manifest.json` records configuration counts, shard names, draft completeness,
 and whether audio was included. The all-data catalog includes all **28,755**
 exact-unique text values with **zero redactions**. The package also contains all
-**114,064** prepared text segments, **1,114** lexicon rows, and **2,568**
+**114,064** prepared text segments, **1,114** lexicon rows, and **3,230**
 instruction rows. The public catalog remains a transparent redistribution view.
 When an exact duplicate has both open and blocked provenance,
 `public_rights_basis` identifies the open copy while retaining both source
 histories. The source-level audit is documented in
 [`research/text-source-rights-audit-2026-09-15.md`](research/text-source-rights-audit-2026-09-15.md).
-The all-data package report is
-[`research/all-data-package-2026-09-15.md`](research/all-data-package-2026-09-15.md).
+The current all-data package report is
+[`research/all-data-package-2026-09-19.md`](research/all-data-package-2026-09-19.md).
 The published release is versioned as `v0.1.0`; its tracked
 index is [`release/v0.1.0-manifest.json`](release/v0.1.0-manifest.json). Compact
 generated reports and visual evidence are tracked under

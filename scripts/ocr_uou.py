@@ -4,29 +4,30 @@ import os
 import shutil
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
-from pathlib import Path
-
-from collect_online import ROOT, RAW, make_record, save_records, snapshot
+from collect_online import ROOT, make_record, save_records, snapshot
+from ingest_incoming_pdfs import FONTCONFIG, PDFTOPPM, TESSERACT, locate_tessdata
 
 WORK = ROOT / 'tmp' / 'pdfs' / 'uou_ocr'
 TESSDATA = WORK / 'tessdata'
-FONTCONFIG = Path('/Users/rushilrawat/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/poppler/etc/fonts/fonts.conf')
-
-
 def render(course, pdf_path):
+    if not PDFTOPPM:
+        raise FileNotFoundError('pdftoppm is required; install Poppler or set PDFTOPPM_BIN')
     folder = WORK / course
     folder.mkdir(parents=True, exist_ok=True)
     env = os.environ.copy()
-    env['FONTCONFIG_FILE'] = str(FONTCONFIG)
-    env['XDG_CACHE_HOME'] = '/private/tmp/garhwali-font-cache'
-    subprocess.run(['pdftoppm', '-r', '180', '-jpeg', '-jpegopt', 'quality=82',
+    if FONTCONFIG and FONTCONFIG.exists():
+        env['FONTCONFIG_FILE'] = str(FONTCONFIG)
+    env.setdefault('XDG_CACHE_HOME', str(WORK / 'font-cache'))
+    subprocess.run([PDFTOPPM, '-r', '180', '-jpeg', '-jpegopt', 'quality=82',
                     str(pdf_path), str(folder / 'page')], check=True, env=env,
                    stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     return sorted(folder.glob('page-*.jpg'))
 
 
 def ocr(image):
-    result = subprocess.run(['tesseract', str(image), 'stdout', '--tessdata-dir',
+    if not TESSERACT:
+        raise FileNotFoundError('tesseract is required; install it or set TESSERACT_BIN')
+    result = subprocess.run([TESSERACT, str(image), 'stdout', '--tessdata-dir',
                              str(TESSDATA), '-l', 'hin+eng', '--psm', '6'],
                             check=True, capture_output=True, text=True)
     return image, result.stdout.strip()
@@ -37,7 +38,7 @@ def main():
     TESSDATA.mkdir(exist_ok=True)
     model, _ = snapshot('uou_cgl', 'hin.traineddata')
     (TESSDATA / 'hin.traineddata').write_bytes(model)
-    shutil.copy2('/opt/homebrew/share/tessdata/eng.traineddata', TESSDATA / 'eng.traineddata')
+    locate_tessdata(WORK)
     rows = []
     counts = {}
     try:
@@ -63,7 +64,7 @@ def main():
                     rights_evidence='sources/online/uou_cgl/terms.html.metadata.json',
                     rights_status='site_declares_CC_BY_NC_SA_4; quoted_works_require_component_review')
                 rec['modifications'] = 'PDF page rendered at 180 DPI; Tesseract hin+eng OCR; Unicode NFC and outer whitespace trimming'
-                rec['ocr_engine'] = subprocess.check_output(['tesseract', '--version'], text=True).splitlines()[0]
+                rec['ocr_engine'] = subprocess.check_output([TESSERACT, '--version'], text=True).splitlines()[0]
                 rows.append(rec)
                 course_rows += 1
             counts[course] = course_rows

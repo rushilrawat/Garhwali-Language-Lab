@@ -24,6 +24,11 @@ SA = 'https://creativecommons.org/licenses/by-sa/4.0/'
 def digest(data):
     return hashlib.sha256(data).hexdigest()
 
+
+def require(condition, message):
+    if not condition:
+        raise ValueError(message)
+
 def fetch(source, name, url):
     folder = RAW / source
     folder.mkdir(parents=True, exist_ok=True)
@@ -32,9 +37,10 @@ def fetch(source, name, url):
     if path.exists() and meta.exists():
         content = path.read_bytes()
         info = json.loads(meta.read_text())
-        assert digest(content) == info['sha256'], f'Raw checksum mismatch: {path}'
+        require(digest(content) == info['sha256'], f'Raw checksum mismatch: {path}')
         return content, info
-    result = subprocess.run(['curl', '--fail', '--location', '--silent', '--show-error',
+    result = subprocess.run(['curl', '--proto', '=https', '--proto-redir', '=https',
+                             '--fail', '--location', '--silent', '--show-error',
                              '--max-time', '60', '--retry', '2', '--user-agent',
                              'GarhwaliCorpus/0.1 (language research)', url],
                             check=True, capture_output=True)
@@ -56,7 +62,7 @@ def record(source, key, text, license_id, license_url, attribution, info, **extr
 def asjp():
     data, info = fetch('asjp', 'GARHWALI.txt', 'https://asjp.clld.org/languages/GARHWALI.txt')
     evidence, _ = fetch('asjp', 'license-page.html', 'https://asjp.clld.org/languages/GARHWALI')
-    assert BY.encode() in evidence, 'ASJP license evidence missing'
+    require(BY.encode() in evidence, 'ASJP license evidence missing')
     rows = []
     for line in data.decode().splitlines():
         match = re.match(r'^(\d+)\s+([^\t]+)\t(.+?)\s*//', line)
@@ -66,7 +72,7 @@ def asjp():
                 'ASJP Database; Garhwali compiled by Viktoria Smirnova, source Kogan 2017; database editors Wichmann et al.',
                 info, concept_id=concept, english_gloss=meaning, script='ASJPcode',
                 genre='lexicon', corpus_layer='core_open'))
-    assert rows, 'ASJP parser produced no records'
+    require(rows, 'ASJP parser produced no records')
     return rows
 
 def tatoeba():
@@ -80,7 +86,7 @@ def tatoeba():
         data = bz2.decompress(compressed)
     rows = []
     for fields in csv.reader(io.StringIO(data.decode()), delimiter='\t'):
-        assert len(fields) >= 4 and fields[1] == 'gbm', 'Unexpected Tatoeba schema'
+        require(len(fields) >= 4 and fields[1] == 'gbm', 'Unexpected Tatoeba schema')
         key, _, text, author = fields[:4]
         author = None if author in ('', r'\N') else author
         rows.append(record('tatoeba', key, text, 'CC-BY-2.0-FR',
@@ -88,7 +94,7 @@ def tatoeba():
             f'Tatoeba sentence {key}; contributor {author or 'unavailable in export'}; see sentence history for attribution', info,
             item_url=f'https://tatoeba.org/en/sentences/show/{key}', contributor=author,
             source_fields=fields, quality_flags=['missing_contributor'] if author is None else [], script='Deva', genre='sentence', corpus_layer='review_queue'))
-    assert rows, 'Tatoeba parser produced no records'
+    require(rows, 'Tatoeba parser produced no records')
     return rows
 
 def wiki():
@@ -99,7 +105,7 @@ def wiki():
     while True:
         raw, info = fetch('wikimedia', f'pages-{page}.json', api + urlencode(params))
         payload = json.loads(raw)
-        assert 'error' not in payload, payload.get('error')
+        require('error' not in payload, payload.get('error'))
         for item in payload.get('query', {}).get('pages', {}).values():
             revision = item['revisions'][0]
             raw_text = revision['slots']['main']['*']
@@ -119,7 +125,7 @@ def wiki():
             break
         params.update(payload['continue'])
         page += 1
-    assert rows, 'Wikimedia parser produced no records'
+    require(rows, 'Wikimedia parser produced no records')
     return rows
 
 def main():
@@ -142,9 +148,12 @@ def main():
     for path in sorted(OUT.glob('*.jsonl')):
         records.extend(json.loads(line) for line in path.read_text().splitlines())
     ids = [r['record_id'] for r in records]
-    assert len(ids) == len(set(ids)), 'Duplicate record IDs'
+    require(len(ids) == len(set(ids)), 'Duplicate record IDs')
     for r in records:
-        assert r['license_url'] and r['attribution'] and r['text_original']
+        require(
+            r['license_url'] and r['attribution'] and r['text_original'],
+            f'Missing license, attribution, or text for {r.get("record_id")}',
+        )
     counts = dict(Counter(r['source_id'] for r in records))
     report = dict(records=len(records), source_counts=counts,
                   unique_normalized_texts=len({r['text_sha256'] for r in records}),

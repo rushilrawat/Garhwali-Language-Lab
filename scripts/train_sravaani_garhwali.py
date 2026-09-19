@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import tarfile
@@ -25,6 +26,7 @@ OFFICIAL_CHECKPOINT_URL = (
     'id=1v5VaYibAaDSFuWvROsPbCzeG3iM6VbxY&export=download&confirm=t'
 )
 OFFICIAL_CHECKPOINT_BYTES = 1_796_208_640
+OFFICIAL_CHECKPOINT_SHA256 = 'cb206f88afbe179d10229a8002e92c74789eed77557ef38a33533e26b69067af'
 CLOUD_HARDWARE = 'l4x1'
 CLOUD_HOURLY_USD = 0.80
 CLOUD_TIMEOUT_HOURS = 6
@@ -85,6 +87,7 @@ def build_training_plan(package):
         'base_checkpoint': {
             'url': OFFICIAL_CHECKPOINT_URL,
             'bytes': OFFICIAL_CHECKPOINT_BYTES,
+            'sha256': OFFICIAL_CHECKPOINT_SHA256,
             'availability': 'official_direct_download',
             'local_copy_required': False,
         },
@@ -130,7 +133,19 @@ def write_plan(plan, output=PLAN_OUTPUT):
     )
 
 
-def validate_checkpoint_file(checkpoint, expected_bytes=OFFICIAL_CHECKPOINT_BYTES):
+def sha256_file(path):
+    digest = hashlib.sha256()
+    with Path(path).open('rb') as handle:
+        for chunk in iter(lambda: handle.read(8 * 1024 * 1024), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def validate_checkpoint_file(
+    checkpoint,
+    expected_bytes=OFFICIAL_CHECKPOINT_BYTES,
+    expected_sha256=OFFICIAL_CHECKPOINT_SHA256,
+):
     checkpoint = Path(checkpoint)
     if not checkpoint.is_file():
         raise ValueError('SraVaani NeMo checkpoint is missing')
@@ -139,24 +154,36 @@ def validate_checkpoint_file(checkpoint, expected_bytes=OFFICIAL_CHECKPOINT_BYTE
         raise ValueError(
             f'SraVaani NeMo checkpoint size is {size}; expected {expected_bytes}'
         )
+    digest = sha256_file(checkpoint)
+    if expected_sha256 is not None and digest != expected_sha256:
+        raise ValueError(
+            f'SraVaani NeMo checkpoint SHA-256 is {digest}; '
+            f'expected {expected_sha256}'
+        )
     if not tarfile.is_tarfile(checkpoint):
         raise ValueError('SraVaani NeMo checkpoint is not a readable tar archive')
-    return {'path': str(checkpoint), 'bytes': size, 'tar_valid': True}
+    return {
+        'path': str(checkpoint), 'bytes': size, 'sha256': digest,
+        'tar_valid': True,
+    }
 
 
 def download_checkpoint(
     checkpoint=CHECKPOINT,
     url=OFFICIAL_CHECKPOINT_URL,
     expected_bytes=OFFICIAL_CHECKPOINT_BYTES,
+    expected_sha256=OFFICIAL_CHECKPOINT_SHA256,
 ):
     checkpoint = Path(checkpoint)
     checkpoint.parent.mkdir(parents=True, exist_ok=True)
     partial = checkpoint.with_suffix(checkpoint.suffix + '.partial')
     try:
-        with urllib.request.urlopen(url) as response, partial.open('wb') as target:
+        with urllib.request.urlopen(url, timeout=120) as response, partial.open('wb') as target:
             while chunk := response.read(8 * 1024 * 1024):
                 target.write(chunk)
-        validation = validate_checkpoint_file(partial, expected_bytes)
+        validation = validate_checkpoint_file(
+            partial, expected_bytes, expected_sha256
+        )
         partial.replace(checkpoint)
     except Exception:
         partial.unlink(missing_ok=True)

@@ -9,10 +9,10 @@
       "title": "Itihaas — Garhwali Language",
       "source_kind": "user_provided_web_capture",
       "canonical_url": null,
-      "local_capture": "/Users/rushilrawat/.codex/attachments/a72b1e27-d441-4dd3-80c6-ccd2b87a0a58/pasted-text.txt",
       "sha256": "f1f5870478d5f290509606f9c6d05f4bd86925b7d9080a80735cfbf05c756ae5",
       "captured_text_bytes": 33166,
-      "notes": "The capture identifies the breadcrumb as Home / languages / Garhwali Language but does not contain a canonical URL."
+      "notes": "The capture identifies the breadcrumb as Home / languages / Garhwali Language but does not contain a canonical URL.",
+      "capture_id": "itihaas-garhwali-user-capture-2026-09-16"
     },
     {
       "source_id": "freebibles-garhwali",
@@ -1163,61 +1163,95 @@
     {
       "record_id": "literary-work:thapalyal-achhryun-ku-taal",
       "title": "Achhryun ku Taal",
-      "title_variants": ["Achhryun Ku Taal"],
-      "creators": ["Lalit Mohan Thapalyal"],
+      "title_variants": [
+        "Achhryun Ku Taal"
+      ],
+      "creators": [
+        "Lalit Mohan Thapalyal"
+      ],
       "work_type": "literary_work",
       "date_or_period": "not_stated",
-      "language_scope": ["Garhwali"],
+      "language_scope": [
+        "Garhwali"
+      ],
       "ingestion_status": "bibliographic_metadata",
-      "source_ids": ["user-literature-writers-2026-09-16"],
+      "source_ids": [
+        "user-literature-writers-2026-09-16"
+      ],
       "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
     },
     {
       "record_id": "literary-work:nawani-phanchi",
       "title": "Phanchi",
       "title_variants": [],
-      "creators": ["Lokesh Nawani"],
+      "creators": [
+        "Lokesh Nawani"
+      ],
       "work_type": "literary_work",
       "date_or_period": "not_stated",
-      "language_scope": ["Garhwali"],
+      "language_scope": [
+        "Garhwali"
+      ],
       "ingestion_status": "bibliographic_metadata",
-      "source_ids": ["user-literature-writers-2026-09-16"],
+      "source_ids": [
+        "user-literature-writers-2026-09-16"
+      ],
       "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
     },
     {
       "record_id": "literary-work:duklaan-aandi-jaandi-saans",
       "title": "Aandi-jaandi saans",
-      "title_variants": ["Aandi Jaandi Saans"],
-      "creators": ["Madan Mohan Duklaan"],
+      "title_variants": [
+        "Aandi Jaandi Saans"
+      ],
+      "creators": [
+        "Madan Mohan Duklaan"
+      ],
       "work_type": "literary_work",
       "date_or_period": "not_stated",
-      "language_scope": ["Garhwali"],
+      "language_scope": [
+        "Garhwali"
+      ],
       "ingestion_status": "bibliographic_metadata",
-      "source_ids": ["user-literature-writers-2026-09-16"],
+      "source_ids": [
+        "user-literature-writers-2026-09-16"
+      ],
       "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
     },
     {
       "record_id": "literary-work:sayar-aunar",
       "title": "Aunar",
       "title_variants": [],
-      "creators": ["Chinmay Sayar"],
+      "creators": [
+        "Chinmay Sayar"
+      ],
       "work_type": "literary_work",
       "date_or_period": "not_stated",
-      "language_scope": ["Garhwali"],
+      "language_scope": [
+        "Garhwali"
+      ],
       "ingestion_status": "bibliographic_metadata",
-      "source_ids": ["user-literature-writers-2026-09-16"],
+      "source_ids": [
+        "user-literature-writers-2026-09-16"
+      ],
       "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
     },
     {
       "record_id": "literary-work:gauniyal-dheet",
       "title": "Dheet",
       "title_variants": [],
-      "creators": ["Dr. Narendra Gauniyal"],
+      "creators": [
+        "Dr. Narendra Gauniyal"
+      ],
       "work_type": "literary_work",
       "date_or_period": "not_stated",
-      "language_scope": ["Garhwali"],
+      "language_scope": [
+        "Garhwali"
+      ],
       "ingestion_status": "bibliographic_metadata",
-      "source_ids": ["user-literature-writers-2026-09-16"],
+      "source_ids": [
+        "user-literature-writers-2026-09-16"
+      ],
       "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
     }
   ],

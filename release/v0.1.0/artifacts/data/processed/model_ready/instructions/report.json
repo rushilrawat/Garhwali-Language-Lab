@@ -14,17 +14,17 @@
     "split_source": "existing document-level parent split"
   },
   "records": {
-    "test": 86,
-    "total": 2654,
-    "train": 2434,
-    "validation": 134
+    "test": 118,
+    "total": 3348,
+    "train": 3066,
+    "validation": 164
   },
   "run_id": "garhwali-instruction-dataset-v0.1",
   "tasks": {
     "english_to_garhwali": 455,
-    "english_to_garhwali_lexicon": 612,
+    "english_to_garhwali_lexicon": 959,
     "garhwali_to_english": 455,
-    "garhwali_to_english_lexicon": 612,
+    "garhwali_to_english_lexicon": 959,
     "garhwali_to_hindi_lexicon": 260,
     "hindi_to_garhwali_lexicon": 260
   }

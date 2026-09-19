@@ -11,6 +11,14 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def display_path(path):
+    path = Path(path)
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
 HUMAN_SPLITS = ROOT / 'data/processed/model_ready/splits/asr'
 MACHINE = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl'
 CONFIDENCE_REPORT = ROOT / 'data/processed/model_ready/transcripts/sravaani_recovery_confidence_report.json'
@@ -306,15 +314,15 @@ def run(human_splits=HUMAN_SPLITS, machine_path=MACHINE,
         'source_conflicts_active_for_source_error_analysis': len(source_conflicts),
         'validation_and_test_human_only': True,
         'inputs': {
-            'machine': {'path': str(machine_path), 'sha256': sha256_file(machine_path)},
+            'machine': {'path': display_path(machine_path), 'sha256': sha256_file(machine_path)},
             'confidence_report': {
-                'path': str(confidence_report_path),
+                'path': display_path(confidence_report_path),
                 'sha256': sha256_file(confidence_report_path),
             },
         },
         'outputs': {
             name: {
-                'path': str(output_dir / name),
+                'path': display_path(output_dir / name),
                 'sha256': sha256_file(output_dir / name),
             }
             for name in ('train.jsonl', 'validation.jsonl', 'test.jsonl', 'stage_plan.json')

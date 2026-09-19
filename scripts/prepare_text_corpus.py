@@ -34,6 +34,7 @@ DOCUMENT_PROVENANCE_FIELDS = (
     "persistent_identifier", "work_type", "degree", "institution", "department",
     "dialect_scope", "editor", "compiler", "volume", "landing_page",
     "original_ocr_text", "original_ocr_text_sha256", "reocr_evidence",
+    "parameter_table_provenance",
     "license_or_rights_statement", "rights_evidence_url", "notes",
 )
 

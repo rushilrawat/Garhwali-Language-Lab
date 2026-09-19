@@ -57,7 +57,11 @@ def parallel_instructions(row, split):
         'source_record_id': row.get('source_record_id'),
         'source_url': row.get('source_url'),
         'license_url': row.get('license_url'),
+        'license': row.get('license'),
+        'license_id': row.get('license_id'),
         'rights_status': row.get('rights_status'),
+        'attribution': row.get('attribution'),
+        'rights_evidence': row.get('rights_evidence'),
         'pair_sha256': row.get('pair_sha256'),
     }]
     parent = row.get('text_sha256')
@@ -125,6 +129,18 @@ def deduplicate(records):
     return list(unique.values()), duplicates
 
 
+def attach_acceptable_responses(records):
+    """Keep source variants while making multi-reference evaluation explicit."""
+    responses = defaultdict(set)
+    for row in records:
+        responses[(row['task'], row['instruction'])].add(row['response'])
+    for row in records:
+        row['acceptable_responses'] = sorted(
+            responses[(row['task'], row['instruction'])]
+        )
+    return records
+
+
 def write_jsonl(path, rows):
     Path(path).write_text(
         ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in rows),
@@ -150,6 +166,7 @@ def build(text_path=TEXT, parallel_path=PARALLEL, lexicon_path=LEXICON,
             continue
         generated.extend(lexicon_instructions(row, split))
     rows, duplicate_count = deduplicate(generated)
+    rows = attach_acceptable_responses(rows)
     rows.sort(key=lambda row: (row['split'], row['instruction_sha256']))
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)

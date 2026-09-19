@@ -8,7 +8,7 @@
 
 Produce a reproducible Garhwali release in which:
 
-- all **257,145 packaged records** pass structural and provenance validation;
+- all **257,807 packaged records** pass structural and provenance validation;
 - **65,000 unique SraVaani recordings** have independent Whisper-large-v3-turbo agreement evidence; the unfunded remainder stays unchanged;
 - every OCR-derived record retains its original text, corrected text, page identity, source, and correction history;
 - exact and semantic duplicates are grouped without losing source attribution;

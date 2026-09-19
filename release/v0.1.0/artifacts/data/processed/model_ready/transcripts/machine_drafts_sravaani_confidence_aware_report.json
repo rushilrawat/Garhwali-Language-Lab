@@ -17,15 +17,15 @@
   "inherited_duplicate_audio_rows": 8,
   "inputs": {
     "base": {
-      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl",
+      "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl",
       "sha256": "41041b8cfdfb50a2457efa79899e6a1addf09c67d5daab4b98b86cb4788cf91d"
     },
     "confidence": {
-      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/sravaani_recovery_confidence.jsonl",
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_confidence.jsonl",
       "sha256": "cd693937a045216084651eefb5977ec01f040578845545890c5b964dce06342d"
     },
     "source_conflicts": {
-      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/language_quality/vaani_source_conflicts.jsonl",
+      "path": "data/processed/model_ready/language_quality/vaani_source_conflicts.jsonl",
       "sha256": "45729fa8188beae0dd76f8d02a39a955d8ca05bfe02ba63f2ce77a244277bfa8"
     }
   },
@@ -33,7 +33,7 @@
   "missing_confidence_hashes": 0,
   "not_targeted_rows": 103354,
   "output": {
-    "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+    "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
     "sha256": "2356e9070d6f849e7e868430b720fb7b7956a5a105ea68c26f647a47f212e8bc"
   },
   "records_removed_or_quarantined": 0,

@@ -1,0 +1,240 @@
+{
+  "adaptation_scope": "LoRA on encoder and decoder attention q/v projections",
+  "baseline_validation": {
+    "cross_entropy": 5.78050459,
+    "records": 130,
+    "target_tokens": 697
+  },
+  "baseline_validation_generation": {
+    "corpus_chrf2": 0.08832715,
+    "cross_entropy": 5.78050459,
+    "diagnostics": {
+      "by_task": {
+        "english_to_garhwali": {
+          "control_token_outputs": 0,
+          "corpus_chrf2": 0.08786426,
+          "empty_outputs": 0,
+          "exact_match": 0.0,
+          "instruction_copies": 0,
+          "mean_adjacent_repetition_rate": 0.0375,
+          "records": 20
+        },
+        "english_to_garhwali_lexicon": {
+          "control_token_outputs": 0,
+          "corpus_chrf2": 0.052813,
+          "empty_outputs": 0,
+          "exact_match": 0.0,
+          "instruction_copies": 0,
+          "mean_adjacent_repetition_rate": 0.08390805,
+          "records": 29
+        },
+        "garhwali_to_english": {
+          "control_token_outputs": 0,
+          "corpus_chrf2": 0.19646848,
+          "empty_outputs": 0,
+          "exact_match": 0.0,
+          "instruction_copies": 0,
+          "mean_adjacent_repetition_rate": 0.0,
+          "records": 20
+        },
+        "garhwali_to_english_lexicon": {
+          "control_token_outputs": 0,
+          "corpus_chrf2": 0.05999741,
+          "empty_outputs": 0,
+          "exact_match": 0.0,
+          "instruction_copies": 0,
+          "mean_adjacent_repetition_rate": 0.16551724,
+          "records": 29
+        },
+        "garhwali_to_hindi_lexicon": {
+          "control_token_outputs": 0,
+          "corpus_chrf2": 0.04519661,
+          "empty_outputs": 0,
+          "exact_match": 0.0,
+          "instruction_copies": 0,
+          "mean_adjacent_repetition_rate": 0.09375,
+          "records": 16
+        },
+        "hindi_to_garhwali_lexicon": {
+          "control_token_outputs": 0,
+          "corpus_chrf2": 0.05349106,
+          "empty_outputs": 0,
+          "exact_match": 0.0,
+          "instruction_copies": 0,
+          "mean_adjacent_repetition_rate": 0.0,
+          "records": 16
+        }
+      },
+      "overall": {
+        "control_token_outputs": 0,
+        "corpus_chrf2": 0.08832715,
+        "empty_outputs": 0,
+        "exact_match": 0.0,
+        "instruction_copies": 0,
+        "mean_adjacent_repetition_rate": 0.07294872,
+        "records": 130
+      }
+    },
+    "exact_match": 0.0,
+    "records": 130,
+    "target_tokens": 697
+  },
+  "configuration": {
+    "batch_size": 1,
+    "device": "cuda",
+    "generation_control_tokens_removed": true,
+    "learning_rate": 0.0001,
+    "lora_alpha": 8,
+    "lora_rank": 4,
+    "max_input_length": 96,
+    "max_new_tokens": 32,
+    "max_target_length": 72,
+    "model_path": "/tmp/mt0-small",
+    "seeds": [
+      43
+    ],
+    "steps_per_seed": 32768,
+    "target_modules": [
+      "q",
+      "v"
+    ],
+    "training_pool_records_per_seed": 2178
+  },
+  "dataset": {
+    "tasks": {
+      "english_to_garhwali": 455,
+      "english_to_garhwali_lexicon": 610,
+      "garhwali_to_english": 455,
+      "garhwali_to_english_lexicon": 610,
+      "garhwali_to_hindi_lexicon": 260,
+      "hindi_to_garhwali_lexicon": 260
+    },
+    "test_records": 86,
+    "test_sha256": "7fb06f4e3b968a6f1bda453a134c217986a2c390f93429c42d5e36528d7aae0e",
+    "train_records": 2434,
+    "train_sha256": "3fa156ad6347a645f1bafa8d5164378a07a6a770ed3c71d34f4c720a7f5ab5fa",
+    "validation_records": 130,
+    "validation_sha256": "8e6d9667f80d659eedb518b58be721340161c159c5587243f9ba0616cd7cea44"
+  },
+  "elapsed_seconds": 2062.356,
+  "integrity": {
+    "all_records_active_for_experiment": true,
+    "selection_split": "validation",
+    "source_text_mutated": false,
+    "test_evaluation_skipped": true,
+    "test_opened_after_training_and_selection": false,
+    "test_records_used_for_training": 0,
+    "training_split_only": true,
+    "validation_generation_evaluated": true
+  },
+  "model_id": "bigscience/mt0-small",
+  "revision": "8116a34237e19160ec003147e758f065876d95f0",
+  "run_id": "garhwali-mt0-instruction-lora-32768-seed43-v0.6",
+  "runs": [
+    {
+      "checkpoint": "/output/checkpoints/seed-43",
+      "seed": 43,
+      "training": {
+        "examples_seen": 32768,
+        "final_training_loss": 4.1863904,
+        "mean_training_loss": 4.32537021,
+        "steps": 32768,
+        "target_tokens": 184833,
+        "unique_training_records": 2178
+      },
+      "validation": {
+        "cross_entropy": 4.18828743,
+        "records": 130,
+        "target_tokens": 697
+      },
+      "validation_generation": {
+        "corpus_chrf2": 0.07087263,
+        "cross_entropy": 4.18828743,
+        "diagnostics": {
+          "by_task": {
+            "english_to_garhwali": {
+              "control_token_outputs": 0,
+              "corpus_chrf2": 0.04500877,
+              "empty_outputs": 0,
+              "exact_match": 0.0,
+              "instruction_copies": 0,
+              "mean_adjacent_repetition_rate": 0.20916667,
+              "records": 20
+            },
+            "english_to_garhwali_lexicon": {
+              "control_token_outputs": 0,
+              "corpus_chrf2": 0.01453488,
+              "empty_outputs": 0,
+              "exact_match": 0.0,
+              "instruction_copies": 0,
+              "mean_adjacent_repetition_rate": 0.0,
+              "records": 29
+            },
+            "garhwali_to_english": {
+              "control_token_outputs": 0,
+              "corpus_chrf2": 0.16652289,
+              "empty_outputs": 0,
+              "exact_match": 0.0,
+              "instruction_copies": 0,
+              "mean_adjacent_repetition_rate": 0.0,
+              "records": 20
+            },
+            "garhwali_to_english_lexicon": {
+              "control_token_outputs": 0,
+              "corpus_chrf2": 0.04021653,
+              "empty_outputs": 0,
+              "exact_match": 0.0,
+              "instruction_copies": 0,
+              "mean_adjacent_repetition_rate": 0.0,
+              "records": 29
+            },
+            "garhwali_to_hindi_lexicon": {
+              "control_token_outputs": 0,
+              "corpus_chrf2": 0.0527392,
+              "empty_outputs": 0,
+              "exact_match": 0.0625,
+              "instruction_copies": 0,
+              "mean_adjacent_repetition_rate": 0.03125,
+              "records": 16
+            },
+            "hindi_to_garhwali_lexicon": {
+              "control_token_outputs": 0,
+              "corpus_chrf2": 0.06377471,
+              "empty_outputs": 0,
+              "exact_match": 0.0625,
+              "instruction_copies": 0,
+              "mean_adjacent_repetition_rate": 0.0,
+              "records": 16
+            }
+          },
+          "overall": {
+            "control_token_outputs": 0,
+            "corpus_chrf2": 0.07087263,
+            "empty_outputs": 0,
+            "exact_match": 0.01538462,
+            "instruction_copies": 0,
+            "mean_adjacent_repetition_rate": 0.03602564,
+            "records": 130
+          }
+        },
+        "exact_match": 0.01538462,
+        "records": 130,
+        "target_tokens": 697
+      }
+    }
+  ],
+  "status": "completed_multi_seed_instruction_tuning",
+  "summary": {
+    "best_seed": 43,
+    "best_validation_cross_entropy": 4.18828743,
+    "generation_promotion_status": "not_evaluated",
+    "improved_seed_count": 1,
+    "mean_cross_entropy": 4.18828743,
+    "mean_cross_entropy_delta": -1.59221716,
+    "std_cross_entropy": 0.0,
+    "test_evaluation_status": "skipped_for_validation_only_continuation"
+  },
+  "test_systems": {},
+  "total_parameters": 300176768,
+  "trainable_parameters": 172032
+}

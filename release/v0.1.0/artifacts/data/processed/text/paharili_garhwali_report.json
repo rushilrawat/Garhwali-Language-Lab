@@ -1,6 +1,6 @@
 {
-  "source": "/Users/rushilrawat/Garhwali Language Lab/experimental/paharili_gbm.jsonl",
-  "output": "/Users/rushilrawat/Garhwali Language Lab/data/processed/text/paharili_garhwali.jsonl",
+  "source": "experimental/paharili_gbm.jsonl",
+  "output": "data/processed/text/paharili_garhwali.jsonl",
   "promoted_records": 15000,
   "filter": "iso_639_3=gbm and upstream_label=gbm"
 }

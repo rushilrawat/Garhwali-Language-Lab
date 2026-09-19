@@ -212,10 +212,17 @@ class CollectionTests(unittest.TestCase):
         data = ('ID,Language_ID,Parameter_ID,Value,Form,Source\n'
                 'GARHWALI-one,GARHWALI,one,ek,ek,Grierson1916\n'
                 'HINDI-one,HINDI,one,ek,ek,Grierson1916\n').encode()
-        rows = mod.lsi_cldf_garhwali_records(data, info)
+        parameters = ('ID,Name,Concepticon_ID,Concepticon_Gloss\n'
+                      'one,One,1493,ONE\n').encode()
+        rows = mod.lsi_cldf_garhwali_records(
+            data, info, parameters,
+            {'raw_path': 'parameters.csv', 'sha256': 'p'},
+        )
         self.assertEqual(len(rows), 1)
         self.assertTrue(rows[0]['historical'])
         self.assertEqual(rows[0]['corpus_layer'], 'historical_review')
+        self.assertEqual(rows[0]['english_gloss'], 'One')
+        self.assertEqual(rows[0]['concepticon_gloss'], 'ONE')
         self.assertIn('structured_derivative_of_existing_lsi_ocr', rows[0]['quality_flags'])
 
     def test_obs_parser_extracts_text_and_ignores_images_and_scripts(self):

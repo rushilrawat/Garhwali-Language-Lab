@@ -1,0 +1,19 @@
+{
+  "run_id": "incoming-pdf-multilayout-reocr-pilot-v0.1",
+  "available_machine_ocr_pages": 659,
+  "reprocessed_pages": 659,
+  "dpi": 300,
+  "layouts": [
+    3,
+    4,
+    6,
+    11
+  ],
+  "exact_variant_agreement_distribution": {
+    "1": 571,
+    "2": 83,
+    "3": 5
+  },
+  "output": "data/processed/evaluation/data_quality/incoming_pdf_reocr_full_v0_1/candidates.jsonl",
+  "policy": "evidence only; original OCR retained; no automatic lexical replacement"
+}

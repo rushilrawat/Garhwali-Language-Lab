@@ -46,6 +46,12 @@ def diff_records(previous, current):
         }
         if changed:
             changes.append({'url': row['url'], 'changes': changed})
+    current_urls = {row['url'] for row in current}
+    for url in sorted(set(old) - current_urls):
+        changes.append({
+            'url': url,
+            'changes': {'source': {'before': 'present', 'after': 'removed'}},
+        })
     return changes
 
 
@@ -117,7 +123,11 @@ def main():
         previous = json.loads(args.previous.read_text(encoding='utf-8')).get('records', [])
     report = {
         'checked_at': datetime.now(timezone.utc).isoformat(),
-        'catalog': str(args.catalog),
+        'catalog': (
+            args.catalog.resolve().relative_to(ROOT.resolve()).as_posix()
+            if args.catalog.resolve().is_relative_to(ROOT.resolve())
+            else str(args.catalog)
+        ),
         'live': args.live,
         'source_urls': len(urls),
         'records': records,

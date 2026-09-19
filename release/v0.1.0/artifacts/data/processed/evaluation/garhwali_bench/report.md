@@ -1,8 +1,9 @@
 # GarhwaliBench v0.1 experimental baseline
 
 This checksum-addressed benchmark contains 3,847 external task records,
-2,492 held-out text segments, and 112
-speaker-safe ASR rows. Every record is active for experimental evaluation.
+398 held-out text segments, and 112
+speaker-safe ASR rows. The internal text is an automated strict candidate set,
+not a native-reviewed or dialect-aware gold benchmark.
 
 ## Integrity
 
@@ -12,9 +13,9 @@ speaker-safe ASR rows. Every record is active for experimental evaluation.
 
 ## Dependency-free text baseline
 
-- Character bigram perplexity: **16.464093**
-- Evaluation character OOV rate: **4.98e-06**
-- Training character vocabulary: **328**
+- Character bigram perplexity: **17.000058**
+- Evaluation character OOV rate: **0.0**
+- Training character vocabulary: **327**
 
 The bigram result is a reproducible floor for later language-model comparisons.
 External exact matches are reported rather than silently removed so benchmark

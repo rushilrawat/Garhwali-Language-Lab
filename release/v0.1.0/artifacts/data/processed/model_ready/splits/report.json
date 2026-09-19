@@ -29,20 +29,20 @@
       "sha256": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220"
     },
     "evaluation/text_candidate.jsonl": {
-      "records": 3668,
-      "sha256": "78e863f02f32e6c140bf68f936481d0d327c5dae8cc5f5f5362732ff1269f226"
+      "records": 3603,
+      "sha256": "8a5b2388328bed9ee8f4d561ba312b5b5e5615c43f9121b7d1889af5f08b427e"
     },
     "text/test.jsonl": {
-      "records": 4164,
-      "sha256": "113776ef216aa9c92df9f00388363434b173bb72bc937434d1a00696a403a84a"
+      "records": 4086,
+      "sha256": "d25db640d9fe5832d96b3e65fc3bbd2a7c3fef61264e73a1ba493bca4ac3a88f"
     },
     "text/train.jsonl": {
-      "records": 106804,
-      "sha256": "31012c155b069bc5fc3cc36074c26553ee7d8eb81b2a00dc2114be5eb6e4aeed"
+      "records": 106915,
+      "sha256": "4a1ec922599ba2d60e4bfddb0eb4a0e8572aa99fd43fa49d82dc855b45612bba"
     },
     "text/validation.jsonl": {
-      "records": 3114,
-      "sha256": "df6e2ec507fde4c11492714331605e466e0631a9c90f1d7a37b524fb6574f176"
+      "records": 3063,
+      "sha256": "42e1564687449d39cb1e7836b62f13320e48ba6ae89c565381ad4794d62f09d3"
     },
     "tts/test.jsonl": {
       "records": 112,
@@ -99,7 +99,7 @@
     "asr_records": 112,
     "native_review_optional": true,
     "review_status": "automated_quality_screened",
-    "text_records": 3668
+    "text_records": 3603
   },
   "excluded_audio": {
     "transcript_or_language_review": 6,
@@ -107,16 +107,24 @@
   },
   "leakage_checks": {
     "identified_speaker_cross_split": 0,
+    "normalized_text_cross_split": 0,
+    "supported_semantic_edge_cross_split": 0,
     "text_hash_cross_split": 0
   },
   "release_id": "garhwali-splits-candidate-2026-09-10",
   "release_status": "integrated_experimental_candidate",
   "text": {
     "records": {
-      "test": 4164,
-      "train": 106804,
-      "validation": 3114
+      "test": 4086,
+      "train": 106915,
+      "validation": 3063
     }
+  },
+  "text_duplicate_components": {
+    "components": 111530,
+    "normalized_edges": 1884,
+    "records_reassigned": 120,
+    "supported_semantic_edges": 1623
   },
   "tts_candidate": {
     "hours": {

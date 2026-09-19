@@ -1,234 +1,554 @@
 {
-  "audit_id": "garhwali-huggingface-all-data-preflight-v0.1",
-  "generated": "2026-09-17",
+  "run_id": "garhwali-hf-all-data-cloud-validation-v0.1",
   "release_id": "garhwali-language-lab-v0.1.0",
   "status": "passed",
-  "records": 257163,
+  "manifest_profile": "all-data",
   "configs": {
-    "asr/test": 450,
-    "asr/train": 4778,
-    "asr/validation": 666,
-    "catalog/train": 28755,
-    "geography/train": 50,
-    "historical_terms/train": 36,
-    "instructions/test": 256,
-    "instructions/train": 2178,
-    "instructions/validation": 134,
-    "lexicon/train": 1114,
-    "literary_people/train": 26,
-    "literary_works/train": 66,
-    "popular_songs/train": 30,
-    "sravaani_drafts/train": 104534,
-    "text/test": 4164,
-    "text/train": 106804,
-    "text/validation": 3114,
-    "university_research/train": 8
+    "asr/test": {
+      "records": 450,
+      "empty_content": 0,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 450,
+      "scripts": {
+        "Beng": 8,
+        "Deva": 442
+      }
+    },
+    "asr/train": {
+      "records": 4778,
+      "empty_content": 0,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 4778,
+      "scripts": {
+        "Deva": 4778
+      }
+    },
+    "asr/validation": {
+      "records": 666,
+      "empty_content": 0,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 666,
+      "scripts": {
+        "Deva": 666
+      }
+    },
+    "catalog/train": {
+      "records": 28755,
+      "empty_content": 0,
+      "rows_with_provenance": 28755,
+      "rows_with_quality_metadata": 28755,
+      "scripts": {
+        "Beng": 8,
+        "Deva": 26838,
+        "LATIN": 53,
+        "Latn": 1854,
+        "none": 2
+      }
+    },
+    "geography/train": {
+      "records": 50,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "historical_terms/train": {
+      "records": 36,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "instructions/test": {
+      "records": 260,
+      "rows_with_provenance": 260,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "instructions/train": {
+      "records": 2650,
+      "rows_with_provenance": 2650,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "instructions/validation": {
+      "records": 320,
+      "rows_with_provenance": 320,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "lexicon/train": {
+      "records": 1114,
+      "rows_with_provenance": 1114,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "literary_people/train": {
+      "records": 26,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "literary_works/train": {
+      "records": 66,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "popular_songs/train": {
+      "records": 30,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "sravaani_drafts/train": {
+      "records": 104534,
+      "empty_content": 34,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 104534,
+      "scripts": {
+        "Beng": 254,
+        "Deva": 103464,
+        "GUJARATI": 55,
+        "GURMUKHI": 171,
+        "KANNADA": 134,
+        "Latn": 81,
+        "MALAYALAM": 59,
+        "MEETEI": 16,
+        "OL": 27,
+        "ORIYA": 73,
+        "TAMIL": 18,
+        "TELUGU": 148,
+        "none": 34
+      }
+    },
+    "text/test": {
+      "records": 4086,
+      "empty_content": 0,
+      "rows_with_provenance": 4086,
+      "rows_with_quality_metadata": 4086,
+      "scripts": {
+        "Deva": 3513,
+        "LATIN": 2,
+        "Latn": 565,
+        "none": 6
+      }
+    },
+    "text/train": {
+      "records": 106915,
+      "empty_content": 0,
+      "rows_with_provenance": 106915,
+      "rows_with_quality_metadata": 106915,
+      "scripts": {
+        "Beng": 16,
+        "Deva": 75826,
+        "LATIN": 51,
+        "Latn": 30683,
+        "none": 339
+      }
+    },
+    "text/validation": {
+      "records": 3063,
+      "empty_content": 0,
+      "rows_with_provenance": 3063,
+      "rows_with_quality_metadata": 3063,
+      "scripts": {
+        "Deva": 2738,
+        "LATIN": 1,
+        "Latn": 321,
+        "none": 3
+      }
+    },
+    "university_research/train": {
+      "records": 8,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    }
   },
-  "jsonl_files": 40,
-  "jsonl_bytes": 448114442,
-  "catalog_records": 28755,
-  "catalog_redacted_text_records": 0,
-  "errors": [],
-  "files": [
+  "totals": {
+    "records": 257807,
+    "empty_content": 34,
+    "rows_with_provenance": 147163,
+    "rows_with_quality_metadata": 253247
+  },
+  "cross_split_identity_overlap": {
+    "asr:test:train": 0,
+    "asr:test:validation": 0,
+    "asr:train:validation": 0,
+    "instructions:test:train": 0,
+    "instructions:test:validation": 0,
+    "instructions:train:validation": 0,
+    "text:test:train": 0,
+    "text:test:validation": 0,
+    "text:train:validation": 0,
+    "instructions_prompt:test:train": 0,
+    "instructions_prompt:test:validation": 0,
+    "instructions_prompt:train:validation": 0
+  },
+  "distinct_provenance_sources": 53,
+  "top_provenance_sources": [
+    [
+      "paharili_gbm",
+      30328
+    ],
+    [
+      "indic_dialect_asr_gbm",
+      18920
+    ],
+    [
+      "atkinson_himalayan_gazetteer",
+      14785
+    ],
+    [
+      "incoming_garhwali_hindi_dictionary",
+      12806
+    ],
+    [
+      "meta_omni",
+      11122
+    ],
+    [
+      "uou_cgl",
+      10043
+    ],
+    [
+      "proverbs1894",
+      9644
+    ],
+    [
+      "incoming_english_hindi_garhwali_dictionary",
+      9401
+    ],
+    [
+      "shanti_chaudhary_garhwali_lokkala_loksahitya_1994",
+      6332
+    ],
+    [
+      "govind_chatak_gadwali_lokgeet_1956",
+      4568
+    ],
+    [
+      "incoming_garhwali_language_and_culture",
+      3449
+    ],
+    [
+      "dcad_gbm",
+      3370
+    ],
+    [
+      "uou_more",
+      3160
+    ],
+    [
+      "lsi",
+      3048
+    ],
+    [
+      "hindialect_gbm",
+      2996
+    ],
+    [
+      "incoming_garhwali_bhasha_linguistic_grammatical_study",
+      1842
+    ],
+    [
+      "obs_garhwali",
+      1552
+    ],
+    [
+      "kellogg_1893",
+      1517
+    ],
+    [
+      "wiktionary_swadesh_thematic",
+      1099
+    ],
+    [
+      "lsi_cldf_garhwali",
+      985
+    ],
+    [
+      "mountainvoices_local_glossary",
+      955
+    ],
+    [
+      "incoming_chandola_syntactic_sketch",
+      849
+    ],
+    [
+      "opus_translatewiki_gbm",
+      732
+    ],
+    [
+      "hill_dialects_1900",
+      694
+    ],
+    [
+      "incoming_gadwali_sahitya",
+      607
+    ],
+    [
+      "sand_garhwali",
+      605
+    ],
+    [
+      "emagazine_animals",
+      536
+    ],
+    [
+      "asjp",
+      461
+    ],
+    [
+      "uttarakhandiwords_animals",
+      433
+    ],
+    [
+      "wiktionary_en",
+      408
+    ],
+    [
+      "madlad400_gbm_clean",
+      404
+    ],
+    [
+      "languageshome",
+      358
+    ],
+    [
+      "dhyani_occupations",
+      321
+    ],
+    [
+      "mamta_southasia_examples",
+      266
+    ],
+    [
+      "hikinegi_garhwali",
+      213
+    ],
+    [
+      "wikimedia",
+      205
+    ],
+    [
+      "chan_numerals_garhwali",
+      202
+    ],
+    [
+      "idioms_proverbs",
+      200
+    ],
+    [
+      "garhwalilanguage_dictionary",
+      181
+    ],
+    [
+      "euttaranchal_3",
+      152
+    ],
+    [
+      "wikisource_garhwal_culture",
+      140
+    ],
+    [
+      "crooke_northern_india_folklore",
+      109
+    ],
+    [
+      "euttaranchal_2",
+      83
+    ],
+    [
+      "tatoeba",
+      72
+    ],
+    [
+      "archive_folksong_thesis",
+      66
+    ],
+    [
+      "panlex_gbm",
+      55
+    ],
+    [
+      "euttaranchal_1",
+      54
+    ],
+    [
+      "records",
+      42
+    ],
+    [
+      "walton_gazetteer_1910",
+      32
+    ],
+    [
+      "pib_ramman_instruments",
+      25
+    ]
+  ],
+  "file_hashes": [
     {
       "path": "data/asr/test-00000.jsonl",
-      "bytes": 306071,
       "sha256": "3aa382895c7f199adfc1030a24ea0d34b43d009e768769a0d06535f7b01a5b7b"
     },
     {
       "path": "data/asr/train-00000.jsonl",
-      "bytes": 3313328,
       "sha256": "b8fa7124c31c0520170c57e5fcb53b056bc374e3e3ff8aed2f70ce3857257a7d"
     },
     {
       "path": "data/asr/validation-00000.jsonl",
-      "bytes": 466171,
       "sha256": "42b77ff8a532ee83b8213f2c391118004e1bf15efa460c42ae58d5af37af352f"
     },
     {
       "path": "data/catalog/train-00000.jsonl",
-      "bytes": 31663631,
-      "sha256": "420f4d60589490ded7d1e26d16272d37b98103b1df7b4ace5546911d5c412a82"
+      "sha256": "1f1c2159024c0953b2ec9ee5758d6135806c6cccbf583049cc8f78a1d3ab9a6e"
     },
     {
       "path": "data/catalog/train-00001.jsonl",
-      "bytes": 31506179,
-      "sha256": "0fa0ed8c2ee69f8bc31ef296b6d8edc70516c2ede0928059ef15a5aa60b6d67a"
+      "sha256": "c2264995dbf4946e27e43a51f45ee11b5cfc8ef1c817f56f81d2afaa5886af46"
     },
     {
       "path": "data/catalog/train-00002.jsonl",
-      "bytes": 27464700,
-      "sha256": "79a85b0b5fdbb3e4664f7714ab12ba84f5526b6e3b5e487003949b29094ec453"
+      "sha256": "a87d6a600b441acb768ebeadfd14cf83343a9b9042fc3f26f1d15c8e201b60ac"
     },
     {
       "path": "data/geography/train-00000.jsonl",
-      "bytes": 36494,
       "sha256": "247f1209f490f3bad45c3b4de1284e16d3a2c6ce74b84f7aac8e38bf35c2c71b"
     },
     {
       "path": "data/historical_terms/train-00000.jsonl",
-      "bytes": 15851,
       "sha256": "e0909ce62cbf7353c7897a56b168c977809984f5f4af2340a7a08dd9b73552b0"
     },
     {
       "path": "data/instructions/test-00000.jsonl",
-      "bytes": 430138,
-      "sha256": "883321e5bb8fa598591ee113579be779008905835cc4691615ffdc7372bdc493"
+      "sha256": "a1d8c6742148dfe383c091e79f9b8ea83a7196ca4828e691edce83bc3943b312"
     },
     {
       "path": "data/instructions/train-00000.jsonl",
-      "bytes": 3649900,
-      "sha256": "32c22ce3484abcd60468b62b911f3a5147dc6c99b6aca670d1bce2279b450bc5"
+      "sha256": "fafb4d53463d7a409b276c4a5c7fac55df4a81360642508a953a0b8e0ef5a97d"
     },
     {
       "path": "data/instructions/validation-00000.jsonl",
-      "bytes": 235864,
-      "sha256": "b668f6e5626c0c687d087c68a47bc3035802d97d27a0431d9fd5bf7ac1c64f31"
+      "sha256": "71b9315427f11bb2312cc5be4b5912113fba122c4947bb2fd76fc2a7c5f38471"
     },
     {
       "path": "data/lexicon/train-00000.jsonl",
-      "bytes": 2107307,
-      "sha256": "79f093a87c3fb260bae7b1899fe3187189330464e17009c25d1ae35ce5f2efe8"
+      "sha256": "2bb8b4c48a13ce6ecc236ee6457c398c51dd8e1f74be4a3eb68676223ec2341a"
     },
     {
       "path": "data/literary_people/train-00000.jsonl",
-      "bytes": 10779,
       "sha256": "e8ab8fb2c3d560cd6450560ab0e455eaa9792a442145f4be25efdee99d791135"
     },
     {
       "path": "data/literary_works/train-00000.jsonl",
-      "bytes": 32737,
       "sha256": "412b619665a554b1ee4e7dde992014136e9ae847a0b311c2f018ee84d0136f9f"
     },
     {
       "path": "data/popular_songs/train-00000.jsonl",
-      "bytes": 23785,
       "sha256": "1cf12681163ce76a511a0f7853ce53e60907bc40560902ccbe86081bd959befc"
     },
     {
       "path": "data/sravaani_drafts/train-00000.jsonl",
-      "bytes": 13132609,
       "sha256": "7ad297db5ffa28a5479e39a317c4ff459ea6f3688b4dad74c3d5ba51bffe070a"
     },
     {
       "path": "data/sravaani_drafts/train-00001.jsonl",
-      "bytes": 13508504,
       "sha256": "5dbad13fac1cf2f4473a633c5bee1cbbd29f4a7af534941a46a38b448d2e40d9"
     },
     {
       "path": "data/sravaani_drafts/train-00002.jsonl",
-      "bytes": 13858692,
       "sha256": "45083cd6940c8ec806e798c9bc85a07f306cccc13178b96d1be608619a248378"
     },
     {
       "path": "data/sravaani_drafts/train-00003.jsonl",
-      "bytes": 13481067,
       "sha256": "da5705931966fc2785bb4708f0dc91f662914316323610702e957ac6b44e8791"
     },
     {
       "path": "data/sravaani_drafts/train-00004.jsonl",
-      "bytes": 12860230,
       "sha256": "0e6c87fe1f60703090a5e9b7391f300a89624b4e6d2e70a11b58ec34fa5c06d4"
     },
     {
       "path": "data/sravaani_drafts/train-00005.jsonl",
-      "bytes": 13689430,
       "sha256": "520b3d4aa160abf02e6cd165ad048875a3dff500e308c2d8cef3506ca6f5ae0b"
     },
     {
       "path": "data/sravaani_drafts/train-00006.jsonl",
-      "bytes": 13023679,
       "sha256": "f4ee90bd6ba5eb6387fc03f3293e2c3d616a716497fc0df1c23b709d6c9c39c2"
     },
     {
       "path": "data/sravaani_drafts/train-00007.jsonl",
-      "bytes": 12859837,
       "sha256": "5399ece85dccd5bc27f7720150d801be38b65eb2c935ed6a3d9379690a821efa"
     },
     {
       "path": "data/sravaani_drafts/train-00008.jsonl",
-      "bytes": 13116920,
       "sha256": "33ab00d3b94557c2d05ce3ee2320165917bdafc89eb6d9da5b4220262c593e48"
     },
     {
       "path": "data/sravaani_drafts/train-00009.jsonl",
-      "bytes": 13838556,
       "sha256": "db9bf08a066ae6f103313171488487733ae4efc9186418d61ca11de0a3a8672c"
     },
     {
       "path": "data/sravaani_drafts/train-00010.jsonl",
-      "bytes": 6994038,
       "sha256": "68ff4695456e961511f4ef3106b9353a8c2f0ed4baa013fca5d1f23978c71031"
     },
     {
       "path": "data/text/test-00000.jsonl",
-      "bytes": 7631285,
-      "sha256": "28a3ca6af3c167e2d1bda1fa3d794fa7ff95b55227fa843af0d9233349c216b4"
+      "sha256": "9be5c35432c110dbcceb8c14e230a06ce0fa8e518ae2d7f4531f342a5f48dcf8"
     },
     {
       "path": "data/text/train-00000.jsonl",
-      "bytes": 17881491,
-      "sha256": "f26c07c0b880557f2d189c9755bf1ff7ff4e05a1766a46a8ef8f1af2a73a48ac"
+      "sha256": "0e961381e80e900cad652633e9221da3ce70c106130dee710cdf4d5d23e4a84d"
     },
     {
       "path": "data/text/train-00001.jsonl",
-      "bytes": 17841066,
-      "sha256": "dc23d459fa45284b142eee53a83edb5b0dbfeecd3c59cf8d03771cbbbcf885c2"
+      "sha256": "ec602a7169c52b886521ad994b7ff008c94b989b3711ab69b80f115107708fa9"
     },
     {
       "path": "data/text/train-00002.jsonl",
-      "bytes": 17953806,
-      "sha256": "836a60346d663549fc00faf06aa1c5ea4148efc32479ce96906e4cc6a680bb7e"
+      "sha256": "f80fb0c1357d91c5c6fc853931338a6712f901a82004ff89959dc9259f7dee5d"
     },
     {
       "path": "data/text/train-00003.jsonl",
-      "bytes": 18204563,
-      "sha256": "fa42727c614d6ca45029478e4336b16fa230d7f29bb4788451f9fa7d0668c8c1"
+      "sha256": "4955692e819f01c6649e844ecb477c576c645d3220425a2d4a2e3e1cdd5bb1be"
     },
     {
       "path": "data/text/train-00004.jsonl",
-      "bytes": 17910219,
-      "sha256": "d3f7cd6e0bd4ddc1fb9c51cc546b026f296ba4fff8b79ac66b09ebd74337b1dd"
+      "sha256": "8e4e2ac1cabea11a97a138f2ea26422f1660136a3086ea387484175af8b9d9b3"
     },
     {
       "path": "data/text/train-00005.jsonl",
-      "bytes": 18062045,
-      "sha256": "8f3e0e6db3924185fd312a82f0c028639d05de0b026784d3ddf414eddc71b940"
+      "sha256": "444bd63763c644ad0776383349997b69b6fa7714665e2604d5e523fc0320156c"
     },
     {
       "path": "data/text/train-00006.jsonl",
-      "bytes": 17810518,
-      "sha256": "c9c65e672909bed8d4c130fa8b58c63e23479f063b742e51ec82a0f2bc2edcdc"
+      "sha256": "4879ac7c62d2d75f4322ea673f46c3c263507e775cbf893b6ff5b450e490bcc9"
     },
     {
       "path": "data/text/train-00007.jsonl",
-      "bytes": 18595576,
-      "sha256": "e0b538df503930f1978704825d84c9102e81d550e96d16ed6a9f45c0e942bd5e"
+      "sha256": "c18e8732d96383a55eb5e20c0cc0e2f3be2016e127e12b808148cffe3352ca4b"
     },
     {
       "path": "data/text/train-00008.jsonl",
-      "bytes": 18797351,
-      "sha256": "758e2bfc2ec081a2c9a273718bd76e5834989878c3af33c3f448e91b4389aaf5"
+      "sha256": "6021f78caa4ef37a1d6611abad7a819ab74b21f1812f885e6ee9d428821952da"
     },
     {
       "path": "data/text/train-00009.jsonl",
-      "bytes": 18043587,
-      "sha256": "52ff13401f9fa4d65c730c74d2dac6845c13822a5bfac04becf2b30c33f9e3ef"
+      "sha256": "f2786eb37edce147808ecef9273dfb15a40464167fd0892ef4b0d38b310366ce"
     },
     {
       "path": "data/text/train-00010.jsonl",
-      "bytes": 12311924,
-      "sha256": "8744131184b12837a547a2e60cd0f4d24874a7fca26b435ff7500f5c22ae1241"
+      "sha256": "0926d3d6c855e83bbc2d2965d38b1bd003fc5673f270377c5a31c2e6ca2b1459"
     },
     {
       "path": "data/text/validation-00000.jsonl",
-      "bytes": 5436698,
-      "sha256": "5adbc7a1fd5e3956448424d8689b92fd2c8ceb901e475b3efe9acb7a9b1fb745"
+      "sha256": "9689443134d3dd2a4b9ce3f7e3052af5383efc89243495e243b7856fd1e7cd47"
     },
     {
       "path": "data/university_research/train-00000.jsonl",
-      "bytes": 7816,
       "sha256": "483c465f8377c50b49f113584b5a8736d032683ded551775f60ca0a175810031"
     }
-  ]
+  ],
+  "errors": [],
+  "records_deleted_or_mutated": 0
 }

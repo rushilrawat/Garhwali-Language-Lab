@@ -73,11 +73,13 @@ configs:
 
 Release: **garhwali-language-lab-v0.1.0**
 
+
+
 Versioned Garhwali (`gbm`) text, speech, lexicon, instruction, geographic,
 historical, literary, music, and university-research resources built by the
 Garhwali Language Lab. Every row retains its available source and review evidence.
 
-This rights-filtered public package contains **146,482 records** across 12 configurations, including transcripts for **104,534
+This rights-filtered public package contains **146,912 records** across 12 configurations, including transcripts for **104,534
 unique SraVaani recordings**. This transcript-only package does not include audio files or source filenames.
 
 The `catalog` configuration publicly accounts for all

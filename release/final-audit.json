@@ -8,6 +8,7 @@
   },
   "audit_id": "garhwali-final-release-audit-v0.1",
   "catalog": {
+    "invalid_release_hashes": 0,
     "missing_evidence": 0,
     "records": 28755,
     "redacted_text_records": 24560
@@ -19,17 +20,17 @@
     "catalog/train": 28755,
     "geography/train": 50,
     "historical_terms/train": 36,
-    "instructions/test": 126,
-    "instructions/train": 1020,
-    "instructions/validation": 64,
+    "instructions/test": 136,
+    "instructions/train": 1516,
+    "instructions/validation": 220,
     "lexicon/train": 667,
     "literary_people/train": 26,
     "literary_works/train": 66,
     "popular_songs/train": 30,
     "sravaani_drafts/train": 104534,
-    "text/test": 476,
-    "text/train": 8194,
-    "text/validation": 428,
+    "text/test": 422,
+    "text/train": 8043,
+    "text/validation": 401,
     "university_research/train": 8
   },
   "drafts": {
@@ -52,17 +53,23 @@
     "third_checkpoint_records": 1188
   },
   "errors": [],
-  "exported_rows": 146482,
-  "generated": "2026-09-18",
+  "exported_rows": 146912,
+  "generated": "2026-09-19",
   "leakage": {
     "asr_audio_cross_split": 0,
     "asr_speaker_cross_split": 0,
+    "instruction_prompt_cross_split": 0,
+    "normalized_text_cross_split": 0,
+    "semantic_component_cross_split": 0,
     "text_id_cross_split": 0
   },
   "provenance": {
     "asr_missing_transcript_source_or_license": 0,
+    "instruction_attribution_or_license_missing": 0,
+    "instruction_reference_metadata_missing": 0,
     "missing_rows": 0,
     "public_rights_failures": 0,
+    "text_admission_metadata_missing": 0,
     "text_language_scope_failures": 0
   },
   "release_id": "garhwali-language-lab-v0.1.0",

@@ -1,5 +1,7 @@
 # Complete all-data package
 
+> **Historical snapshot (2026-09-15).** Current authoritative counts are in [`release/v0.1.0-manifest.json`](../release/v0.1.0-manifest.json) and the 2026-09-19 report.
+
 The Garhwali Language Lab now builds a first-class `all-data` Hugging Face
 profile. It keeps every collected text value available for quality improvement,
 research, and model preparation. No text is placed in a hidden or quarantine

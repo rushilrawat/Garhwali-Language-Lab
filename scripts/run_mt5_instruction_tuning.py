@@ -127,6 +127,30 @@ def metric_summary(references, hypotheses):
     }
 
 
+def multi_reference_metric_summary(reference_sets, hypotheses):
+    """Score each output against its closest valid source-attested variant."""
+    selected = []
+    exact = 0
+    for references, hypothesis in zip(reference_sets, hypotheses):
+        references = list(references) or ['']
+        exact_matches = [
+            reference for reference in references
+            if normalize(reference) == normalize(hypothesis)
+        ]
+        if exact_matches:
+            exact += 1
+            selected.append(exact_matches[0])
+        else:
+            selected.append(max(
+                references,
+                key=lambda reference: corpus_chrf([reference], [hypothesis]),
+            ))
+    return {
+        'exact_match': round(exact / max(1, len(reference_sets)), 8),
+        'corpus_chrf2': corpus_chrf(selected, hypotheses),
+    }
+
+
 def generation_diagnostics(rows, hypotheses):
     """Summarize generation failure modes globally and by instruction task."""
     grouped = defaultdict(list)
@@ -142,6 +166,7 @@ def generation_diagnostics(rows, hypotheses):
             'instruction_sha256': row['instruction_sha256'],
             'task': row['task'],
             'reference': row['response'],
+            'acceptable_responses': row.get('acceptable_responses') or [row['response']],
             'hypothesis': hypothesis,
             'empty': not bool(normalized_hypothesis),
             'copies_instruction': bool(normalized_hypothesis) and (
@@ -156,8 +181,8 @@ def generation_diagnostics(rows, hypotheses):
         grouped[row['task']].append(detail)
 
     def summarize(items):
-        return metric_summary(
-            [item['reference'] for item in items],
+        return multi_reference_metric_summary(
+            [item['acceptable_responses'] for item in items],
             [item['hypothesis'] for item in items],
         ) | {
             'records': len(items),
@@ -227,8 +252,6 @@ def load_base_model(device, model_path=MODEL):
 
 
 def encoded_batch(tokenizer, rows, max_input_length, max_target_length, device):
-    import torch
-
     inputs = tokenizer(
         [row['instruction'] for row in rows],
         max_length=max_input_length,
@@ -335,8 +358,10 @@ def generate_predictions(model, tokenizer, rows, max_input_length,
                 clean_generated_text(text)
                 for text in tokenizer.batch_decode(generated, skip_special_tokens=True)
             )
-    references = [row['response'] for row in rows]
-    return hypotheses, metric_summary(references, hypotheses)
+    references = [
+        row.get('acceptable_responses') or [row['response']] for row in rows
+    ]
+    return hypotheses, multi_reference_metric_summary(references, hypotheses)
 
 
 def evaluate_test_model(model, tokenizer, rows, max_input_length,

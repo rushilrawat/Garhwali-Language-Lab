@@ -3,11 +3,13 @@ import unittest
 import build_instruction_accuracy_split as m
 
 
-def row(parent, task, index):
+def row(parent, task, index, instruction=None):
     return {
         'parent_text_sha256': parent,
         'task': task,
         'instruction_sha256': f'{parent}-{task}-{index}',
+        'instruction': instruction or f'{task} prompt {parent}',
+        'response': f'answer {index}',
         'active_for_experiment': True,
     }
 
@@ -62,6 +64,34 @@ class InstructionAccuracySplitTests(unittest.TestCase):
         self.assertEqual(result['integrity']['parent_cross_split'], 0)
         self.assertEqual(result['integrity']['prior_seen_parent_test_overlap'], 0)
         self.assertTrue(result['integrity']['all_records_active_for_experiment'])
+
+    def test_split_keeps_identical_prompts_in_one_partition(self):
+        train = self.rows + [
+            row('train-shared', 'garhwali_to_english', 100, 'shared prompt'),
+        ]
+        validation = [
+            row('validation-shared', 'garhwali_to_english', 101, 'shared prompt'),
+        ]
+        result = m.split_rows(
+            train, validation, target_test_records=8,
+            prior_seeds=(17, 29, 43), prior_steps=2, prior_batch_size=1,
+        )
+        prompt_splits = {
+            split
+            for split in ('train', 'validation', 'test')
+            for item in result[split]
+            if item['instruction'] == 'shared prompt'
+        }
+        self.assertEqual(prompt_splits, {'validation'})
+        self.assertEqual(result['integrity']['instruction_prompt_cross_split'], 0)
+        shared = [
+            item for item in result['validation']
+            if item['instruction'] == 'shared prompt'
+        ]
+        self.assertEqual(
+            {tuple(item['acceptable_responses']) for item in shared},
+            {('answer 100', 'answer 101')},
+        )
 
 
 if __name__ == '__main__':

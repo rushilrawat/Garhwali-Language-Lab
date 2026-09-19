@@ -9,10 +9,10 @@ public transcript dataset is published separately on Hugging Face. The complete
 all-data package contains every collected text value with its original source,
 rights, and quality metadata.
 
-The complete transcript-only all-data package contains **257,145 rows**. Its
+The complete transcript-only all-data package contains **257,807 rows**. Its
 catalog includes all **28,755 exact-unique texts with zero redactions** and six
 structured knowledge configurations containing **216 place, history, literary,
-music, and university-research records**. The separate **146,482-row public
+music, and university-research records**. The separate **146,912-row public
 redistribution package** exposes full text for the
 4,195 records with a named public rights basis and preserves catalog metadata for
 the remaining 24,560. The

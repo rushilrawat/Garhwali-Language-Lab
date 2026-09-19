@@ -24,7 +24,8 @@ def safe_name(text: str) -> str:
 def curl(url: str, destination: Path) -> None:
     subprocess.run(
         [
-            "curl", "-k", "-L", "--fail", "--retry", "4",
+            "curl", "--proto", "=https", "--proto-redir", "=https",
+            "-L", "--fail", "--retry", "4",
             "--retry-all-errors", "-C", "-", url, "-o", str(destination),
         ],
         check=True,

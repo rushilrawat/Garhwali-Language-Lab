@@ -452,6 +452,11 @@ def run(
         "elapsed_seconds": round(time.monotonic() - started, 3),
     }
     write_json(output / "report.json", report)
+    if best is None:
+        raise RuntimeError(
+            f'All {len(trial_results)} SraVaani sweep trials failed; '
+            f'see {output / "report.json"}'
+        )
     return report
 
 

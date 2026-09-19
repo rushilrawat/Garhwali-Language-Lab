@@ -22,15 +22,9 @@ DEFAULT_INPUT = ROOT / "incoming/pdfs"
 DEFAULT_OUTPUT = ROOT / "experimental/incoming_pdfs.jsonl"
 DEFAULT_REPORT = ROOT / "research/incoming-pdf-ingestion-2026-09-16.json"
 DEFAULT_CACHE = ROOT / "data/extracted/incoming_pdfs/page_cache"
-PDFTOPPM = shutil.which("pdftoppm") or str(
-    Path.home()
-    / ".cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm"
-)
-TESSERACT = shutil.which("tesseract") or "/opt/homebrew/bin/tesseract"
-FONTCONFIG = (
-    Path.home()
-    / ".cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/poppler/etc/fonts/fonts.conf"
-)
+PDFTOPPM = os.environ.get("PDFTOPPM_BIN") or shutil.which("pdftoppm")
+TESSERACT = os.environ.get("TESSERACT_BIN") or shutil.which("tesseract")
+FONTCONFIG = Path(os.environ["FONTCONFIG_FILE"]) if os.environ.get("FONTCONFIG_FILE") else None
 
 KNOWN_DUPLICATE_OUTPUTS = {
     "6a1028710506a4dd2f2695953ad538a1152b2b8b4efd58e95e64109fafbfb34e":
@@ -179,8 +173,8 @@ def page_record(*, source_id: str, source_pdf: Path, source_sha256: str,
         "attribution": author or title,
         "text": text,
         "text_sha256": text_sha256,
-        "iso_639_3": "gbm",
-        "language": "Garhwali",
+        "iso_639_3": "mul",
+        "language": "Garhwali-focused multilingual reference",
         "language_scope": "garhwali_focused_mixed_reference",
         "script": detected_script(text),
         "genre": genre,
@@ -219,10 +213,15 @@ def locate_tessdata(work_dir: Path) -> Path:
     if hindi is None:
         raise FileNotFoundError("Project Hindi Tesseract model is missing")
     english_candidates = [
+        Path(os.environ["TESSDATA_PREFIX"]) / "eng.traineddata"
+        if os.environ.get("TESSDATA_PREFIX") else None,
         Path("/opt/homebrew/share/tessdata/eng.traineddata"),
         Path("/usr/local/share/tessdata/eng.traineddata"),
+        Path("/usr/share/tesseract-ocr/5/tessdata/eng.traineddata"),
+        Path("/usr/share/tesseract-ocr/4.00/tessdata/eng.traineddata"),
+        Path("/usr/share/tessdata/eng.traineddata"),
     ]
-    english = next((path for path in english_candidates if path.exists()), None)
+    english = next((path for path in english_candidates if path and path.exists()), None)
     if english is None:
         raise FileNotFoundError("English Tesseract model is missing")
     for source, name in ((hindi, "hin.traineddata"), (english, "eng.traineddata")):
@@ -234,15 +233,20 @@ def locate_tessdata(work_dir: Path) -> Path:
 
 def extract_ocr_page(pdf: Path, page_number: int, cache_file: Path,
                      tessdata: Path, dpi: int) -> tuple[int, str]:
+    if not PDFTOPPM or not TESSERACT:
+        raise FileNotFoundError(
+            "OCR requires pdftoppm and tesseract on PATH, or PDFTOPPM_BIN and "
+            "TESSERACT_BIN environment variables"
+        )
     if cache_file.exists():
         return page_number, json.loads(cache_file.read_text(encoding="utf-8"))["text"]
     cache_file.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="garhwali-pdf-page-") as tmp:
         prefix = Path(tmp) / "page"
         env = os.environ.copy()
-        if FONTCONFIG.exists():
+        if FONTCONFIG and FONTCONFIG.exists():
             env["FONTCONFIG_FILE"] = str(FONTCONFIG)
-        env["XDG_CACHE_HOME"] = "/private/tmp/garhwali-font-cache"
+        env.setdefault("XDG_CACHE_HOME", str(Path(tempfile.gettempdir()) / "garhwali-font-cache"))
         subprocess.run(
             [PDFTOPPM, "-f", str(page_number), "-l", str(page_number),
              "-r", str(dpi), "-jpeg", "-singlefile", str(pdf), str(prefix)],

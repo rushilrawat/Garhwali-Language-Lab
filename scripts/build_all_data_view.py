@@ -20,7 +20,12 @@ def main():
             )
             dst.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n')
             count += 1
-    report = {'source': str(SOURCE), 'output': str(OUTPUT), 'records': count, 'includes_all_canonical_rows': True}
+    report = {
+        'source': str(SOURCE.relative_to(ROOT)),
+        'output': str(OUTPUT.relative_to(ROOT)),
+        'records': count,
+        'includes_all_canonical_rows': True,
+    }
     (OUTPUT.with_name('all_garhwali_report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(report, indent=2))
 

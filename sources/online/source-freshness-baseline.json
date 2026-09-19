@@ -1,0 +1,354 @@
+{
+  "baseline_note": "Frozen comparison baseline for scheduled HTTP metadata checks; no source content is stored here.",
+  "catalog": "sources/online/deep-search-catalog.md",
+  "changes": [],
+  "checked_at": "2026-09-11T03:30:06.497738+00:00",
+  "live": true,
+  "records": [
+    {
+      "content_length": "42742",
+      "error": null,
+      "etag": "\"a6f6-65b0d4ea768e2\"",
+      "last_modified": "Wed, 09 Sep 2026 14:02:52 GMT",
+      "status": 200,
+      "url": "https://aclanthology.org/2026.vardial-1.12/"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": "Fri, 11 Sep 2026 01:04:12 GMT",
+      "status": 200,
+      "url": "https://archive.org/"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://archive.org/details/cu31924089930774"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://archive.org/details/grammarofhindl00kell"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://archive.org/details/in.ernet.dli.2015.48008"
+    },
+    {
+      "content_length": "40820",
+      "error": null,
+      "etag": null,
+      "last_modified": "Mon, 24 Aug 2026 19:06:26 GMT",
+      "status": 200,
+      "url": "https://arxiv.org/abs/2608.10670"
+    },
+    {
+      "content_length": "18958",
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://asjp.clld.org/languages/GARHWALI"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://books.google.com/books?id=veUTAAAAYAAJ"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": "Fri, 28 Aug 2026 03:29:42 GMT",
+      "status": 200,
+      "url": "https://commons.wikimedia.org/wiki/File:Linguistic_Survey_of_India_Vol_9_Part_4.djvu"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": "Wed, 09 Sep 2026 03:18:07 GMT",
+      "status": 200,
+      "url": "https://en.wiktionary.org/wiki/Appendix:Garhwali_Swadesh_list"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": "W/\"59ed4df228ad33188b278dfb7eaf67a0\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://github.com/rachanagusain/PahariLI"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": "W/\"f55d5c20253b3b0139ab483e64bf51c4\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://github.com/soodashima91/Garhwali-ASR"
+    },
+    {
+      "content_length": "411253",
+      "error": null,
+      "etag": "W/\"64675-LSqsKdfqVV7/ZZb+BIRAF+5EprQ\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/ARTPARK-IISc/Vaani"
+    },
+    {
+      "content_length": "249645",
+      "error": null,
+      "etag": "W/\"3cf2d-3vkAAtwSQVHaU2Iq1/yYFY0/BKk\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/ARTPARK-IISc/Vaani-transcription-part"
+    },
+    {
+      "content_length": "252685",
+      "error": null,
+      "etag": "W/\"3db0d-rcb6RKqwQegmXZ9I3R3a1h4L0KE\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/Helsinki-NLP/tatoeba"
+    },
+    {
+      "content_length": "368105",
+      "error": null,
+      "etag": "W/\"59de9-8HYfvqRSwAKZi3HO8051Yq2Yt+w\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/allenai/MADLAD-400"
+    },
+    {
+      "content_length": "476338",
+      "error": null,
+      "etag": "W/\"744b2-eRjm/OZKXPEJnaT/umo5ks7g8hM\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/cis-lmu/glotlid-corpus"
+    },
+    {
+      "content_length": "2353613",
+      "error": null,
+      "etag": "W/\"23e9cd-oFCoIYpJNM8DwW+G9neqQQytm0g\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/facebook/omnilingual-asr-corpus"
+    },
+    {
+      "content_length": "165081",
+      "error": null,
+      "etag": "W/\"284d9-TSvD28nJdD7ZUGcJLHC/GMiFxJg\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/google/IndicGenBench_flores_in"
+    },
+    {
+      "content_length": "725232",
+      "error": null,
+      "etag": "W/\"b10f0-H2FZDc7/jMy71ZRHZrTHzUNUWZc\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/grushaaaaa/indic-dialect-asr"
+    },
+    {
+      "content_length": "304523",
+      "error": null,
+      "etag": "W/\"4a58b-GMxKIKM3LTzuuREdxmeODRAA3Mc\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/hikinegi/Garhwali-Dataset"
+    },
+    {
+      "content_length": "141347",
+      "error": null,
+      "etag": "W/\"22823-oyq+nLtqdrNVNLiUCLopxi2NzdA\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/kapturecx/Chaashini"
+    },
+    {
+      "content_length": "1646806",
+      "error": null,
+      "etag": "W/\"1920d6-xFRkUs+37iJSYePg8i/VbbK6rXk\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/lbourdois/panlex"
+    },
+    {
+      "content_length": "2310261",
+      "error": null,
+      "etag": "W/\"234075-+0V/eo0AZWLeE16sI+akKgJQx/o\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://huggingface.co/datasets/openbmb/DCAD-2000"
+    },
+    {
+      "content_length": "1218128",
+      "error": null,
+      "etag": null,
+      "last_modified": "Mon, 19 Aug 2024 11:47:49 GMT",
+      "status": 200,
+      "url": "https://ignca.gov.in/eBooks/100007.pdf"
+    },
+    {
+      "content_length": "90635",
+      "error": null,
+      "etag": "\"531e4c71-1620b\"",
+      "last_modified": "Mon, 10 Mar 2014 23:36:17 GMT",
+      "status": 200,
+      "url": "https://mountainvoices.org/i_glossary.html"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://omniglot.com/writing/garhwali.htm"
+    },
+    {
+      "content_length": "41503",
+      "error": null,
+      "etag": "\"acxzhfieubw0h\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://opus.nlpl.eu/datasets/translatewiki"
+    },
+    {
+      "content_length": "0",
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://sites.google.com/view/dhyani/%E0%A4%97%E0%A4%A2%E0%A4%B5%E0%A4%B3-%E0%A4%95%E0%A4%95%E0%A4%B7/%E0%A4%97%E0%A4%A2%E0%A4%B5%E0%A4%B2-%E0%A4%AE%E0%A4%B9%E0%A4%B5%E0%A4%B0-%E0%A4%94%E0%A4%B0-%E0%A4%95%E0%A4%B9%E0%A4%B5%E0%A4%A4"
+    },
+    {
+      "content_length": "5526",
+      "error": "HTTP Error 403: Forbidden",
+      "etag": null,
+      "last_modified": null,
+      "status": 403,
+      "url": "https://translatewiki.net/wiki/Project:About"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": "Thu, 10 Sep 2026 17:30:57 GMT",
+      "status": 200,
+      "url": "https://uou.ac.in/progdetail?pid=CGL-21"
+    },
+    {
+      "content_length": "126009",
+      "error": null,
+      "etag": "\"1447gtjn4b12oxq\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://vaani.iisc.ac.in/"
+    },
+    {
+      "content_length": "27702",
+      "error": null,
+      "etag": "\"pc9xbatmnfl92\"",
+      "last_modified": null,
+      "status": 200,
+      "url": "https://vaani.iisc.ac.in/models/sravaani"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://web.archive.org/"
+    },
+    {
+      "content_length": null,
+      "error": "<urlopen error timed out>",
+      "etag": null,
+      "last_modified": null,
+      "status": null,
+      "url": "https://www.chdpublication.education.gov.in/ebook/pdf/Bhasha%20Sep-Oct%202019.pdf"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://www.euttaranchal.com/culture/learn-garhwali.php"
+    },
+    {
+      "content_length": "6102",
+      "error": null,
+      "etag": "\"3281335-17d6-5e9563a409a8f\"",
+      "last_modified": "Fri, 23 Sep 2022 11:10:37 GMT",
+      "status": 200,
+      "url": "https://www.freebiblesindia.in/bible/gbm/index.html"
+    },
+    {
+      "content_length": "42025",
+      "error": null,
+      "etag": "\"3140179-a429-651235adedc81\"",
+      "last_modified": "Wed, 06 May 2026 10:09:10 GMT",
+      "status": 200,
+      "url": "https://www.freebiblesindia.in/obs/"
+    },
+    {
+      "content_length": null,
+      "error": null,
+      "etag": null,
+      "last_modified": "Fri, 04 Sep 2026 17:25:12 GMT",
+      "status": 200,
+      "url": "https://www.languageshome.com/English-Garhwali.htm"
+    },
+    {
+      "content_length": "70330",
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://zenodo.org/records/15463198"
+    },
+    {
+      "content_length": "78229",
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://zenodo.org/records/15654191"
+    },
+    {
+      "content_length": "73570",
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://zenodo.org/records/17985722"
+    },
+    {
+      "content_length": "74222",
+      "error": null,
+      "etag": null,
+      "last_modified": null,
+      "status": 200,
+      "url": "https://zenodo.org/records/8361936"
+    }
+  ],
+  "source_urls": 43
+}

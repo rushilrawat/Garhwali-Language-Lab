@@ -21,7 +21,7 @@ The reserved Hugging Face repository is
 | --- | ---: |
 | Exact-unique parent texts | 28,755 |
 | Sentence segments | 114,064 |
-| All-data package | 257,145 rows / 0 redacted texts |
+| All-data package | 257,807 rows / 0 redacted texts |
 | All supervised speech rows | 5,894 / 8.803724 hours |
 | Strict identified-speaker comparison rows | 2,002 / 3.562395 hours |
 | Normalized training-candidate WAVs | 1,736 |
@@ -38,10 +38,10 @@ The reserved Hugging Face repository is
 | SraVaani experimental drafts | 104,542 source rows / 104,534 unique audio |
 | SraVaani draft quality | 103,354 standard / 1,188 flagged |
 | Independent Whisper agreement evidence | 65,000 rows / 157 exact agreements |
-| Incoming PDF OCR consensus | 659 pages checked / 69 corrected |
+| Incoming PDF OCR consensus | 659 pages checked / 69 same-engine layout variants |
 | GarhwaliBench external task records | 3,847 |
-| GarhwaliBench held-out text / ASR | 2,492 / 112 |
-| Character bigram baseline | 16.464 perplexity |
+| GarhwaliBench held-out text / ASR | 398 / 112 |
+| Character bigram baseline | 17.000058 perplexity / 0 observed character OOV |
 | Best multilingual tokenizer | IndicBERTv2 / 1.531569 tokens per word |
 | IndicBERTv2 masked-token pilot | 17.786561% accuracy / 506 masks |
 | Translation benchmark | 997 development / 1,012 test pairs |
@@ -55,18 +55,25 @@ The reserved Hugging Face repository is
 | IndicBERTv2 head adaptation | 6.678164 → 6.578552 validation cross-entropy |
 | IndicBERTv2 encoder LoRA | 6.659330 → 6.014093 frozen-test cross-entropy |
 | Longer IndicBERTv2 LoRA | 6.678164 → 5.624498 mean validation cross-entropy |
-| Instruction examples | 2,568 total / 2,178 train / 134 validation / 256 test |
+| Instruction examples | 3,230 total / 2,650 train / 320 validation / 260 test |
 | mT5 instruction LoRA | 28.201385 → 27.569880 mean validation cross-entropy |
 | mT0-small accuracy LoRA | 5.614353 → 4.961989 mean validation cross-entropy |
 
-Text segments use connected-document splitting: 80,881 train, 2,499 validation,
-and 2,836 test. Strict speech uses 1,621 train, 269 validation, and 112 test rows.
-No exact text hash or identified speaker crosses these partitions.
-GarhwaliBench additionally reports zero exact train/evaluation text overlap and
-zero ASR speaker overlap.
+The complete all-data text view uses connected-document splitting: 106,915
+train, 3,063 validation, and 4,086 test records. The public text view contains
+8,043 train, 401 validation, and 422 test records. Strict speech uses 1,621
+train, 269 validation, and 112 test rows. No normalized text component, exact
+text hash, or identified speaker crosses these partitions. GarhwaliBench also
+reports zero exact train/evaluation text overlap and zero ASR speaker overlap.
+
+The tokenizer and model results below were run on earlier checksum-addressed
+snapshots, including a 2,492-record historical test set. They remain reproducible
+research results, but they are not scores on the current 398-record
+GarhwaliBench candidate and must not be presented as current release-benchmark
+results.
 
 The instruction split inherits document-level parent partitions and has zero
-parent or exact instruction-pair crossing. All 2,568 records are active in the
+parent, exact instruction-pair, or normalized-prompt crossing. All 3,230 records are active in the
 all-data package for experiments. The first mT5 run remains a negative baseline;
 the later mT0-small
 run improves teacher-forced accuracy on a new 258-record test but still requires

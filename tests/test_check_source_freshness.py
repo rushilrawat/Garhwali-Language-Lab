@@ -24,6 +24,13 @@ class SourceFreshnessTests(unittest.TestCase):
             {'url': 'https://b.example', 'changes': {'status': {'before': 200, 'after': 404}}},
         ])
 
+    def test_reports_removed_catalog_urls(self):
+        previous = [{'url': 'https://removed.example', 'status': 200}]
+        self.assertEqual(m.diff_records(previous, []), [{
+            'url': 'https://removed.example',
+            'changes': {'source': {'before': 'present', 'after': 'removed'}},
+        }])
+
     def test_live_request_uses_a_certificate_context(self):
         class Response:
             status = 200

@@ -17,6 +17,14 @@ BASE = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_qu
 CONFIDENCE = ROOT / 'data/processed/model_ready/transcripts/sravaani_recovery_confidence.jsonl'
 OUTPUT = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl'
 REPORT = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware_report.json'
+
+
+def display_path(path):
+    path = Path(path)
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
 SOURCE_CONFLICTS = ROOT / 'data/processed/model_ready/language_quality/vaani_source_conflicts.jsonl'
 RECOVERY_FIELDS = (
     'whisper_candidate',
@@ -158,17 +166,17 @@ def run(base_path=BASE, confidence_path=CONFIDENCE,
         'all_records_preserved': True,
         'all_supervised_training_eligible': False,
         'inputs': {
-            'base': {'path': str(base_path), 'sha256': sha256_file(base_path)},
+            'base': {'path': display_path(base_path), 'sha256': sha256_file(base_path)},
             'confidence': {
-                'path': str(confidence_path),
+                'path': display_path(confidence_path),
                 'sha256': sha256_file(confidence_path),
             },
             'source_conflicts': {
-                'path': str(source_conflict_path),
+                'path': display_path(source_conflict_path),
                 'sha256': sha256_file(source_conflict_path),
             },
         },
-        'output': {'path': str(output_path), 'sha256': sha256_file(output_path)},
+        'output': {'path': display_path(output_path), 'sha256': sha256_file(output_path)},
     }
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(

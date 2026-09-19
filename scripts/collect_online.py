@@ -54,7 +54,8 @@ def fetch(source, name, url, max_time=55, max_size=100000000):
     try:
         if source == 'wiktionary_en':
             time.sleep(2)  # Respect the public API after its earlier rate-limit response.
-        p = subprocess.run(['curl', '--fail', '--location', '--silent', '--show-error',
+        p = subprocess.run(['curl', '--proto', '=https', '--proto-redir', '=https',
+                            '--fail', '--location', '--silent', '--show-error',
                             '--max-time', str(max_time), '--retry', '1', '--max-filesize', str(max_size),
                             '--user-agent', 'GarhwaliLanguageLab/0.1 (public corpus research)', url],
                            capture_output=True, check=True)
@@ -245,16 +246,25 @@ def latin_record(source, key, text, info, attribution, **extra):
     return record
 
 
-def sand_garhwali_records(data, info):
+def sand_garhwali_records(data, info, parameters_data=None,
+                          parameters_info=None):
+    parameters = {
+        item['ID']: item for item in csv_dict_rows(parameters_data)
+    } if parameters_data else {}
     rows = []
     for item in csv_dict_rows(data):
         if item.get('Language_ID') != 'Garhwali':
             continue
+        parameter = parameters.get(item.get('Parameter_ID'), {})
         rows.append(latin_record(
             'sand_garhwali', item['ID'], item.get('Form') or item['Value'], info,
             'South Asian Numeral Database contributors; source mephd2021; Numeralbank editors',
             corpus_layer='core_open', genre='numeral_lexicon', modality='text',
             parameter_id=item.get('Parameter_ID'), value=item.get('Value'),
+            english_gloss=parameter.get('Name'),
+            concepticon_id=parameter.get('Concepticon_ID'),
+            concepticon_gloss=parameter.get('Concepticon_Gloss'),
+            parameter_table_provenance=parameters_info,
             segments=item.get('Segments'), source_bibliography=item.get('Source'),
             source_url='https://github.com/numeralbank/sand/tree/v1.0',
             rights_evidence='https://zenodo.org/records/15463198'))
@@ -306,16 +316,25 @@ def mamta_garhwali_records(values_data, values_info, examples_data, examples_inf
     return values, examples
 
 
-def lsi_cldf_garhwali_records(data, info):
+def lsi_cldf_garhwali_records(data, info, parameters_data=None,
+                              parameters_info=None):
+    parameters = {
+        item['ID']: item for item in csv_dict_rows(parameters_data)
+    } if parameters_data else {}
     rows = []
     for item in csv_dict_rows(data):
         if item.get('Language_ID') != 'GARHWALI':
             continue
+        parameter = parameters.get(item.get('Parameter_ID'), {})
         record = latin_record(
             'lsi_cldf_garhwali', item['ID'], item.get('Form') or item['Value'], info,
             'George A. Grierson, Linguistic Survey of India; Lexibank CLDF editors',
             corpus_layer='historical_review', genre='historical_lexicon', modality='text',
             parameter_id=item.get('Parameter_ID'), value=item.get('Value'),
+            english_gloss=parameter.get('Name'),
+            concepticon_id=parameter.get('Concepticon_ID'),
+            concepticon_gloss=parameter.get('Concepticon_Gloss'),
+            parameter_table_provenance=parameters_info,
             segments=item.get('Segments'), source_bibliography=item.get('Source'),
             source_url='https://github.com/lexibank/lsi/tree/v1.0',
             rights_evidence='https://zenodo.org/records/8361936',
@@ -375,27 +394,6 @@ def obs_text_blocks(data):
     return parser.blocks
 
 
-def obs_garhwali_record(story_number, data, info):
-    blocks = obs_text_blocks(data)
-    if len(blocks) < 2:
-        raise ValueError(f'OBS story {story_number} has too little extracted text')
-    text_value = '\n\n'.join(blocks)
-    devanagari = sum('\u0900' <= char <= '\u097f' for char in text_value)
-    alphabetic = sum(char.isalpha() for char in text_value)
-    if alphabetic == 0 or devanagari / alphabetic < 0.5:
-        raise ValueError(f'OBS story {story_number} is not predominantly Devanagari')
-    return make_record(
-        'obs_garhwali', f'{story_number:03d}', text_value, info,
-        'CC-BY-NC-SA-4.0', 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
-        'Garhwali Open Bible Stories translators; Free Bibles India / IPS Apps',
-        story_number=story_number, corpus_layer='restricted_nc_sa',
-        genre='translated_bible_story', modality='text',
-        source_url=f'https://media.ipsapps.org/in/osa/stories/36-Garhwali-{story_number:03d}.html',
-        rights_evidence='sources/online/obs_garhwali/catalog.html.metadata.json',
-        quality_flags=['translation_quality_unreviewed', 'item_page_has_no_license_block',
-                       'illustrations_excluded'])
-
-
 def djvu_word_pages(data):
     root = ET.fromstring(data)
     pages = []
@@ -413,8 +411,13 @@ def obs_garhwali_record(story_number, data, info):
     blocks = obs_text_blocks(data)
     if len(blocks) < 2:
         raise ValueError(f'Open Bible Story {story_number} has too little text')
+    text_value = '\n\n'.join(blocks)
+    devanagari = sum('\u0900' <= char <= '\u097f' for char in text_value)
+    alphabetic = sum(char.isalpha() for char in text_value)
+    if alphabetic == 0 or devanagari / alphabetic < 0.5:
+        raise ValueError(f'Open Bible Story {story_number} is not predominantly Devanagari')
     return make_record(
-        'obs_garhwali', f'{story_number:03d}', '\n\n'.join(blocks), info,
+        'obs_garhwali', f'{story_number:03d}', text_value, info,
         'CC-BY-NC-SA-4.0', 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
         'Garhwali Open Bible Stories contributors; Free Bibles India / unfoldingWord source family',
         corpus_layer='restricted_nc_sa', genre='religious_narrative', modality='text',
@@ -1465,6 +1468,8 @@ def fourth_wave_acquire():
     jobs = [
         ('sand_garhwali', 'forms.csv',
          'https://raw.githubusercontent.com/numeralbank/sand/v1.0/cldf/forms.csv'),
+        ('sand_garhwali', 'parameters.csv',
+         'https://raw.githubusercontent.com/numeralbank/sand/v1.0/cldf/parameters.csv'),
         ('sand_garhwali', 'cldf-metadata.json',
          'https://raw.githubusercontent.com/numeralbank/sand/v1.0/cldf/cldf-metadata.json'),
         ('chan_numerals_garhwali', 'forms.csv',
@@ -1479,6 +1484,8 @@ def fourth_wave_acquire():
          'https://raw.githubusercontent.com/cldf-datasets/mamtasouthasia/v1.0/cldf/cldf-metadata.json'),
         ('lsi_cldf_garhwali', 'forms.csv',
          'https://raw.githubusercontent.com/lexibank/lsi/v1.0/cldf/forms.csv'),
+        ('lsi_cldf_garhwali', 'parameters.csv',
+         'https://raw.githubusercontent.com/lexibank/lsi/v1.0/cldf/parameters.csv'),
         ('lsi_cldf_garhwali', 'cldf-metadata.json',
          'https://raw.githubusercontent.com/lexibank/lsi/v1.0/cldf/cldf-metadata.json'),
         ('obs_garhwali', 'catalog.html', 'https://www.freebiblesindia.in/obs/'),
@@ -1500,7 +1507,12 @@ def fourth_wave_acquire():
 def fourth_wave_extract():
     """Extract open numeral forms/examples and restricted OBS story text."""
     sand_raw, sand_info = snapshot('sand_garhwali', 'forms.csv')
-    sand_rows = sand_garhwali_records(sand_raw, sand_info)
+    sand_parameters, sand_parameters_info = snapshot(
+        'sand_garhwali', 'parameters.csv'
+    )
+    sand_rows = sand_garhwali_records(
+        sand_raw, sand_info, sand_parameters, sand_parameters_info
+    )
     if len(sand_rows) != 123:
         raise ValueError(f'Expected 123 SAND Garhwali forms, found {len(sand_rows)}')
 
@@ -1519,7 +1531,12 @@ def fourth_wave_extract():
             f'{len(mamta_values)} and {len(mamta_examples)}')
 
     lsi_raw, lsi_info = snapshot('lsi_cldf_garhwali', 'forms.csv')
-    lsi_rows = lsi_cldf_garhwali_records(lsi_raw, lsi_info)
+    lsi_parameters, lsi_parameters_info = snapshot(
+        'lsi_cldf_garhwali', 'parameters.csv'
+    )
+    lsi_rows = lsi_cldf_garhwali_records(
+        lsi_raw, lsi_info, lsi_parameters, lsi_parameters_info
+    )
     if len(lsi_rows) != 185:
         raise ValueError(f'Expected 185 LSI CLDF Garhwali forms, found {len(lsi_rows)}')
 

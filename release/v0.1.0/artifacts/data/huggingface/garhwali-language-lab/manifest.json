@@ -52,21 +52,21 @@
       "files": [
         "test-00000.jsonl"
       ],
-      "records": 126,
+      "records": 136,
       "shards": 1
     },
     "instructions/train": {
       "files": [
         "train-00000.jsonl"
       ],
-      "records": 1020,
+      "records": 1516,
       "shards": 1
     },
     "instructions/validation": {
       "files": [
         "validation-00000.jsonl"
       ],
-      "records": 64,
+      "records": 220,
       "shards": 1
     },
     "lexicon/train": {
@@ -118,21 +118,21 @@
       "files": [
         "test-00000.jsonl"
       ],
-      "records": 476,
+      "records": 422,
       "shards": 1
     },
     "text/train": {
       "files": [
         "train-00000.jsonl"
       ],
-      "records": 8194,
+      "records": 8043,
       "shards": 1
     },
     "text/validation": {
       "files": [
         "validation-00000.jsonl"
       ],
-      "records": 428,
+      "records": 401,
       "shards": 1
     },
     "university_research/train": {
@@ -147,7 +147,7 @@
   "draft_inherited_duplicate_rows": 8,
   "draft_queue_records": 104542,
   "draft_records": 104542,
-  "draft_source": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+  "draft_source": "data/processed/model_ready/transcripts/machine_drafts_sravaani_verified.jsonl",
   "draft_source_label_conflicts": 98,
   "draft_third_checkpoint_records": 1188,
   "draft_three_checkpoint_review_records": 1090,

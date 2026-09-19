@@ -7,6 +7,11 @@ ROOT = Path(__file__).resolve().parents[1]
 LAYERS = ['corpus', 'benchmarks', 'restricted', 'experimental', 'extracted/historical']
 
 
+def require(condition, message):
+    if not condition:
+        raise ValueError(message)
+
+
 def training_use_is_authorized(row, layer):
     if not row.get('training_eligible', False):
         return True
@@ -28,8 +33,11 @@ def main():
         raw = Path(info['raw_path'])
         if not raw.is_absolute():
             raw = ROOT / raw
-        assert raw.exists(), f'missing snapshot: {raw}'
-        assert hashlib.sha256(raw.read_bytes()).hexdigest() == info['sha256'], pointer
+        require(raw.exists(), f'missing snapshot: {raw}')
+        require(
+            hashlib.sha256(raw.read_bytes()).hexdigest() == info['sha256'],
+            f'snapshot checksum mismatch: {pointer}',
+        )
         snapshots += 1
 
     counts = {}
@@ -39,28 +47,31 @@ def main():
         for path in (ROOT / layer).glob('*.jsonl'):
             rows.extend(json.loads(line) for line in path.read_text().splitlines())
         ids = [row['record_id'] for row in rows]
-        assert len(ids) == len(set(ids)), f'duplicate ID within {layer}'
-        assert not all_ids.intersection(ids), f'duplicate ID across layers: {layer}'
+        require(len(ids) == len(set(ids)), f'duplicate ID within {layer}')
+        require(not all_ids.intersection(ids), f'duplicate ID across layers: {layer}')
         all_ids.update(ids)
-        assert all(training_use_is_authorized(row, layer) for row in rows), layer
-        assert all(rights_are_documented(row) for row in rows), layer
+        require(all(training_use_is_authorized(row, layer) for row in rows), layer)
+        require(all(rights_are_documented(row) for row in rows), layer)
         counts[layer] = len(rows)
 
     uou = [json.loads(line) for line in (ROOT / 'restricted' / 'uou_cgl_pages.jsonl').read_text().splitlines()]
-    assert len(uou) == 436
+    require(len(uou) == 436, f'expected 436 UOU rows, found {len(uou)}')
     devanagari = sum('\u0900' <= char <= '\u097f' for row in uou for char in row['text_normalized'])
     characters = sum(len(row['text_normalized']) for row in uou)
-    assert devanagari / characters > 0.5, 'UOU OCR is not predominantly Unicode Devanagari'
+    require(
+        devanagari / characters > 0.5,
+        'UOU OCR is not predominantly Unicode Devanagari',
+    )
 
     madlad = [json.loads(line) for line in
               (ROOT / 'experimental' / 'madlad400_gbm_clean.jsonl').read_text().splitlines()]
-    assert len(madlad) == 18
-    assert all(row.get('corpus_layer') == 'experimental' for row in madlad)
-    assert all(row.get('experimental_training_eligible') for row in madlad)
-    assert all('component_rights_review_required' in row.get('quality_flags', [])
-               for row in madlad)
-    assert all(0 <= row['quality_metrics']['devanagari_share_of_nonspace'] <= 1
-               for row in madlad)
+    require(len(madlad) == 18, f'expected 18 MADLAD rows, found {len(madlad)}')
+    require(all(row.get('corpus_layer') == 'experimental' for row in madlad), 'MADLAD layer')
+    require(all(row.get('experimental_training_eligible') for row in madlad), 'MADLAD eligibility')
+    require(all('component_rights_review_required' in row.get('quality_flags', [])
+                for row in madlad), 'MADLAD rights flags')
+    require(all(0 <= row['quality_metrics']['devanagari_share_of_nonspace'] <= 1
+                for row in madlad), 'MADLAD quality metrics')
 
     print(json.dumps({'snapshots_verified': snapshots, 'layer_counts': counts,
                       'total_records': len(all_ids), 'uou_devanagari_ratio': round(devanagari / characters, 3)},

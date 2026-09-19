@@ -51,6 +51,14 @@ class InstructionTuningTests(unittest.TestCase):
         self.assertEqual(summary['exact_match'], 1.0)
         self.assertEqual(summary['corpus_chrf2'], 1.0)
 
+    def test_multi_reference_metrics_accept_valid_variant(self):
+        summary = m.multi_reference_metric_summary(
+            [['माछि', 'मच्छि'], ['घास']],
+            ['मच्छि', 'घास'],
+        )
+        self.assertEqual(summary['exact_match'], 1.0)
+        self.assertEqual(summary['corpus_chrf2'], 1.0)
+
     def test_clean_generated_text_removes_mt5_sentinels(self):
         self.assertEqual(m.clean_generated_text('<extra_id_0>'), '')
         self.assertEqual(m.clean_generated_text('उत्तर <extra_id_1>'), 'उत्तर')

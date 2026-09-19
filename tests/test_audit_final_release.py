@@ -1,4 +1,5 @@
 import json
+import hashlib
 import tempfile
 import unittest
 from pathlib import Path
@@ -18,24 +19,31 @@ class FinalReleaseAuditTests(unittest.TestCase):
         configs = {}
         provenance = [{
             'license_url': 'https://creativecommons.org/licenses/by/4.0/',
+            'license_id': 'CC-BY-4.0',
+            'attribution': 'Test source',
             'iso_639_3': 'gbm',
         }]
         rows = {
-            'text/train': [{'id': 'text-a', 'text': 'अ', 'language': 'gbm', 'provenance': provenance}],
-            'text/validation': [{'id': 'text-b', 'text': 'ब', 'language': 'gbm', 'provenance': provenance}],
-            'text/test': [{'id': 'text-c', 'text': 'क', 'language': 'gbm', 'provenance': provenance}],
+            'text/train': [{'id': 'text-a', 'text': 'अ', 'language': 'gbm', 'provenance': provenance, 'language_buckets': ['garhwali_candidate'], 'quality_tiers': ['strict_gold_candidate'], 'recommended_for_training': True}],
+            'text/validation': [{'id': 'text-b', 'text': 'ब', 'language': 'gbm', 'provenance': provenance, 'language_buckets': ['garhwali_candidate'], 'quality_tiers': ['strict_gold_candidate'], 'recommended_for_training': True}],
+            'text/test': [{'id': 'text-c', 'text': 'क', 'language': 'gbm', 'provenance': provenance, 'language_buckets': ['garhwali_candidate'], 'quality_tiers': ['strict_gold_candidate'], 'recommended_for_training': True}],
             'asr/train': [{'audio': 'audio/audio-a.wav', 'audio_sha256': 'audio-a', 'speaker_id': 'speaker-a', 'transcript': 'अ', 'source': 'VAANI', 'license': 'CC-BY-4.0'}],
             'asr/validation': [{'audio': 'audio/audio-b.wav', 'audio_sha256': 'audio-b', 'speaker_id': 'speaker-b', 'transcript': 'ब', 'source': 'VAANI', 'license': 'CC-BY-4.0'}],
             'asr/test': [{'audio': 'audio/audio-c.wav', 'audio_sha256': 'audio-c', 'speaker_id': 'speaker-c', 'transcript': 'क', 'source': 'VAANI', 'license': 'CC-BY-4.0'}],
             'sravaani_drafts/train': [{'audio': 'audio/draft-a.wav', 'audio_sha256': 'draft-a', 'transcript': '', 'training_eligible': False, 'experimental_training_eligible': True, 'machine_transcript_quality': {'level': 'high_risk'}}],
-            'lexicon/train': [{'form': 'अ', 'provenance': provenance}],
-            'instructions/train': [{'instruction': 'a', 'response': 'b', 'provenance': provenance}],
-            'instructions/validation': [{'instruction': 'c', 'response': 'd', 'provenance': provenance}],
-            'instructions/test': [{'instruction': 'e', 'response': 'f', 'provenance': provenance}],
+            'lexicon/train': [{
+                'form': 'अ', 'provenance': provenance,
+                'form_sha256': hashlib.sha256('अ'.encode()).hexdigest(),
+            }],
+            'instructions/train': [{'instruction': 'a', 'response': 'b', 'acceptable_responses': ['b'], 'provenance': provenance}],
+            'instructions/validation': [{'instruction': 'c', 'response': 'd', 'acceptable_responses': ['d'], 'provenance': provenance}],
+            'instructions/test': [{'instruction': 'e', 'response': 'f', 'acceptable_responses': ['f'], 'provenance': provenance}],
             'catalog/train': [
-                {'id': 'text-a', 'text': 'अ', 'sources': provenance},
+                {'id': 'text-a', 'text': 'अ', 'sources': provenance,
+                 'release_text_sha256': hashlib.sha256('अ'.encode()).hexdigest()},
                 {'id': 'text-b', 'text': None, 'redaction_reason': 'rights_pending', 'sources': provenance},
-                {'id': 'text-c', 'text': 'क', 'sources': provenance},
+                {'id': 'text-c', 'text': 'क', 'sources': provenance,
+                 'release_text_sha256': hashlib.sha256('क'.encode()).hexdigest()},
             ],
             'geography/train': [{'id': 'place-a', 'knowledge_family': 'geography'}],
             'historical_terms/train': [{'id': 'term-a', 'knowledge_family': 'historical_terms'}],
@@ -133,6 +141,57 @@ class FinalReleaseAuditTests(unittest.TestCase):
             report = m.audit(index, root)
         self.assertEqual(report['status'], 'failed')
         self.assertIn('geography contains a missing or duplicate stable ID', report['errors'])
+
+    def test_rejects_unhandled_public_configuration(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            manifest_path = root / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text())
+            manifest['configs']['unknown/train'] = {
+                'files': ['train-00000.jsonl'], 'records': 1, 'shards': 1,
+            }
+            manifest_path.write_text(json.dumps(manifest))
+            write_jsonl(root / 'data/unknown/train-00000.jsonl', [{'id': 'x'}])
+            report = m.audit(index, root)
+        self.assertEqual(report['status'], 'failed')
+        self.assertIn('unexpected configs: unknown/train', report['errors'])
+
+    def test_rejects_instruction_prompt_leakage(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            path = root / 'data/instructions/test-00000.jsonl'
+            write_jsonl(path, [{
+                'instruction': '  A  ', 'response': 'z',
+                'acceptable_responses': ['z'],
+                'provenance': [{
+                    'license_url': 'https://creativecommons.org/licenses/by/4.0/',
+                    'license_id': 'CC-BY-4.0',
+                    'attribution': 'Test source',
+                    'iso_639_3': 'gbm',
+                }],
+            }])
+            report = m.audit(index, root)
+        self.assertEqual(report['status'], 'failed')
+        self.assertIn(
+            'instruction prompts overlap across train and test', report['errors']
+        )
+
+    def test_rejects_text_without_quality_admission_metadata(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            path = root / 'data/text/train-00000.jsonl'
+            row = json.loads(path.read_text())
+            row.pop('recommended_for_training')
+            write_jsonl(path, [row])
+            report = m.audit(index, root)
+        self.assertEqual(report['status'], 'failed')
+        self.assertIn(
+            'text/train has 1 rows without language/quality admission metadata',
+            report['errors'],
+        )
 
     def test_requires_every_audio_file_when_audio_is_included(self):
         with tempfile.TemporaryDirectory() as directory:

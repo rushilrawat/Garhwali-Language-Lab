@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import argparse
+import errno
 import hashlib
 import json
 import os
 import re
 import shutil
+import tempfile
 from collections import Counter
 from pathlib import Path
 
@@ -43,6 +45,23 @@ BLOCKING_RIGHTS_MARKERS = (
 
 def profile_includes_all_data(profile):
     return profile == 'all-data'
+
+
+def prepare_package_output(output):
+    output = Path(output)
+    resolved = output.resolve()
+    managed = {DEFAULT_OUTPUT.resolve(), ALL_DATA_OUTPUT.resolve()}
+    if output.exists() and resolved not in managed:
+        raise ValueError(
+            'refusing to replace an existing custom output directory; use a new '
+            'path or one of the managed Hugging Face package paths'
+        )
+    if output.is_symlink() or (output.exists() and not output.is_dir()):
+        raise ValueError(f'package output must be a regular directory: {output}')
+    if output.exists():
+        shutil.rmtree(output)
+    output.mkdir(parents=True)
+    return output
 
 
 def asr_split_directory(profile):
@@ -231,7 +250,16 @@ def deduplicate_audio_rows(rows, transcript_field):
     yield from groups.values()
 
 
-def text_row(row):
+def source_languages(row):
+    """Return source-declared ISO codes without guessing from shared scripts."""
+    return sorted({
+        item.get('iso_639_3')
+        for item in provenance_items(row)
+        if item.get('iso_639_3')
+    })
+
+
+def text_row(row, parent_quality=None):
     scripts = set()
     for character in row['text']:
         codepoint = ord(character)
@@ -242,12 +270,51 @@ def text_row(row):
         elif character.isascii() and character.isalpha():
             scripts.add('Latn')
     script = next(iter(scripts)) if len(scripts) == 1 else ('Mixed' if scripts else 'Other')
+    parent_quality = parent_quality or {}
+    parent_records = [
+        parent_quality[parent['text_sha256']]
+        for parent in row.get('parents') or []
+        if parent.get('text_sha256') in parent_quality
+    ]
+    language_buckets = sorted({
+        parent.get('language_bucket') for parent in parent_records
+        if parent.get('language_bucket')
+    })
+    quality_tiers = sorted({
+        (parent.get('quality_v2') or {}).get('tier') for parent in parent_records
+        if (parent.get('quality_v2') or {}).get('tier')
+    })
+    languages = source_languages(row)
+    if language_buckets == ['garhwali_candidate']:
+        language = 'gbm'
+    elif 'mixed_language' in language_buckets:
+        language = 'mul'
+    elif 'review' in language_buckets:
+        language = 'und'
+    elif len(languages) == 1:
+        language = languages[0]
+    elif languages:
+        language = 'mul'
+    else:
+        language = 'und'
+    recommended = (
+        language == 'gbm'
+        and 'strict_gold_candidate' in quality_tiers
+        and not row.get('quality_flags')
+    )
     return {
         'id': row['segment_sha256'],
         'text': row['text'],
-        'language': 'gbm',
+        'language': language,
+        'source_languages': languages,
+        'language_buckets': language_buckets,
+        'quality_tiers': quality_tiers,
+        'recommended_for_training': recommended,
         'script': script,
         'split': row['split'],
+        'duplicate_component_id': row.get('duplicate_component_id'),
+        'original_split': row.get('original_split'),
+        'split_assignment': row.get('split_assignment'),
         'quality_flags': row.get('quality_flags') or [],
         'provenance': provenance_items(row),
         'public_rights_basis': [
@@ -262,6 +329,32 @@ def with_public_rights_basis(row):
         catalog_provenance(item) for item in publishable_provenance_items(row)
     ]
     return enriched
+
+
+def lexicon_row(row):
+    enriched = with_public_rights_basis(row)
+    enriched['source_text_sha256'] = row.get('text_sha256')
+    enriched['form_sha256'] = hashlib.sha256(
+        str(row.get('form') or '').encode('utf-8')
+    ).hexdigest()
+    return enriched
+
+
+def refresh_acceptable_responses(rows):
+    groups = {}
+    for row in rows:
+        key = (
+            row.get('task'),
+            ' '.join(str(row.get('instruction') or '').casefold().split()),
+        )
+        groups.setdefault(key, set()).add(row.get('response'))
+    for row in rows:
+        key = (
+            row.get('task'),
+            ' '.join(str(row.get('instruction') or '').casefold().split()),
+        )
+        row['acceptable_responses'] = sorted(groups[key])
+    return rows
 
 
 def catalog_provenance(item):
@@ -285,6 +378,8 @@ def catalog_row(row, include_all_text=False, refinement=None):
         'split': row.get('split'),
         'text': text if text_is_public or include_all_text else None,
         'text_sha256': row['text_sha256'],
+        'source_text_sha256': row['text_sha256'],
+        'release_text_sha256': hashlib.sha256(text.encode('utf-8')).hexdigest(),
         'text_character_count': len(text),
         'content_included': text_is_public or include_all_text,
         'active_for_quality_work': True,
@@ -357,11 +452,21 @@ def link_audio(rows, output):
         if digest in seen:
             continue
         seen.add(digest)
-        source = ROOT / row['local_audio_path']
+        source = (ROOT / row['local_audio_path']).resolve()
+        audio_root = (ROOT / 'data/vaani/audio').resolve()
+        if source.is_symlink() or not source.is_file() or not source.is_relative_to(audio_root):
+            raise ValueError(f'unsafe audio source path: {row["local_audio_path"]}')
+        if sha256_file(source) != digest:
+            raise ValueError(f'audio SHA-256 mismatch: {row["local_audio_path"]}')
         target = output / content_audio_path(digest)
         target.parent.mkdir(parents=True, exist_ok=True)
         if not target.exists():
-            os.link(source, target)
+            try:
+                os.link(source, target)
+            except OSError as error:
+                if error.errno != errno.EXDEV:
+                    raise
+                shutil.copy2(source, target)
             linked += 1
     return {'new': linked, 'total': len(seen)}
 
@@ -392,6 +497,7 @@ def dataset_card(report):
     )
     config_count = len({key.split('/', 1)[0] for key in report['configs']})
     if profile_includes_all_data(report['profile']):
+        language_header = '- gbm\n- hi\n- en'
         package_summary = (
             f'This complete all-data package contains **{exported_rows:,} records** '
             f'across {config_count} configurations'
@@ -401,7 +507,11 @@ def dataset_card(report):
 text values. No catalog text values are redacted. Source, license, rights status,
 quality tier, language evidence, and review state remain attached to every row so
 research use and any later redistribution decision can be audited.'''
+        access_notice = '''> **Access warning:** this all-data profile contains
+restricted and rights-pending source content. Keep it local or access-controlled;
+do not publish it as an open dataset until every included component is cleared.'''
     else:
+        language_header = '- gbm'
         package_summary = (
             f'This rights-filtered public package contains **{exported_rows:,} records** '
             f'across {config_count} configurations'
@@ -411,9 +521,10 @@ research use and any later redistribution decision can be audited.'''
 source terms do not permit redistribution retain their stable content hash,
 source URL, rights status, quality tier, language evidence, and review reasons;
 only the protected text value is redacted. Nothing is silently omitted.'''
+        access_notice = ''
     return f'''---
 language:
-- gbm
+{language_header}
 license: other
 task_categories:
 - automatic-speech-recognition
@@ -486,6 +597,8 @@ configs:
 
 Release: **{report['release_id']}**
 
+{access_notice}
+
 Versioned Garhwali (`gbm`) text, speech, lexicon, instruction, geographic,
 historical, literary, music, and university-research resources built by the
 Garhwali Language Lab. Every row retains its available source and review evidence.
@@ -522,9 +635,9 @@ release audit are in the [source repository](https://github.com/rushilrawat/Garh
 '''
 
 
-def build(output, profile='public', include_audio=False, allow_partial_drafts=False,
-          shard_rows=10_000):
-    output = Path(output)
+def _build_at(output, profile='public', include_audio=False,
+              allow_partial_drafts=False, shard_rows=10_000):
+    output = prepare_package_output(output)
     report = {
         'release_id': RELEASE_ID,
         'profile': profile,
@@ -532,18 +645,26 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
         'configs': {},
     }
 
+    quality_catalog = list(read_jsonl(
+        ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
+    ))
+    parent_quality = {row['text_sha256']: row for row in quality_catalog}
     text_dir = ROOT / 'data/processed/model_ready/splits/text'
     for split in ('train', 'validation', 'test'):
         rows = read_jsonl(text_dir / f'{split}.jsonl')
+        exported_rows = (text_row(row, parent_quality) for row in rows)
         if profile == 'public':
-            rows = (row for row in rows if is_public_garhwali_text_row(row))
+            exported_rows = (
+                exported
+                for exported in exported_rows
+                if exported['language'] == 'gbm'
+                and is_public_garhwali_text_row(exported)
+            )
         report['configs'][f'text/{split}'] = write_shards(
-            (text_row(row) for row in rows), output / 'data/text', split, shard_rows
+            exported_rows,
+            output / 'data/text', split, shard_rows
         )
 
-    quality_catalog = read_jsonl(
-        ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
-    )
     refinement_path = ROOT / 'data/processed/model_ready/text_quality_v2/priority_text.jsonl'
     refinements = {
         row['text_sha256']: row for row in read_jsonl(refinement_path)
@@ -667,15 +788,16 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     if profile == 'public':
         lexicon = (row for row in lexicon if is_public_text_row(row))
     report['configs']['lexicon/train'] = write_shards(
-        (with_public_rights_basis(row) for row in lexicon),
+        (lexicon_row(row) for row in lexicon),
         output / 'data/lexicon', 'train', shard_rows,
     )
 
     instructions_dir = ROOT / 'data/processed/model_ready/instructions_v0.2'
     for split in ('train', 'validation', 'test'):
-        rows = read_jsonl(instructions_dir / f'{split}.jsonl')
+        rows = list(read_jsonl(instructions_dir / f'{split}.jsonl'))
         if profile == 'public':
-            rows = (row for row in rows if is_public_text_row(row))
+            rows = [row for row in rows if is_public_text_row(row)]
+        rows = refresh_acceptable_responses(rows)
         report['configs'][f'instructions/{split}'] = write_shards(
             (with_public_rights_basis(row) for row in rows),
             output / 'data/instructions', split, shard_rows,
@@ -688,12 +810,56 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
     report['removed_audio_files'] = removed_audio_files
     output.mkdir(parents=True, exist_ok=True)
     (output / 'README.md').write_text(dataset_card(report), encoding='utf-8')
+    for name in ('LICENSE_POLICY.md', 'ATTRIBUTION.md', 'REMOVAL_POLICY.md'):
+        shutil.copy2(ROOT / name, output / name)
     (output / 'manifest.json').write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
         encoding='utf-8',
     )
     report['manifest_sha256'] = sha256_file(output / 'manifest.json')
     return report
+
+
+def build(output, profile='public', include_audio=False, allow_partial_drafts=False,
+          shard_rows=10_000):
+    """Build in a sibling staging directory, then replace the managed package."""
+    output = Path(output)
+    managed = {DEFAULT_OUTPUT.resolve(), ALL_DATA_OUTPUT.resolve()}
+    if output.exists() and output.resolve() not in managed:
+        raise ValueError(
+            'refusing to replace an existing custom output directory; use a new '
+            'path or one of the managed Hugging Face package paths'
+        )
+    if output.is_symlink() or (output.exists() and not output.is_dir()):
+        raise ValueError(f'package output must be a regular directory: {output}')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    staging = Path(tempfile.mkdtemp(
+        dir=output.parent, prefix=f'.{output.name}.building-'
+    ))
+    staging.rmdir()
+    backup = Path(tempfile.mkdtemp(
+        dir=output.parent, prefix=f'.{output.name}.previous-'
+    ))
+    backup.rmdir()
+    try:
+        report = _build_at(
+            staging, profile=profile, include_audio=include_audio,
+            allow_partial_drafts=allow_partial_drafts, shard_rows=shard_rows,
+        )
+        if output.exists():
+            output.rename(backup)
+        staging.rename(output)
+        if backup.exists():
+            shutil.rmtree(backup)
+        return report
+    except Exception:
+        if staging.exists():
+            shutil.rmtree(staging)
+        if backup.exists() and not output.exists():
+            backup.rename(output)
+        elif backup.exists():
+            shutil.rmtree(backup)
+        raise
 
 
 def main():

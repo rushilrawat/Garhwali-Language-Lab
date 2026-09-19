@@ -1,6 +1,7 @@
 import tempfile
 import unittest
 import json
+import bz2
 from pathlib import Path
 from unittest.mock import patch
 import ingest_open as m
@@ -9,8 +10,12 @@ import ingest_open as m
 class LegacyIngestionTests(unittest.TestCase):
     def test_missing_author_is_explicit_and_preserves_attribution_gap(self):
         payload = b'123\tgbm\tsample\t\\N\n'
-        with patch.object(m, 'fetch', return_value=(payload, {'raw_path': 'x'})):
-            row = m.tatoeba()[0]
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(m, 'RAW', Path(directory)), patch.object(
+                m, 'fetch',
+                return_value=(bz2.compress(payload), {'raw_path': 'x'}),
+            ):
+                row = m.tatoeba()[0]
         self.assertIsNone(row['contributor'])
         self.assertIn('missing_contributor', row['quality_flags'])
         self.assertFalse(row['training_eligible'])

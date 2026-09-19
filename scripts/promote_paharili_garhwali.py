@@ -24,7 +24,12 @@ def main():
             row['quality_flags'].append('user-approved-garhwali-only-promotion')
             dst.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n')
             count += 1
-    report = {'source': str(SOURCE), 'output': str(OUTPUT), 'promoted_records': count, 'filter': 'iso_639_3=gbm and upstream_label=gbm'}
+    report = {
+        'source': str(SOURCE.relative_to(ROOT)),
+        'output': str(OUTPUT.relative_to(ROOT)),
+        'promoted_records': count,
+        'filter': 'iso_639_3=gbm and upstream_label=gbm',
+    }
     (OUTPUT.with_name('paharili_garhwali_report.json')).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(report, indent=2))
 

@@ -2,11 +2,36 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import build_huggingface_dataset as m
 
 
 class HuggingFaceDatasetBuilderTests(unittest.TestCase):
+    def test_failed_managed_build_preserves_previous_package(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / 'package'
+            output.mkdir()
+            marker = output / 'manifest.json'
+            marker.write_text('previous')
+            with (
+                patch.object(m, 'DEFAULT_OUTPUT', output),
+                patch.object(m, '_build_at', side_effect=RuntimeError('failed')),
+                self.assertRaisesRegex(RuntimeError, 'failed'),
+            ):
+                m.build(output)
+            self.assertEqual(marker.read_text(), 'previous')
+
+    def test_package_builder_refuses_to_delete_existing_custom_directory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            existing = Path(directory) / 'scripts'
+            existing.mkdir()
+            marker = existing / 'keep.py'
+            marker.write_text('keep')
+            with self.assertRaisesRegex(ValueError, 'refusing to replace'):
+                m.prepare_package_output(existing)
+            self.assertEqual(marker.read_text(), 'keep')
+
     def test_knowledge_configs_cover_every_structured_cultural_catalog(self):
         self.assertEqual(
             set(m.KNOWLEDGE_CONFIGS),
@@ -89,7 +114,55 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         exported = m.text_row(open_row)
         self.assertEqual(exported['script'], 'Deva')
         self.assertEqual(exported['public_rights_basis'][0]['source_id'], 'open')
+        self.assertEqual(exported['language'], 'und')
         self.assertEqual(m.text_row({**base, 'text': 'garhwali'})['script'], 'Latn')
+
+    def test_text_export_does_not_label_english_or_mixed_context_as_garhwali(self):
+        base = {'segment_sha256': 'a', 'split': 'train', 'quality_flags': []}
+        english = m.text_row({
+            **base,
+            'text': 'Garhwal district history',
+            'parents': [{'text_sha256': 'eng-parent', 'provenance': [
+                {'source_id': 'gazetteer', 'iso_639_3': 'eng'},
+            ]}],
+        })
+        mixed = m.text_row({
+            **base,
+            'text': 'Garhwali गढ़वाली',
+            'parents': [{'text_sha256': 'mixed-parent', 'provenance': [
+                {'source_id': 'survey', 'iso_639_3': 'mul'},
+            ]}],
+        })
+        self.assertEqual(english['language'], 'eng')
+        self.assertEqual(mixed['language'], 'mul')
+        self.assertFalse(english['recommended_for_training'])
+
+    def test_text_export_carries_parent_quality_and_recommendation(self):
+        row = {
+            'segment_sha256': 'a', 'split': 'train', 'text': 'गढ़वाली',
+            'quality_flags': [],
+            'parents': [{'text_sha256': 'parent', 'provenance': [
+                {'source_id': 'open', 'iso_639_3': 'gbm'},
+            ]}],
+        }
+        parent_quality = {
+            'parent': {
+                'language_bucket': 'garhwali_candidate',
+                'quality_v2': {'tier': 'strict_gold_candidate'},
+            },
+        }
+        exported = m.text_row(row, parent_quality)
+        self.assertEqual(exported['language'], 'gbm')
+        self.assertEqual(exported['quality_tiers'], ['strict_gold_candidate'])
+        self.assertTrue(exported['recommended_for_training'])
+
+    def test_refreshes_references_after_public_filtering(self):
+        rows = [
+            {'task': 'translation', 'instruction': 'Same prompt',
+             'response': 'one', 'acceptable_responses': ['one', 'two']},
+        ]
+        refreshed = m.refresh_acceptable_responses(rows)
+        self.assertEqual(refreshed[0]['acceptable_responses'], ['one'])
 
     def test_catalog_keeps_every_identity_but_redacts_unlicensed_text(self):
         row = {
@@ -367,18 +440,38 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
     def test_audio_link_report_is_idempotent(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            source = root / 'source.wav'
+            source = root / 'data/vaani/audio/source.wav'
+            source.parent.mkdir(parents=True)
             source.write_bytes(b'audio')
             old_root = m.ROOT
             try:
                 m.ROOT = root
-                row = {'audio_sha256': 'ab' * 32, 'local_audio_path': 'source.wav'}
+                row = {
+                    'audio_sha256': m.sha256_file(source),
+                    'local_audio_path': 'data/vaani/audio/source.wav',
+                }
                 first = m.link_audio([row], root / 'package')
                 second = m.link_audio([row], root / 'package')
             finally:
                 m.ROOT = old_root
         self.assertEqual(first, {'new': 1, 'total': 1})
         self.assertEqual(second, {'new': 0, 'total': 1})
+
+    def test_audio_link_rejects_path_outside_audio_root(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'secret.txt'
+            source.write_text('secret')
+            old_root = m.ROOT
+            try:
+                m.ROOT = root
+                with self.assertRaisesRegex(ValueError, 'unsafe audio source'):
+                    m.link_audio([{
+                        'audio_sha256': m.sha256_file(source),
+                        'local_audio_path': 'secret.txt',
+                    }], root / 'package')
+            finally:
+                m.ROOT = old_root
 
     def test_transcript_only_cleanup_removes_packaged_audio(self):
         with tempfile.TemporaryDirectory() as directory:

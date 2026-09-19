@@ -15,6 +15,8 @@ DEFAULT_SPLITS = ROOT / 'data/processed/model_ready/splits/report.json'
 DEFAULT_TEXT = ROOT / 'data/processed/text/report.json'
 DEFAULT_PUBLIC = ROOT / 'data/huggingface/garhwali-language-lab/manifest.json'
 DEFAULT_ALL_DATA = ROOT / 'data/huggingface/garhwali-language-lab-all-data/manifest.json'
+DEFAULT_BENCHMARK = ROOT / 'data/processed/evaluation/garhwali_bench/manifest.json'
+DEFAULT_RESOURCES = ROOT / 'data/processed/model_ready/language_resources/report.json'
 KNOWLEDGE_CONFIGS = (
     'geography', 'historical_terms', 'literary_people',
     'literary_works', 'popular_songs', 'university_research',
@@ -32,7 +34,7 @@ def package_records(manifest):
     return sum(value['records'] for value in manifest['configs'].values())
 
 
-def refresh(index, splits, text, public, all_data):
+def refresh(index, splits, text, public, all_data, benchmark=None, resources=None):
     records = splits['text']['records']
     index['generated'] = date.today().isoformat()
     index['text'].update({
@@ -61,6 +63,40 @@ def refresh(index, splits, text, public, all_data):
         'transcript_only_package_rows': package_records(public),
     })
     index['evaluation_candidates']['text'] = splits['evaluation_candidates']['text_records']
+    if benchmark:
+        baseline = benchmark.get('baselines', {}).get('character_bigram', {})
+        index['garhwali_bench'].update({
+            'release_id': benchmark.get('release_id'),
+            'held_out_text_records': benchmark['records']['text_evaluation'],
+            'speaker_safe_asr_records': benchmark['records']['asr_evaluation'],
+            'external_records': benchmark['records']['external_total'],
+            'character_bigram_perplexity': baseline.get('perplexity'),
+            'character_oov_rate': baseline.get('oov_character_rate'),
+            'external_exact_train_text': benchmark['leakage']['external_exact_train_text'],
+            'internal_exact_train_text': benchmark['leakage']['internal_text_exact_train_text'],
+            'asr_speaker_overlap': benchmark['leakage']['asr_speaker_overlap'],
+            'native_reviewed': bool(benchmark.get('native_reviewed')),
+            'dialect_aware': bool(benchmark.get('dialect_aware')),
+            'status': benchmark.get('status'),
+        })
+        index['evaluation_candidates'].update({
+            'text': benchmark['records']['text_evaluation'],
+            'speech': benchmark['records']['asr_evaluation'],
+            'review_status': benchmark.get('status'),
+            'native_review_optional': False,
+        })
+    if resources:
+        index['language_resources'].update({
+            'tokenizer_type': resources['tokenizer_type'],
+            'tokenizer_vocabulary_size': resources['tokenizer_vocabulary_size'],
+            'tokenizer_training_texts': resources['tokenizer_training_texts'],
+            'word_types': resources['word_types'],
+            'pronunciation_candidates': resources['pronunciation_candidates'],
+            'pronunciations_with_source_phonetics': resources[
+                'pronunciation_with_source_phonetics'
+            ],
+            'tts_pairs': resources['tts_pairs'],
+        })
 
     knowledge_counts = {
         family: config_records(all_data, family) for family in KNOWLEDGE_CONFIGS
@@ -80,6 +116,8 @@ def main():
     parser.add_argument('--text-report', type=Path, default=DEFAULT_TEXT)
     parser.add_argument('--public-manifest', type=Path, default=DEFAULT_PUBLIC)
     parser.add_argument('--all-data-manifest', type=Path, default=DEFAULT_ALL_DATA)
+    parser.add_argument('--benchmark-manifest', type=Path, default=DEFAULT_BENCHMARK)
+    parser.add_argument('--language-resources', type=Path, default=DEFAULT_RESOURCES)
     args = parser.parse_args()
 
     index = json.loads(args.index.read_text(encoding='utf-8'))
@@ -89,6 +127,8 @@ def main():
         json.loads(args.text_report.read_text(encoding='utf-8')),
         json.loads(args.public_manifest.read_text(encoding='utf-8')),
         json.loads(args.all_data_manifest.read_text(encoding='utf-8')),
+        json.loads(args.benchmark_manifest.read_text(encoding='utf-8')),
+        json.loads(args.language_resources.read_text(encoding='utf-8')),
     )
     args.index.write_text(
         json.dumps(refreshed, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'

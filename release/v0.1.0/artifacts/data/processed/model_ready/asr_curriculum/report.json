@@ -33,11 +33,11 @@
   "inherited_machine_duplicate_rows": 8,
   "inputs": {
     "confidence_report": {
-      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/sravaani_recovery_confidence_report.json",
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_confidence_report.json",
       "sha256": "de02974b491d02a639c726b281b86bbe569eb59d2015967c66754f9c81e4b00e"
     },
     "machine": {
-      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+      "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
       "sha256": "2356e9070d6f849e7e868430b720fb7b7956a5a105ea68c26f647a47f212e8bc"
     }
   },
@@ -51,19 +51,19 @@
   "nonempty_candidate_fallbacks": 1,
   "outputs": {
     "stage_plan.json": {
-      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/stage_plan.json",
+      "path": "data/processed/model_ready/asr_curriculum/stage_plan.json",
       "sha256": "517fabccf6dce1f7945f5cd3c6c8518e25017b0cdf35226529668c07eeadc62b"
     },
     "test.jsonl": {
-      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/test.jsonl",
+      "path": "data/processed/model_ready/asr_curriculum/test.jsonl",
       "sha256": "9c4d2547f37a89b0e2e5ee2bc3224743d53b4711565c4cecd5bbeec53de9ba82"
     },
     "train.jsonl": {
-      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/train.jsonl",
+      "path": "data/processed/model_ready/asr_curriculum/train.jsonl",
       "sha256": "1fd46372acd738e310b80acca3324a7aba218a26f948bdc47a13248e4270538b"
     },
     "validation.jsonl": {
-      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/validation.jsonl",
+      "path": "data/processed/model_ready/asr_curriculum/validation.jsonl",
       "sha256": "5d2a45ceffa8c5e8c31691ed411ce765ca928ae6f0e817daf8eb05774ac97659"
     }
   },

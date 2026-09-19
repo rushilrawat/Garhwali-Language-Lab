@@ -16,7 +16,7 @@ Updated 2026-09-18 from the checked-in preparation scripts. Raw and downloaded m
 - Seven incoming PDFs were hash-checked. Six unique books yielded 769 active page records and 1,774,697 characters; the seventh exactly matches the already ingested 370-record *Gadwali LokGeet* scan. The new pages contribute 27,926 Hugging Face text segment identities with full book, page, hash, OCR, rights, and quality provenance. Seven neighboring JSON records now preserve verified title-page and catalog bibliography, including roles, editions, publication dates and places, publishers, identifiers, extent, subjects, source links, duplicate relationships, and rights evidence.
 - Structured Wiktionary extraction now yields 77 Garhwali lemmas, alternative forms, and examples in place of 56 flattened raw page blobs. Conservative wikitext rendering removes page scaffolding while preserving source prose.
 - Source-aware treatment preserves 392 scholarly Garhwali transcriptions in their published notation. The public accuracy queue fell from 628 to 176; none of these source-grounded resolutions is described as native review.
-- The full four-layout OCR sweep covered all 659 incoming machine-OCR pages. Strong consensus promoted 69 corrected page texts; every promoted row retains its original OCR, source hash, confidence, and layout evidence. Rebuilding after these corrections reduced derived segment identities by 18 through deduplication without deleting any parent source record.
+- The full four-layout OCR sweep covered all 659 incoming machine-OCR pages. It retained 69 same-engine layout-consensus variants beside the original OCR, source hash, confidence, and layout evidence. These are machine proposals rather than validated corrections. Rebuilding after the variants reduced derived segment identities by 18 through deduplication without deleting any parent source record.
 
 ## VAANI Garhwali
 
@@ -44,7 +44,7 @@ Updated 2026-09-18 from the checked-in preparation scripts. Raw and downloaded m
 
 ## Model-assisted text cleanup
 
-The rebuilt complete package contains 257,145 rows and the separate public redistribution package contains 146,482 rows. Local package validation passes with zero strict cross-split identity overlap, 53 distinct provenance sources, and no deleted or mutated source records.
+The rebuilt complete package contains 257,807 rows and the separate public redistribution package contains 146,912 rows. Local package validation passes with zero strict cross-split identity overlap, zero normalized instruction-prompt overlap, 53 distinct provenance sources, and no deleted or mutated source records.
 
 - The original model-assisted cleanup run covered 27,987 parent texts before the source-grounded re-extraction. Its immutable proposal artifact remains a historical model snapshot; the current canonical corpus contains 28,755 texts.
 - Pinned IndicBERTv2 scored 4,096 OCR-, language-, spelling-, and dialect-priority records over 81,116 deterministic masked tokens. The 90th-percentile loss threshold identifies 410 model/source disagreements for inspection without changing source labels.
@@ -143,7 +143,7 @@ The rebuilt complete package contains 257,145 rows and the separate public redis
 ## Language quality
 
 - All 28,755 cleaned texts have source-backed language, Unicode-script, genre, explicit-dialect, and geographic-evidence fields.
-- Separate views contain 25,459 likely Garhwali candidates, 1,468 declared mixed-language records, 1,511 unresolved script/language records, and 317 non-Garhwali cultural-context records. The tagged all-data view retains all four groups.
+- Separate views contain 25,341 likely Garhwali candidates, 2,237 mixed-language records, 860 unresolved script/language records, and 317 non-Garhwali cultural-context records. The tagged all-data view retains all four groups.
 - Language-identity confidence is high for 9,981 texts, medium for 15,478, and low for 3,296. The medium group is dominated by 14,999 PahariLI texts whose Garhwali label is useful but whose component lineage remains missing.
 - Every text has a genre. Resource views expose 1,114 lexicon candidates, 455 parallel examples, and 1,187 grammar-source candidates.
 - Train-only language resources include a 330-symbol Unicode character tokenizer, 203,539 observed word types, 1,114 pronunciation candidates (293 with source phonetic evidence), and 1,736 normalized TTS candidate pairs.
@@ -193,9 +193,19 @@ adapted checkpoint, and completed the closed held-out evaluation. The resulting
 43.528% WER / 17.452% CER does not displace base SraVaani because its primary
 WER is worse.
 
-GarhwaliBench v0.1 indexes 3,847 external task records, 2,492 held-out text segments, and 112 speaker-safe ASR rows. Exact train/evaluation text overlap and ASR speaker overlap are zero. Its deterministic character-bigram floor is 16.464093 perplexity with a 0.00000498 character OOV rate.
+The current GarhwaliBench v0.1 candidate indexes 3,847 external task records,
+398 strict automated held-out text segments, and 112 speaker-safe ASR rows.
+Exact train/evaluation text overlap and ASR speaker overlap are zero. Its
+deterministic character-bigram floor is 17.000058 perplexity with zero observed
+character OOV. Native review and dialect annotation remain required, so this is
+not yet a gold benchmark.
 
-The multilingual audit compares five pinned tokenizers on all 2,492 held-out texts. IndicBERTv2 has the lowest fertility at 1.531569 tokens per whitespace word. Its first 128-record masked-language pilot scores 17.786561% masked-token accuracy and 6.977486 cross-entropy over 506 deterministic masks, with zero truncation.
+The earlier multilingual audit compares five pinned tokenizers on a historical,
+checksum-addressed 2,492-text test snapshot. IndicBERTv2 has the lowest fertility
+at 1.531569 tokens per whitespace word. Its first 128-record masked-language
+pilot scores 17.786561% masked-token accuracy and 6.977486 cross-entropy over 506
+deterministic masks, with zero truncation. These values have not been recomputed
+on the current 398-record benchmark candidate.
 
 The Garhwali-to-English translation audit covers 997 IndicGenBench FLORES development pairs and all 1,012 test pairs. The deterministic translation-memory floor scores 0.008208 smoothed BLEU / 0.215886 chrF2. On the same fixed 32-record pilot, pinned NLLB-200 distilled with an explicit Hindi source-token proxy scores 0.219719 / 0.574134, while the community Garhwali LoRA adapter scores 0.095460 / 0.460474. The base model is retained as the current pilot because the adapter underperforms and publishes no Garhwali language-token mapping.
 
@@ -203,10 +213,15 @@ The XORQA retrieval audit deduplicates 1,139 source rows into 1,059 passages and
 
 ## Dataset splits
 
-- Document-aware text partitions contain 80,881 train, 2,499 validation, and 2,836 test segments. Exact segment hashes do not cross partitions.
+- The complete all-data text partitions contain 106,915 train, 3,063 validation,
+  and 4,086 test segments; the public text partitions contain 8,043 train, 401
+  validation, and 422 test segments. Neither normalized text components nor
+  exact segment hashes cross partitions.
 - Strict ASR and TTS candidate partitions retain 2,002 clean transcript/audio rows from 248 identified speakers: 1,621 train, 269 validation, and 112 test. No identified speaker crosses a partition.
 - The broader 5,894-row supervised ASR export remains available. The strict view excludes 3,886 placeholder-speaker rows and six transcript/language-review rows rather than deleting them.
-- Candidate evaluation manifests contain 2,527 unflagged test text segments and 112 strict test audio rows. They are checksum-addressed, automatically screened, and active for experimental evaluation; GarhwaliBench v0.1 remains frozen at its original 2,492-record snapshot.
+- Candidate evaluation manifests contain 398 strict automated test text segments
+  and 112 strict test audio rows. They are checksum-addressed and active for
+  experimental evaluation; native review and dialect annotation remain pending.
 - Reproduce these outputs with `python3 scripts/build_dataset_splits.py`. The release manifest records every split artifact, row count, and SHA-256 digest.
 
 ## Reproduction

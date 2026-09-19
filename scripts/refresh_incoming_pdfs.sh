@@ -2,11 +2,7 @@
 set -euo pipefail
 
 PYTHON_BIN="${PYTHON_BIN:-.venv/bin/python}"
-DEFAULT_PDF_PYTHON="/Users/rushilrawat/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
-PDF_PYTHON_BIN="${PDF_PYTHON_BIN:-$DEFAULT_PDF_PYTHON}"
-if [[ ! -x "$PDF_PYTHON_BIN" ]]; then
-  PDF_PYTHON_BIN="$PYTHON_BIN"
-fi
+PDF_PYTHON_BIN="${PDF_PYTHON_BIN:-$PYTHON_BIN}"
 
 PYTHONPATH=scripts "$PDF_PYTHON_BIN" scripts/ingest_incoming_pdfs.py
 PYTHONPATH=scripts "$PYTHON_BIN" scripts/integrate_reocr_evidence.py

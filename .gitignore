@@ -15,6 +15,7 @@ raw/
 !/sources/online/README.md
 !/sources/online/deep-search-catalog.md
 !/sources/online/source-audit-2026-09-08.md
+!/sources/online/source-freshness-baseline.json
 /sources/web/
 /restricted/
 /experimental/
@@ -70,6 +71,8 @@ checkpoints/
 outputs/
 runs/
 artifacts/
+!release/*/artifacts/
+!release/*/artifacts/**
 wandb/
 
 *.pt

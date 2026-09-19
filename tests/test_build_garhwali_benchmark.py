@@ -49,6 +49,7 @@ class GarhwaliBenchmarkTests(unittest.TestCase):
                 eval_text,
                 train_asr,
                 eval_asr,
+                None,
                 root / 'out',
             )
 
@@ -79,6 +80,7 @@ class GarhwaliBenchmarkTests(unittest.TestCase):
                     root / 'eval.jsonl',
                     root / 'train_asr.jsonl',
                     root / 'eval_asr.jsonl',
+                    None,
                     root / 'out',
                 )
 

@@ -1,24 +1,39 @@
 {
   "release_id": "garhwali-language-lab-v0.1.0",
-  "generated": "2026-09-16",
+  "generated": "2026-09-19",
   "target_repo": "rushilrawat/garhwali-language-lab-all-data",
   "repo_type": "dataset",
-  "planned_visibility": "public",
-  "publication_status": "ready_for_final_approval",
+  "planned_visibility": "private",
+  "publication_status": "blocked_pending_rights_and_quality_review",
   "profile": "all-data",
   "include_audio": false,
-  "records": 257163,
-  "configurations": 12,
+  "records": 257807,
+  "configurations": 18,
   "catalog_records": 28755,
   "catalog_redacted_text_records": 0,
-  "files": 42,
-  "bytes": 448122082,
-  "aggregate_sha256": "7878c5cdf6218ab82d8fcf9268b79b89e512257e80279e9c3cefc19f137b55a7",
+  "files": 45,
+  "bytes": 493154855,
+  "aggregate_sha256": "e64abf2662e1a57b2736c6c8e7173f3dce54ea52083dfcd17de7f6ae565c18ea",
   "artifacts": [
     {
+      "path": "ATTRIBUTION.md",
+      "bytes": 844,
+      "sha256": "7c14c191af77d924aff39c5d0979a34c693fe5e1e5422e5c1668f3fbf4790366"
+    },
+    {
+      "path": "LICENSE_POLICY.md",
+      "bytes": 2756,
+      "sha256": "a255a1526c237e61b249008a2af9159e37d6426d54249be433d22304daac0161"
+    },
+    {
       "path": "README.md",
-      "bytes": 3892,
-      "sha256": "a170138d7c1ec90eaa0d8258f479ba275ccefed916da21c5cdf2ed054529fdd1"
+      "bytes": 4118,
+      "sha256": "b2f09946fdc1590db07acc038d421bd624142fe8786933186171cb23a8093c84"
+    },
+    {
+      "path": "REMOVAL_POLICY.md",
+      "bytes": 632,
+      "sha256": "7a890891eb04e0d53b05b1c9132b105ecd88bde3dcdcfec0d251268db2552a89"
     },
     {
       "path": "data/asr/test-00000.jsonl",
@@ -37,18 +52,18 @@
     },
     {
       "path": "data/catalog/train-00000.jsonl",
-      "bytes": 31663631,
-      "sha256": "420f4d60589490ded7d1e26d16272d37b98103b1df7b4ace5546911d5c412a82"
+      "bytes": 33492042,
+      "sha256": "1f1c2159024c0953b2ec9ee5758d6135806c6cccbf583049cc8f78a1d3ab9a6e"
     },
     {
       "path": "data/catalog/train-00001.jsonl",
-      "bytes": 31506179,
-      "sha256": "0fa0ed8c2ee69f8bc31ef296b6d8edc70516c2ede0928059ef15a5aa60b6d67a"
+      "bytes": 33338873,
+      "sha256": "c2264995dbf4946e27e43a51f45ee11b5cfc8ef1c817f56f81d2afaa5886af46"
     },
     {
       "path": "data/catalog/train-00002.jsonl",
-      "bytes": 27464700,
-      "sha256": "79a85b0b5fdbb3e4664f7714ab12ba84f5526b6e3b5e487003949b29094ec453"
+      "bytes": 29052230,
+      "sha256": "a87d6a600b441acb768ebeadfd14cf83343a9b9042fc3f26f1d15c8e201b60ac"
     },
     {
       "path": "data/geography/train-00000.jsonl",
@@ -62,23 +77,23 @@
     },
     {
       "path": "data/instructions/test-00000.jsonl",
-      "bytes": 430138,
-      "sha256": "883321e5bb8fa598591ee113579be779008905835cc4691615ffdc7372bdc493"
+      "bytes": 530220,
+      "sha256": "a1d8c6742148dfe383c091e79f9b8ea83a7196ca4828e691edce83bc3943b312"
     },
     {
       "path": "data/instructions/train-00000.jsonl",
-      "bytes": 3649900,
-      "sha256": "32c22ce3484abcd60468b62b911f3a5147dc6c99b6aca670d1bce2279b450bc5"
+      "bytes": 5493453,
+      "sha256": "fafb4d53463d7a409b276c4a5c7fac55df4a81360642508a953a0b8e0ef5a97d"
     },
     {
       "path": "data/instructions/validation-00000.jsonl",
-      "bytes": 235864,
-      "sha256": "b668f6e5626c0c687d087c68a47bc3035802d97d27a0431d9fd5bf7ac1c64f31"
+      "bytes": 782598,
+      "sha256": "71b9315427f11bb2312cc5be4b5912113fba122c4947bb2fd76fc2a7c5f38471"
     },
     {
       "path": "data/lexicon/train-00000.jsonl",
-      "bytes": 2107307,
-      "sha256": "79f093a87c3fb260bae7b1899fe3187189330464e17009c25d1ae35ce5f2efe8"
+      "bytes": 2452038,
+      "sha256": "2bb8b4c48a13ce6ecc236ee6457c398c51dd8e1f74be4a3eb68676223ec2341a"
     },
     {
       "path": "data/literary_people/train-00000.jsonl",
@@ -152,68 +167,68 @@
     },
     {
       "path": "data/text/test-00000.jsonl",
-      "bytes": 7631285,
-      "sha256": "28a3ca6af3c167e2d1bda1fa3d794fa7ff95b55227fa843af0d9233349c216b4"
+      "bytes": 8767307,
+      "sha256": "9be5c35432c110dbcceb8c14e230a06ce0fa8e518ae2d7f4531f342a5f48dcf8"
     },
     {
       "path": "data/text/train-00000.jsonl",
-      "bytes": 17881491,
-      "sha256": "f26c07c0b880557f2d189c9755bf1ff7ff4e05a1766a46a8ef8f1af2a73a48ac"
+      "bytes": 21184566,
+      "sha256": "0e961381e80e900cad652633e9221da3ce70c106130dee710cdf4d5d23e4a84d"
     },
     {
       "path": "data/text/train-00001.jsonl",
-      "bytes": 17841066,
-      "sha256": "dc23d459fa45284b142eee53a83edb5b0dbfeecd3c59cf8d03771cbbbcf885c2"
+      "bytes": 21125855,
+      "sha256": "ec602a7169c52b886521ad994b7ff008c94b989b3711ab69b80f115107708fa9"
     },
     {
       "path": "data/text/train-00002.jsonl",
-      "bytes": 17953806,
-      "sha256": "836a60346d663549fc00faf06aa1c5ea4148efc32479ce96906e4cc6a680bb7e"
+      "bytes": 21242571,
+      "sha256": "f80fb0c1357d91c5c6fc853931338a6712f901a82004ff89959dc9259f7dee5d"
     },
     {
       "path": "data/text/train-00003.jsonl",
-      "bytes": 18204563,
-      "sha256": "fa42727c614d6ca45029478e4336b16fa230d7f29bb4788451f9fa7d0668c8c1"
+      "bytes": 21457702,
+      "sha256": "4955692e819f01c6649e844ecb477c576c645d3220425a2d4a2e3e1cdd5bb1be"
     },
     {
       "path": "data/text/train-00004.jsonl",
-      "bytes": 17910219,
-      "sha256": "d3f7cd6e0bd4ddc1fb9c51cc546b026f296ba4fff8b79ac66b09ebd74337b1dd"
+      "bytes": 21068354,
+      "sha256": "8e4e2ac1cabea11a97a138f2ea26422f1660136a3086ea387484175af8b9d9b3"
     },
     {
       "path": "data/text/train-00005.jsonl",
-      "bytes": 18062045,
-      "sha256": "8f3e0e6db3924185fd312a82f0c028639d05de0b026784d3ddf414eddc71b940"
+      "bytes": 21361170,
+      "sha256": "444bd63763c644ad0776383349997b69b6fa7714665e2604d5e523fc0320156c"
     },
     {
       "path": "data/text/train-00006.jsonl",
-      "bytes": 17810518,
-      "sha256": "c9c65e672909bed8d4c130fa8b58c63e23479f063b742e51ec82a0f2bc2edcdc"
+      "bytes": 21005271,
+      "sha256": "4879ac7c62d2d75f4322ea673f46c3c263507e775cbf893b6ff5b450e490bcc9"
     },
     {
       "path": "data/text/train-00007.jsonl",
-      "bytes": 18595576,
-      "sha256": "e0b538df503930f1978704825d84c9102e81d550e96d16ed6a9f45c0e942bd5e"
+      "bytes": 21816994,
+      "sha256": "c18e8732d96383a55eb5e20c0cc0e2f3be2016e127e12b808148cffe3352ca4b"
     },
     {
       "path": "data/text/train-00008.jsonl",
-      "bytes": 18797351,
-      "sha256": "758e2bfc2ec081a2c9a273718bd76e5834989878c3af33c3f448e91b4389aaf5"
+      "bytes": 22058365,
+      "sha256": "6021f78caa4ef37a1d6611abad7a819ab74b21f1812f885e6ee9d428821952da"
     },
     {
       "path": "data/text/train-00009.jsonl",
-      "bytes": 18043587,
-      "sha256": "52ff13401f9fa4d65c730c74d2dac6845c13822a5bfac04becf2b30c33f9e3ef"
+      "bytes": 21294350,
+      "sha256": "f2786eb37edce147808ecef9273dfb15a40464167fd0892ef4b0d38b310366ce"
     },
     {
       "path": "data/text/train-00010.jsonl",
-      "bytes": 12311924,
-      "sha256": "8744131184b12837a547a2e60cd0f4d24874a7fca26b435ff7500f5c22ae1241"
+      "bytes": 14731001,
+      "sha256": "0926d3d6c855e83bbc2d2965d38b1bd003fc5673f270377c5a31c2e6ca2b1459"
     },
     {
       "path": "data/text/validation-00000.jsonl",
-      "bytes": 5436698,
-      "sha256": "5adbc7a1fd5e3956448424d8689b92fd2c8ceb901e475b3efe9acb7a9b1fb745"
+      "bytes": 6311211,
+      "sha256": "9689443134d3dd2a4b9ce3f7e3052af5383efc89243495e243b7856fd1e7cd47"
     },
     {
       "path": "data/university_research/train-00000.jsonl",
@@ -222,8 +237,8 @@
     },
     {
       "path": "manifest.json",
-      "bytes": 3748,
-      "sha256": "baba1db73598c65590e018061199d8b1fa0057f3b41506a97cd3463269582060"
+      "bytes": 3740,
+      "sha256": "e992ad49876902bc8d4cc00957b53459f767af111b7c9fa17397618d780fda08"
     }
   ]
 }

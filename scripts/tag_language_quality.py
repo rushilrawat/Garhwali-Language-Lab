@@ -241,16 +241,35 @@ def _metadata_values(provenance, fields):
     return sorted({str(value) for value in values})
 
 
+def _parameter_glosses(provenance):
+    """Recover only documented numeral meanings from stable identifiers."""
+    values = []
+    for source in provenance:
+        metadata = source.get('linguistic_metadata') or {}
+        parameter = str(metadata.get('parameter_id') or '').strip()
+        if not parameter:
+            continue
+        source_id = source.get('source_id')
+        if source_id == 'chan_numerals_garhwali' and parameter.isdigit():
+            values.append(parameter)
+    return sorted(set(values))
+
+
 def lexicon_candidate(row):
     genres = set(row.get('genre_quality', {}).get('tags', []))
     if not genres.intersection(LEXICON_GENRES):
         return None
+    provenance = row.get('provenance', [])
+    english_glosses = set(_metadata_values(
+        provenance, ('english_gloss', 'gloss_en')
+    ))
+    english_glosses.update(_parameter_glosses(provenance))
     return {
         'text_sha256': row['text_sha256'],
         'form': row.get('text_model') or row.get('text_clean') or row.get('text'),
         'genres': sorted(genres),
         'glosses': {
-            'english': _metadata_values(row.get('provenance', []), ('english_gloss', 'gloss_en')),
+            'english': sorted(english_glosses),
             'hindi': _metadata_values(row.get('provenance', []), ('gloss_hi',)),
             'other': _metadata_values(row.get('provenance', []), ('gloss',)),
         },
@@ -281,7 +300,12 @@ def parallel_entries(row):
                 'pair_sha256': digest, 'garhwali': garhwali, 'english': english,
                 'text_sha256': row['text_sha256'], 'source_id': source.get('source_id'),
                 'source_record_id': source.get('record_id'), 'source_url': source.get('source_url'),
-                'rights_status': source.get('rights_status'), 'license_url': source.get('license_url'),
+                'rights_status': source.get('rights_status'),
+                'license': source.get('license'),
+                'license_id': source.get('license_id'),
+                'license_url': source.get('license_url'),
+                'attribution': source.get('attribution'),
+                'rights_evidence': source.get('rights_evidence'),
             })
     return entries
 

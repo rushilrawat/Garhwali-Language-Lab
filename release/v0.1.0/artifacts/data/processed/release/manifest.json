@@ -293,11 +293,11 @@
     "inherited_machine_duplicate_rows": 8,
     "inputs": {
       "confidence_report": {
-        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/sravaani_recovery_confidence_report.json",
+        "path": "data/processed/model_ready/transcripts/sravaani_recovery_confidence_report.json",
         "sha256": "de02974b491d02a639c726b281b86bbe569eb59d2015967c66754f9c81e4b00e"
       },
       "machine": {
-        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+        "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
         "sha256": "2356e9070d6f849e7e868430b720fb7b7956a5a105ea68c26f647a47f212e8bc"
       }
     },
@@ -311,19 +311,19 @@
     "nonempty_candidate_fallbacks": 1,
     "outputs": {
       "stage_plan.json": {
-        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/stage_plan.json",
+        "path": "data/processed/model_ready/asr_curriculum/stage_plan.json",
         "sha256": "517fabccf6dce1f7945f5cd3c6c8518e25017b0cdf35226529668c07eeadc62b"
       },
       "test.jsonl": {
-        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/test.jsonl",
+        "path": "data/processed/model_ready/asr_curriculum/test.jsonl",
         "sha256": "9c4d2547f37a89b0e2e5ee2bc3224743d53b4711565c4cecd5bbeec53de9ba82"
       },
       "train.jsonl": {
-        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/train.jsonl",
+        "path": "data/processed/model_ready/asr_curriculum/train.jsonl",
         "sha256": "1fd46372acd738e310b80acca3324a7aba218a26f948bdc47a13248e4270538b"
       },
       "validation.jsonl": {
-        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/asr_curriculum/validation.jsonl",
+        "path": "data/processed/model_ready/asr_curriculum/validation.jsonl",
         "sha256": "5d2a45ceffa8c5e8c31691ed411ce765ca928ae6f0e817daf8eb05774ac97659"
       }
     },
@@ -386,20 +386,20 @@
         "sha256": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220"
       },
       "evaluation/text_candidate.jsonl": {
-        "records": 2527,
-        "sha256": "2b75b3e7558d93520533f299d70e80b6dd649b06b6ff0b643ec9080ce6642a67"
+        "records": 3603,
+        "sha256": "8a5b2388328bed9ee8f4d561ba312b5b5e5615c43f9121b7d1889af5f08b427e"
       },
       "text/test.jsonl": {
-        "records": 2836,
-        "sha256": "fc6cef0e680846d81b74691a56839e3b831c3b98164b7a29982ef4f69b83c73e"
+        "records": 4086,
+        "sha256": "d25db640d9fe5832d96b3e65fc3bbd2a7c3fef61264e73a1ba493bca4ac3a88f"
       },
       "text/train.jsonl": {
-        "records": 80881,
-        "sha256": "c6da19a64001bdf1c09b773b5dfed4458e8646bc1585a5ce3bc9cc3f5cb31f94"
+        "records": 106915,
+        "sha256": "4a1ec922599ba2d60e4bfddb0eb4a0e8572aa99fd43fa49d82dc855b45612bba"
       },
       "text/validation.jsonl": {
-        "records": 2499,
-        "sha256": "738acfe14f4b3442e606e46a4ea58baa96f8842a469adc06100aa6e222b923aa"
+        "records": 3063,
+        "sha256": "42e1564687449d39cb1e7836b62f13320e48ba6ae89c565381ad4794d62f09d3"
       },
       "tts/test.jsonl": {
         "records": 112,
@@ -456,7 +456,7 @@
       "asr_records": 112,
       "native_review_optional": true,
       "review_status": "automated_quality_screened",
-      "text_records": 2527
+      "text_records": 3603
     },
     "excluded_audio": {
       "transcript_or_language_review": 6,
@@ -464,16 +464,24 @@
     },
     "leakage_checks": {
       "identified_speaker_cross_split": 0,
+      "normalized_text_cross_split": 0,
+      "supported_semantic_edge_cross_split": 0,
       "text_hash_cross_split": 0
     },
     "release_id": "garhwali-splits-candidate-2026-09-10",
     "release_status": "integrated_experimental_candidate",
     "text": {
       "records": {
-        "test": 2836,
-        "train": 80881,
-        "validation": 2499
+        "test": 4086,
+        "train": 106915,
+        "validation": 3063
       }
+    },
+    "text_duplicate_components": {
+      "components": 111530,
+      "normalized_edges": 1884,
+      "records_reassigned": 120,
+      "supported_semantic_edges": 1623
     },
     "tts_candidate": {
       "hours": {
@@ -619,7 +627,7 @@
     "deep_cleaned_text": {
       "exists": true,
       "path": "data/processed/model_ready/cleaned/text.jsonl",
-      "records": 27986
+      "records": 28755
     },
     "language_quality_audio_supervised": {
       "exists": true,
@@ -654,7 +662,7 @@
     "language_quality_text_all": {
       "exists": true,
       "path": "data/processed/model_ready/language_quality/text.jsonl",
-      "records": 27986
+      "records": 28755
     },
     "language_quality_text_garhwali_candidates": {
       "exists": true,
@@ -664,7 +672,7 @@
     "language_quality_text_mixed": {
       "exists": true,
       "path": "data/processed/model_ready/language_quality/text_mixed_language.jsonl",
-      "records": 1468
+      "records": 2237
     },
     "language_quality_text_review": {
       "exists": true,
@@ -734,22 +742,22 @@
     "split_text_evaluation_candidate": {
       "exists": true,
       "path": "data/processed/model_ready/splits/evaluation/text_candidate.jsonl",
-      "records": 2527
+      "records": 3603
     },
     "split_text_test": {
       "exists": true,
       "path": "data/processed/model_ready/splits/text/test.jsonl",
-      "records": 2836
+      "records": 4086
     },
     "split_text_train": {
       "exists": true,
       "path": "data/processed/model_ready/splits/text/train.jsonl",
-      "records": 80881
+      "records": 106915
     },
     "split_text_validation": {
       "exists": true,
       "path": "data/processed/model_ready/splits/text/validation.jsonl",
-      "records": 2499
+      "records": 3063
     },
     "split_tts_experimental_test": {
       "exists": true,
@@ -784,22 +792,22 @@
     "text_all_experimental": {
       "exists": true,
       "path": "data/processed/text/all_garhwali.jsonl",
-      "records": 27986
+      "records": 28755
     },
     "text_canonical": {
       "exists": true,
       "path": "data/processed/text/canonical.jsonl",
-      "records": 27986
+      "records": 28755
     },
     "text_cleaned_all": {
       "exists": true,
       "path": "data/processed/text/cleaned_all_garhwali.jsonl",
-      "records": 27986
+      "records": 28755
     },
     "text_segments_all": {
       "exists": true,
       "path": "data/processed/model_ready/segments/all_segments.jsonl",
-      "records": 86216
+      "records": 114064
     },
     "transcripts_supervised_model_ready": {
       "exists": true,
@@ -880,22 +888,23 @@
   "garhwali_benchmark_report": {
     "baselines": {
       "character_bigram": {
-        "evaluated_characters_with_boundaries": 203451,
+        "evaluated_characters_with_boundaries": 37824,
         "model": "add-one-smoothed_character_bigram",
-        "negative_log_likelihood_per_character": 2.801182,
-        "oov_character_rate": 4.98e-06,
-        "perplexity": 16.464093,
-        "train_character_vocabulary": 328
+        "negative_log_likelihood_per_character": 2.833217,
+        "oov_character_rate": 0.0,
+        "perplexity": 17.000058,
+        "train_character_vocabulary": 327
       }
     },
+    "dialect_aware": false,
     "internal_evaluation": {
       "asr": {
         "path": "data/processed/model_ready/splits/evaluation/asr_candidate.jsonl",
         "sha256": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220"
       },
       "text": {
-        "path": "data/processed/model_ready/splits/evaluation/text_candidate.jsonl",
-        "sha256": "ec5a52883baa4df2d5893ac078dd335e9b623ae01cd3261fddf1ceb59c4397ac"
+        "path": "data/processed/evaluation/garhwali_bench/internal_text.jsonl",
+        "sha256": "dac10e0b1b5d0a1af0884008bfe734912042b707238ffabeeb35cc1af96e46c7"
       }
     },
     "leakage": {
@@ -903,14 +912,15 @@
       "external_exact_train_text": 0,
       "internal_text_exact_train_text": 0
     },
-    "quality_policy": "All records are active for experimental evaluation; schema, overlap, and quality signals remain explicit.",
+    "native_reviewed": false,
+    "quality_policy": "Internal text is restricted to automated strict Garhwali candidates. It remains experimental until native review and dialect annotation.",
     "records": {
       "asr_evaluation": 112,
       "external_total": 3847,
-      "text_evaluation": 2492
+      "text_evaluation": 398
     },
     "release_id": "garhwali-bench-v0.1-experimental",
-    "status": "automated_experimental_baseline",
+    "status": "strict_automated_candidate_pending_native_review",
     "tasks": {
       "crosssum": {
         "path": "benchmarks/indicgenbench_crosssum.jsonl",
@@ -935,7 +945,7 @@
       }
     }
   },
-  "generated": "2026-09-15",
+  "generated": "2026-09-19",
   "indicbertv2_masked_lm_report": {
     "device": "cpu",
     "elapsed_seconds": 4.765,
@@ -980,16 +990,16 @@
   "language_resources_report": {
     "pronunciation_candidates": 1114,
     "pronunciation_with_source_phonetics": 293,
-    "tokenizer_training_texts": 80881,
+    "tokenizer_training_texts": 106915,
     "tokenizer_type": "unicode_character",
-    "tokenizer_vocabulary_size": 330,
+    "tokenizer_vocabulary_size": 331,
     "tts_pairs": 1736,
     "tts_split_pairs": {
       "test": 89,
       "train": 1422,
       "validation": 225
     },
-    "word_types": 203539
+    "word_types": 262231
   },
   "long_form_audio_report": {
     "clips": 1204,
@@ -1424,15 +1434,15 @@
     "inherited_duplicate_audio_rows": 8,
     "inputs": {
       "base": {
-        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl",
+        "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl",
         "sha256": "41041b8cfdfb50a2457efa79899e6a1addf09c67d5daab4b98b86cb4788cf91d"
       },
       "confidence": {
-        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/sravaani_recovery_confidence.jsonl",
+        "path": "data/processed/model_ready/transcripts/sravaani_recovery_confidence.jsonl",
         "sha256": "cd693937a045216084651eefb5977ec01f040578845545890c5b964dce06342d"
       },
       "source_conflicts": {
-        "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/language_quality/vaani_source_conflicts.jsonl",
+        "path": "data/processed/model_ready/language_quality/vaani_source_conflicts.jsonl",
         "sha256": "45729fa8188beae0dd76f8d02a39a955d8ca05bfe02ba63f2ce77a244277bfa8"
       }
     },
@@ -1440,7 +1450,7 @@
     "missing_confidence_hashes": 0,
     "not_targeted_rows": 103354,
     "output": {
-      "path": "/Users/rushilrawat/Garhwali Language Lab/data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+      "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
       "sha256": "2356e9070d6f849e7e868430b720fb7b7956a5a105ea68c26f647a47f212e8bc"
     },
     "records_removed_or_quarantined": 0,
@@ -1576,11 +1586,11 @@
     "batch_size": 4,
     "cloud_job": {
       "billing_status": "positive_huggingface_credit_required",
-      "gpu_memory_gb": 16,
-      "hardware": "t4-small",
-      "hourly_compute_cost_usd": 0.4,
-      "maximum_compute_cost_usd": 3.2,
-      "timeout_hours": 8
+      "gpu_memory_gb": 24,
+      "hardware": "l4x1",
+      "hourly_compute_cost_usd": 0.8,
+      "maximum_compute_cost_usd": 4.8,
+      "timeout_hours": 6
     },
     "effective_batch_size": 32,
     "epochs": 2,
@@ -1681,30 +1691,30 @@
     "word_errors": 892
   },
   "text_report": {
-    "characters": 7371364,
+    "characters": 9145955,
     "duplicate_groups": 2022,
     "duplicate_rows": 2123,
-    "empty_records": 0,
+    "empty_records": 216,
     "invalid_json_records": 0,
     "layer_records": {
       "corpus": 3581,
-      "data/extracted": 779,
-      "experimental": 23202,
+      "data/extracted": 995,
+      "experimental": 23971,
       "extracted": 1097,
       "restricted": 1450
     },
     "quality_bands": {
-      "low": 70,
-      "review": 27916
+      "low": 71,
+      "review": 28684
     },
-    "source_files": 35,
-    "source_records": 30109,
+    "source_files": 42,
+    "source_records": 31094,
     "split_unique_texts": {
-      "test": 1394,
-      "train": 25169,
-      "validation": 1423
+      "test": 1441,
+      "train": 25862,
+      "validation": 1452
     },
-    "unique_texts": 27986
+    "unique_texts": 28755
   },
   "text_source_audit_report": {
     "high_quality_rights_pending_records": 1748,

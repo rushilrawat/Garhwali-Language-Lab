@@ -51,7 +51,7 @@ class DatasetSplitTests(unittest.TestCase):
                 },
             ])
 
-            report = m.build_splits(text_path, audio_path, out)
+            report = m.build_splits(text_path, audio_path, out, semantic_path=None)
 
             self.assertEqual(report['text']['records'], {'test': 2, 'train': 1, 'validation': 0})
             self.assertEqual(report['asr_strict']['records'], {'test': 1, 'train': 1, 'validation': 0})
@@ -97,6 +97,31 @@ class DatasetSplitTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, 'speaker crosses splits'):
                 m.build_splits(text_path, audio_path, root / 'out')
+
+    def test_supported_semantic_duplicates_are_reassigned_together(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            text_path = root / 'text.jsonl'
+            audio_path = root / 'audio.jsonl'
+            semantic_path = root / 'semantic.jsonl'
+            write_jsonl(text_path, [
+                {'segment_sha256': 'a' * 64, 'split': 'train', 'text': 'भौत शुक्रिया!'},
+                {'segment_sha256': 'b' * 64, 'split': 'test', 'text': 'भौत शुक्रिया।'},
+            ])
+            write_jsonl(audio_path, [])
+            write_jsonl(semantic_path, [{
+                'left_segment_sha256': 'a' * 64,
+                'right_segment_sha256': 'b' * 64,
+                'refined_decision': 'supported_candidate',
+            }])
+            report = m.build_splits(
+                text_path, audio_path, root / 'out', semantic_path=semantic_path
+            )
+            self.assertEqual(report['text']['records']['test'], 0)
+            self.assertEqual(report['text']['records']['train'], 2)
+            self.assertEqual(
+                report['text_duplicate_components']['records_reassigned'], 1
+            )
 
 
 if __name__ == '__main__':

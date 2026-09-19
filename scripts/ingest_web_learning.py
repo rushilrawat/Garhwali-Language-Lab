@@ -52,12 +52,13 @@ def nodes(data):
     parser=TextParser(); parser.feed(data.decode('utf-8',errors='replace')); return parser.nodes
 
 
-def main():
-    RAW.mkdir(parents=True,exist_ok=True); records=[]; source_counts={}
+def collect_records(fetcher=fetch):
+    RAW.mkdir(parents=True,exist_ok=True); records=[]; source_counts={}; failures=[]
     for source,url in URLS.items():
-        try: data=fetch(url)
+        try: data=fetcher(url)
         except Exception as error:
-            print(source,'failed',error); continue
+            failures.append({'source': source, 'url': url, 'error': str(error)})
+            continue
         digest=hashlib.sha256(data).hexdigest(); raw=RAW/f'{source}-{digest[:12]}.html'; raw.write_bytes(data)
         values=nodes(data); pairs=[]
         if source.startswith('euttaranchal'):
@@ -83,7 +84,25 @@ def main():
                 'quality_flags':['native_accuracy_unverified','web_source'],
                 'provenance':{'raw_path':str(raw.relative_to(ROOT)),'sha256':digest}})
         source_counts[source]=len(pairs)
-    OUT.write_text(''.join(json.dumps(r,ensure_ascii=False,sort_keys=True)+'\n' for r in records),encoding='utf-8')
+    missing = sorted(set(URLS) - set(source_counts))
+    empty = sorted(source for source, count in source_counts.items() if count == 0)
+    if failures or missing or empty or not records:
+        raise RuntimeError(
+            f'web learning ingestion incomplete: failures={failures}, '
+            f'missing={missing}, empty={empty}, records={len(records)}'
+        )
+    return records, source_counts
+
+
+def main():
+    records, source_counts = collect_records()
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    temporary = OUT.with_suffix(f'{OUT.suffix}.tmp')
+    temporary.write_text(
+        ''.join(json.dumps(r,ensure_ascii=False,sort_keys=True)+'\n' for r in records),
+        encoding='utf-8',
+    )
+    temporary.replace(OUT)
     report={'records':len(records),'source_counts':source_counts,'output':str(OUT.relative_to(ROOT))}
     (RAW/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report,ensure_ascii=False,indent=2))

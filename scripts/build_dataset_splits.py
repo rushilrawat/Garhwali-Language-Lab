@@ -3,6 +3,7 @@
 
 import hashlib
 import json
+import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -11,6 +12,10 @@ ROOT = Path(__file__).resolve().parents[1]
 TEXT_SOURCE = ROOT / 'data/processed/model_ready/segments/all_segments.jsonl'
 AUDIO_SOURCE = ROOT / 'data/processed/model_ready/language_quality/audio_supervised.jsonl'
 OUT = ROOT / 'data/processed/model_ready/splits'
+SEMANTIC_EDGES = ROOT / (
+    'data/processed/evaluation/data_quality/'
+    'semantic_duplicates_refined_v0_2/cloud_output/refined_candidates.jsonl'
+)
 SPLITS = ('train', 'validation', 'test')
 PLACEHOLDER_SPEAKERS = {'', 'na', 'n/a', 'none', 'null', 'unknown', 'unidentified'}
 
@@ -51,8 +56,84 @@ def audio_exclusion_reason(row):
     return None
 
 
-def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT):
+def normalized_text_key(text):
+    normalized = unicodedata.normalize('NFKC', str(text or '')).casefold()
+    return ''.join(char for char in normalized if char.isalnum())
+
+
+def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
+    """Keep normalized and model-supported near duplicates in one split."""
+    by_id = {row['segment_sha256']: dict(row) for row in rows}
+    parent = {identity: identity for identity in by_id}
+
+    def find(identity):
+        while parent[identity] != identity:
+            parent[identity] = parent[parent[identity]]
+            identity = parent[identity]
+        return identity
+
+    def union(left, right):
+        left_root, right_root = find(left), find(right)
+        if left_root != right_root:
+            parent[max(left_root, right_root)] = min(left_root, right_root)
+
+    normalized_groups = defaultdict(list)
+    for identity, row in by_id.items():
+        key = normalized_text_key(row.get('text'))
+        if key:
+            normalized_groups[key].append(identity)
+    normalized_edges = 0
+    for identities in normalized_groups.values():
+        for identity in identities[1:]:
+            union(identities[0], identity)
+            normalized_edges += 1
+
+    semantic_edges = 0
+    semantic_path = Path(semantic_path) if semantic_path else None
+    if semantic_path and semantic_path.exists():
+        for edge in read_jsonl(semantic_path):
+            if edge.get('refined_decision') not in {
+                'supported_candidate', 'high_confidence_near_duplicate',
+            }:
+                continue
+            left = edge.get('left_segment_sha256')
+            right = edge.get('right_segment_sha256')
+            if left in by_id and right in by_id:
+                union(left, right)
+                semantic_edges += 1
+
+    components = defaultdict(list)
+    for identity in by_id:
+        components[find(identity)].append(identity)
+    split_priority = {'train': 0, 'validation': 1, 'test': 2}
+    moved = 0
+    for root, identities in components.items():
+        assigned = min(
+            (by_id[identity]['split'] for identity in identities),
+            key=split_priority.__getitem__,
+        )
+        for identity in identities:
+            row = by_id[identity]
+            if row['split'] != assigned:
+                row['original_split'] = row['split']
+                row['split'] = assigned
+                row['split_assignment'] = 'duplicate_component_isolation'
+                moved += 1
+            row['duplicate_component_id'] = root
+    return list(by_id.values()), {
+        'normalized_edges': normalized_edges,
+        'supported_semantic_edges': semantic_edges,
+        'components': len(components),
+        'records_reassigned': moved,
+    }
+
+
+def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT,
+                 semantic_path=SEMANTIC_EDGES):
     text_rows = sorted(read_jsonl(text_path), key=lambda row: row['segment_sha256'])
+    text_rows, text_component_report = component_safe_text_splits(
+        text_rows, semantic_path
+    )
     audio_rows = sorted(read_jsonl(audio_path), key=lambda row: row['audio_sha256'])
 
     text_hash_splits = defaultdict(set)
@@ -164,8 +245,11 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT)
         'excluded_audio': dict(sorted(excluded.items())),
         'leakage_checks': {
             'text_hash_cross_split': 0,
+            'normalized_text_cross_split': 0,
+            'supported_semantic_edge_cross_split': 0,
             'identified_speaker_cross_split': 0,
         },
+        'text_duplicate_components': text_component_report,
         'artifacts': dict(sorted(artifacts.items())),
     }
     output_dir.mkdir(parents=True, exist_ok=True)

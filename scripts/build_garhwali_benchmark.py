@@ -18,6 +18,7 @@ TRAIN_TEXT = ROOT / 'data/processed/model_ready/splits/text/train.jsonl'
 EVAL_TEXT = ROOT / 'data/processed/model_ready/splits/evaluation/text_candidate.jsonl'
 TRAIN_ASR = ROOT / 'data/processed/model_ready/splits/asr/train.jsonl'
 EVAL_ASR = ROOT / 'data/processed/model_ready/splits/evaluation/asr_candidate.jsonl'
+QUALITY_CATALOG = ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
 OUT = ROOT / 'data/processed/evaluation/garhwali_bench'
 TASKS = {
     'flores': ('source', 'target'),
@@ -94,6 +95,7 @@ def build_benchmark(
     evaluation_text_path=EVAL_TEXT,
     train_asr_path=TRAIN_ASR,
     evaluation_asr_path=EVAL_ASR,
+    quality_catalog_path=QUALITY_CATALOG,
     output_dir=OUT,
 ):
     benchmarks_dir = Path(benchmarks_dir)
@@ -102,9 +104,23 @@ def build_benchmark(
     evaluation_text_path = Path(evaluation_text_path)
     train_asr_path = Path(train_asr_path)
     evaluation_asr_path = Path(evaluation_asr_path)
+    quality_catalog_path = Path(quality_catalog_path) if quality_catalog_path else None
 
     train_text_rows = read_jsonl(train_text_path)
     evaluation_text_rows = read_jsonl(evaluation_text_path)
+    if quality_catalog_path and quality_catalog_path.exists():
+        strict_parents = {
+            row['text_sha256'] for row in read_jsonl(quality_catalog_path)
+            if (row.get('quality_v2') or {}).get('tier') == 'strict_gold_candidate'
+            and row.get('language_bucket') == 'garhwali_candidate'
+        }
+        evaluation_text_rows = [
+            row for row in evaluation_text_rows
+            if any(
+                parent.get('text_sha256') in strict_parents
+                for parent in row.get('parents') or []
+            )
+        ]
     train_asr_rows = read_jsonl(train_asr_path)
     evaluation_asr_rows = read_jsonl(evaluation_asr_path)
     train_texts = {normalize(row.get('text', '')) for row in train_text_rows}
@@ -141,7 +157,9 @@ def build_benchmark(
 
     report = {
         'release_id': 'garhwali-bench-v0.1-experimental',
-        'status': 'automated_experimental_baseline',
+        'status': 'strict_automated_candidate_pending_native_review',
+        'native_reviewed': False,
+        'dialect_aware': False,
         'records': {
             'external_total': external_total,
             'text_evaluation': len(evaluation_text_rows),
@@ -149,7 +167,10 @@ def build_benchmark(
         },
         'tasks': task_entries,
         'internal_evaluation': {
-            'text': {'path': display_path(evaluation_text_path), 'sha256': sha256_file(evaluation_text_path)},
+            'text': {
+                'path': display_path(output_dir / 'internal_text.jsonl'),
+                'sha256': None,
+            },
             'asr': {'path': display_path(evaluation_asr_path), 'sha256': sha256_file(evaluation_asr_path)},
         },
         'leakage': {
@@ -164,11 +185,18 @@ def build_benchmark(
             ),
         },
         'quality_policy': (
-            'All records are active for experimental evaluation; schema, overlap, and '
-            'quality signals remain explicit.'
+            'Internal text is restricted to automated strict Garhwali candidates. '
+            'It remains experimental until native review and dialect annotation.'
         ),
     }
     output_dir.mkdir(parents=True, exist_ok=True)
+    internal_text_path = output_dir / 'internal_text.jsonl'
+    internal_text_path.write_text(
+        ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n'
+                for row in evaluation_text_rows),
+        encoding='utf-8',
+    )
+    report['internal_evaluation']['text']['sha256'] = sha256_file(internal_text_path)
     (output_dir / 'manifest.json').write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
         encoding='utf-8',
@@ -178,7 +206,8 @@ def build_benchmark(
 
 This checksum-addressed benchmark contains {external_total:,} external task records,
 {len(evaluation_text_rows):,} held-out text segments, and {len(evaluation_asr_rows):,}
-speaker-safe ASR rows. Every record is active for experimental evaluation.
+speaker-safe ASR rows. The internal text is an automated strict candidate set,
+not a native-reviewed or dialect-aware gold benchmark.
 
 ## Integrity
 

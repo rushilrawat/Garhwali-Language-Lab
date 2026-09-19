@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import unicodedata
 from datetime import date
 from pathlib import Path
 
@@ -48,6 +50,11 @@ def overlap_error(label, split_values):
     return errors
 
 
+def normalized_text_key(text):
+    normalized = unicodedata.normalize('NFKC', str(text or '')).casefold()
+    return ''.join(char for char in normalized if char.isalnum())
+
+
 def public_rights_basis(row):
     if 'public_rights_basis' in row:
         return row.get('public_rights_basis') or []
@@ -71,14 +78,24 @@ def audit(index, dataset_root):
     missing_configs = sorted(REQUIRED_CONFIGS - set(manifest.get('configs', {})))
     if missing_configs:
         errors.append(f'missing configs: {", ".join(missing_configs)}')
+    unexpected_configs = sorted(set(manifest.get('configs', {})) - REQUIRED_CONFIGS)
+    if unexpected_configs:
+        errors.append(f'unexpected configs: {", ".join(unexpected_configs)}')
 
     actual_counts = {}
     text_ids = {}
+    text_normalized = {}
+    text_components = {}
+    instruction_prompts = {}
     asr_hashes = {}
     asr_speakers = {}
     provenance_missing = 0
     rights_failures = 0
     language_scope_failures = 0
+    text_admission_metadata_missing = 0
+    instruction_reference_metadata_missing = 0
+    instruction_attribution_missing = 0
+    content_hash_failures = 0
     asr_metadata_missing = 0
     expected_audio = set()
     draft_hashes = set()
@@ -116,6 +133,14 @@ def audit(index, dataset_root):
 
         if group == 'text':
             text_ids[split] = {row.get('id') for row in rows}
+            text_normalized[split] = {
+                normalized_text_key(row.get('text')) for row in rows
+                if normalized_text_key(row.get('text'))
+            }
+            text_components[split] = {
+                row.get('duplicate_component_id') for row in rows
+                if row.get('duplicate_component_id')
+            }
             missing = sum(not row.get('provenance') for row in rows)
             rights = sum(
                 not public_rights_basis(row)
@@ -132,15 +157,27 @@ def audit(index, dataset_root):
                 )
                 for row in rows
             )
+            admission_missing = sum(
+                'language_buckets' not in row
+                or 'quality_tiers' not in row
+                or 'recommended_for_training' not in row
+                for row in rows
+            )
             if missing:
                 errors.append(f'{key} has {missing} rows without provenance')
             if rights:
                 errors.append(f'{key} has {rights} rows without compatible public rights')
             if language_scope:
                 errors.append(f'{key} has {language_scope} rows outside explicit Garhwali scope')
+            if admission_missing:
+                errors.append(
+                    f'{key} has {admission_missing} rows without language/quality '
+                    'admission metadata'
+                )
             provenance_missing += missing
             rights_failures += rights
             language_scope_failures += language_scope
+            text_admission_metadata_missing += admission_missing
         elif group == 'asr':
             expected_audio.update(row.get('audio') for row in rows if row.get('audio'))
             asr_hashes[split] = {row.get('audio_sha256') for row in rows}
@@ -171,6 +208,41 @@ def audit(index, dataset_root):
                 errors.append(f'{key} has {rights} rows without compatible public rights')
             provenance_missing += missing
             rights_failures += rights
+            if group == 'instructions':
+                instruction_prompts[split] = {
+                    ' '.join(str(row.get('instruction') or '').casefold().split())
+                    for row in rows
+                }
+                reference_missing = sum(
+                    not row.get('acceptable_responses') for row in rows
+                )
+                if reference_missing:
+                    errors.append(
+                        f'{key} has {reference_missing} rows without acceptable '
+                        'response metadata'
+                    )
+                instruction_reference_metadata_missing += reference_missing
+                attribution_missing = sum(
+                    any(
+                        not item.get('attribution')
+                        or not (item.get('license_id') or item.get('license_url'))
+                        for item in public_rights_basis(row)
+                    )
+                    for row in rows
+                )
+                if attribution_missing:
+                    errors.append(
+                        f'{key} has {attribution_missing} rows with incomplete '
+                        'public attribution or license metadata'
+                    )
+                instruction_attribution_missing += attribution_missing
+            else:
+                for row in rows:
+                    expected = hashlib.sha256(
+                        str(row.get('form') or '').encode('utf-8')
+                    ).hexdigest()
+                    if row.get('form_sha256') != expected:
+                        content_hash_failures += 1
         elif group == 'sravaani_drafts':
             expected_audio.update(row.get('audio') for row in rows if row.get('audio'))
             draft_rows += len(rows)
@@ -228,6 +300,10 @@ def audit(index, dataset_root):
                     catalog_redacted += 1
                     if not row.get('redaction_reason') or not row.get('sources'):
                         catalog_missing_evidence += 1
+                else:
+                    expected = hashlib.sha256(row['text'].encode('utf-8')).hexdigest()
+                    if row.get('release_text_sha256') != expected:
+                        content_hash_failures += 1
         elif group in KNOWLEDGE_GROUPS:
             ids = [row.get('id') for row in rows]
             if not all(ids) or len(ids) != len(set(ids)):
@@ -237,8 +313,11 @@ def audit(index, dataset_root):
             knowledge_records += len(rows)
 
     errors.extend(overlap_error('text IDs', text_ids))
+    errors.extend(overlap_error('normalized text', text_normalized))
+    errors.extend(overlap_error('text duplicate components', text_components))
     errors.extend(overlap_error('ASR audio hashes', asr_hashes))
     errors.extend(overlap_error('ASR speakers', asr_speakers))
+    errors.extend(overlap_error('instruction prompts', instruction_prompts))
     if draft_quality_missing:
         errors.append(f'{draft_quality_missing} SraVaani drafts lack quality metadata')
     if supervised_drafts:
@@ -270,6 +349,8 @@ def audit(index, dataset_root):
         errors.append('catalog does not account for every exact-unique text record')
     if catalog_missing_evidence:
         errors.append(f'{catalog_missing_evidence} redacted catalog rows lack public evidence')
+    if content_hash_failures:
+        errors.append(f'{content_hash_failures} exported values have invalid release hashes')
 
     asr_total = sum(actual_counts.get(f'asr/{split}', 0) for split in ('train', 'validation', 'test'))
     if asr_total != index.get('speech', {}).get('strict_comparison_rows'):
@@ -343,12 +424,24 @@ def audit(index, dataset_root):
             'missing_rows': provenance_missing,
             'public_rights_failures': rights_failures,
             'text_language_scope_failures': language_scope_failures,
+            'text_admission_metadata_missing': text_admission_metadata_missing,
+            'instruction_reference_metadata_missing': instruction_reference_metadata_missing,
+            'instruction_attribution_or_license_missing': instruction_attribution_missing,
             'asr_missing_transcript_source_or_license': asr_metadata_missing,
         },
         'leakage': {
             'text_id_cross_split': 0 if not overlap_error('text', text_ids) else 1,
+            'normalized_text_cross_split': (
+                0 if not overlap_error('normalized text', text_normalized) else 1
+            ),
+            'semantic_component_cross_split': (
+                0 if not overlap_error('component', text_components) else 1
+            ),
             'asr_audio_cross_split': 0 if not overlap_error('asr', asr_hashes) else 1,
             'asr_speaker_cross_split': 0 if not overlap_error('speaker', asr_speakers) else 1,
+            'instruction_prompt_cross_split': (
+                0 if not overlap_error('instruction', instruction_prompts) else 1
+            ),
         },
         'drafts': {
             **checks,
@@ -370,6 +463,7 @@ def audit(index, dataset_root):
             'records': len(catalog_ids),
             'redacted_text_records': catalog_redacted,
             'missing_evidence': catalog_missing_evidence,
+            'invalid_release_hashes': content_hash_failures,
         },
         'structured_knowledge': {
             'records': knowledge_records,
