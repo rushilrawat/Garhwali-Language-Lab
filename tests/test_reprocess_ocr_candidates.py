@@ -22,6 +22,7 @@ class ReprocessOcrCandidatesTests(unittest.TestCase):
         index, agreement = module.choose_candidate(candidates)
         self.assertEqual((index, agreement), (1, 2))
 
+    @patch.object(module, "TESSERACT", "tesseract")
     @patch.object(module.subprocess, "run")
     def test_ocr_variant_requests_tsv_output_explicitly(self, run):
         run.return_value.stdout = (

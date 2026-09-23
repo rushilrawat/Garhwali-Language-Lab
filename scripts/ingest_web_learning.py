@@ -52,7 +52,8 @@ def nodes(data):
     parser=TextParser(); parser.feed(data.decode('utf-8',errors='replace')); return parser.nodes
 
 
-def collect_records(fetcher=fetch):
+def collect_records(fetcher=None):
+    fetcher = fetch if fetcher is None else fetcher
     RAW.mkdir(parents=True,exist_ok=True); records=[]; source_counts={}; failures=[]
     for source,url in URLS.items():
         try: data=fetcher(url)
