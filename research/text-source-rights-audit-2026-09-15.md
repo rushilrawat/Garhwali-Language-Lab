@@ -1,11 +1,10 @@
 # Text source and rights audit
 
 > Historical snapshot from 2026-09-15. Its row counts and 145,497-row package
-> figure were superseded by the 2026-09-19 build: 28,755 parent texts,
-> 114,064 prepared segments, 146,912 public rows, and 257,807 all-data rows.
-> See [`all-data-package-2026-09-19.md`](all-data-package-2026-09-19.md) and
-> [`finalreport.md`](../finalreport.md) for current release evidence and the
-> later structured-record rights/provenance gap.
+> figure was superseded by later package builds. This report and the linked
+> 2026-09-19 report are historical snapshots, not current inventories. See
+> [`finalreport.md`](../finalreport.md) for the current 146,684-row public and
+> 257,807-row all-data package counts and structured-record rights status.
 
 ## Outcome
 

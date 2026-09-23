@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-432%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-435%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -208,7 +208,7 @@ counts, audit gaps, and remaining work.
 - **SraVaani adaptation result:** the 102-step human-reference run scores 43.528%
   WER / 17.452% CER on the frozen 112-record test. Original SraVaani remains
   preferred at 42.761% / 17.606% because WER is the primary metric.
-- **432 automated tests** and **367 immutable source snapshots** verified, with 43 public source URLs covered
+- **435 automated tests** and **367 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
 These figures describe the preparation snapshot updated on 2026-09-23. Raw
@@ -287,7 +287,7 @@ progress in the ignored cache. See [`PIPELINE.md`](PIPELINE.md).
 | `data/processed/` | Generated canonical, cleaned, tagged, segmented, and model views | Git-ignored JSONL and reports |
 | `research/` | Source audits, gap plans, reports, and decisions | Human-readable provenance and limitations |
 
-The complete source inventory is [`sources/online/deep-search-catalog.md`](sources/online/deep-search-catalog.md). The current workspace scan found no directory or package configuration named quarantine, hold, or unusable. All 1,450 nonempty text rows in the ignored `restricted/` input layer match canonical corpus content by normalized hash; the all-data text split retains 16,375 segments with restricted-source provenance. These source files remain Git-ignored and are not uploaded anywhere; the public profile still fails its rights gate.
+The complete source inventory is [`sources/online/deep-search-catalog.md`](sources/online/deep-search-catalog.md). The current workspace scan found no directory or package configuration named quarantine, hold, or unusable. All 1,450 nonempty text rows in the ignored `restricted/` input layer match canonical corpus content by normalized hash; the all-data text split retains 16,375 segments with restricted-source provenance. These source files remain Git-ignored and are not uploaded anywhere. The current public package passes its rights audit with zero failures by redacting 24,566 catalog values and excluding 216 structured records without compatible public-rights evidence; this does not clear those omitted records for redistribution.
 The catalog records sources that were inspected but not promoted, including blocked,
 gated, mirrored, copyrighted, and permission-dependent material.
 

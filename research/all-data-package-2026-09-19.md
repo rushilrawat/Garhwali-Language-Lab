@@ -1,6 +1,11 @@
 # Complete all-data package — 2026-09-19
 
-This is the current report for the access-controlled `all-data` Hugging Face
+> Historical snapshot. The current 2026-09-23 release candidate contains
+> 257,807 all-data rows and 146,684 rights-filtered public rows. The public
+> profile now excludes 216 structured records without compatible rights
+> evidence. See [`finalreport.md`](../finalreport.md) for current audit results.
+
+This report describes the access-controlled `all-data` Hugging Face
 profile. It preserves every collected text value and all experimental speech
 hypotheses with source, rights, quality, and review metadata. It is not cleared
 for public redistribution as a whole.

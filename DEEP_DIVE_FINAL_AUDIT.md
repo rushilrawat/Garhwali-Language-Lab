@@ -64,9 +64,9 @@ Package manifests carry per-shard SHA-256 values; both the final audit and cloud
 
 **Remaining:** use an independently signed or separately published manifest if tamper evidence across release artifacts is required. Current hashes detect shard drift relative to the package manifest; this same-manifest check does not protect against an actor replacing both the shard and its manifest entry.
 
-### Medium — release identity does not match the reviewed repository state
+### Resolved — release identity matches the reviewed repository state
 
-The package and release index identify themselves as `garhwali-language-lab-v0.1.1`; annotated tag `v0.1.1` resolves to the reviewed release commit. The historical `v0.1.0` tag is unchanged. Do not publish without rerunning checks against the exact tagged commit.
+The package and release index identify themselves as `garhwali-language-lab-v0.1.1`; annotated tag `v0.1.1` resolves to the reviewed release commit. The historical `v0.1.0` tag is unchanged. The exact reviewed commit passed the recorded release checks.
 
 ### Medium — “all-data” and “public-profile” are different products
 
@@ -74,7 +74,7 @@ The all-data package preserves all 28,755 catalog text values, including restric
 
 ### Fixed low-severity reporting defect — public preflight carried an all-data run ID
 
-The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1` run ID for both package profiles, so the saved public preflight was mislabeled despite declaring `manifest_profile: public`. The run ID now includes the manifest profile, a regression test checks both names, and the public preflight artifact was regenerated as `garhwali-hf-public-cloud-validation-v0.1`. Its rights failures are unchanged and expected.
+The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1` run ID for both package profiles, so the saved public preflight was mislabeled despite declaring `manifest_profile: public`. The run ID now includes the manifest profile, a regression test checks both names, and the public preflight artifact was regenerated as `garhwali-hf-public-cloud-validation-v0.1`. The regenerated public preflight passes; it excludes structured records without compatible public-rights evidence.
 
 ## Remediation order
 
