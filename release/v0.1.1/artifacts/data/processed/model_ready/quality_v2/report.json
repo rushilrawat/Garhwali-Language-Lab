@@ -1,0 +1,72 @@
+{
+  "datasets": {
+    "machine_drafts": {
+      "reason_counts": {
+        "bengali_script": 257,
+        "empty_machine_transcript": 34,
+        "empty_transcript": 34,
+        "frequent_identical_hypothesis": 121,
+        "implausibly_long_for_duration": 2,
+        "low_cross_model_confidence": 1158,
+        "machine_draft_high_risk": 1083,
+        "mixed_script": 25,
+        "no_devanagari_letters": 1026,
+        "repeated_token_loop": 17,
+        "source_label_conflict": 98
+      },
+      "records": 104542,
+      "tier_rates": {
+        "machine_draft_experimental": 0.988636,
+        "machine_draft_review": 0.010426,
+        "source_label_conflict_preserved": 0.000937
+      },
+      "tiers": {
+        "machine_draft_experimental": 103354,
+        "machine_draft_review": 1090,
+        "source_label_conflict_preserved": 98
+      }
+    },
+    "supervised_speech": {
+      "reason_counts": {
+        "existing_review_flag": 13,
+        "mechanical_cleanup_applied": 2,
+        "model_disagreement_requires_listening": 5,
+        "not_recommended_for_supervised_training": 13
+      },
+      "records": 5894,
+      "tier_rates": {
+        "experimental_review": 0.002206,
+        "strict_gold_candidate": 0.997794
+      },
+      "tiers": {
+        "experimental_review": 13,
+        "strict_gold_candidate": 5881
+      }
+    },
+    "text": {
+      "reason_counts": {
+        "cleanup_review_required": 7606,
+        "language_confidence_not_high": 18780,
+        "language_review_required": 3606,
+        "low_surface_quality": 12,
+        "no_rights_cleared_training_source": 24566,
+        "not_garhwali_candidate": 3414
+      },
+      "records": 28755,
+      "tier_rates": {
+        "experimental_review": 0.696714,
+        "high_quality_rights_pending": 0.060859,
+        "non_strict_context": 0.118727,
+        "strict_gold_candidate": 0.1237
+      },
+      "tiers": {
+        "experimental_review": 20034,
+        "high_quality_rights_pending": 1750,
+        "non_strict_context": 3414,
+        "strict_gold_candidate": 3557
+      }
+    }
+  },
+  "method": "Evidence-only tiering; original and cleaned values are preserved byte-for-byte.",
+  "strict_policy": "Strict candidates require strong language evidence, clean structure, compatible training rights, and no active review flags."
+}

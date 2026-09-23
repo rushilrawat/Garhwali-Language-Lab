@@ -1,0 +1,11 @@
+{
+  "model": "openai/whisper-small",
+  "language_prompt": "hi",
+  "records": 20,
+  "word_errors": 403,
+  "reference_words": 300,
+  "character_errors": 976,
+  "reference_characters": 1029,
+  "wer": 1.3433333333333333,
+  "cer": 0.9484936831875608
+}

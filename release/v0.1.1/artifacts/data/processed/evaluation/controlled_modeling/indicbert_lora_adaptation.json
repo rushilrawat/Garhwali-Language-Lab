@@ -1,0 +1,107 @@
+{
+  "adaptation_scope": "LoRA on encoder attention query/value projections; MLM head frozen",
+  "baseline_validation": {
+    "accuracy": 0.21747212,
+    "cross_entropy": 6.67816411,
+    "masked_tokens": 538,
+    "records": 128
+  },
+  "configuration": {
+    "device": "cpu",
+    "evaluation_mask_seed": 101,
+    "learning_rate": 0.0001,
+    "lora_alpha": 8,
+    "lora_dropout": 0.0,
+    "lora_rank": 4,
+    "mask_rate": 0.15,
+    "max_length": 128,
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 256,
+    "target_modules": [
+      "query",
+      "value"
+    ],
+    "training_pool_records_per_seed": 2048,
+    "validation_records": 128
+  },
+  "elapsed_seconds": 180.054,
+  "integrity": {
+    "frozen_test_records_used": 0,
+    "selection_split": "validation",
+    "source_text_mutated": false,
+    "training_split_only": true
+  },
+  "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+  "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+  "run_id": "indicbertv2-garhwali-encoder-lora-v0.1",
+  "runs": [
+    {
+      "checkpoint": "models/controlled_modeling/indicbert_lora_v0.1/seed-17",
+      "seed": 17,
+      "training": {
+        "final_training_loss": 2.94705415,
+        "masked_tokens": 985,
+        "mean_training_loss": 6.26786491,
+        "steps": 256,
+        "unique_training_records": 256
+      },
+      "validation": {
+        "accuracy": 0.21747212,
+        "cross_entropy": 6.0699914,
+        "masked_tokens": 538,
+        "records": 128
+      }
+    },
+    {
+      "checkpoint": "models/controlled_modeling/indicbert_lora_v0.1/seed-29",
+      "seed": 29,
+      "training": {
+        "final_training_loss": 1.14729118,
+        "masked_tokens": 1065,
+        "mean_training_loss": 6.50135436,
+        "steps": 256,
+        "unique_training_records": 256
+      },
+      "validation": {
+        "accuracy": 0.21747212,
+        "cross_entropy": 6.0545786,
+        "masked_tokens": 538,
+        "records": 128
+      }
+    },
+    {
+      "checkpoint": "models/controlled_modeling/indicbert_lora_v0.1/seed-43",
+      "seed": 43,
+      "training": {
+        "final_training_loss": 7.77280521,
+        "masked_tokens": 1022,
+        "mean_training_loss": 6.25631693,
+        "steps": 256,
+        "unique_training_records": 256
+      },
+      "validation": {
+        "accuracy": 0.21561338,
+        "cross_entropy": 6.06337472,
+        "masked_tokens": 538,
+        "records": 128
+      }
+    }
+  ],
+  "status": "validation_only_encoder_adaptation_pilot",
+  "summary": {
+    "improved_seed_count": 3,
+    "mean_accuracy": 0.21685254,
+    "mean_accuracy_delta": -0.00061958,
+    "mean_cross_entropy": 6.06264824,
+    "mean_cross_entropy_delta": -0.61551587,
+    "promotion_status": "advance_to_longer_continued_pretraining",
+    "std_accuracy": 0.00087622,
+    "std_cross_entropy": 0.00631318
+  },
+  "total_parameters": 278292880,
+  "trainable_parameters": 147456
+}

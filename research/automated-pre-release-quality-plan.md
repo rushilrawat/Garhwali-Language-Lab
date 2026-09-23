@@ -1,6 +1,6 @@
 # Automated Pre-release Quality Plan
 
-**Status:** local automated release pass completed 2026-09-18
+**Status:** automated build completed 2026-09-19; final review found a structured-record provenance gap, so publication remains blocked
 **Scope:** strongest practical corpus cleanup and verification before the first proper release, excluding human review
 **Release rule:** preserve every source record and original value; publish quality tiers and corrected derivatives instead of hiding data
 
@@ -8,7 +8,9 @@
 
 Produce a reproducible Garhwali release in which:
 
-- all **257,807 packaged records** pass structural and provenance validation;
+- all **257,807 packaged records** pass structural checks, and every data family
+  has its source and quality metadata checked. (Current audit coverage is
+  incomplete for the six structured-knowledge configurations; see finalreport.md.)
 - **65,000 unique SraVaani recordings** have independent Whisper-large-v3-turbo agreement evidence; the unfunded remainder stays unchanged;
 - every OCR-derived record retains its original text, corrected text, page identity, source, and correction history;
 - exact and semantic duplicates are grouped without losing source attribution;
@@ -34,7 +36,8 @@ Produce a reproducible Garhwali release in which:
 - [x] Re-run a 20-page weak-page pilot with four OCR layouts at 300 DPI.
 - [x] Re-run all 659 incoming machine-OCR pages with the validated multi-layout pipeline.
 - [x] Compare candidates using layout agreement, confidence, script evidence, and length stability.
-- [x] Apply 69 high-confidence consensus corrections automatically.
+- [x] Retain 69 same-engine layout-consensus text variants as reversible machine
+  proposals; they are not native-verified corrections.
 - [x] Retain the original OCR, corrected text, confidence, page identity, source hash, and layout evidence.
 
 **Acceptance:** no source text is overwritten; every automated change is reversible and attributable; unchanged and unresolved pages remain available.
@@ -76,7 +79,10 @@ Produce a reproducible Garhwali release in which:
 - [x] Run focused tests, the full test suite, release audit, and `git diff --check`.
 - [x] Generate final statistics, limitations, source cards, model cards, and the Hugging Face dataset card.
 
-**Acceptance:** all blocking checks pass; remaining uncertainty is documented per record or source; release artifacts reproduce from committed code and manifests.
+**Acceptance:** declared automated checks pass, all source and quality fields are
+validated for every configuration, remaining uncertainty is documented per
+record or source, and release artifacts reproduce from committed code and
+manifests. The structured-record provenance requirement is not yet satisfied.
 
 ## Release outputs
 
@@ -89,4 +95,7 @@ Produce a reproducible Garhwali release in which:
 
 ## What does not block this release
 
-Native-speaker review remains valuable, but it is not required for this automated release. Records that cannot be resolved confidently remain included with lower confidence and explicit evidence rather than being hidden, deleted, or silently corrected.
+Native-speaker review remains valuable and is required before the benchmark is
+described as native-validated. Records that cannot be resolved confidently
+remain included with lower confidence and explicit evidence rather than being
+hidden, deleted, or silently corrected.

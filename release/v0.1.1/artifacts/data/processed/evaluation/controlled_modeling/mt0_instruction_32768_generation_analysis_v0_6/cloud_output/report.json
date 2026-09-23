@@ -1,0 +1,230 @@
+{
+  "run_id": "garhwali-mt0-32768-generation-analysis-v0.6",
+  "validation_records": 130,
+  "selection_split": "validation",
+  "fixed_test_opened": false,
+  "systems": {
+    "seed-17": {
+      "records": 130,
+      "target_tokens": 697,
+      "cross_entropy": 4.26628047,
+      "exact_match": 0.01538462,
+      "corpus_chrf2": 0.0646888,
+      "diagnostics": {
+        "overall": {
+          "exact_match": 0.01538462,
+          "corpus_chrf2": 0.0646888,
+          "records": 130,
+          "empty_outputs": 0,
+          "instruction_copies": 0,
+          "control_token_outputs": 0,
+          "mean_adjacent_repetition_rate": 0.03525641
+        },
+        "by_task": {
+          "english_to_garhwali": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.04264072,
+            "records": 20,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.22916667
+          },
+          "english_to_garhwali_lexicon": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.01927437,
+            "records": 29,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "garhwali_to_english": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.14324947,
+            "records": 20,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "garhwali_to_english_lexicon": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.04237391,
+            "records": 29,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "garhwali_to_hindi_lexicon": {
+            "exact_match": 0.0625,
+            "corpus_chrf2": 0.05078333,
+            "records": 16,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "hindi_to_garhwali_lexicon": {
+            "exact_match": 0.0625,
+            "corpus_chrf2": 0.05483564,
+            "records": 16,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          }
+        }
+      }
+    },
+    "seed-29": {
+      "records": 130,
+      "target_tokens": 697,
+      "cross_entropy": 4.21928229,
+      "exact_match": 0.01538462,
+      "corpus_chrf2": 0.07400284,
+      "diagnostics": {
+        "overall": {
+          "exact_match": 0.01538462,
+          "corpus_chrf2": 0.07400284,
+          "records": 130,
+          "empty_outputs": 0,
+          "instruction_copies": 0,
+          "control_token_outputs": 0,
+          "mean_adjacent_repetition_rate": 0.025
+        },
+        "by_task": {
+          "english_to_garhwali": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.0460788,
+            "records": 20,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.1625
+          },
+          "english_to_garhwali_lexicon": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.02683668,
+            "records": 29,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "garhwali_to_english": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.16223163,
+            "records": 20,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "garhwali_to_english_lexicon": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.04777125,
+            "records": 29,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "garhwali_to_hindi_lexicon": {
+            "exact_match": 0.0625,
+            "corpus_chrf2": 0.05287977,
+            "records": 16,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "hindi_to_garhwali_lexicon": {
+            "exact_match": 0.0625,
+            "corpus_chrf2": 0.08762025,
+            "records": 16,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          }
+        }
+      }
+    },
+    "seed-43": {
+      "records": 130,
+      "target_tokens": 697,
+      "cross_entropy": 4.18828743,
+      "exact_match": 0.01538462,
+      "corpus_chrf2": 0.07087263,
+      "diagnostics": {
+        "overall": {
+          "exact_match": 0.01538462,
+          "corpus_chrf2": 0.07087263,
+          "records": 130,
+          "empty_outputs": 0,
+          "instruction_copies": 0,
+          "control_token_outputs": 0,
+          "mean_adjacent_repetition_rate": 0.03602564
+        },
+        "by_task": {
+          "english_to_garhwali": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.04500877,
+            "records": 20,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.20916667
+          },
+          "english_to_garhwali_lexicon": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.01453488,
+            "records": 29,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "garhwali_to_english": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.16652289,
+            "records": 20,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "garhwali_to_english_lexicon": {
+            "exact_match": 0.0,
+            "corpus_chrf2": 0.04021653,
+            "records": 29,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          },
+          "garhwali_to_hindi_lexicon": {
+            "exact_match": 0.0625,
+            "corpus_chrf2": 0.0527392,
+            "records": 16,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.03125
+          },
+          "hindi_to_garhwali_lexicon": {
+            "exact_match": 0.0625,
+            "corpus_chrf2": 0.06377471,
+            "records": 16,
+            "empty_outputs": 0,
+            "instruction_copies": 0,
+            "control_token_outputs": 0,
+            "mean_adjacent_repetition_rate": 0.0
+          }
+        }
+      }
+    }
+  }
+}

@@ -7,11 +7,21 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX = ROOT / 'release/v0.1.0-manifest.json'
+DEFAULT_INDEX = ROOT / 'release/v0.1.1-manifest.json'
 
 
 def validate(index):
     errors = []
+    if (
+        'release_ready' in str(index.get('status') or '')
+        and index.get('final_audit_status') != 'passed'
+    ):
+        errors.append('release-ready status requires a passing final audit')
+    if (
+        index.get('status') == 'blocked_final_audit'
+        and index.get('final_audit_status') == 'passed'
+    ):
+        errors.append('blocked release status is stale after a passing final audit')
     for name in ('text', 'speech'):
         section = index[name]
         actual = sum(section['splits'].values())

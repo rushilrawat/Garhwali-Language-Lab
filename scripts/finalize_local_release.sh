@@ -18,6 +18,7 @@ export PYTHONDONTWRITEBYTECODE=1
 "$PYTHON_BIN" scripts/tag_language_quality.py
 "$PYTHON_BIN" scripts/build_dataset_splits.py
 "$PYTHON_BIN" scripts/build_quality_tiers.py
+"$PYTHON_BIN" scripts/build_recommended_text_view.py
 "$PYTHON_BIN" scripts/build_language_resources.py
 "$PYTHON_BIN" scripts/build_garhwali_benchmark.py
 "$PYTHON_BIN" scripts/build_instruction_dataset.py
@@ -30,14 +31,23 @@ export PYTHONDONTWRITEBYTECODE=1
   --output data/huggingface/garhwali-language-lab-all-data
 "$PYTHON_BIN" scripts/build_release_manifest.py
 "$PYTHON_BIN" scripts/sync_release_index.py
-"$PYTHON_BIN" scripts/audit_final_release.py
+audit_failed=0
+if ! "$PYTHON_BIN" scripts/audit_final_release.py; then
+  audit_failed=1
+fi
+"$PYTHON_BIN" scripts/sync_release_index.py
+"$PYTHON_BIN" scripts/validate_release_index.py
 "$PYTHON_BIN" scripts/validate_hf_package_cloud.py \
   --package data/huggingface/garhwali-language-lab-all-data \
-  --output release/v0.1.0/huggingface-preflight.json
+  --output release/v0.1.1/huggingface-preflight.json
 "$PYTHON_BIN" scripts/build_hf_upload_plan.py \
   --package data/huggingface/garhwali-language-lab-all-data \
-  --output release/v0.1.0/huggingface-all-data-upload.json \
+  --output release/v0.1.1/huggingface-all-data-upload.json \
   --visibility private
 "$PYTHON_BIN" -m unittest discover -s tests -p 'test_*.py'
 "$PYTHON_BIN" scripts/build_release_bundle.py
 "$PYTHON_BIN" scripts/build_release_bundle.py --check
+if [[ "$audit_failed" -ne 0 ]]; then
+  echo "Final audit failed; release status is blocked." >&2
+  exit 1
+fi

@@ -1,3 +1,4 @@
+import hashlib
 import json
 import tempfile
 import unittest
@@ -43,15 +44,69 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
 
     def test_knowledge_row_adds_a_stable_common_id_without_losing_metadata(self):
         exported = m.knowledge_row(
-            {'person_id': 'literary-person:example', 'canonical_name': 'Example'},
+            {
+                'person_id': 'literary-person:example',
+                'canonical_name': 'Example',
+                'source_ids': ['catalog-a'],
+                'verification_status': 'corroborated_in_project',
+            },
             'literary_people',
         )
         self.assertEqual(exported['id'], 'literary-person:example')
         self.assertEqual(exported['knowledge_family'], 'literary_people')
         self.assertEqual(exported['canonical_name'], 'Example')
+        self.assertEqual(exported['provenance'][0]['source_id'], 'catalog-a')
+        self.assertEqual(exported['rights_status'], 'not_assessed')
+        self.assertFalse(exported['quality_metadata']['native_reviewed'])
 
         with self.assertRaisesRegex(ValueError, 'stable ID'):
             m.knowledge_row({'title': 'No identifier'}, 'literary_works')
+
+    def test_knowledge_row_resolves_source_ids_to_traceable_metadata(self):
+        exported = m.knowledge_row(
+            {
+                'term_id': 'history:term:example',
+                'source_refs': ['history-source'],
+            },
+            'historical_terms',
+            source_catalog={
+                'history-source': {
+                    'title': 'Official history page',
+                    'url': 'https://example.org/history',
+                    'source_kind': 'government_page',
+                    'sha256': 'a' * 64,
+                    'capture_id': 'capture-17',
+                    'local_capture': 'sources/manual/history.md',
+                },
+            },
+        )
+        self.assertEqual(exported['provenance'][0]['source_id'], 'history-source')
+        self.assertEqual(exported['provenance'][0]['source_url'], 'https://example.org/history')
+        self.assertEqual(exported['provenance'][0]['source_title'], 'Official history page')
+        self.assertEqual(exported['provenance'][0]['source_snapshot_sha256'], 'a' * 64)
+        self.assertEqual(exported['provenance'][0]['source_capture_id'], 'capture-17')
+        self.assertEqual(exported['provenance'][0]['source_capture_path'], 'sources/manual/history.md')
+
+    def test_source_catalog_resolves_geography_evidence_and_shared_capture(self):
+        geography_sources = m.source_catalog_for_family('geography')
+        geography = m.knowledge_row(
+            {
+                'record_id': 'place:example',
+                'evidence': ['district_portal'],
+                'wikipedia_url': 'https://en.wikipedia.org/wiki/Example',
+            },
+            'geography', geography_sources,
+        )
+        self.assertEqual(
+            geography['provenance'][0]['source_url'],
+            'https://uttarakhand.s3waas.gov.in/',
+        )
+        people_sources = m.source_catalog_for_family('literary_people')
+        capture = m.source_provenance('itihaas-garhwali-capture', people_sources)
+        self.assertEqual(
+            capture['source_snapshot_sha256'],
+            'f1f5870478d5f290509606f9c6d05f4bd86925b7d9080a80735cfbf05c756ae5',
+        )
 
     def test_public_text_requires_at_least_one_publishable_exact_source(self):
         allowed = {
@@ -93,6 +148,24 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             ['open'],
         )
 
+    def test_public_knowledge_requires_explicit_rights_basis(self):
+        cleared = {
+            'rights_status': 'rights_assessed_compatible',
+            'public_rights_basis': [{
+                'license': 'CC-BY-4.0',
+                'attribution': 'Source attribution',
+                'source_url': 'https://example.org/record',
+            }],
+        }
+        pending = {
+            'rights_status': 'not_assessed',
+            'provenance': [{
+                'source_url': 'https://example.org/record',
+            }],
+        }
+        self.assertTrue(m.is_public_knowledge_row(cleared))
+        self.assertFalse(m.is_public_knowledge_row(pending))
+
     def test_rights_warnings_are_blocked_across_separator_styles(self):
         for rights_status in (
             'upstream component review required',
@@ -104,6 +177,21 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                     'license_id': 'CC-BY-NC-SA-4.0',
                     'rights_status': rights_status,
                 }))
+
+    def test_noncommercial_and_no_derivatives_cc_licenses_are_not_public(self):
+        for license_id, license_url in (
+            ('CC-BY-NC-SA-4.0', 'https://creativecommons.org/licenses/by-nc-sa/4.0/'),
+            ('CC-BY-ND-4.0', 'https://creativecommons.org/licenses/by-nd/4.0/'),
+        ):
+            with self.subTest(license_id=license_id):
+                self.assertFalse(m.is_publishable_provenance({
+                    'license_id': license_id,
+                    'license_url': license_url,
+                }))
+
+    def test_open_license_matching_requires_mit_token_not_substring(self):
+        self.assertTrue(m.is_publishable_provenance({'license_id': 'MIT'}))
+        self.assertFalse(m.is_publishable_provenance({'license': 'limited permission'}))
 
     def test_text_export_derives_script(self):
         base = {'segment_sha256': 'a', 'split': 'train', 'quality_flags': []}
@@ -142,7 +230,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'segment_sha256': 'a', 'split': 'train', 'text': 'गढ़वाली',
             'quality_flags': [],
             'parents': [{'text_sha256': 'parent', 'provenance': [
-                {'source_id': 'open', 'iso_639_3': 'gbm'},
+                {'source_id': 'open', 'iso_639_3': 'gbm', 'license_id': 'CC-BY-4.0'},
             ]}],
         }
         parent_quality = {
@@ -272,8 +360,31 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIn('complete all-data package', card)
         self.assertIn('No catalog text values are redacted', card)
         self.assertNotIn('This rights-filtered package', card)
-        self.assertIn('config_name: literary_works', card)
-        self.assertIn('config_name: university_research', card)
+        self.assertNotIn('config_name: literary_works', card)
+        self.assertNotIn('config_name: university_research', card)
+
+    def test_public_card_discloses_structured_metadata_clearance_gap(self):
+        report = {
+            'release_id': 'test',
+            'profile': 'public',
+            'configs': {'text/train': {'records': 2}},
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'draft_unique_audio': 1,
+            'catalog_records': 2,
+            'catalog_redacted_text_records': 1,
+            'structured_knowledge_excluded_for_rights': {'geography': 50},
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+        }
+        card = m.dataset_card(report)
+        self.assertIn('public-profile package', card)
+        self.assertIn('omits **50 structured-knowledge records**', card)
+        self.assertNotIn('config_name: geography', card)
+        self.assertIn('They remain intact in the complete all-data package', card)
 
     def test_catalog_includes_open_text(self):
         row = {
@@ -415,6 +526,10 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'train-00000.jsonl', 'train-00001.jsonl', 'train-00002.jsonl'
             ])
             self.assertEqual(json.loads(paths[-1].read_text())['id'], '4')
+            self.assertEqual(
+                report['file_sha256'],
+                {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in paths},
+            )
 
     def test_draft_coverage_accepts_source_rows_with_duplicate_audio(self):
         queue = [

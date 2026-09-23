@@ -37,7 +37,7 @@ class ReleaseBundleTests(unittest.TestCase):
             artifact = root / 'report.json'
             artifact.write_text('{}\n')
             (root / 'index.json').write_text(json.dumps({
-                'release_id': 'garhwali-language-lab-v0.1.0',
+                'release_id': 'garhwali-language-lab-v0.1.1',
                 'files': 1,
                 'bytes': artifact.stat().st_size,
                 'artifacts': [{
@@ -56,7 +56,7 @@ class ReleaseBundleTests(unittest.TestCase):
             artifact = root / 'report.json'
             artifact.write_text('{"path":"/Users/example/private"}\n')
             (root / 'index.json').write_text(json.dumps({
-                'release_id': 'garhwali-language-lab-v0.1.0',
+                'release_id': 'garhwali-language-lab-v0.1.1',
                 'files': 1,
                 'bytes': artifact.stat().st_size,
                 'artifacts': [{
@@ -75,7 +75,7 @@ class ReleaseBundleTests(unittest.TestCase):
             root = Path(directory)
             (root / 'secret.txt').write_text('not indexed')
             (root / 'index.json').write_text(json.dumps({
-                'release_id': 'garhwali-language-lab-v0.1.0',
+                'release_id': 'garhwali-language-lab-v0.1.1',
                 'files': 0, 'bytes': 0, 'artifacts': [],
             }))
             self.assertIn(
@@ -89,7 +89,7 @@ class ReleaseBundleTests(unittest.TestCase):
             outside = root.parent / 'outside.json'
             outside.write_text('{}\n')
             (root / 'index.json').write_text(json.dumps({
-                'release_id': 'garhwali-language-lab-v0.1.0',
+                'release_id': 'garhwali-language-lab-v0.1.1',
                 'files': 1,
                 'bytes': outside.stat().st_size,
                 'artifacts': [{

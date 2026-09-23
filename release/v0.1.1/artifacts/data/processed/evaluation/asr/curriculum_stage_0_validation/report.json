@@ -1,0 +1,18 @@
+{
+  "cer": 0.49596355668319686,
+  "character_errors": 8601,
+  "device": "mps",
+  "elapsed_seconds": 86.054,
+  "evaluation_manifest": "data/processed/model_ready/splits/asr/validation.jsonl",
+  "evaluation_manifest_sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66",
+  "evaluation_records": 269,
+  "language_prompt": "hi",
+  "max_target_tokens": 128,
+  "model_id": "whisper-tiny-garhwali-curriculum-stage-0",
+  "reference_characters": 17342,
+  "reference_words": 4980,
+  "revision": "local-v0.1-exact-stage0",
+  "run_id": "whisper-tiny-garhwali-curriculum-stage-0-garhwali-speaker-safe-v0.1",
+  "wer": 0.8751004016064257,
+  "word_errors": 4358
+}

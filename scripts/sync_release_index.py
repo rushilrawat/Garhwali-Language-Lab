@@ -10,13 +10,14 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX = ROOT / 'release/v0.1.0-manifest.json'
+DEFAULT_INDEX = ROOT / 'release/v0.1.1-manifest.json'
 DEFAULT_SPLITS = ROOT / 'data/processed/model_ready/splits/report.json'
 DEFAULT_TEXT = ROOT / 'data/processed/text/report.json'
 DEFAULT_PUBLIC = ROOT / 'data/huggingface/garhwali-language-lab/manifest.json'
 DEFAULT_ALL_DATA = ROOT / 'data/huggingface/garhwali-language-lab-all-data/manifest.json'
 DEFAULT_BENCHMARK = ROOT / 'data/processed/evaluation/garhwali_bench/manifest.json'
 DEFAULT_RESOURCES = ROOT / 'data/processed/model_ready/language_resources/report.json'
+DEFAULT_FINAL_AUDIT = ROOT / 'release/v0.1.1/final-audit.json'
 KNOWLEDGE_CONFIGS = (
     'geography', 'historical_terms', 'literary_people',
     'literary_works', 'popular_songs', 'university_research',
@@ -34,7 +35,8 @@ def package_records(manifest):
     return sum(value['records'] for value in manifest['configs'].values())
 
 
-def refresh(index, splits, text, public, all_data, benchmark=None, resources=None):
+def refresh(index, splits, text, public, all_data, benchmark=None, resources=None,
+            final_audit=None):
     records = splits['text']['records']
     index['generated'] = date.today().isoformat()
     index['text'].update({
@@ -83,7 +85,7 @@ def refresh(index, splits, text, public, all_data, benchmark=None, resources=Non
             'text': benchmark['records']['text_evaluation'],
             'speech': benchmark['records']['asr_evaluation'],
             'review_status': benchmark.get('status'),
-            'native_review_optional': False,
+            'native_review_deferred': True,
         })
     if resources:
         index['language_resources'].update({
@@ -101,11 +103,25 @@ def refresh(index, splits, text, public, all_data, benchmark=None, resources=Non
     knowledge_counts = {
         family: config_records(all_data, family) for family in KNOWLEDGE_CONFIGS
     }
+    public_knowledge_count = sum(
+        config_records(public, family) for family in KNOWLEDGE_CONFIGS
+    )
+    all_knowledge_count = sum(knowledge_counts.values())
     index['structured_knowledge'] = {
-        'records': sum(knowledge_counts.values()),
+        'records': all_knowledge_count,
         'configs': knowledge_counts,
-        'included_in_public_and_all_data_packages': True,
+        'all_data_records': all_knowledge_count,
+        'public_records': public_knowledge_count,
+        'public_excluded_for_rights': all_knowledge_count - public_knowledge_count,
+        'included_in_all_data_package': True,
     }
+    audit_status = (final_audit or {}).get('status', 'not_run')
+    index['final_audit_status'] = audit_status
+    index['status'] = (
+        'release_ready_with_public_rights_filtered_export'
+        if audit_status == 'passed'
+        else 'blocked_final_audit'
+    )
     return index
 
 
@@ -118,6 +134,7 @@ def main():
     parser.add_argument('--all-data-manifest', type=Path, default=DEFAULT_ALL_DATA)
     parser.add_argument('--benchmark-manifest', type=Path, default=DEFAULT_BENCHMARK)
     parser.add_argument('--language-resources', type=Path, default=DEFAULT_RESOURCES)
+    parser.add_argument('--final-audit', type=Path, default=DEFAULT_FINAL_AUDIT)
     args = parser.parse_args()
 
     index = json.loads(args.index.read_text(encoding='utf-8'))
@@ -129,12 +146,16 @@ def main():
         json.loads(args.all_data_manifest.read_text(encoding='utf-8')),
         json.loads(args.benchmark_manifest.read_text(encoding='utf-8')),
         json.loads(args.language_resources.read_text(encoding='utf-8')),
+        json.loads(args.final_audit.read_text(encoding='utf-8'))
+        if args.final_audit.exists() else None,
     )
     args.index.write_text(
         json.dumps(refreshed, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
     )
     print(json.dumps({
         'release_id': refreshed['release_id'],
+        'status': refreshed['status'],
+        'final_audit_status': refreshed['final_audit_status'],
         'text_records': refreshed['text']['total'],
         'unique_parent_documents': refreshed['text']['unique_parent_documents'],
         'structured_knowledge_records': refreshed['structured_knowledge']['records'],

@@ -1,0 +1,92 @@
+{
+  "artifacts": {
+    "model_sha256": "54ecf8a4215af0e19a6100a2303b942f17ddde933217f65d39c28eb1ca81c3cb",
+    "pilot_checkpoint": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048-weighted-batches",
+    "predictions": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048-weighted-batches/evaluation_predictions.jsonl",
+    "predictions_sha256": "cea515ef6843cb0e981913e7d1bcee07696b89fc12492ba13fdb0154dc6a04b0",
+    "training_report": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048-weighted-batches/report.json",
+    "training_report_sha256": "e18ee19af6874704f7ad114e477d24a96a4acc7458e8bbfe9178d359c3914b96",
+    "validation_manifest": "data/processed/model_ready/splits/asr/validation.jsonl",
+    "validation_manifest_sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66"
+  },
+  "baseline": {
+    "cer": 0.4629800484373198,
+    "character_errors": 8029,
+    "records": 269,
+    "reference_characters": 17342,
+    "reference_words": 4980,
+    "wer": 0.7805220883534136,
+    "word_errors": 3887
+  },
+  "baseline_checkpoint": "whisper_tiny_v0.2",
+  "comparison_to_original_stage_1_pilot": {
+    "cer_delta": 0.000634298235497599,
+    "character_error_delta": 11,
+    "wer_delta": 0.004016064257028162,
+    "word_error_delta": 20
+  },
+  "comparison_to_stage_0": {
+    "cer_delta": 0.0006919617114519161,
+    "character_error_delta": 12,
+    "decision": "rejected",
+    "promotion_rule": "pilot_wer_and_cer_must_both_be_lower_than_stage_0",
+    "relative_cer_change": 0.0014945821397433215,
+    "relative_wer_change": 0.009776177000257333,
+    "wer_delta": 0.007630522088353464,
+    "word_error_delta": 38
+  },
+  "curriculum_stage": 1,
+  "decision": "rejected",
+  "next_action": "retain_stage_0_and_stop_this_machine_label_curriculum_recipe",
+  "original_stage_1_pilot": {
+    "cer": 0.46303771191327414,
+    "character_errors": 8030,
+    "records": 269,
+    "reference_characters": 17342,
+    "reference_words": 4980,
+    "wer": 0.7841365461847389,
+    "word_errors": 3905
+  },
+  "paired_validation_against_stage_0": {
+    "cer": {
+      "better": 131,
+      "tie": 41,
+      "worse": 97
+    },
+    "exact_same_predictions": 0,
+    "wer": {
+      "better": 89,
+      "tie": 87,
+      "worse": 93
+    }
+  },
+  "run_id": "garhwali-whisper-stage-1-weighted-batch-pilot-h32-m2048-v0.1",
+  "stage_2_unlocked": false,
+  "status": "completed",
+  "training": {
+    "batching_strategy": "stratified_normalized_weighted_gradient_accumulation",
+    "effective_weight_mass": 64.071795,
+    "epochs": 1,
+    "human_records": 32,
+    "machine_records": 2048,
+    "mean_objective_loss": 0.523636828823328,
+    "mean_raw_loss": 0.6338293121966462,
+    "optimizer_steps": 32,
+    "records_per_batch": {
+      "maximum": 65,
+      "minimum": 65
+    },
+    "total_records": 2080,
+    "training_examples": 2080
+  },
+  "training_complete": false,
+  "weighted_batch_pilot": {
+    "cer": 0.46367201014877174,
+    "character_errors": 8041,
+    "records": 269,
+    "reference_characters": 17342,
+    "reference_words": 4980,
+    "wer": 0.7881526104417671,
+    "word_errors": 3925
+  }
+}

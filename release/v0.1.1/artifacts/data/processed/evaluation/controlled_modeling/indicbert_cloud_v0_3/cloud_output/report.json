@@ -1,0 +1,107 @@
+{
+  "adaptation_scope": "LoRA on encoder attention query/value projections; MLM head frozen",
+  "baseline_validation": {
+    "accuracy": 0.24299065,
+    "cross_entropy": 6.39548393,
+    "masked_tokens": 535,
+    "records": 128
+  },
+  "configuration": {
+    "device": "cuda",
+    "evaluation_mask_seed": 101,
+    "learning_rate": 0.0001,
+    "lora_alpha": 8,
+    "lora_dropout": 0.0,
+    "lora_rank": 4,
+    "mask_rate": 0.15,
+    "max_length": 128,
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 4096,
+    "target_modules": [
+      "query",
+      "value"
+    ],
+    "training_pool_records_per_seed": 106804,
+    "validation_records": 128
+  },
+  "elapsed_seconds": 287.383,
+  "integrity": {
+    "frozen_test_records_used": 0,
+    "selection_split": "validation",
+    "source_text_mutated": false,
+    "training_split_only": true
+  },
+  "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+  "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+  "run_id": "indicbertv2-garhwali-encoder-lora-v0.2",
+  "runs": [
+    {
+      "checkpoint": "/output/checkpoints/seed-17",
+      "seed": 17,
+      "training": {
+        "final_training_loss": 4.55422783,
+        "masked_tokens": 14687,
+        "mean_training_loss": 5.56838944,
+        "steps": 4096,
+        "unique_training_records": 4096
+      },
+      "validation": {
+        "accuracy": 0.27476636,
+        "cross_entropy": 5.08971085,
+        "masked_tokens": 535,
+        "records": 128
+      }
+    },
+    {
+      "checkpoint": "/output/checkpoints/seed-29",
+      "seed": 29,
+      "training": {
+        "final_training_loss": 4.02000856,
+        "masked_tokens": 14677,
+        "mean_training_loss": 5.63691028,
+        "steps": 4096,
+        "unique_training_records": 4096
+      },
+      "validation": {
+        "accuracy": 0.28224299,
+        "cross_entropy": 5.08759214,
+        "masked_tokens": 535,
+        "records": 128
+      }
+    },
+    {
+      "checkpoint": "/output/checkpoints/seed-43",
+      "seed": 43,
+      "training": {
+        "final_training_loss": 3.47126365,
+        "masked_tokens": 14876,
+        "mean_training_loss": 5.57405397,
+        "steps": 4096,
+        "unique_training_records": 4096
+      },
+      "validation": {
+        "accuracy": 0.29158879,
+        "cross_entropy": 5.09001965,
+        "masked_tokens": 535,
+        "records": 128
+      }
+    }
+  ],
+  "status": "completed_longer_corpus_wide_sampled_continued_pretraining",
+  "summary": {
+    "improved_seed_count": 3,
+    "mean_accuracy": 0.28286605,
+    "mean_accuracy_delta": 0.0398754,
+    "mean_cross_entropy": 5.08910755,
+    "mean_cross_entropy_delta": -1.30637638,
+    "promotion_status": "validated_longer_continued_pretraining",
+    "std_accuracy": 0.00688185,
+    "std_cross_entropy": 0.00107894
+  },
+  "total_parameters": 278292880,
+  "trainable_parameters": 147456
+}

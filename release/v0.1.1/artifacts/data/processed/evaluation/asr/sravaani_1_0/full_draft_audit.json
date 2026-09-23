@@ -1,0 +1,20 @@
+{
+  "all_active_experimental": true,
+  "all_not_supervised": true,
+  "draft_rows": 104542,
+  "draft_unique_audio": 104534,
+  "drafts_without_devanagari_letters": 1026,
+  "duplicate_draft_rows": 8,
+  "empty_drafts": 34,
+  "missing_audio_hashes": 0,
+  "model_revisions": [
+    {
+      "model": "ARTPARK-IISc/SraVaani-1.0",
+      "revision": "f5dd5358325a5208775b91dad98918e079ea2b27",
+      "rows": 104542
+    }
+  ],
+  "queue_rows": 104542,
+  "queue_unique_audio": 104534,
+  "unexpected_audio_hashes": 0
+}

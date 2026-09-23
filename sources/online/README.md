@@ -203,7 +203,9 @@ python3 scripts/collect_online.py wayback
 python3 scripts/collect_online.py archive_open
 python3 scripts/collect_online.py archive_extract
 python3 scripts/collect_online.py historical_more_acquire
-PYTHONPATH=/Users/rushilrawat/.cache/codex-runtimes/codex-primary-runtime/dependencies/python python3 scripts/collect_online.py historical_more_extract
+# If this system's Python certificate bundle is not configured, add a local
+# certifi/runtime dependency directory here instead of a machine-specific path.
+PYTHONPATH=/path/to/local-python-dependencies python3 scripts/collect_online.py historical_more_extract
 python3 scripts/collect_online.py opus_acquire
 python3 scripts/collect_online.py opus_extract
 PYTHONPATH=/private/tmp/garhwali-parquet python3 scripts/collect_online.py indic_asr_range_acquire

@@ -6,6 +6,9 @@ all-data package, including records with restricted or rights-pending source
 terms. Retention does not change the source's
 copyright, license, consent scope, or attribution requirements.
 
+The repository code is licensed under MIT by `LICENSE`. That code license does
+not license corpus content, source scans, recordings, or generated data.
+
 ## Public dataset releases
 
 A record may enter a public dataset only when its source-level provenance shows
@@ -48,7 +51,10 @@ owner, contributor, or speaker can submit a removal request using the source or
 audio identifier; derived records and future releases must carry the resulting
 exclusion while preserving a private audit entry.
 
-The public `v0.1.0` release contains the rights-filtered Hugging Face profile.
-Evaluation rows and pronunciation/TTS resources retain optional native-review
-metadata. The complete all-data profile keeps full values and their original
-source terms together.
+The locally generated public profile contains only records with an explicit
+compatible rights basis. It excludes 216 structured knowledge records until
+source-specific reuse evidence is recorded. The complete all-data profile keeps
+those values and their original source terms together and must remain private or
+access-controlled. The public profile's exclusion passes its automated rights
+gate; it does not clear the omitted records for redistribution. The current
+release review is in [`finalreport.md`](finalreport.md).

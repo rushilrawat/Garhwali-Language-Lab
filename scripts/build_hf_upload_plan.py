@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
-DEFAULT_OUTPUT = ROOT / 'release/v0.1.0/huggingface-all-data-upload.json'
+DEFAULT_OUTPUT = ROOT / 'release/v0.1.1/huggingface-all-data-upload.json'
 
 
 def sha256(path):
@@ -23,7 +23,7 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def build(package, target_repo, visibility):
+def build(package, target_repo=None, visibility='private'):
     package = Path(package)
     manifest = json.loads((package / 'manifest.json').read_text(encoding='utf-8'))
     profile = manifest.get('profile')
@@ -33,6 +33,12 @@ def build(package, target_repo, visibility):
         )
     if not isinstance(manifest.get('configs'), dict) or not manifest.get('release_id'):
         raise ValueError('Package manifest is missing release_id or configs')
+    if target_repo is None:
+        target_repo = (
+            'rushilrawat/garhwali-language-lab'
+            if profile == 'public'
+            else 'rushilrawat/garhwali-language-lab-all-data'
+        )
     expected_files = {
         'README.md', 'manifest.json', 'LICENSE_POLICY.md',
         'ATTRIBUTION.md', 'REMOVAL_POLICY.md',
@@ -102,9 +108,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--package', type=Path, default=DEFAULT_PACKAGE)
     parser.add_argument('--output', type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument(
-        '--target-repo', default='rushilrawat/garhwali-language-lab-all-data'
-    )
+    parser.add_argument('--target-repo')
     parser.add_argument('--visibility', choices=('private', 'public'), default='private')
     args = parser.parse_args()
     report = build(args.package, args.target_repo, args.visibility)

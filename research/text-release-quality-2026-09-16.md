@@ -1,5 +1,9 @@
 # Text release quality audit
 
+> Historical snapshot from 2026-09-16 (114,082 segments). The current package
+> has 114,064 prepared segments; see [`finalreport.md`](../finalreport.md) for
+> current release status.
+
 **Grain:** one exact-unique text segment per split row
 
 **Records:** 114,082

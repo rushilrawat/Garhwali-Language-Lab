@@ -8,6 +8,17 @@ import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from build_huggingface_dataset import (
+    is_publishable_provenance,
+    recommended_text_training_row,
+)
+
+
+KNOWLEDGE_CONFIGS = {
+    'geography', 'historical_terms', 'literary_people',
+    'literary_works', 'popular_songs', 'university_research',
+}
+
 
 def sha256(path):
     digest = hashlib.sha256()
@@ -58,12 +69,18 @@ def main():
         seen = set()
         stats = Counter()
         scripts = Counter()
+        declared_hashes = expected.get('file_sha256') or {}
+        if set(declared_hashes) != set(expected.get('files') or []):
+            errors.append(f'file_hash_manifest_mismatch:{key}')
         for filename in expected["files"]:
             path = args.package / "data" / config / filename
             if not path.exists():
                 errors.append(f"missing_file:{config}/{filename}")
                 continue
-            file_hashes.append({"path": str(path.relative_to(args.package)), "sha256": sha256(path)})
+            digest = sha256(path)
+            file_hashes.append({"path": str(path.relative_to(args.package)), "sha256": digest})
+            if declared_hashes.get(filename) != digest:
+                errors.append(f'file_hash_mismatch:{key}:{filename}')
             with path.open(encoding="utf-8") as handle:
                 for line_number, line in enumerate(handle, 1):
                     try:
@@ -80,6 +97,12 @@ def main():
                     else:
                         seen.add(rid)
                         split_ids[config][split].add(rid)
+                    if config == 'text' and row.get('id') != hashlib.sha256(
+                        str(row.get('text') or '').encode('utf-8')
+                    ).hexdigest():
+                        stats['text_id_hash_mismatch'] += 1
+                    if config == 'catalog' and row.get('id') != row.get('text_sha256'):
+                        stats['catalog_id_hash_mismatch'] += 1
                     text = row.get("text") if "text" in row else row.get("transcript")
                     if text is not None:
                         stats["empty_content"] += int(not str(text).strip())
@@ -89,9 +112,38 @@ def main():
                     stats["rows_with_quality_metadata"] += int(any(
                         key_name in row for key_name in (
                             "quality_flags", "machine_transcript_quality", "quality_v2",
-                            "language_quality", "surface_quality"
+                            "language_quality", "surface_quality", "quality_metadata",
                         )
                     ))
+                    if config in KNOWLEDGE_CONFIGS:
+                        if not provenance or any(
+                            not (item.get('source_id') or item.get('source_url'))
+                            for item in provenance
+                        ):
+                            stats['knowledge_missing_source_provenance'] += 1
+                        if not provenance or any(
+                            not (
+                                item.get('source_url')
+                                or item.get('source_snapshot_sha256')
+                                or item.get('source_capture_path')
+                            )
+                            for item in provenance
+                        ):
+                            stats['knowledge_untraceable_source_provenance'] += 1
+                        metadata = row.get('quality_metadata')
+                        if not isinstance(metadata, dict) or not metadata.get('review_status'):
+                            stats['knowledge_missing_quality_metadata'] += 1
+                        if not row.get('rights_status'):
+                            stats['knowledge_missing_rights_status'] += 1
+                        if manifest.get('profile') == 'public':
+                            rights_basis = row.get('public_rights_basis') or []
+                            if not rights_basis or not all(
+                                is_publishable_provenance(item)
+                                and item.get('attribution')
+                                and (item.get('source_url') or item.get('source_snapshot_sha256'))
+                                for item in rights_basis
+                            ):
+                                stats['knowledge_missing_public_rights'] += 1
                     for item in provenance:
                         source = item.get("source_id")
                         if source:
@@ -100,6 +152,8 @@ def main():
                         source_languages = set(row.get('source_languages') or [])
                         if row.get('language') == 'gbm' and source_languages & {'eng', 'hin', 'mul'}:
                             stats['unsupported_garhwali_label'] += 1
+                        if row.get('recommended_for_training') is not recommended_text_training_row(row):
+                            stats['invalid_training_recommendation'] += 1
                         if any(
                             field not in row for field in (
                                 'language_buckets', 'quality_tiers',
@@ -120,9 +174,16 @@ def main():
             errors.append(f"missing_identity:{key}:{stats['missing_identity']}")
         if stats['duplicate_identity']:
             errors.append(f"duplicate_identity:{key}:{stats['duplicate_identity']}")
+        for field in ('text_id_hash_mismatch', 'catalog_id_hash_mismatch'):
+            if stats[field]:
+                errors.append(f'{field}:{key}:{stats[field]}')
         for field in (
             'unsupported_garhwali_label', 'missing_admission_metadata',
-            'missing_acceptable_responses',
+            'invalid_training_recommendation',
+            'missing_acceptable_responses', 'knowledge_missing_source_provenance',
+            'knowledge_untraceable_source_provenance',
+            'knowledge_missing_quality_metadata', 'knowledge_missing_rights_status',
+            'knowledge_missing_public_rights',
         ):
             if stats[field]:
                 errors.append(f'{field}:{key}:{stats[field]}')
@@ -169,7 +230,7 @@ def main():
         errors.append(f'symlink:{path.relative_to(args.package).as_posix()}')
 
     report = {
-        "run_id": "garhwali-hf-all-data-cloud-validation-v0.1",
+        "run_id": f"garhwali-hf-{manifest['profile']}-cloud-validation-v0.1",
         "release_id": manifest["release_id"],
         "status": "passed" if not errors else "failed",
         "manifest_profile": manifest["profile"],

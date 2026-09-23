@@ -1,0 +1,23 @@
+{
+  "baselines": {
+    "copy_source": {
+      "corpus_bleu_smoothed": 0.00043426,
+      "corpus_chrf2": 0.00746001,
+      "exact_match": 0.0
+    },
+    "development_translation_memory": {
+      "corpus_bleu_smoothed": 0.00820786,
+      "corpus_chrf2": 0.21588612,
+      "exact_match": 0.0
+    }
+  },
+  "development_records": 997,
+  "metric_note": "BLEU uses add-one smoothing; chrF uses character orders 1-6 and beta=2.",
+  "retrieval": {
+    "mean_similarity": 0.14106076,
+    "zero_similarity_records": 0
+  },
+  "run_id": "garhwali-english-translation-baselines-v0.1",
+  "test_records": 1012,
+  "translation_direction": "gbm_to_en"
+}

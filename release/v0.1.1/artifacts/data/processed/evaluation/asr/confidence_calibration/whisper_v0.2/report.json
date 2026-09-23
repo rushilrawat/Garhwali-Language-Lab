@@ -1,0 +1,18 @@
+{
+  "cer": 0.44590619382252,
+  "character_errors": 10914,
+  "device": "cpu",
+  "elapsed_seconds": 320.107,
+  "evaluation_manifest": "data/processed/evaluation/asr/confidence_calibration/manifest.jsonl",
+  "evaluation_manifest_sha256": "5c1e24349e0e956c1b1eab96ce0f3d62ffff010ff7a2f0cf414d3bb766c2900d",
+  "evaluation_records": 381,
+  "language_prompt": "hi",
+  "max_target_tokens": 128,
+  "model_id": "whisper-tiny-garhwali-v0.2",
+  "reference_characters": 24476,
+  "reference_words": 7066,
+  "revision": "local-v0.2",
+  "run_id": "whisper-tiny-garhwali-v0.2-garhwali-speaker-safe-v0.1",
+  "wer": 0.7694593829606566,
+  "word_errors": 5437
+}

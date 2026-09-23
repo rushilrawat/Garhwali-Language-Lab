@@ -1,0 +1,14 @@
+{
+  "flag:high_dc_offset": 11,
+  "flag:projected_clipping": 223,
+  "flag:very_loud": 1,
+  "flag:very_quiet": 31,
+  "rendered": 1736,
+  "rendered_review": 266,
+  "rendered_test": 89,
+  "rendered_train": 1422,
+  "rendered_validation": 225,
+  "selection": "strict ASR/TTS candidates with an unflagged normalization plan",
+  "skipped_flagged": 266,
+  "source_audio_unchanged": true
+}

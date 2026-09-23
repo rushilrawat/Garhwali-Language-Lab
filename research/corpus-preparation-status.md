@@ -1,6 +1,6 @@
 # Corpus preparation status
 
-Updated 2026-09-18 from the checked-in preparation scripts. Raw and downloaded material remains under gitignore. Model-result paragraphs retain the exact dataset snapshot used by each historical experiment.
+Updated 2026-09-23. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
 
 ## Text
 
@@ -44,7 +44,7 @@ Updated 2026-09-18 from the checked-in preparation scripts. Raw and downloaded m
 
 ## Model-assisted text cleanup
 
-The rebuilt complete package contains 257,807 rows and the separate public redistribution package contains 146,912 rows. Local package validation passes with zero strict cross-split identity overlap, zero normalized instruction-prompt overlap, 53 distinct provenance sources, and no deleted or mutated source records.
+The rebuilt complete package contains 257,807 rows and the rights-filtered public profile contains 146,684 rows. The public package excludes 216 structured records with unassessed or incompatible rights; the all-data package retains them. Both package validations pass with zero strict cross-split identity overlap, zero normalized instruction-prompt overlap, 81 distinct provenance sources in all-data, traceable source locators on every structured record, and no deleted or mutated source records. Native-speaker review and dialect annotation are deferred; this release is labeled an automated candidate.
 
 - The original model-assisted cleanup run covered 27,987 parent texts before the source-grounded re-extraction. Its immutable proposal artifact remains a historical model snapshot; the current canonical corpus contains 28,755 texts.
 - Pinned IndicBERTv2 scored 4,096 OCR-, language-, spelling-, and dialect-priority records over 81,116 deterministic masked tokens. The 90th-percentile loss threshold identifies 410 model/source disagreements for inspection without changing source labels.
@@ -68,8 +68,8 @@ The rebuilt complete package contains 257,807 rows and the separate public redis
 - Three 64-step mT5-small LoRA seeds all improve validation loss from 28.201385 to a 27.569880 mean. The validation-selected seed 29 scores 29.059347 test cross-entropy versus the base model's 30.416287, but generation remains at 0% exact match and 0.0 chrF2 after sentinel-token removal, so this adapter is not promoted.
 - A new v0.2 instruction test was frozen from 258 parent records unseen by the earlier pilot; the old 84-record test was not reused. Zero-shot mT0-small scores 5.614353 validation cross-entropy, and three 256-step LoRA seeds reach a 4.961989 mean and 5.019603 mean on the new test. All seeds improve teacher-forced loss; exact match remains 0%, so native-reference scoring and a longer curriculum remain open.
 - The final 16,384-step mT0 continuation lowers best validation cross-entropy from 4.476975 at 8,192 steps to 4.315077. Seed 43 reaches 2.3077% exact match and 0.073709 chrF2, but adapted chrF2 remains below the zero-shot base; the fixed test remains unopened.
-- A budget-bounded 32,768-step continuation preserves complete seed-17 and seed-29 adapters with validation cross-entropies of 4.266280 and 4.219282. Seed 43 stopped near step 23,456 after the reported credit balance became insufficient. Cancellation occurred before the combined generation report was written, so deeper per-task generation metrics remain unfinished; the fixed test stayed closed.
-- Cross-encoder refinement of all 29,903 semantic candidates identifies 267 high-confidence and 1,357 supported near-duplicate pairs, 14,257 likely false positives, and 14,022 review-required pairs. The supported set contains 92 cross-split pairs; originals remain unchanged.
+- **Superseded partial-run note:** all three 32,768-step mT0 seeds later completed. The seed-43 validation loss is 4.188287; cross-seed and per-task generation analysis completed, and the validation-selected seed-43 checkpoint was evaluated once on the separate 86-row test. It reached 4.358291 test cross-entropy and 2.33% exact match, while chrF2 (0.062177) remained below the base model (0.085840). The test was not used for selection.
+- Cross-encoder refinement of all 29,903 semantic candidates identified 267 high-confidence and 1,357 supported near-duplicate pairs, 14,257 likely false positives, and 14,022 review-required pairs. The original split report had 92 supported cross-split pairs. **Superseded:** the rebuilt split manifest uses 1,623 supported semantic edges, reassigns 120 records, and reports zero supported-semantic cross-split overlap; source texts remain unchanged.
 
 ## Long-form folklore audio
 
@@ -144,27 +144,20 @@ The rebuilt complete package contains 257,807 rows and the separate public redis
 
 - All 28,755 cleaned texts have source-backed language, Unicode-script, genre, explicit-dialect, and geographic-evidence fields.
 - Separate views contain 25,341 likely Garhwali candidates, 2,237 mixed-language records, 860 unresolved script/language records, and 317 non-Garhwali cultural-context records. The tagged all-data view retains all four groups.
-- Language-identity confidence is high for 9,981 texts, medium for 15,478, and low for 3,296. The medium group is dominated by 14,999 PahariLI texts whose Garhwali label is useful but whose component lineage remains missing.
+- Current language-resource report: confidence is high for 9,975 texts, medium for 15,366, and low for 3,414. The medium group is dominated by 14,999 PahariLI texts whose Garhwali label is useful but whose component lineage remains missing.
 - Every text has a genre. Resource views expose 1,114 lexicon candidates, 455 parallel examples, and 1,187 grammar-source candidates.
-- Train-only language resources include a 330-symbol Unicode character tokenizer, 203,539 observed word types, 1,114 pronunciation candidates (293 with source phonetic evidence), and 1,736 normalized TTS candidate pairs.
+- Current train-only language resources include a 331-symbol Unicode character tokenizer, 262,231 observed word types, 1,114 pronunciation candidates (293 with source phonetic evidence), and 1,736 normalized TTS candidate pairs.
 - Only 29 text records carry explicit dialect labels. District names are never converted into dialect labels; 10,872 conversational, lexical, or folk records are prioritized for dialect review.
 - All 110,436 VAANI recordings carry district, gender, speaker-status, and language-evidence tags. Nine supervised transcripts need language/script review. The untranscribed 104,542 remain medium-confidence source-labelled Garhwali audio until transcription verifies their content.
 - VAANI has 363 distinct non-placeholder speaker IDs across 21,023 rows; 89,413 rows use an unidentified speaker placeholder. Geographic coverage is limited to Uttarkashi (74,552) and Tehri Garhwal (35,884).
 
 ## SraVaani quality sweep
 
-- Hugging Face Job [`6aaa08ed5527934177ee7c78`](https://huggingface.co/jobs/rushilrawat/6aaa08ed5527934177ee7c78)
-  was launched on 2026-09-16 on one `l4x1` GPU with a six-hour / $4.80 hard
-  ceiling. It compares 61 ordered decoder/joint and cautious full-model trials,
-  stopping when the remaining runtime is needed for result persistence.
-- Selection uses the 269-record validation split. Only the selected checkpoint,
-  and only if it improves original-model validation WER, receives one evaluation
-  on the 112-record held-out test. See
-  [`sravaani-budget-sweep-2026-09-16.md`](sravaani-budget-sweep-2026-09-16.md).
+- Completed Hugging Face Job [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768) ran all 61 validation-first trials. The selected adaptation improved validation WER but worsened held-out WER, so base SraVaani remains preferred. Paid Hugging Face processing is no longer active. See [`sravaani-refined-61-result-2026-09-16.md`](sravaani-refined-61-result-2026-09-16.md).
 
 ## Review queues
 
-`data/processed/review/` contains bounded samples: 13 source transcript, 3 clipping, 4,112 normalization, 62 low-quality text, and 100 review-band text records. The unified two-pass native-review workflow additionally exposes 10,873 dialect, 2,492 evaluation-text, 112 evaluation-ASR, 3,284 language-identity, 1,124 lexicon, 892 OCR, and 113 transcript packets. It has received zero human decisions so far.
+`data/processed/review/` contains bounded samples: 13 source transcript, 3 clipping, 4,112 normalization, 62 low-quality text, and 100 review-band text records. The two-pass native-review workflow packages 176 current source/text accuracy cases and 113 transcript packets; broader older packets include 10,873 dialect-priority and 2,492 earlier evaluation-text items. These are review queues, not adjudicated examples. It has received zero human decisions so far. The current strict benchmark contains 398 automatically screened text items and 112 ASR items.
 
 Adjudication requires matching decisions from two distinct reviewers. Accepted and corrected decisions are materialized beside their immutable source payloads; originals are never overwritten.
 
@@ -197,8 +190,8 @@ The current GarhwaliBench v0.1 candidate indexes 3,847 external task records,
 398 strict automated held-out text segments, and 112 speaker-safe ASR rows.
 Exact train/evaluation text overlap and ASR speaker overlap are zero. Its
 deterministic character-bigram floor is 17.000058 perplexity with zero observed
-character OOV. Native review and dialect annotation remain required, so this is
-not yet a gold benchmark.
+character OOV. Native review and dialect annotation are deferred for the
+v0.1.1 candidate, so this is not a gold benchmark.
 
 The earlier multilingual audit compares five pinned tokenizers on a historical,
 checksum-addressed 2,492-text test snapshot. IndicBERTv2 has the lowest fertility
@@ -214,7 +207,7 @@ The XORQA retrieval audit deduplicates 1,139 source rows into 1,059 passages and
 ## Dataset splits
 
 - The complete all-data text partitions contain 106,915 train, 3,063 validation,
-  and 4,086 test segments; the public text partitions contain 8,043 train, 401
+  and 4,086 test segments; the public text partitions contain 8,037 train, 401
   validation, and 422 test segments. Neither normalized text components nor
   exact segment hashes cross partitions.
 - Strict ASR and TTS candidate partitions retain 2,002 clean transcript/audio rows from 248 identified speakers: 1,621 train, 269 validation, and 112 test. No identified speaker crosses a partition.
@@ -265,4 +258,13 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The complete pipeline suite has 374 passing tests in the project `.venv`, including resumable PDF ingestion and page-provenance export, LangGraph checkpoint/retry behavior, final-audit extractors, language-quality tagging, reversible cleanup proposals and ablation, source-level rights-basis accounting, controlled multi-seed text scaling, IndicBERTv2 head/encoder adaptation, instruction construction and validation-only mT5/mT0 tuning utilities, frozen transfer comparison, document-aware split invariants, benchmark contamination checks, tokenizer, masked-language, translation, retrieval, speech comparison, confidence-aware curriculum selection, source-label conflict isolation, three-checkpoint risky-draft review, audio-grounded structural-outlier review, weighted-batch gradient accumulation, SraVaani NeMo packaging, checkpoint launch, budget-capped validation-first sweep planning, held-out evaluation, paired pilot registration, training and review audio rendering, long-form segmentation, native-review materialization, ASR draft resumption, source freshness, popular-song metadata validation, geography metadata validation, historical-term metadata validation, literary-work and people coverage, university-research ingestion, Hugging Face knowledge configurations, release-index synchronization, and release validation.
+The current full-suite run passes **435 tests**. Structured records have standardized provenance and quality
+metadata, including URLs or capture fingerprints for every source reference.
+The 146,684-row public profile omits the 216 structured records until rights
+evidence is explicit; all remain in the 257,807-row all-data package. Public
+and all-data preflights and the final audit pass for the rights-filtered
+profile. Native-speaker review and dialect annotation are deferred; the
+benchmark is an automated candidate. See
+[`finalreport.md`](../finalreport.md) and
+[`DEEP_DIVE_FINAL_AUDIT.md`](../DEEP_DIVE_FINAL_AUDIT.md) for the release
+decision and remaining audit work.

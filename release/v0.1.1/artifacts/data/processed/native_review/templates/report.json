@@ -1,0 +1,8 @@
+{
+  "instructions": "Give separate template copies to two reviewers; import completed rows into data/review_decisions/native_reviews.jsonl.",
+  "required_independent_reviews": 2,
+  "template_counts": {
+    "text_accuracy": 176,
+    "transcript": 113
+  }
+}

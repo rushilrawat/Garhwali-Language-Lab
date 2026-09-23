@@ -1,0 +1,19 @@
+{
+  "supervised_rows": 5894,
+  "recommended_supervised_rows": 5881,
+  "experimental_review_rows": 13,
+  "experimental_supervised_rows": 5894,
+  "untranscribed_rows": 104542,
+  "bengali_script_rows": 8,
+  "quality_flags": {
+    "bengali-script-in-garhwali-config": 8,
+    "bengali-script-under-garhwali-label": 8,
+    "manual-transcript-review": 6
+  },
+  "split_rows": {
+    "test": 450,
+    "train": 4778,
+    "validation": 666
+  },
+  "supervised_duration_hours": 8.80372421875
+}

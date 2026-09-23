@@ -1,0 +1,10 @@
+{
+  "general_validation_records": 3114,
+  "pdf_validation_records": 615,
+  "run_id": "indicbert-balanced-domain-input-v0.1",
+  "test_records_written": 0,
+  "test_used_for_training_or_selection": false,
+  "train_general_records": 25983,
+  "train_pdf_records": 25983,
+  "train_records": 51966
+}

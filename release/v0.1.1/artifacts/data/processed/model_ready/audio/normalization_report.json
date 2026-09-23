@@ -1,0 +1,64 @@
+{
+  "distributions": {
+    "dc_offset_normalized": {
+      "max": 0.134728,
+      "min": -0.157046,
+      "p01": -0.033186,
+      "p05": -0.001228,
+      "p50": -8.8e-05,
+      "p95": 0.000313,
+      "p99": 0.010672
+    },
+    "duration_seconds": {
+      "max": 20.467,
+      "min": 0.878,
+      "p01": 1.069813,
+      "p05": 1.306797,
+      "p50": 3.74425,
+      "p95": 9.58,
+      "p99": 12.814
+    },
+    "peak_dbfs": {
+      "max": 0.0,
+      "min": -39.502409,
+      "p01": -23.276937,
+      "p05": -13.04046,
+      "p50": -0.000265,
+      "p95": 0.0,
+      "p99": 0.0
+    },
+    "rms_dbfs": {
+      "max": -4.899592,
+      "min": -57.617843,
+      "p01": -39.109681,
+      "p05": -29.567069,
+      "p50": -16.374791,
+      "p95": -12.006246,
+      "p99": -10.54142
+    },
+    "zero_sample_share": {
+      "max": 0.436952,
+      "min": 0.0,
+      "p01": 0.000112,
+      "p05": 0.000225,
+      "p50": 0.001524,
+      "p95": 0.027192,
+      "p99": 0.073827
+    }
+  },
+  "high_clipping": 3,
+  "high_dc_offset": 2718,
+  "projected_clipping": 10967,
+  "records": 110436,
+  "review_records": 4112,
+  "thresholds": {
+    "high_clipping_sample_share_at_least": 0.01,
+    "high_dc_offset_absolute_above": 0.02,
+    "projected_peak_ceiling_dbfs": -1.0,
+    "target_rms_dbfs": -20.0,
+    "very_loud_above_dbfs": -10.0,
+    "very_quiet_below_dbfs": -40.0
+  },
+  "very_loud": 552,
+  "very_quiet": 856
+}

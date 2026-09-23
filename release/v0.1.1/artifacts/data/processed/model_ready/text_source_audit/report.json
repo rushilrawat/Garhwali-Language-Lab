@@ -1,0 +1,295 @@
+{
+  "high_quality_rights_pending_records": 1748,
+  "mixed_rights_exact_duplicate_records": 1913,
+  "policy": {
+    "accuracy": "A source language label or open license is not evidence of native orthographic, semantic, or transcription accuracy.",
+    "blocked_only_text": "Text with no publishable provenance remains rights-pending; its identity and source evidence remain present in the public catalog.",
+    "exact_duplicate_rights": "An exact-unique text is publishable when at least one retained provenance record supplies compatible redistribution evidence. Blocked mirror provenance remains attached and does not revoke the open source grant."
+  },
+  "public_text_records": 4195,
+  "quality_tier_counts": {
+    "experimental_review": 20034,
+    "high_quality_rights_pending": 1748,
+    "non_strict_context": 2645,
+    "strict_gold_candidate": 3559
+  },
+  "records": 27986,
+  "review_priority_counts": {
+    "romanized_orthography": 4,
+    "source_accuracy": 163,
+    "surface_or_scaffolding": 9
+  },
+  "review_queue_records": 176,
+  "review_source_counts": {
+    "opus_translatewiki_gbm": 172,
+    "panlex_gbm": 4
+  },
+  "rights_pending_text_records": 23791,
+  "source_summary": {
+    "archive_1865": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 1,
+      "records": 1
+    },
+    "archive_folksong_thesis": {
+      "blocked_records": 1,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 1
+    },
+    "asjp": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 89,
+      "records": 89
+    },
+    "atkinson_himalayan_gazetteer": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 302,
+      "records": 302
+    },
+    "chan_numerals_garhwali": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 40,
+      "records": 40
+    },
+    "crooke_northern_india_folklore": {
+      "blocked_records": 13,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 13
+    },
+    "dcad_gbm": {
+      "blocked_records": 119,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 119
+    },
+    "dhyani_occupations": {
+      "blocked_records": 65,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 65
+    },
+    "emagazine_animals": {
+      "blocked_records": 104,
+      "mixed_rights_overlap_records": 2,
+      "open_basis_records": 0,
+      "records": 104
+    },
+    "euttaranchal_1": {
+      "blocked_records": 23,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 23
+    },
+    "euttaranchal_2": {
+      "blocked_records": 34,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 34
+    },
+    "euttaranchal_3": {
+      "blocked_records": 38,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 38
+    },
+    "garhwalilanguage_dictionary": {
+      "blocked_records": 35,
+      "mixed_rights_overlap_records": 5,
+      "open_basis_records": 0,
+      "records": 35
+    },
+    "hikinegi_garhwali": {
+      "blocked_records": 53,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 53
+    },
+    "hill_dialects_1900": {
+      "blocked_records": 25,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 25
+    },
+    "hindialect_gbm": {
+      "blocked_records": 128,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 128
+    },
+    "incubator_wt": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 4,
+      "records": 4
+    },
+    "indic_dialect_asr_gbm": {
+      "blocked_records": 7796,
+      "mixed_rights_overlap_records": 1903,
+      "open_basis_records": 0,
+      "records": 7796
+    },
+    "kellogg_1893": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 34,
+      "records": 34
+    },
+    "languageshome": {
+      "blocked_records": 89,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 89
+    },
+    "lsi": {
+      "blocked_records": 93,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 93
+    },
+    "lsi_cldf_garhwali": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 170,
+      "records": 170
+    },
+    "madlad400_gbm_clean": {
+      "blocked_records": 18,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 18
+    },
+    "mamta_southasia_examples": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 67,
+      "records": 67
+    },
+    "meta_omni": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 1903,
+      "open_basis_records": 2864,
+      "records": 2864
+    },
+    "mountainvoices_local_glossary": {
+      "blocked_records": 193,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 193
+    },
+    "obs_garhwali": {
+      "blocked_records": 50,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 50
+    },
+    "omniglot": {
+      "blocked_records": 4,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 4
+    },
+    "opus_translatewiki_gbm": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 181,
+      "records": 181
+    },
+    "paharili_gbm": {
+      "blocked_records": 15000,
+      "mixed_rights_overlap_records": 1,
+      "open_basis_records": 0,
+      "records": 15000
+    },
+    "panlex_gbm": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 13,
+      "records": 13
+    },
+    "pib_ramman_instruments": {
+      "blocked_records": 5,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 5
+    },
+    "proverbs1894": {
+      "blocked_records": 440,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 440
+    },
+    "sand_garhwali": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 123,
+      "records": 123
+    },
+    "tatoeba": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 1,
+      "open_basis_records": 36,
+      "records": 36
+    },
+    "unknown": {
+      "blocked_records": 779,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 779
+    },
+    "uou_cgl": {
+      "blocked_records": 436,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 436
+    },
+    "uou_more": {
+      "blocked_records": 156,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 156
+    },
+    "uttarakhandiwords_animals": {
+      "blocked_records": 60,
+      "mixed_rights_overlap_records": 2,
+      "open_basis_records": 0,
+      "records": 60
+    },
+    "walton_gazetteer_1910": {
+      "blocked_records": 2,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 0,
+      "records": 2
+    },
+    "wikimedia": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 35,
+      "records": 35
+    },
+    "wikisource_garhwal_culture": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 0,
+      "open_basis_records": 2,
+      "records": 2
+    },
+    "wiktionary_en": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 3,
+      "open_basis_records": 76,
+      "records": 76
+    },
+    "wiktionary_swadesh_thematic": {
+      "blocked_records": 0,
+      "mixed_rights_overlap_records": 6,
+      "open_basis_records": 192,
+      "records": 192
+    }
+  },
+  "strict_records_using_open_overlap": 1906
+}

@@ -1,0 +1,49 @@
+{
+  "all_originals_preserved": true,
+  "automatic_corrections": 0,
+  "calibration": {
+    "calibration_records_with_flagged_sravaani_output": 0,
+    "failure_pattern_has_direct_calibration_support": false,
+    "lowest_row_cer_counts_including_ties": {
+      "ARTPARK-IISc/SraVaani-1.0": 108,
+      "whisper-tiny-garhwali-v0.1": 2,
+      "whisper-tiny-garhwali-v0.2": 3
+    },
+    "row_mean_cer": {
+      "ARTPARK-IISc/SraVaani-1.0": 0.183524,
+      "whisper-tiny-garhwali-v0.1": 0.413177,
+      "whisper-tiny-garhwali-v0.2": 0.390708
+    },
+    "shared_human_reference_records": 112
+  },
+  "evidence_limit": "The two Whisper checkpoints are related, no target record has a human reference, and the shared calibration set contains no SraVaani output with this failure pattern. Proposals improve reviewability, not proven accuracy.",
+  "evidence_status": {
+    "clean_candidate_low_consensus": 730,
+    "related_checkpoint_consensus_clean": 325,
+    "unresolved_structural_risk": 35
+  },
+  "inputs": {
+    "confidence_aware_drafts": {
+      "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+      "sha256": "2356e9070d6f849e7e868430b720fb7b7956a5a105ea68c26f647a47f212e8bc"
+    },
+    "whisper_v0.1_recovery": {
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_whisper_v0.1.jsonl",
+      "sha256": "69711d5119acc64e831376952d11fca281e5960a7f286ecd0eff3e5734b95661"
+    }
+  },
+  "output": "data/processed/model_ready/transcripts/sravaani_recovery_adjudication.jsonl",
+  "proposals_with_structural_flags": 35,
+  "proposed_models": {
+    "ARTPARK-IISc/SraVaani-1.0": 18,
+    "whisper-tiny-garhwali-v0.1": 33,
+    "whisper-tiny-garhwali-v0.2": 1039
+  },
+  "recommended_machine_label_training_records": 0,
+  "records": 1090,
+  "review_queue": "data/processed/review/sravaani_recovery_adjudication.jsonl",
+  "run_id": "sravaani-risky-draft-three-checkpoint-review-v0.1",
+  "source_label_conflicts_handled_separately": 98,
+  "supervised_training_promotions": 0,
+  "unique_audio_hashes": 1090
+}

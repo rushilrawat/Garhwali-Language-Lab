@@ -1,0 +1,155 @@
+{
+  "artifacts": {
+    "asr/test.jsonl": {
+      "records": 112,
+      "sha256": "2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52"
+    },
+    "asr/train.jsonl": {
+      "records": 1621,
+      "sha256": "87ea08229a3a445460043127a2296112a131e914ea0d507c4a35ee0f5ee33ec8"
+    },
+    "asr/validation.jsonl": {
+      "records": 269,
+      "sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66"
+    },
+    "asr_experimental/test.jsonl": {
+      "records": 450,
+      "sha256": "75a01ddf165fb6646b140bb6cc50aff4f0e981569c85ffcbcf5ac9062da1bfcd"
+    },
+    "asr_experimental/train.jsonl": {
+      "records": 4778,
+      "sha256": "3812dd8d83b4488a604a463456a666e94251b02698c12c42b823fbc5aebd5f84"
+    },
+    "asr_experimental/validation.jsonl": {
+      "records": 666,
+      "sha256": "d7f4e7605b9e1a48d4e4facc1df02eb21fd15497a67a37067b9a324b4956596f"
+    },
+    "evaluation/asr_candidate.jsonl": {
+      "records": 112,
+      "sha256": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220"
+    },
+    "evaluation/text_candidate.jsonl": {
+      "records": 3603,
+      "sha256": "8a5b2388328bed9ee8f4d561ba312b5b5e5615c43f9121b7d1889af5f08b427e"
+    },
+    "text/test.jsonl": {
+      "records": 4086,
+      "sha256": "d25db640d9fe5832d96b3e65fc3bbd2a7c3fef61264e73a1ba493bca4ac3a88f"
+    },
+    "text/train.jsonl": {
+      "records": 106915,
+      "sha256": "4a1ec922599ba2d60e4bfddb0eb4a0e8572aa99fd43fa49d82dc855b45612bba"
+    },
+    "text/validation.jsonl": {
+      "records": 3063,
+      "sha256": "42e1564687449d39cb1e7836b62f13320e48ba6ae89c565381ad4794d62f09d3"
+    },
+    "tts/test.jsonl": {
+      "records": 112,
+      "sha256": "2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52"
+    },
+    "tts/train.jsonl": {
+      "records": 1621,
+      "sha256": "87ea08229a3a445460043127a2296112a131e914ea0d507c4a35ee0f5ee33ec8"
+    },
+    "tts/validation.jsonl": {
+      "records": 269,
+      "sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66"
+    },
+    "tts_experimental/test.jsonl": {
+      "records": 450,
+      "sha256": "75a01ddf165fb6646b140bb6cc50aff4f0e981569c85ffcbcf5ac9062da1bfcd"
+    },
+    "tts_experimental/train.jsonl": {
+      "records": 4778,
+      "sha256": "3812dd8d83b4488a604a463456a666e94251b02698c12c42b823fbc5aebd5f84"
+    },
+    "tts_experimental/validation.jsonl": {
+      "records": 666,
+      "sha256": "d7f4e7605b9e1a48d4e4facc1df02eb21fd15497a67a37067b9a324b4956596f"
+    }
+  },
+  "asr_experimental_all": {
+    "hours": {
+      "test": 0.675755,
+      "train": 7.166164,
+      "validation": 0.961805
+    },
+    "quality_flags_retained": true,
+    "records": {
+      "test": 450,
+      "train": 4778,
+      "validation": 666
+    }
+  },
+  "asr_strict": {
+    "hours": {
+      "test": 0.220797,
+      "train": 2.870413,
+      "validation": 0.471185
+    },
+    "identified_speakers": 248,
+    "records": {
+      "test": 112,
+      "train": 1621,
+      "validation": 269
+    }
+  },
+  "evaluation_candidates": {
+    "asr_records": 112,
+    "native_review_optional": true,
+    "review_status": "automated_quality_screened",
+    "text_records": 3603
+  },
+  "excluded_audio": {
+    "transcript_or_language_review": 6,
+    "unidentified_speaker": 3886
+  },
+  "leakage_checks": {
+    "identified_speaker_cross_split": 0,
+    "normalized_text_cross_split": 0,
+    "supported_semantic_edge_cross_split": 0,
+    "text_hash_cross_split": 0
+  },
+  "release_id": "garhwali-splits-candidate-2026-09-10",
+  "release_status": "integrated_experimental_candidate",
+  "text": {
+    "records": {
+      "test": 4086,
+      "train": 106915,
+      "validation": 3063
+    }
+  },
+  "text_duplicate_components": {
+    "components": 111530,
+    "normalized_edges": 1884,
+    "records_reassigned": 120,
+    "supported_semantic_edges": 1623
+  },
+  "tts_candidate": {
+    "hours": {
+      "test": 0.220797,
+      "train": 2.870413,
+      "validation": 0.471185
+    },
+    "identified_speakers": 248,
+    "records": {
+      "test": 112,
+      "train": 1621,
+      "validation": 269
+    }
+  },
+  "tts_experimental_all": {
+    "hours": {
+      "test": 0.675755,
+      "train": 7.166164,
+      "validation": 0.961805
+    },
+    "quality_flags_retained": true,
+    "records": {
+      "test": 450,
+      "train": 4778,
+      "validation": 666
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "adaptation_scope": "LoRA on encoder attention query/value projections; MLM head frozen",
+  "baseline_secondary_validation": {
+    "accuracy": 0.2447333,
+    "cross_entropy": 6.07532916,
+    "masked_tokens": 2231,
+    "records": 615
+  },
+  "baseline_validation": {
+    "accuracy": 0.22379603,
+    "cross_entropy": 6.72935947,
+    "masked_tokens": 1059,
+    "records": 256
+  },
+  "configuration": {
+    "device": "cuda",
+    "evaluation_mask_seed": 101,
+    "learning_rate": 5e-05,
+    "lora_alpha": 8,
+    "lora_dropout": 0.0,
+    "lora_rank": 4,
+    "mask_rate": 0.15,
+    "max_length": 128,
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 16384,
+    "target_modules": [
+      "query",
+      "value"
+    ],
+    "training_pool_records_per_seed": 51966,
+    "validation_records": 256
+  },
+  "elapsed_seconds": 1147.614,
+  "integrity": {
+    "frozen_test_records_used": 0,
+    "secondary_validation_records": 615,
+    "selection_split": "validation",
+    "source_text_mutated": false,
+    "training_split_only": true
+  },
+  "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+  "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+  "run_id": "indicbertv2-garhwali-encoder-lora-v0.2",
+  "runs": [
+    {
+      "checkpoint": "/output/checkpoints/seed-17",
+      "secondary_validation": {
+        "accuracy": 0.32272524,
+        "cross_entropy": 4.67068522,
+        "masked_tokens": 2231,
+        "records": 615
+      },
+      "seed": 17,
+      "training": {
+        "final_training_loss": 6.01320648,
+        "masked_tokens": 55982,
+        "mean_training_loss": 5.24218735,
+        "steps": 16384,
+        "unique_training_records": 16384
+      },
+      "validation": {
+        "accuracy": 0.26156752,
+        "cross_entropy": 5.32251194,
+        "masked_tokens": 1059,
+        "records": 256
+      }
+    },
+    {
+      "checkpoint": "/output/checkpoints/seed-29",
+      "secondary_validation": {
+        "accuracy": 0.32227701,
+        "cross_entropy": 4.68935272,
+        "masked_tokens": 2231,
+        "records": 615
+      },
+      "seed": 29,
+      "training": {
+        "final_training_loss": 6.02938795,
+        "masked_tokens": 55838,
+        "mean_training_loss": 5.27629118,
+        "steps": 16384,
+        "unique_training_records": 16384
+      },
+      "validation": {
+        "accuracy": 0.25684608,
+        "cross_entropy": 5.30804243,
+        "masked_tokens": 1059,
+        "records": 256
+      }
+    },
+    {
+      "checkpoint": "/output/checkpoints/seed-43",
+      "secondary_validation": {
+        "accuracy": 0.32362169,
+        "cross_entropy": 4.69732996,
+        "masked_tokens": 2231,
+        "records": 615
+      },
+      "seed": 43,
+      "training": {
+        "final_training_loss": 4.73505306,
+        "masked_tokens": 56080,
+        "mean_training_loss": 5.26775775,
+        "steps": 16384,
+        "unique_training_records": 16384
+      },
+      "validation": {
+        "accuracy": 0.25590179,
+        "cross_entropy": 5.31920012,
+        "masked_tokens": 1059,
+        "records": 256
+      }
+    }
+  ],
+  "status": "completed_longer_corpus_wide_sampled_continued_pretraining",
+  "summary": {
+    "improved_seed_count": 3,
+    "mean_accuracy": 0.25810513,
+    "mean_accuracy_delta": 0.0343091,
+    "mean_cross_entropy": 5.31658483,
+    "mean_cross_entropy_delta": -1.41277464,
+    "promotion_status": "validated_longer_continued_pretraining",
+    "std_accuracy": 0.00247844,
+    "std_cross_entropy": 0.00618986
+  },
+  "total_parameters": 278292880,
+  "trainable_parameters": 147456
+}

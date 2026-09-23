@@ -1,0 +1,47 @@
+{
+  "audio_hours": 2.536038,
+  "batching_strategy": "one_record_per_optimizer_step",
+  "curriculum_stage": 1,
+  "duplicate_audio_hashes": 0,
+  "effective_weight_mass": 64.071795,
+  "empty_evaluation_targets": 0,
+  "empty_targets": 0,
+  "evaluation_records": 269,
+  "evaluation_split": "validation",
+  "failures": [],
+  "full_stage_train_records": 104967,
+  "missing_audio_files": 0,
+  "model_source": "models/whisper-tiny-garhwali-v0.2",
+  "pilot_human_records": 32,
+  "pilot_machine_records": 2048,
+  "previous_stage": {
+    "checkpoint_weights_copied": false,
+    "curriculum_stage": 0,
+    "run_id": "garhwali-whisper-curriculum-stage-0-v0.1",
+    "selection_report": "data/processed/evaluation/asr/curriculum_stage_0/report.json",
+    "selection_report_sha256": "60309d3ca8497fed3ab9d5a67ef7d918364d6ea81aa82e583fd99df59bcb1ace",
+    "training_complete": true,
+    "training_equivalence_verified": true,
+    "training_records": 1621,
+    "training_scope": "human_reference_only",
+    "validation": {
+      "cer": 0.4629800484373198,
+      "character_errors": 8029,
+      "records": 269,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.7805220883534136,
+      "word_errors": 3887
+    }
+  },
+  "projected_training_steps": 2080,
+  "records_by_tier": {
+    "human_reference": 32,
+    "standard_sravaani": 2048
+  },
+  "resume_from": "models/whisper-tiny-garhwali-v0.2",
+  "run_id": "garhwali-whisper-curriculum-dry-run-v0.1",
+  "status": "passed",
+  "train_records": 2080,
+  "training_complete": false
+}

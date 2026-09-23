@@ -1,0 +1,6 @@
+{
+  "source": "data/processed/text/canonical.jsonl",
+  "output": "data/processed/text/all_garhwali.jsonl",
+  "records": 28755,
+  "includes_all_canonical_rows": true
+}

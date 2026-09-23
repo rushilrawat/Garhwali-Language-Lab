@@ -4,6 +4,11 @@ import run_indicbert_lora_adaptation as m
 
 
 class IndicBertLoraAdaptationTests(unittest.TestCase):
+    def test_defaults_use_recommended_data_and_distinct_output(self):
+        self.assertEqual(m.TRAIN, m.head.TRAIN)
+        self.assertEqual(m.VALIDATION, m.head.VALIDATION)
+        self.assertIn('recommended', m.OUTPUT.name)
+
     def test_summary_advances_only_when_mean_loss_improves(self):
         baseline = {'cross_entropy': 6.0, 'accuracy': 0.2}
         improved = [

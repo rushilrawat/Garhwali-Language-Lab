@@ -17,8 +17,8 @@ import run_indicbert_adaptation as head
 ROOT = Path(__file__).resolve().parents[1]
 TRAIN = head.TRAIN
 VALIDATION = head.VALIDATION
-OUTPUT = ROOT / 'data/processed/evaluation/controlled_modeling/indicbert_lora_adaptation.json'
-CHECKPOINTS = ROOT / 'models/controlled_modeling/indicbert_lora_v0.1'
+OUTPUT = ROOT / 'data/processed/evaluation/controlled_modeling/indicbert_lora_adaptation_recommended.json'
+CHECKPOINTS = ROOT / 'models/controlled_modeling/indicbert_lora_recommended_v0.1'
 LORA_TARGET_MODULES = ('query', 'value')
 DEFAULT_SEEDS = (17, 29, 43)
 

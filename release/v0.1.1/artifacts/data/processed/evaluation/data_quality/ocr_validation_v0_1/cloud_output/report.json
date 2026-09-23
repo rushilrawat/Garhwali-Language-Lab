@@ -1,0 +1,39 @@
+{
+  "run_id": "garhwali-ocr-spelling-validation-v0.1",
+  "input_priority_records": 18620,
+  "scored_candidate_records": 10856,
+  "decisions": {
+    "inconclusive": 5346,
+    "model_rejects_proposal": 3079,
+    "model_supported_proposal": 2431
+  },
+  "original_model": {
+    "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+    "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+    "scored_records": 10856,
+    "masked_tokens": 138687,
+    "mask_rate": 0.15,
+    "seed": 29,
+    "max_length": 256,
+    "truncated_records": 1930,
+    "device": "cuda",
+    "elapsed_seconds": 113.466
+  },
+  "proposed_model": {
+    "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+    "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+    "scored_records": 10856,
+    "masked_tokens": 137574,
+    "mask_rate": 0.15,
+    "seed": 29,
+    "max_length": 256,
+    "truncated_records": 1900,
+    "device": "cuda",
+    "elapsed_seconds": 113.901
+  },
+  "policy": {
+    "originals_preserved": true,
+    "automatic_application": false,
+    "native_review_required": true
+  }
+}

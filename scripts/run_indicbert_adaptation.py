@@ -13,10 +13,10 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-TRAIN = ROOT / 'data/processed/model_ready/splits/text/train.jsonl'
-VALIDATION = ROOT / 'data/processed/model_ready/splits/text/validation.jsonl'
-OUTPUT = ROOT / 'data/processed/evaluation/controlled_modeling/indicbert_head_adaptation.json'
-CHECKPOINTS = ROOT / 'models/controlled_modeling/indicbert_head_v0.1'
+TRAIN = ROOT / 'data/processed/model_ready/splits/text_recommended/train.jsonl'
+VALIDATION = ROOT / 'data/processed/model_ready/splits/text_recommended/validation.jsonl'
+OUTPUT = ROOT / 'data/processed/evaluation/controlled_modeling/indicbert_head_adaptation_recommended.json'
+CHECKPOINTS = ROOT / 'models/controlled_modeling/indicbert_head_recommended_v0.1'
 MODEL_ID = 'ai4bharat/IndicBERTv2-MLM-only'
 REVISION = '8598f13fe52443bc3fc054fcd665944560145b5c'
 MODEL = ROOT / '.cache/huggingface/hub/models--ai4bharat--IndicBERTv2-MLM-only/snapshots' / REVISION

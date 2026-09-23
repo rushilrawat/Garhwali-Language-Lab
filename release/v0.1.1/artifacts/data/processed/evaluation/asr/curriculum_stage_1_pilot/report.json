@@ -1,0 +1,58 @@
+{
+  "artifacts": {
+    "model_sha256": "8bde3ac6e0a715230bb3f6895d34fcf3cb00552996ebbef25996d2206b036a94",
+    "pilot_checkpoint": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048",
+    "predictions": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048/evaluation_predictions.jsonl",
+    "predictions_sha256": "f12c0828b587e7c7f7551fcf0548d5a76985cb93c6ff634547088ef868553e56",
+    "training_report": "models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048/report.json",
+    "training_report_sha256": "425996c737e1f604658b53899f9fc14a257aadab6f56824faf5623ce9c77ba5d",
+    "validation_manifest": "data/processed/model_ready/splits/asr/validation.jsonl",
+    "validation_manifest_sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66"
+  },
+  "baseline": {
+    "cer": 0.4629800484373198,
+    "character_errors": 8029,
+    "records": 269,
+    "reference_characters": 17342,
+    "reference_words": 4980,
+    "wer": 0.7805220883534136,
+    "word_errors": 3887
+  },
+  "baseline_checkpoint": "whisper_tiny_v0.2",
+  "comparison": {
+    "cer_delta": 5.766347595431709e-05,
+    "character_error_delta": 1,
+    "decision": "rejected",
+    "promotion_rule": "pilot_wer_and_cer_must_both_be_lower_than_stage_0",
+    "relative_cer_change": 0.0001245485116452568,
+    "relative_wer_change": 0.004630820684332391,
+    "wer_delta": 0.0036144578313253017,
+    "word_error_delta": 18
+  },
+  "curriculum_stage": 1,
+  "next_action": "retain_stage_0_and_do_not_run_full_stage_1_with_this_configuration",
+  "pilot": {
+    "cer": 0.46303771191327414,
+    "character_errors": 8030,
+    "records": 269,
+    "reference_characters": 17342,
+    "reference_words": 4980,
+    "wer": 0.7841365461847389,
+    "word_errors": 3905
+  },
+  "run_id": "garhwali-whisper-curriculum-stage-1-pilot-h32-m2048-v0.1",
+  "stage_2_unlocked": false,
+  "status": "completed",
+  "training": {
+    "effective_weight_mass": 64.071795,
+    "epochs": 1,
+    "full_stage_records": 104967,
+    "human_records": 32,
+    "machine_records": 2048,
+    "mean_raw_loss": 0.661673211485434,
+    "mean_weighted_loss": 0.018369638629015892,
+    "steps": 2080,
+    "total_records": 2080
+  },
+  "training_complete": false
+}

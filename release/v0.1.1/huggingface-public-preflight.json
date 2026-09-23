@@ -1,0 +1,447 @@
+{
+  "run_id": "garhwali-hf-public-cloud-validation-v0.1",
+  "release_id": "garhwali-language-lab-v0.1.1",
+  "status": "passed",
+  "manifest_profile": "public",
+  "configs": {
+    "asr/test": {
+      "records": 112,
+      "empty_content": 0,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 112,
+      "scripts": {
+        "Deva": 112
+      }
+    },
+    "asr/train": {
+      "records": 1621,
+      "empty_content": 0,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 1621,
+      "scripts": {
+        "Deva": 1621
+      }
+    },
+    "asr/validation": {
+      "records": 269,
+      "empty_content": 0,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 269,
+      "scripts": {
+        "Deva": 269
+      }
+    },
+    "catalog/train": {
+      "records": 28755,
+      "rows_with_provenance": 28755,
+      "rows_with_quality_metadata": 28755,
+      "empty_content": 0,
+      "scripts": {
+        "Deva": 3365,
+        "LATIN": 52,
+        "Latn": 771,
+        "none": 1
+      }
+    },
+    "instructions/test": {
+      "records": 136,
+      "rows_with_provenance": 136,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "instructions/train": {
+      "records": 1516,
+      "rows_with_provenance": 1516,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "instructions/validation": {
+      "records": 220,
+      "rows_with_provenance": 220,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "lexicon/train": {
+      "records": 661,
+      "rows_with_provenance": 661,
+      "rows_with_quality_metadata": 0,
+      "scripts": {}
+    },
+    "sravaani_drafts/train": {
+      "records": 104534,
+      "empty_content": 34,
+      "rows_with_provenance": 0,
+      "rows_with_quality_metadata": 104534,
+      "scripts": {
+        "Beng": 254,
+        "Deva": 103464,
+        "GUJARATI": 55,
+        "GURMUKHI": 171,
+        "KANNADA": 134,
+        "Latn": 81,
+        "MALAYALAM": 59,
+        "MEETEI": 16,
+        "OL": 27,
+        "ORIYA": 73,
+        "TAMIL": 18,
+        "TELUGU": 148,
+        "none": 34
+      }
+    },
+    "text/test": {
+      "records": 422,
+      "empty_content": 0,
+      "rows_with_provenance": 422,
+      "rows_with_quality_metadata": 422,
+      "scripts": {
+        "Deva": 405,
+        "Latn": 17
+      }
+    },
+    "text/train": {
+      "records": 8037,
+      "empty_content": 0,
+      "rows_with_provenance": 8037,
+      "rows_with_quality_metadata": 8037,
+      "scripts": {
+        "Deva": 7679,
+        "LATIN": 32,
+        "Latn": 324,
+        "none": 2
+      }
+    },
+    "text/validation": {
+      "records": 401,
+      "empty_content": 0,
+      "rows_with_provenance": 401,
+      "rows_with_quality_metadata": 401,
+      "scripts": {
+        "Deva": 383,
+        "Latn": 18
+      }
+    }
+  },
+  "totals": {
+    "records": 146684,
+    "empty_content": 34,
+    "rows_with_provenance": 40148,
+    "rows_with_quality_metadata": 144151
+  },
+  "cross_split_identity_overlap": {
+    "asr:test:train": 0,
+    "asr:test:validation": 0,
+    "asr:train:validation": 0,
+    "instructions:test:train": 0,
+    "instructions:test:validation": 0,
+    "instructions:train:validation": 0,
+    "text:test:train": 0,
+    "text:test:validation": 0,
+    "text:train:validation": 0,
+    "instructions_prompt:test:train": 0,
+    "instructions_prompt:test:validation": 0,
+    "instructions_prompt:train:validation": 0
+  },
+  "distinct_provenance_sources": 53,
+  "top_provenance_sources": [
+    [
+      "paharili_gbm",
+      15014
+    ],
+    [
+      "indic_dialect_asr_gbm",
+      12601
+    ],
+    [
+      "meta_omni",
+      11085
+    ],
+    [
+      "wiktionary_swadesh_thematic",
+      1098
+    ],
+    [
+      "lsi_cldf_garhwali",
+      985
+    ],
+    [
+      "opus_translatewiki_gbm",
+      727
+    ],
+    [
+      "sand_garhwali",
+      572
+    ],
+    [
+      "asjp",
+      460
+    ],
+    [
+      "proverbs1894",
+      440
+    ],
+    [
+      "uou_cgl",
+      436
+    ],
+    [
+      "wiktionary_en",
+      406
+    ],
+    [
+      "govind_chatak_gadwali_lokgeet_1956",
+      370
+    ],
+    [
+      "atkinson_himalayan_gazetteer",
+      302
+    ],
+    [
+      "shanti_chaudhary_garhwali_lokkala_loksahitya_1994",
+      298
+    ],
+    [
+      "incoming_garhwali_hindi_dictionary",
+      239
+    ],
+    [
+      "mamta_southasia_examples",
+      224
+    ],
+    [
+      "mountainvoices_local_glossary",
+      193
+    ],
+    [
+      "chan_numerals_garhwali",
+      186
+    ],
+    [
+      "uou_more",
+      156
+    ],
+    [
+      "incoming_garhwali_bhasha_linguistic_grammatical_study",
+      147
+    ],
+    [
+      "hindialect_gbm",
+      128
+    ],
+    [
+      "incoming_english_hindi_garhwali_dictionary",
+      123
+    ],
+    [
+      "dcad_gbm",
+      119
+    ],
+    [
+      "emagazine_animals",
+      116
+    ],
+    [
+      "wikimedia",
+      115
+    ],
+    [
+      "incoming_chandola_syntactic_sketch",
+      110
+    ],
+    [
+      "idioms_proverbs",
+      99
+    ],
+    [
+      "lsi",
+      93
+    ],
+    [
+      "languageshome",
+      90
+    ],
+    [
+      "uttarakhandiwords_animals",
+      77
+    ],
+    [
+      "incoming_garhwali_language_and_culture",
+      76
+    ],
+    [
+      "incoming_gadwali_sahitya",
+      74
+    ],
+    [
+      "tatoeba",
+      72
+    ],
+    [
+      "dhyani_occupations",
+      65
+    ],
+    [
+      "garhwalilanguage_dictionary",
+      65
+    ],
+    [
+      "hikinegi_garhwali",
+      53
+    ],
+    [
+      "obs_garhwali",
+      50
+    ],
+    [
+      "panlex_gbm",
+      43
+    ],
+    [
+      "euttaranchal_3",
+      38
+    ],
+    [
+      "euttaranchal_2",
+      34
+    ],
+    [
+      "kellogg_1893",
+      34
+    ],
+    [
+      "hill_dialects_1900",
+      25
+    ],
+    [
+      "euttaranchal_1",
+      23
+    ],
+    [
+      "madlad400_gbm_clean",
+      18
+    ],
+    [
+      "incubator_wt",
+      14
+    ],
+    [
+      "crooke_northern_india_folklore",
+      13
+    ],
+    [
+      "records",
+      12
+    ],
+    [
+      "pib_ramman_instruments",
+      5
+    ],
+    [
+      "omniglot",
+      4
+    ],
+    [
+      "wikisource_garhwal_culture",
+      2
+    ]
+  ],
+  "file_hashes": [
+    {
+      "path": "data/asr/test-00000.jsonl",
+      "sha256": "7c6fa105a4eb3c293421207b6b6015ecf9285ba929d9d17f780a513f071a7723"
+    },
+    {
+      "path": "data/asr/train-00000.jsonl",
+      "sha256": "642ac24972d82edc33229ad0a61c2d577b6d33590327762526bc91bfbedf1946"
+    },
+    {
+      "path": "data/asr/validation-00000.jsonl",
+      "sha256": "715546377b0fa612213d9040c91ae84d2dd29cbed5efa9dbb77b871ef016ede2"
+    },
+    {
+      "path": "data/catalog/train-00000.jsonl",
+      "sha256": "2fd4259976585bdca6c86549661c6f2a02c10ce35dd17bef0ea44cb91c353ab3"
+    },
+    {
+      "path": "data/catalog/train-00001.jsonl",
+      "sha256": "a2ae621ca42744cc37c897ff5f07c69e50c6c3b9410f6920096200450829da9d"
+    },
+    {
+      "path": "data/catalog/train-00002.jsonl",
+      "sha256": "f8f4ee732c71451a78ce7bcb95b95f6af61ddbe79691a452c7350035ca934801"
+    },
+    {
+      "path": "data/instructions/test-00000.jsonl",
+      "sha256": "ae3a9cee398c4a7607834268de0b776db6fadd9e189264e0b72f221afb5471c2"
+    },
+    {
+      "path": "data/instructions/train-00000.jsonl",
+      "sha256": "90d598a7a87ecdf72e4a66f5a79bde06f8e49edd7ab4f3ffcde74decd494a377"
+    },
+    {
+      "path": "data/instructions/validation-00000.jsonl",
+      "sha256": "25303186bd6b2130aca25ca453b8dc414e2a60424c359cedd9a4fb8984d9b319"
+    },
+    {
+      "path": "data/lexicon/train-00000.jsonl",
+      "sha256": "ba82ca37d06066cfb5e5c2df072ef8844e4347c1aa6f9db889cbcda0acfecbbe"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00000.jsonl",
+      "sha256": "7ad297db5ffa28a5479e39a317c4ff459ea6f3688b4dad74c3d5ba51bffe070a"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00001.jsonl",
+      "sha256": "5dbad13fac1cf2f4473a633c5bee1cbbd29f4a7af534941a46a38b448d2e40d9"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00002.jsonl",
+      "sha256": "45083cd6940c8ec806e798c9bc85a07f306cccc13178b96d1be608619a248378"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00003.jsonl",
+      "sha256": "da5705931966fc2785bb4708f0dc91f662914316323610702e957ac6b44e8791"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00004.jsonl",
+      "sha256": "0e6c87fe1f60703090a5e9b7391f300a89624b4e6d2e70a11b58ec34fa5c06d4"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00005.jsonl",
+      "sha256": "520b3d4aa160abf02e6cd165ad048875a3dff500e308c2d8cef3506ca6f5ae0b"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00006.jsonl",
+      "sha256": "f4ee90bd6ba5eb6387fc03f3293e2c3d616a716497fc0df1c23b709d6c9c39c2"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00007.jsonl",
+      "sha256": "5399ece85dccd5bc27f7720150d801be38b65eb2c935ed6a3d9379690a821efa"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00008.jsonl",
+      "sha256": "33ab00d3b94557c2d05ce3ee2320165917bdafc89eb6d9da5b4220262c593e48"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00009.jsonl",
+      "sha256": "db9bf08a066ae6f103313171488487733ae4efc9186418d61ca11de0a3a8672c"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00010.jsonl",
+      "sha256": "68ff4695456e961511f4ef3106b9353a8c2f0ed4baa013fca5d1f23978c71031"
+    },
+    {
+      "path": "data/text/test-00000.jsonl",
+      "sha256": "0b345b88be9dca8039ddbba7b42e127a13c0eea6df9238e5c960c06fe42cd0a4"
+    },
+    {
+      "path": "data/text/train-00000.jsonl",
+      "sha256": "075f91866c2697cc291d686ee65b9c2835a5c5c028099f7b47b5dc373b18f54e"
+    },
+    {
+      "path": "data/text/validation-00000.jsonl",
+      "sha256": "5872f344ee155ce833e6eec86104b8a3b321c32bf272d37d6b7b58b06e4c8ea4"
+    }
+  ],
+  "errors": [],
+  "records_deleted_or_mutated": 0
+}

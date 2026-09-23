@@ -1,0 +1,79 @@
+{
+  "all_unique_machine_audio_preserved": 104534,
+  "audio_hash_leakage": {
+    "human_cross_split": 0,
+    "machine_to_human": 0
+  },
+  "curriculum": {
+    "effective_weight_mass": {
+      "human_reference": 1621.0,
+      "recovery_low": 0.318823,
+      "recovery_medium": 0.421284,
+      "recovery_very_low": 1.73954,
+      "standard_sravaani": 1618.52035
+    },
+    "hours": {
+      "human_reference": 2.870413,
+      "recovery_low": 0.019046,
+      "recovery_medium": 0.014432,
+      "recovery_very_low": 0.582671,
+      "standard_sravaani": 125.823789
+    },
+    "records": {
+      "human_reference": 1621,
+      "recovery_low": 35,
+      "recovery_medium": 30,
+      "recovery_very_low": 1025,
+      "standard_sravaani": 103346
+    }
+  },
+  "empty_training_targets": 0,
+  "human_effective_weight_mass": 1621.0,
+  "human_train_records": 1621,
+  "inherited_machine_duplicate_rows": 8,
+  "inputs": {
+    "confidence_report": {
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_confidence_report.json",
+      "sha256": "de02974b491d02a639c726b281b86bbe569eb59d2015967c66754f9c81e4b00e"
+    },
+    "machine": {
+      "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+      "sha256": "2356e9070d6f849e7e868430b720fb7b7956a5a105ea68c26f647a47f212e8bc"
+    }
+  },
+  "machine_audio_active_for_garhwali_training": 104436,
+  "machine_effective_weight_mass": 1620.999996,
+  "machine_source_records": 104542,
+  "machine_training_audio_records": 104436,
+  "machine_unique_audio_records": 104534,
+  "machine_weight_ratio": 1.0,
+  "machine_weight_scale": 0.019225752447776467,
+  "nonempty_candidate_fallbacks": 1,
+  "outputs": {
+    "stage_plan.json": {
+      "path": "data/processed/model_ready/asr_curriculum/stage_plan.json",
+      "sha256": "517fabccf6dce1f7945f5cd3c6c8518e25017b0cdf35226529668c07eeadc62b"
+    },
+    "test.jsonl": {
+      "path": "data/processed/model_ready/asr_curriculum/test.jsonl",
+      "sha256": "9c4d2547f37a89b0e2e5ee2bc3224743d53b4711565c4cecd5bbeec53de9ba82"
+    },
+    "train.jsonl": {
+      "path": "data/processed/model_ready/asr_curriculum/train.jsonl",
+      "sha256": "1fd46372acd738e310b80acca3324a7aba218a26f948bdc47a13248e4270538b"
+    },
+    "validation.jsonl": {
+      "path": "data/processed/model_ready/asr_curriculum/validation.jsonl",
+      "sha256": "5d2a45ceffa8c5e8c31691ed411ce765ca928ae6f0e817daf8eb05774ac97659"
+    }
+  },
+  "records_removed_or_quarantined": 0,
+  "run_id": "garhwali-asr-confidence-curriculum-v0.1",
+  "source_conflict_audio_records": 98,
+  "source_conflicts_active_for_source_error_analysis": 98,
+  "standard_sravaani_raw_score": 0.8145938878901782,
+  "test_records": 112,
+  "train_records": 106057,
+  "validation_and_test_human_only": true,
+  "validation_records": 269
+}

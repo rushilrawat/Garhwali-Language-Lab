@@ -46,3 +46,11 @@ class HuggingFaceUploadPlanTests(unittest.TestCase):
         self.assertEqual(report['files'], 3)
         self.assertEqual(report['records'], 1)
         self.assertEqual(len(report['aggregate_sha256']), 64)
+
+    def test_public_plan_defaults_to_public_dataset_repository(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.package(root, 'public')
+            report = m.build(root, visibility='public')
+        self.assertEqual(report['target_repo'], 'rushilrawat/garhwali-language-lab')
+        self.assertEqual(report['publication_status'], 'ready_after_final_approval')

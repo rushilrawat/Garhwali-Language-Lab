@@ -1,0 +1,188 @@
+{
+  "adaptation_scope": "LoRA on encoder and decoder attention q/v projections",
+  "baseline_validation": {
+    "cross_entropy": 28.2013851,
+    "records": 130,
+    "target_tokens": 796
+  },
+  "configuration": {
+    "batch_size": 1,
+    "device": "cpu",
+    "generation_control_tokens_removed": true,
+    "learning_rate": 0.0002,
+    "lora_alpha": 8,
+    "lora_rank": 4,
+    "max_input_length": 96,
+    "max_new_tokens": 32,
+    "max_target_length": 72,
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 64,
+    "target_modules": [
+      "q",
+      "v"
+    ],
+    "training_pool_records_per_seed": 2304
+  },
+  "dataset": {
+    "tasks": {
+      "english_to_garhwali": 446,
+      "english_to_garhwali_lexicon": 553,
+      "garhwali_to_english": 446,
+      "garhwali_to_english_lexicon": 553,
+      "garhwali_to_hindi_lexicon": 260,
+      "hindi_to_garhwali_lexicon": 260
+    },
+    "test_records": 84,
+    "test_sha256": "d5d88f8f5fe19c8292dc17ec2afdd5861d73285ac50cbc0160dfe14a85492d44",
+    "train_records": 2304,
+    "train_sha256": "7bac97d691a12390d0aae224c343ae9fbc7d54df6fc72acbb82868fd6148e867",
+    "validation_records": 130,
+    "validation_sha256": "4c9c5047d187a2338655e4f9e329936bf2ec7282740b213a0676d437567c0797"
+  },
+  "elapsed_seconds": 67.803,
+  "integrity": {
+    "all_records_active_for_experiment": true,
+    "selection_split": "validation",
+    "source_text_mutated": false,
+    "test_opened_after_training_and_selection": true,
+    "test_records_used_for_training": 0,
+    "training_split_only": true
+  },
+  "model_id": "google/mt5-small",
+  "revision": "73fb5dbe4756edadc8fbe8c769b0a109493acf7a",
+  "run_id": "garhwali-mt5-instruction-lora-v0.1",
+  "runs": [
+    {
+      "checkpoint": "models/controlled_modeling/mt5_instruction_v0.1/seed-17",
+      "seed": 17,
+      "test": {
+        "corpus_chrf2": 0.0,
+        "cross_entropy": 30.50204213,
+        "exact_match": 0.0,
+        "records": 84,
+        "target_tokens": 448
+      },
+      "training": {
+        "examples_seen": 64,
+        "final_training_loss": 26.61389542,
+        "mean_training_loss": 26.30468903,
+        "steps": 64,
+        "target_tokens": 499,
+        "unique_training_records": 64
+      },
+      "validation": {
+        "cross_entropy": 28.00760167,
+        "records": 130,
+        "target_tokens": 796
+      }
+    },
+    {
+      "checkpoint": "models/controlled_modeling/mt5_instruction_v0.1/seed-29",
+      "seed": 29,
+      "test": {
+        "corpus_chrf2": 0.0,
+        "cross_entropy": 29.05934742,
+        "exact_match": 0.0,
+        "records": 84,
+        "target_tokens": 448
+      },
+      "training": {
+        "examples_seen": 64,
+        "final_training_loss": 31.80759048,
+        "mean_training_loss": 28.82888834,
+        "steps": 64,
+        "target_tokens": 462,
+        "unique_training_records": 64
+      },
+      "validation": {
+        "cross_entropy": 27.19406037,
+        "records": 130,
+        "target_tokens": 796
+      }
+    },
+    {
+      "checkpoint": "models/controlled_modeling/mt5_instruction_v0.1/seed-43",
+      "seed": 43,
+      "test": {
+        "corpus_chrf2": 0.0,
+        "cross_entropy": 29.01462014,
+        "exact_match": 0.0,
+        "records": 84,
+        "target_tokens": 448
+      },
+      "training": {
+        "examples_seen": 64,
+        "final_training_loss": 48.21107101,
+        "mean_training_loss": 30.19273011,
+        "steps": 64,
+        "target_tokens": 349,
+        "unique_training_records": 64
+      },
+      "validation": {
+        "cross_entropy": 27.50797725,
+        "records": 130,
+        "target_tokens": 796
+      }
+    }
+  ],
+  "status": "completed_multi_seed_instruction_tuning",
+  "summary": {
+    "all_seed_test_cross_entropy_below_base": false,
+    "best_seed": 29,
+    "best_validation_cross_entropy": 27.19406037,
+    "generation_promotion_status": "not_promoted_for_generation",
+    "improved_seed_count": 3,
+    "mean_cross_entropy": 27.56987976,
+    "mean_cross_entropy_delta": -0.63150534,
+    "mean_test_cross_entropy": 29.52533656,
+    "selected_seed_test_corpus_chrf2": 0.0,
+    "selected_seed_test_cross_entropy": 29.05934742,
+    "selected_seed_test_exact_match": 0.0,
+    "std_cross_entropy": 0.33499881,
+    "std_test_cross_entropy": 0.69087647
+  },
+  "test_systems": {
+    "base": {
+      "test": {
+        "corpus_chrf2": 0.0,
+        "cross_entropy": 30.41628715,
+        "exact_match": 0.0,
+        "records": 84,
+        "target_tokens": 448
+      }
+    },
+    "seed-17": {
+      "test": {
+        "corpus_chrf2": 0.0,
+        "cross_entropy": 30.50204213,
+        "exact_match": 0.0,
+        "records": 84,
+        "target_tokens": 448
+      }
+    },
+    "seed-29": {
+      "test": {
+        "corpus_chrf2": 0.0,
+        "cross_entropy": 29.05934742,
+        "exact_match": 0.0,
+        "records": 84,
+        "target_tokens": 448
+      }
+    },
+    "seed-43": {
+      "test": {
+        "corpus_chrf2": 0.0,
+        "cross_entropy": 29.01462014,
+        "exact_match": 0.0,
+        "records": 84,
+        "target_tokens": 448
+      }
+    }
+  },
+  "total_parameters": 300176768,
+  "trainable_parameters": 172032
+}

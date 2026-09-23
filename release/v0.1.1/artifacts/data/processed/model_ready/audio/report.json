@@ -1,0 +1,18 @@
+{
+  "all_records_retained": true,
+  "missing_quality_records": 0,
+  "quality_flags": {
+    "bengali-script-in-garhwali-config": 8,
+    "bengali-script-under-garhwali-label": 8,
+    "high_clipping": 3,
+    "manual-transcript-review": 6
+  },
+  "speaker_cross_split_count": 0,
+  "split_records": {
+    "test": 450,
+    "train": 4778,
+    "validation": 666
+  },
+  "supervised_records": 5894,
+  "untranscribed_records": 104542
+}

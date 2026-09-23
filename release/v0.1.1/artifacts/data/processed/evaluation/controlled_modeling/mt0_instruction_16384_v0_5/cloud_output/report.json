@@ -1,0 +1,156 @@
+{
+  "adaptation_scope": "LoRA on encoder and decoder attention q/v projections",
+  "baseline_validation": {
+    "cross_entropy": 5.78050459,
+    "records": 130,
+    "target_tokens": 697
+  },
+  "baseline_validation_generation": {
+    "corpus_chrf2": 0.08832715,
+    "cross_entropy": 5.78050459,
+    "exact_match": 0.0,
+    "records": 130,
+    "target_tokens": 697
+  },
+  "configuration": {
+    "batch_size": 1,
+    "device": "cuda",
+    "generation_control_tokens_removed": true,
+    "learning_rate": 0.0001,
+    "lora_alpha": 8,
+    "lora_rank": 4,
+    "max_input_length": 96,
+    "max_new_tokens": 32,
+    "max_target_length": 72,
+    "model_path": "/tmp/mt0-small",
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 16384,
+    "target_modules": [
+      "q",
+      "v"
+    ],
+    "training_pool_records_per_seed": 2178
+  },
+  "dataset": {
+    "tasks": {
+      "english_to_garhwali": 455,
+      "english_to_garhwali_lexicon": 610,
+      "garhwali_to_english": 455,
+      "garhwali_to_english_lexicon": 610,
+      "garhwali_to_hindi_lexicon": 260,
+      "hindi_to_garhwali_lexicon": 260
+    },
+    "test_records": 86,
+    "test_sha256": "7fb06f4e3b968a6f1bda453a134c217986a2c390f93429c42d5e36528d7aae0e",
+    "train_records": 2434,
+    "train_sha256": "3fa156ad6347a645f1bafa8d5164378a07a6a770ed3c71d34f4c720a7f5ab5fa",
+    "validation_records": 130,
+    "validation_sha256": "8e6d9667f80d659eedb518b58be721340161c159c5587243f9ba0616cd7cea44"
+  },
+  "elapsed_seconds": 2960.923,
+  "integrity": {
+    "all_records_active_for_experiment": true,
+    "selection_split": "validation",
+    "source_text_mutated": false,
+    "test_evaluation_skipped": true,
+    "test_opened_after_training_and_selection": false,
+    "test_records_used_for_training": 0,
+    "training_split_only": true,
+    "validation_generation_evaluated": true
+  },
+  "model_id": "bigscience/mt0-small",
+  "revision": "8116a34237e19160ec003147e758f065876d95f0",
+  "run_id": "garhwali-mt0-instruction-lora-16384-v0.5",
+  "runs": [
+    {
+      "checkpoint": "/output/checkpoints/seed-17",
+      "seed": 17,
+      "training": {
+        "examples_seen": 16384,
+        "final_training_loss": 3.30540681,
+        "mean_training_loss": 4.52459683,
+        "steps": 16384,
+        "target_tokens": 93179,
+        "unique_training_records": 2178
+      },
+      "validation": {
+        "cross_entropy": 4.31507713,
+        "records": 130,
+        "target_tokens": 697
+      },
+      "validation_generation": {
+        "corpus_chrf2": 0.06859638,
+        "cross_entropy": 4.31507713,
+        "exact_match": 0.01538462,
+        "records": 130,
+        "target_tokens": 697
+      }
+    },
+    {
+      "checkpoint": "/output/checkpoints/seed-29",
+      "seed": 29,
+      "training": {
+        "examples_seen": 16384,
+        "final_training_loss": 5.89741039,
+        "mean_training_loss": 4.51126691,
+        "steps": 16384,
+        "target_tokens": 92311,
+        "unique_training_records": 2178
+      },
+      "validation": {
+        "cross_entropy": 4.36035756,
+        "records": 130,
+        "target_tokens": 697
+      },
+      "validation_generation": {
+        "corpus_chrf2": 0.07143439,
+        "cross_entropy": 4.36035756,
+        "exact_match": 0.02307692,
+        "records": 130,
+        "target_tokens": 697
+      }
+    },
+    {
+      "checkpoint": "/output/checkpoints/seed-43",
+      "seed": 43,
+      "training": {
+        "examples_seen": 16384,
+        "final_training_loss": 1.0735482,
+        "mean_training_loss": 4.51974191,
+        "steps": 16384,
+        "target_tokens": 92444,
+        "unique_training_records": 2178
+      },
+      "validation": {
+        "cross_entropy": 4.3558346,
+        "records": 130,
+        "target_tokens": 697
+      },
+      "validation_generation": {
+        "corpus_chrf2": 0.0737091,
+        "cross_entropy": 4.3558346,
+        "exact_match": 0.02307692,
+        "records": 130,
+        "target_tokens": 697
+      }
+    }
+  ],
+  "status": "completed_multi_seed_instruction_tuning",
+  "summary": {
+    "best_seed": 17,
+    "best_validation_cross_entropy": 4.31507713,
+    "generation_promotion_status": "not_evaluated",
+    "improved_seed_count": 3,
+    "mean_cross_entropy": 4.34375643,
+    "mean_cross_entropy_delta": -1.43674816,
+    "std_cross_entropy": 0.02036322,
+    "test_evaluation_status": "skipped_for_validation_only_continuation"
+  },
+  "test_systems": {},
+  "total_parameters": 300176768,
+  "trainable_parameters": 172032
+}

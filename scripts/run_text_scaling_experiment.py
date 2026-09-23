@@ -15,10 +15,10 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-TRAIN = ROOT / 'data/processed/model_ready/splits/text/train.jsonl'
-VALIDATION = ROOT / 'data/processed/model_ready/splits/text/validation.jsonl'
-TEST = ROOT / 'data/processed/model_ready/splits/evaluation/text_candidate.jsonl'
-OUTPUT = ROOT / 'data/processed/evaluation/controlled_modeling/text_scaling.json'
+TRAIN = ROOT / 'data/processed/model_ready/splits/text_recommended/train.jsonl'
+VALIDATION = ROOT / 'data/processed/model_ready/splits/text_recommended/validation.jsonl'
+TEST = ROOT / 'data/processed/evaluation/garhwali_bench/internal_text.jsonl'
+OUTPUT = ROOT / 'data/processed/evaluation/controlled_modeling/text_scaling_recommended.json'
 DEFAULT_FRACTIONS = (0.01, 0.05, 0.10, 0.25, 0.50, 1.0)
 DEFAULT_SEEDS = (17, 29, 43)
 DEFAULT_ORDERS = (2, 3)
@@ -105,6 +105,14 @@ def sha256_file(path):
     return digest.hexdigest()
 
 
+def display_path(path):
+    path = Path(path)
+    try:
+        return path.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.name
+
+
 def evaluate_run(train_rows, evaluation_texts, fraction, seed, order, split):
     sample = hash_sample(train_rows, fraction, seed)
     result = {
@@ -180,6 +188,9 @@ def run(train_path=TRAIN, validation_path=VALIDATION, test_path=TEST, output_pat
         'run_id': 'garhwali-controlled-text-scaling-v0.1',
         'model_family': 'add-one-smoothed_character_ngram',
         'data': {
+            'train_path': display_path(train_path),
+            'validation_path': display_path(validation_path),
+            'frozen_test_path': display_path(test_path),
             'train_records': len(train_rows),
             'validation_records': len(validation_rows),
             'frozen_test_records': len(test_rows),

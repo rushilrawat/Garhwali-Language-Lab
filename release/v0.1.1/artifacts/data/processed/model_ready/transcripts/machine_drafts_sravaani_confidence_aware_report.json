@@ -1,0 +1,44 @@
+{
+  "all_non_conflict_records_active_experimentally": true,
+  "all_records_active_experimentally": false,
+  "all_records_preserved": true,
+  "all_supervised_training_eligible": false,
+  "automatic_promotions": 0,
+  "base_records": 104542,
+  "base_unique_audio_hashes": 104534,
+  "confidence_bands": {
+    "low": 35,
+    "medium": 30,
+    "very_low": 1123
+  },
+  "confidence_records": 1188,
+  "confidence_unique_audio_hashes": 1188,
+  "data_grain": "one row per original SraVaani source recording row",
+  "inherited_duplicate_audio_rows": 8,
+  "inputs": {
+    "base": {
+      "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl",
+      "sha256": "41041b8cfdfb50a2457efa79899e6a1addf09c67d5daab4b98b86cb4788cf91d"
+    },
+    "confidence": {
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_confidence.jsonl",
+      "sha256": "cd693937a045216084651eefb5977ec01f040578845545890c5b964dce06342d"
+    },
+    "source_conflicts": {
+      "path": "data/processed/model_ready/language_quality/vaani_source_conflicts.jsonl",
+      "sha256": "45729fa8188beae0dd76f8d02a39a955d8ca05bfe02ba63f2ce77a244277bfa8"
+    }
+  },
+  "machine_transcripts_replaced": 0,
+  "missing_confidence_hashes": 0,
+  "not_targeted_rows": 103354,
+  "output": {
+    "path": "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl",
+    "sha256": "2356e9070d6f849e7e868430b720fb7b7956a5a105ea68c26f647a47f212e8bc"
+  },
+  "records_removed_or_quarantined": 0,
+  "recovery_attached_rows": 1188,
+  "run_id": "sravaani-confidence-aware-integration-v0.1",
+  "source_conflict_registry_records": 106,
+  "source_conflicts_attached_to_machine_rows": 98
+}

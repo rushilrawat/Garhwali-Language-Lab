@@ -67,9 +67,35 @@ class SyncReleaseIndexTests(unittest.TestCase):
         self.assertEqual(refreshed['all_data_package']['transcript_only_package_rows'], 31)
         self.assertEqual(refreshed['all_data_package']['full_text_segments'], 15)
         self.assertEqual(refreshed['structured_knowledge']['records'], 1)
+        self.assertEqual(refreshed['structured_knowledge']['public_records'], 1)
+        self.assertEqual(refreshed['structured_knowledge']['public_excluded_for_rights'], 0)
+        self.assertTrue(refreshed['structured_knowledge']['included_in_all_data_package'])
         self.assertEqual(refreshed['evaluation_candidates']['text'], 2)
+        self.assertTrue(refreshed['evaluation_candidates']['native_review_deferred'])
         self.assertEqual(refreshed['garhwali_bench']['character_bigram_perplexity'], 12.5)
         self.assertEqual(refreshed['language_resources']['word_types'], 20)
+
+    def test_release_status_cannot_claim_ready_when_final_audit_fails(self):
+        index = {
+            'status': 'release_ready_with_public_rights_filtered_export',
+            'text': {}, 'all_data_package': {}, 'public_text_release': {},
+            'evaluation_candidates': {}, 'garhwali_bench': {},
+            'language_resources': {},
+        }
+        refreshed = m.refresh(
+            index,
+            {'text': {'records': {'train': 1, 'validation': 1, 'test': 1}},
+             'evaluation_candidates': {'text_records': 1}},
+            {'unique_texts': 1},
+            {'catalog_records': 1, 'catalog_redacted_text_records': 0,
+             'configs': {'catalog/train': {'records': 1}}},
+            {'catalog_records': 1, 'catalog_redacted_text_records': 0,
+             'all_collected_text_values_included': True,
+             'configs': {'catalog/train': {'records': 1}}},
+            final_audit={'status': 'failed'},
+        )
+        self.assertEqual(refreshed['final_audit_status'], 'failed')
+        self.assertEqual(refreshed['status'], 'blocked_final_audit')
 
 
 if __name__ == '__main__':

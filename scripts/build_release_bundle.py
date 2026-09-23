@@ -12,7 +12,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / 'release/v0.1.0/artifacts'
+OUTPUT = ROOT / 'release/v0.1.1/artifacts'
 MAX_BYTES = 10 * 1024 * 1024
 REPORT_NAMES = {
     'full_draft_audit.json', 'indicbert_head_adaptation.json',
@@ -80,7 +80,7 @@ def _build_at(output):
             'sha256': sha256(source),
         })
     index = {
-        'release_id': 'garhwali-language-lab-v0.1.0',
+        'release_id': 'garhwali-language-lab-v0.1.1',
         'files': len(entries),
         'bytes': sum(item['bytes'] for item in entries),
         'artifacts': entries,
@@ -159,7 +159,7 @@ def verify(output=OUTPUT, check_sources=True):
         errors.append('index file count does not match artifact entries')
     if sum(item.get('bytes', 0) for item in entries) != index.get('bytes'):
         errors.append('index byte count does not match artifact entries')
-    if index.get('release_id') != 'garhwali-language-lab-v0.1.0':
+    if index.get('release_id') != 'garhwali-language-lab-v0.1.1':
         errors.append('unexpected release ID')
     indexed = set(indexed_paths)
     actual = {

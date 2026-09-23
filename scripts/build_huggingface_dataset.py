@@ -18,7 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab'
 ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
-RELEASE_ID = 'garhwali-language-lab-v0.1.0'
+RELEASE_ID = 'garhwali-language-lab-v0.1.1'
 KNOWLEDGE_CONFIGS = {
     'geography': ROOT / 'data/extracted/geography/records.jsonl',
     'historical_terms': ROOT / 'data/extracted/historical_terms/records.jsonl',
@@ -27,9 +27,15 @@ KNOWLEDGE_CONFIGS = {
     'popular_songs': ROOT / 'data/extracted/popular_songs/records.jsonl',
     'university_research': ROOT / 'data/extracted/university_research/records.jsonl',
 }
+KNOWLEDGE_SOURCE_CATALOGS = {
+    'geography': ROOT / 'research/garhwali-geography-catalog.json',
+    'historical_terms': ROOT / 'research/garhwali-historical-terms.json',
+    'literary_people': ROOT / 'research/garhwali-literary-people-catalog.json',
+    'literary_works': ROOT / 'research/garhwali-literary-works-catalog.json',
+}
 OPEN_LICENSE_MARKERS = (
     'cc0', 'creativecommons.org/publicdomain', 'cc-by-', 'cc_by_',
-    '/licenses/by/', '/licenses/by-sa/', 'mit', 'apache-2.0',
+    '/licenses/by/', '/licenses/by-sa/', 'apache-2.0',
 )
 BLOCKING_FLAGS = {
     'component_rights_review_required', 'source_lineage_missing', 'unlicensed',
@@ -87,6 +93,13 @@ def is_publishable_provenance(item):
     license_text = ' '.join(str(item.get(key) or '') for key in (
         'license', 'license_id', 'license_url',
     )).casefold()
+    compact_license = re.sub(r'[^a-z0-9]+', '', license_text)
+    if any(marker in compact_license for marker in (
+        'ccbync', 'ccbynd', 'licensesbync', 'licensesbynd',
+    )):
+        return False
+    if re.search(r'(?<![a-z0-9])mit(?![a-z0-9])', license_text):
+        return True
     return any(marker in license_text for marker in OPEN_LICENSE_MARKERS)
 
 
@@ -112,6 +125,21 @@ def is_public_garhwali_text_row(row):
     items = publishable_provenance_items(row)
     return bool(items) and all(
         item.get('iso_639_3') == 'gbm' for item in items
+    )
+
+
+def is_public_knowledge_row(row):
+    rights_basis = row.get('public_rights_basis') or []
+    rights_status = re.sub(
+        r'[^a-z0-9]+', '_', str(row.get('rights_status') or '').casefold()
+    ).strip('_')
+    return bool(rights_basis) and rights_status not in {
+        'not_assessed', 'review_pending', 'rights_pending', 'unknown',
+    } and all(
+        is_publishable_provenance(item)
+        and item.get('attribution')
+        and (item.get('source_url') or item.get('source_snapshot_sha256'))
+        for item in rights_basis
     )
 
 
@@ -259,6 +287,19 @@ def source_languages(row):
     })
 
 
+def recommended_text_training_row(row):
+    rights_basis = row.get('public_rights_basis') or []
+    return bool(
+        row.get('language') == 'gbm'
+        and set(row.get('source_languages') or []) == {'gbm'}
+        and row.get('language_buckets') == ['garhwali_candidate']
+        and 'strict_gold_candidate' in (row.get('quality_tiers') or [])
+        and not row.get('quality_flags')
+        and rights_basis
+        and all(is_publishable_provenance(item) for item in rights_basis)
+    )
+
+
 def text_row(row, parent_quality=None):
     scripts = set()
     for character in row['text']:
@@ -297,19 +338,14 @@ def text_row(row, parent_quality=None):
         language = 'mul'
     else:
         language = 'und'
-    recommended = (
-        language == 'gbm'
-        and 'strict_gold_candidate' in quality_tiers
-        and not row.get('quality_flags')
-    )
-    return {
+    exported = {
         'id': row['segment_sha256'],
         'text': row['text'],
         'language': language,
         'source_languages': languages,
         'language_buckets': language_buckets,
         'quality_tiers': quality_tiers,
-        'recommended_for_training': recommended,
+        'recommended_for_training': False,
         'script': script,
         'split': row['split'],
         'duplicate_component_id': row.get('duplicate_component_id'),
@@ -321,6 +357,8 @@ def text_row(row, parent_quality=None):
             catalog_provenance(item) for item in publishable_provenance_items(row)
         ],
     }
+    exported['recommended_for_training'] = recommended_text_training_row(exported)
+    return exported
 
 
 def with_public_rights_basis(row):
@@ -359,7 +397,9 @@ def refresh_acceptable_responses(rows):
 
 def catalog_provenance(item):
     keep = (
-        'source_id', 'source_url', 'record_id', 'iso_639_3', 'genre', 'script',
+        'source_id', 'source_url', 'source_title', 'source_kind',
+        'source_snapshot_sha256', 'source_capture_id', 'source_capture_path',
+        'source_notes', 'source_capture_bytes', 'record_id', 'iso_639_3', 'genre', 'script',
         'license', 'license_id', 'license_url', 'rights_status', 'quality_flags',
         'rights_evidence', 'attribution',
         'source_pdf', 'source_pdf_sha256', 'pdf_page', 'title', 'author',
@@ -408,15 +448,137 @@ def catalog_row(row, include_all_text=False, refinement=None):
     return exported
 
 
-def knowledge_row(row, family):
-    """Add a common identity and family while preserving catalog metadata."""
+def source_catalog_for_family(family):
+    path = KNOWLEDGE_SOURCE_CATALOGS.get(family)
+    if path is None or not path.exists():
+        return {}
+    catalog = json.loads(path.read_text(encoding='utf-8'))
+    sources = {
+        item['source_id']: item
+        for item in catalog.get('sources', [])
+        if item.get('source_id')
+    }
+    # Some catalog families share captures but keep their source registries
+    # separately. Merge matching IDs so exported references retain the best
+    # available URL or capture fingerprint.
+    for other_path in KNOWLEDGE_SOURCE_CATALOGS.values():
+        if not other_path.exists():
+            continue
+        for item in json.loads(other_path.read_text(encoding='utf-8')).get('sources', []):
+            if item.get('source_id'):
+                sources.setdefault(item['source_id'], item)
+                if item['source_id'] in sources:
+                    sources[item['source_id']] = {
+                        **item, **sources[item['source_id']],
+                        **{key: value for key, value in item.items()
+                           if value and not sources[item['source_id']].get(key)},
+                    }
+    if family == 'geography':
+        aliases = {
+            'division_district_list': 'Garhwal Mandal official introduction',
+            'division_headquarters': 'Garhwal Mandal official introduction',
+            'district_portal': 'Government of Uttarakhand district portal',
+            'district_page': 'Government of Uttarakhand district portal',
+            'tehsil_list': 'Wikipedia list of tehsils of Uttarakhand',
+            'map_lookup': 'OpenStreetMap search',
+            'wikipedia_place': 'Wikipedia Garhwal division',
+            'wikipedia_geography': 'Wikipedia Garhwal division',
+            'division_geography': 'Wikipedia Garhwal division',
+            'historic_capital': 'Wikipedia Garhwal division',
+            'river_confluence': 'Wikipedia Garhwal division',
+            'river_source': 'Wikipedia Garhwal division',
+            'mountain_geography': 'Wikipedia Garhwal division',
+            'protected_area': 'Wikipedia Garhwal division',
+            'government_water_source': 'Garhwal Mandal official introduction',
+            'pilgrimage_geography': 'Wikipedia Garhwal division',
+        }
+        by_name = {item.get('name'): item for item in catalog.get('sources', [])}
+        for source_id, name in aliases.items():
+            if name in by_name:
+                sources[source_id] = by_name[name]
+                sources[source_id]['source_id'] = source_id
+    return sources
+
+
+def source_provenance(source_id, source_catalog):
+    source = source_catalog.get(source_id) or {}
+    result = {'source_id': source_id}
+    mapped = {
+        'source_url': source.get('url') or source.get('canonical_url') or source.get('source_url'),
+        'source_title': source.get('title') or source.get('name'),
+        'source_kind': source.get('source_kind'),
+        'source_snapshot_sha256': source.get('sha256'),
+        'source_capture_id': source.get('capture_id'),
+        'source_capture_path': source.get('local_capture'),
+        'source_notes': source.get('notes'),
+        'source_capture_bytes': source.get('captured_text_bytes'),
+    }
+    result.update({key: value for key, value in mapped.items() if value not in (None, '', [])})
+    return result
+
+
+def knowledge_row(row, family, source_catalog=None):
+    """Add stable IDs and explicit provenance, quality, and rights fields."""
     identity = next(
         (row.get(key) for key in ('id', 'record_id', 'person_id', 'term_id') if row.get(key)),
         None,
     )
     if not identity:
         raise ValueError(f'{family} knowledge record has no stable ID')
-    return {**row, 'id': identity, 'knowledge_family': family}
+    source_catalog = source_catalog or {}
+    exported = {**row, 'id': identity, 'knowledge_family': family}
+    if not exported.get('provenance'):
+        provenance = []
+        for field in ('source_ids', 'source_refs', 'evidence'):
+            values = exported.get(field) or []
+            if isinstance(values, str):
+                values = [values]
+            provenance.extend(
+                source_provenance(value, source_catalog)
+                for value in values if isinstance(value, str) and value.strip()
+            )
+        for field in (
+            'source_url', 'wikipedia_url', 'osm_search_url', 'youtube_url',
+            'lyrics_sources', 'translation_sources',
+        ):
+            values = exported.get(field) or []
+            if isinstance(values, str):
+                values = [values]
+            provenance.extend(
+                {'source_url': value}
+                for value in values if isinstance(value, str) and value.strip()
+            )
+        exported['provenance'] = provenance
+    else:
+        exported['provenance'] = [
+            {
+                **(
+                    source_provenance(item.get('source_id'), source_catalog)
+                    if item.get('source_id') else {}
+                ),
+                **item,
+            }
+            for item in exported['provenance']
+            if isinstance(item, dict)
+        ]
+    exported.setdefault('quality_metadata', {
+        'review_status': 'not_reviewed',
+        'source_verification_status': (
+            exported.get('verification_status')
+            or exported.get('ingestion_status')
+            or 'not_assessed'
+        ),
+        'native_reviewed': False,
+        'evidence_fields': [
+            field for field in (
+                'evidence', 'source_refs', 'source_ids', 'source_url',
+                'wikipedia_url', 'lyrics_sources', 'translation_sources',
+            ) if exported.get(field)
+        ],
+    })
+    exported.setdefault('rights_status', 'not_assessed')
+    exported.setdefault('public_rights_basis', [])
+    return exported
 
 
 def write_shards(rows, directory, split, shard_rows=10_000):
@@ -441,7 +603,13 @@ def write_shards(rows, directory, split, shard_rows=10_000):
     finally:
         if handle:
             handle.close()
-    return {'records': count, 'shards': len(paths), 'files': [str(p.name) for p in paths]}
+    files = [str(path.name) for path in paths]
+    return {
+        'records': count,
+        'shards': len(paths),
+        'files': files,
+        'file_sha256': {path.name: sha256_file(path) for path in paths},
+    }
 
 
 def link_audio(rows, output):
@@ -495,7 +663,27 @@ def dataset_card(report):
         if report['include_audio'] else
         'This transcript-only package does not include audio files or source filenames.'
     )
-    config_count = len({key.split('/', 1)[0] for key in report['configs']})
+    nonempty_configs = {
+        key: value for key, value in report['configs'].items()
+        if value.get('records', 0) > 0
+    }
+    config_names = sorted({key.split('/', 1)[0] for key in nonempty_configs})
+    config_count = len(config_names)
+    config_blocks = []
+    for name in config_names:
+        files = []
+        for key, value in sorted(nonempty_configs.items()):
+            config, split = key.split('/', 1)
+            if config != name:
+                continue
+            files.extend(
+                f'  - split: {split}\n    path: data/{name}/{filename}'
+                for filename in value.get('files') or [f'{split}-*.jsonl']
+            )
+        config_blocks.append(
+            f'- config_name: {name}\n  data_files:\n' + '\n'.join(files)
+        )
+    configs_yaml = '\n'.join(config_blocks)
     if profile_includes_all_data(report['profile']):
         language_header = '- gbm\n- hi\n- en'
         package_summary = (
@@ -509,11 +697,13 @@ quality tier, language evidence, and review state remain attached to every row s
 research use and any later redistribution decision can be audited.'''
         access_notice = '''> **Access warning:** this all-data profile contains
 restricted and rights-pending source content. Keep it local or access-controlled;
-do not publish it as an open dataset until every included component is cleared.'''
+do not publish it as an open dataset until every included component is cleared.
+It retains all structured records with row-level source, quality, and rights
+metadata attached.'''
     else:
         language_header = '- gbm'
         package_summary = (
-            f'This rights-filtered public package contains **{exported_rows:,} records** '
+            f'This public-profile package contains **{exported_rows:,} records** '
             f'across {config_count} configurations'
         )
         catalog_summary = f'''The `catalog` configuration publicly accounts for all
@@ -521,7 +711,14 @@ do not publish it as an open dataset until every included component is cleared.'
 source terms do not permit redistribution retain their stable content hash,
 source URL, rights status, quality tier, language evidence, and review reasons;
 only the protected text value is redacted. Nothing is silently omitted.'''
-        access_notice = ''
+        excluded = sum(report.get('structured_knowledge_excluded_for_rights', {}).values())
+        access_notice = f'''This public profile omits **{excluded:,} structured-knowledge records**
+whose provenance does not include an explicit compatible public-rights basis.
+They remain intact in the complete all-data package. No source license is
+inferred from a URL. The text catalog records each collected text identity and
+redacts values without compatible redistribution evidence. Native-speaker
+review and dialect annotation are deferred; benchmark and model scores are
+automated research results, not native-validated claims.'''
     return f'''---
 language:
 {language_header}
@@ -531,66 +728,7 @@ task_categories:
 - text-generation
 - translation
 configs:
-- config_name: text
-  data_files:
-  - split: train
-    path: data/text/train-*.jsonl
-  - split: validation
-    path: data/text/validation-*.jsonl
-  - split: test
-    path: data/text/test-*.jsonl
-- config_name: asr
-  data_files:
-  - split: train
-    path: data/asr/train-*.jsonl
-  - split: validation
-    path: data/asr/validation-*.jsonl
-  - split: test
-    path: data/asr/test-*.jsonl
-- config_name: sravaani_drafts
-  data_files:
-  - split: train
-    path: data/sravaani_drafts/train-*.jsonl
-- config_name: lexicon
-  data_files:
-  - split: train
-    path: data/lexicon/train-*.jsonl
-- config_name: instructions
-  data_files:
-  - split: train
-    path: data/instructions/train-*.jsonl
-  - split: validation
-    path: data/instructions/validation-*.jsonl
-  - split: test
-    path: data/instructions/test-*.jsonl
-- config_name: catalog
-  data_files:
-  - split: train
-    path: data/catalog/train-*.jsonl
-- config_name: geography
-  data_files:
-  - split: train
-    path: data/geography/train-*.jsonl
-- config_name: historical_terms
-  data_files:
-  - split: train
-    path: data/historical_terms/train-*.jsonl
-- config_name: literary_people
-  data_files:
-  - split: train
-    path: data/literary_people/train-*.jsonl
-- config_name: literary_works
-  data_files:
-  - split: train
-    path: data/literary_works/train-*.jsonl
-- config_name: popular_songs
-  data_files:
-  - split: train
-    path: data/popular_songs/train-*.jsonl
-- config_name: university_research
-  data_files:
-  - split: train
-    path: data/university_research/train-*.jsonl
+{configs_yaml}
 ---
 
 # Garhwali Language Lab
@@ -601,7 +739,7 @@ Release: **{report['release_id']}**
 
 Versioned Garhwali (`gbm`) text, speech, lexicon, instruction, geographic,
 historical, literary, music, and university-research resources built by the
-Garhwali Language Lab. Every row retains its available source and review evidence.
+Garhwali Language Lab. Available source and review metadata vary by configuration.
 
 {package_summary}, including transcripts for **{report['draft_unique_audio']:,}
 unique SraVaani recordings**. {audio_summary}
@@ -643,6 +781,7 @@ def _build_at(output, profile='public', include_audio=False,
         'profile': profile,
         'include_audio': include_audio,
         'configs': {},
+        'structured_knowledge_excluded_for_rights': {},
     }
 
     quality_catalog = list(read_jsonl(
@@ -696,10 +835,22 @@ def _build_at(output, profile='public', include_audio=False,
     for family, path in KNOWLEDGE_CONFIGS.items():
         if not path.exists():
             raise FileNotFoundError(f'Missing structured knowledge catalog: {path}')
-        rows = [knowledge_row(row, family) for row in read_jsonl(path)]
+        source_catalog = source_catalog_for_family(family)
+        rows = [
+            knowledge_row(row, family, source_catalog)
+            for row in read_jsonl(path)
+        ]
         ids = [row['id'] for row in rows]
         if len(ids) != len(set(ids)):
             raise ValueError(f'Duplicate stable IDs in {family}')
+        if profile == 'public':
+            publishable_rows = [row for row in rows if is_public_knowledge_row(row)]
+            report['structured_knowledge_excluded_for_rights'][family] = (
+                len(rows) - len(publishable_rows)
+            )
+            rows = publishable_rows
+            if not rows:
+                continue
         report['configs'][f'{family}/train'] = write_shards(
             rows, output / f'data/{family}', 'train', shard_rows
         )

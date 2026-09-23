@@ -60,6 +60,18 @@ class ReleaseIndexTests(unittest.TestCase):
             'garhwali_bench.internal_exact_train_text must be zero, found 1',
         ])
 
+    def test_rejects_release_ready_status_without_passing_final_audit(self):
+        index = {
+            'status': 'release_ready_with_public_rights_filtered_export',
+            'final_audit_status': 'failed',
+            'text': {'total': 0, 'splits': {'train': 0, 'validation': 0, 'test': 0}},
+            'speech': {'total': 0, 'splits': {'train': 0, 'validation': 0, 'test': 0}},
+            'leakage': {},
+        }
+        self.assertEqual(
+            m.validate(index), ['release-ready status requires a passing final audit']
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

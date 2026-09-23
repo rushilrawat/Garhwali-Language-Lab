@@ -1,0 +1,176 @@
+{
+  "all_collected_text_values_included": false,
+  "catalog_records": 28755,
+  "catalog_redacted_text_records": 24566,
+  "catalog_refined_text_records": 3735,
+  "configs": {
+    "asr/test": {
+      "file_sha256": {
+        "test-00000.jsonl": "7c6fa105a4eb3c293421207b6b6015ecf9285ba929d9d17f780a513f071a7723"
+      },
+      "files": [
+        "test-00000.jsonl"
+      ],
+      "records": 112,
+      "shards": 1
+    },
+    "asr/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "642ac24972d82edc33229ad0a61c2d577b6d33590327762526bc91bfbedf1946"
+      },
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 1621,
+      "shards": 1
+    },
+    "asr/validation": {
+      "file_sha256": {
+        "validation-00000.jsonl": "715546377b0fa612213d9040c91ae84d2dd29cbed5efa9dbb77b871ef016ede2"
+      },
+      "files": [
+        "validation-00000.jsonl"
+      ],
+      "records": 269,
+      "shards": 1
+    },
+    "catalog/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "2fd4259976585bdca6c86549661c6f2a02c10ce35dd17bef0ea44cb91c353ab3",
+        "train-00001.jsonl": "a2ae621ca42744cc37c897ff5f07c69e50c6c3b9410f6920096200450829da9d",
+        "train-00002.jsonl": "f8f4ee732c71451a78ce7bcb95b95f6af61ddbe79691a452c7350035ca934801"
+      },
+      "files": [
+        "train-00000.jsonl",
+        "train-00001.jsonl",
+        "train-00002.jsonl"
+      ],
+      "records": 28755,
+      "shards": 3
+    },
+    "instructions/test": {
+      "file_sha256": {
+        "test-00000.jsonl": "ae3a9cee398c4a7607834268de0b776db6fadd9e189264e0b72f221afb5471c2"
+      },
+      "files": [
+        "test-00000.jsonl"
+      ],
+      "records": 136,
+      "shards": 1
+    },
+    "instructions/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "90d598a7a87ecdf72e4a66f5a79bde06f8e49edd7ab4f3ffcde74decd494a377"
+      },
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 1516,
+      "shards": 1
+    },
+    "instructions/validation": {
+      "file_sha256": {
+        "validation-00000.jsonl": "25303186bd6b2130aca25ca453b8dc414e2a60424c359cedd9a4fb8984d9b319"
+      },
+      "files": [
+        "validation-00000.jsonl"
+      ],
+      "records": 220,
+      "shards": 1
+    },
+    "lexicon/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "ba82ca37d06066cfb5e5c2df072ef8844e4347c1aa6f9db889cbcda0acfecbbe"
+      },
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 661,
+      "shards": 1
+    },
+    "sravaani_drafts/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "7ad297db5ffa28a5479e39a317c4ff459ea6f3688b4dad74c3d5ba51bffe070a",
+        "train-00001.jsonl": "5dbad13fac1cf2f4473a633c5bee1cbbd29f4a7af534941a46a38b448d2e40d9",
+        "train-00002.jsonl": "45083cd6940c8ec806e798c9bc85a07f306cccc13178b96d1be608619a248378",
+        "train-00003.jsonl": "da5705931966fc2785bb4708f0dc91f662914316323610702e957ac6b44e8791",
+        "train-00004.jsonl": "0e6c87fe1f60703090a5e9b7391f300a89624b4e6d2e70a11b58ec34fa5c06d4",
+        "train-00005.jsonl": "520b3d4aa160abf02e6cd165ad048875a3dff500e308c2d8cef3506ca6f5ae0b",
+        "train-00006.jsonl": "f4ee90bd6ba5eb6387fc03f3293e2c3d616a716497fc0df1c23b709d6c9c39c2",
+        "train-00007.jsonl": "5399ece85dccd5bc27f7720150d801be38b65eb2c935ed6a3d9379690a821efa",
+        "train-00008.jsonl": "33ab00d3b94557c2d05ce3ee2320165917bdafc89eb6d9da5b4220262c593e48",
+        "train-00009.jsonl": "db9bf08a066ae6f103313171488487733ae4efc9186418d61ca11de0a3a8672c",
+        "train-00010.jsonl": "68ff4695456e961511f4ef3106b9353a8c2f0ed4baa013fca5d1f23978c71031"
+      },
+      "files": [
+        "train-00000.jsonl",
+        "train-00001.jsonl",
+        "train-00002.jsonl",
+        "train-00003.jsonl",
+        "train-00004.jsonl",
+        "train-00005.jsonl",
+        "train-00006.jsonl",
+        "train-00007.jsonl",
+        "train-00008.jsonl",
+        "train-00009.jsonl",
+        "train-00010.jsonl"
+      ],
+      "records": 104534,
+      "shards": 11
+    },
+    "text/test": {
+      "file_sha256": {
+        "test-00000.jsonl": "0b345b88be9dca8039ddbba7b42e127a13c0eea6df9238e5c960c06fe42cd0a4"
+      },
+      "files": [
+        "test-00000.jsonl"
+      ],
+      "records": 422,
+      "shards": 1
+    },
+    "text/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "075f91866c2697cc291d686ee65b9c2835a5c5c028099f7b47b5dc373b18f54e"
+      },
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 8037,
+      "shards": 1
+    },
+    "text/validation": {
+      "file_sha256": {
+        "validation-00000.jsonl": "5872f344ee155ce833e6eec86104b8a3b321c32bf272d37d6b7b58b06e4c8ea4"
+      },
+      "files": [
+        "validation-00000.jsonl"
+      ],
+      "records": 401,
+      "shards": 1
+    }
+  },
+  "draft_audio_grounded_review_records": 35,
+  "draft_inherited_duplicate_rows": 8,
+  "draft_queue_records": 104542,
+  "draft_records": 104542,
+  "draft_source": "data/processed/model_ready/transcripts/machine_drafts_sravaani_verified.jsonl",
+  "draft_source_label_conflicts": 98,
+  "draft_third_checkpoint_records": 1188,
+  "draft_three_checkpoint_review_records": 1090,
+  "draft_unique_audio": 104534,
+  "drafts_complete": true,
+  "include_audio": false,
+  "linked_audio_files": 0,
+  "newly_linked_audio_files": 0,
+  "profile": "public",
+  "release_id": "garhwali-language-lab-v0.1.1",
+  "removed_audio_files": 0,
+  "structured_knowledge_excluded_for_rights": {
+    "geography": 50,
+    "historical_terms": 36,
+    "literary_people": 26,
+    "literary_works": 66,
+    "popular_songs": 30,
+    "university_research": 8
+  }
+}

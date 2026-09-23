@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-409%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-432%20passing-success.svg)](research/corpus-preparation-status.md)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -103,6 +103,9 @@ not a defect in the dataset.
 
 ## ✨ Current snapshot
 
+See [`finalreport.md`](finalreport.md) for the current release decision, verified
+counts, audit gaps, and remaining work.
+
 - **31,094 source text records** from 42 files, deduplicated to **28,755 unique
   texts** and 9,145,955 characters.
 - **119,679 sentence-like occurrences** exposed from page-sized and long records,
@@ -130,10 +133,10 @@ not a defect in the dataset.
 - **8 university and research records** preserve institution, access level,
   topics, and deduplication status; the existing UOU materials are linked rather
   than ingested twice.
-- **257,807 upload-ready all-data rows** span text, human and machine speech
+- **257,807 local all-data rows** span text, human and machine speech
   transcripts, lexicon, instructions, and six structured knowledge
-  configurations. The separately audited public package contains **146,912
-  rows**.
+  configurations. The rights-filtered public package contains **146,684
+  rows** and omits 216 structured records without compatible public-rights evidence.
 - **2,002 strict speaker-identified ASR/TTS candidates** across 248 speakers,
   totaling 3.562 hours with zero identified-speaker split leakage.
 - **1,736 normalized derived WAVs** rendered from unflagged strict candidates;
@@ -205,10 +208,10 @@ not a defect in the dataset.
 - **SraVaani adaptation result:** the 102-step human-reference run scores 43.528%
   WER / 17.452% CER on the frozen 112-record test. Original SraVaani remains
   preferred at 42.761% / 17.606% because WER is the primary metric.
-- **409 automated tests** and **365 immutable source snapshots** verified, with 43 public source URLs covered
+- **432 automated tests** and **367 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
-These figures describe the preparation snapshot updated on 2026-09-19. Raw
+These figures describe the preparation snapshot updated on 2026-09-23. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
 Git through `.gitignore`.
 
@@ -228,9 +231,9 @@ Git through `.gitignore`.
 | ---: | ---: | ---: | ---: |
 | English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
 
-| `257,807` | `146,912` | `216` | `409` |
+| `257,807` | `146,684` | `216` | `435` |
 | ---: | ---: | ---: | ---: |
-| all-data package rows | public package rows | structured knowledge records | passing tests |
+| all-data package rows | rights-filtered public rows | local structured records | passing tests |
 
 </div>
 
@@ -277,14 +280,14 @@ progress in the ignored cache. See [`PIPELINE.md`](PIPELINE.md).
 | --- | --- | --- |
 | `corpus/` | Open or source-licensed text | ASJP, Tatoeba, Meta Omnilingual, Wikimedia, numerals, localization |
 | `benchmarks/` | Evaluation-only material | IndicGenBench Flores, XorQA, Crosssum |
-| `restricted/` | Useful data with limited or non-commercial terms | UOU OCR, Open Bible Stories, PanLex, thematic vocabulary |
+| `restricted/` | Source layer with limited/non-commercial or component-review terms; included in the complete local all-data research package, not cleared for public redistribution | UOU OCR, Open Bible Stories, PanLex, thematic vocabulary |
 | `experimental/` | Active local data with unresolved rights or quality signals | PahariLI, Indic Dialect ASR, web documents, community datasets |
 | `extracted/historical/` | Historical OCR and structured linguistic evidence | LSI, Upreti, Kellogg, Walton, historical folklore |
 | `data/vaani/` | Local VAANI metadata, audio, images, and manifests | Git-ignored; never commit raw audio or cache files |
 | `data/processed/` | Generated canonical, cleaned, tagged, segmented, and model views | Git-ignored JSONL and reports |
 | `research/` | Source audits, gap plans, reports, and decisions | Human-readable provenance and limitations |
 
-The complete source inventory is [`sources/online/deep-search-catalog.md`](sources/online/deep-search-catalog.md).
+The complete source inventory is [`sources/online/deep-search-catalog.md`](sources/online/deep-search-catalog.md). The current workspace scan found no directory or package configuration named quarantine, hold, or unusable. All 1,450 nonempty text rows in the ignored `restricted/` input layer match canonical corpus content by normalized hash; the all-data text split retains 16,375 segments with restricted-source provenance. These source files remain Git-ignored and are not uploaded anywhere; the public profile still fails its rights gate.
 The catalog records sources that were inspected but not promoted, including blocked,
 gated, mirrored, copyrighted, and permission-dependent material.
 
@@ -530,8 +533,9 @@ selection rules, exclusions, counts, and leakage checks.
 - [x] Audit licensing, attribution, source hashes, and unresolved rights.
 - [x] Track unresolved language, dialect, OCR, audio, and transcript records.
 - [x] Verify source snapshots and release-manifest line counts.
-- [x] Make the two-pass native workflow available as an optional future quality
-  upgrade without blocking the current release.
+- [x] Provide a two-pass native-review workflow and ready-to-fill packets. Native
+  decisions remain absent, so the benchmark is still an automated candidate and
+  the release is not represented as native-validated.
 - [x] Package all 176 remaining text-accuracy cases and all 113 transcript-review
   cases as JSONL plus flat two-reviewer CSV templates; include English alignments
   for 172 Translatewiki rows and two model hypotheses for five ambiguous human
@@ -574,18 +578,18 @@ selection rules, exclusions, counts, and leakage checks.
   quality documentation.
 - [x] Generate a versioned local release manifest.
 - [x] Document the redistribution and model-use policy.
-- [x] Publish a dataset card with license treatment, attribution, consent scope,
+- [x] Prepare a dataset card with license treatment, attribution, consent scope,
   exclusions, review status, and reproducibility commands.
 
 ## 🔭 Research platform roadmap
 
 | Stage | Status | Primary artifact | Remaining success condition |
 | --- | --- | --- | --- |
-| **1. Corpus v1.0** | Local release candidate complete | `GarhwaliCorpus` | Import the active SraVaani result, freeze final manifests, then publish the selected package |
-| **2. Benchmark v1.0** | Experimental benchmark complete | `GarhwaliBench` | Add native judgments and version later corrections instead of changing the frozen baseline |
-| **3. Baseline audit** | Complete | `Garhwali Model Report` | Keep comparisons pinned as new models are added |
-| **4. Controlled modeling** | Active | `GarhwaliGPT` plus adapted models | Finish the refined SraVaani sweep and retain only validation-supported gains |
-| **5. Research experiments** | Active | Reproducible ablation suite | Extend multi-seed quality, transfer, and scaling experiments after the release freeze |
+| **1. Corpus v0.1 candidate** | Rights-filtered public build passes automated audit; 216 rights-pending structured records stay in all-data only | `GarhwaliCorpus` | Align release version/tag, then publish the rights-filtered package when requested |
+| **2. Benchmark candidate** | Automated 398-text / 112-ASR candidate built; native/dialect review deferred | `GarhwaliBench` | Keep review deferred and label every benchmark/model result as an automated candidate |
+| **3. Baseline audit** | Historical experiment suite complete | `Garhwali Model Report` | Reevaluate advertised scores against a versioned final benchmark |
+| **4. Controlled modeling** | Current experiments complete; no active paid job | `GarhwaliGPT` plus adapted models | Keep unpromoted checkpoints experimental; rerun only against the frozen release benchmark |
+| **5. Research experiments** | Core automated experiments complete | Reproducible ablation suite | Add further transfer and scaling work after the corpus and benchmark versions are settled |
 | **6. Community expansion** | Planned | Corpus v1.x/v2 | Add native corrections, more varieties and districts, conversations, parallel data, and corrected historical text |
 | **7. Public platform** | Planned | Dataset, models, leaderboard, versioned API, explorer | Upload the final dataset, then ship stable search, lexicon, normalization, transliteration, and cultural endpoints |
 
@@ -617,18 +621,18 @@ with provenance.
 | Deliverable | Focused effort from the current state | Main dependency |
 | --- | ---: | --- |
 | Literary, cultural, and university additions | Complete | Automated validation |
-| Local Corpus v1 release candidate | Complete: 257,807 all-data / 146,912 public rows | Final audit and package validation pass |
-| SraVaani refined sweep and integration | Current active job plus 2–4 hours of local evaluation | Hugging Face job completion |
-| Final Hugging Face dataset publication | 2–4 focused hours after model integration | Final upload decision and network transfer |
-| Quality-focused dataset and benchmark v1 | 40–80 hours / 1–2 working weeks | Native review remains the accuracy bottleneck |
+| Local corpus package candidate | Automated build complete: 257,807 all-data / 146,684 public-profile rows | Public profile excludes 216 structured records without compatible rights evidence; local v0.1.1 tag matches reviewed commit d1ec21a |
+| SraVaani refined sweep and integration | Complete; base checkpoint remains preferred | Further paid Hugging Face runs are paused by project direction |
+| Hugging Face dataset publication | Not active; no upload made | Current project direction is local work; do not publish until rights and release gates are resolved |
+| Quality-focused dataset and benchmark release | Automated candidate is prepared | Native review and dialect annotation are deferred; do not claim native-validated quality |
 | Sellable text-first API MVP | 30–60 additional hours / 1–2 weeks | Dataset freeze, hosting, authentication, billing, monitoring |
 | Translation and ASR beta | 2–6 additional weeks | Better native references and measured quality gains |
 | Full corpus, benchmark, models, community layer, API, and demos | 2–4 months of sustained work | Native participation, evaluation, and production operations |
 
-“Finished” for the first public release means a reproducible dataset, frozen
-benchmark, documentation, and text-first API. Strong production speech,
-translation, and TTS remain later releases because their accuracy cannot be
-established from machine scores alone.
+“Finished” for the first public release means a reproducible dataset, a frozen
+benchmark, and documentation. A text-first API is a later product stage. Strong
+production speech, translation, and TTS also remain later releases because their
+accuracy cannot be established from machine scores alone.
 
 ### Next execution cycle
 
@@ -716,8 +720,9 @@ established from machine scores alone.
     literary people, literary works, popular songs, and university research are
     first-class Hugging Face configurations with 216 records and stable IDs.
 21. [x] **Release reconciliation — High:** the 257,807-row all-data package and
-    146,912-row public package are rebuilt, the tracked release index is synced,
-    and the public export passes provenance, count, and leakage validation.
+    146,684-row public package are rebuilt, the tracked release index is synced,
+    and the rights-filtered public export passes provenance, count, rights, and
+    leakage checks. The omitted 216 records remain in the local all-data package.
 22. [x] **Refined SraVaani decision — Xhigh:** Job
     [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768)
     completed all 61 trials. The selected checkpoint improved validation WER to
@@ -756,9 +761,11 @@ established from machine scores alone.
     validation domains. General loss fell from 6.729359 to a 5.316585 mean;
     PDF-domain accuracy rose from 24.473% to approximately 32.29%.
 30. [x] **Semantic duplicate and leakage audit — High:** the complete
-    pre-OCR-correction segment snapshot was embedded. The audit found 29,903 high-similarity candidate
-    pairs, including 2,839 cross-split candidates requiring review; no source
-    record was automatically deleted or changed.
+    pre-OCR-correction segment snapshot was embedded. Cross-encoder refinement
+    found 29,903 candidate pairs. The earlier split had 92 supported pairs
+    crossing partitions; the rebuilt split groups supported semantic edges,
+    reassigns 120 records, and reports zero supported-edge leakage. No source
+    text was changed or deleted.
 31. [x] **Release metadata completeness — High:** profile all 114,064 current split rows,
     restore stable source identifiers for 9,774 segments from their originating
     filenames, rebuild the package, and verify zero empty text, duplicate IDs,
@@ -898,51 +905,58 @@ PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/redecode_supervis
 git diff --check
 ```
 
-The final audit checks the tracked release index against every generated Hugging
-Face shard, including actual row counts, provenance, transcript/source/license
-metadata, draft coverage, and cross-split text, audio, and speaker leakage. Its
-machine-readable result is [`release/final-audit.json`](release/final-audit.json).
-The current verification result is **409 passing tests**, **365 verified source
-snapshots**, and zero release-index, export-count, provenance, or leakage errors.
+The public package now excludes the 216 structured records without compatible
+rights evidence; all remain intact in the complete all-data package. The public
+preflight and final audit pass with zero rights failures. The all-data package
+also passes preflight and retains all 28,755 collected text values with zero
+catalog redactions. Native-speaker review and dialect annotation are deferred;
+the benchmark remains explicitly an automated candidate. Every structured
+source reference resolves to a source URL or capture fingerprint, but that
+traceability alone does not grant reuse rights. The audit reopens all five
+benchmark artifacts and verifies package shard hashes and content-derived text IDs. See
+[`finalreport.md`](finalreport.md) and
+[`DEEP_DIVE_FINAL_AUDIT.md`](DEEP_DIVE_FINAL_AUDIT.md) for details. The
+The current complete suite passes **435 tests**. The pipeline tracks **367 source snapshots**.
 
-## 🤗 Hugging Face release
+## Local dataset packages
 
 Future PDFs go in `incoming/pdfs/` with a same-name JSON metadata sidecar. Run
 `bash scripts/refresh_incoming_pdfs.sh` to hash and deduplicate the files,
 extract embedded text or OCR scan pages, rebuild cleaned and segmented corpus
-views, and regenerate the upload-ready all-data package. This local pipeline
-does not consume Hugging Face GPU credit.
+views, and regenerate the local all-data package. This local pipeline does not
+consume Hugging Face GPU credit. No dataset upload or paid Hugging Face job is
+currently part of the project work.
 
-`scripts/build_huggingface_dataset.py` creates two upload-ready multi-config
+`scripts/build_huggingface_dataset.py` creates two local multi-config
 datasets with Garhwali text, human VAANI transcripts, SraVaani machine drafts,
 lexicon, instruction splits, geography, historical terms, literary people,
 literary works, popular-song metadata, and university research. The **all-data
-profile is the complete model and research package**: it contains **257,807
-rows**, including every collected text value and all **216 structured cultural
-and scholarly records**. Each row keeps its source, quality, rights, and review
-metadata. The **146,912-row public profile** is a separate redistribution view
-for records with explicit compatible source terms. Both omit original audio
-filenames and raw speaker identifiers.
+profile is the complete local research package**: it contains **257,807 rows**,
+including every collected text value and all **216 structured cultural and
+scholarly records**. Those structured records now carry standardized
+provenance and quality fields. The **146,684-row public profile** omits the 216
+structured records that lack compatible rights evidence. The rights-filtered
+package audit passes; this does not clear the omitted records themselves. Both
+profiles omit original audio filenames and raw speaker identifiers. Native-
+speaker review and dialect annotation are deferred, so the benchmark remains an
+automated candidate. See [`finalreport.md`](finalreport.md) before any release.
 
 ```bash
 # Build the complete transcript-only all-data package (257,807 rows)
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
   --profile all-data
 
-# Build and audit the separate public redistribution package
+# Build the rights-filtered public-profile candidate
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
   --profile public \
   --output data/huggingface/garhwali-language-lab
 .venv/bin/python scripts/audit_final_release.py
-
-# Upload the rights-filtered public package after the final release review
-HF_HOME=.cache/huggingface hf upload rushilrawat/garhwali-language-lab \
-  data/huggingface/garhwali-language-lab . --repo-type dataset
 ```
 
 The all-data package is for local or access-controlled research. It contains
-rights-pending and restricted components and must not be uploaded to a public
-repository unless every included source has first been cleared for redistribution.
+rights-pending and restricted components. The public profile excludes all 216
+structured records without compatible public-rights evidence. The package
+audit passes for this filtered profile; no package has been uploaded.
 
 The generated `README.md` is the Hugging Face dataset card, while
 `manifest.json` records configuration counts, shard names, draft completeness,
@@ -956,10 +970,12 @@ histories. The source-level audit is documented in
 [`research/text-source-rights-audit-2026-09-15.md`](research/text-source-rights-audit-2026-09-15.md).
 The current all-data package report is
 [`research/all-data-package-2026-09-19.md`](research/all-data-package-2026-09-19.md).
-The published release is versioned as `v0.1.0`; its tracked
-index is [`release/v0.1.0-manifest.json`](release/v0.1.0-manifest.json). Compact
+The generated package snapshot carries release ID `v0.1.1`. The historical
+`v0.1.0` tag remains unchanged; local annotated tag `v0.1.1` resolves to
+reviewed commit `d1ec21a`. The index is
+[`release/v0.1.1-manifest.json`](release/v0.1.1-manifest.json). Compact
 generated reports and visual evidence are tracked under
-[`release/v0.1.0/`](release/v0.1.0/README.md).
+[`release/v0.1.1/`](release/v0.1.1/README.md). No remote upload has occurred.
 
 ## 🤝 Contributing
 

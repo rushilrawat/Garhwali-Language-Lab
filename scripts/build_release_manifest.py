@@ -18,6 +18,9 @@ def main():
     vaani_report = json.loads((ROOT/'data/processed/vaani/report.json').read_text())
     audio_report = json.loads((ROOT/'data/processed/audio/report.json').read_text())
     dataset_split_report = json.loads((ROOT/'data/processed/model_ready/splits/report.json').read_text())
+    recommended_text_view_report = read_optional_json(
+        ROOT/'data/processed/model_ready/splits/text_recommended/report.json'
+    )
     language_resources_report = read_optional_json(ROOT/'data/processed/model_ready/language_resources/report.json')
     text_source_audit_report = read_optional_json(
         ROOT/'data/processed/model_ready/text_source_audit/report.json'
@@ -26,6 +29,12 @@ def main():
     long_form_audio_report = read_optional_json(ROOT/'data/processed/long_form_audio/report.json')
     garhwali_benchmark_report = read_optional_json(
         ROOT/'data/processed/evaluation/garhwali_bench/manifest.json'
+    )
+    text_scaling_recommended_report = read_optional_json(
+        ROOT/'data/processed/evaluation/controlled_modeling/text_scaling_recommended.json'
+    )
+    text_scaling_broad_comparison_report = read_optional_json(
+        ROOT/'data/processed/evaluation/controlled_modeling/text_scaling_broad_same_eval_v0.1.json'
     )
     multilingual_tokenizer_audit = read_optional_json(
         ROOT/'data/processed/evaluation/model_audit/tokenizer_report.json'
@@ -129,6 +138,9 @@ def main():
       'split_text_train': 'data/processed/model_ready/splits/text/train.jsonl',
       'split_text_validation': 'data/processed/model_ready/splits/text/validation.jsonl',
       'split_text_test': 'data/processed/model_ready/splits/text/test.jsonl',
+      'split_text_recommended_train': 'data/processed/model_ready/splits/text_recommended/train.jsonl',
+      'split_text_recommended_validation': 'data/processed/model_ready/splits/text_recommended/validation.jsonl',
+      'split_text_recommended_test': 'data/processed/model_ready/splits/text_recommended/test.jsonl',
       'split_asr_train': 'data/processed/model_ready/splits/asr/train.jsonl',
       'split_asr_validation': 'data/processed/model_ready/splits/asr/validation.jsonl',
       'split_asr_test': 'data/processed/model_ready/splits/asr/test.jsonl',
@@ -179,11 +191,14 @@ def main():
       'vaani_report': vaani_report,
       'audio_report': audio_report,
       'dataset_split_report': dataset_split_report,
+      'recommended_text_view_report': recommended_text_view_report,
       'language_resources_report': language_resources_report,
       'text_source_audit_report': text_source_audit_report,
       'native_review_report': native_review_report,
       'long_form_audio_report': long_form_audio_report,
       'garhwali_benchmark_report': garhwali_benchmark_report,
+      'text_scaling_recommended_report': text_scaling_recommended_report,
+      'text_scaling_broad_same_eval_report': text_scaling_broad_comparison_report,
       'multilingual_tokenizer_audit': multilingual_tokenizer_audit,
       'indicbertv2_masked_lm_report': indicbertv2_masked_lm_report,
       'translation_floor_report': translation_floor_report,

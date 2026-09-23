@@ -1,0 +1,414 @@
+{
+  "release_id": "garhwali-language-lab-v0.1.1",
+  "status": "release_ready_with_public_rights_filtered_export",
+  "generated": "2026-09-23",
+  "language": "Garhwali (gbm)",
+  "local_storage_gb_approx": 34,
+  "text": {
+    "total": 114064,
+    "splits": {
+      "test": 4086,
+      "train": 106915,
+      "validation": 3063
+    },
+    "unique_parent_documents": 28755
+  },
+  "all_data_package": {
+    "profile": "all-data",
+    "transcript_only_package_rows": 257807,
+    "full_text_segments": 114064,
+    "exact_unique_texts": 28755,
+    "redacted_text_values": 0,
+    "human_vaani_transcript_rows": 5894,
+    "lexicon_rows": 1114,
+    "instruction_rows": 3230,
+    "all_collected_text_values_included": true
+  },
+  "public_text_release": {
+    "exact_unique_with_public_rights_basis": 4189,
+    "rights_pending_catalog_records": 24566,
+    "strict_public_candidates": 3559,
+    "high_quality_rights_pending_candidates": 1748,
+    "mixed_rights_exact_duplicates": 1913,
+    "strict_records_using_open_overlap": 1906,
+    "native_or_source_review_queue": 176,
+    "source_attested_linguistic_transcriptions": 392,
+    "transcript_only_package_rows": 146684
+  },
+  "native_review": {
+    "text_accuracy_packets": 176,
+    "transcript_packets": 113,
+    "ambiguous_supervised_transcripts_with_model_evidence": 5,
+    "required_independent_reviews": 2,
+    "adjudicated_records": 0,
+    "status": "reviewer_ready"
+  },
+  "speech": {
+    "total": 5894,
+    "hours": 8.803724,
+    "splits": {
+      "train": 4778,
+      "validation": 666,
+      "test": 450
+    },
+    "strict_comparison_rows": 2002,
+    "strict_comparison_hours": 3.562395,
+    "strict_identified_speakers": 248,
+    "all_supervised_rows_active_experimentally": true,
+    "untranscribed_rows_preserved": 104542
+  },
+  "derived_audio": {
+    "total": 2002,
+    "splits": {
+      "train": 1422,
+      "validation": 225,
+      "test": 89
+    },
+    "flagged_review_copies": 266,
+    "flagged_strict_rows_active_experimentally": 266
+  },
+  "long_form_audio": {
+    "episodes": 66,
+    "clips": 1204,
+    "hours": 8.928764,
+    "experimental_training_eligible": true,
+    "public_redistribution_eligible": false
+  },
+  "language_resources": {
+    "tokenizer_type": "unicode_character",
+    "tokenizer_vocabulary_size": 331,
+    "tokenizer_training_texts": 106915,
+    "word_types": 262231,
+    "lexicon_candidates": 1114,
+    "pronunciation_candidates": 1114,
+    "pronunciations_with_source_phonetics": 293,
+    "tts_pairs": 1736
+  },
+  "evaluation_candidates": {
+    "text": 398,
+    "speech": 112,
+    "review_status": "strict_automated_candidate_pending_native_review",
+    "native_review_optional": false,
+    "native_review_deferred": true
+  },
+  "garhwali_bench": {
+    "release_id": "garhwali-bench-v0.1-experimental",
+    "external_records": 3847,
+    "held_out_text_records": 398,
+    "speaker_safe_asr_records": 112,
+    "character_bigram_perplexity": 17.000058,
+    "character_oov_rate": 0.0,
+    "external_exact_train_text": 0,
+    "internal_exact_train_text": 0,
+    "asr_speaker_overlap": 0,
+    "native_reviewed": false,
+    "dialect_aware": false,
+    "status": "strict_automated_candidate_pending_native_review"
+  },
+  "multilingual_model_audit": {
+    "tokenizers_evaluated": 5,
+    "held_out_text_records": 2492,
+    "best_tokenizer": "ai4bharat/IndicBERTv2-MLM-only",
+    "best_fertility_tokens_per_word": 1.531569,
+    "indicbertv2_masked_lm_records": 128,
+    "indicbertv2_masked_tokens": 506,
+    "indicbertv2_masked_token_accuracy": 0.17786561,
+    "indicbertv2_masked_token_cross_entropy": 6.977486,
+    "indicbertv2_masked_token_perplexity": 1072.219001,
+    "indicbertv2_truncated_records": 0
+  },
+  "translation_baseline": {
+    "direction": "Garhwali-to-English",
+    "development_pairs": 997,
+    "test_pairs": 1012,
+    "translation_memory_bleu_smoothed": 0.00820786,
+    "translation_memory_chrf2": 0.21588612,
+    "nllb_pilot_records": 32,
+    "nllb_source_token_proxy": "hin_Deva",
+    "nllb_base_bleu_smoothed": 0.21971862,
+    "nllb_base_chrf2": 0.57413371,
+    "community_adapter_bleu_smoothed": 0.09546021,
+    "community_adapter_chrf2": 0.46047417,
+    "selected_pilot": "facebook/nllb-200-distilled-600M",
+    "status": "experimental_hindi_source_token_proxy"
+  },
+  "retrieval_baseline": {
+    "benchmark": "IndicGenBench XORQA Garhwali",
+    "source_rows": 1139,
+    "unique_passages": 1059,
+    "development_queries": 500,
+    "test_queries": 539,
+    "test_word_bm25_recall_at_10": 0.01669759,
+    "test_character_bm25_recall_at_10": 0.02411874,
+    "test_indicbertv2_recall_at_1": 0.02226345,
+    "test_indicbertv2_recall_at_5": 0.08163265,
+    "test_indicbertv2_recall_at_10": 0.1038961,
+    "test_indicbertv2_mrr_at_10": 0.04660747,
+    "dev_oracle_english_bm25_recall_at_10": 0.852,
+    "missing_test_oracle_questions": 539,
+    "status": "experimental_single_associated_passage_relevance"
+  },
+  "asr_baseline": {
+    "model": "whisper-tiny-garhwali-v0.2",
+    "training_steps_after_initial_pass": 3242,
+    "test_rows": 112,
+    "wer": 0.7430488974113135,
+    "cer": 0.40440145780768155,
+    "promotion_status": "rejected_for_automatic_pseudolabeling",
+    "review_only_draft_rows": 100,
+    "draft_median_uncalibrated_confidence": 0.17401576,
+    "draft_strict_training_eligible_rows": 0,
+    "draft_experimental_training_eligible_rows": 100
+  },
+  "speech_baseline_comparison": {
+    "evaluation_rows": 112,
+    "evaluation_manifest_sha256": "2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52",
+    "whisper_tiny_zero_shot_wer": 1.4793863854266538,
+    "whisper_tiny_zero_shot_cer": 1.3680964395850854,
+    "whisper_small_zero_shot_wer": 0.9717162032598274,
+    "whisper_small_zero_shot_cer": 0.5782169890664424,
+    "whisper_tiny_finetune_v0_1_wer": 0.7905081495685522,
+    "whisper_tiny_finetune_v0_1_cer": 0.4290720493411831,
+    "whisper_tiny_finetune_v0_2_wer": 0.7430488974113135,
+    "whisper_tiny_finetune_v0_2_cer": 0.40440145780768155,
+    "selected_checkpoint": "ARTPARK-IISc/SraVaani-1.0",
+    "sravaani_status": "provider_approved_evaluated",
+    "sravaani_revision": "f5dd5358325a5208775b91dad98918e079ea2b27",
+    "sravaani_model_artifact_sha256": "789a21b6df8b0bb2ea2cc1c120edbfd4b898d3a26e6c6673cca45d14b64a47f2",
+    "sravaani_wer": 0.4276126558005753,
+    "sravaani_cer": 0.17605831230726102,
+    "sravaani_relative_wer_reduction_vs_whisper_v0_2": 0.424516129032258,
+    "sravaani_draft_rows": 104542,
+    "sravaani_draft_unique_audio": 104534,
+    "sravaani_draft_inherited_duplicate_rows": 8,
+    "sravaani_draft_empty_rows": 34,
+    "sravaani_draft_missing_audio_hashes": 0,
+    "sravaani_draft_unexpected_audio_hashes": 0,
+    "sravaani_drafts_active_experimentally": true,
+    "sravaani_draft_unique_hypotheses": 103996,
+    "sravaani_draft_standard_rows": 103354,
+    "sravaani_draft_flagged_rows": 1188,
+    "sravaani_draft_high_risk_rows": 1083,
+    "sravaani_draft_no_devanagari_rows": 1026,
+    "sravaani_draft_bengali_script_rows": 257,
+    "sravaani_draft_repetition_loop_rows": 17,
+    "promotion_status": "rejected_for_automatic_pseudolabeling"
+  },
+  "model_assisted_text_cleanup": {
+    "snapshot_status": "historical_pre_source_accuracy_pass",
+    "total_records": 27987,
+    "active_for_experiment": 27987,
+    "excluded": 0,
+    "records_with_any_proposal": 16687,
+    "model_scored_records": 4096,
+    "model_masked_tokens": 81116,
+    "model_source_disagreements": 410,
+    "mechanical_change_records": 108,
+    "spelling_candidate_records": 10200,
+    "spelling_candidate_pairs": 35864,
+    "hindi_garhwali_ambiguity_records": 2327,
+    "dialect_priority_records": 10660,
+    "ocr_priority_records": 2328,
+    "application_status": "proposal_only",
+    "originals_preserved": true
+  },
+  "text_cleanup_ablation": {
+    "train_records": 25169,
+    "test_records": 1393,
+    "baseline_character_bigram_perplexity": 16.88499549,
+    "mechanical_character_bigram_perplexity": 16.88726214,
+    "bulk_spelling_character_bigram_perplexity": 16.76707705,
+    "baseline_test_token_oov_rate": 0.06995491,
+    "bulk_spelling_test_token_oov_rate": 0.06016912,
+    "mechanical_promotion_status": "not_promoted",
+    "spelling_promotion_status": "not_promoted"
+  },
+  "controlled_text_scaling": {
+    "model_family": "add-one-smoothed_character_ngram",
+    "training_records": 80926,
+    "validation_records": 2488,
+    "frozen_test_records": 2492,
+    "fractions": [
+      0.01,
+      0.05,
+      0.1,
+      0.25,
+      0.5,
+      1.0
+    ],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "orders": [
+      2,
+      3
+    ],
+    "validation_runs": 36,
+    "selected_order": 3,
+    "selected_fraction": 1.0,
+    "mean_validation_perplexity": 11.71299731,
+    "frozen_test_perplexity": 11.89388647,
+    "train_validation_exact_text_overlap": 0,
+    "train_test_exact_text_overlap": 0
+  },
+  "indicbertv2_head_adaptation": {
+    "status": "advance_to_encoder_adaptation",
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 64,
+    "training_pool_records_per_seed": 512,
+    "validation_records": 128,
+    "validation_masked_tokens": 538,
+    "encoder_frozen": true,
+    "trainable_parameters": 842128,
+    "baseline_validation_cross_entropy": 6.67816411,
+    "mean_adapted_validation_cross_entropy": 6.57855235,
+    "std_adapted_validation_cross_entropy": 0.01493512,
+    "improved_seed_count": 3,
+    "frozen_test_records_used": 0
+  },
+  "indicbertv2_encoder_lora": {
+    "status": "selected_for_longer_continued_pretraining",
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 256,
+    "training_pool_records_per_seed": 2048,
+    "validation_records": 128,
+    "trainable_parameters": 147456,
+    "baseline_validation_cross_entropy": 6.67816411,
+    "mean_validation_cross_entropy": 6.06264824,
+    "std_validation_cross_entropy": 0.00631318,
+    "improved_seed_count": 3
+  },
+  "indicbertv2_transfer_frozen_test": {
+    "test_records": 256,
+    "masked_tokens": 1037,
+    "test_subset_sha256": "943cd7bf66ac462fb0e6db9e10783ceca727ee131aefceb0da62774ae6c060e3",
+    "base_cross_entropy": 6.65932994,
+    "head_only_mean_cross_entropy": 6.53723563,
+    "encoder_lora_mean_cross_entropy": 6.01409287,
+    "encoder_lora_std_cross_entropy": 0.00882765,
+    "encoder_lora_accuracy": 0.21279331,
+    "selected_family": "encoder_lora_256_steps",
+    "train_test_exact_text_overlap": 0,
+    "future_test_tuning_allowed": false
+  },
+  "indicbertv2_encoder_lora_long": {
+    "status": "validated_longer_continued_pretraining",
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 1024,
+    "training_pool_records_per_seed": 8192,
+    "unique_training_records_per_seed": 1024,
+    "validation_records": 128,
+    "validation_masked_tokens": 538,
+    "trainable_parameters": 147456,
+    "baseline_validation_cross_entropy": 6.67816411,
+    "mean_validation_cross_entropy": 5.62449828,
+    "std_validation_cross_entropy": 0.02223708,
+    "mean_validation_accuracy": 0.2354399,
+    "improved_seed_count": 3,
+    "frozen_test_records_used": 0
+  },
+  "instruction_dataset": {
+    "total_records": 2654,
+    "train_records": 2434,
+    "validation_records": 134,
+    "test_records": 86,
+    "tasks": 6,
+    "parent_cross_split": 0,
+    "exact_instruction_pair_cross_split": 0,
+    "all_records_active_experimentally": true,
+    "provenance_preserved": true
+  },
+  "mt5_instruction_tuning": {
+    "dataset_snapshot_status": "historical_pre_source_accuracy_pass",
+    "status": "not_promoted_for_generation",
+    "model": "google/mt5-small",
+    "revision": "73fb5dbe4756edadc8fbe8c769b0a109493acf7a",
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 64,
+    "trainable_parameters": 172032,
+    "baseline_validation_cross_entropy": 28.2013851,
+    "mean_validation_cross_entropy": 27.56987976,
+    "improved_validation_seed_count": 3,
+    "selected_seed": 29,
+    "base_test_cross_entropy": 30.41628715,
+    "selected_seed_test_cross_entropy": 29.05934742,
+    "selected_seed_test_exact_match": 0.0,
+    "selected_seed_test_chrf2": 0.0,
+    "test_records_used_for_training": 0
+  },
+  "instruction_accuracy_split_v2": {
+    "snapshot_status": "current_regenerated_dataset",
+    "run_id": "garhwali-instruction-accuracy-split-v0.2",
+    "train_records": 2178,
+    "validation_records": 134,
+    "test_records": 256,
+    "test_sha256": "ef6e31256ec711a63f73f1adf8f44eeb27d430ba2c13fa7dea46aba726cd9a11",
+    "previously_closed_test_reused": 0,
+    "prior_seen_parent_test_overlap": 0,
+    "parent_cross_split": 0,
+    "all_records_active_experimentally": true
+  },
+  "mt0_instruction_tuning_v2": {
+    "dataset_snapshot_status": "historical_pre_source_accuracy_pass",
+    "status": "accuracy_baseline_not_promoted",
+    "model": "bigscience/mt0-small",
+    "revision": "8116a34237e19160ec003147e758f065876d95f0",
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 256,
+    "trainable_parameters": 172032,
+    "baseline_validation_cross_entropy": 5.61435313,
+    "mean_validation_cross_entropy": 4.96198884,
+    "mean_test_cross_entropy": 5.01960305,
+    "all_seed_test_cross_entropy_below_base": true,
+    "selected_seed": 29,
+    "selected_seed_test_cross_entropy": 5.00885879,
+    "selected_seed_test_chrf2": 0.05258826,
+    "selected_seed_test_exact_match": 0.0,
+    "test_records_used_for_training": 0
+  },
+  "leakage": {
+    "text_hash_cross_split": 0,
+    "identified_speaker_cross_split": 0
+  },
+  "release_policy": "Every collected record is active for experiments and represented in the public catalog by stable identity, provenance, rights, and quality evidence. Text and audio values are redistributed when verified source terms permit it; protected values remain catalogued with the content field redacted.",
+  "machine_manifest": "data/processed/release/manifest.json",
+  "final_audit": "release/final-audit.json",
+  "structured_knowledge": {
+    "records": 216,
+    "configs": {
+      "geography": 50,
+      "historical_terms": 36,
+      "literary_people": 26,
+      "literary_works": 66,
+      "popular_songs": 30,
+      "university_research": 8
+    },
+    "all_data_records": 216,
+    "public_records": 0,
+    "public_excluded_for_rights": 216,
+    "included_in_all_data_package": true
+  },
+  "final_audit_status": "passed"
+}

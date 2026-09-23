@@ -1,5 +1,9 @@
 # Source-grounded text accuracy review
 
+> Historical snapshot from 2026-09-15. It describes the accuracy evidence and
+> review queue at that date; current package counts and release blockers are in
+> [`finalreport.md`](../finalreport.md).
+
 ## Outcome
 
 This pass reduced the public text review queue from **628 to 176 records** without

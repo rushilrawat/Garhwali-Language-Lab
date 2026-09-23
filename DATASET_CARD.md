@@ -8,11 +8,16 @@ folklore, folk songs, educational material, historical linguistics, community
 writing, and cultural context without erasing source rights or uncertain language
 labels.
 
-The current release is `garhwali-language-lab-v0.1.0`. Every collected text value
-is present in the complete all-data Hugging Face package with quality, source,
-and rights metadata retained. A separate public redistribution profile contains
-only records with compatible source terms.
-The reserved Hugging Face repository is
+The current package snapshot uses release ID
+`garhwali-language-lab-v0.1.1`; annotated tag v0.1.1 resolves to the reviewed
+commit and the historical v0.1.0 tag remains unchanged. The public profile includes records
+with an explicit compatible rights basis and excludes 216 structured reference
+records whose rights remain unassessed or incompatible. Those records remain
+intact in the all-data package. Native-speaker review and dialect annotation are
+deferred; benchmark and model scores are automated research results, not native-
+or dialect-validated claims. See [`finalreport.md`](finalreport.md) for the
+release decision and audit scope. This Hugging Face URL is the repository
+target; no remote upload was performed:
 [`rushilrawat/garhwali-language-lab`](https://huggingface.co/datasets/rushilrawat/garhwali-language-lab).
 
 ## Current scale
@@ -22,6 +27,7 @@ The reserved Hugging Face repository is
 | Exact-unique parent texts | 28,755 |
 | Sentence segments | 114,064 |
 | All-data package | 257,807 rows / 0 redacted texts |
+| Rights-filtered public profile | 146,684 rows / 12 configurations |
 | All supervised speech rows | 5,894 / 8.803724 hours |
 | Strict identified-speaker comparison rows | 2,002 / 3.562395 hours |
 | Normalized training-candidate WAVs | 1,736 |
@@ -109,6 +115,9 @@ The corpus contains CC BY, CC BY-SA, CC BY-NC-SA, public-domain, restricted,
 rights-pending, and unresolved components. There is therefore no single license
 covering the complete all-data package.
 
+The repository code is licensed under MIT in [`LICENSE`](LICENSE). That license
+does not apply to the dataset, upstream source material, or all-data package.
+
 VAANI is recorded as CC BY 4.0 in its source metadata. Modern books, podcast
 episodes, community pages, social posts, and dataset components whose repository
 license does not clear underlying content remain active all-data research inputs
@@ -155,7 +164,7 @@ publish raw caches, reference images, or private reviewer identities.
 
 Run the preparation commands in [`README.md`](README.md). Machine-generated data
 stays under `data/processed/`; the tracked release summary is
-[`release/v0.1.0-manifest.json`](release/v0.1.0-manifest.json). The full
+[`release/v0.1.1-manifest.json`](release/v0.1.1-manifest.json). The full
 test suite, release-index validator, leakage checks, and source-freshness workflow
 run in GitHub Actions.
 

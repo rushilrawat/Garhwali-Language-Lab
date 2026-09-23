@@ -5,6 +5,11 @@ import run_indicbert_adaptation as m
 
 
 class IndicBertAdaptationTests(unittest.TestCase):
+    def test_defaults_use_recommended_training_and_validation_views(self):
+        self.assertEqual(m.TRAIN.parts[-3:], ('splits', 'text_recommended', 'train.jsonl'))
+        self.assertEqual(m.VALIDATION.parts[-3:], ('splits', 'text_recommended', 'validation.jsonl'))
+        self.assertIn('recommended', m.OUTPUT.name)
+
     def test_training_selection_is_deterministic(self):
         rows = [{'segment_sha256': str(index), 'text': str(index)} for index in range(20)]
         first = m.select_rows(rows, 5, 17)

@@ -1,0 +1,18 @@
+{
+  "all_source_records_remain_active": true,
+  "automatic_corrections_promoted": 0,
+  "input_sha256": "41041b8cfdfb50a2457efa79899e6a1addf09c67d5daab4b98b86cb4788cf91d",
+  "mechanical_candidates_changed": 17,
+  "original_transcripts_preserved": true,
+  "records_removed_or_quarantined": 0,
+  "recovery_actions": {
+    "compare_repetition_compaction": 17,
+    "redecode_empty": 34,
+    "redecode_frequent_hypothesis": 121,
+    "redecode_with_devanagari_constraint": 1049,
+    "resegment_and_redecode": 2
+  },
+  "recovery_records": 1188,
+  "run_id": "sravaani-draft-recovery-routing-v0.1",
+  "source_records": 104542
+}

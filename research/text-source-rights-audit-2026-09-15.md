@@ -1,5 +1,12 @@
 # Text source and rights audit
 
+> Historical snapshot from 2026-09-15. Its row counts and 145,497-row package
+> figure were superseded by the 2026-09-19 build: 28,755 parent texts,
+> 114,064 prepared segments, 146,912 public rows, and 257,807 all-data rows.
+> See [`all-data-package-2026-09-19.md`](all-data-package-2026-09-19.md) and
+> [`finalreport.md`](../finalreport.md) for current release evidence and the
+> later structured-record rights/provenance gap.
+
 ## Outcome
 
 This pass audited all **27,986 exact-unique text records** and fixed two release
