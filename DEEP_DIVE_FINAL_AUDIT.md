@@ -66,7 +66,7 @@ Package manifests carry per-shard SHA-256 values; both the final audit and cloud
 
 ### Medium — release identity does not match the reviewed repository state
 
-The package and release index identify themselves as `garhwali-language-lab-v0.1.1`; annotated tag `v0.1.1` resolves to reviewed commit `d1ec21a`. The historical `v0.1.0` tag is unchanged. Do not publish without rerunning checks against the exact tagged commit.
+The package and release index identify themselves as `garhwali-language-lab-v0.1.1`; annotated tag `v0.1.1` resolves to the reviewed release commit. The historical `v0.1.0` tag is unchanged. Do not publish without rerunning checks against the exact tagged commit.
 
 ### Medium — “all-data” and “public-profile” are different products
 

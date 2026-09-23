@@ -2,7 +2,7 @@
 
 **Review date:** 2026-09-23
 **Reviewed package ID:** `garhwali-language-lab-v0.1.1`
-**Decision:** **The rights-filtered automated public-profile candidate is release-ready.** Commit `d1ec21a` and annotated tag `v0.1.1` identify the same reviewed state. Native-speaker review and dialect annotation are explicitly deferred; this release must be described as an automated candidate, not a native-validated corpus or gold benchmark. No remote upload was performed.
+**Decision:** **The rights-filtered automated public-profile candidate is release-ready.** Annotated tag `v0.1.1` identifies the reviewed release state. Native-speaker review and dialect annotation are explicitly deferred; this release must be described as an automated candidate, not a native-validated corpus or gold benchmark. No remote upload was performed.
 
 ## Project scope
 
@@ -39,7 +39,7 @@ The packages contain transcripts and metadata, not source audio. Popular-song re
 - Recomputed benchmark artifact hashes/counts, split overlap, shard hashes, and content-derived identifiers in the release audit.
 - Preserved the 7,490-row checksum-addressed recommended text-training view and set future IndicBERT/text-scaling defaults to use it.
 - Added a root MIT `LICENSE` for repository code only. It does not license corpus values or override source-specific rights.
-- Prepared release metadata as `garhwali-language-lab-v0.1.1`; the historical `v0.1.0` tag remains unchanged. The local annotated `v0.1.1` tag resolves to reviewed commit `d1ec21a`.
+- Prepared release metadata as `garhwali-language-lab-v0.1.1`; the historical `v0.1.0` tag remains unchanged. The local annotated `v0.1.1` tag resolves to the reviewed release commit.
 - Deferred native-speaker adjudication and dialect annotation from this release gate at the project owner's direction. Cards and reports identify the benchmark and language-quality results as automated candidates.
 
 ## Fresh verification required for each release commit
@@ -48,7 +48,7 @@ The latest local package build and final audit report 146,684 public rows, 257,8
 
 The all-data package is a local research artifact containing rights-pending material; it is not the public package and must remain access-controlled. The public package is a rights-filtered subset, not a claim that all collected data has redistribution rights. No Hugging Face upload or paid job was started.
 
-Before attaching a public release, rerun the package builders, public/all-data cloud preflights, final audit, release-index validation, complete tests, compilation/shell checks, and bundle check against commit `d1ec21a`. Do not move the existing v0.1.0 tag.
+Before attaching a public release, rerun the package builders, public/all-data cloud preflights, final audit, release-index validation, complete tests, compilation/shell checks, and bundle check against the exact commit referenced by `v0.1.1`. Do not move the existing v0.1.0 tag.
 
 ## Remaining limitations and follow-up
 

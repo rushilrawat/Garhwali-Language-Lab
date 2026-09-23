@@ -14,6 +14,7 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+          cache-dependency-path: requirements-pipeline.txt
       - run: python -m pip install -r requirements-pipeline.txt
       - run: python scripts/check_source_freshness.py --live --timeout 20 --previous sources/online/source-freshness-baseline.json --output source-freshness.json
       - uses: actions/upload-artifact@v4

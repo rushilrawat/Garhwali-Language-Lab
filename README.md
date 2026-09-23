@@ -621,7 +621,7 @@ with provenance.
 | Deliverable | Focused effort from the current state | Main dependency |
 | --- | ---: | --- |
 | Literary, cultural, and university additions | Complete | Automated validation |
-| Local corpus package candidate | Automated build complete: 257,807 all-data / 146,684 public-profile rows | Public profile excludes 216 structured records without compatible rights evidence; local v0.1.1 tag matches reviewed commit d1ec21a |
+| Local corpus package candidate | Automated build complete: 257,807 all-data / 146,684 public-profile rows | Public profile excludes 216 structured records without compatible rights evidence; local v0.1.1 tag matches reviewed commit |
 | SraVaani refined sweep and integration | Complete; base checkpoint remains preferred | Further paid Hugging Face runs are paused by project direction |
 | Hugging Face dataset publication | Not active; no upload made | Current project direction is local work; do not publish until rights and release gates are resolved |
 | Quality-focused dataset and benchmark release | Automated candidate is prepared | Native review and dialect annotation are deferred; do not claim native-validated quality |
@@ -972,7 +972,7 @@ The current all-data package report is
 [`research/all-data-package-2026-09-19.md`](research/all-data-package-2026-09-19.md).
 The generated package snapshot carries release ID `v0.1.1`. The historical
 `v0.1.0` tag remains unchanged; local annotated tag `v0.1.1` resolves to
-reviewed commit `d1ec21a`. The index is
+the reviewed release commit. The index is
 [`release/v0.1.1-manifest.json`](release/v0.1.1-manifest.json). Compact
 generated reports and visual evidence are tracked under
 [`release/v0.1.1/`](release/v0.1.1/README.md). No remote upload has occurred.

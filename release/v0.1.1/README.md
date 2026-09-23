@@ -16,5 +16,5 @@ gold results. The repository's MIT license applies to code only; source data
 retains its own rights and attribution requirements.
 
 The compact evidence bundle is under `artifacts/`. Release readiness refers to
-the local automated package audit. Annotated tag `v0.1.1` resolves to reviewed
-commit `d1ec21a`; the historical v0.1.0 tag remains unchanged.
+the local automated package audit. Annotated tag `v0.1.1` resolves to the
+reviewed release commit; the historical v0.1.0 tag remains unchanged.
