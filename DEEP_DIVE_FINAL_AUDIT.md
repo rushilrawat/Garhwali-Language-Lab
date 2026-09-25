@@ -1,6 +1,6 @@
 # Garhwali Language Lab — deep final audit
 
-**Audit date:** 2026-09-23
+**Audit date:** 2026-09-24
 **Scope:** current working tree, generated public/all-data Hugging Face package snapshots, model-data selection scripts, release and preflight validators, research status, and test coverage.
 **Purpose:** identify defects that can make corpus claims, source reuse, evaluation, or model-quality conclusions incorrect; record verified fixes and the remaining release gates.
 
@@ -22,13 +22,13 @@ The package inventory reports 257,807 rows across overlapping all-data views and
 
 ### High — 216 structured knowledge records still lack public-rights evidence
 
-The public and all-data packages contain 216 records in six configurations: geography (50), historical terms (36), literary people (26), literary works (66), popular songs (30), and university research (8). Source hints previously used inconsistent field names such as `evidence`, `source_refs`, `source_ids`, `source_url`, `wikipedia_url`, `lyrics_sources`, and `translation_sources`. The builder now maps source pointers into standardized `provenance`, adds explicit quality/review status, and records rights as assessed or `not_assessed` without inventing a license. Current audit counts are **0 missing provenance**, **0 missing quality metadata**, **186 unassessed rights**, and **216 rows without compatible public rights**.
+The public and all-data packages contain 216 records in six configurations: geography (50), historical terms (36), literary people (26), literary works (66), popular songs (30), and university research (8). Source hints previously used inconsistent field names such as `evidence`, `source_refs`, `source_ids`, `source_url`, `wikipedia_url`, `lyrics_sources`, and `translation_sources`. The builder now maps source pointers into standardized `provenance`, adds explicit quality/review status, and records rights without inventing a license. A web review has now examined the 186 previously unassessed geography, history, people, works, and university records. Some component sources carry reuse terms, but no whole-record public-rights basis was established for those mixed-source records. Current audit counts are **0 missing provenance**, **0 missing quality metadata**, **0 unreviewed rights statuses**, and **216 rows without compatible public rights**.
 
 The release audit and cloud preflight enforce these fields. The all-data/private preflight passes. The public builder omits all six structured configurations until compatible rights are established; therefore the public audit and preflight now pass without treating any of the 216 records as cleared. The complete records remain in all-data.
 
 **Additional traceability fix:** a deeper row-level check found that some geography evidence labels and a literary capture reference still exported as internal IDs without a URL or capture fingerprint. Geography evidence IDs now resolve through the geography catalog, and shared source IDs inherit the best available metadata across the project's structured-source catalogs. The regenerated all-data package has **zero untraceable structured rows** and passes cloud preflight. This improves citation traceability; it does not establish redistribution rights.
 
-**Remaining:** establish source-specific rights evidence if these structured records are to be added to a later public version. A source URL alone is not a license. Their exclusion resolves this release's package gate, not the underlying rights status.
+**Remaining:** establish source-specific rights evidence for every field if these structured records are to be added to a later public version. A source URL alone is not a license. Their exclusion resolves this release's package gate, not the underlying rights status. Findings and exact source links are in [`research/structured-rights-web-review-2026-09-23.md`](research/structured-rights-web-review-2026-09-23.md); all 216 records remain intact in all-data.
 
 ### High — historical broad text-model runs do not establish Garhwali-only quality
 
@@ -98,8 +98,9 @@ The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1`
 - [x] Align the text-scaling experiment defaults with the checksum-frozen 398-row benchmark.
 - [x] Tie release-index readiness to final-audit status.
 - [x] Resolve geography evidence labels and shared literary capture IDs to source URLs or capture fingerprints; the structured-source traceability count is zero.
-- [x] Refresh local release audit artifacts and package preflights; the v0.1.1 public audit and index pass. The current full suite passes 435 tests.
-- [ ] Record source-specific rights evidence before adding any of the 216 structured records to a public package.
+- [x] Refresh local release audit artifacts and package preflights; the v0.1.1 public audit and index pass. The current full suite passes 463 tests.
+- [x] Review online reuse terms for the 186 previously unassessed structured records and retain per-record findings; all remain present in all-data.
+- [ ] Establish a compatible public-rights basis for every field before adding any of the 216 structured records to a public package.
 - [ ] Re-evaluate neural text models using the recommended view and fixed strict validation/test artifacts.
 - [x] Recompute benchmark hashes/counts/leakage independently; current files pass with zero measured overlap.
 - [x] Set IndicBERT head/LoRA defaults to recommended train/validation views with separate outputs.
@@ -109,4 +110,4 @@ The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1`
 
 ## Limits of this pass
 
-This is a code and generated-data audit of the local workspace. The public and all-data package audits, preflights, release-index checks, and bundle checks pass for the current v0.1.1 candidate. Public packaging omits the 216 structured records without compatible rights evidence; all-data retains them. No remote Hugging Face upload or paid job was started. This audit does not prove source copyright ownership or native-language correctness. Machine OCR and ASR agreement remain evidence signals, not human verification. Historical model metrics remain tied to their original data hashes and are not silently restated as results on a future cleaned benchmark.
+This is a code and generated-data audit of the local workspace. The public and all-data package audits, preflights, release-index checks, and bundle checks pass for the current v0.1.1 candidate. Public text packaging omits the 216 structured records without compatible rights evidence; all-data retains them. As of 2026-09-24, [`rushilrawat/garhwali-speech`](https://huggingface.co/datasets/rushilrawat/garhwali-speech) is public with 110,436 VAANI rows and 2,927 Meta Omnilingual rows in separate configs. All 50 new shard sizes and SHA-256 hashes match the local package. The initial Dataset Viewer request returned a temporary HTTP 500 while indexing; fresh checks now succeed for split listing, validity, Parquet listing (267 files), and a Meta validation preview. Both configs expose train/validation/test splits. Card-only commit [`b64f0c4b914296c979947cf551ec976a0342d8af`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/b64f0c4b914296c979947cf551ec976a0342d8af) clarifies exact-duplicate filtering; no data shards changed. The 5 duplicate-audio groups, 31 cross-split exact-transcript groups, zero VAANI audio/text overlaps, and split-safety counts are documented in [`research/huggingface-release-overlap-audit-2026-09-24.md`](research/huggingface-release-overlap-audit-2026-09-24.md). The text repo remains owner-private because its rights-filtered profile contains redacted catalog values. No paid job or storage purchase was made. This audit does not prove source copyright ownership or native-language correctness. Machine OCR and ASR agreement remain evidence signals, not human verification. Historical model metrics remain tied to their original data hashes and are not silently restated as results on a future cleaned benchmark.

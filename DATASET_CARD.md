@@ -16,9 +16,14 @@ records whose rights remain unassessed or incompatible. Those records remain
 intact in the all-data package. Native-speaker review and dialect annotation are
 deferred; benchmark and model scores are automated research results, not native-
 or dialect-validated claims. See [`finalreport.md`](finalreport.md) for the
-release decision and audit scope. This Hugging Face URL is the repository
-target; no remote upload was performed:
-[`rushilrawat/garhwali-language-lab`](https://huggingface.co/datasets/rushilrawat/garhwali-language-lab).
+release decision and audit scope. Current Hugging Face publication is split
+between [`Garhwali Speech`](https://huggingface.co/datasets/rushilrawat/garhwali-speech),
+which is public, and [`Garhwali Corpus`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus),
+which is owner-private because the current text profile contains redacted
+catalog entries and excludes 216 structured records without compatible public
+rights evidence. The text repository will remain private until the release can
+meet the project's no-redactions requirement without misrepresenting reuse
+rights.
 
 ## Current scale
 

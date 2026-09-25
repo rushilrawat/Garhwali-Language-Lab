@@ -35,7 +35,21 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "corroborated_in_project",
-      "notes": "Spelling variant retained."
+      "notes": "Spelling variant retained.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:sudarshan-shah",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:kumdanand-bahuguna",
@@ -51,7 +65,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "name_uncertain",
-      "notes": "User spelling retained; requires an authority record."
+      "notes": "User spelling retained; requires an authority record.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:kumdanand-bahuguna",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:hari-dutt-sharma-nautiyal",
@@ -65,7 +92,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "Bibliographic identity requires confirmation."
+      "notes": "Bibliographic identity requires confirmation.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:hari-dutt-sharma-nautiyal",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:hari-krishna-daurga-dutti-rudra",
@@ -79,7 +119,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "name_uncertain",
-      "notes": "The supplied phrase may combine more than one person; preserved intact until a primary source resolves it."
+      "notes": "The supplied phrase may combine more than one person; preserved intact until a primary source resolves it.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:hari-krishna-daurga-dutti-rudra",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:urvi-dutt-shastri",
@@ -93,7 +146,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "name_uncertain",
-      "notes": "User spelling retained; requires an authority record."
+      "notes": "User spelling retained; requires an authority record.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:urvi-dutt-shastri",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:mahidhar-dangwal",
@@ -107,7 +173,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "No work title was supplied."
+      "notes": "No work title was supplied.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:mahidhar-dangwal",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:satyasharan-raturi",
@@ -127,7 +206,21 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "corroborated_in_project",
-      "notes": "Spelling variant retained."
+      "notes": "Spelling variant retained.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:satyasharan-raturi",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:atma-ram-gairola",
@@ -141,7 +234,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "No work title was supplied."
+      "notes": "No work title was supplied.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:atma-ram-gairola",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:devendra-dutt-raturi",
@@ -155,7 +261,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "No work title was supplied."
+      "notes": "No work title was supplied.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:devendra-dutt-raturi",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:suradutt-saklani",
@@ -169,7 +288,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "No work title was supplied."
+      "notes": "No work title was supplied.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:suradutt-saklani",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:mola-ram",
@@ -185,7 +317,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "Named as a historian in the supplied list."
+      "notes": "Named as a historian in the supplied list.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:mola-ram",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:miya-prem-singh",
@@ -199,7 +344,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "No work title was supplied."
+      "notes": "No work title was supplied.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:miya-prem-singh",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:hari-dutt-shastri",
@@ -213,7 +371,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "No work title was supplied."
+      "notes": "No work title was supplied.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:hari-dutt-shastri",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:hari-krishna-raturi",
@@ -227,7 +398,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "No work title was supplied."
+      "notes": "No work title was supplied.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:hari-krishna-raturi",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:vijaya-ram-raturi",
@@ -241,7 +425,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "No work title was supplied."
+      "notes": "No work title was supplied.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:vijaya-ram-raturi",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:abodh-bandhu-bahuguna",
@@ -261,7 +458,21 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "corroborated_in_project",
-      "notes": "Dates supplied by user: 1927–2004."
+      "notes": "Dates supplied by user: 1927–2004.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:abodh-bandhu-bahuguna",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:bachan-singh-negi",
@@ -280,7 +491,21 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "corroborated_in_project",
-      "notes": "Project catalog also records Ramcharitmanas and Bhagavad Gita translations."
+      "notes": "Project catalog also records Ramcharitmanas and Bhagavad Gita translations.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:bachan-singh-negi",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:lalit-mohan-thapalyal",
@@ -299,7 +524,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "Variant spelling retained."
+      "notes": "Variant spelling retained.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:lalit-mohan-thapalyal",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:leeladhar-jagudi",
@@ -314,7 +552,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "Born 1944 and Padma Shri status supplied by user; no Garhwali work title was supplied."
+      "notes": "Born 1944 and Padma Shri status supplied by user; no Garhwali work title was supplied.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:leeladhar-jagudi",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:lokesh-nawani",
@@ -330,7 +581,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "Edition details remain to be verified."
+      "notes": "Edition details remain to be verified.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:lokesh-nawani",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:madan-mohan-duklaan",
@@ -346,7 +610,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "Edition details remain to be verified."
+      "notes": "Edition details remain to be verified.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:madan-mohan-duklaan",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:chandramohan-raturi",
@@ -364,7 +641,21 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "corroborated_in_project",
-      "notes": "Work already present in literary catalog."
+      "notes": "Work already present in literary catalog.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:chandramohan-raturi",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:chinmay-sayar",
@@ -380,7 +671,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "Edition details remain to be verified."
+      "notes": "Edition details remain to be verified.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:chinmay-sayar",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:narendra-gauniyal",
@@ -396,7 +700,20 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "user_supplied",
-      "notes": "Edition details remain to be verified."
+      "notes": "Edition details remain to be verified.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:narendra-gauniyal",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:durga-prasad-ghildiyal",
@@ -416,7 +733,21 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "corroborated_in_project",
-      "notes": "Works already present in literary catalog."
+      "notes": "Works already present in literary catalog.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:durga-prasad-ghildiyal",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "person_id": "literary-person:harish-juyal-kutaj",
@@ -436,7 +767,21 @@
         "user-literature-writers-2026-09-16"
       ],
       "verification_status": "attribution_conflict",
-      "notes": "Existing capture says Harish; later user list says Gireesh. Both are visible pending a primary bibliographic source."
+      "notes": "Existing capture says Harish; later user list says Gireesh. Both are visible pending a primary bibliographic source.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-person:harish-juyal-kutaj",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     }
   ]
 }

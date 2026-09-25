@@ -132,3 +132,6 @@ coverage/
 
 # Accidental editor/clipboard artifact
 /.gitignore#*
+
+# Local-only row-level accuracy ledger includes VAANI speaker identifiers.
+/research/model-accuracy-lineage-2026-09-24.json

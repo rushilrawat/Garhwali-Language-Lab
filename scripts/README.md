@@ -20,3 +20,14 @@ PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 
 After collection and model experiments are frozen, rebuild and validate every
 local release layer with `bash scripts/finalize_local_release.sh`.
+
+The separate speech release is built with `scripts/build_hf_speech_release.py`.
+When the pinned Meta Omnilingual shards are present in
+`data/downloads/meta_omni_gbm/data/gbm_Deva/`, add that source with
+`python -m pip install -r requirements-hf-release.txt` followed by
+`PYTHONPATH=scripts python scripts/build_hf_meta_omni_speech.py`.
+The builder verifies local text/audio hashes and duplicate overlap before
+writing the second config. The generated package is gitignored; syncing it to
+Hugging Face requires a write-scoped repository credential. Re-running the
+metadata update is idempotent: it keeps one Meta config/card section and does
+not duplicate attribution or manifests.

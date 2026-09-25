@@ -1,6 +1,14 @@
 # Corpus preparation status
 
-Updated 2026-09-23. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-09-24. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+
+## Hugging Face publication
+
+- [`Garhwali Speech`](https://huggingface.co/datasets/rushilrawat/garhwali-speech) is public with separate VAANI and Meta Omnilingual configs: 110,436 VAANI rows / 135.510 hours and 2,927 Meta rows / 19.136 hours. The combined release is 113,363 rows / 154.646 hours. Commit `914eb221b6f58f88d85a8d5dd826acac827ee1c4` adds 50 Meta Parquet shards; all remote sizes and SHA-256 hashes match the local manifests.
+- [`Garhwali Corpus`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) is owner-private. The public-profile export contains redacted catalog values and excludes 216 structured records without compatible redistribution evidence; it does not meet the project's no-redactions release requirement.
+- The complete local all-data corpus remains unchanged. No paid Hugging Face compute job or storage purchase was used for these uploads.
+- The speech release omits raw filenames, reference images, speaker IDs, stay-duration, and fine-grained location fields. It retains source CC BY 4.0 attribution and split metadata; transcripts remain unreviewed references or model hypotheses. The first post-upload Dataset Viewer check returned a temporary HTTP 500 while indexing; a later retry succeeded for splits, validity, Parquet listing, and a Meta validation preview. Both configs expose train/validation/test splits, and the validity endpoint reports preview, viewer, search, filter, and statistics enabled.
+- The candidate-source overlap audit and exact duplicate decisions are in [`huggingface-release-overlap-audit-2026-09-24.md`](huggingface-release-overlap-audit-2026-09-24.md). Card-only Hub commit `b64f0c4b914296c979947cf551ec976a0342d8af` now tells users to filter split-safety fields: all 2,927 rows remain published, while 2,857 pass both leakage-safety flags.
 
 ## Text
 
@@ -38,7 +46,7 @@ Updated 2026-09-23. This is a chronological preparation log: model-result paragr
 - A refined validation-first sweep completed all 61 decoder/joint trials without failure. Its selected `5e-5`, two-epoch, seed-17 checkpoint improves validation WER from 43.454% to 42.711%, but frozen-test WER worsens from base SraVaani's 42.761% to 43.528%; it is not promoted. The next experimental package contains 5,513 human-transcribed training clips / 8.112 hours with zero fixed validation/test hash overlap and zero identified-speaker overlap; 3,886 training rows retain incomplete speaker identity.
 - Expanded human-reference SraVaani training completed 346 steps on all 5,513 eligible clips. Validation WER improves to 42.209%, but frozen-test WER is 43.289% versus base SraVaani's 42.761%; the experimental checkpoint is retained and the base model remains preferred.
 - The resumable SraVaani path completed all 104,542 untranscribed source rows, covering 104,534 unique audio hashes with zero missing or unexpected hashes. Eight duplicate hashes are inherited from distinct VAANI source filenames and produce identical drafts. Thirty-four drafts are empty. All rows remain preserved; 98 source-label-conflict drafts are active for source analysis but excluded from Garhwali training.
-- Independent Whisper-large-v3-turbo evidence covers 65,000 unique SraVaani drafts, including 157 exact transcript agreements. This evidence is attached without replacing any SraVaani transcript. The remaining planned recordings were not processed after paid Hugging Face work stopped.
+- Independent Whisper-large-v3-turbo evidence covers 65,000 unique SraVaani drafts, including 157 exact transcript agreements. This evidence is attached without replacing any SraVaani transcript. A later 15,000-row batch job (`6aac7f02b1dc2b62dc58fb5c`) is marked `CANCELED`; its last log reports 13,840/15,000 processed, but the local batch directory has no predictions or report, so those rows are not included in the integrated evidence. Hugging Face reported no cancellation reason, and the log contains no rate-limit error; the cause is unconfirmed. There are currently no running or scheduled Hugging Face jobs.
 - A second local Whisper checkpoint now supplies a third hypothesis and uncalibrated acoustic score for every one of the 1,188 recovery recordings. The resulting 1,090-record Garhwali review layer has 325 clean related-checkpoint consensus proposals, 730 clean low-consensus proposals, and 35 structurally unresolved proposals. It preserves every source value and makes no human-reference or training promotion.
 - The 35 structural outliers now carry waveform activity, deterministic Whisper `v0.2` re-decoding, and score percentiles calibrated on 112 human-referenced clips. All re-decodes match exactly. The score-to-CER correlations are only -0.164 for `v0.1` and -0.232 for `v0.2`, so these rows remain pending listening review and outside recommended machine-label training.
 
@@ -258,13 +266,15 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The current full-suite run passes **435 tests**. Structured records have standardized provenance and quality
+The current full-suite run passes **463 tests**. Structured records have standardized provenance and quality
 metadata, including URLs or capture fingerprints for every source reference.
-The 146,684-row public profile omits the 216 structured records until rights
-evidence is explicit; all remain in the 257,807-row all-data package. Public
-and all-data preflights and the final audit pass for the rights-filtered
-profile. Native-speaker review and dialect annotation are deferred; the
-benchmark is an automated candidate. See
+A web review added source-specific rights findings to the 186 formerly
+unassessed records, but did not establish a compatible public-rights basis for
+the complete mixed-source records. The 146,684-row public profile therefore
+omits all 216 structured records; all remain in the 257,807-row all-data
+package. Public and all-data preflights pass for the rebuilt packages.
+Native-speaker review and dialect annotation are deferred; the benchmark is an
+automated candidate. See
 [`finalreport.md`](../finalreport.md) and
 [`DEEP_DIVE_FINAL_AUDIT.md`](../DEEP_DIVE_FINAL_AUDIT.md) for the release
-decision and remaining audit work.
+decision and [`structured-rights-web-review-2026-09-23.md`](structured-rights-web-review-2026-09-23.md) for source findings.

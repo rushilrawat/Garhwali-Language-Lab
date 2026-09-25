@@ -385,6 +385,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIn('omits **50 structured-knowledge records**', card)
         self.assertNotIn('config_name: geography', card)
         self.assertIn('They remain intact in the complete all-data package', card)
+        self.assertIn('Garhwali Speech', card)
+        self.assertIn('rushilrawat/garhwali-speech', card)
 
     def test_catalog_includes_open_text(self):
         row = {

@@ -684,6 +684,7 @@ def dataset_card(report):
             f'- config_name: {name}\n  data_files:\n' + '\n'.join(files)
         )
     configs_yaml = '\n'.join(config_blocks)
+    speech_companion = ''
     if profile_includes_all_data(report['profile']):
         language_header = '- gbm\n- hi\n- en'
         package_summary = (
@@ -701,6 +702,7 @@ do not publish it as an open dataset until every included component is cleared.
 It retains all structured records with row-level source, quality, and rights
 metadata attached.'''
     else:
+        speech_companion = '''\n\n## Linked speech dataset\n\nThe companion [Garhwali Speech dataset](https://huggingface.co/datasets/rushilrawat/garhwali-speech) contains VAANI audio with provider transcripts and separately labeled SraVaani drafts.'''
         language_header = '- gbm'
         package_summary = (
             f'This public-profile package contains **{exported_rows:,} records** '
@@ -769,7 +771,7 @@ explicitly ineligible for Garhwali training.
 
 This package uses multiple upstream licenses. Inspect each row's provenance
 before redistribution or model release. Full documentation, limitations, and the
-release audit are in the [source repository](https://github.com/rushilrawat/Garhwali-Language-Lab).
+release audit are in the [source repository](https://github.com/rushilrawat/Garhwali-Language-Lab).{speech_companion}
 '''
 
 

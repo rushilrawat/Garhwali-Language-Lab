@@ -55,5 +55,6 @@ The locally generated public profile contains only records with an explicit
 compatible rights basis. It excludes 216 structured knowledge records until
 source-specific reuse evidence is recorded. The complete all-data profile keeps
 those values and their original source terms together and must remain private or
-access-controlled until each source component is cleared. The current release
-review is in [`finalreport.md`](finalreport.md).
+access-controlled. The public profile's exclusion passes its automated rights
+gate; it does not clear the omitted records for redistribution. The current
+release review is in [`finalreport.md`](finalreport.md).

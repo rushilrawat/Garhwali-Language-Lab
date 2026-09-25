@@ -6,138 +6,332 @@
     {
       "record_id": "university-research:hnbgu-chandela-1987",
       "title": "Garhwali lok sahitya mein jan jeevan kee abhivyakti",
-      "creators": ["Sarla Chandela", "Hari Mohan (guide)"],
+      "creators": [
+        "Sarla Chandela",
+        "Hari Mohan (guide)"
+      ],
       "institution": "Hemvati Nandan Bahuguna Garhwal University",
       "year": "1987",
       "resource_type": "doctoral_thesis",
-      "topics": ["Garhwali folk literature", "social life"],
-      "language_scope": ["Hindi", "Garhwali subject matter"],
+      "topics": [
+        "Garhwali folk literature",
+        "social life"
+      ],
+      "language_scope": [
+        "Hindi",
+        "Garhwali subject matter"
+      ],
       "source_url": "https://indcat.inflibnet.ac.in/index.php/thesesrequest?id=th_3980",
       "source_authority": "INFLIBNET IndCat university thesis catalogue",
       "access_level": "metadata_only",
       "ingestion_status": "bibliographic_metadata",
       "already_covered_by": [],
       "visibility": "catalogued",
-      "notes": "IndCat supplies researcher, guide, department, institution, year, language, subject, and PhD status."
+      "notes": "IndCat supplies researcher, guide, department, institution, year, language, subject, and PhD status.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:university-research:hnbgu-chandela-1987",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "indcat_academic_catalog_access"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "university-research:doon-garhwali-cultural-context",
       "title": "Certificate Course in Garhwali Language and Its Cultural Context",
-      "creators": ["Doon University"],
+      "creators": [
+        "Doon University"
+      ],
       "institution": "Doon University",
       "year": "2022",
       "resource_type": "official_course_syllabus",
-      "topics": ["linguistic history", "dialect variants", "grammar", "idioms", "proverbs", "literature", "songs", "plays", "dance", "storytelling"],
-      "language_scope": ["English course outline", "Garhwali subject matter"],
+      "topics": [
+        "linguistic history",
+        "dialect variants",
+        "grammar",
+        "idioms",
+        "proverbs",
+        "literature",
+        "songs",
+        "plays",
+        "dance",
+        "storytelling"
+      ],
+      "language_scope": [
+        "English course outline",
+        "Garhwali subject matter"
+      ],
       "source_url": "https://doonuniversity.ac.in/admin/assets/uploads/syllabus/20220818172530e61781ab4f.pdf",
       "source_authority": "Doon University official syllabus",
       "access_level": "open_document",
       "ingestion_status": "research_context_extracted",
       "already_covered_by": [],
       "visibility": "catalogued",
-      "notes": "The outline names ten regional varieties and specifies grammar, idioms, literature, and thirty cultural learning items."
+      "notes": "The outline names ten regional varieties and specifies grammar, idioms, literature, and thirty cultural learning items.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:university-research:doon-garhwali-cultural-context",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "university_item_terms_not_found",
+          "government_policy_unverified"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "university-research:uou-cgl-21",
       "title": "Certificate in Garhwali Language (CGL-21)",
-      "creators": ["Uttarakhand Open University"],
+      "creators": [
+        "Uttarakhand Open University"
+      ],
       "institution": "Uttarakhand Open University",
       "year": "2021 onward",
       "resource_type": "official_course_and_learning_materials",
-      "topics": ["selected poetry", "selected prose", "grammar", "vocabulary", "folk literature"],
-      "language_scope": ["Hindi", "Garhwali"],
+      "topics": [
+        "selected poetry",
+        "selected prose",
+        "grammar",
+        "vocabulary",
+        "folk literature"
+      ],
+      "language_scope": [
+        "Hindi",
+        "Garhwali"
+      ],
       "source_url": "https://uou.ac.in/index.php/progdetail?pid=CGL-21",
       "source_authority": "Uttarakhand Open University official programme page",
       "access_level": "open_course_materials",
       "ingestion_status": "already_ingested",
-      "already_covered_by": ["existing UOU OCR and targeted page extraction"],
+      "already_covered_by": [
+        "existing UOU OCR and targeted page extraction"
+      ],
       "visibility": "catalogued",
-      "notes": "Deduplicated pointer to CGL-101 poetry, CGL-102 prose, CGL-103 grammar and vocabulary, and CGL-104 folk literature already represented locally."
+      "notes": "Deduplicated pointer to CGL-101 poetry, CGL-102 prose, CGL-103 grammar and vocabulary, and CGL-104 folk literature already represented locally.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:university-research:uou-cgl-21",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "university_item_terms_not_found",
+          "government_policy_unverified"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "university-research:sgrru-garhwali-ba-ma-nep",
       "title": "Garhwali Language BA, MA, and NEP curricula",
-      "creators": ["Shri Guru Ram Rai University"],
+      "creators": [
+        "Shri Guru Ram Rai University"
+      ],
       "institution": "Shri Guru Ram Rai University",
       "year": "2020–2022",
       "resource_type": "official_curriculum_index",
-      "topics": ["Garhwali language", "Garhwali literature", "Garhwali culture"],
-      "language_scope": ["Garhwali subject matter"],
+      "topics": [
+        "Garhwali language",
+        "Garhwali literature",
+        "Garhwali culture"
+      ],
+      "language_scope": [
+        "Garhwali subject matter"
+      ],
       "source_url": "https://www.sgrru.ac.in/bos-school-of-humanities-and-social-sciences",
       "source_authority": "Shri Guru Ram Rai University Board of Studies",
       "access_level": "metadata_and_link_index",
       "ingestion_status": "bibliographic_metadata",
       "already_covered_by": [],
       "visibility": "catalogued",
-      "notes": "The official Board of Studies page lists BA and MA Garhwali Language curricula for 2020 and 2021 and an NEP curriculum for 2022."
+      "notes": "The official Board of Studies page lists BA and MA Garhwali Language curricula for 2020 and 2021 and an NEP curriculum for 2022.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:university-research:sgrru-garhwali-ba-ma-nep",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "university_item_terms_not_found",
+          "government_policy_unverified"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "university-research:uok-bahuguna-aspect-split",
       "title": "Aspect-Based Split Between V-Aux and Aux-V Orders in Garhwali",
-      "creators": ["Saket Bahuguna"],
+      "creators": [
+        "Saket Bahuguna"
+      ],
       "institution": "University of Kashmir",
       "year": "2022",
       "resource_type": "peer_reviewed_research_article",
-      "topics": ["syntax", "aspect", "auxiliary order", "head movement"],
-      "language_scope": ["English", "Garhwali linguistic examples"],
+      "topics": [
+        "syntax",
+        "aspect",
+        "auxiliary order",
+        "head movement"
+      ],
+      "language_scope": [
+        "English",
+        "Garhwali linguistic examples"
+      ],
       "source_url": "https://linguistics.uok.edu.in/Main/JournalVolume.aspx?V=IJL2022",
       "source_authority": "Interdisciplinary Journal of Linguistics, University of Kashmir",
       "access_level": "open_abstract_and_paper_link",
       "ingestion_status": "research_context_extracted",
       "already_covered_by": [],
       "visibility": "catalogued",
-      "notes": "The publisher abstract describes an aspect-conditioned split between participle–auxiliary and auxiliary–participle orders."
+      "notes": "The publisher abstract describes an aspect-conditioned split between participle–auxiliary and auxiliary–participle orders.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:university-research:uok-bahuguna-aspect-split",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "university_item_terms_not_found",
+          "government_policy_unverified"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "university-research:tufs-kandari-proverbs",
       "title": "गढ़वाली मुहावरों-कहावतों का वृहत् संग्रह",
-      "creators": ["Pushkar Singh Kandari"],
+      "creators": [
+        "Pushkar Singh Kandari"
+      ],
       "institution": "Tokyo University of Foreign Studies",
       "year": "2003; repository record 2021",
       "resource_type": "repository_book_record",
-      "topics": ["Garhwali idioms", "Garhwali proverbs", "Hindi dictionary"],
-      "language_scope": ["Hindi", "Garhwali"],
+      "topics": [
+        "Garhwali idioms",
+        "Garhwali proverbs",
+        "Hindi dictionary"
+      ],
+      "language_scope": [
+        "Hindi",
+        "Garhwali"
+      ],
       "source_url": "https://tufs.repo.nii.ac.jp/records/17829",
       "source_authority": "Tokyo University of Foreign Studies academic repository",
       "access_level": "cover_and_table_of_contents",
       "ingestion_status": "bibliographic_metadata",
       "already_covered_by": [],
       "visibility": "catalogued",
-      "notes": "Repository metadata identifies a 392-page Vani Prakashan book and exposes the cover, title page, and table of contents."
+      "notes": "Repository metadata identifies a 392-page Vani Prakashan book and exposes the cover, title page, and table of contents.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:university-research:tufs-kandari-proverbs",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "university_item_rights_fetch_blocked"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "university-research:hnbgu-garhwali-language-literature-syllabus",
       "title": "Garhwali Bhasha aur Uska Sahitya and Garhwali Lokgeet course references",
-      "creators": ["Hemvati Nandan Bahuguna Garhwal University"],
+      "creators": [
+        "Hemvati Nandan Bahuguna Garhwal University"
+      ],
       "institution": "Hemvati Nandan Bahuguna Garhwal University",
       "year": "2022",
       "resource_type": "official_university_syllabus",
-      "topics": ["Garhwali language", "Garhwali literature", "Garhwali folk songs"],
-      "language_scope": ["English and Hindi syllabus", "Garhwali subject matter"],
+      "topics": [
+        "Garhwali language",
+        "Garhwali literature",
+        "Garhwali folk songs"
+      ],
+      "language_scope": [
+        "English and Hindi syllabus",
+        "Garhwali subject matter"
+      ],
       "source_url": "https://hnbgu.ac.in/sites/default/files/2022-10/Syllabus-English%2C%20Modern%20European%20and%20Other%20Foreign%20Languages.pdf",
       "source_authority": "Hemvati Nandan Bahuguna Garhwal University official syllabus",
       "access_level": "open_document",
       "ingestion_status": "research_context_extracted",
       "already_covered_by": [],
       "visibility": "catalogued",
-      "notes": "The syllabus indexes formal study of Garhwali language, literature, and folk-song culture."
+      "notes": "The syllabus indexes formal study of Garhwali language, literature, and folk-song culture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:university-research:hnbgu-garhwali-language-literature-syllabus",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "university_item_terms_not_found",
+          "government_policy_unverified"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "university-research:burdwan-bahuguna-ergative",
       "title": "Tracing the Evolution and Development of the Ergative Case in Garhwali",
-      "creators": ["Saket Bahuguna"],
+      "creators": [
+        "Saket Bahuguna"
+      ],
       "institution": "The University of Burdwan",
       "year": "2022",
       "resource_type": "peer_reviewed_research_article",
-      "topics": ["ergativity", "case marking", "historical linguistics", "dialect variation"],
-      "language_scope": ["English", "Garhwali linguistic examples"],
+      "topics": [
+        "ergativity",
+        "case marking",
+        "historical linguistics",
+        "dialect variation"
+      ],
+      "language_scope": [
+        "English",
+        "Garhwali linguistic examples"
+      ],
       "source_url": "https://cdn.b-u.ac.in/journals/linguistics/ling_xvi_2022.pdf",
       "source_authority": "The University of Burdwan Journal of the Department of Linguistics",
       "access_level": "open_journal_issue",
       "ingestion_status": "research_context_extracted",
       "already_covered_by": [],
       "visibility": "catalogued",
-      "notes": "The article studies Garhwali ergative markers and their historical and regional development."
+      "notes": "The article studies Garhwali ergative markers and their historical and regional development.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:university-research:burdwan-bahuguna-ergative",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "university_item_terms_not_found",
+          "government_policy_unverified"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     }
   ]
 }

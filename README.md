@@ -9,7 +9,9 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-435%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-463%20passing-success.svg)](research/corpus-preparation-status.md)
+[![Hugging Face Speech](https://img.shields.io/badge/Hugging%20Face-Speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
+[![Hugging Face Corpus](https://img.shields.io/badge/Hugging%20Face-Corpus%20(private)-orange?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
 
 </div>
@@ -23,6 +25,11 @@ writing spread across datasets, books, archives, websites, and local collections
 The lab turns those fragments into research-grade resources while retaining the
 source, rights status, dialect evidence, quality flags, and transformation history
 for every record.
+
+## 🤗 Hugging Face datasets
+
+- **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** is public, with 113,363 VAANI and Meta Omnilingual rows in separate configs.
+- **[Garhwali Corpus](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)** is owner-private. It contains the 146,684-row rights-filtered profile; the complete 257,807-row all-data package remains local. The Hub profile redacts 24,566 catalog values and omits 216 structured records without a compatible public-rights basis. No local records are deleted.
 
 The project keeps two views by design:
 
@@ -87,7 +94,7 @@ language as it is actually used.
 
 | Living part of Garhwali | What is represented now | Why it matters |
 | --- | --- | --- |
-| **Voices** | 110,436 VAANI recordings, 135.5 hours, 5,894 supervised transcripts, and speaker/district metadata | Speech gives models pronunciation, rhythm, variation, and everyday language that books cannot provide. |
+| **Voices** | 110,436 VAANI recordings (135.5 hours) and 2,927 Meta Omnilingual recordings (19.14 hours) are public in separate configs | Speech gives models pronunciation, rhythm, variation, and everyday language that books cannot provide. |
 | **Words in daily life** | 1,114 lexicon candidates; 666 thematic vocabulary records covering animals, birds, plants, food, tools, occupations, instruments, kinship, land, and ritual life; 99 idiom/proverb records | Local words carry the environment, work, humour, relationships, and worldview of Garhwal. |
 | **Poetry, plays, and performance** | 370 OCR pages from Govind Chatak’s *Gadwali Lokgeet*; 298 pages from Shanti Chaudhary’s folk-art study; 592 UOU pages on poetry, prose, folk songs, ballads, tales, literature, and theatre; 66 narrated folktale episodes; 30 famous and classic song metadata records; 66 named literary, periodical, linguistic, and language-resource works; 26 named writers, historians, translators, and playwrights | Songs, poems, and plays preserve memory, metaphor, history, and forms of speech that ordinary sentence datasets miss. |
 | **Stories and cultural memory** | 440 pages from Upreti’s *Proverbs & Folklore*; 317 public-domain historical cultural-reference records; 50 Garhwali Open Bible Stories | Historical and translated narratives provide context, while their source and language status stay explicit. |
@@ -116,6 +123,11 @@ counts, audit gaps, and remaining work.
 - **110,436 VAANI Garhwali recordings** totaling **135.509 hours**; 5,894 have
   human transcripts and all 104,542 previously untranscribed rows now have
   revision-pinned SraVaani experimental drafts.
+- **2,927 Meta Omnilingual Garhwali recordings** totaling **19.136 hours** are
+  public as a second speech config. The two speech sources have zero exact audio
+  or transcript matches with each other. Within Meta, 5 exact-audio groups and
+  31 exact-transcript groups cross source splits; all rows remain present, and
+  the card documents how to filter the 2,857 rows that pass split-safety checks.
 - **363 identified speaker IDs**, with district, gender, and speaker-status fields
   preserved; current VAANI coverage is Uttarkashi and Tehri Garhwal.
 - **25,341 likely Garhwali text candidates**, 2,237 mixed-language
@@ -208,10 +220,10 @@ counts, audit gaps, and remaining work.
 - **SraVaani adaptation result:** the 102-step human-reference run scores 43.528%
   WER / 17.452% CER on the frozen 112-record test. Original SraVaani remains
   preferred at 42.761% / 17.606% because WER is the primary metric.
-- **435 automated tests** and **367 immutable source snapshots** verified, with 43 public source URLs covered
+- **463 automated tests** and **367 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
-These figures describe the preparation snapshot updated on 2026-09-23. Raw
+These figures describe the preparation snapshot updated on 2026-09-25. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
 Git through `.gitignore`.
 
@@ -231,7 +243,7 @@ Git through `.gitignore`.
 | ---: | ---: | ---: | ---: |
 | English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
 
-| `257,807` | `146,684` | `216` | `435` |
+| `257,807` | `146,684` | `216` | `463` |
 | ---: | ---: | ---: | ---: |
 | all-data package rows | rights-filtered public rows | local structured records | passing tests |
 
@@ -623,7 +635,7 @@ with provenance.
 | Literary, cultural, and university additions | Complete | Automated validation |
 | Local corpus package candidate | Automated build complete: 257,807 all-data / 146,684 public-profile rows | Public profile excludes 216 structured records without compatible rights evidence; local v0.1.1 tag matches reviewed commit |
 | SraVaani refined sweep and integration | Complete; base checkpoint remains preferred | Further paid Hugging Face runs are paused by project direction |
-| Hugging Face dataset publication | Not active; no upload made | Current project direction is local work; do not publish until rights and release gates are resolved |
+| Hugging Face dataset publication | VAANI and Meta Omnilingual speech configs are public; text package is private pending a no-redactions release | [Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech) has 113,363 rows in two configs; both configs and splits now appear in the Viewer; [Garhwali Corpus](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) is owner-private because its current export contains redacted catalog values |
 | Quality-focused dataset and benchmark release | Automated candidate is prepared | Native review and dialect annotation are deferred; do not claim native-validated quality |
 | Sellable text-first API MVP | 30–60 additional hours / 1–2 weeks | Dataset freeze, hosting, authentication, billing, monitoring |
 | Translation and ASR beta | 2–6 additional weeks | Better native references and measured quality gains |
@@ -916,7 +928,7 @@ traceability alone does not grant reuse rights. The audit reopens all five
 benchmark artifacts and verifies package shard hashes and content-derived text IDs. See
 [`finalreport.md`](finalreport.md) and
 [`DEEP_DIVE_FINAL_AUDIT.md`](DEEP_DIVE_FINAL_AUDIT.md) for details. The
-The current complete suite passes **435 tests**. The pipeline tracks **367 source snapshots**.
+The current complete suite passes **463 tests**. The pipeline tracks **367 source snapshots**.
 
 ## Local dataset packages
 
@@ -924,8 +936,10 @@ Future PDFs go in `incoming/pdfs/` with a same-name JSON metadata sidecar. Run
 `bash scripts/refresh_incoming_pdfs.sh` to hash and deduplicate the files,
 extract embedded text or OCR scan pages, rebuild cleaned and segmented corpus
 views, and regenerate the local all-data package. This local pipeline does not
-consume Hugging Face GPU credit. No dataset upload or paid Hugging Face job is
-currently part of the project work.
+consume Hugging Face GPU credit. The release uses two linked Hugging Face
+datasets; the speech package is public, and the text package is owner-private
+until its contents meet the no-redactions requirement. No paid Hugging Face
+compute job or storage purchase was made for publication.
 
 `scripts/build_huggingface_dataset.py` creates two local multi-config
 datasets with Garhwali text, human VAANI transcripts, SraVaani machine drafts,
@@ -954,9 +968,40 @@ PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
 ```
 
 The all-data package is for local or access-controlled research. It contains
-rights-pending and restricted components. The public profile excludes all 216
-structured records without compatible public-rights evidence. The package
-audit passes for this filtered profile; no package has been uploaded.
+rights-pending and restricted components. The 186 structured records previously
+marked unassessed now carry source-specific rights-review findings; those
+findings did not establish a compatible public-rights basis for the complete
+records. The public profile excludes all 216 structured records. See
+[`research/structured-rights-web-review-2026-09-23.md`](research/structured-rights-web-review-2026-09-23.md).
+The package audit passes for this filtered profile. It is uploaded to
+`rushilrawat/garhwali-corpus`, which is currently private because the export
+contains redacted catalog entries and omits 216 structured records without
+compatible rights evidence. No records were deleted from the local all-data
+package.
+
+The project uses two linked Hugging Face datasets: **Garhwali Corpus** for the
+rights-filtered text and language-resource export, and **Garhwali Speech** for
+speech audio and transcripts. The current remote speech repo is public at
+[rushilrawat/garhwali-speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech).
+The corpus repo is at
+[rushilrawat/garhwali-corpus](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
+but is private because the current text profile has redacted catalog entries;
+it will remain private until the release can meet the no-redactions requirement
+without misrepresenting third-party reuse rights. The cards link to each other.
+This is a packaging choice for distinct content and terms, not a Hub limitation.
+The public speech repo now contains both configs ([Meta data upload](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/914eb221b6f58f88d85a8d5dd826acac827ee1c4), [split-safety card update](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/b64f0c4b914296c979947cf551ec976a0342d8af)): 110,436 VAANI rows and 2,927
+Meta Omnilingual rows in 50 new Parquet shards. The combined package has
+113,363 source rows, 113,350 unique audio hashes, 154.646 hours, and about
+16.91 GiB of source audio. All 50 Meta shard sizes and SHA-256 hashes match the
+local manifests. Both sources are CC BY 4.0; transcripts remain unreviewed
+references or clearly marked machine drafts. The first Hub Dataset Viewer
+request returned a temporary HTTP 500 while indexing; a later check succeeded.
+Both configs expose train/validation/test splits, the Viewer lists all 267
+Parquet shards, validity checks report preview/viewer/search/filter/statistics
+enabled, and a Meta validation preview loads successfully with 298 rows. The
+follow-up commit changes the card only; it adds instructions to filter the
+split-safety flags before leakage-sensitive use, while retaining every row. No
+paid GPU job or storage purchase was made.
 
 The generated `README.md` is the Hugging Face dataset card, while
 `manifest.json` records configuration counts, shard names, draft completeness,
@@ -975,7 +1020,10 @@ The generated package snapshot carries release ID `v0.1.1`. The historical
 the reviewed release commit. The index is
 [`release/v0.1.1-manifest.json`](release/v0.1.1-manifest.json). Compact
 generated reports and visual evidence are tracked under
-[`release/v0.1.1/`](release/v0.1.1/README.md). No remote upload has occurred.
+[`release/v0.1.1/`](release/v0.1.1/README.md). Hugging Face publication status
+is tracked above; remote datasets are separate from the local Git release. The
+source-by-source duplicate and current upload audit is
+[`research/huggingface-release-overlap-audit-2026-09-24.md`](research/huggingface-release-overlap-audit-2026-09-24.md).
 
 ## 🤝 Contributing
 

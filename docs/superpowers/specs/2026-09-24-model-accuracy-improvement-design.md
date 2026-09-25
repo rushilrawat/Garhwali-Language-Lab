@@ -1,7 +1,7 @@
 # Garhwali model accuracy improvement design
 
 **Date:** 2026-09-24
-**Status:** Design for review; no training or model changes authorized by this document alone.
+**Status:** Approved design; implementation must follow the reviewed workstream plans and global constraints below.
 
 ## Intent and constraints
 

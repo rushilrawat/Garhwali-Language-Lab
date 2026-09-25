@@ -1,0 +1,4352 @@
+{
+  "evaluation_split": "asr/validation",
+  "ignored_prediction_rows": {
+    "sravaani": 0,
+    "whisper_v0.2": 0
+  },
+  "input_sha256": {
+    "sravaani": "78b9509b5682474f391fb388a1a5ed1d25b5c48f527824eb9cf4cb879219f73a",
+    "validation_manifest": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66",
+    "whisper_v0.2": "4f068f4c2d5949a9be285c84fb956f0467e9ebe6ab5347eb1c58e41fe735a723"
+  },
+  "limitation": "Automated-reference comparison only; this validation split has prior evaluation history and does not establish native-speaker correctness or blind generalization.",
+  "metric_normalizer": "scripts/asr_metrics.py: NFC, casefold, punctuation/symbol to space, whitespace collapse",
+  "models": {
+    "sravaani": {
+      "cer": 0.1892515280821128,
+      "character_errors": 3282,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.43393574297188753,
+      "word_errors": 2161
+    },
+    "whisper_v0.2": {
+      "cer": 0.4629800484373198,
+      "character_errors": 8029,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.7805220883534136,
+      "word_errors": 3887
+    }
+  },
+  "paired_comparison": {
+    "sravaani": {
+      "lower_cer_rows": 261,
+      "lower_wer_rows": 249
+    },
+    "whisper_v0.2": {
+      "lower_cer_rows": 5,
+      "lower_wer_rows": 8
+    }
+  },
+  "previously_inspected": true,
+  "record_count": 269,
+  "row_set_sha256": "442871fc0c3a312e96e761e5d46a7ddaff041c0a641676c020e6053e3808f2a0",
+  "rows": [
+    {
+      "audio_sha256": "f18076e5376747ccb2970f6d68bd8d5f94bbc3e9e846d0f00bf9fd48e7549626",
+      "models": {
+        "sravaani": {
+          "character_errors": 20,
+          "word_errors": 12
+        },
+        "whisper_v0.2": {
+          "character_errors": 48,
+          "word_errors": 25
+        }
+      },
+      "reference_characters": 97,
+      "reference_words": 31,
+      "row_idx": 10022
+    },
+    {
+      "audio_sha256": "5e4a098fcef8aed709603a57fed457e171dfd99944977c8342b6103f0a558b9f",
+      "models": {
+        "sravaani": {
+          "character_errors": 14,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 15,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 56,
+      "reference_words": 15,
+      "row_idx": 10025
+    },
+    {
+      "audio_sha256": "9d8080a0ea95762e61ee4bec27923dd100d6059f5f6d982703774d6ecfcd01f0",
+      "models": {
+        "sravaani": {
+          "character_errors": 27,
+          "word_errors": 21
+        },
+        "whisper_v0.2": {
+          "character_errors": 80,
+          "word_errors": 35
+        }
+      },
+      "reference_characters": 134,
+      "reference_words": 41,
+      "row_idx": 10026
+    },
+    {
+      "audio_sha256": "0eacd2f29f339c985b755baa362a028a7ac7087c07a65d2746986aeb4a26f9e9",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 20,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 57,
+      "reference_words": 14,
+      "row_idx": 10106
+    },
+    {
+      "audio_sha256": "06015ee9a8a3b217eb48c9d43be228df1d56a1560b6eb35478c3a7859a78877c",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 10,
+          "word_errors": 4
+        }
+      },
+      "reference_characters": 61,
+      "reference_words": 21,
+      "row_idx": 10107
+    },
+    {
+      "audio_sha256": "d1e2361155d05cf64fff4da7b4d976633ab24a1c6276fd6e5740abe370c2e821",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 17,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 61,
+      "reference_words": 19,
+      "row_idx": 10109
+    },
+    {
+      "audio_sha256": "723b3c1e16dc28f7bd9261d36835ea5a4005f7b36487befdaaa79fd5a4fd8416",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 27,
+          "word_errors": 18
+        }
+      },
+      "reference_characters": 79,
+      "reference_words": 18,
+      "row_idx": 10439
+    },
+    {
+      "audio_sha256": "60e127e34522b52d1e5528f1c02b1dd38a34375d79b9739591571e0c0e6f40e6",
+      "models": {
+        "sravaani": {
+          "character_errors": 17,
+          "word_errors": 13
+        },
+        "whisper_v0.2": {
+          "character_errors": 26,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 92,
+      "reference_words": 22,
+      "row_idx": 10451
+    },
+    {
+      "audio_sha256": "9bf9ba53383530474dcc0ab5d3b0553f1564bc84b31eb1ec5c6112354c82d54b",
+      "models": {
+        "sravaani": {
+          "character_errors": 21,
+          "word_errors": 12
+        },
+        "whisper_v0.2": {
+          "character_errors": 72,
+          "word_errors": 25
+        }
+      },
+      "reference_characters": 114,
+      "reference_words": 26,
+      "row_idx": 10472
+    },
+    {
+      "audio_sha256": "a97317f0e4959f5f2247fe7574c9c5b8d6ec385d0cdd1ef49739b096044cbe60",
+      "models": {
+        "sravaani": {
+          "character_errors": 18,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 54,
+          "word_errors": 22
+        }
+      },
+      "reference_characters": 117,
+      "reference_words": 26,
+      "row_idx": 10478
+    },
+    {
+      "audio_sha256": "288573de5a335f60bfc15e9cce014c95f4420ea44f85827b21a598ecc0a20d7f",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 25,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 70,
+      "reference_words": 19,
+      "row_idx": 11478
+    },
+    {
+      "audio_sha256": "e47bdb867faf0dd096602c4d4c9d9a37a1c7d12ab050461ee10f4e5d853c65c5",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 46,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 53,
+      "reference_words": 19,
+      "row_idx": 1203
+    },
+    {
+      "audio_sha256": "be500d203dc84b6522b7de987a5f92882f53d8781e37c3ca0e562672de65972c",
+      "models": {
+        "sravaani": {
+          "character_errors": 17,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 29,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 58,
+      "reference_words": 18,
+      "row_idx": 1214
+    },
+    {
+      "audio_sha256": "11cbf322ecec88a2f666e43459e2a7b38f9f093e1e877b1ee31c6faf3169cdd8",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 18,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 23,
+      "reference_words": 5,
+      "row_idx": 12611
+    },
+    {
+      "audio_sha256": "b43348597d63640deeaba3c3d19cb87e0230fab21be95c5d4f76651e4e134ddc",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 23,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 68,
+      "reference_words": 17,
+      "row_idx": 12637
+    },
+    {
+      "audio_sha256": "496a74d004f551a8b13bd225fb4b92083b374373c80ec456d8359f8700b06f65",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 45,
+          "word_errors": 18
+        }
+      },
+      "reference_characters": 112,
+      "reference_words": 34,
+      "row_idx": 12777
+    },
+    {
+      "audio_sha256": "dd40824b3440badfeb0530d76b7eefe1524b61eaa0bdaac54ba85dc014ad3533",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 12,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 73,
+      "reference_words": 23,
+      "row_idx": 12817
+    },
+    {
+      "audio_sha256": "f5a5959c153bea9166c44923cfd40085a4846f93d1c1e62959be0a6f186fbc1c",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 41,
+          "word_errors": 21
+        }
+      },
+      "reference_characters": 101,
+      "reference_words": 34,
+      "row_idx": 12829
+    },
+    {
+      "audio_sha256": "28b67554871dd0c0504b551403ec1cdfee2d6aef09dbd2ca398d341b1f873a25",
+      "models": {
+        "sravaani": {
+          "character_errors": 14,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 44,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 102,
+      "reference_words": 25,
+      "row_idx": 13340
+    },
+    {
+      "audio_sha256": "9d393d2c1caf7cc0e9d5248de5a209e06f74c967de73aecc69b62dd14429fcb1",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 45,
+          "word_errors": 19
+        }
+      },
+      "reference_characters": 93,
+      "reference_words": 25,
+      "row_idx": 13342
+    },
+    {
+      "audio_sha256": "68d8caeed749599e5edc8b7b175ba8cc27f932a50630ef2c507641c36d29ba29",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 52,
+      "reference_words": 14,
+      "row_idx": 13349
+    },
+    {
+      "audio_sha256": "b51fef506b1ab6b17fe4c8ca952f38eecd88747fe25a6151b56246d3a6334c1e",
+      "models": {
+        "sravaani": {
+          "character_errors": 18,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 44,
+          "word_errors": 20
+        }
+      },
+      "reference_characters": 100,
+      "reference_words": 30,
+      "row_idx": 13357
+    },
+    {
+      "audio_sha256": "bd3078f33071a4a34867afa962ff282e2048a017ed35e07b8f309a219cd25620",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 10,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 27,
+      "reference_words": 10,
+      "row_idx": 13447
+    },
+    {
+      "audio_sha256": "27bcde4e6a9581434fb8d4381543f7a6993165414e1cbf735c6d9ab053a44f14",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 47,
+      "reference_words": 16,
+      "row_idx": 13449
+    },
+    {
+      "audio_sha256": "cd2e3274886c5f18d06e06e20d7c14a3303b11c0ec4ea1784161c3cd2c9f7e3c",
+      "models": {
+        "sravaani": {
+          "character_errors": 25,
+          "word_errors": 15
+        },
+        "whisper_v0.2": {
+          "character_errors": 55,
+          "word_errors": 24
+        }
+      },
+      "reference_characters": 77,
+      "reference_words": 25,
+      "row_idx": 13453
+    },
+    {
+      "audio_sha256": "52280eb47f40a5d3e26b6d637b18b09e67557b7df491e589ed7cc7590e872055",
+      "models": {
+        "sravaani": {
+          "character_errors": 26,
+          "word_errors": 15
+        },
+        "whisper_v0.2": {
+          "character_errors": 38,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 72,
+      "reference_words": 22,
+      "row_idx": 13463
+    },
+    {
+      "audio_sha256": "16635f4762a58bc424cea0d1e59765542beacf9a740981ca7f407c21d5790e72",
+      "models": {
+        "sravaani": {
+          "character_errors": 31,
+          "word_errors": 27
+        },
+        "whisper_v0.2": {
+          "character_errors": 50,
+          "word_errors": 25
+        }
+      },
+      "reference_characters": 97,
+      "reference_words": 32,
+      "row_idx": 13464
+    },
+    {
+      "audio_sha256": "9b5268730c8b00621af5a67f732ede073c38a05140ef55dfa3c77c8ac8626317",
+      "models": {
+        "sravaani": {
+          "character_errors": 26,
+          "word_errors": 18
+        },
+        "whisper_v0.2": {
+          "character_errors": 42,
+          "word_errors": 24
+        }
+      },
+      "reference_characters": 87,
+      "reference_words": 27,
+      "row_idx": 13509
+    },
+    {
+      "audio_sha256": "d1ca101eff4b63d55de232afa24df214177b347be627741be8fdee8706a13459",
+      "models": {
+        "sravaani": {
+          "character_errors": 27,
+          "word_errors": 27
+        },
+        "whisper_v0.2": {
+          "character_errors": 79,
+          "word_errors": 36
+        }
+      },
+      "reference_characters": 121,
+      "reference_words": 43,
+      "row_idx": 13524
+    },
+    {
+      "audio_sha256": "cc331f2b9bc6f80a7ad2aec2c59edbb53689dd652127b5049f340993f16bbfe3",
+      "models": {
+        "sravaani": {
+          "character_errors": 28,
+          "word_errors": 17
+        },
+        "whisper_v0.2": {
+          "character_errors": 69,
+          "word_errors": 25
+        }
+      },
+      "reference_characters": 116,
+      "reference_words": 39,
+      "row_idx": 13535
+    },
+    {
+      "audio_sha256": "c592f211a7cd941ce55579d8e611b1ed973ee2b46e0004c6f5ae963afb42e950",
+      "models": {
+        "sravaani": {
+          "character_errors": 18,
+          "word_errors": 14
+        },
+        "whisper_v0.2": {
+          "character_errors": 74,
+          "word_errors": 30
+        }
+      },
+      "reference_characters": 118,
+      "reference_words": 36,
+      "row_idx": 13546
+    },
+    {
+      "audio_sha256": "72b8865f6882d1609994adc40f4f4dcf4d6cf917ea1e0ceb800a7a65e822cc08",
+      "models": {
+        "sravaani": {
+          "character_errors": 17,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 29,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 56,
+      "reference_words": 14,
+      "row_idx": 13557
+    },
+    {
+      "audio_sha256": "1f8a40aa62230cff94bffed52a13f2aec8159b55bdf3dee9da112551d49e1005",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 30,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 59,
+      "reference_words": 16,
+      "row_idx": 13568
+    },
+    {
+      "audio_sha256": "a79b8947dc1f4fc1dbef1b49310a8b8e4e653566d4769604b9f3bdd2ad08d72a",
+      "models": {
+        "sravaani": {
+          "character_errors": 18,
+          "word_errors": 14
+        },
+        "whisper_v0.2": {
+          "character_errors": 44,
+          "word_errors": 25
+        }
+      },
+      "reference_characters": 79,
+      "reference_words": 24,
+      "row_idx": 13587
+    },
+    {
+      "audio_sha256": "5f3bf198d2227bf4494a877495b2f0e5cc01f846ea3345c4d0da1f5e28602991",
+      "models": {
+        "sravaani": {
+          "character_errors": 21,
+          "word_errors": 15
+        },
+        "whisper_v0.2": {
+          "character_errors": 49,
+          "word_errors": 21
+        }
+      },
+      "reference_characters": 56,
+      "reference_words": 17,
+      "row_idx": 13588
+    },
+    {
+      "audio_sha256": "bf5f366c910b015e3f480c25040565b8bbd605e94711a954c510f40cdf504ea4",
+      "models": {
+        "sravaani": {
+          "character_errors": 20,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 32,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 55,
+      "reference_words": 17,
+      "row_idx": 13591
+    },
+    {
+      "audio_sha256": "f5fbfd897d78d251b9699d43c70cc397b373a7c3f6bb8f0efca7253170895f7b",
+      "models": {
+        "sravaani": {
+          "character_errors": 24,
+          "word_errors": 13
+        },
+        "whisper_v0.2": {
+          "character_errors": 55,
+          "word_errors": 26
+        }
+      },
+      "reference_characters": 113,
+      "reference_words": 31,
+      "row_idx": 13592
+    },
+    {
+      "audio_sha256": "8157fa3118899280faddb97c868f19a9a0e47eba7b29baa537241f03d2719032",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 64,
+          "word_errors": 34
+        }
+      },
+      "reference_characters": 114,
+      "reference_words": 38,
+      "row_idx": 13603
+    },
+    {
+      "audio_sha256": "6cbaa3688f44ec722a2a1d4e583bd9dd3ad979881fcabd1d44fb0ce07f715246",
+      "models": {
+        "sravaani": {
+          "character_errors": 1,
+          "word_errors": 1
+        },
+        "whisper_v0.2": {
+          "character_errors": 11,
+          "word_errors": 5
+        }
+      },
+      "reference_characters": 15,
+      "reference_words": 5,
+      "row_idx": 15119
+    },
+    {
+      "audio_sha256": "f8c20cc080dec278fb0d9ccb158d2ceb44f903e6068f48b65d0cc23ef5fcb6a7",
+      "models": {
+        "sravaani": {
+          "character_errors": 17,
+          "word_errors": 13
+        },
+        "whisper_v0.2": {
+          "character_errors": 44,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 63,
+      "reference_words": 15,
+      "row_idx": 15134
+    },
+    {
+      "audio_sha256": "3fc1c9e77320c19c58ae75c7dd1c728510dd819c67c0f6eae2c8a31cc05aba47",
+      "models": {
+        "sravaani": {
+          "character_errors": 11,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 27,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 35,
+      "reference_words": 10,
+      "row_idx": 15140
+    },
+    {
+      "audio_sha256": "4f74c43ca394e9a493def2732501617ac8b5bc14cff9a48ba833b3aa6e419898",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 31,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 48,
+      "reference_words": 11,
+      "row_idx": 15143
+    },
+    {
+      "audio_sha256": "c7aef183a13e6e13bbc2e1c4275176147a15d917b9247b1e334e00f80f63d383",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 20,
+          "word_errors": 8
+        }
+      },
+      "reference_characters": 38,
+      "reference_words": 9,
+      "row_idx": 15151
+    },
+    {
+      "audio_sha256": "915d9f840ba2e6467db13522b805639c47c1104c89c30254e286842d94d6dabd",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 21,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 35,
+      "reference_words": 12,
+      "row_idx": 15155
+    },
+    {
+      "audio_sha256": "4419e7ef10c401b8c8732698392214165db4201543babf2b1773018ef6200c1f",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 25,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 48,
+      "reference_words": 9,
+      "row_idx": 15166
+    },
+    {
+      "audio_sha256": "2247c23484edb99ff4c619f39ecd02c35d8a74e87efaa277c6c5067fd1c1b5c7",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 13,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 41,
+      "reference_words": 11,
+      "row_idx": 16377
+    },
+    {
+      "audio_sha256": "a612568a6a3efba91402549ad313117c287460574e67bae03c0f11a4cd44fd79",
+      "models": {
+        "sravaani": {
+          "character_errors": 11,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 39,
+      "reference_words": 13,
+      "row_idx": 16395
+    },
+    {
+      "audio_sha256": "7b2fa51dd69b55f6a18ca2c3fc98707886f9de71da055b908590c66a8890ed50",
+      "models": {
+        "sravaani": {
+          "character_errors": 17,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 22,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 48,
+      "reference_words": 15,
+      "row_idx": 16398
+    },
+    {
+      "audio_sha256": "cf7a4c398c98e3f9078aa86e7c53c62449b682404d19fe47d3c6cfd8f13d9942",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 25,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 69,
+      "reference_words": 21,
+      "row_idx": 16788
+    },
+    {
+      "audio_sha256": "a8c0ca2d077fd9fea4ac15ac42edd20bb00a1d9a5cb24947014cbcbda5600304",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 9,
+          "word_errors": 3
+        }
+      },
+      "reference_characters": 20,
+      "reference_words": 6,
+      "row_idx": 16823
+    },
+    {
+      "audio_sha256": "ef307a39fc33efeb3aa4bcc73928c757bfcf786a7f91de68b879f5f04f66d5ec",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 20,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 53,
+      "reference_words": 17,
+      "row_idx": 1735
+    },
+    {
+      "audio_sha256": "0d38d6181ddcde3a019c39fa475b46cb7242c8d9eab853422a8c2f63b9311806",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 38,
+          "word_errors": 18
+        }
+      },
+      "reference_characters": 80,
+      "reference_words": 22,
+      "row_idx": 1736
+    },
+    {
+      "audio_sha256": "8601d8233a26d103417c029c13cc3452b230b6e1101ba479b186cd7e389ed416",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 45,
+          "word_errors": 26
+        }
+      },
+      "reference_characters": 90,
+      "reference_words": 27,
+      "row_idx": 1739
+    },
+    {
+      "audio_sha256": "97b2231d737b186a599a80da337d0bfa5c8b1442e0e16ce9c64a3935552f92dc",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 47,
+          "word_errors": 22
+        }
+      },
+      "reference_characters": 85,
+      "reference_words": 23,
+      "row_idx": 18168
+    },
+    {
+      "audio_sha256": "3a75cfa4af768ebe6f2f48b33901a69885b488e4b22e67b11e81a53f7f91dbfb",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 12
+        },
+        "whisper_v0.2": {
+          "character_errors": 21,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 73,
+      "reference_words": 21,
+      "row_idx": 18181
+    },
+    {
+      "audio_sha256": "1528ee7a09138719b99a47ea4b9a8d7806a0dc835d0addb7b66cc5e3a9638012",
+      "models": {
+        "sravaani": {
+          "character_errors": 0,
+          "word_errors": 0
+        },
+        "whisper_v0.2": {
+          "character_errors": 3,
+          "word_errors": 3
+        }
+      },
+      "reference_characters": 17,
+      "reference_words": 6,
+      "row_idx": 18192
+    },
+    {
+      "audio_sha256": "2bc39e82b5458c763bd70f4156bb6f90e63da06e4b10951f165fc99fcab392c8",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 17,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 64,
+      "reference_words": 18,
+      "row_idx": 18199
+    },
+    {
+      "audio_sha256": "b9806ad89bad1f1ae4bffbd36a49bf39d841d5b173a7eef2d5321f3dcb580428",
+      "models": {
+        "sravaani": {
+          "character_errors": 6,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 21,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 56,
+      "reference_words": 20,
+      "row_idx": 18202
+    },
+    {
+      "audio_sha256": "5d73007ed07f7776100b4ce4226e0934b46e0e9aaaf1fb26ee760f51da603a3f",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 6,
+          "word_errors": 5
+        }
+      },
+      "reference_characters": 29,
+      "reference_words": 9,
+      "row_idx": 18214
+    },
+    {
+      "audio_sha256": "06f9b0d4b58593b6da2999ab27f6172262dc67e679b5fa3abb9cfd6dea4aeaf4",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 12,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 70,
+      "reference_words": 19,
+      "row_idx": 18222
+    },
+    {
+      "audio_sha256": "0d9ce49c13ae89d812dc6e702f3eae3f98401c3e4f0aceb7664dc80a3c47741c",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 25,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 70,
+      "reference_words": 20,
+      "row_idx": 18229
+    },
+    {
+      "audio_sha256": "65fab1c3ffaf96ab75e4cf2e6171cfcb944f6810dc11722564a4ab9a3017284d",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 12,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 35,
+      "reference_words": 11,
+      "row_idx": 18234
+    },
+    {
+      "audio_sha256": "0122d26f575e3e6d09f21311b5dc793314d06ef1e996800f934fc3ef8290ea5d",
+      "models": {
+        "sravaani": {
+          "character_errors": 6,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 32,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 64,
+      "reference_words": 17,
+      "row_idx": 18238
+    },
+    {
+      "audio_sha256": "ff4263c6cef792b2ff642bb518380c2167637cb33704578ae2329ded4e6bb6b1",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 30,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 74,
+      "reference_words": 23,
+      "row_idx": 18243
+    },
+    {
+      "audio_sha256": "82eff3ccc23e346bc2fa3d4851491ad264503d844088ccbbf055be4096a30d68",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 21,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 42,
+      "reference_words": 13,
+      "row_idx": 18248
+    },
+    {
+      "audio_sha256": "776f5a68fdd76ca3bb85662620e74992c9a12bbac1eda188d54d82c4f0ea4fe2",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 12,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 61,
+      "reference_words": 17,
+      "row_idx": 18259
+    },
+    {
+      "audio_sha256": "e70e05918b30e089f4535ab171742c4edd6147ed150e7db8211e8e7e4ee480c9",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 28,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 81,
+      "reference_words": 26,
+      "row_idx": 18264
+    },
+    {
+      "audio_sha256": "5422afbc70b59f1caa0b05ec7ecb89842306c5d4093872ddf724562935578161",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 56,
+      "reference_words": 19,
+      "row_idx": 18267
+    },
+    {
+      "audio_sha256": "b3cdf20de489df6885c0c8e5c9ea3bd73c4ee22b977ad9fdec45900d026aa222",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 32,
+          "word_errors": 19
+        }
+      },
+      "reference_characters": 91,
+      "reference_words": 24,
+      "row_idx": 18274
+    },
+    {
+      "audio_sha256": "14c1d1125cf763889a115704dfddc8fdcab5ced5c4130686a49048a8e0604f93",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 62,
+      "reference_words": 15,
+      "row_idx": 18821
+    },
+    {
+      "audio_sha256": "7138223d93f809a2305b9be2d95ef1cc6de9ce878fc5e8adfc5628202e906fa5",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 22,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 62,
+      "reference_words": 15,
+      "row_idx": 18832
+    },
+    {
+      "audio_sha256": "8c13ae60d5833074110e299fdea611ef9772f7a038db3a8bde50d2e305519b95",
+      "models": {
+        "sravaani": {
+          "character_errors": 25,
+          "word_errors": 17
+        },
+        "whisper_v0.2": {
+          "character_errors": 29,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 77,
+      "reference_words": 21,
+      "row_idx": 18833
+    },
+    {
+      "audio_sha256": "78362168086c0e4b0a786f060397b5334ab1819dbfb3582e6bb9cc2b08116351",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 6,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 31,
+      "reference_words": 9,
+      "row_idx": 18843
+    },
+    {
+      "audio_sha256": "08d6b0627887c180ac2168c802187da3120efbeaf2ebb60cfeca0c762a2434b9",
+      "models": {
+        "sravaani": {
+          "character_errors": 20,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 26,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 57,
+      "reference_words": 15,
+      "row_idx": 18852
+    },
+    {
+      "audio_sha256": "2a60c65168b8a7e4101f7b698217151054c8e6e701e61b56a311e8e2e4046381",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 15,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 60,
+      "reference_words": 16,
+      "row_idx": 18858
+    },
+    {
+      "audio_sha256": "1767b5c2cc39aea560a9679e25501156a199e1f737e9437b8d67e6fe70cd73e4",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 20,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 49,
+      "reference_words": 14,
+      "row_idx": 18880
+    },
+    {
+      "audio_sha256": "426e119ff54c5ffebe3c8e414f7b7087c91c79efdc4aecb4a85a6f4e377f4064",
+      "models": {
+        "sravaani": {
+          "character_errors": 21,
+          "word_errors": 15
+        },
+        "whisper_v0.2": {
+          "character_errors": 44,
+          "word_errors": 18
+        }
+      },
+      "reference_characters": 94,
+      "reference_words": 21,
+      "row_idx": 19237
+    },
+    {
+      "audio_sha256": "d659fc87530a2f9eec38cc83dd017a302c4fcc5aaa6d50a7110a59ee06d179d9",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 23,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 37,
+      "reference_words": 11,
+      "row_idx": 19256
+    },
+    {
+      "audio_sha256": "bca70bfe9c72af0a5a48cb8f488335e99f19d3ce99669a2c28403ce1ebf07ba4",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 34,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 75,
+      "reference_words": 22,
+      "row_idx": 19799
+    },
+    {
+      "audio_sha256": "a22e979687d5a8527ccc27294c2e8eb6f0f11fb237a60b168450a9dd17059b24",
+      "models": {
+        "sravaani": {
+          "character_errors": 3,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 11,
+          "word_errors": 5
+        }
+      },
+      "reference_characters": 33,
+      "reference_words": 9,
+      "row_idx": 19805
+    },
+    {
+      "audio_sha256": "52a701d3c7acd7c487bbc492c424f8315894c15e12734eab4758181593669350",
+      "models": {
+        "sravaani": {
+          "character_errors": 22,
+          "word_errors": 12
+        },
+        "whisper_v0.2": {
+          "character_errors": 45,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 85,
+      "reference_words": 23,
+      "row_idx": 19815
+    },
+    {
+      "audio_sha256": "3f3cc91db3a7e967c1ad120887abe0dd85e111dd55c4f29bdb0997b31d4b9638",
+      "models": {
+        "sravaani": {
+          "character_errors": 3,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 10,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 47,
+      "reference_words": 14,
+      "row_idx": 19816
+    },
+    {
+      "audio_sha256": "5d14a7096655aba34ea36d9b0c3725a2f0f44f5e8207d077a1cb46bccae223e9",
+      "models": {
+        "sravaani": {
+          "character_errors": 11,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 37,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 69,
+      "reference_words": 19,
+      "row_idx": 19819
+    },
+    {
+      "audio_sha256": "b75fc916337b0301c52dcea14743370d516b1c3153a0afe6c4e25d2d711c68ad",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 35,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 65,
+      "reference_words": 18,
+      "row_idx": 19822
+    },
+    {
+      "audio_sha256": "668f6fd73a2c95a0d031b2cd2f38435e826534be9bc75c4fcc53a3c2d51ad184",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 17,
+          "word_errors": 8
+        }
+      },
+      "reference_characters": 33,
+      "reference_words": 8,
+      "row_idx": 19825
+    },
+    {
+      "audio_sha256": "85e6aff9b1532df13183cdbad173574ac0c2d448925073d36c4e7285e5d4e1bb",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 22,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 57,
+      "reference_words": 17,
+      "row_idx": 19827
+    },
+    {
+      "audio_sha256": "4cae73a8e17c221f241d387a40f087329a050e8164b3b4a7d72976e8ef8b744f",
+      "models": {
+        "sravaani": {
+          "character_errors": 1,
+          "word_errors": 1
+        },
+        "whisper_v0.2": {
+          "character_errors": 2,
+          "word_errors": 1
+        }
+      },
+      "reference_characters": 31,
+      "reference_words": 9,
+      "row_idx": 19845
+    },
+    {
+      "audio_sha256": "be501ccdb23ee4978fca4e0e4e43d6558f737ca9e77e532c6de75de0326f8eec",
+      "models": {
+        "sravaani": {
+          "character_errors": 20,
+          "word_errors": 13
+        },
+        "whisper_v0.2": {
+          "character_errors": 44,
+          "word_errors": 19
+        }
+      },
+      "reference_characters": 77,
+      "reference_words": 24,
+      "row_idx": 19846
+    },
+    {
+      "audio_sha256": "b62171e674b5b22a8d191064d39fc214827df54667b58dd15389a489cb8a7009",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 33,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 63,
+      "reference_words": 17,
+      "row_idx": 19848
+    },
+    {
+      "audio_sha256": "961c9f014bf3ad12d040904aea46a77d24497416dcaa81407a21331c32981230",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 6,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 31,
+      "reference_words": 10,
+      "row_idx": 19849
+    },
+    {
+      "audio_sha256": "03460b215e27bf8e36955d019337c9793c43882efc433efe3cfc9d86f865de7a",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 15,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 61,
+      "reference_words": 17,
+      "row_idx": 19854
+    },
+    {
+      "audio_sha256": "8bded0a85f5a98be1b8d91031e308b672d437cfdd2f190eb93a61fe978bbad2b",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 6,
+          "word_errors": 5
+        }
+      },
+      "reference_characters": 27,
+      "reference_words": 10,
+      "row_idx": 19860
+    },
+    {
+      "audio_sha256": "f9263ad2ae937c817f4649d6068044a2f35af4ec5eaf32d74f1a9efa8d5cbfd4",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 29,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 78,
+      "reference_words": 22,
+      "row_idx": 19863
+    },
+    {
+      "audio_sha256": "415e7d30b0101d1503215cd9efe02ca208fedc2459e21a9ff81179ad1125a2ed",
+      "models": {
+        "sravaani": {
+          "character_errors": 22,
+          "word_errors": 13
+        },
+        "whisper_v0.2": {
+          "character_errors": 37,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 48,
+      "reference_words": 11,
+      "row_idx": 20694
+    },
+    {
+      "audio_sha256": "9ea990ef621110cca8d149f493ed777c24cb34b64273303383b6d546dcfb5b11",
+      "models": {
+        "sravaani": {
+          "character_errors": 16,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 27,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 41,
+      "reference_words": 9,
+      "row_idx": 20695
+    },
+    {
+      "audio_sha256": "ca8ba5bce9515514486cdb1885ecbd8cafb8dca2c0f265bae13c3007ac62c16c",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 31,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 44,
+      "reference_words": 14,
+      "row_idx": 20696
+    },
+    {
+      "audio_sha256": "4c43d2ef2232d266c564038e03690e7964954ec460911adc8ce91b2af1031013",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 27,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 40,
+      "reference_words": 14,
+      "row_idx": 21535
+    },
+    {
+      "audio_sha256": "6b7bb4d186973b58002bc77488c4bcc540877a0f0b7c84be8d608a25c12b6fbf",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 22,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 32,
+      "reference_words": 9,
+      "row_idx": 21536
+    },
+    {
+      "audio_sha256": "ec5896009e94dac11f6702fd0049b1a23b5a614cd69e2301c92f6aa60a86229f",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 34,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 47,
+      "reference_words": 11,
+      "row_idx": 22049
+    },
+    {
+      "audio_sha256": "b67f0f4bac19d73c020179696815e81dbeb923d8d6187840f04d8503b2a42211",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 40,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 41,
+      "reference_words": 11,
+      "row_idx": 22050
+    },
+    {
+      "audio_sha256": "c606c6040bab8377a9835dc768943295fac25dad906e2902d9a6d23c37e3aecb",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 1
+        },
+        "whisper_v0.2": {
+          "character_errors": 13,
+          "word_errors": 5
+        }
+      },
+      "reference_characters": 26,
+      "reference_words": 7,
+      "row_idx": 22054
+    },
+    {
+      "audio_sha256": "4f5bfc43ca5f90973f2dd7595743ad18601bc6f8dbcf7a848c56cdd978e08825",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 31,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 54,
+      "reference_words": 16,
+      "row_idx": 22059
+    },
+    {
+      "audio_sha256": "b31506f9ba2b2536a55566c0c196a0ac19b7108e653bde059e60088e2db747db",
+      "models": {
+        "sravaani": {
+          "character_errors": 19,
+          "word_errors": 13
+        },
+        "whisper_v0.2": {
+          "character_errors": 24,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 54,
+      "reference_words": 15,
+      "row_idx": 22095
+    },
+    {
+      "audio_sha256": "ae7dbe75abec0a2a15f857d2fb267dd2f84842c174b3fad3b2cf5167f9acd94c",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 32,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 66,
+      "reference_words": 17,
+      "row_idx": 22345
+    },
+    {
+      "audio_sha256": "030c0f9b5471a1fb2c03ca039e9e7d59dad80bc0e454c40929d54287ced7c660",
+      "models": {
+        "sravaani": {
+          "character_errors": 24,
+          "word_errors": 12
+        },
+        "whisper_v0.2": {
+          "character_errors": 34,
+          "word_errors": 18
+        }
+      },
+      "reference_characters": 83,
+      "reference_words": 24,
+      "row_idx": 22350
+    },
+    {
+      "audio_sha256": "649c29ac1bb3ef050ae8f23a4fc5e2e5cecd55dc7471998b9259af31f799637e",
+      "models": {
+        "sravaani": {
+          "character_errors": 17,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 36,
+          "word_errors": 20
+        }
+      },
+      "reference_characters": 63,
+      "reference_words": 16,
+      "row_idx": 22355
+    },
+    {
+      "audio_sha256": "f8957c7b434a7d0e5d90fe4c9854574317e1fdadba13230fc62532afb1a5ceff",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 68,
+      "reference_words": 19,
+      "row_idx": 22359
+    },
+    {
+      "audio_sha256": "0547cbfe74762f5a546107bd56a33643cf0d4f666131e05a7b30ffeb391fcf62",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 16,
+          "word_errors": 8
+        }
+      },
+      "reference_characters": 34,
+      "reference_words": 10,
+      "row_idx": 22365
+    },
+    {
+      "audio_sha256": "f5ed4be3b2926a3a2926bdce98638adb2d0938b3d0eea1c6aaad5a73a2a74e2b",
+      "models": {
+        "sravaani": {
+          "character_errors": 11,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 16,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 50,
+      "reference_words": 13,
+      "row_idx": 22370
+    },
+    {
+      "audio_sha256": "47d1f64055cd8a59ac20679ed8ca93e99b3ea708e45b82d4a99151b0e2fbc090",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 25,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 69,
+      "reference_words": 21,
+      "row_idx": 22378
+    },
+    {
+      "audio_sha256": "c47964d40599bca5eda8fccc8f78fc9ad24e1b8cb795038c510028b28185b157",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 42,
+          "word_errors": 20
+        }
+      },
+      "reference_characters": 74,
+      "reference_words": 16,
+      "row_idx": 22381
+    },
+    {
+      "audio_sha256": "6b68be500bf2759e6cdb557a28e55c77a9f426cc630e89adf7713554df77a1b0",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 22,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 80,
+      "reference_words": 22,
+      "row_idx": 22382
+    },
+    {
+      "audio_sha256": "b53e96fc0ab69c5a6bed9109735098a0358712c9fd96c25619a5c69aa0c84160",
+      "models": {
+        "sravaani": {
+          "character_errors": 26,
+          "word_errors": 19
+        },
+        "whisper_v0.2": {
+          "character_errors": 59,
+          "word_errors": 27
+        }
+      },
+      "reference_characters": 101,
+      "reference_words": 30,
+      "row_idx": 22383
+    },
+    {
+      "audio_sha256": "85badc63f8d788f1d93ba9b6b243b0574d9eee5a6b6d387ed0a0150ceb373035",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 11,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 36,
+      "reference_words": 9,
+      "row_idx": 22396
+    },
+    {
+      "audio_sha256": "18887ca758bf6e089e195d4e0b9fe01a4d250a24cca120d7a1e384b783e51605",
+      "models": {
+        "sravaani": {
+          "character_errors": 6,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 69,
+      "reference_words": 16,
+      "row_idx": 22399
+    },
+    {
+      "audio_sha256": "48158ec83cfe1dc7580ab9eb0a04235c3cca1a2040bc2005c7ee3396c0979e63",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 35,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 46,
+      "reference_words": 14,
+      "row_idx": 22400
+    },
+    {
+      "audio_sha256": "1620cfcd18e7e4a483220a4ce3170437b17f6d9af8e7a51e09ece3461b3003a7",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 13,
+          "word_errors": 8
+        }
+      },
+      "reference_characters": 29,
+      "reference_words": 10,
+      "row_idx": 22402
+    },
+    {
+      "audio_sha256": "ee9565b60e34bcdd9ff7a4a02e9ab48119a86bb8df5e6436b2f2809e1a8e9eb0",
+      "models": {
+        "sravaani": {
+          "character_errors": 6,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 5
+        }
+      },
+      "reference_characters": 40,
+      "reference_words": 9,
+      "row_idx": 22404
+    },
+    {
+      "audio_sha256": "5c4eaca02ef3968e4a220058d507fd4a8976b8ca3a881f68099a1904037c1a7e",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 24,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 39,
+      "reference_words": 10,
+      "row_idx": 22421
+    },
+    {
+      "audio_sha256": "cdcf01e6d23294c8163574be41acdd80d0f5460ec047b56c93b8c98a5772c2ca",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 22,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 34,
+      "reference_words": 11,
+      "row_idx": 22422
+    },
+    {
+      "audio_sha256": "8c0578fa76f2f66dfdb4ffb101372d2edf1520f9933ded700e89d376734624f2",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 12,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 29,
+      "reference_words": 6,
+      "row_idx": 22424
+    },
+    {
+      "audio_sha256": "dde47011ccdf64b757c9e2e2cbfce08288a0cd435f18ab2f8c6e5a83e261c970",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 51,
+      "reference_words": 14,
+      "row_idx": 22429
+    },
+    {
+      "audio_sha256": "23dffecdb8cb12b266113b5921851f8a59289e2fd49b2c63d4dd9fa3d55f3272",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 20,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 65,
+      "reference_words": 18,
+      "row_idx": 22449
+    },
+    {
+      "audio_sha256": "44ae9822c1c0b9e4e33fdd1d5c50c29d6804e335d88aac37ae9d70eeda2ebc68",
+      "models": {
+        "sravaani": {
+          "character_errors": 16,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 32,
+      "reference_words": 8,
+      "row_idx": 22462
+    },
+    {
+      "audio_sha256": "10b251082fa1a3292dd4509d2480ef816a07753fb2c7058b6c896e044b83da4a",
+      "models": {
+        "sravaani": {
+          "character_errors": 21,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 25,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 68,
+      "reference_words": 18,
+      "row_idx": 22475
+    },
+    {
+      "audio_sha256": "c0ffa512ddc6eeb246662558e4b6ef2e68d9624d68f89f8a835cfd53c398b966",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 17,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 45,
+      "reference_words": 14,
+      "row_idx": 22476
+    },
+    {
+      "audio_sha256": "8cd770fc50f0b7b3912c9ca836bb353825c42ccbababe11e4e8c6c611a11ca8b",
+      "models": {
+        "sravaani": {
+          "character_errors": 22,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 41,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 51,
+      "reference_words": 17,
+      "row_idx": 22563
+    },
+    {
+      "audio_sha256": "b6545be0ac6d19226ca3c29c3f0312d39f8c7218f10a56ea1e0d767a37665160",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 29,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 53,
+      "reference_words": 14,
+      "row_idx": 22568
+    },
+    {
+      "audio_sha256": "9f227c4fa2476dbd73cacaaa3a3e436ccbae4d8abe2b5330b0e971860240f437",
+      "models": {
+        "sravaani": {
+          "character_errors": 17,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 53,
+          "word_errors": 23
+        }
+      },
+      "reference_characters": 77,
+      "reference_words": 20,
+      "row_idx": 22589
+    },
+    {
+      "audio_sha256": "e2791350e581002eabf1ddc64344018ef26947c61f8c6497334b5481c1fe7331",
+      "models": {
+        "sravaani": {
+          "character_errors": 20,
+          "word_errors": 12
+        },
+        "whisper_v0.2": {
+          "character_errors": 36,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 62,
+      "reference_words": 17,
+      "row_idx": 22597
+    },
+    {
+      "audio_sha256": "1421c5f455ca58a817e88330a3626e7f8ae829b1254a37298dab19715127c553",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 41,
+          "word_errors": 22
+        }
+      },
+      "reference_characters": 82,
+      "reference_words": 21,
+      "row_idx": 22603
+    },
+    {
+      "audio_sha256": "5f0291b6d97b754bb18b7772adf4b45484de4a48f46589bd985897397ea2519b",
+      "models": {
+        "sravaani": {
+          "character_errors": 23,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 44,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 50,
+      "reference_words": 11,
+      "row_idx": 22607
+    },
+    {
+      "audio_sha256": "07efaacc3d22180f0e92a4b45af2cf8e7b459a6f847085425eee34b2db48f6e4",
+      "models": {
+        "sravaani": {
+          "character_errors": 23,
+          "word_errors": 13
+        },
+        "whisper_v0.2": {
+          "character_errors": 50,
+          "word_errors": 23
+        }
+      },
+      "reference_characters": 77,
+      "reference_words": 23,
+      "row_idx": 22619
+    },
+    {
+      "audio_sha256": "bb6058ab066411ff08dcd2543f0087dad915494dbcfec847a3c2b27baf284f3a",
+      "models": {
+        "sravaani": {
+          "character_errors": 6,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 29,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 51,
+      "reference_words": 18,
+      "row_idx": 22621
+    },
+    {
+      "audio_sha256": "11150cf811331630dad59d46fbdfb5540272a0115634a6d3f63bb674cf0a5d98",
+      "models": {
+        "sravaani": {
+          "character_errors": 34,
+          "word_errors": 15
+        },
+        "whisper_v0.2": {
+          "character_errors": 62,
+          "word_errors": 26
+        }
+      },
+      "reference_characters": 80,
+      "reference_words": 22,
+      "row_idx": 22629
+    },
+    {
+      "audio_sha256": "6a84d5a489e4c1caaaf76b81b79b40ed2d5160c3b6321e6eea6d43b3cfe1971d",
+      "models": {
+        "sravaani": {
+          "character_errors": 19,
+          "word_errors": 12
+        },
+        "whisper_v0.2": {
+          "character_errors": 54,
+          "word_errors": 19
+        }
+      },
+      "reference_characters": 74,
+      "reference_words": 22,
+      "row_idx": 2263
+    },
+    {
+      "audio_sha256": "6a53b72b34e12e5d3b6793c8c98b65bfef1a9d7201eb610a069544138c19dbbb",
+      "models": {
+        "sravaani": {
+          "character_errors": 33,
+          "word_errors": 19
+        },
+        "whisper_v0.2": {
+          "character_errors": 57,
+          "word_errors": 20
+        }
+      },
+      "reference_characters": 76,
+      "reference_words": 21,
+      "row_idx": 22635
+    },
+    {
+      "audio_sha256": "3c7e0827929ccd9cf185dc652e4974b63c409c91ef14ec1c03b278bd74279110",
+      "models": {
+        "sravaani": {
+          "character_errors": 23,
+          "word_errors": 15
+        },
+        "whisper_v0.2": {
+          "character_errors": 62,
+          "word_errors": 25
+        }
+      },
+      "reference_characters": 96,
+      "reference_words": 27,
+      "row_idx": 22646
+    },
+    {
+      "audio_sha256": "306acf8cd51ed1a45fed9c061c1fcf22d764298bf2d81e9f48bf5cdaba7b58a5",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 27,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 34,
+      "reference_words": 6,
+      "row_idx": 22647
+    },
+    {
+      "audio_sha256": "7b5fb78480dbf022e0799b1fdb746433e089895827782346e571408c0542ce08",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 11,
+          "word_errors": 5
+        }
+      },
+      "reference_characters": 25,
+      "reference_words": 7,
+      "row_idx": 2348
+    },
+    {
+      "audio_sha256": "f589748936342df3fc6466fa17bb1daf246350d05da4b617cc05425cdb7dd26b",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 35,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 64,
+      "reference_words": 18,
+      "row_idx": 24594
+    },
+    {
+      "audio_sha256": "302df947352902a31b10636cc41c6c29438cf17649ab0bcfea5b460e589fcf6d",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 22,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 72,
+      "reference_words": 20,
+      "row_idx": 25666
+    },
+    {
+      "audio_sha256": "b8b81dc1141e4bf790d89f10512796c16d03d7ab434beffe80ff02f3bd99cd0d",
+      "models": {
+        "sravaani": {
+          "character_errors": 11,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 25,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 60,
+      "reference_words": 16,
+      "row_idx": 25798
+    },
+    {
+      "audio_sha256": "e85e4f9a21bbbfb5fa1034dd73afcfb4389df91b04d119fcde2c06ce7013b0cf",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 13,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 49,
+      "reference_words": 14,
+      "row_idx": 25801
+    },
+    {
+      "audio_sha256": "3b0cec452fdb345c491b03ae4097c2950ce398a2f70f4fe1c39e9b1aafab93dc",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 12,
+          "word_errors": 4
+        }
+      },
+      "reference_characters": 29,
+      "reference_words": 6,
+      "row_idx": 25805
+    },
+    {
+      "audio_sha256": "4b59f1fe1aac2fc8e95a9cb37c7576e15a7129f054d81ef05c53b6fcf7f94a89",
+      "models": {
+        "sravaani": {
+          "character_errors": 6,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 21,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 33,
+      "reference_words": 9,
+      "row_idx": 25810
+    },
+    {
+      "audio_sha256": "80f1ae88bcaf0384a645867575300f940bb6ae889e9ee6446421b340dcbb6769",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 23,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 66,
+      "reference_words": 20,
+      "row_idx": 25812
+    },
+    {
+      "audio_sha256": "c2156f9ebebcde7527b1bbc38444485d503891f5239a7797fa35d17dd5b6b3ea",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 20,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 50,
+      "reference_words": 12,
+      "row_idx": 25814
+    },
+    {
+      "audio_sha256": "af225503c87fab0ee5dc80e4dc09811e9621461bfa2114516681715aeef183da",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 29,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 64,
+      "reference_words": 18,
+      "row_idx": 25818
+    },
+    {
+      "audio_sha256": "8fc41dec2876930c38e5df4c4eb92226849a05b0560051eeee2b7d55f378053a",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 9,
+          "word_errors": 3
+        }
+      },
+      "reference_characters": 22,
+      "reference_words": 4,
+      "row_idx": 25822
+    },
+    {
+      "audio_sha256": "bd7f3cf345d718cf820ed28ebf3289568c9429517a31bf8a5a4b0297512f93b9",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 9,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 31,
+      "reference_words": 8,
+      "row_idx": 25829
+    },
+    {
+      "audio_sha256": "9bd603416b172e285ae82a5070a230735a19a7a1b0837c237fc602d233285948",
+      "models": {
+        "sravaani": {
+          "character_errors": 16,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 70,
+          "word_errors": 25
+        }
+      },
+      "reference_characters": 118,
+      "reference_words": 27,
+      "row_idx": 26049
+    },
+    {
+      "audio_sha256": "06bbfdd1d44a3554e858d1e00f4b1904d595a090beb718744e4c05ddb5ea49f4",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 47,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 87,
+      "reference_words": 20,
+      "row_idx": 26061
+    },
+    {
+      "audio_sha256": "89762ad630cc9c6b3da9585fa17f7e07401be34fa16b6b79eb9e39d5d3abbfad",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 68,
+          "word_errors": 24
+        }
+      },
+      "reference_characters": 130,
+      "reference_words": 40,
+      "row_idx": 26062
+    },
+    {
+      "audio_sha256": "4e41a4da84ce0e85daa6c42b0bf2e3f67f84c84234470e3c1bf6296246cf9c2b",
+      "models": {
+        "sravaani": {
+          "character_errors": 19,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 30,
+          "word_errors": 20
+        }
+      },
+      "reference_characters": 84,
+      "reference_words": 23,
+      "row_idx": 26090
+    },
+    {
+      "audio_sha256": "eecee440ca7d78faf714a427b75ea7b9bdc8b665c6c19c897f01d26eafc12aca",
+      "models": {
+        "sravaani": {
+          "character_errors": 1,
+          "word_errors": 1
+        },
+        "whisper_v0.2": {
+          "character_errors": 21,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 75,
+      "reference_words": 19,
+      "row_idx": 26091
+    },
+    {
+      "audio_sha256": "38ff2acbca0daeecc4cc5167c3b3f346986fde208de5f029b3f4f39b4b057300",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 77,
+      "reference_words": 21,
+      "row_idx": 26092
+    },
+    {
+      "audio_sha256": "1b272016be92131168928a6f73c3faea13020e3a510d1e19a5bca66220d1446e",
+      "models": {
+        "sravaani": {
+          "character_errors": 23,
+          "word_errors": 19
+        },
+        "whisper_v0.2": {
+          "character_errors": 85,
+          "word_errors": 35
+        }
+      },
+      "reference_characters": 136,
+      "reference_words": 40,
+      "row_idx": 26093
+    },
+    {
+      "audio_sha256": "1f08610bb83647f9628abe320596ae09f84f9a61431c8037528171deca389cc5",
+      "models": {
+        "sravaani": {
+          "character_errors": 26,
+          "word_errors": 17
+        },
+        "whisper_v0.2": {
+          "character_errors": 61,
+          "word_errors": 26
+        }
+      },
+      "reference_characters": 110,
+      "reference_words": 32,
+      "row_idx": 26094
+    },
+    {
+      "audio_sha256": "4ebfb27e986f323a44965ec024b8122b347eb413da1e153559a30733e30dff21",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 53,
+      "reference_words": 16,
+      "row_idx": 26095
+    },
+    {
+      "audio_sha256": "0e9d0b42c75384e3670c755b73a82b2685fa1acd54d53223612d49aeefe20883",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 20,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 53,
+      "reference_words": 16,
+      "row_idx": 26096
+    },
+    {
+      "audio_sha256": "68e7d078aa34b17bf761042cc2eddec762253f414d66f40220837d309ce45132",
+      "models": {
+        "sravaani": {
+          "character_errors": 22,
+          "word_errors": 16
+        },
+        "whisper_v0.2": {
+          "character_errors": 30,
+          "word_errors": 19
+        }
+      },
+      "reference_characters": 68,
+      "reference_words": 22,
+      "row_idx": 26097
+    },
+    {
+      "audio_sha256": "87a94cc23a40cc6f2781ad4fdfe4228e7dd31562c313dcaf34659a2dfdf540ac",
+      "models": {
+        "sravaani": {
+          "character_errors": 27,
+          "word_errors": 23
+        },
+        "whisper_v0.2": {
+          "character_errors": 60,
+          "word_errors": 28
+        }
+      },
+      "reference_characters": 106,
+      "reference_words": 34,
+      "row_idx": 26098
+    },
+    {
+      "audio_sha256": "ee6aebafb5d57d6ff0108b1326a9b6fd064e5ea5ae7ff1d67d378ab37d3aaa03",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 25,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 63,
+      "reference_words": 14,
+      "row_idx": 26105
+    },
+    {
+      "audio_sha256": "6a73dfb2341418ded16a0b482fa4757785e2163d60ed3f1503b42e7acb021264",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 21,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 69,
+      "reference_words": 25,
+      "row_idx": 26106
+    },
+    {
+      "audio_sha256": "a7cb036056c03d953a1d85fc8cc39534f87ba22b52a0d1dc5f010d38ffa2cceb",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 9,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 28,
+      "reference_words": 9,
+      "row_idx": 2721
+    },
+    {
+      "audio_sha256": "ac943853696ad84779770e61a14b191a3a0067dac77ee437233efd34796da8b3",
+      "models": {
+        "sravaani": {
+          "character_errors": 11,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 27,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 59,
+      "reference_words": 14,
+      "row_idx": 2722
+    },
+    {
+      "audio_sha256": "8dc98a3f05c47564ee922a86da24e0d06751d3534f651c5bd9a4774463e608db",
+      "models": {
+        "sravaani": {
+          "character_errors": 18,
+          "word_errors": 12
+        },
+        "whisper_v0.2": {
+          "character_errors": 52,
+          "word_errors": 25
+        }
+      },
+      "reference_characters": 92,
+      "reference_words": 29,
+      "row_idx": 2726
+    },
+    {
+      "audio_sha256": "e0c43c3275f580421873953d3c0fbfae49f161de8aa4973b9e36b84bc542bea2",
+      "models": {
+        "sravaani": {
+          "character_errors": 19,
+          "word_errors": 12
+        },
+        "whisper_v0.2": {
+          "character_errors": 34,
+          "word_errors": 18
+        }
+      },
+      "reference_characters": 78,
+      "reference_words": 26,
+      "row_idx": 2728
+    },
+    {
+      "audio_sha256": "676ceded84e04dd6b75fbb5b8aee62ed7d23c6a325cde3adf8f72337f649b5f2",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 31,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 91,
+      "reference_words": 28,
+      "row_idx": 2739
+    },
+    {
+      "audio_sha256": "657b9bef66e3beb29a52b584c1ed7387276fbc39bd0b0fbf280be2823320b8ca",
+      "models": {
+        "sravaani": {
+          "character_errors": 0,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 5,
+          "word_errors": 3
+        }
+      },
+      "reference_characters": 42,
+      "reference_words": 13,
+      "row_idx": 27420
+    },
+    {
+      "audio_sha256": "e8c93ac41f5b074a35478c414cf60e55ad29afd2f490115a9e78c911c1aa606f",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 4,
+          "word_errors": 3
+        }
+      },
+      "reference_characters": 37,
+      "reference_words": 10,
+      "row_idx": 2744
+    },
+    {
+      "audio_sha256": "0d84ddd7eac097c9fe2683ed1f186ae9138a57008708bae7f0246af6648dd465",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 11,
+          "word_errors": 8
+        }
+      },
+      "reference_characters": 32,
+      "reference_words": 10,
+      "row_idx": 2747
+    },
+    {
+      "audio_sha256": "89fcfb6be66a1e14d240969f31b5e570d51494ed675b3578015dc29e2b8dfb80",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 26,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 71,
+      "reference_words": 19,
+      "row_idx": 2749
+    },
+    {
+      "audio_sha256": "10540c155fce5403194e96ef17a57c42b4dc03b9e47999895f631fddebc2b578",
+      "models": {
+        "sravaani": {
+          "character_errors": 11,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 21,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 66,
+      "reference_words": 21,
+      "row_idx": 2751
+    },
+    {
+      "audio_sha256": "729ff7f260a71eac465e02aa5f8cf287647614e37cdb71f613eeeb8b1f91c2d2",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 23,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 43,
+      "reference_words": 10,
+      "row_idx": 27538
+    },
+    {
+      "audio_sha256": "2696602f6a62580fad7b2e2d2a434cf8a7f1ed4a3815dbc7ca619de4dab6d822",
+      "models": {
+        "sravaani": {
+          "character_errors": 11,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 30,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 52,
+      "reference_words": 12,
+      "row_idx": 27540
+    },
+    {
+      "audio_sha256": "cc80aed302ff939add0ff043170bde08a499c1328b8edcb2ca16c4e86f3b3d2e",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 32,
+          "word_errors": 18
+        }
+      },
+      "reference_characters": 80,
+      "reference_words": 26,
+      "row_idx": 27561
+    },
+    {
+      "audio_sha256": "d5de92a90dc85ddbd5c57968c5e822d0fa0828ac9b23b7f24983ee49f925d764",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 26,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 56,
+      "reference_words": 11,
+      "row_idx": 27563
+    },
+    {
+      "audio_sha256": "24e626f1288c93a59a296566f25a2b84afd40b7d75ec64f208dc92f88eba129e",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 40,
+          "word_errors": 23
+        }
+      },
+      "reference_characters": 93,
+      "reference_words": 28,
+      "row_idx": 27565
+    },
+    {
+      "audio_sha256": "ee10295061be53cbf9d2e718c3af298c00e1af379119bde744e5e273492a83ed",
+      "models": {
+        "sravaani": {
+          "character_errors": 19,
+          "word_errors": 14
+        },
+        "whisper_v0.2": {
+          "character_errors": 45,
+          "word_errors": 24
+        }
+      },
+      "reference_characters": 110,
+      "reference_words": 30,
+      "row_idx": 27566
+    },
+    {
+      "audio_sha256": "7b34f1dcc030c8a71e2064d4dba4276f1274e4e2d7be755f5b46b135fac52674",
+      "models": {
+        "sravaani": {
+          "character_errors": 20,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 36,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 46,
+      "reference_words": 11,
+      "row_idx": 27644
+    },
+    {
+      "audio_sha256": "b39f88d975aedfa7071270b402c66cad09b673c5395bbfb1a65501d446a2883e",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 23,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 49,
+      "reference_words": 17,
+      "row_idx": 27657
+    },
+    {
+      "audio_sha256": "f10c8407fa9a1e626f0f8ec5e09a164a6183f32256429946492921cfba1bb15b",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 8
+        }
+      },
+      "reference_characters": 53,
+      "reference_words": 16,
+      "row_idx": 27658
+    },
+    {
+      "audio_sha256": "5cf50bfe433e3e4cdd0980247af3c50e846e0437fe7c665dc9b3557028ca2347",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 36,
+          "word_errors": 18
+        }
+      },
+      "reference_characters": 76,
+      "reference_words": 27,
+      "row_idx": 27659
+    },
+    {
+      "audio_sha256": "f18314bb997ebaf7b70620d5ea16801ef8490ea73c5b8d17d1b0713f05fbf85d",
+      "models": {
+        "sravaani": {
+          "character_errors": 12,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 87,
+          "word_errors": 35
+        }
+      },
+      "reference_characters": 131,
+      "reference_words": 43,
+      "row_idx": 27776
+    },
+    {
+      "audio_sha256": "1bfa4f6c4ada6f7cf2c69aceac83f29ea0ecf60a5ff1aec262385b7f8ff9ed46",
+      "models": {
+        "sravaani": {
+          "character_errors": 14,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 50,
+          "word_errors": 22
+        }
+      },
+      "reference_characters": 78,
+      "reference_words": 23,
+      "row_idx": 27777
+    },
+    {
+      "audio_sha256": "106e9d2bb1aa4bdd3e286d8adb000bd195503ae702de1966d4efff0e0045d685",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 39,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 79,
+      "reference_words": 25,
+      "row_idx": 27909
+    },
+    {
+      "audio_sha256": "1f0628961ce5faf807f5fd21704667a994a54579e229abf3c39cbfc98abfd5c4",
+      "models": {
+        "sravaani": {
+          "character_errors": 14,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 64,
+          "word_errors": 27
+        }
+      },
+      "reference_characters": 113,
+      "reference_words": 32,
+      "row_idx": 27916
+    },
+    {
+      "audio_sha256": "3c58ff48dcad36cace173634e6ac29292945cbe7880e5f8f332bff477aad6aaf",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 37,
+          "word_errors": 20
+        }
+      },
+      "reference_characters": 71,
+      "reference_words": 24,
+      "row_idx": 27925
+    },
+    {
+      "audio_sha256": "4f48ca4bcacd2a9cd81963abaf9a47fafbceac18e80994f0d07cacf3b3e75e42",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 78,
+          "word_errors": 26
+        }
+      },
+      "reference_characters": 110,
+      "reference_words": 30,
+      "row_idx": 27942
+    },
+    {
+      "audio_sha256": "48c1b956b86f072566bf2b054335081f1386eddba640207a18be6c62e60b74a6",
+      "models": {
+        "sravaani": {
+          "character_errors": 34,
+          "word_errors": 21
+        },
+        "whisper_v0.2": {
+          "character_errors": 136,
+          "word_errors": 55
+        }
+      },
+      "reference_characters": 193,
+      "reference_words": 62,
+      "row_idx": 27950
+    },
+    {
+      "audio_sha256": "008e2b22c2fbfe574b7837c83dadb7cb96ac0dc72bf3dfe1df5427ecb22a3fb4",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 34,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 52,
+      "reference_words": 13,
+      "row_idx": 27998
+    },
+    {
+      "audio_sha256": "3982aaca9655102338c97bbb55e68bb31b21fe694155011b068b0976dfc5479d",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 24,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 36,
+      "reference_words": 9,
+      "row_idx": 28617
+    },
+    {
+      "audio_sha256": "1798a87a9ae4d134f5becc7f0a36bd9a049e63040cea8beadb2926bcf630aa65",
+      "models": {
+        "sravaani": {
+          "character_errors": 26,
+          "word_errors": 17
+        },
+        "whisper_v0.2": {
+          "character_errors": 61,
+          "word_errors": 26
+        }
+      },
+      "reference_characters": 123,
+      "reference_words": 35,
+      "row_idx": 28621
+    },
+    {
+      "audio_sha256": "e8a7bea118a1eeb3e652bca686498249ee723786c4cbb9e9a144575bff57ade5",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 27,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 57,
+      "reference_words": 17,
+      "row_idx": 313
+    },
+    {
+      "audio_sha256": "e739b64b84a216fd32daefaa3f5019877be7ecc0614668c36cc2ea2d45d93b6f",
+      "models": {
+        "sravaani": {
+          "character_errors": 21,
+          "word_errors": 13
+        },
+        "whisper_v0.2": {
+          "character_errors": 37,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 87,
+      "reference_words": 24,
+      "row_idx": 3269
+    },
+    {
+      "audio_sha256": "20bb16199f7afdf692bbe90e01a9d9e892ee0cd83bdd51b4644ce85a5d42ab4d",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 33,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 82,
+      "reference_words": 22,
+      "row_idx": 3287
+    },
+    {
+      "audio_sha256": "26193a8b04f3e42ffad4b55f177eb22da8bd7b3a6f46a3ccb20fe18a3f9d576a",
+      "models": {
+        "sravaani": {
+          "character_errors": 6,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 11,
+          "word_errors": 8
+        }
+      },
+      "reference_characters": 71,
+      "reference_words": 23,
+      "row_idx": 3299
+    },
+    {
+      "audio_sha256": "e0014c7b83ed6f6f392ae3b05e208b6388bdd640576984788022aa2db836a240",
+      "models": {
+        "sravaani": {
+          "character_errors": 11,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 33,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 66,
+      "reference_words": 17,
+      "row_idx": 3300
+    },
+    {
+      "audio_sha256": "169c70628e0ed091853f3401a380f7b738d1edd470d9cfd9bce7387fcd05d6c8",
+      "models": {
+        "sravaani": {
+          "character_errors": 26,
+          "word_errors": 19
+        },
+        "whisper_v0.2": {
+          "character_errors": 100,
+          "word_errors": 38
+        }
+      },
+      "reference_characters": 126,
+      "reference_words": 38,
+      "row_idx": 3301
+    },
+    {
+      "audio_sha256": "804c3a0f1afee79950f326ad13e3102051594f6f0604e1dca83465ab4e3b859a",
+      "models": {
+        "sravaani": {
+          "character_errors": 27,
+          "word_errors": 14
+        },
+        "whisper_v0.2": {
+          "character_errors": 77,
+          "word_errors": 32
+        }
+      },
+      "reference_characters": 133,
+      "reference_words": 36,
+      "row_idx": 3313
+    },
+    {
+      "audio_sha256": "b4b0e21ab12786c731d608b01045c5329d60e017a4c511284c527ce1195bf771",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 1
+        },
+        "whisper_v0.2": {
+          "character_errors": 10,
+          "word_errors": 5
+        }
+      },
+      "reference_characters": 28,
+      "reference_words": 6,
+      "row_idx": 3317
+    },
+    {
+      "audio_sha256": "16e85ce3ec00bd8f3bdeb7a69262ea842715e1ba650cd7a99e83c0bf5325374f",
+      "models": {
+        "sravaani": {
+          "character_errors": 30,
+          "word_errors": 21
+        },
+        "whisper_v0.2": {
+          "character_errors": 75,
+          "word_errors": 28
+        }
+      },
+      "reference_characters": 118,
+      "reference_words": 31,
+      "row_idx": 3319
+    },
+    {
+      "audio_sha256": "37d5d3800693ca27eb6896d61134b91157b4649f103c9608c4eda24a3ed45709",
+      "models": {
+        "sravaani": {
+          "character_errors": 26,
+          "word_errors": 17
+        },
+        "whisper_v0.2": {
+          "character_errors": 48,
+          "word_errors": 25
+        }
+      },
+      "reference_characters": 87,
+      "reference_words": 29,
+      "row_idx": 3320
+    },
+    {
+      "audio_sha256": "c01aba2e80ad4bf5555a2c1758a46e6ca59fc67bf95702d8b0ec613e0b5d27ab",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 15,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 26,
+      "reference_words": 7,
+      "row_idx": 3321
+    },
+    {
+      "audio_sha256": "1ec8772af751a251c9408d983d5ce6a4abf7f699c8bdfa2c278d71460d17a5ae",
+      "models": {
+        "sravaani": {
+          "character_errors": 29,
+          "word_errors": 18
+        },
+        "whisper_v0.2": {
+          "character_errors": 56,
+          "word_errors": 29
+        }
+      },
+      "reference_characters": 115,
+      "reference_words": 31,
+      "row_idx": 3336
+    },
+    {
+      "audio_sha256": "35116ad934bc21398e9b5221ac91b6699b20562aaf2dee361449c66abea78cbf",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 17,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 75,
+      "reference_words": 25,
+      "row_idx": 3344
+    },
+    {
+      "audio_sha256": "18962885f066f1183604ebfd9027adf646556f3665d69b09e78f17578c99f4d6",
+      "models": {
+        "sravaani": {
+          "character_errors": 27,
+          "word_errors": 16
+        },
+        "whisper_v0.2": {
+          "character_errors": 39,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 74,
+      "reference_words": 20,
+      "row_idx": 353
+    },
+    {
+      "audio_sha256": "327a8645830de4be58d981cb8620b115b26199b306f254f8ea2b8c34b135ec35",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 12,
+          "word_errors": 8
+        }
+      },
+      "reference_characters": 21,
+      "reference_words": 5,
+      "row_idx": 5120
+    },
+    {
+      "audio_sha256": "02d722d708fe743f53d49526d61df9a07523e50962e791afde17c873047928bf",
+      "models": {
+        "sravaani": {
+          "character_errors": 14,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 28,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 84,
+      "reference_words": 24,
+      "row_idx": 5136
+    },
+    {
+      "audio_sha256": "824f8665de4c78ccb754829641b618e2205ac98e14b4ed6a1627a33d92d4f408",
+      "models": {
+        "sravaani": {
+          "character_errors": 17,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 27,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 50,
+      "reference_words": 13,
+      "row_idx": 5142
+    },
+    {
+      "audio_sha256": "c73614164e45b4cc31cd39e1ec71fada0dfc202260e75b18a4d02c8d15a6cf5f",
+      "models": {
+        "sravaani": {
+          "character_errors": 14,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 20,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 34,
+      "reference_words": 10,
+      "row_idx": 5164
+    },
+    {
+      "audio_sha256": "0e009f7a101022a896ebde5f6fa746c888e9110ca08b09ff9408504011c53132",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 27,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 57,
+      "reference_words": 17,
+      "row_idx": 5171
+    },
+    {
+      "audio_sha256": "930c319ffd00ab6b57f954ac3e303d31151cf50ab4520bde29ee598c86aaa80e",
+      "models": {
+        "sravaani": {
+          "character_errors": 11,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 11,
+          "word_errors": 4
+        }
+      },
+      "reference_characters": 46,
+      "reference_words": 13,
+      "row_idx": 5175
+    },
+    {
+      "audio_sha256": "cb2737b6c4c7d9e8c62fa9a7e0f1810aefc1c583c935d9612d22d168138653cb",
+      "models": {
+        "sravaani": {
+          "character_errors": 3,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 9,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 45,
+      "reference_words": 12,
+      "row_idx": 5184
+    },
+    {
+      "audio_sha256": "6d40693d2f889d2b02b52ed1a0b8c54b65c9b11b52523d67946696c8315cb0e9",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 50,
+          "word_errors": 28
+        }
+      },
+      "reference_characters": 88,
+      "reference_words": 22,
+      "row_idx": 5193
+    },
+    {
+      "audio_sha256": "4dc0db39eaff459a61b220e5fb6427608cecaee675fcc916e9e7ca910eb73ada",
+      "models": {
+        "sravaani": {
+          "character_errors": 18,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 28,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 76,
+      "reference_words": 21,
+      "row_idx": 5368
+    },
+    {
+      "audio_sha256": "f85275850de17877cc7b432a812ecebd5c3c3daa505da1a637ecf1cf04d88998",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 11,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 47,
+      "reference_words": 11,
+      "row_idx": 5382
+    },
+    {
+      "audio_sha256": "a0fecc2e3ede0aadc367987ebeb2ef91402d332733819e30a2d11b1a7c02b64b",
+      "models": {
+        "sravaani": {
+          "character_errors": 9,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 16,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 39,
+      "reference_words": 13,
+      "row_idx": 5386
+    },
+    {
+      "audio_sha256": "198bab79d24831c59321131dc84b0faf82605938ec99118fef42cf786ba5e515",
+      "models": {
+        "sravaani": {
+          "character_errors": 6,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 7,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 60,
+      "reference_words": 16,
+      "row_idx": 5390
+    },
+    {
+      "audio_sha256": "27005644791a5396c4afe145a5c5e191f9ef8eb7a1c3df7c67df5c072b948f18",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 7,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 62,
+      "reference_words": 16,
+      "row_idx": 5406
+    },
+    {
+      "audio_sha256": "4ad0ae8190fdfad2a33822d7989b8f6816aba3b3f2563dae3bc6bdf6e7c8e771",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 13,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 58,
+      "reference_words": 16,
+      "row_idx": 5407
+    },
+    {
+      "audio_sha256": "673fb8e097dac6314ce1a6b4f11ee89ab6c58492f2a08a23d5d21f39a839f6cf",
+      "models": {
+        "sravaani": {
+          "character_errors": 14,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 31,
+          "word_errors": 19
+        }
+      },
+      "reference_characters": 81,
+      "reference_words": 24,
+      "row_idx": 6015
+    },
+    {
+      "audio_sha256": "3de4a50b6a36aac6485c45a0ef00ab0005b7f3270f803600599bdf21e83621d5",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 9,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 41,
+      "reference_words": 11,
+      "row_idx": 6831
+    },
+    {
+      "audio_sha256": "30b4071b9d51ef7eae7b7ecea370d768146c049af2d04ea54bc270fa3432000c",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 8,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 49,
+      "reference_words": 15,
+      "row_idx": 6837
+    },
+    {
+      "audio_sha256": "3fa050ec5932763add0076b3db948bbe2d611b74775a1325e93b860d839f5eaa",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 12,
+          "word_errors": 5
+        }
+      },
+      "reference_characters": 64,
+      "reference_words": 15,
+      "row_idx": 6841
+    },
+    {
+      "audio_sha256": "1659d8cb28f2a64067e70470c55c2d5fbf8581666690122ac5243d4818233d40",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 18,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 72,
+      "reference_words": 26,
+      "row_idx": 6852
+    },
+    {
+      "audio_sha256": "bdb21d70cf66ff8202e7b66302a31f24c5120d34c0b209105dadf78ffd91bb12",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 1
+        },
+        "whisper_v0.2": {
+          "character_errors": 2,
+          "word_errors": 1
+        }
+      },
+      "reference_characters": 17,
+      "reference_words": 6,
+      "row_idx": 6853
+    },
+    {
+      "audio_sha256": "ea101894a5256c7b246267ac6edd9094a7551f9c3a7bcef25334523184e8374e",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 6,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 48,
+      "reference_words": 15,
+      "row_idx": 6854
+    },
+    {
+      "audio_sha256": "2d5c3f739714488ddcc31133807ce387ed0557748a9e6d7bc25ed3a0ae58b932",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 7,
+          "word_errors": 4
+        }
+      },
+      "reference_characters": 41,
+      "reference_words": 13,
+      "row_idx": 6862
+    },
+    {
+      "audio_sha256": "b6be08d606bc05000c2234ccf544b8ee0f016911087dfb6bad373d927c515d81",
+      "models": {
+        "sravaani": {
+          "character_errors": 1,
+          "word_errors": 1
+        },
+        "whisper_v0.2": {
+          "character_errors": 11,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 52,
+      "reference_words": 18,
+      "row_idx": 6881
+    },
+    {
+      "audio_sha256": "a82c04b8f320ba8259d60b6f8e8cad53658a9a5e48043ca0082c38966e835c84",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 20,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 53,
+      "reference_words": 18,
+      "row_idx": 6883
+    },
+    {
+      "audio_sha256": "1875df19112a3626b8717b6318d3344b1104df0dc1f550c1364489630e80a738",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 2,
+          "word_errors": 5
+        }
+      },
+      "reference_characters": 18,
+      "reference_words": 6,
+      "row_idx": 6898
+    },
+    {
+      "audio_sha256": "044a2a2d5d087dc307b0c26831be68f5c331a6f34f3e2884659166e701aeb62c",
+      "models": {
+        "sravaani": {
+          "character_errors": 3,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 12,
+          "word_errors": 6
+        }
+      },
+      "reference_characters": 40,
+      "reference_words": 12,
+      "row_idx": 6903
+    },
+    {
+      "audio_sha256": "90bb3510856b2cd701b75477c4118f7c45a7422c29eaad52592efe9dc2a28e09",
+      "models": {
+        "sravaani": {
+          "character_errors": 0,
+          "word_errors": 0
+        },
+        "whisper_v0.2": {
+          "character_errors": 12,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 43,
+      "reference_words": 16,
+      "row_idx": 6905
+    },
+    {
+      "audio_sha256": "3f4b96b2e9b556ce8d2722b51ad9c8aa7696fa9a320a46b04ea376255a0e66c4",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 14
+        }
+      },
+      "reference_characters": 81,
+      "reference_words": 21,
+      "row_idx": 6911
+    },
+    {
+      "audio_sha256": "514d58874c3e5f03bc84591c74420856a5c478bc4f9a1c9950304505cb7ba22c",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 8,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 59,
+      "reference_words": 15,
+      "row_idx": 6917
+    },
+    {
+      "audio_sha256": "d85c98255b8edca97b43ee945c607a817ec5dd653c32bc0e07d3af07c1726167",
+      "models": {
+        "sravaani": {
+          "character_errors": 17,
+          "word_errors": 9
+        },
+        "whisper_v0.2": {
+          "character_errors": 36,
+          "word_errors": 15
+        }
+      },
+      "reference_characters": 84,
+      "reference_words": 24,
+      "row_idx": 7227
+    },
+    {
+      "audio_sha256": "263012cc1c09cbc3498e8e1bd13f3cc249fb61cb849b2a988d2756abe0e4f4ea",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 22,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 77,
+      "reference_words": 23,
+      "row_idx": 7235
+    },
+    {
+      "audio_sha256": "bc4314690158596588f29c0eb60112f2024daafbebc8583188172397ce98b0ac",
+      "models": {
+        "sravaani": {
+          "character_errors": 15,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 18,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 41,
+      "reference_words": 12,
+      "row_idx": 7242
+    },
+    {
+      "audio_sha256": "09c9ada56d798b2a6c80d71dc2d3536aab55ae800dd7cdf406619c39644a3ff8",
+      "models": {
+        "sravaani": {
+          "character_errors": 13,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 65,
+      "reference_words": 19,
+      "row_idx": 7253
+    },
+    {
+      "audio_sha256": "f3ab92898c3a8fef46193f5a0e70b0928559406e95e28c3e57018e6a8b36cdbc",
+      "models": {
+        "sravaani": {
+          "character_errors": 19,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 28,
+          "word_errors": 17
+        }
+      },
+      "reference_characters": 75,
+      "reference_words": 21,
+      "row_idx": 7258
+    },
+    {
+      "audio_sha256": "49e20f0bd1f8565af3c302e8d64232792281d0d189006d6e9cc04f333b20a576",
+      "models": {
+        "sravaani": {
+          "character_errors": 16,
+          "word_errors": 8
+        },
+        "whisper_v0.2": {
+          "character_errors": 33,
+          "word_errors": 18
+        }
+      },
+      "reference_characters": 81,
+      "reference_words": 19,
+      "row_idx": 7268
+    },
+    {
+      "audio_sha256": "1a9a60290a1ebe18d5b73d0f3c28fd6ca1aca1a3b28cfad7460fd65b0ca33be5",
+      "models": {
+        "sravaani": {
+          "character_errors": 18,
+          "word_errors": 11
+        },
+        "whisper_v0.2": {
+          "character_errors": 41,
+          "word_errors": 16
+        }
+      },
+      "reference_characters": 76,
+      "reference_words": 16,
+      "row_idx": 7277
+    },
+    {
+      "audio_sha256": "f90d811196c12aea0d227c15ce901c7f580cff8af0e0eee2aae43eb402051cfb",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 20,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 46,
+      "reference_words": 13,
+      "row_idx": 7280
+    },
+    {
+      "audio_sha256": "f6c1a9dd50d2111194ae76131f00707e566bd33aea5112f66e77ea03d4b41497",
+      "models": {
+        "sravaani": {
+          "character_errors": 16,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 38,
+          "word_errors": 20
+        }
+      },
+      "reference_characters": 87,
+      "reference_words": 26,
+      "row_idx": 7287
+    },
+    {
+      "audio_sha256": "e8e9d2b7f9bf393e80390f136f1bda3c3827eb3d3cdcd09b205ff7788d772bed",
+      "models": {
+        "sravaani": {
+          "character_errors": 18,
+          "word_errors": 13
+        },
+        "whisper_v0.2": {
+          "character_errors": 45,
+          "word_errors": 20
+        }
+      },
+      "reference_characters": 80,
+      "reference_words": 25,
+      "row_idx": 7289
+    },
+    {
+      "audio_sha256": "8e373623696f69a6274e7e1d08fa8d5db99e77a053e07620f7ef5f534e2cb741",
+      "models": {
+        "sravaani": {
+          "character_errors": 18,
+          "word_errors": 15
+        },
+        "whisper_v0.2": {
+          "character_errors": 84,
+          "word_errors": 37
+        }
+      },
+      "reference_characters": 93,
+      "reference_words": 30,
+      "row_idx": 7299
+    },
+    {
+      "audio_sha256": "268bc24108db9318f56e7bb2091650ec0d2350fb46afd0fb9ed4f18682fd4c2c",
+      "models": {
+        "sravaani": {
+          "character_errors": 6,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 9,
+          "word_errors": 4
+        }
+      },
+      "reference_characters": 15,
+      "reference_words": 4,
+      "row_idx": 7311
+    },
+    {
+      "audio_sha256": "8b3bc855c8245e38414495bd09cfa5a0408e1754948dbbb5bc7503a5d9621065",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 8,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 53,
+      "reference_words": 16,
+      "row_idx": 7798
+    },
+    {
+      "audio_sha256": "4d319f9111e96553f0da4e843c1b148d3dad10fa0363241598eb3aceeed988ff",
+      "models": {
+        "sravaani": {
+          "character_errors": 7,
+          "word_errors": 5
+        },
+        "whisper_v0.2": {
+          "character_errors": 13,
+          "word_errors": 9
+        }
+      },
+      "reference_characters": 34,
+      "reference_words": 13,
+      "row_idx": 7888
+    },
+    {
+      "audio_sha256": "f018250209b85ce9b90d7f4dbb0ca89bcb6274b510608c5a9b83bd0dc5a8ba34",
+      "models": {
+        "sravaani": {
+          "character_errors": 4,
+          "word_errors": 3
+        },
+        "whisper_v0.2": {
+          "character_errors": 17,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 54,
+      "reference_words": 15,
+      "row_idx": 8219
+    },
+    {
+      "audio_sha256": "af56d169e9c1f07643124f4beb66adeb3743a5914cd5d001f6b8480f94b2a29b",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 3,
+          "word_errors": 2
+        }
+      },
+      "reference_characters": 21,
+      "reference_words": 7,
+      "row_idx": 8256
+    },
+    {
+      "audio_sha256": "9c1c3cd73c13406f7eb4a2a555c21d155d78054ac24ab48da8419b81429c4ac6",
+      "models": {
+        "sravaani": {
+          "character_errors": 10,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 16,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 73,
+      "reference_words": 20,
+      "row_idx": 8277
+    },
+    {
+      "audio_sha256": "2c7a2b00cf85a9863bdd0be93c12ddd2e491d4d68bce19f9c4ad57129013550e",
+      "models": {
+        "sravaani": {
+          "character_errors": 3,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 4,
+          "word_errors": 4
+        }
+      },
+      "reference_characters": 42,
+      "reference_words": 11,
+      "row_idx": 8279
+    },
+    {
+      "audio_sha256": "cc7b0a41702e26bfc0d3efa682758a8abe8ea341cbaab569d4d238bf96ed80fc",
+      "models": {
+        "sravaani": {
+          "character_errors": 31,
+          "word_errors": 22
+        },
+        "whisper_v0.2": {
+          "character_errors": 90,
+          "word_errors": 34
+        }
+      },
+      "reference_characters": 124,
+      "reference_words": 39,
+      "row_idx": 843
+    },
+    {
+      "audio_sha256": "8741b52bda328a27138da2bb7b1a42671f96d56c6a5d4def5e175c8dd73afc58",
+      "models": {
+        "sravaani": {
+          "character_errors": 16,
+          "word_errors": 13
+        },
+        "whisper_v0.2": {
+          "character_errors": 29,
+          "word_errors": 19
+        }
+      },
+      "reference_characters": 80,
+      "reference_words": 24,
+      "row_idx": 849
+    },
+    {
+      "audio_sha256": "84f464a6f31790dc7f870388aefc3da50e10003a0c1d62e0b2baa5aebf01e0c5",
+      "models": {
+        "sravaani": {
+          "character_errors": 28,
+          "word_errors": 17
+        },
+        "whisper_v0.2": {
+          "character_errors": 77,
+          "word_errors": 31
+        }
+      },
+      "reference_characters": 139,
+      "reference_words": 36,
+      "row_idx": 863
+    },
+    {
+      "audio_sha256": "72581a2e9b158331e7c6ba37232f69c68a9afe2b2092a5e873a9233d14327758",
+      "models": {
+        "sravaani": {
+          "character_errors": 69,
+          "word_errors": 30
+        },
+        "whisper_v0.2": {
+          "character_errors": 104,
+          "word_errors": 39
+        }
+      },
+      "reference_characters": 128,
+      "reference_words": 40,
+      "row_idx": 872
+    },
+    {
+      "audio_sha256": "21ca7700141a5501ab1293117464f708d119405c9be17c38b66ab6b86a63be74",
+      "models": {
+        "sravaani": {
+          "character_errors": 25,
+          "word_errors": 10
+        },
+        "whisper_v0.2": {
+          "character_errors": 29,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 36,
+      "reference_words": 9,
+      "row_idx": 939
+    },
+    {
+      "audio_sha256": "dfd679fd953c7505b909a8027e427fac6e86b7c99f810311c41a1035692cc73a",
+      "models": {
+        "sravaani": {
+          "character_errors": 6,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 16,
+          "word_errors": 10
+        }
+      },
+      "reference_characters": 35,
+      "reference_words": 13,
+      "row_idx": 945
+    },
+    {
+      "audio_sha256": "383d25ffcecd3c2b3dc634d8cb0bdbb2b664f5105b4ddae1896007a40a1becc0",
+      "models": {
+        "sravaani": {
+          "character_errors": 1,
+          "word_errors": 1
+        },
+        "whisper_v0.2": {
+          "character_errors": 2,
+          "word_errors": 3
+        }
+      },
+      "reference_characters": 23,
+      "reference_words": 8,
+      "row_idx": 9938
+    },
+    {
+      "audio_sha256": "f79ea7a0cf249bd4fb709482cf69f5d1082192be3db4ef142a2baa16b2107cc7",
+      "models": {
+        "sravaani": {
+          "character_errors": 8,
+          "word_errors": 7
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 12
+        }
+      },
+      "reference_characters": 62,
+      "reference_words": 20,
+      "row_idx": 9941
+    },
+    {
+      "audio_sha256": "5031d475a8fce4149688e2e771592ad60157c36cfee17b60e63e0b05a3f6b1b6",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 19,
+          "word_errors": 13
+        }
+      },
+      "reference_characters": 46,
+      "reference_words": 14,
+      "row_idx": 9943
+    },
+    {
+      "audio_sha256": "bdb7eeff24f05834d1ae320eff6e27415d96cac1e735023702a2eec9cde9e534",
+      "models": {
+        "sravaani": {
+          "character_errors": 2,
+          "word_errors": 2
+        },
+        "whisper_v0.2": {
+          "character_errors": 9,
+          "word_errors": 7
+        }
+      },
+      "reference_characters": 29,
+      "reference_words": 10,
+      "row_idx": 9947
+    },
+    {
+      "audio_sha256": "05fd8ef0a207a5241656d57711dc453e1d1b8725cb05b7dccc627c4e7156b72a",
+      "models": {
+        "sravaani": {
+          "character_errors": 5,
+          "word_errors": 4
+        },
+        "whisper_v0.2": {
+          "character_errors": 18,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 66,
+      "reference_words": 22,
+      "row_idx": 9949
+    },
+    {
+      "audio_sha256": "b950469eeb7921fe2d550d5bb325fae503e7dc8429989149beebba1ecc0a3724",
+      "models": {
+        "sravaani": {
+          "character_errors": 3,
+          "word_errors": 6
+        },
+        "whisper_v0.2": {
+          "character_errors": 8,
+          "word_errors": 11
+        }
+      },
+      "reference_characters": 58,
+      "reference_words": 21,
+      "row_idx": 9950
+    },
+    {
+      "audio_sha256": "6536cd75ff5fa987f342ede991bba6ed6816f0d5e925c37204cdecbed7dd2f97",
+      "models": {
+        "sravaani": {
+          "character_errors": 0,
+          "word_errors": 0
+        },
+        "whisper_v0.2": {
+          "character_errors": 5,
+          "word_errors": 4
+        }
+      },
+      "reference_characters": 35,
+      "reference_words": 11,
+      "row_idx": 9951
+    }
+  ],
+  "status": "development_only"
+}

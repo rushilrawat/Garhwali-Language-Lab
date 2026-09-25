@@ -118,3 +118,7 @@ explicitly ineligible for Garhwali training.
 This package uses multiple upstream licenses. Inspect each row's provenance
 before redistribution or model release. Full documentation, limitations, and the
 release audit are in the [source repository](https://github.com/rushilrawat/Garhwali-Language-Lab).
+
+## Linked speech dataset
+
+The companion [Garhwali Speech dataset](https://huggingface.co/datasets/rushilrawat/garhwali-speech) contains VAANI audio with provider transcripts and separately labeled SraVaani drafts.

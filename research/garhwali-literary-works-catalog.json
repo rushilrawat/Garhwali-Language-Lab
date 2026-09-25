@@ -58,7 +58,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Temple-grant inscription at Dev Prayag; catalogued as a named historical witness, not a modern literary edition."
+      "notes": "Temple-grant inscription at Dev Prayag; catalogued as a named historical witness, not a modern literary edition.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:jagatpal-dev-prayag-grant-1335",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:jayadev-bahuguna-ranch-judya",
@@ -76,7 +89,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "The supplied capture describes this as the oldest identified Garhwali manuscript."
+      "notes": "The supplied capture describes this as the oldest identified Garhwali manuscript.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:jayadev-bahuguna-ranch-judya",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:sudarshan-shah-sabhaasaar",
@@ -94,7 +120,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:sudarshan-shah-sabhaasaar",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:garhwali-new-testament-1830",
@@ -113,7 +152,21 @@
         "itihaas-garhwali-capture",
         "freebibles-garhwali"
       ],
-      "notes": "The project already catalogs a modern source-native Garhwali New Testament edition; no chapter payload was added by this literary-history pass."
+      "notes": "The project already catalogs a modern source-native Garhwali New Testament edition; no chapter payload was added by this literary-history pass.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:garhwali-new-testament-1830",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "freebibles_terms_not_verified"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:matthew-garhwali-1876",
@@ -131,7 +184,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "The supplied capture says this edition was printed at Lucknow."
+      "notes": "The supplied capture says this edition was printed at Lucknow.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:matthew-garhwali-1876",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:bachan-singh-negi-mahabharata",
@@ -149,7 +215,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:bachan-singh-negi-mahabharata",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:bachan-singh-negi-ramayana",
@@ -167,7 +246,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:bachan-singh-negi-ramayana",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:bachan-singh-negi-ramcharitmanas",
@@ -185,7 +277,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:bachan-singh-negi-ramcharitmanas",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:bachan-singh-negi-bhagwat-geeta",
@@ -205,7 +310,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:bachan-singh-negi-bhagwat-geeta",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:lsi-prodigal-son-garhwali",
@@ -224,7 +342,21 @@
         "itihaas-garhwali-capture",
         "lsi-ix-4"
       ],
-      "notes": "Named recording/text item in the Linguistic Survey of India; the existing LSI historical extraction is retained."
+      "notes": "Named recording/text item in the Linguistic Survey of India; the existing LSI historical extraction is retained.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:lsi-prodigal-son-garhwali",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "lsi_public_domain"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:lsi-bundle-of-sticks-garhwali",
@@ -243,7 +375,21 @@
         "itihaas-garhwali-capture",
         "lsi-ix-4"
       ],
-      "notes": "Named folk-tale recording/text item in the Linguistic Survey of India; the existing LSI historical extraction is retained."
+      "notes": "Named folk-tale recording/text item in the Linguistic Survey of India; the existing LSI historical extraction is retained.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:lsi-bundle-of-sticks-garhwali",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "lsi_public_domain"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kellogg-hindi-grammar",
@@ -264,7 +410,21 @@
         "itihaas-garhwali-capture",
         "kellogg-1893"
       ],
-      "notes": "The existing historical layer contains 34 OCR pages that mention Garhwali."
+      "notes": "The existing historical layer contains 34 OCR pages that mention Garhwali.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kellogg-hindi-grammar",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "archive_kellogg_terms_unverified"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:lsi-volume-ix-part-iv",
@@ -286,7 +446,21 @@
         "itihaas-garhwali-capture",
         "lsi-ix-4"
       ],
-      "notes": "The project's historical layer already contains the Garhwali-relevant LSI extraction."
+      "notes": "The project's historical layer already contains the Garhwali-relevant LSI extraction.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:lsi-volume-ix-part-iv",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "lsi_public_domain"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:gairola-sadei",
@@ -304,7 +478,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:gairola-sadei",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:raturi-phyunli",
@@ -322,7 +509,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:raturi-phyunli",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:raturi-utha-garhwalyun",
@@ -340,7 +540,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:raturi-utha-garhwalyun",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:premi-agyaal",
@@ -358,7 +571,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:premi-agyaal",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:bhatt-umaal",
@@ -376,7 +602,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:bhatt-umaal",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:gairola-parbati",
@@ -394,7 +633,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:gairola-parbati",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:shikhar-kuredi-phategi",
@@ -412,7 +664,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:shikhar-kuredi-phategi",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:dandriyal-anjwaal",
@@ -430,7 +695,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:dandriyal-anjwaal",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:dandriyal-mangtu",
@@ -448,7 +726,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:dandriyal-mangtu",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:dandriyal-nagraja",
@@ -466,7 +757,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:dandriyal-nagraja",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kutaj-khigtaat",
@@ -485,7 +789,21 @@
         "itihaas-garhwali-capture",
         "user-literature-writers-2026-09-16"
       ],
-      "notes": "The existing capture attributes this work to Harish Juyal ‘Kutaj’. The later user list says Gireesh Juyal ‘Kutaj’; that conflicting spelling/attribution is preserved in the people catalog pending a primary bibliographic source."
+      "notes": "The existing capture attributes this work to Harish Juyal ‘Kutaj’. The later user list says Gireesh Juyal ‘Kutaj’; that conflicting spelling/attribution is preserved in the people catalog pending a primary bibliographic source.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kutaj-khigtaat",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown",
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:parvatiya-gainika-nau-par",
@@ -503,7 +821,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:parvatiya-gainika-nau-par",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:keshwan-hari-hindwaan",
@@ -521,7 +852,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:keshwan-hari-hindwaan",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:panwar-inma-kankwei-aan-basant",
@@ -539,7 +883,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:panwar-inma-kankwei-aan-basant",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:bahuguna-gaad",
@@ -557,7 +914,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:bahuguna-gaad",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:bahuguna-myateki-ganga",
@@ -575,7 +945,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:bahuguna-myateki-ganga",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:bahuguna-bhumyal",
@@ -593,7 +976,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:bahuguna-bhumyal",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:thapliyal-pralhad",
@@ -611,7 +1007,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:thapliyal-pralhad",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:bahuguna-mochhang",
@@ -629,7 +1038,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:bahuguna-mochhang",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:ghildiyal-bwari",
@@ -647,7 +1069,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:ghildiyal-bwari",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:ghildiyal-mwari",
@@ -665,7 +1100,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:ghildiyal-mwari",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:ghildiyal-gaari",
@@ -683,7 +1131,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:ghildiyal-gaari",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-dr-asaram",
@@ -701,7 +1162,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-dr-asaram",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-panch-parani",
@@ -719,7 +1193,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-panch-parani",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:chatak-kya-gori",
@@ -737,7 +1224,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:chatak-kya-gori",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:naithani-ristaun",
@@ -755,7 +1255,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:naithani-ristaun",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:naithani-chithi-patri",
@@ -773,7 +1286,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:naithani-chithi-patri",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-tabari",
@@ -791,7 +1317,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-tabari",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-tup-tap",
@@ -809,7 +1348,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-tup-tap",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-pani",
@@ -827,7 +1379,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-pani",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-kulla-pichkari",
@@ -845,7 +1410,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-kulla-pichkari",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-lagyan-chhaan",
@@ -863,7 +1441,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-lagyan-chhaan",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-ados-pados",
@@ -881,7 +1472,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-ados-pados",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-hari-singho",
@@ -899,7 +1503,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-hari-singho",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-aar-parai",
@@ -917,7 +1534,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-aar-parai",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-samsya-khadi",
@@ -935,7 +1565,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-samsya-khadi",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-naaraz",
@@ -953,7 +1596,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-naaraz",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:kathait-bakki-tumari",
@@ -971,7 +1627,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named in the supplied Garhwali-language history capture."
+      "notes": "Named in the supplied Garhwali-language history capture.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:kathait-bakki-tumari",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:uttarakhand-khabarsar",
@@ -989,7 +1658,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named as a contemporary newspaper published entirely in Garhwali."
+      "notes": "Named as a contemporary newspaper published entirely in Garhwali.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:uttarakhand-khabarsar",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:rant-raibar",
@@ -1009,7 +1691,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Monthly Garhwali newspaper associated with Akhil Garhwal Sabha; both spellings in the capture are preserved."
+      "notes": "Monthly Garhwali newspaper associated with Akhil Garhwal Sabha; both spellings in the capture are preserved.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:rant-raibar",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:baduli",
@@ -1027,7 +1722,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named as a magazine contributing to Garhwali literary development."
+      "notes": "Named as a magazine contributing to Garhwali literary development.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:baduli",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:hilaans",
@@ -1045,7 +1753,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named as a magazine contributing to Garhwali literary development."
+      "notes": "Named as a magazine contributing to Garhwali literary development.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:hilaans",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:chitthi-patri-magazine",
@@ -1063,7 +1784,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named as a magazine; kept distinct from Bijendra Prasad Naithani's Chithi-Patri-Collection."
+      "notes": "Named as a magazine; kept distinct from Bijendra Prasad Naithani's Chithi-Patri-Collection.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:chitthi-patri-magazine",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:dhaad",
@@ -1081,7 +1815,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named as a magazine contributing to Garhwali literary development."
+      "notes": "Named as a magazine contributing to Garhwali literary development.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:dhaad",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:bedu-pako-radio",
@@ -1102,7 +1849,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named internet-radio service; the capture says its name comes from a well-known Himalayan melody."
+      "notes": "Named internet-radio service; the capture says its name comes from a well-known Himalayan melody.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:bedu-pako-radio",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:chakhul-dictionary",
@@ -1120,7 +1880,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named Garhwali-language app with vocabulary and cultural information."
+      "notes": "Named Garhwali-language app with vocabulary and cultural information.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:chakhul-dictionary",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:garhpedia",
@@ -1138,7 +1911,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named community-driven encyclopedia for Garhwali preservation."
+      "notes": "Named community-driven encyclopedia for Garhwali preservation.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:garhpedia",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:himlingo-dictionary",
@@ -1158,7 +1944,20 @@
       "source_ids": [
         "itihaas-garhwali-capture"
       ],
-      "notes": "Named community dictionary; catalog metadata only. The project does not bypass the site's stated limits on automated collection."
+      "notes": "Named community dictionary; catalog metadata only. The project does not bypass the site's stated limits on automated collection.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:himlingo-dictionary",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "itihaas_capture_rights_unknown"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:thapalyal-achhryun-ku-taal",
@@ -1178,7 +1977,20 @@
       "source_ids": [
         "user-literature-writers-2026-09-16"
       ],
-      "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
+      "notes": "User-supplied title and attribution; edition details still require a title-page or library record.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:thapalyal-achhryun-ku-taal",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:nawani-phanchi",
@@ -1196,7 +2008,20 @@
       "source_ids": [
         "user-literature-writers-2026-09-16"
       ],
-      "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
+      "notes": "User-supplied title and attribution; edition details still require a title-page or library record.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:nawani-phanchi",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:duklaan-aandi-jaandi-saans",
@@ -1216,7 +2041,20 @@
       "source_ids": [
         "user-literature-writers-2026-09-16"
       ],
-      "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
+      "notes": "User-supplied title and attribution; edition details still require a title-page or library record.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:duklaan-aandi-jaandi-saans",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:sayar-aunar",
@@ -1234,7 +2072,20 @@
       "source_ids": [
         "user-literature-writers-2026-09-16"
       ],
-      "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
+      "notes": "User-supplied title and attribution; edition details still require a title-page or library record.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:sayar-aunar",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     },
     {
       "record_id": "literary-work:gauniyal-dheet",
@@ -1252,7 +2103,20 @@
       "source_ids": [
         "user-literature-writers-2026-09-16"
       ],
-      "notes": "User-supplied title and attribution; edition details still require a title-page or library record."
+      "notes": "User-supplied title and attribution; edition details still require a title-page or library record.",
+      "rights_status": "reviewed_rights_unresolved",
+      "rights_review": {
+        "review_id": "structured-rights-review-2026-09-23:literary-work:gauniyal-dheet",
+        "reviewed_on": "2026-09-23",
+        "review_status": "source_terms_checked",
+        "source_assessments": [
+          "user_supplied_lead"
+        ],
+        "record_scope": "structured metadata and short catalog descriptions; not the full referenced book, paper, song, or source webpage",
+        "public_redistribution": "not_cleared_for_this_complete_record",
+        "note": "A license on one cited source applies only to material derived from that source; this mixed-source record has no whole-record public-rights basis yet. All source content and values are retained."
+      },
+      "public_rights_basis": []
     }
   ],
   "capture_coverage": {
