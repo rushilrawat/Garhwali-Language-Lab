@@ -18,6 +18,8 @@ language resources, review queues, and reproducible model datasets out.*
 
 ---
 
+> **Documentation map:** [Browse all project docs, research reports, plans, and frozen release notes](docs/README.md).
+
 ## 🎯 The project goal
 
 Garhwali has valuable speech, vocabulary, folklore, scholarship, and community
