@@ -46,7 +46,10 @@ class SyncReleaseIndexTests(unittest.TestCase):
             'release_id': 'bench', 'status': 'candidate',
             'native_reviewed': False, 'dialect_aware': False,
             'records': {'external_total': 3, 'text_evaluation': 2, 'asr_evaluation': 1},
+            'training': {'text': {'records': 7, 'sha256': 'train-hash'}},
             'leakage': {'external_exact_train_text': 0,
+                        'external_cross_split_primary_text_groups': 1,
+                        'external_cross_split_primary_text_rows': 2,
                         'internal_text_exact_train_text': 0, 'asr_speaker_overlap': 0},
             'baselines': {'character_bigram': {'perplexity': 12.5,
                                                 'oov_character_rate': 0.01}},
@@ -73,6 +76,10 @@ class SyncReleaseIndexTests(unittest.TestCase):
         self.assertEqual(refreshed['evaluation_candidates']['text'], 2)
         self.assertTrue(refreshed['evaluation_candidates']['native_review_deferred'])
         self.assertEqual(refreshed['garhwali_bench']['character_bigram_perplexity'], 12.5)
+        self.assertEqual(refreshed['garhwali_bench']['character_bigram_training_records'], 7)
+        self.assertEqual(refreshed['garhwali_bench']['character_bigram_training_sha256'], 'train-hash')
+        self.assertEqual(refreshed['garhwali_bench']['external_cross_split_primary_text_groups'], 1)
+        self.assertEqual(refreshed['garhwali_bench']['external_cross_split_primary_text_rows'], 2)
         self.assertEqual(refreshed['language_resources']['word_types'], 20)
 
     def test_release_status_cannot_claim_ready_when_final_audit_fails(self):

@@ -3,10 +3,10 @@
     "character_bigram": {
       "evaluated_characters_with_boundaries": 37824,
       "model": "add-one-smoothed_character_bigram",
-      "negative_log_likelihood_per_character": 2.833217,
+      "negative_log_likelihood_per_character": 2.647741,
       "oov_character_rate": 0.0,
-      "perplexity": 17.000058,
-      "train_character_vocabulary": 327
+      "perplexity": 14.122106,
+      "train_character_vocabulary": 110
     }
   },
   "dialect_aware": false,
@@ -22,6 +22,8 @@
   },
   "leakage": {
     "asr_speaker_overlap": 0,
+    "external_cross_split_primary_text_groups": 1,
+    "external_cross_split_primary_text_rows": 2,
     "external_exact_train_text": 0,
     "internal_text_exact_train_text": 0
   },
@@ -36,6 +38,11 @@
   "status": "strict_automated_candidate_pending_native_review",
   "tasks": {
     "crosssum": {
+      "cross_split_text_overlap": {
+        "group_count": 0,
+        "groups": [],
+        "row_count": 0
+      },
       "path": "benchmarks/indicgenbench_crosssum.jsonl",
       "records": 699,
       "schema_errors": 0,
@@ -43,6 +50,11 @@
       "usage": "evaluation_only"
     },
     "flores": {
+      "cross_split_text_overlap": {
+        "group_count": 0,
+        "groups": [],
+        "row_count": 0
+      },
       "path": "benchmarks/indicgenbench_flores.jsonl",
       "records": 2009,
       "schema_errors": 0,
@@ -50,11 +62,35 @@
       "usage": "evaluation_only"
     },
     "xorqa": {
+      "cross_split_text_overlap": {
+        "group_count": 1,
+        "groups": [
+          {
+            "record_ids": [
+              "indicgenbench_xorqa:dev:296",
+              "indicgenbench_xorqa:train:64"
+            ],
+            "splits": [
+              "dev",
+              "train"
+            ],
+            "text_sha256": "681064aff251f593856efe1dc9328f32f879bae12c3410750a42bead8abeaf59"
+          }
+        ],
+        "row_count": 2
+      },
       "path": "benchmarks/indicgenbench_xorqa.jsonl",
       "records": 1139,
       "schema_errors": 0,
       "sha256": "e69be06befb0227395ba0feb58220388134279d4f95659ba8442e0b8e3d13ed6",
       "usage": "evaluation_only"
+    }
+  },
+  "training": {
+    "text": {
+      "path": "data/processed/model_ready/splits/text_recommended/train.jsonl",
+      "records": 7490,
+      "sha256": "2de3f3f95f24d41df9a4ce142496b7e9e97ac402ff4cca4c00edb6bed41d6ec8"
     }
   }
 }

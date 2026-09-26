@@ -24,7 +24,7 @@ class FinalReleaseAuditTests(unittest.TestCase):
         artifacts = {
             'data/processed/evaluation/garhwali_bench/internal_text.jsonl': text_eval,
             'data/processed/model_ready/splits/evaluation/asr_candidate.jsonl': asr_eval,
-            'data/processed/model_ready/splits/text/train.jsonl': text_train,
+            'data/processed/model_ready/splits/text_recommended/train.jsonl': text_train,
             'data/processed/model_ready/splits/asr/train.jsonl': asr_train,
             'data/processed/model_ready/splits/asr/validation.jsonl': asr_validation,
             'data/processed/evaluation/garhwali_bench/benchmarks/flores.jsonl': [{'source': 'hello'}],
@@ -46,10 +46,14 @@ class FinalReleaseAuditTests(unittest.TestCase):
                 'text': expected['data/processed/evaluation/garhwali_bench/internal_text.jsonl'],
                 'asr': expected['data/processed/model_ready/splits/evaluation/asr_candidate.jsonl'],
             },
+            'training': {
+                'text': expected['data/processed/model_ready/splits/text_recommended/train.jsonl'],
+            },
+            'leakage': {'external_exact_train_text': 0},
             'tasks': {
-                'flores': {**expected['data/processed/evaluation/garhwali_bench/benchmarks/flores.jsonl'], 'usage': 'evaluation_only', 'schema_errors': 0},
-                'crosssum': {**expected['data/processed/evaluation/garhwali_bench/benchmarks/crosssum.jsonl'], 'usage': 'evaluation_only', 'schema_errors': 0},
-                'xorqa': {**expected['data/processed/evaluation/garhwali_bench/benchmarks/xorqa.jsonl'], 'usage': 'evaluation_only', 'schema_errors': 0},
+                'flores': {**expected['data/processed/evaluation/garhwali_bench/benchmarks/flores.jsonl'], 'usage': 'evaluation_only', 'schema_errors': 0, 'cross_split_text_overlap': {'group_count': 0, 'row_count': 0, 'groups': []}},
+                'crosssum': {**expected['data/processed/evaluation/garhwali_bench/benchmarks/crosssum.jsonl'], 'usage': 'evaluation_only', 'schema_errors': 0, 'cross_split_text_overlap': {'group_count': 0, 'row_count': 0, 'groups': []}},
+                'xorqa': {**expected['data/processed/evaluation/garhwali_bench/benchmarks/xorqa.jsonl'], 'usage': 'evaluation_only', 'schema_errors': 0, 'cross_split_text_overlap': {'group_count': 0, 'row_count': 0, 'groups': []}},
             },
         }
         path = root / 'data/processed/evaluation/garhwali_bench/manifest.json'
@@ -70,7 +74,7 @@ class FinalReleaseAuditTests(unittest.TestCase):
     def test_benchmark_audit_rejects_changed_artifact_and_recomputes_overlap(self):
         with tempfile.TemporaryDirectory() as directory:
             root = self.benchmark_fixture(Path(directory))
-            text_train = root / 'data/processed/model_ready/splits/text/train.jsonl'
+            text_train = root / 'data/processed/model_ready/splits/text_recommended/train.jsonl'
             write_jsonl(text_train, [{'text': 'गढ़वाली वाक्य'}])
             changed = root / 'data/processed/evaluation/garhwali_bench/internal_text.jsonl'
             write_jsonl(changed, [{'text': 'गढ़वाली वाक्य'}])
@@ -82,6 +86,56 @@ class FinalReleaseAuditTests(unittest.TestCase):
         self.assertEqual(report['leakage']['internal_text_exact_train_text'], 1)
         self.assertEqual(report['leakage']['asr_audio_train_or_validation_overlap'], 1)
         self.assertEqual(report['leakage']['asr_speaker_train_or_validation_overlap'], 1)
+
+    def test_benchmark_audit_recomputes_and_reports_external_split_duplicates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.benchmark_fixture(Path(directory))
+            xorqa_path = root / 'data/processed/evaluation/garhwali_bench/benchmarks/xorqa.jsonl'
+            rows = [
+                {'record_id': 'xorqa:train:1', 'split': 'train', 'text_normalized': 'same'},
+                {'record_id': 'xorqa:dev:1', 'split': 'dev', 'text_normalized': ' same '},
+            ]
+            write_jsonl(xorqa_path, rows)
+            manifest_path = root / 'data/processed/evaluation/garhwali_bench/manifest.json'
+            manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+            manifest['tasks']['xorqa'].update({
+                'records': 2,
+                'sha256': hashlib.sha256(xorqa_path.read_bytes()).hexdigest(),
+                'cross_split_text_overlap': {
+                    'group_count': 1,
+                    'row_count': 2,
+                    'groups': [{
+                        'text_sha256': hashlib.sha256(b'same').hexdigest(),
+                        'splits': ['dev', 'train'],
+                        'record_ids': ['xorqa:dev:1', 'xorqa:train:1'],
+                    }],
+                },
+            })
+            manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+
+            report = m.audit_benchmark(root)
+
+        self.assertEqual(report['status'], 'passed')
+        self.assertTrue(any('xorqa' in warning and '1 exact primary-text group' in warning for warning in report['warnings']))
+
+    def test_benchmark_audit_rejects_broad_text_training_view(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.benchmark_fixture(Path(directory))
+            broad_path = root / 'data/processed/model_ready/splits/text/train.jsonl'
+            write_jsonl(broad_path, [{'text': 'प्रशिक्षण वाक्य'}])
+            manifest_path = root / 'data/processed/evaluation/garhwali_bench/manifest.json'
+            manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+            manifest['training']['text'].update({
+                'path': 'data/processed/model_ready/splits/text/train.jsonl',
+                'records': 1,
+                'sha256': hashlib.sha256(broad_path.read_bytes()).hexdigest(),
+            })
+            manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+
+            report = m.audit_benchmark(root)
+
+        self.assertEqual(report['status'], 'failed')
+        self.assertTrue(any('must use the recommended text training split' in error for error in report['errors']))
 
     def fixture(self, root):
         configs = {}

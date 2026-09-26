@@ -27,8 +27,11 @@ class GarhwaliBenchmarkTests(unittest.TestCase):
                 {'text_normalized': 'सार', 'source_example': {'text': 'article', 'summary': 'सार'}},
             ])
             write_jsonl(benchmarks / 'indicgenbench_xorqa.jsonl', [
-                {'text_normalized': 'सवाल', 'source_example': {
+                {'record_id': 'xorqa:dev:1', 'split': 'dev', 'text_normalized': 'सवाल', 'source_example': {
                     'context': 'context', 'question': 'सवाल', 'answers': [{'text': 'answer'}],
+                }},
+                {'record_id': 'xorqa:train:1', 'split': 'train', 'text_normalized': ' सवाल ', 'source_example': {
+                    'context': 'context', 'question': ' सवाल ', 'answers': [{'text': 'answer'}],
                 }},
             ])
             train_text = root / 'text/train.jsonl'
@@ -53,12 +56,27 @@ class GarhwaliBenchmarkTests(unittest.TestCase):
                 root / 'out',
             )
 
-            self.assertEqual(report['records']['external_total'], 3)
+            self.assertEqual(report['records']['external_total'], 4)
             self.assertEqual(report['records']['text_evaluation'], 1)
             self.assertEqual(report['records']['asr_evaluation'], 1)
+            self.assertTrue(m.TRAIN_TEXT.as_posix().endswith('text_recommended/train.jsonl'))
+            self.assertEqual(report['training']['text']['records'], 2)
+            self.assertEqual(report['training']['text']['sha256'], m.sha256_file(train_text))
             self.assertEqual(report['leakage']['external_exact_train_text'], 1)
             self.assertEqual(report['leakage']['internal_text_exact_train_text'], 0)
             self.assertEqual(report['leakage']['asr_speaker_overlap'], 0)
+            self.assertEqual(
+                report['tasks']['xorqa']['cross_split_text_overlap'],
+                {
+                    'group_count': 1,
+                    'row_count': 2,
+                    'groups': [{
+                        'text_sha256': m.hashlib.sha256(m.normalize(' सवाल ').encode('utf-8')).hexdigest(),
+                        'splits': ['dev', 'train'],
+                        'record_ids': ['xorqa:dev:1', 'xorqa:train:1'],
+                    }],
+                },
+            )
             self.assertTrue(math.isfinite(report['baselines']['character_bigram']['perplexity']))
             self.assertTrue((root / 'out/manifest.json').exists())
             self.assertTrue((root / 'out/report.md').exists())

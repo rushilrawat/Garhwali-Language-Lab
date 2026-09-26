@@ -14,6 +14,10 @@ from build_huggingface_dataset import (
     is_publishable_provenance,
     recommended_text_training_row,
 )
+from build_garhwali_benchmark import (
+    audit_cross_split_text_overlap,
+    normalize as normalize_benchmark_text,
+)
 from validate_release_index import validate
 
 
@@ -21,6 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INDEX = ROOT / 'release/v0.1.1-manifest.json'
 DEFAULT_DATASET = ROOT / 'data/huggingface/garhwali-language-lab'
 DEFAULT_OUTPUT = ROOT / 'release/v0.1.1/final-audit.json'
+RECOMMENDED_TEXT_TRAIN = 'data/processed/model_ready/splits/text_recommended/train.jsonl'
 REQUIRED_CONFIGS = {
     'text/train', 'text/validation', 'text/test',
     'asr/train', 'asr/validation', 'asr/test',
@@ -97,6 +102,7 @@ def audit_benchmark(project_root):
     root = Path(project_root).resolve()
     manifest_path = root / 'data/processed/evaluation/garhwali_bench/manifest.json'
     errors = []
+    warnings = []
     artifacts_checked = 0
     if not manifest_path.is_file():
         return {
@@ -115,6 +121,18 @@ def audit_benchmark(project_root):
 
     internal = manifest.get('internal_evaluation') or {}
     records = manifest.get('records') or {}
+    training = manifest.get('training') or {}
+    training_text_manifest = dict(training.get('text') or {})
+    if not training_text_manifest:
+        errors.append('GarhwaliBench recommended text training manifest is missing')
+        training_text_rows = []
+    else:
+        training_text_rows = benchmark_artifact(
+            root, training_text_manifest, 'GarhwaliBench recommended text training', errors
+        )
+        artifacts_checked += 1
+        if training_text_manifest.get('path') != RECOMMENDED_TEXT_TRAIN:
+            errors.append('GarhwaliBench baseline must use the recommended text training split')
     internal_text_manifest = dict(internal.get('text') or {})
     internal_asr_manifest = dict(internal.get('asr') or {})
     internal_text_manifest.setdefault('records', records.get('text_evaluation'))
@@ -132,31 +150,41 @@ def audit_benchmark(project_root):
         errors.append('GarhwaliBench internal ASR count disagrees with top-level manifest')
 
     tasks = manifest.get('tasks') or {}
+    external_rows = []
     for name in ('crosssum', 'flores', 'xorqa'):
         artifact = tasks.get(name)
         if not isinstance(artifact, dict):
             errors.append(f'GarhwaliBench task {name} is missing from manifest')
             continue
-        benchmark_artifact(root, artifact, f'GarhwaliBench {name}', errors)
+        task_rows = benchmark_artifact(root, artifact, f'GarhwaliBench {name}', errors)
+        external_rows.extend(task_rows)
         artifacts_checked += 1
         if artifact.get('usage') != 'evaluation_only':
             errors.append(f'GarhwaliBench task {name} is not marked evaluation-only')
         if artifact.get('schema_errors') != 0:
             errors.append(f'GarhwaliBench task {name} declares schema errors')
+        cross_split_overlap = audit_cross_split_text_overlap(task_rows)
+        if artifact.get('cross_split_text_overlap') != cross_split_overlap:
+            errors.append(
+                f'GarhwaliBench task {name} cross-split text overlap disagrees with recomputed value'
+            )
+        elif cross_split_overlap['group_count']:
+            warnings.append(
+                f"GarhwaliBench task {name} has {cross_split_overlap['group_count']} "
+                "exact primary-text group(s) across source splits; source rows are preserved"
+            )
 
-    text_train_path = root / 'data/processed/model_ready/splits/text/train.jsonl'
     asr_train_path = root / 'data/processed/model_ready/splits/asr/train.jsonl'
     asr_validation_path = root / 'data/processed/model_ready/splits/asr/validation.jsonl'
     try:
-        text_train = list(read_jsonl(text_train_path))
         asr_train = list(read_jsonl(asr_train_path))
         asr_validation = list(read_jsonl(asr_validation_path))
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         errors.append(f'cannot load training splits for benchmark leakage audit: {exc}')
-        text_train, asr_train, asr_validation = [], [], []
+        asr_train, asr_validation = [], []
 
     trained_text = {
-        normalized_text_key(row.get('text')) for row in text_train
+        normalized_text_key(row.get('text')) for row in training_text_rows
         if normalized_text_key(row.get('text'))
     }
     heldout_text = {
@@ -164,6 +192,15 @@ def audit_benchmark(project_root):
         if normalized_text_key(row.get('text'))
     }
     text_overlap = len(trained_text & heldout_text)
+    exact_training_texts = {
+        normalize_benchmark_text(row.get('text')) for row in training_text_rows
+        if normalize_benchmark_text(row.get('text'))
+    }
+    external_exact_overlap = sum(
+        normalize_benchmark_text(row.get('text_normalized')) in exact_training_texts
+        for row in external_rows
+        if normalize_benchmark_text(row.get('text_normalized'))
+    )
     train_audio = {
         row.get('audio_sha256') for row in asr_train + asr_validation
         if row.get('audio_sha256')
@@ -181,12 +218,16 @@ def audit_benchmark(project_root):
     speaker_overlap = len(train_speakers & heldout_speakers)
     if text_overlap:
         errors.append(f'GarhwaliBench internal text overlaps text train by {text_overlap} normalized values')
+    declared_external_overlap = (manifest.get('leakage') or {}).get('external_exact_train_text')
+    if declared_external_overlap != external_exact_overlap:
+        errors.append('GarhwaliBench external benchmark overlap disagrees with recomputed recommended-training value')
     if audio_overlap:
         errors.append(f'GarhwaliBench ASR overlaps train/validation by {audio_overlap} audio hashes')
     if speaker_overlap:
         errors.append(f'GarhwaliBench ASR overlaps train/validation by {speaker_overlap} speakers')
 
     computed_leakage = {
+        'external_exact_recommended_train_text': external_exact_overlap,
         'internal_text_exact_train_text': text_overlap,
         'asr_audio_train_or_validation_overlap': audio_overlap,
         'asr_speaker_train_or_validation_overlap': speaker_overlap,
@@ -201,11 +242,12 @@ def audit_benchmark(project_root):
     return {
         'status': 'passed' if not errors else 'failed',
         'errors': errors,
+        'warnings': warnings,
         'artifacts_checked': artifacts_checked,
         'artifact_failures': sum('artifact' in error or 'manifest' in error for error in errors),
         'record_counts': {
             'internal_text': len(text_rows), 'internal_asr': len(asr_rows),
-            'text_train': len(text_train), 'asr_train': len(asr_train),
+            'recommended_text_train': len(training_text_rows), 'asr_train': len(asr_train),
             'asr_validation': len(asr_validation),
         },
         'leakage': computed_leakage,

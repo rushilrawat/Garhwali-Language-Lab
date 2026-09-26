@@ -195,11 +195,20 @@ adapted checkpoint, and completed the closed held-out evaluation. The resulting
 WER is worse.
 
 The current GarhwaliBench v0.1 candidate indexes 3,847 external task records,
-398 strict automated held-out text segments, and 112 speaker-safe ASR rows.
-Exact train/evaluation text overlap and ASR speaker overlap are zero. Its
-deterministic character-bigram floor is 17.000058 perplexity with zero observed
-character OOV. Native review and dialect annotation are deferred for the
-v0.1.1 candidate, so this is not a gold benchmark.
+398 strict automated text rows, and 112 speaker-safe ASR rows. The benchmark
+builder now trains its character-bigram floor on the 7,490-row recommended
+Garhwali view (manifest SHA-256
+`2de3f3f95f24d41df9a4ce142496b7e9e97ac402ff4cca4c00edb6bed41d6ec8`): test
+perplexity is 14.122106 with zero observed character OOV and zero exact
+train/evaluation overlap. The prior 17.000058 score used the broad 106,915-row
+training view and is retained only as a same-scorer comparison. The external
+audit also flags one exact XORQA primary-text group across source train/dev (two
+rows); neither row is in test, and neither is removed. There is no approved
+independent final accuracy score. Native review and dialect annotation are
+deferred, so GarhwaliBench remains an automated candidate rather than a gold
+benchmark. See
+[`benchmark-research-status-2026-09-25.md`](benchmark-research-status-2026-09-25.md)
+for the counted status and remaining steps.
 
 The earlier multilingual audit compares five pinned tokenizers on a historical,
 checksum-addressed 2,492-text test snapshot. IndicBERTv2 has the lowest fertility
@@ -266,7 +275,7 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The current full-suite run passes **463 tests**. Structured records have standardized provenance and quality
+The current full-suite run passes **466 tests**. Structured records have standardized provenance and quality
 metadata, including URLs or capture fingerprints for every source reference.
 A web review added source-specific rights findings to the 186 formerly
 unassessed records, but did not establish a compatible public-rights basis for

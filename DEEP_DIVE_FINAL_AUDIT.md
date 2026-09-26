@@ -1,6 +1,6 @@
 # Garhwali Language Lab — deep final audit
 
-**Audit date:** 2026-09-24
+**Audit date:** 2026-09-25
 **Scope:** current working tree, generated public/all-data Hugging Face package snapshots, model-data selection scripts, release and preflight validators, research status, and test coverage.
 **Purpose:** identify defects that can make corpus claims, source reuse, evaluation, or model-quality conclusions incorrect; record verified fixes and the remaining release gates.
 
@@ -44,6 +44,31 @@ Before this audit, `scripts/run_text_scaling_experiment.py` defaulted to `data/p
 
 **Remediation verified:** the default uses the recommended 7,490-row train view, 377-row validation view, and exact 398-row frozen benchmark. Broad and recommended character n-gram baselines were run on the same 377/398 validation/test artifacts. The recommended corpus reached test cross-entropy **2.3233** (perplexity **10.2095**), compared with **2.5011** (perplexity **12.1965**) for the broad corpus. This is a character n-gram signal, not proof of neural-model improvement.
 
+### High — GarhwaliBench's character baseline used the wrong default training view
+
+The benchmark builder still defaulted to the broad 106,915-row training split
+after the text-scaling and IndicBERT workflows had moved to the recommended
+7,490-row Garhwali view. Its headline baseline and training-overlap check
+therefore did not describe the strict modeling view.
+
+**Fixed and verified:** the builder now defaults to
+`text_recommended/train.jsonl`, records the training row count and SHA-256, and
+the final release audit rejects a broad training view. On the same 398-row
+candidate and with the same character-bigram scorer, recommended training gets
+2.647741 cross-entropy / **14.122106 perplexity** versus 2.833217 /
+17.000058 for broad training. The separate controlled text-scaling experiment
+uses a different character n-gram scoring implementation and reports 10.209546
+versus 12.196482 perplexity; those scales must not be compared directly. These
+are automated-candidate results, not native-language accuracy.
+
+### Medium — one external benchmark text repeats across source splits
+
+XORQA has one exact `text_normalized` duplicate across source `train` and `dev`
+(`indicgenbench_xorqa:train:64` and `indicgenbench_xorqa:dev:296`). Neither row
+is in test. The builder and final audit now recompute and expose the overlap;
+both source rows remain present and the audit emits a warning. FLORES and
+CrossSum have zero such groups.
+
 ### High — release index status could remain “ready” after a failed audit
 
 The release finalizer synchronized the release index before running the final audit. The index status could therefore still say `release_ready_with_public_rights_filtered_export` while the audit subsequently failed. The index validator did not compare release readiness with the final-audit status.
@@ -58,7 +83,7 @@ There are no completed native-speaker adjudications. The current benchmark remai
 
 ### Medium — benchmark and package integrity checks are now recomputed
 
-The final audit now reopens all five GarhwaliBench artifacts, recomputes their SHA-256 hashes and row counts, and recomputes internal text overlap plus ASR audio-hash and speaker overlap against train/validation files. The current artifact set passes with zero measured overlap. It also recomcomputes every `recommended_for_training` value from language, quality, flags, and public-rights evidence, catching false-positive and false-negative flags.
+The final audit now checks all six benchmark inputs and recomputes artifact hashes, counts, and leakage instead of trusting stored claims. It reports zero internal text, audio-hash, and identified-speaker overlap, plus one preserved XORQA train/dev warning. It also recomputes every `recommended_for_training` value from language, quality, flags, and public-rights evidence.
 
 Package manifests carry per-shard SHA-256 values; both the final audit and cloud preflight recalculate them. The audit recalculates exported text IDs from content and catalog IDs from text hashes. Current audit counts are zero shard-hash failures and zero text-ID failures.
 
@@ -98,11 +123,11 @@ The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1`
 - [x] Align the text-scaling experiment defaults with the checksum-frozen 398-row benchmark.
 - [x] Tie release-index readiness to final-audit status.
 - [x] Resolve geography evidence labels and shared literary capture IDs to source URLs or capture fingerprints; the structured-source traceability count is zero.
-- [x] Refresh local release audit artifacts and package preflights; the v0.1.1 public audit and index pass. The current full suite passes 463 tests.
+- [x] Refresh local release audit artifacts and package preflights; the v0.1.1 public audit and index pass. The current full suite passes 466 tests.
 - [x] Review online reuse terms for the 186 previously unassessed structured records and retain per-record findings; all remain present in all-data.
 - [ ] Establish a compatible public-rights basis for every field before adding any of the 216 structured records to a public package.
 - [ ] Re-evaluate neural text models using the recommended view and fixed strict validation/test artifacts.
-- [x] Recompute benchmark hashes/counts/leakage independently; current files pass with zero measured overlap.
+- [x] Recompute benchmark hashes/counts/leakage independently; internal overlap is zero and the XORQA source-split duplicate is explicitly flagged.
 - [x] Set IndicBERT head/LoRA defaults to recommended train/validation views with separate outputs.
 - [x] Add package-manifest shard-hash and content-derived text-ID recomputation to the release audit and cloud preflight.
 - [x] Make cloud preflight run IDs profile-specific and regenerate the public report.
@@ -110,4 +135,6 @@ The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1`
 
 ## Limits of this pass
 
-This is a code and generated-data audit of the local workspace. The public and all-data package audits, preflights, release-index checks, and bundle checks pass for the current v0.1.1 candidate. Public text packaging omits the 216 structured records without compatible rights evidence; all-data retains them. As of 2026-09-24, [`rushilrawat/garhwali-speech`](https://huggingface.co/datasets/rushilrawat/garhwali-speech) is public with 110,436 VAANI rows and 2,927 Meta Omnilingual rows in separate configs. All 50 new shard sizes and SHA-256 hashes match the local package. The initial Dataset Viewer request returned a temporary HTTP 500 while indexing; fresh checks now succeed for split listing, validity, Parquet listing (267 files), and a Meta validation preview. Both configs expose train/validation/test splits. Card-only commit [`b64f0c4b914296c979947cf551ec976a0342d8af`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/b64f0c4b914296c979947cf551ec976a0342d8af) clarifies exact-duplicate filtering; no data shards changed. The 5 duplicate-audio groups, 31 cross-split exact-transcript groups, zero VAANI audio/text overlaps, and split-safety counts are documented in [`research/huggingface-release-overlap-audit-2026-09-24.md`](research/huggingface-release-overlap-audit-2026-09-24.md). The text repo remains owner-private because its rights-filtered profile contains redacted catalog values. No paid job or storage purchase was made. This audit does not prove source copyright ownership or native-language correctness. Machine OCR and ASR agreement remain evidence signals, not human verification. Historical model metrics remain tied to their original data hashes and are not silently restated as results on a future cleaned benchmark.
+This code and generated-data audit was refreshed on 2026-09-25. The public and all-data package checks pass. The benchmark audit verifies six inputs, reports zero internal text/audio/speaker overlap, and preserves one XORQA train/dev warning. The release index validates, all 466 tests pass, and the rebuilt compact bundle contains 131 files (2,585,212 bytes) with no hash or path errors.
+
+Hugging Face visibility and Viewer status were last independently verified on 2026-09-24: `rushilrawat/garhwali-speech` was public with 110,436 VAANI and 2,927 Meta Omnilingual rows, and `rushilrawat/garhwali-corpus` was private. The speech Viewer checks passed and exact audio/transcript overlap counts matched the local audit. These checks do not establish source ownership or native-language correctness. The corpus remains private because 24,566 catalog values are redacted and 216 structured records lack compatible public-rights evidence; all remain present in the local all-data package.

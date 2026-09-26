@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BENCHMARKS = ROOT / 'benchmarks'
-TRAIN_TEXT = ROOT / 'data/processed/model_ready/splits/text/train.jsonl'
+TRAIN_TEXT = ROOT / 'data/processed/model_ready/splits/text_recommended/train.jsonl'
 EVAL_TEXT = ROOT / 'data/processed/model_ready/splits/evaluation/text_candidate.jsonl'
 TRAIN_ASR = ROOT / 'data/processed/model_ready/splits/asr/train.jsonl'
 EVAL_ASR = ROOT / 'data/processed/model_ready/splits/evaluation/asr_candidate.jsonl'
@@ -42,6 +42,33 @@ def sha256_file(path):
         for chunk in iter(lambda: handle.read(1024 * 1024), b''):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def audit_cross_split_text_overlap(rows):
+    grouped = {}
+    for index, row in enumerate(rows):
+        text = normalize(row.get('text_normalized', ''))
+        split = str(row.get('split') or '').strip()
+        if not text or not split:
+            continue
+        text_hash = hashlib.sha256(text.encode('utf-8')).hexdigest()
+        grouped.setdefault(text_hash, []).append((split, row.get('record_id') or str(index)))
+
+    overlaps = []
+    for text_hash, members in sorted(grouped.items()):
+        splits = sorted({split for split, _ in members})
+        if len(splits) < 2:
+            continue
+        overlaps.append({
+            'text_sha256': text_hash,
+            'splits': splits,
+            'record_ids': sorted(record_id for _, record_id in members),
+        })
+    return {
+        'group_count': len(overlaps),
+        'row_count': sum(len(group['record_ids']) for group in overlaps),
+        'groups': overlaps,
+    }
 
 
 def display_path(path):
@@ -143,6 +170,7 @@ def build_benchmark(
             'records': len(rows),
             'sha256': sha256_file(path),
             'schema_errors': invalid,
+            'cross_split_text_overlap': audit_cross_split_text_overlap(rows),
             'usage': 'evaluation_only',
         }
 
@@ -173,8 +201,23 @@ def build_benchmark(
             },
             'asr': {'path': display_path(evaluation_asr_path), 'sha256': sha256_file(evaluation_asr_path)},
         },
+        'training': {
+            'text': {
+                'path': display_path(train_text_path),
+                'records': len(train_text_rows),
+                'sha256': sha256_file(train_text_path),
+            },
+        },
         'leakage': {
             'external_exact_train_text': external_overlap,
+            'external_cross_split_primary_text_groups': sum(
+                task['cross_split_text_overlap']['group_count']
+                for task in task_entries.values()
+            ),
+            'external_cross_split_primary_text_rows': sum(
+                task['cross_split_text_overlap']['row_count']
+                for task in task_entries.values()
+            ),
             'internal_text_exact_train_text': internal_text_overlap,
             'asr_speaker_overlap': speaker_overlap,
         },
@@ -197,6 +240,21 @@ def build_benchmark(
         encoding='utf-8',
     )
     report['internal_evaluation']['text']['sha256'] = sha256_file(internal_text_path)
+    split_overlap_lines = []
+    for task, details in task_entries.items():
+        overlap = details['cross_split_text_overlap']
+        if overlap['group_count']:
+            split_names = sorted({
+                split
+                for group in overlap['groups']
+                for split in group['splits']
+            })
+            split_overlap_lines.append(
+                f"- {task}: **{overlap['group_count']} groups / {overlap['row_count']} rows** "
+                f"across {', '.join(split_names)}"
+            )
+        else:
+            split_overlap_lines.append(f'- {task}: **0 groups / 0 rows**')
     (output_dir / 'manifest.json').write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
         encoding='utf-8',
@@ -215,7 +273,18 @@ not a native-reviewed or dialect-aware gold benchmark.
 - ASR speakers shared with training: **{speaker_overlap}**
 - External benchmark texts matching training exactly: **{external_overlap}**
 
+## Exact primary-text repeats across source splits
+
+These counts use each record's normalized `text_normalized` field. Source rows
+remain unchanged and evaluation-only; inspect any overlap before using source
+train/dev partitions for model fitting or selection.
+
+{chr(10).join(split_overlap_lines)}
+
 ## Dependency-free text baseline
+
+Training view: `{display_path(train_text_path)}` ({len(train_text_rows):,} rows;
+SHA-256 `{report['training']['text']['sha256']}`).
 
 - Character bigram perplexity: **{baseline['perplexity']}**
 - Evaluation character OOV rate: **{baseline['oov_character_rate']}**

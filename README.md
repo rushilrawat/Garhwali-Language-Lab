@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-463%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-466%20passing-success.svg)](research/corpus-preparation-status.md)
 [![Hugging Face Speech](https://img.shields.io/badge/Hugging%20Face-Speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 [![Hugging Face Corpus](https://img.shields.io/badge/Hugging%20Face-Corpus%20(private)-orange?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
@@ -159,11 +159,17 @@ counts, audit gaps, and remaining work.
 - **Speaker-safe ASR comparison:** SraVaani leads at 0.428 WER / 0.176 CER,
   ahead of the controlled Whisper-tiny fine-tune at 0.743 / 0.404 on the same
   112 recordings.
-- **GarhwaliBench v0.1 candidate:** 3,847 external task records, 398 strict
-  automated held-out text segments, and 112 speaker-safe ASR rows, with zero
-  measured training overlap. It is not yet native-reviewed or dialect-aware.
-- **Current character bigram floor:** 17.000058 held-out perplexity and zero
-  observed character OOV on the 398-record candidate benchmark.
+- **GarhwaliBench v0.1 candidate:** 3,847 external task records across three
+  valid schemas, 398 strict automated text rows, and 112 speaker-safe ASR rows.
+  The internal text and ASR checks find zero measured training overlap. One
+  exact XORQA primary-text group spans its source `train` and `dev` splits; the
+  records are retained and flagged. No current task has an approved independent
+  final-accuracy score.
+- **Recommended-view character bigram baseline:** 14.122106 perplexity on the
+  398-row candidate, trained on 7,490 recommended Garhwali rows with zero exact
+  train/evaluation overlap. Using the same scorer and candidate, the earlier
+  broad 106,915-row view scored 17.000058. These are automated text-model
+  baselines, not native-language accuracy scores.
 - **Multilingual tokenizer audit:** IndicBERTv2 leads five candidates at 1.532
   tokens per Garhwali word; the Garhwali OpenLLaMA adapter tokenizer needs 5.327.
 - **IndicBERTv2 baseline:** 17.79% masked-token accuracy on 506 deterministic
@@ -220,7 +226,7 @@ counts, audit gaps, and remaining work.
 - **SraVaani adaptation result:** the 102-step human-reference run scores 43.528%
   WER / 17.452% CER on the frozen 112-record test. Original SraVaani remains
   preferred at 42.761% / 17.606% because WER is the primary metric.
-- **463 automated tests** and **367 immutable source snapshots** verified, with 43 public source URLs covered
+- **466 automated tests** and **367 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
 These figures describe the preparation snapshot updated on 2026-09-25. Raw
@@ -243,7 +249,7 @@ Git through `.gitignore`.
 | ---: | ---: | ---: | ---: |
 | English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
 
-| `257,807` | `146,684` | `216` | `463` |
+| `257,807` | `146,684` | `216` | `466` |
 | ---: | ---: | ---: | ---: |
 | all-data package rows | rights-filtered public rows | local structured records | passing tests |
 
@@ -598,10 +604,10 @@ selection rules, exclusions, counts, and leakage checks.
 | Stage | Status | Primary artifact | Remaining success condition |
 | --- | --- | --- | --- |
 | **1. Corpus v0.1 candidate** | Rights-filtered public build passes automated audit; 216 rights-pending structured records stay in all-data only | `GarhwaliCorpus` | Align release version/tag, then publish the rights-filtered package when requested |
-| **2. Benchmark candidate** | Automated 398-text / 112-ASR candidate built; native/dialect review deferred | `GarhwaliBench` | Keep review deferred and label every benchmark/model result as an automated candidate |
-| **3. Baseline audit** | Historical experiment suite complete | `Garhwali Model Report` | Reevaluate advertised scores against a versioned final benchmark |
-| **4. Controlled modeling** | Current experiments complete; no active paid job | `GarhwaliGPT` plus adapted models | Keep unpromoted checkpoints experimental; rerun only against the frozen release benchmark |
-| **5. Research experiments** | Core automated experiments complete | Reproducible ablation suite | Add further transfer and scaling work after the corpus and benchmark versions are settled |
+| **2. Benchmark candidate** | 5 candidate artifacts built; 3/3 external schemas pass; one source train/dev duplicate is flagged; no independent final score approved | `GarhwaliBench` | Freeze model choices on validation, then use a documented untouched evaluation set; retain automated-candidate wording |
+| **3. Baseline audit** | ASR, text, translation, retrieval, and generation results exist, but their test histories differ | `Garhwali Model Report` | Reconcile all run inputs and compare only on eligible, hash-frozen splits |
+| **4. Controlled modeling** | Prior local/cloud experiments are recorded; no model is promoted as release-ready | `GarhwaliGPT` plus adapted models | Run comparable validation-only controls; keep already-scored tests closed |
+| **5. Research experiments** | Five task areas have baseline evidence; no unified independent final evaluation | Reproducible ablation suite | Complete reproducible ablations after runtimes and eligible evaluation sets are fixed |
 | **6. Community expansion** | Planned | Corpus v1.x/v2 | Add native corrections, more varieties and districts, conversations, parallel data, and corrected historical text |
 | **7. Public platform** | Planned | Dataset, models, leaderboard, versioned API, explorer | Upload the final dataset, then ship stable search, lexicon, normalization, transliteration, and cultural endpoints |
 
@@ -812,7 +818,10 @@ accuracy cannot be established from machine scores alone.
     normalization, transliteration, and cultural-record endpoints with API keys,
     quotas, citations, confidence, and correction intake.
 
-The first benchmark index and deterministic character baseline are complete. See
+The measured benchmark and research status, including exact completion counts,
+the recommended-view baseline, and unresolved evaluation gates, is in
+[`research/benchmark-research-status-2026-09-25.md`](research/benchmark-research-status-2026-09-25.md).
+The original benchmark snapshot is preserved in
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
 The multilingual tokenizer and IndicBERTv2 findings are in
 [`research/multilingual-model-audit-2026-09-11.md`](research/multilingual-model-audit-2026-09-11.md).
@@ -928,7 +937,7 @@ traceability alone does not grant reuse rights. The audit reopens all five
 benchmark artifacts and verifies package shard hashes and content-derived text IDs. See
 [`finalreport.md`](finalreport.md) and
 [`DEEP_DIVE_FINAL_AUDIT.md`](DEEP_DIVE_FINAL_AUDIT.md) for details. The
-The current complete suite passes **463 tests**. The pipeline tracks **367 source snapshots**.
+The current complete suite passes **466 tests**. The pipeline tracks **367 source snapshots**.
 
 ## Local dataset packages
 

@@ -67,16 +67,26 @@ def refresh(index, splits, text, public, all_data, benchmark=None, resources=Non
     index['evaluation_candidates']['text'] = splits['evaluation_candidates']['text_records']
     if benchmark:
         baseline = benchmark.get('baselines', {}).get('character_bigram', {})
+        text_training = (benchmark.get('training') or {}).get('text', {})
+        leakage = benchmark.get('leakage', {})
         index['garhwali_bench'].update({
             'release_id': benchmark.get('release_id'),
             'held_out_text_records': benchmark['records']['text_evaluation'],
             'speaker_safe_asr_records': benchmark['records']['asr_evaluation'],
             'external_records': benchmark['records']['external_total'],
             'character_bigram_perplexity': baseline.get('perplexity'),
+            'character_bigram_training_records': text_training.get('records'),
+            'character_bigram_training_sha256': text_training.get('sha256'),
             'character_oov_rate': baseline.get('oov_character_rate'),
-            'external_exact_train_text': benchmark['leakage']['external_exact_train_text'],
-            'internal_exact_train_text': benchmark['leakage']['internal_text_exact_train_text'],
-            'asr_speaker_overlap': benchmark['leakage']['asr_speaker_overlap'],
+            'external_exact_train_text': leakage.get('external_exact_train_text'),
+            'external_cross_split_primary_text_groups': leakage.get(
+                'external_cross_split_primary_text_groups'
+            ),
+            'external_cross_split_primary_text_rows': leakage.get(
+                'external_cross_split_primary_text_rows'
+            ),
+            'internal_exact_train_text': leakage.get('internal_text_exact_train_text'),
+            'asr_speaker_overlap': leakage.get('asr_speaker_overlap'),
             'native_reviewed': bool(benchmark.get('native_reviewed')),
             'dialect_aware': bool(benchmark.get('dialect_aware')),
             'status': benchmark.get('status'),

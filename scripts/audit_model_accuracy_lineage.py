@@ -1224,12 +1224,15 @@ def render_markdown(report: dict) -> str:
         )
     if not pair_counts:
         lines.append("| None detected | — | 0 | 0 | 0 |")
-    lines.extend(["Exact row references and hashes are in the JSON ledger.", ""])
+    lines.extend([
+        "Exact row references and hashes are in the local-only JSON ledger, which contains VAANI speaker identifiers and is excluded from Git and public packages.",
+        "",
+    ])
     lines.extend(
         [
             "## Evaluation use decisions",
             "",
-            "No current split is approved as an independent held-out confirmation. A row-set fingerprint identifies each exact subset; its manifest SHA-256 and any previously scored row IDs/hashes are in the JSON ledger.",
+            "No current split is approved as an independent held-out confirmation. A row-set fingerprint identifies each exact subset; its manifest SHA-256 and any previously scored row IDs/hashes are in the local-only JSON ledger, which contains VAANI speaker identifiers and is excluded from Git and public packages.",
             "",
             "| Evaluation | Status | Selected rows | Previously scored | Permitted use |",
             "|---|---|---:|---:|---|",
@@ -1308,7 +1311,7 @@ def render_markdown(report: dict) -> str:
     lines.extend(["", "## Exact previously scored rows", ""])
     for family, splits in sorted(report["previously_scored_rows"].items()):
         counts = ", ".join(f"{split}={len(rows)}" for split, rows in sorted(splits.items()))
-        lines.append(f"- **{family}:** {counts}. Exact row IDs and hashes are in the JSON ledger.")
+        lines.append(f"- **{family}:** {counts}. Exact row IDs and hashes are in the local-only JSON ledger.")
     if not report["previously_scored_rows"]:
         lines.append("- No prediction rows matched the configured manifests.")
     lines.extend(

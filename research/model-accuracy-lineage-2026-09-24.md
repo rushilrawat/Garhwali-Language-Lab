@@ -78,11 +78,11 @@ Model training lineage and upstream pretraining overlap are recorded as unknown 
 | text_recommended | instructions_v0.2/validation | 0 | 29 | 0 |
 | text_recommended | meta_omnilingual/test | 0 | 75 | 0 |
 | text_recommended | meta_omnilingual/validation | 0 | 85 | 0 |
-Exact row references and hashes are in the local-only JSON ledger, which contains VAANI speaker identifiers and is excluded from Git.
+Exact row references and hashes are in the local-only JSON ledger, which contains VAANI speaker identifiers and is excluded from Git and public packages.
 
 ## Evaluation use decisions
 
-No current split is approved as an independent held-out confirmation. A row-set fingerprint identifies each exact subset; its manifest SHA-256 and any previously scored row IDs/hashes are in the local-only JSON ledger, excluded from Git because it contains VAANI speaker identifiers.
+No current split is approved as an independent held-out confirmation. A row-set fingerprint identifies each exact subset; its manifest SHA-256 and any previously scored row IDs/hashes are in the local-only JSON ledger, which contains VAANI speaker identifiers and is excluded from Git and public packages.
 
 | Evaluation | Status | Selected rows | Previously scored | Permitted use |
 |---|---|---:|---:|---|

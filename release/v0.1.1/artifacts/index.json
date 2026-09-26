@@ -291,14 +291,14 @@
       "sha256": "e6e90d06da06df15bb1355a5063b0eed4c35a24bd75e530e796f7409b79c89d6"
     },
     {
-      "bytes": 2029,
+      "bytes": 3046,
       "path": "data/processed/evaluation/garhwali_bench/manifest.json",
-      "sha256": "e0094c7c5925c7674a4d31db7e0d3311925004f941bf30a11e516dde1d348e6c"
+      "sha256": "ce93c7c1c06680d04bf9b861cbfdf8ca11b6cf9bf1968ba9cf19687655b8865b"
     },
     {
-      "bytes": 805,
+      "bytes": 1355,
       "path": "data/processed/evaluation/garhwali_bench/report.md",
-      "sha256": "d535ddaced6241dd8a57a9cb344deb388e2d500f5d04e06bad1670b540d8c35f"
+      "sha256": "ae3a4212ccb8c741a84eb7689991855ad3319491ee93c42bd804693a77824383"
     },
     {
       "bytes": 550,
@@ -576,9 +576,9 @@
       "sha256": "752cd0352789dd79ef946ce9fe835f373bf6f1272b3357c708ba9ea8b9c9aaad"
     },
     {
-      "bytes": 122995,
+      "bytes": 124084,
       "path": "data/processed/release/manifest.json",
-      "sha256": "72288503c2de8f1a2280eda2df1dce9692582837166180a6618e041b90fcae1b"
+      "sha256": "65c0fe6559198b05c7c46bc04f9092b12d7eac0846e99897533550d9366502a3"
     },
     {
       "bytes": 214,
@@ -656,7 +656,7 @@
       "sha256": "9136fe48ad247ce9faba204be32ddc70860095d992ba142a7ad4b9ea916d6af1"
     }
   ],
-  "bytes": 2582556,
+  "bytes": 2585212,
   "files": 131,
   "release_id": "garhwali-language-lab-v0.1.1"
 }

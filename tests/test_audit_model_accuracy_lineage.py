@@ -11,6 +11,7 @@ from audit_model_accuracy_lineage import (
     hash_overlap,
     read_jsonl,
     render_json,
+    render_markdown,
 )
 
 
@@ -130,6 +131,16 @@ class LineageReportTests(unittest.TestCase):
         )
         self.assertIn("meta_omnilingual", SINGLE_MANIFESTS)
         self.assertEqual(set(BENCHMARKS), {"flores", "xorqa", "crosssum"})
+
+    def test_markdown_keeps_speaker_identifier_ledger_local_only(self):
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            self._write_required_manifests(root)
+            markdown = render_markdown(build_report(root))
+
+        self.assertIn("local-only JSON ledger", markdown)
+        self.assertIn("contains VAANI speaker identifiers", markdown)
+        self.assertIn("excluded from Git and public packages", markdown)
 
     def test_missing_required_split_fails_with_family_and_split(self):
         with TemporaryDirectory() as temp_dir:
