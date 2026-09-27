@@ -51,10 +51,10 @@
 - Tests: `tests/test_run_translation_baseline.py`, `tests/test_run_nllb_translation_baseline.py`
 - Write: `data/processed/evaluation/translation/accuracy_{dev,test}/`
 
-- [ ] **Step 1: Add tests showing baseline evaluation selects the requested split and defaults to `dev`, never `test`.** Test rows must not be read in a dev-only invocation.
-- [ ] **Step 2: Add `--split {dev,test}` to both runners and a `--max-records` option with stable `record_id` ordering.** Preserve existing output schema and record exact selected row IDs/hashes.
-- [ ] **Step 3: Keep BLEU/chrF2/exact-match implementations shared and test zero-length, empty, and Unicode inputs.** Report full denominators and the normalizer used.
-- [ ] **Step 4: Run the NLLB base and any locally available adapter on the same validation rows.** Include model/adapter revisions, `hin_Deva` proxy status, decoding config, local artifact hashes, and latency.
+- [x] **Step 1: Add tests showing baseline evaluation selects the requested split and defaults to `dev`, never `test`.** The default-path test includes a test row without translation payload; dev scoring selects only the requested records.
+- [x] **Step 2: Add `--split {dev,test}` to both runners and a `--max-records` option with stable `record_id` ordering.** Reports preserve existing prediction fields and record selected IDs and hashes.
+- [x] **Step 3: Keep BLEU/chrF2/exact-match implementations shared and test zero-length, empty, and Unicode inputs.** Reports include full record denominators, empty counts, and the normalizer used.
+- [ ] **Step 4: Run the NLLB base and any locally available adapter on the same validation rows.** Include model/adapter revisions, `hin_Deva` proxy status, decoding config, local artifact hashes, and latency. **Blocked (2026-09-26):** the pinned base weights are absent, the project `.venv` lacks the model runtime, and PEFT is missing from the optional cached runtime; see [roadmap issue BMR-004](../../../research/issues%26improvement%20plan.md).
 - [ ] **Step 5: Compare mT0 and translation baselines only on task-compatible, identical Garhwali-to-English rows.** If schemas or row sets differ, report separate tasks rather than making a direct score comparison.
 
 ### Task 3: One eligible held-out evaluation

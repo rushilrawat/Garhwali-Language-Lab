@@ -37,10 +37,10 @@
 - Tests: `tests/test_run_retrieval_baseline.py`, `tests/test_run_indicbert_retrieval_baseline.py`
 - Output: `data/processed/evaluation/retrieval/`
 
-- [ ] **Step 1: Add tests for document/query separation.** Training, dev, and test rows must be labeled explicitly; each row's positive context must resolve to exactly one stable deduplicated document ID.
-- [ ] **Step 2: Add a deterministic `--selection-split` for BM25 parameter choice and keep test scoring separate.** The default report should include dev metrics and record that no tuning used test.
-- [ ] **Step 3: Add input manifest hash, passage corpus hash, row IDs, duplicate-group mapping, and `evaluation_status` to both baseline reports.** Preserve current ranking/metric output fields.
-- [ ] **Step 4: Recompute current word-BM25, character-BM25, and zero-shot IndicBERT scores on dev.** Confirm current reported test metrics are marked previously evaluated in the lineage ledger.
+- [x] **Step 1: Add tests for document/query separation.** Training, dev, and test rows must be labeled explicitly; each row's positive context must resolve to exactly one stable deduplicated document ID.
+- [x] **Step 2: Add a deterministic `--selection-split` for BM25 parameter choice and keep test scoring separate.** The default report includes dev metrics and records that no tuning used test; the current CLI only permits dev.
+- [x] **Step 3: Add input manifest hash, passage corpus hash, row IDs, duplicate-group mapping, and `evaluation_status` to both baseline reports.** Preserve ranking output and record complete passage-source mappings.
+- [ ] **Step 4: Recompute current word-BM25, character-BM25, and zero-shot IndicBERT scores on dev.** Word/character results are complete in `research/retrieval-quality-2026-09-25.md`; IndicBERTv2 is blocked because the active environment lacks PyTorch/Transformers and the pinned weights are not cached. Confirmed XORQA test history remains historical in the lineage ledger.
 
 ### Task 2: Train a small, reproducible dense retriever
 

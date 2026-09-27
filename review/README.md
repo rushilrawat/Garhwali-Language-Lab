@@ -1,5 +1,16 @@
 # Native-review workflow
 
+## Current status (2026-09-26)
+
+The review system is ready, but **0 records have been adjudicated**. The latest
+release snapshot has 176 text-accuracy packets and 113 transcript packets, with
+five ambiguous supervised transcripts carrying additional model evidence. The
+project owner has deferred native-language and dialect review; therefore the
+corpus and benchmark remain automated candidates, not native-validated data.
+These queues do not block local experiments, and no model output is promoted to
+ground truth without review. Current aggregate status is in
+[`research/corpus-preparation-status.md`](../research/corpus-preparation-status.md).
+
 Run `python3 scripts/native_review_workflow.py` to rebuild review packets under
 `data/processed/native_review/packets/`. Each packet has a stable target ID, the
 full source payload, and a review type covering language identity, dialect,

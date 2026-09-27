@@ -11,9 +11,9 @@
       "sha256": "c01a9b2a460b601b25acc026daaeddacf00d137c767ddd6bdf4aeb012d75e963"
     },
     {
-      "bytes": 4802,
+      "bytes": 5582,
       "path": "data/huggingface/garhwali-language-lab/README.md",
-      "sha256": "d122c2f47a6c1535bd9bbfe8f4806af909b745bb6a455029167a13ec92b8b1b9"
+      "sha256": "51030dd761f29b84599299b9b93df827f2bc755f9e4fed31ff60e3a2818fa03f"
     },
     {
       "bytes": 632,
@@ -301,6 +301,11 @@
       "sha256": "ae3a4212ccb8c741a84eb7689991855ad3319491ee93c42bd804693a77824383"
     },
     {
+      "bytes": 9108,
+      "path": "data/processed/evaluation/garhwali_bench/v0.2-draft/manifest.json",
+      "sha256": "0352298d966d4ebcf1540bad913db283bc1cb9e69dfd85b7ea9e5b4fd8525fd1"
+    },
+    {
       "bytes": 550,
       "path": "data/processed/evaluation/model_audit/indicbertv2_masked_lm.json",
       "sha256": "db98e80c39882de746373134fa5bdea8166475c88cc2436afc418789cbcd98c2"
@@ -321,9 +326,19 @@
       "sha256": "bfd97e27b7e841b300ecbfa2bef68a880906e09c6399910e2974ca941f806972"
     },
     {
+      "bytes": 158945,
+      "path": "data/processed/evaluation/retrieval/roadmap_2026-09-25/bm25_dev/report.json",
+      "sha256": "dafb5582955de71b69cc0686104d3689eb976cc7c304d7a34c30b0128ac66fbf"
+    },
+    {
       "bytes": 2738,
       "path": "data/processed/evaluation/text_cleanup_ablation/report.json",
       "sha256": "4f0942747fcd305d30f031ac256cabc17d10f54fb3d9396040b745e75f2159a0"
+    },
+    {
+      "bytes": 37512,
+      "path": "data/processed/evaluation/translation/accuracy_dev/report.json",
+      "sha256": "90a1bb0a20344e75c82186bce0d292e0b3657172e553b8206611a9941afd97bd"
     },
     {
       "bytes": 711,
@@ -334,6 +349,16 @@
       "bytes": 563,
       "path": "data/processed/evaluation/translation/nllb_hindi_proxy/report.json",
       "sha256": "600a760fb52ed402cdf799cce7fcf6aeb1723966b80771eb0f21b095345001ff"
+    },
+    {
+      "bytes": 37512,
+      "path": "data/processed/evaluation/translation/phase4_manifest_dev/report.json",
+      "sha256": "bf49e31621792fc5de500ea193bf46844aa90a8c69d72268881426046587da54"
+    },
+    {
+      "bytes": 37512,
+      "path": "data/processed/evaluation/translation/phase4_manifest_dev_gated/report.json",
+      "sha256": "14fb80f411d2d30fe4bab5e97fc1576d01d19a9afe4e8939a2e9078d7592c459"
     },
     {
       "bytes": 636,
@@ -656,7 +681,7 @@
       "sha256": "9136fe48ad247ce9faba204be32ddc70860095d992ba142a7ad4b9ea916d6af1"
     }
   ],
-  "bytes": 2585212,
-  "files": 131,
+  "bytes": 2866581,
+  "files": 136,
   "release_id": "garhwali-language-lab-v0.1.1"
 }

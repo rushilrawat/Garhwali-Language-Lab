@@ -1,6 +1,6 @@
 # Garhwali Language Lab — deep final audit
 
-**Audit date:** 2026-09-25
+**Audit date:** 2026-09-26
 **Scope:** current working tree, generated public/all-data Hugging Face package snapshots, model-data selection scripts, release and preflight validators, research status, and test coverage.
 **Purpose:** identify defects that can make corpus claims, source reuse, evaluation, or model-quality conclusions incorrect; record verified fixes and the remaining release gates.
 
@@ -123,7 +123,7 @@ The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1`
 - [x] Align the text-scaling experiment defaults with the checksum-frozen 398-row benchmark.
 - [x] Tie release-index readiness to final-audit status.
 - [x] Resolve geography evidence labels and shared literary capture IDs to source URLs or capture fingerprints; the structured-source traceability count is zero.
-- [x] Refresh local release audit artifacts and package preflights; the v0.1.1 public audit and index pass. The current full suite passes 466 tests.
+- [x] Refresh local release audit artifacts and package preflights; the v0.1.1 public audit and index pass. The current full suite passes 519 tests.
 - [x] Review online reuse terms for the 186 previously unassessed structured records and retain per-record findings; all remain present in all-data.
 - [ ] Establish a compatible public-rights basis for every field before adding any of the 216 structured records to a public package.
 - [ ] Re-evaluate neural text models using the recommended view and fixed strict validation/test artifacts.
@@ -135,6 +135,6 @@ The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1`
 
 ## Limits of this pass
 
-This code and generated-data audit was refreshed on 2026-09-25. The public and all-data package checks pass. The benchmark audit verifies six inputs, reports zero internal text/audio/speaker overlap, and preserves one XORQA train/dev warning. The release index validates, all 466 tests pass, and the rebuilt compact bundle contains 131 files (2,585,212 bytes) with no hash or path errors.
+This code and generated-data audit was refreshed on 2026-09-26. The public and all-data package checks pass. The benchmark audit verifies six inputs, reports zero internal text/audio/speaker overlap, and preserves one XORQA train/dev warning. Follow-up exact-content verification confirmed 27 XORQA source-context groups spanning source splits (11 include training plus development/test; four include both training and test). The row-level usage overlay flags 62 records for open diagnostics only and retains every source row. Four near-text candidates were inspected: three are same-split training duplicate-component variants, and one is a same-context/same-answer pair within XORQA dev. No near pair crosses splits. The v0.2 contract draft validates eight views and 12,622 records with zero structural/integrity errors. A deterministic local adapter now exports the same eight views, retains all rows, and verifies output hashes/counts; metric contracts remain draft and semantic/cross-language checks remain unresolved. Phase 4 now has a shared manifest writer integrated into translation and NLLB, historical-test gates on both, and NLLB preflight; model execution remains unverified because the pinned local checkpoint is absent. The release index validates, and the current full suite passes 519 tests. The rebuilt compact bundle contains 131 files (2,585,212 bytes) with no hash or path errors. See [the Phase 2 adjudication record](research/benchmark-overlap-adjudication-2026-09-26.md), [the v0.2 schema contract](research/garhwali-bench-v0.2-schema-contract.md), and [the adapter report](research/benchmark-v02-export-2026-09-26.md).
 
 Hugging Face visibility and Viewer status were last independently verified on 2026-09-24: `rushilrawat/garhwali-speech` was public with 110,436 VAANI and 2,927 Meta Omnilingual rows, and `rushilrawat/garhwali-corpus` was private. The speech Viewer checks passed and exact audio/transcript overlap counts matched the local audit. These checks do not establish source ownership or native-language correctness. The corpus remains private because 24,566 catalog values are redacted and 216 structured records lack compatible public-rights evidence; all remain present in the local all-data package.

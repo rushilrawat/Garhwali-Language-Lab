@@ -9,7 +9,12 @@ import os
 import time
 from pathlib import Path
 
-from run_retrieval_baseline import build_documents, context_id, metric_summary
+from run_retrieval_baseline import (
+    build_documents,
+    context_id,
+    metric_summary,
+    provenance,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,9 +25,11 @@ INPUT = ROOT / 'benchmarks/indicgenbench_xorqa.jsonl'
 OUTPUT = ROOT / 'data/processed/evaluation/retrieval/indicbertv2'
 
 
-def select_evaluation_rows(rows, limit):
+def select_evaluation_rows(rows, limit, selection_split='dev'):
+    if selection_split != 'dev':
+        raise ValueError('retrieval selection supports only dev; test rows are not eligible')
     selected = sorted(
-        (row for row in rows if row.get('split') == 'test'),
+        (row for row in rows if row.get('split') == selection_split),
         key=lambda row: row.get('record_id', ''),
     )
     return selected[:limit] if limit else selected
@@ -74,7 +81,10 @@ def run(
     max_document_tokens=192,
     max_query_tokens=64,
     device='auto',
+    selection_split='dev',
 ):
+    if selection_split != 'dev':
+        raise ValueError('retrieval selection supports only dev; test rows are not eligible')
     os.environ.setdefault('TOKENIZERS_PARALLELISM', 'false')
     import torch
     from transformers import AutoModel, AutoTokenizer
@@ -83,8 +93,8 @@ def run(
         device = 'mps' if torch.backends.mps.is_available() else 'cpu'
     with Path(input_path).open(encoding='utf-8') as handle:
         rows = [json.loads(line) for line in handle if line.strip()]
-    documents, _ = build_documents(rows)
-    evaluation_rows = select_evaluation_rows(rows, max_records)
+    documents, _, source_ids = build_documents(rows)
+    evaluation_rows = select_evaluation_rows(rows, max_records, selection_split)
     document_ids = [row['document_id'] for row in documents]
     tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
     model = AutoModel.from_pretrained(model_path, local_files_only=True).to(device)
@@ -122,13 +132,17 @@ def run(
         'pooling': 'attention_mask_mean_pooling_l2_normalized',
         'training': 'zero_shot; no retrieval fine-tuning',
         'corpus_documents': len(documents),
-        'evaluation_split': 'test',
+        'evaluation_split': selection_split,
+        'selection_split': selection_split,
+        'evaluation_status': 'development_selection_only',
+        'test_scored': False,
         'evaluation_queries': len(evaluation_rows),
         'max_document_tokens': max_document_tokens,
         'max_query_tokens': max_query_tokens,
         'batch_size': batch_size,
         'device': device,
         'elapsed_seconds': round(time.monotonic() - start, 3),
+        **provenance(input_path, documents, source_ids, evaluation_rows),
         **metric_summary(results),
     }
     output_dir = Path(output_dir)
@@ -154,6 +168,7 @@ def main():
     parser.add_argument('--max-document-tokens', type=int, default=192)
     parser.add_argument('--max-query-tokens', type=int, default=64)
     parser.add_argument('--device', choices=('auto', 'mps', 'cpu'), default='auto')
+    parser.add_argument('--selection-split', choices=('dev',), default='dev')
     args = parser.parse_args()
     print(json.dumps(run(
         args.input,
@@ -163,6 +178,7 @@ def main():
         max_document_tokens=args.max_document_tokens,
         max_query_tokens=args.max_query_tokens,
         device=args.device,
+        selection_split=args.selection_split,
     ), ensure_ascii=False, indent=2, sort_keys=True))
 
 

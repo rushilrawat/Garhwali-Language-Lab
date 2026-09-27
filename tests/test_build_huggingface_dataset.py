@@ -382,7 +382,10 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         }
         card = m.dataset_card(report)
         self.assertIn('public-profile package', card)
+        self.assertIn('across 1 named configuration (1 config/split entries)', card)
         self.assertIn('omits **50 structured-knowledge records**', card)
+        self.assertIn('Geography, historical terms, literary people and works', card)
+        self.assertNotIn('university-research resources built by the Garhwali Language Lab', card)
         self.assertNotIn('config_name: geography', card)
         self.assertIn('They remain intact in the complete all-data package', card)
         self.assertIn('Garhwali Speech', card)

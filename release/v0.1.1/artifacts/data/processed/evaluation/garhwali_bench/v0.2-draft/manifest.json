@@ -1,0 +1,199 @@
+{
+  "all_source_rows_retained": true,
+  "benchmark_id": "garhwali-bench-v0.2-draft",
+  "input_hashes": {
+    "external/crosssum": "fcb10709e25c9a7a174df3e97501dc59c061601687fa253f214dedeb44856e4b",
+    "external/flores": "7c96d63be5f43e6a65fc229238c6d295d983fe46be032e9f8418d32150225097",
+    "external/xorqa": "e69be06befb0227395ba0feb58220388134279d4f95659ba8442e0b8e3d13ed6",
+    "internal/asr": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220",
+    "internal/text": "dac10e0b1b5d0a1af0884008bfe734912042b707238ffabeeb35cc1af96e46c7",
+    "text_recommended/test": "34a6ceb690335e9c67d08751f889871ad196b5587f90ee0aee9604f3ec8e089c",
+    "text_recommended/train": "2de3f3f95f24d41df9a4ce142496b7e9e97ac402ff4cca4c00edb6bed41d6ec8",
+    "text_recommended/validation": "a031c770c267dbd22c18f723aa88c780740edf8a00eeb1d55a5fe07623a4fdf3"
+  },
+  "local_only": true,
+  "metric_contracts": {
+    "asr": {
+      "limitations": "Empty-reference handling and corpus-vs-record aggregation need an explicit frozen policy before new comparisons.",
+      "metrics": [
+        {
+          "id": "garhwali-asr-wer-v1-draft",
+          "implementation_status": "existing_per_record_scorer; corpus aggregation contract still open",
+          "signature": "scripts/asr_metrics.py: NFC, casefold, punctuation/symbol to spaces, whitespace collapse; edit distance over whitespace words; preserve corpus edit and reference-word totals"
+        },
+        {
+          "id": "garhwali-asr-cer-v1-draft",
+          "implementation_status": "existing_per_record_scorer; corpus aggregation contract still open",
+          "signature": "same normalization; edit distance over normalized characters with spaces removed; preserve corpus edit and reference-character totals"
+        }
+      ],
+      "scores_computed": false,
+      "status": "draft_not_release_frozen"
+    },
+    "language_modeling": {
+      "limitations": "Perplexity is tokenizer/model specific and is not directly comparable across different tokenizers.",
+      "metrics": [
+        {
+          "id": "character-ngram-cross-entropy-v1-draft",
+          "implementation_status": "existing_experimental_baseline; order is run-configured",
+          "signature": "NFC+whitespace-collapse; character n-gram order and add-one smoothing recorded per run; include boundary symbols and report evaluated character denominator"
+        }
+      ],
+      "scores_computed": false,
+      "status": "draft_not_release_frozen"
+    },
+    "question_answering": {
+      "limitations": "Exact source-context overlap labels restrict the 62 flagged XORQA rows to open diagnostics; source-generalization eligibility remains false for those rows.",
+      "metrics": [
+        {
+          "id": "garhwali-qa-exact-match-v1-draft",
+          "implementation_status": "not_implemented",
+          "signature": "normalized prediction equals any normalized reference; normalization and answerability policy not yet frozen"
+        },
+        {
+          "id": "garhwali-qa-token-f1-v1-draft",
+          "implementation_status": "not_implemented",
+          "signature": "maximum token-overlap F1 over references; tokenizer and empty-answer handling not yet frozen"
+        }
+      ],
+      "scores_computed": false,
+      "status": "draft_not_release_frozen"
+    },
+    "summarization": {
+      "limitations": "Do not compute or compare scores until tokenizer, source/summary fields, empty-output policy, and source-family aggregation are frozen.",
+      "metrics": [
+        {
+          "id": "garhwali-custom-chrf2-v1",
+          "implementation_status": "reuse_candidate_not_yet_bound_to_crosssum",
+          "signature": "character n-gram orders 1-6; beta=2; exact implementation and normalizer hash required"
+        },
+        {
+          "id": "rouge-l-fmeasure-v1-draft",
+          "implementation_status": "not_implemented",
+          "signature": "token-level LCS precision/recall F1; tokenizer, normalization, and multi-reference policy not yet frozen"
+        }
+      ],
+      "scores_computed": false,
+      "status": "draft_not_release_frozen"
+    },
+    "translation": {
+      "limitations": "Direction, references, normalization, and implementation must be frozen per run; do not call custom BLEU SacreBLEU.",
+      "metrics": [
+        {
+          "id": "garhwali-custom-add1-bleu-v1",
+          "implementation_status": "existing_nonstandard_custom_scorer",
+          "signature": "NFC+casefold+whitespace-collapse; corpus word n-grams orders 1-4; add-one precision smoothing per order; corpus brevity penalty; scripts/run_translation_baseline.py:corpus_bleu"
+        },
+        {
+          "id": "garhwali-custom-chrf2-v1",
+          "implementation_status": "existing_custom_scorer_not_sacrebleu",
+          "signature": "NFC+casefold+whitespace-collapse; character n-grams orders 1-6; beta=2; per-order corpus precision/recall F-beta macro-average; scripts/run_translation_baseline.py:corpus_chrf"
+        }
+      ],
+      "scores_computed": false,
+      "status": "draft_not_release_frozen"
+    }
+  },
+  "migration_gaps": [
+    "Some legacy views do not contain original raw text; the adapter records that absence rather than relabeling normalized view text as raw.",
+    "Metric signatures are draft definitions, not release-frozen protocols; no scores are computed by this export.",
+    "No row has been rights-cleared by this schema adapter; release eligibility remains an independent gate.",
+    "Model exposure and semantic/cross-language contamination remain unresolved unless row-level evidence is available."
+  ],
+  "public_upload_allowed": false,
+  "schema_version": "garhwali-bench-export-v0.2-draft",
+  "source_manifest_sha256": "ce93c7c1c06680d04bf9b861cbfdf8ca11b6cf9bf1968ba9cf19687655b8865b",
+  "source_release_id": "garhwali-bench-v0.1-experimental",
+  "source_validation_errors": 0,
+  "source_validation_status": "pass",
+  "status": "draft_local_only_not_release_ready",
+  "total_records": 12622,
+  "usage_overlay_sha256": "0569329afd721a2b8c2e525481048705fbde4ec6ae4fd949df2ccf6789f1273f",
+  "views": {
+    "external/crosssum": {
+      "input_sha256": "fcb10709e25c9a7a174df3e97501dc59c061601687fa253f214dedeb44856e4b",
+      "output_sha256": "14515dfec56f366eafa2ae8b10a7839fd2b067652179548f29ecb2a81b09e560",
+      "path": "external__crosssum.jsonl",
+      "records": 699,
+      "split_counts": {
+        "dev": 100,
+        "test": 500,
+        "train": 99
+      },
+      "task": "summarization"
+    },
+    "external/flores": {
+      "input_sha256": "7c96d63be5f43e6a65fc229238c6d295d983fe46be032e9f8418d32150225097",
+      "output_sha256": "0914dc64b2ab31e5cdf9a8742d9168c3069b371bf7192c7bf81e3d965b496df3",
+      "path": "external__flores.jsonl",
+      "records": 2009,
+      "split_counts": {
+        "dev": 997,
+        "test": 1012
+      },
+      "task": "translation"
+    },
+    "external/xorqa": {
+      "input_sha256": "e69be06befb0227395ba0feb58220388134279d4f95659ba8442e0b8e3d13ed6",
+      "output_sha256": "eb002f3c4a1f83d17a9ea0a289db2ccd80c222504888acb5ad75b54cb59934e9",
+      "path": "external__xorqa.jsonl",
+      "records": 1139,
+      "split_counts": {
+        "dev": 500,
+        "test": 539,
+        "train": 100
+      },
+      "task": "question_answering"
+    },
+    "internal/asr": {
+      "input_sha256": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220",
+      "output_sha256": "c8137a82facd90e6418fd5207434d76e5e0e2a782ae8e4b199c8b9844b19700c",
+      "path": "internal__asr.jsonl",
+      "records": 112,
+      "split_counts": {
+        "test": 112
+      },
+      "task": "asr"
+    },
+    "internal/text": {
+      "input_sha256": "dac10e0b1b5d0a1af0884008bfe734912042b707238ffabeeb35cc1af96e46c7",
+      "output_sha256": "9a653ed8a1c7fc31e17a27e30407eb936cf25ede3aba08e7f79c0d8adb674800",
+      "path": "internal__text.jsonl",
+      "records": 398,
+      "split_counts": {
+        "test": 398
+      },
+      "task": "language_modeling"
+    },
+    "text_recommended/test": {
+      "input_sha256": "34a6ceb690335e9c67d08751f889871ad196b5587f90ee0aee9604f3ec8e089c",
+      "output_sha256": "173e7a7a42699c6b36b8a284af507c7732edfe84977babe7ea5e7acebce02750",
+      "path": "text_recommended__test.jsonl",
+      "records": 398,
+      "split_counts": {
+        "test": 398
+      },
+      "task": "language_modeling"
+    },
+    "text_recommended/train": {
+      "input_sha256": "2de3f3f95f24d41df9a4ce142496b7e9e97ac402ff4cca4c00edb6bed41d6ec8",
+      "output_sha256": "c028ec80f295b96b681635127ea3e19107a1259310e157be1aa37c9330442b10",
+      "path": "text_recommended__train.jsonl",
+      "records": 7490,
+      "split_counts": {
+        "train": 7490
+      },
+      "task": "language_modeling"
+    },
+    "text_recommended/validation": {
+      "input_sha256": "a031c770c267dbd22c18f723aa88c780740edf8a00eeb1d55a5fe07623a4fdf3",
+      "output_sha256": "5596c893e9a3fa71978d3073c022a201b2db0a15e7763c684c3cf7c34c909397",
+      "path": "text_recommended__validation.jsonl",
+      "records": 377,
+      "split_counts": {
+        "validation": 377
+      },
+      "task": "language_modeling"
+    }
+  }
+}

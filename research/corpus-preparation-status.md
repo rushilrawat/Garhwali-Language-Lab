@@ -41,10 +41,10 @@ Updated 2026-09-24. This is a chronological preparation log: model-result paragr
 - A second reversible cleanup pass retains all 28,755 text and 5,894 supervised audio-transcript rows. It cleans annotation/markup artifacts and flags 928 text plus 920 audio-transcript rows for truncation, URLs, or script review.
 - Whisper-small zero-shot evaluation on 20 validation rows scored 134.3% WER and 94.8% CER. A speaker-safe Whisper-tiny fine-tune improved the 112-row strict speaker-disjoint candidate result to 74.3% WER and 40.4% CER after the initial pass plus two lower-learning-rate passes. Because this candidate set informed iteration, it is not the future frozen native benchmark, and the model remains unsafe for automatic pseudo-label promotion.
 - A resumable 100-record draft-transcription pilot completed with file-level provenance and uncalibrated token confidence. Median confidence is 0.174; every draft is marked `machine_draft_noisy_experimental` and remains active only in the noisy experimental view.
-- A fair five-checkpoint comparison uses the same 112 speaker-safe test rows and normalization. Zero-shot Whisper-tiny scores 147.939% WER / 136.810% CER; zero-shot Whisper-small scores 97.172% / 57.822%; the two local tiny fine-tunes reach 79.051% / 42.907% and 74.305% / 40.440%. Provider-approved SraVaani 1.0 is strongest at 42.761% WER / 17.606% CER, a 42.45% relative WER reduction from the best local Whisper checkpoint.
-- The human-reference SraVaani decoder/joint adaptation completed 102 steps on 1,621 training clips and was evaluated once on the same frozen 112-record test. It scores 43.528% WER / 17.452% CER: 16 more word errors but 11 fewer character errors than base SraVaani. Because primary WER worsened, the adapted checkpoint remains experimental and base SraVaani stays preferred.
-- A refined validation-first sweep completed all 61 decoder/joint trials without failure. Its selected `5e-5`, two-epoch, seed-17 checkpoint improves validation WER from 43.454% to 42.711%, but frozen-test WER worsens from base SraVaani's 42.761% to 43.528%; it is not promoted. The next experimental package contains 5,513 human-transcribed training clips / 8.112 hours with zero fixed validation/test hash overlap and zero identified-speaker overlap; 3,886 training rows retain incomplete speaker identity.
-- Expanded human-reference SraVaani training completed 346 steps on all 5,513 eligible clips. Validation WER improves to 42.209%, but frozen-test WER is 43.289% versus base SraVaani's 42.761%; the experimental checkpoint is retained and the base model remains preferred.
+- The base-model report and both zero-shot Whisper reports pin the same 112-row manifest (SHA-256 `2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52`). Zero-shot Whisper-tiny scores 147.939% WER / 136.810% CER; zero-shot Whisper-small scores 97.172% / 57.822%. The two local tiny fine-tunes were reported at 79.051% / 42.907% and 74.305% / 40.440%; the [speech baseline comparison](speech-baseline-comparison-2026-09-11.md) records an independent match of all 112 audio hashes and references for both, so those comparisons are row-aligned.
+- The human-reference SraVaani decoder/joint adaptation completed 102 steps on 1,621 training clips. Its report records 43.528% WER / 17.452% CER on a 112-record test manifest, but that manifest hash differs from the base report. Matching counts do not establish the same rows, so the previously reported 16-word-error WER comparison is not verified as paired; retain both as historical and do not promote the adaptation.
+- A refined validation-first sweep completed all 61 decoder/joint trials without failure. Its selected `5e-5`, two-epoch, seed-17 checkpoint improves validation WER from 43.454% to 42.711%. Its historical test aggregate is 43.528%, but the report omits a test-manifest hash; exact comparison with the base test is unverified. It is not promoted. The next experimental package contains 5,513 human-transcribed training clips / 8.112 hours with zero training overlap against the prepared validation/test hashes and zero identified-speaker overlap; 3,886 training rows retain incomplete speaker identity.
+- Expanded human-reference SraVaani training completed 346 steps on all 5,513 eligible clips. Validation WER improves to 42.209%; its historical test aggregate is 43.289%, with no test-manifest hash in the report. Exact comparison with base SraVaani is unverified; the checkpoint remains experimental.
 - The resumable SraVaani path completed all 104,542 untranscribed source rows, covering 104,534 unique audio hashes with zero missing or unexpected hashes. Eight duplicate hashes are inherited from distinct VAANI source filenames and produce identical drafts. Thirty-four drafts are empty. All rows remain preserved; 98 source-label-conflict drafts are active for source analysis but excluded from Garhwali training.
 - Independent Whisper-large-v3-turbo evidence covers 65,000 unique SraVaani drafts, including 157 exact transcript agreements. This evidence is attached without replacing any SraVaani transcript. A later 15,000-row batch job (`6aac7f02b1dc2b62dc58fb5c`) is marked `CANCELED`; its last log reports 13,840/15,000 processed, but the local batch directory has no predictions or report, so those rows are not included in the integrated evidence. Hugging Face reported no cancellation reason, and the log contains no rate-limit error; the cause is unconfirmed. There are currently no running or scheduled Hugging Face jobs.
 - A second local Whisper checkpoint now supplies a third hypothesis and uncalibrated acoustic score for every one of the 1,188 recovery recordings. The resulting 1,090-record Garhwali review layer has 325 clean related-checkpoint consensus proposals, 730 clean low-consensus proposals, and 35 structurally unresolved proposals. It preserves every source value and makes no human-reference or training promotion.
@@ -76,7 +76,7 @@ The rebuilt complete package contains 257,807 rows and the rights-filtered publi
 - Three 64-step mT5-small LoRA seeds all improve validation loss from 28.201385 to a 27.569880 mean. The validation-selected seed 29 scores 29.059347 test cross-entropy versus the base model's 30.416287, but generation remains at 0% exact match and 0.0 chrF2 after sentinel-token removal, so this adapter is not promoted.
 - A new v0.2 instruction test was frozen from 258 parent records unseen by the earlier pilot; the old 84-record test was not reused. Zero-shot mT0-small scores 5.614353 validation cross-entropy, and three 256-step LoRA seeds reach a 4.961989 mean and 5.019603 mean on the new test. All seeds improve teacher-forced loss; exact match remains 0%, so native-reference scoring and a longer curriculum remain open.
 - The final 16,384-step mT0 continuation lowers best validation cross-entropy from 4.476975 at 8,192 steps to 4.315077. Seed 43 reaches 2.3077% exact match and 0.073709 chrF2, but adapted chrF2 remains below the zero-shot base; the fixed test remains unopened.
-- **Superseded partial-run note:** all three 32,768-step mT0 seeds later completed. The seed-43 validation loss is 4.188287; cross-seed and per-task generation analysis completed, and the validation-selected seed-43 checkpoint was evaluated once on the separate 86-row test. It reached 4.358291 test cross-entropy and 2.33% exact match, while chrF2 (0.062177) remained below the base model (0.085840). The test was not used for selection.
+- **Superseded partial-run note:** all three 32,768-step mT0 seeds later completed. The seed-43 validation loss is 4.188287; cross-seed and per-task generation analysis completed, and the validation-selected seed-43 checkpoint was reported evaluated once on a separate 86-row test. The existing report records 4.358291 test cross-entropy and 2.33% exact match, while chrF2 (0.062177) remained below the base model (0.085840). The test was not used for selection. However, its 172 prediction rows do not map to current local manifests (118 and 260 rows), so exact test identity is unresolved; treat all test scores as historical, not independent. See [`generation-quality-2026-09-25.md`](generation-quality-2026-09-25.md) for the reconciled outputs and hashes.
 - Cross-encoder refinement of all 29,903 semantic candidates identified 267 high-confidence and 1,357 supported near-duplicate pairs, 14,257 likely false positives, and 14,022 review-required pairs. The original split report had 92 supported cross-split pairs. **Superseded:** the rebuilt split manifest uses 1,623 supported semantic edges, reassigns 120 records, and reports zero supported-semantic cross-split overlap; source texts remain unchanged.
 
 ## Long-form folklore audio
@@ -161,7 +161,7 @@ The rebuilt complete package contains 257,807 rows and the rights-filtered publi
 
 ## SraVaani quality sweep
 
-- Completed Hugging Face Job [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768) ran all 61 validation-first trials. The selected adaptation improved validation WER but worsened held-out WER, so base SraVaani remains preferred. Paid Hugging Face processing is no longer active. See [`sravaani-refined-61-result-2026-09-16.md`](sravaani-refined-61-result-2026-09-16.md).
+- Completed Hugging Face Job [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768) ran all 61 validation-first trials. The selected adaptation improved validation WER; its saved test aggregate is historical and lacks a manifest hash, so a paired held-out WER comparison is unverified. Paid Hugging Face processing is no longer active. See [`sravaani-refined-61-result-2026-09-16.md`](sravaani-refined-61-result-2026-09-16.md).
 
 ## Review queues
 
@@ -190,9 +190,10 @@ All audio hashes and 16 kHz mono 16-bit PCM properties pass, every row retains
 CC BY 4.0 evidence, and cross-split audio/speaker leakage is zero. The decoder-only
 102-step plan and official 1,796,208,640-byte NeMo checkpoint were verified. The
 `l4x1` Hugging Face Job completed training, persisted a 1,796,198,400-byte
-adapted checkpoint, and completed the closed held-out evaluation. The resulting
-43.528% WER / 17.452% CER does not displace base SraVaani because its primary
-WER is worse.
+adapted checkpoint, and completed the held-out evaluation. The result is
+43.528% WER / 17.452% CER on the report's 112-record manifest. Its manifest
+hash differs from the base report, so the direct WER comparison is unverified;
+the model remains experimental pending split-lineage reconciliation.
 
 The current GarhwaliBench v0.1 candidate indexes 3,847 external task records,
 398 strict automated text rows, and 112 speaker-safe ASR rows. The benchmark
@@ -217,9 +218,9 @@ pilot scores 17.786561% masked-token accuracy and 6.977486 cross-entropy over 50
 deterministic masks, with zero truncation. These values have not been recomputed
 on the current 398-record benchmark candidate.
 
-The Garhwali-to-English translation audit covers 997 IndicGenBench FLORES development pairs and all 1,012 test pairs. The deterministic translation-memory floor scores 0.008208 smoothed BLEU / 0.215886 chrF2. On the same fixed 32-record pilot, pinned NLLB-200 distilled with an explicit Hindi source-token proxy scores 0.219719 / 0.574134, while the community Garhwali LoRA adapter scores 0.095460 / 0.460474. The base model is retained as the current pilot because the adapter underperforms and publishes no Garhwali language-token mapping.
+The historical translation audit covers 997 IndicGenBench FLORES development pairs and all 1,012 test pairs; its test and 32-record NLLB Hindi-token proxy outputs have already been scored. A 2026-09-26 dev-only refresh now reports copy-source at 0.000995 smoothed BLEU / 0.008060 chrF2 and leave-exact-source-out translation memory at 0.019922 / 0.238087 on the 997 dev rows. It does not rescore the test. The earlier fixed 32-record NLLB pilot remains historical: the pinned base scored 0.219719 / 0.574134 and the community adapter scored 0.095460 / 0.460474 using a Hindi source-token proxy. Current local NLLB execution is blocked because the base weights and runtime packages are absent. See [translation-quality-2026-09-26.md](translation-quality-2026-09-26.md); no model is promoted and no result establishes native-reviewed translation quality.
 
-The XORQA retrieval audit deduplicates 1,139 source rows into 1,059 passages and evaluates 500 dev plus 539 test questions. On the full test split, word BM25 reaches 1.669759% Recall@10, character BM25 reaches 2.411874%, and zero-shot mean-pooled IndicBERTv2 reaches 10.389610% with 2.226345% Recall@1. English oracle BM25 reaches 85.2% Recall@10 on the 500 dev rows where the upstream benchmark supplies oracle questions; all 539 test oracle questions are empty and are explicitly excluded from that comparator.
+The historical XORQA retrieval audit deduplicates 1,139 source rows into 1,059 passages and includes 500 dev plus 539 previously scored test questions. Its test metrics are historical. A current 2026-09-25 dev-only BM25 rerun corrects zero-score tie handling and records full source-row provenance in [`retrieval-quality-2026-09-25.md`](retrieval-quality-2026-09-25.md); it gets 0.8%/1.0% Recall@10 for Garhwali word/character queries and 85.2% for the English-oracle diagnostic. It does not rescore test.
 
 ## Dataset splits
 
@@ -257,8 +258,8 @@ python3 scripts/build_language_resources.py
 python3 scripts/build_garhwali_benchmark.py
 PYTHONPATH=.cache/asr-runtime python3 scripts/audit_multilingual_tokenizers.py
 PYTHONPATH=.cache/asr-runtime python3 scripts/run_masked_lm_baseline.py
-python3 scripts/run_translation_baseline.py
-PYTHONPATH=.cache/asr-runtime python3 scripts/run_nllb_translation_baseline.py --max-records 32 --max-new-tokens 64 --device cpu
+python3 scripts/run_translation_baseline.py --split dev
+PYTHONPATH=.cache/asr-runtime python3 scripts/run_nllb_translation_baseline.py --split dev --max-records 32 --max-new-tokens 64 --device cpu
 python3 scripts/run_retrieval_baseline.py
 PYTHONPATH=.cache/asr-runtime python3 scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
 PYTHONPATH=.cache/asr-runtime python3 scripts/run_whisper_comparison.py --device cpu
@@ -275,7 +276,7 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The current full-suite run passes **466 tests**. Structured records have standardized provenance and quality
+The current full-suite run passes **519 tests**. Structured records have standardized provenance and quality
 metadata, including URLs or capture fingerprints for every source reference.
 A web review added source-specific rights findings to the 186 formerly
 unassessed records, but did not establish a compatible public-rights basis for

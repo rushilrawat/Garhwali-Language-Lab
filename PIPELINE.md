@@ -59,9 +59,9 @@ PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 .venv/bin/python scripts/build_garhwali_benchmark.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/audit_multilingual_tokenizers.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_masked_lm_baseline.py
-.venv/bin/python scripts/run_translation_baseline.py
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --max-records 32 --max-new-tokens 64 --device cpu
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --adapter .cache/model-adapters/garhwali-nllb-v12 --output data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy --max-records 32 --max-new-tokens 64 --device cpu
+.venv/bin/python scripts/run_translation_baseline.py --split dev
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --split dev --max-records 32 --max-new-tokens 64 --device cpu
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --split dev --adapter .cache/model-adapters/garhwali-nllb-v12 --max-records 32 --max-new-tokens 64 --device cpu
 .venv/bin/python scripts/run_retrieval_baseline.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_whisper_comparison.py --device cpu
@@ -90,13 +90,15 @@ unknown tokens, and context overflow on the frozen text evaluation set. The
 masked-language runner uses deterministic hash-selected masks so repeated model
 comparisons score the same held-out positions.
 
-The translation floor evaluates source copying and development-set translation
-memory on every IndicGenBench FLORES test row. The NLLB pilot uses a pinned local
-snapshot and the same deterministic 32-record subset for both comparisons.
-Because NLLB has no Garhwali language token, both runs explicitly use `hin_Deva`
-as an experimental source-token proxy and `eng_Latn` as the target token. The
-community adapter's own language-token mapping is undocumented, so its result is
-retained for comparison rather than treated as a validated Garhwali score.
+The translation runner now defaults to the 997 IndicGenBench FLORES dev rows;
+its translation-memory diagnostic excludes exact normalized-source self-matches.
+The old 1,012-row test result remains historical. NLLB's saved 32-row pilot is
+also historical and used `hin_Deva` as an experimental source-token proxy and
+`eng_Latn` as the target token because NLLB has no Garhwali language token. The
+current local runtime lacks the NLLB base weights and required packages, so the
+updated dev NLLB commands are documented but not currently runnable. Results
+are written to split-specific directories; explicit `--split test` is for
+historical reproduction only, never model selection or blind-accuracy claims.
 
 The retrieval audit deduplicates XORQA contexts into a fixed passage index and
 scores dev/test questions without training on benchmark queries. Word and

@@ -1,13 +1,18 @@
 # Garhwali Language Lab v0.1.0
 
+> **Frozen snapshot:** counts below describe the `v0.1.0` package, not the latest
+> workspace. The current project counts, model research, Hugging Face visibility,
+> and release limits are in the [project README](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/README.md)
+> and [final report](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/finalreport.md).
+
 This directory preserves the compact generated evidence for release `v0.1.0`:
 evaluation reports, preparation reports, ingestion summaries, visual inventory
 artifacts, and the transcript-only Hugging Face card and manifest.
 
 Row-level datasets, audio, caches, and model weights remain outside Git. The
-public transcript dataset is published separately on Hugging Face. The complete
-all-data package contains every collected text value with its original source,
-rights, and quality metadata.
+companion speech dataset is public on Hugging Face; the text-corpus repository
+is owner-private. The complete all-data package contains every collected text
+value with its original source, rights, and quality metadata.
 
 The complete transcript-only all-data package contains **257,807 rows**. Its
 catalog includes all **28,755 exact-unique texts with zero redactions** and six

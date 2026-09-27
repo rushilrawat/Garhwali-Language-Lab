@@ -20,21 +20,25 @@ tuning.
 | Original SraVaani 1.0 | 892 / 2,086 | 42.7613% | 1,256 / 7,134 | 17.6058% |
 | Garhwali decoder/joint adaptation | 908 / 2,086 | 43.5283% | 1,245 / 7,134 | 17.4516% |
 
-The adaptation adds 16 word errors, worsening WER by 0.7670 percentage points
-(1.79% relative), while removing 11 character errors and improving CER by
-0.1542 percentage points (0.88% relative). Because WER was the declared primary
-selection metric, this checkpoint is retained as an experimental artifact and
-is not promoted over the original SraVaani model.
+The aggregate counts differ by 16 word errors and 11 character errors. A
+post-run audit found that the adaptation report's test-manifest SHA-256
+(`d9202d6c8e659aef86a1170409a726f42a65b4ae87825c3cd82a0530d55483a1`) differs
+from the base-model report's hash
+(`2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52`). Both
+reports have 112 rows and matching denominators, but row identity has not been
+reconciled. Therefore the displayed differences are historical aggregate
+arithmetic, not verified paired WER/CER deltas; this checkpoint remains
+experimental and is not promoted.
 
-At record level, word errors improve on 25 clips, worsen on 32, and remain equal
-on 55. Character errors improve on 35, worsen on 41, and remain equal on 36.
-Neither model produces an empty hypothesis, and neither produces a fully exact
-transcript on this difficult test. This confirms a small redistribution of
-errors rather than a reliable overall gain.
+The original report recorded 25/32/55 rows with lower/higher/equal word errors
+and 35/41/36 with lower/higher/equal character errors. Those paired row counts
+are retained as historical but are not independently verified against the two
+different manifest hashes in this audit. No test payload was reopened here.
 
 ## Reproducibility
 
 - Frozen manifest SHA-256: `d9202d6c8e659aef86a1170409a726f42a65b4ae87825c3cd82a0530d55483a1`
+- Post-run audit: base-model test manifest SHA-256 is `2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52`; the hashes differ, and equal record counts do not establish row identity.
 - Frozen audio archive SHA-256: `8eb4d109e9fb70e6f04d6b699f5190e3ba3d668a61411e78cdbb8f37e8901d10`
 - Evaluation output: `data/processed/evaluation/asr/sravaani_finetune/cloud_output/held_out_evaluation/`
 - Predictions: 112 rows with reference, hypothesis, and per-record error counts

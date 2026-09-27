@@ -81,12 +81,22 @@ redacts values without compatible redistribution evidence. Native-speaker
 review and dialect annotation are deferred; benchmark and model scores are
 automated research results, not native-validated claims.
 
-Versioned Garhwali (`gbm`) text, speech, lexicon, instruction, geographic,
-historical, literary, music, and university-research resources built by the
-Garhwali Language Lab. Available source and review metadata vary by configuration.
+This rights-filtered profile contains Garhwali
+text, human transcripts, lexicon and instructions, plus experimental SraVaani
+drafts. Geography, historical terms, literary people and works, songs, and
+university-research records are excluded where the complete structured record
+does not have a compatible public-rights basis.
 
-This public-profile package contains **146,684 records** across 6 configurations, including transcripts for **104,534
+This public-profile package contains **146,684 records** across 6 named configurations (12 config/split entries), including transcripts for **104,534
 unique SraVaani recordings**. This transcript-only package does not include audio files or source filenames.
+
+This dataset card describes data scope, not model accuracy. Native-speaker
+review and dialect annotation are deferred; transcripts and machine drafts retain
+their review status. The project pipeline uses Python 3.12 and LangGraph for
+resumable ingestion; quality checks and model metrics use task-specific scripts.
+LangChain is not part of the current pipeline. See the [project README](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/README.md)
+and [benchmark research status](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/research/benchmark-research-status-2026-09-25.md)
+for the latest measured results and limitations.
 
 The `catalog` configuration publicly accounts for all
 **28,755 exact-unique collected text records**. Rows whose

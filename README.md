@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-466%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-519%20passing-success.svg)](research/corpus-preparation-status.md)
 [![Hugging Face Speech](https://img.shields.io/badge/Hugging%20Face-Speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 [![Hugging Face Corpus](https://img.shields.io/badge/Hugging%20Face-Corpus%20(private)-orange?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
@@ -30,8 +30,16 @@ for every record.
 
 ## 🤗 Hugging Face datasets
 
-- **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** is public, with 113,363 VAANI and Meta Omnilingual rows in separate configs.
-- **[Garhwali Corpus](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)** is owner-private. It contains the 146,684-row rights-filtered profile; the complete 257,807-row all-data package remains local. The Hub profile redacts 24,566 catalog values and omits 216 structured records without a compatible public-rights basis. No local records are deleted.
+- **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** was checked live on 2026-09-27 and remains public. Its two source configs contain 113,363 rows (113,350 unique audio hashes), 154.65 hours, and about 16.91 GiB of audio. The Dataset Viewer preview loaded; Hub metadata says the repo was last updated 2026-09-24.
+- **[Garhwali Corpus](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)** was checked live on 2026-09-27 and remains owner-private; Hub metadata says it was last updated 2026-09-24. The private rights-filtered profile has 146,684 rows across 12 configs, redacts 24,566 catalog values, and omits 216 structured records without compatible public-rights evidence. The complete 257,807-row, 18-config all-data package—with all collected text values and all 216 structured records—remains local and access-controlled. No source records are deleted. The private profile does not meet the no-redactions requirement for a public release.
+
+**Hugging Face Jobs checked 2026-09-27:** no jobs are running and no scheduled jobs are active. There are 34 historical jobs. One semantic-duplicate audit attempt failed but has a completed retry; a separate 15,000-row Whisper agreement job was canceled after its last log showed 13,840 rows, and its output is not integrated into the corpus.
+
+## Current benchmark and model stage
+
+The 2026-09-26 roadmap snapshot has **Phase 1 inventory/reproducibility complete; Phases 2–3 in progress; Phase 4 started with translation-run manifests; and Phase 5 baseline consolidation partial**. Later uncertainty analysis, eligibility decisions, and benchmark-card/release work remain. The local v0.2 draft covers eight views and 12,622 rows; it is not a frozen benchmark or an accuracy certification. The full automated test suite passes **519 tests**.
+
+Estimated effort to a reproducible benchmark/model research release candidate is **50–75 focused hours, or roughly 6–9 weeks at 8–10 focused hours per week**. This estimate excludes the API/community product, native-speaker review and dialect annotation (deferred), and fresh model runs that require missing local weights or dependencies. The detailed work order and blockers are in [`research/benchmark-model-roadmap.md`](research/benchmark-model-roadmap.md).
 
 The project keeps two views by design:
 
@@ -134,7 +142,7 @@ counts, audit gaps, and remaining work.
   preserved; current VAANI coverage is Uttarkashi and Tehri Garhwal.
 - **25,341 likely Garhwali text candidates**, 2,237 mixed-language
   records, 860 review records, and 317 non-Garhwali cultural-context records.
-- **4,195 exact-unique texts with a public rights basis**, including 3,559 strict
+- **4,189 exact-unique texts with a public rights basis**, including 3,559 strict
   public candidates; 1,748 additional high-quality candidates remain active with
   rights-pending provenance.
 - **1,913 mixed-rights exact duplicates** retain every source warning; 1,906
@@ -225,23 +233,84 @@ counts, audit gaps, and remaining work.
 - **SraVaani adaptation package:** 2,002 human-reference clips are packaged into
   deterministic NeMo train, validation, and held-out test archives totaling
   412,037,120 bytes, with all audio hashes verified and zero split leakage.
-- **SraVaani adaptation result:** the 102-step human-reference run scores 43.528%
-  WER / 17.452% CER on the frozen 112-record test. Original SraVaani remains
-  preferred at 42.761% / 17.606% because WER is the primary metric.
-- **466 automated tests** and **367 immutable source snapshots** verified, with 43 public source URLs covered
+- **SraVaani adaptation result:** the 102-step human-reference run reports
+  43.528% WER / 17.452% CER on a 112-record test manifest. Its saved manifest
+  hash differs from the base-model report, so this is a historical score rather
+  than a verified paired comparison; no model is promoted from it.
+- **519 automated tests** and **367 immutable source snapshots** verified, with 43 public source URLs covered
   by a scheduled freshness audit.
 
-These figures describe the preparation snapshot updated on 2026-09-25. Raw
+These figures describe the preparation snapshot updated through 2026-09-26. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
 Git through `.gitignore`.
+
+### Latest benchmark and model checks (2026-09-26)
+
+The benchmark and model work is in **baseline consolidation and validation**, not
+final accuracy certification. The candidate benchmark passes its automated
+integrity checks, but none of the five task areas has an approved independent
+final-accuracy set. Native review and dialect annotation remain deferred.
+
+- **ASR:** five saved SraVaani decoder/training candidates were re-scored against
+  the same 269 development utterances. RNNT beam-8 is the best decoder-only
+  result at 43.253% WER / 18.919% CER. Expanded-human fine-tuning reaches
+  42.209% / 18.302% on that same development set, but no fine-tune is promoted:
+  historical test reports lack enough manifest identity to verify paired
+  comparisons, and the references have not been native-adjudicated.
+- **Translation:** the 997-row FLORES development diagnostics score copy at
+  0.000995 BLEU / 0.008060 chrF2 and leave-exact-source-out memory at
+  0.019922 / 0.238087. These are weak development floors, not model accuracy;
+  NLLB was not run because its pinned weights and PEFT runtime are unavailable
+  locally. The previously scored test was not rerun.
+- **Retrieval:** word and character BM25 Recall@10 are 0.8% and 1.0% on 500
+  development questions; the English-oracle diagnostic is 85.2%. Dense retrieval
+  is blocked by missing local model dependencies and weights.
+- **Generation:** the 32,768-step mT0 seed-43 run has the best saved validation
+  loss (4.188287), but every adapter is below the base model on validation
+  chrF2. No adapter is promoted; its previously scored test remains historical.
+- **Split/family scan:** a review-only scan of 12,510 text rows found one exact
+  XORQA train/dev text repeat and 27 exact XORQA source-context groups
+  spanning source splits. Eleven connect training to dev/test, including four
+  that include train and test. Four near-duplicate candidates remain within
+  their existing split. Follow-up verification confirmed 27 source-context
+  groups spanning splits and labeled 62 rows open-diagnostic-only for
+  independent source-generalization claims; all rows remain available. The
+  four near pairs were reviewed: three share same-split train duplicate
+  components and one shares a context/answer within dev. The 398 text records
+  mirrored between internal evaluation and recommended test are same-split
+  copies. See the [adjudication report](research/benchmark-overlap-adjudication-2026-09-26.md).
+- **v0.2 benchmark draft:** a deterministic local adapter now exports all eight
+  views / 12,622 rows with separate source/scoring fields where available,
+  normalizer IDs, per-view hashes, and the 62-row XORQA usage overlay. Every
+  source row is retained. The package is local-only; raw text is unavailable in
+  some legacy views, metric signatures remain draft, and rights are not cleared.
+  See the [v0.2 contract](research/garhwali-bench-v0.2-schema-contract.md) and
+  [export report](research/benchmark-v02-export-2026-09-26.md).
+- **Phase 4 evaluation runners:** translation and NLLB runs now write a shared
+  `run_manifest.json` with split/input/selected-row hashes, config hash, code
+  commit and dirty state, runtime/device, timestamps, and prediction/report
+  hashes. NLLB validates inputs and local checkpoints before loading Torch or
+  Transformers. Both runners require an extra opt-in for historical test
+  scoring. Runner work is in progress; uncached NLLB weights still prevent a
+  real model run.
+- **Verification:** 519 project tests pass. These checks validate code and
+  artifact integrity; they do not establish that every Garhwali word, transcript,
+  or reference is linguistically correct.
+
+The reports retain exact manifests, metrics, and limitations:
+[ASR consolidation](research/asr-baseline-consolidation-2026-09-26.md),
+[translation](research/translation-quality-2026-09-26.md),
+[retrieval](research/retrieval-quality-2026-09-25.md), and
+[generation](research/generation-quality-2026-09-25.md). This refresh used saved
+outputs and local diagnostics; it launched no paid Hugging Face jobs.
 
 ## 📈 Corpus scale
 
 <div align="center">
 
-| `~34 GB` | `110,436` | `135.5 h` | `28,755` |
+| `~71.6 GiB` | `110,436` | `135.5 h` | `28,755` |
 | --- | ---: | ---: | ---: |
-| local corpus data | recordings | audio duration | unique text lines |
+| local `data/` workspace footprint* | recordings | audio duration | unique text lines |
 
 | `9.15M` | `1.76M` | `114,064` | `1,114` |
 | ---: | ---: | ---: | ---: |
@@ -251,15 +320,18 @@ Git through `.gitignore`.
 | ---: | ---: | ---: | ---: |
 | English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
 
-| `257,807` | `146,684` | `216` | `466` |
+| `257,807` | `146,684` | `216` | `519` |
 | ---: | ---: | ---: | ---: |
-| all-data package rows | rights-filtered public rows | local structured records | passing tests |
+| all-data package rows | rights-filtered profile rows (Hub repo private) | local structured records | passing tests |
 
 </div>
 
-The storage figure combines the measured 30.1 GiB VAANI directory, 3.1 GiB of
-processed views, and about 0.3 GiB of downloads. *Whitespace tokens are an engineering count
-from the canonical text view, not a linguistic tokenization.*
+*Measured with `du` on 2026-09-26, the ignored `data/` tree uses about 71.6 GiB:
+30.1 GiB of VAANI files, 21.1 GiB of processed outputs, 17.7 GiB of staged
+Hugging Face packages, and 2.7 GiB of downloads. This is the local workspace
+footprint, including generated artifacts; it is not the size of a single
+redistributable dataset. Whitespace tokens are an engineering count from the
+canonical text view, not a linguistic tokenization.*
 
 ## 🧱 How the pipeline fits together
 
@@ -291,8 +363,18 @@ from the canonical text view, not a linguistic tokenization.*
 ```
 
 The deterministic collectors own source acquisition and extraction. LangGraph
-coordinates resumable waves, retries transient network failures, and checkpoints
-progress in the ignored cache. See [`PIPELINE.md`](PIPELINE.md).
+coordinates resumable ingestion waves, retries transient network failures, and
+checkpoints progress in the ignored cache. Model metrics and benchmark selection
+remain deterministic task-specific Python scripts; LangChain is not part of the
+current pipeline. See [`PIPELINE.md`](PIPELINE.md).
+
+**Runtime status (2026-09-26):** Python 3.12 and the pinned pipeline requirements
+support the data and audit commands. Model environments are separate. The active
+`.venv` lacks PyTorch, Transformers, and PEFT; the optional cached runtime exposes
+PyTorch and Transformers but lacks PEFT, NeMo, PyArrow, SoundFile, librosa, and
+torchaudio. SraVaani base weights and NLLB weights are not cached. The latest
+translation and retrieval refreshes therefore used dependency-free local
+diagnostics, and no new paid cloud run was started.
 
 ## 📚 Data layers
 
@@ -342,8 +424,8 @@ PYTHONPATH=scripts .venv/bin/python scripts/analyze_sravaani_drafts.py
 .venv/bin/python scripts/build_garhwali_benchmark.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/audit_multilingual_tokenizers.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_masked_lm_baseline.py
-.venv/bin/python scripts/run_translation_baseline.py
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --max-records 32 --max-new-tokens 64 --device cpu
+.venv/bin/python scripts/run_translation_baseline.py --split dev
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --split dev --max-records 32 --max-new-tokens 64 --device cpu
 .venv/bin/python scripts/run_retrieval_baseline.py
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_whisper_comparison.py --device cpu
@@ -353,6 +435,10 @@ PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_whisper_comparison.py
 .venv/bin/python scripts/build_release_manifest.py
 .venv/bin/python scripts/validate_release_index.py
 ```
+
+Translation runners default to the development split and write to split-specific
+directories. The existing FLORES test outputs are historical; do not use the
+explicit `--split test` option for model selection or blind-accuracy claims.
 
 ASR experiments use the separately pinned `requirements-asr.txt`. Generated
 checkpoints and review-only machine drafts remain Git-ignored:
@@ -605,11 +691,11 @@ selection rules, exclusions, counts, and leakage checks.
 
 | Stage | Status | Primary artifact | Remaining success condition |
 | --- | --- | --- | --- |
-| **1. Corpus v0.1 candidate** | Rights-filtered public build passes automated audit; 216 rights-pending structured records stay in all-data only | `GarhwaliCorpus` | Align release version/tag, then publish the rights-filtered package when requested |
-| **2. Benchmark candidate** | 5 candidate artifacts built; 3/3 external schemas pass; one source train/dev duplicate is flagged; no independent final score approved | `GarhwaliBench` | Freeze model choices on validation, then use a documented untouched evaluation set; retain automated-candidate wording |
-| **3. Baseline audit** | ASR, text, translation, retrieval, and generation results exist, but their test histories differ | `Garhwali Model Report` | Reconcile all run inputs and compare only on eligible, hash-frozen splits |
-| **4. Controlled modeling** | Prior local/cloud experiments are recorded; no model is promoted as release-ready | `GarhwaliGPT` plus adapted models | Run comparable validation-only controls; keep already-scored tests closed |
-| **5. Research experiments** | Five task areas have baseline evidence; no unified independent final evaluation | Reproducible ablation suite | Complete reproducible ablations after runtimes and eligible evaluation sets are fixed |
+| **1. Corpus v0.1 candidate** | Local rights-filtered build passes automated audit; text repo is owner-private, and 216 structured records remain only in all-data | `GarhwaliCorpus` | Resolve the no-redactions goal against source rights, then publish only a profile supported by its rights evidence |
+| **2. Benchmark candidate** | 5 task artifacts built; 3/3 external schemas pass; one XORQA train/dev duplicate is flagged; 0/5 independent final-accuracy sets approved | `GarhwaliBench` | Freeze model choices on development data and establish eligible final sets; keep automated-candidate wording |
+| **3. Baseline audit** | Saved ASR outputs are aligned on 269 development rows; translation and retrieval have fresh development-only diagnostics; older test reports have incomplete lineage | `Garhwali Model Report` | Reconcile test manifests and exposure, then use only eligible hash-frozen evaluation sets |
+| **4. Controlled modeling** | Text, generation, translation, retrieval, and ASR experiments are documented; no fine-tuned model is promoted for production | `GarhwaliGPT` plus adapted models | Restore a compatible local runtime or use separately authorized compute; select only on development data |
+| **5. Research experiments** | Baselines and bounded ablations are recorded; external model/runtime prerequisites block some fresh inference | Reproducible ablation suite | Continue low-cost local checks, then run controlled ablations only when weights, dependencies, and eligible evaluation are ready |
 | **6. Community expansion** | Planned | Corpus v1.x/v2 | Add native corrections, more varieties and districts, conversations, parallel data, and corrected historical text |
 | **7. Public platform** | Planned | Dataset, models, leaderboard, versioned API, explorer | Upload the final dataset, then ship stable search, lexicon, normalization, transliteration, and cultural endpoints |
 
@@ -641,13 +727,14 @@ with provenance.
 | Deliverable | Focused effort from the current state | Main dependency |
 | --- | ---: | --- |
 | Literary, cultural, and university additions | Complete | Automated validation |
-| Local corpus package candidate | Automated build complete: 257,807 all-data / 146,684 public-profile rows | Public profile excludes 216 structured records without compatible rights evidence; local v0.1.1 tag matches reviewed commit |
-| SraVaani refined sweep and integration | Complete; base checkpoint remains preferred | Further paid Hugging Face runs are paused by project direction |
-| Hugging Face dataset publication | VAANI and Meta Omnilingual speech configs are public; text package is private pending a no-redactions release | [Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech) has 113,363 rows in two configs; both configs and splits now appear in the Viewer; [Garhwali Corpus](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) is owner-private because its current export contains redacted catalog values |
-| Quality-focused dataset and benchmark release | Automated candidate is prepared | Native review and dialect annotation are deferred; do not claim native-validated quality |
-| Sellable text-first API MVP | 30–60 additional hours / 1–2 weeks | Dataset freeze, hosting, authentication, billing, monitoring |
-| Translation and ASR beta | 2–6 additional weeks | Better native references and measured quality gains |
-| Full corpus, benchmark, models, community layer, API, and demos | 2–4 months of sustained work | Native participation, evaluation, and production operations |
+| Local corpus package candidate | Automated build complete: 257,807 all-data / 146,684 rights-filtered profile rows | All-data is access-controlled; the profile redacts 24,566 values and excludes 216 structured records; v0.1.1 local tag matches the reviewed commit |
+| Benchmark/model research release candidate | **50–75 focused hours / about 6–9 weeks** at 8–10 hours per week | Close Phase 2/3 split and schema gaps; extend Phase 4 manifests; consolidate baselines; quantify uncertainty; finish eligibility labels, cards, and release checks. Missing model weights/dependencies may block fresh inference. |
+| SraVaani experiments | Saved runs are complete; no fine-tune is promoted, and some historical test aggregates lack row-level manifest hashes | No Hugging Face Jobs are running or scheduled; fresh local inference needs compatible dependencies and weights |
+| Hugging Face datasets | Checked live 2026-09-27: Speech is public; Corpus is private; both repos were last updated 2026-09-24 | Speech has 113,363 rows in two configs. The private Corpus profile has 146,684 rows in 12 configs, with 24,566 redacted values and 216 structured exclusions. The full 257,807-row package is local. |
+| Native language review and dialect annotation | Deferred; separate effort not included in the estimate above | Garhwali-speaking reviewers and a review protocol |
+| Sellable text-first API MVP | 30–60 additional focused hours / roughly 1–2 full-time weeks | Dataset/schema freeze, hosting, authentication, billing, and monitoring |
+| Translation and ASR beta | Additional weeks after the benchmark candidate | Better references and measured quality gains; production claims require language-aware evaluation |
+| Full corpus, benchmark, models, community layer, API, and demos | Several additional months after the benchmark/model research candidate | Native participation, product implementation, evaluation, hosting, and operations |
 
 “Finished” for the first public release means a reproducible dataset, a frozen
 benchmark, and documentation. A text-first API is a later product stage. Strong
@@ -665,9 +752,12 @@ accuracy cannot be established from machine scores alone.
    multi-seed mT5/mT0 tuning are complete. mT0 is the current accuracy baseline;
    exact-match generation and native-reference review remain open.
 4. [x] **SraVaani comparison — High:** the provider-approved, revision-pinned
-   model scores 42.761% WER / 17.606% CER on the same 112-row ASR manifest,
-   reducing WER by 42.45% relative to the best local Whisper checkpoint. The
-   resumable full pass produced drafts for all 104,542 untranscribed source rows,
+   model scores 42.761% WER / 17.606% CER on its pinned 112-row ASR manifest.
+   The zero-shot Whisper reports use that same manifest, and the prior comparison
+   audit matched both local Whisper fine-tunes to it by audio hashes and reference
+   text; SraVaani's 42.45% WER reduction versus the best local Whisper checkpoint
+   is supported on those rows.
+   The resumable full pass produced drafts for all 104,542 untranscribed source rows,
    covering 104,534 unique recordings with zero missing audio hashes.
 5. [x] **Transcript recovery routing — High:** all 1,188 flagged drafts now have
    deterministic recovery actions; originals remain active, no rows are
@@ -733,9 +823,10 @@ accuracy cannot be established from machine scores alone.
     weakly related to CER, so every case remains pending listening review.
 19. [x] **SraVaani human-reference training — Xhigh:** Hugging Face Job
     [`6aa9e33af76d6a098a70ec01`](https://huggingface.co/jobs/rushilrawat/6aa9e33af76d6a098a70ec01)
-    completed the 102-step decoder/joint adaptation on `l4x1`. The one-time
-    112-record test scores 43.528% WER / 17.452% CER versus the base model's
-    42.761% / 17.606%. The experimental checkpoint is retained but not promoted.
+    completed the 102-step decoder/joint adaptation on `l4x1`. Its one-time
+    112-record test report gives 43.528% WER / 17.452% CER. The recorded test
+    manifest hash differs from the base report, so the values are not a verified
+    paired comparison. The experimental checkpoint is not promoted.
 20. [x] **Structured knowledge packaging — Medium:** geography, historical terms,
     literary people, literary works, popular songs, and university research are
     first-class Hugging Face configurations with 216 records and stable IDs.
@@ -746,15 +837,18 @@ accuracy cannot be established from machine scores alone.
 22. [x] **Refined SraVaani decision — Xhigh:** Job
     [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768)
     completed all 61 trials. The selected checkpoint improved validation WER to
-    42.711% but worsened frozen-test WER to 43.528% versus the base model's
-    42.761%, so it is retained for research and not promoted.
+    42.711%; its saved historical test aggregate is 43.528%. The fine-tune report
+    does not record a test-manifest hash, so direct comparison with the base
+    result is unverified. The checkpoint is retained for research, not promoted.
 23. [x] **Expanded human-transcript SraVaani — Xhigh:** train on 5,513 human
     transcripts (8.112 hours) after excluding every fixed validation/test audio
     hash and every known benchmark speaker; select on the unchanged 269-record
     validation set and evaluate the frozen 112-record test at most once. Job
     [`6aaaa754f76d6a098a70f2f`](https://huggingface.co/jobs/rushilrawat/6aaaa754f76d6a098a70f2f)
-    completed 346 steps. Validation WER improved to 42.209%, but frozen-test WER
-    was 43.289% versus base SraVaani's 42.761%; the checkpoint remains experimental.
+    completed 346 steps. Validation WER improved to 42.209%; its saved historical
+    test aggregate is 43.289%. The fine-tune report omits a test-manifest hash,
+    so direct comparison with the base result is unverified; the checkpoint
+    remains experimental.
 24. [x] **IndicBERTv2 continuation — Xhigh:** Job
     [`6aaaad62f76d6a098a71100f`](https://huggingface.co/jobs/rushilrawat/6aaaad62f76d6a098a71100f)
     completed three 4,096-step seeds against the current 106,804-record training
@@ -809,13 +903,17 @@ accuracy cannot be established from machine scores alone.
     re-scored all 29,903 embedding candidates, supporting 1,624 near-duplicate
     pairs and narrowing cross-split review to 92 supported pairs. No record was
     automatically removed or changed.
-36. [x] **Budget-bounded 32,768-step mT0 continuation — Xhigh:** seeds 17 and
-    29 completed and improved validation cross-entropy to 4.266280 and 4.219282.
-    Seed 43 and the combined generation diagnostics were stopped when the
-    reported Hugging Face balance became insufficient; the fixed test stayed closed.
-37. [ ] **Final dataset publication — High:** rebuild the manifests after the
-    model decision, run the final audit again, and upload the selected all-data
-    package and its dataset card to Hugging Face.
+36. [x] **32,768-step mT0 continuation — Xhigh:** all three seeds later completed;
+    seed 43 had the best validation cross-entropy at 4.188287. The three-seed
+    generation audit found every adapter below the base model on validation
+    chrF2, so no adapter was promoted. The selected seed was evaluated once on
+    an 86-row test after selection; that test is historical, and its 172
+    prediction rows are not mapped to the current local manifest inventory. Details:
+    [`research/generation-quality-2026-09-25.md`](research/generation-quality-2026-09-25.md).
+37. [ ] **Final dataset publication — High:** freeze the intended public profile,
+    reconcile the no-redactions requirement with source-specific rights, rebuild
+    and audit the manifests, then publish only the records supported for public
+    redistribution. Keep the complete rights-pending all-data package private.
 38. [ ] **Text-first API MVP — High:** implement versioned search, lexicon,
     normalization, transliteration, and cultural-record endpoints with API keys,
     quotas, citations, confidence, and correction intake.
@@ -823,13 +921,28 @@ accuracy cannot be established from machine scores alone.
 The measured benchmark and research status, including exact completion counts,
 the recommended-view baseline, and unresolved evaluation gates, is in
 [`research/benchmark-research-status-2026-09-25.md`](research/benchmark-research-status-2026-09-25.md).
+The mT0 validation-generation diagnostics and test-history correction are in
+[`research/generation-quality-2026-09-25.md`](research/generation-quality-2026-09-25.md).
+The phased benchmark and model-research plan, with task metrics, technical
+choices, evidence gates, and the next work order, is in
+[`research/benchmark-model-roadmap.md`](research/benchmark-model-roadmap.md).
+The roadmap issue log, including translation split-safety fixes and remaining
+model/data blockers, is in
+[`research/issues&improvement plan.md`](research/issues%26improvement%20plan.md).
+The saved ASR runs, validation-row agreement, held-out aggregates, and current
+inference blockers are consolidated in
+[`research/asr-baseline-consolidation-2026-09-26.md`](research/asr-baseline-consolidation-2026-09-26.md).
 The original benchmark snapshot is preserved in
 [`research/garhwali-bench-v0.1-2026-09-11.md`](research/garhwali-bench-v0.1-2026-09-11.md).
 The multilingual tokenizer and IndicBERTv2 findings are in
 [`research/multilingual-model-audit-2026-09-11.md`](research/multilingual-model-audit-2026-09-11.md).
 The Garhwali-to-English floors and NLLB comparison are in
 [`research/translation-baseline-2026-09-11.md`](research/translation-baseline-2026-09-11.md).
-The XORQA lexical and IndicBERTv2 results are in
+The current 997-row dev-only refresh and local NLLB preflight are in
+[`research/translation-quality-2026-09-26.md`](research/translation-quality-2026-09-26.md).
+The current dev-only BM25 rerun, zero-score metric correction, and blocked dense-model preflight are in
+[`research/retrieval-quality-2026-09-25.md`](research/retrieval-quality-2026-09-25.md).
+The historical XORQA lexical and IndicBERTv2 results are in
 [`research/retrieval-baseline-2026-09-11.md`](research/retrieval-baseline-2026-09-11.md).
 The complete local ASR comparison and SraVaani access status are in
 [`research/speech-baseline-comparison-2026-09-11.md`](research/speech-baseline-comparison-2026-09-11.md).
@@ -939,7 +1052,7 @@ traceability alone does not grant reuse rights. The audit reopens all five
 benchmark artifacts and verifies package shard hashes and content-derived text IDs. See
 [`finalreport.md`](finalreport.md) and
 [`DEEP_DIVE_FINAL_AUDIT.md`](DEEP_DIVE_FINAL_AUDIT.md) for details. The
-The current complete suite passes **466 tests**. The pipeline tracks **367 source snapshots**.
+The current complete suite passes **519 tests**. The pipeline tracks **367 source snapshots**.
 
 ## Local dataset packages
 

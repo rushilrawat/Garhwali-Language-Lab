@@ -160,9 +160,17 @@ configs:
 
 # Garhwali Speech
 
-Companion to [Garhwali Corpus](https://huggingface.co/datasets/{TEXT_REPO}). This
-repository has separate configs for Project VAANI and Meta Omnilingual speech;
-choose one source config at a time because their splits and transcript histories differ.
+Companion to [Garhwali Corpus](https://huggingface.co/datasets/{TEXT_REPO}),
+which is currently owner-private and rights-filtered; access to the text package
+requires authorization. This repository has separate configs for Project VAANI
+and Meta Omnilingual speech; choose one source config at a time because their
+splits and transcript histories differ.
+
+The companion text package and speech package are separate releases with
+different data scope. Current model results and benchmark limits are documented
+in the [project README](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/README.md).
+The reproducible pipeline uses Python 3.12 and LangGraph for resumable ingestion;
+model evaluation uses task-specific scripts, and LangChain is not currently used.
 
 ## Contents
 

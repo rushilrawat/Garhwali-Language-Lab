@@ -121,10 +121,11 @@ included in the local release manifest.
 
 ## Final result
 
-The adapted checkpoint scores 43.5283% WER and 17.4516% CER on the frozen test,
-compared with 42.7613% WER and 17.6058% CER for the original SraVaani model.
-Because the primary WER metric worsened by 0.7670 percentage points, the adapted
-checkpoint remains experimental and the original checkpoint stays preferred.
+The adapted checkpoint report records 43.5283% WER and 17.4516% CER on a
+112-record test manifest; the base report records 42.7613% WER and 17.6058%
+CER on a different manifest hash. Matching counts do not verify identical rows,
+so these scores are historical aggregates rather than a verified paired
+comparison. The adapted checkpoint remains experimental and is not promoted.
 See [`sravaani-adaptation-evaluation-2026-09-16.md`](sravaani-adaptation-evaluation-2026-09-16.md).
 
 The local-directory mounts are uploaded to Hugging Face's private transient

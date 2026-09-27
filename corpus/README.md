@@ -1,5 +1,13 @@
 # Garhwali corpus: first ingestion
 
+This directory documents the project's initial openly licensed text sources; it
+is not the full current corpus. The current integrated snapshot contains 28,755
+exact-unique parent texts, 114,064 segments, speech and experimental views, and
+separate rights-filtered exports. See the [project overview](../README.md) and
+[final review](../finalreport.md) for current counts, Hugging Face state, and
+release limits. This folder's source files retain their own licenses and review
+status.
+
 Run `python3 scripts/ingest_open.py` from the project root. Standard-library Python and curl are sufficient. Raw responses and acquisition metadata live in `sources/web/`; subsequent runs verify their checksums and reuse them. Each importer replaces only its own JSONL file atomically, so repeated runs do not append duplicates or overwrite other sources.
 
 ## Current files
@@ -18,4 +26,4 @@ Preserve these per-source licenses when redistributing. Wikimedia history URLs i
 
 The earlier research inventory estimated ASJP at 40 items. Actual extraction yielded 91 concept records; use the ingestion report for current quantities. Wikimedia counts exclude redirects and count substantive source records rather than all discovered pages; individual pages can still contain scaffolding or non-Garhwali text.
 
-The broader online pass is documented in [`sources/online/README.md`](../sources/online/README.md) and [`outputs/online-ingestion-2026-09-07/report.md`](../outputs/online-ingestion-2026-09-07/report.md). It adds Meta, English Wiktionary, Incubator Wiktionary, benchmark, restricted evaluation and historical OCR layers. Historical and restricted material is deliberately outside this open text layer. Existing snapshots remain content-addressed and are never silently refreshed.
+The broader online pass is documented in [`sources/online/README.md`](../sources/online/README.md) and [`outputs/online-ingestion-2026-09-07/report.md`](../outputs/online-ingestion-2026-09-07/report.md). It adds Meta, English Wiktionary, Incubator Wiktionary, benchmark, restricted evaluation and historical OCR layers. Later work added user-supplied books, community and cultural material, research references, and structured language resources. Historical and restricted material stays distinguishable from this starter open-text layer. Existing snapshots remain content-addressed and are never silently refreshed.

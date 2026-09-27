@@ -1,10 +1,25 @@
 # Online ingestion register
 
-Snapshot dates: 2026-09-07 through 2026-09-09 (UTC). The collector records every attempted URL in
+The first bounded online crawl ran 2026-09-07 through 2026-09-09 (UTC). This
+register preserves that dated acquisition history and has later source reviews
+below; it is not a claim that all current corpus material came from that crawl.
+The collector records every attempted URL in
 `requests.jsonl`; successful bodies are content addressed and pointed to by a
 `*.metadata.json` file. A failed request remains in the log with its URL and
 error. No credentials, paywalls, robots restrictions or access controls were
 bypassed, and no remote audio or video was bulk downloaded.
+
+## Current project context (2026-09-26)
+
+The integrated project now contains **28,755 exact-unique parent texts** and
+**114,064 prepared text segments**; these are project-wide counts, not totals for
+the initial online crawl. The current inventory also includes seven supplied
+PDFs (six unique books, 769 active page records, and one exact duplicate),
+structured literature, songs, geography, historical terms, and university
+research records. The current release and rights counts are maintained in the
+[root README](../../README.md) and [final report](../../finalreport.md). Source
+discovery and acquisition history remain in this register; each later addition
+retains its own provenance and rights status.
 
 ## Material promoted into the project
 
@@ -45,13 +60,18 @@ bypassed, and no remote audio or video was bulk downloaded.
 | `restricted/` + `research/` | Web thematic lexicon | 666 source records / 642 distinct normalized written forms | Birds, animals, insects, instruments, occupations, nature, food and regional cultural terms; source-level rights, confidence and native-review flags retained |
 | Git-ignored `data/extracted/garhwali_idioms_dhyani/` | Balakrishna D. Dhyani, *Garhwali Muhavare Aur Kahavaten* | 99 exact-unique records | 69 standalone proverbs plus 30 Garhwali comparison entries; Hindi/English notes retained; no exact overlap across 33,807 existing text records |
 
-The open corpus now contains 3,560 source records. The candidate sources
+In the initial online-ingestion snapshot, the open corpus contained 3,560 source records. The candidate sources
 are active in `experimental/`: Indic Dialect ASR 7,823 rows, PahariLI 15,000,
 hikinegi 53, DCAD 119, and 18 exact-novel MADLAD clean documents. Across every
 layer there are 32,967 source records and 30,913 exact unique normalized texts;
-see the machine-generated [dedup
+these counts describe that dated ingestion pass, not the current integrated
+package. See the machine-generated [dedup
 report](../../outputs/online-ingestion-2026-09-07/dedup-report.json). No record
 has native-speaker review yet; no record is a released training recommendation.
+
+The later user-supplied book intake and multi-layout OCR evidence are documented
+in [`research/incoming-pdf-ingestion-2026-09-16.md`](../../research/incoming-pdf-ingestion-2026-09-16.md)
+and [`research/incoming-pdf-reocr-pilot-2026-09-17.md`](../../research/incoming-pdf-reocr-pilot-2026-09-17.md).
 
 ## Source inventory status
 

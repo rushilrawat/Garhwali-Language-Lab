@@ -11,19 +11,22 @@ was decoder/joint-only adaptation at learning rate `5e-5`, two epochs, seed 17,
 and 102 optimizer steps. It improved the 269-record validation set from
 43.454% to 42.711% WER and from 18.948% to 18.660% CER.
 
-The selected checkpoint was then evaluated once on the frozen 112-record test.
-It scored 43.528% WER and 17.494% CER. Base SraVaani scores 42.761% WER and
-17.606% CER on the same test. The refinement therefore worsened the primary
-test metric by 0.767 percentage points while improving CER by 0.112 percentage
-points. The base checkpoint remains the preferred ASR model.
+The selected checkpoint was then evaluated once on a reported 112-record test.
+It scored 43.528% WER and 17.494% CER. The base SraVaani report gives 42.761%
+WER and 17.606% CER, but the fine-tune report does not record a test-manifest
+hash. Matching counts do not verify that the same rows were scored, so the
+numeric difference is historical, not a paired test delta. The refined
+checkpoint remains experimental and is not promoted.
 
-| Model | Validation WER | Validation CER | Frozen test WER | Frozen test CER |
+| Model | Validation WER | Validation CER | Historical test WER | Historical test CER |
 | --- | ---: | ---: | ---: | ---: |
 | Base SraVaani | 43.454% | 18.948% | 42.761% | 17.606% |
 | Validation-selected refined checkpoint | 42.711% | 18.660% | 43.528% | 17.494% |
 
-Selection used validation WER only. The frozen test did not select or tune a
-configuration. The retained experimental checkpoint SHA-256 is
+Selection used validation WER only. The test aggregate did not select or tune a
+configuration. The base report pins test manifest SHA-256
+`2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52`; this
+fine-tune report does not. The retained experimental checkpoint SHA-256 is
 `f1a29db9c7a70566e456fe657051f558c7d77d1731585e6f80ab9b889e414a4e`.
 
 ## Runtime and credit estimate

@@ -669,6 +669,7 @@ def dataset_card(report):
     }
     config_names = sorted({key.split('/', 1)[0] for key in nonempty_configs})
     config_count = len(config_names)
+    config_word = 'configuration' if config_count == 1 else 'configurations'
     config_blocks = []
     for name in config_names:
         files = []
@@ -689,8 +690,13 @@ def dataset_card(report):
         language_header = '- gbm\n- hi\n- en'
         package_summary = (
             f'This complete all-data package contains **{exported_rows:,} records** '
-            f'across {config_count} configurations'
+            f'across {config_count} named {config_word} '
+            f'({len(nonempty_configs)} config/split entries)'
         )
+        resource_summary = '''Versioned Garhwali (`gbm`) text, speech, lexicon,
+instructions, geography, historical terms, literature, music, and university-
+research resources built by the Garhwali Language Lab. Available source, rights,
+and review metadata vary by configuration.'''
         catalog_summary = f'''The `catalog` configuration contains all
 **{report['catalog_records']:,} exact-unique collected text records with their full
 text values. No catalog text values are redacted. Source, license, rights status,
@@ -706,8 +712,14 @@ metadata attached.'''
         language_header = '- gbm'
         package_summary = (
             f'This public-profile package contains **{exported_rows:,} records** '
-            f'across {config_count} configurations'
+            f'across {config_count} named {config_word} '
+            f'({len(nonempty_configs)} config/split entries)'
         )
+        resource_summary = '''This rights-filtered profile contains Garhwali
+text, human transcripts, lexicon and instructions, plus experimental SraVaani
+drafts. Geography, historical terms, literary people and works, songs, and
+university-research records are excluded where the complete structured record
+does not have a compatible public-rights basis.'''
         catalog_summary = f'''The `catalog` configuration publicly accounts for all
 **{report['catalog_records']:,} exact-unique collected text records**. Rows whose
 source terms do not permit redistribution retain their stable content hash,
@@ -739,12 +751,18 @@ Release: **{report['release_id']}**
 
 {access_notice}
 
-Versioned Garhwali (`gbm`) text, speech, lexicon, instruction, geographic,
-historical, literary, music, and university-research resources built by the
-Garhwali Language Lab. Available source and review metadata vary by configuration.
+{resource_summary}
 
 {package_summary}, including transcripts for **{report['draft_unique_audio']:,}
 unique SraVaani recordings**. {audio_summary}
+
+This dataset card describes data scope, not model accuracy. Native-speaker
+review and dialect annotation are deferred; transcripts and machine drafts retain
+their review status. The project pipeline uses Python 3.12 and LangGraph for
+resumable ingestion; quality checks and model metrics use task-specific scripts.
+LangChain is not part of the current pipeline. See the [project README](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/README.md)
+and [benchmark research status](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/research/benchmark-research-status-2026-09-25.md)
+for the latest measured results and limitations.
 
 {catalog_summary}
 

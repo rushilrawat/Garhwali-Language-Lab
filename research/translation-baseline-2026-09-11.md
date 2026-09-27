@@ -5,6 +5,12 @@ Generated on 2026-09-11 from the frozen IndicGenBench FLORES asset in
 the original benchmark records, model revisions, predictions, and metric
 settings remain identifiable.
 
+**Status note (2026-09-26):** The results below are historical test results;
+FLORES test rows have already been scored. The runners now default to `dev`
+and save to split-specific directories. Do not rerun the old test experiment
+for model selection. The latest dev-only refresh is documented in
+[`translation-quality-2026-09-26.md`](translation-quality-2026-09-26.md).
+
 ## Evaluation data
 
 The benchmark contains **2,009** Garhwali-to-English pairs: **997 development**
@@ -41,11 +47,16 @@ claim about what the adapter learned.
 
 ## Reproduction
 
+The original predictions and reports are preserved in the local ignored
+evaluation directory. To reproduce the current development-only copy and
+translation-memory baseline, run:
+
 ```bash
-.venv/bin/python scripts/run_translation_baseline.py
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --max-records 32 --max-new-tokens 64 --device cpu
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --adapter .cache/model-adapters/garhwali-nllb-v12 --output data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy --max-records 32 --max-new-tokens 64 --device cpu
+python3 scripts/run_translation_baseline.py --split dev
 ```
+
+The NLLB historical test pilot is not rerun here; its pinned model/adapter
+revisions and prior aggregate values are retained above.
 
 Model weights, adapter files, predictions, and generated reports remain ignored
 by Git. The tracked release manifest copies the resulting aggregate metrics.

@@ -2,7 +2,7 @@
 
 Updated: 2026-09-16
 Job: [`6aaaa754f76d6a098a70f2f`](https://huggingface.co/jobs/rushilrawat/6aaaa754f76d6a098a70f2f)
-Final status: completed; checkpoint retained as experimental, base model preferred
+Final status: completed; checkpoint retained as experimental, no model promoted
 
 ## Data boundary
 
@@ -47,9 +47,9 @@ The reproducible builders and launcher are
 ## Result
 
 The job completed 346 optimizer steps. Validation improved from 43.454% to
-42.209% WER and from 18.948% to 18.302% CER. The one-time frozen test reached
-43.289% WER / 17.396% CER, compared with base SraVaani at 42.761% / 17.606%.
-Because the primary held-out WER is 0.528 percentage points worse, base
-SraVaani remains preferred. The expanded checkpoint is retained as experimental.
+42.209% WER and from 18.948% to 18.302% CER. The saved 112-record test
+aggregate is 43.289% WER / 17.396% CER; the fine-tune report does not record a
+test-manifest hash, so the comparison to base SraVaani's 42.761% / 17.606% is
+not verifiably paired. The checkpoint remains experimental and is not promoted.
 
 The job used 693 seconds of billed L4 runtime, an estimated $0.154 at $0.80/hour.

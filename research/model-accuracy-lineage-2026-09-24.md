@@ -175,6 +175,8 @@ Sources: [https://huggingface.co/ARTPARK-IISc/SraVaani-1.0](https://huggingface.
 | `data/processed/evaluation/controlled_modeling/mt5_instruction/test_predictions.jsonl` | 336 | `1bc275a14fcaa298211b4eb7283240c11000b4326b3db2a5b44e4e2923081eea` | unmatched | 0 | 0 | 0 | 336 |
 | `data/processed/evaluation/retrieval/indicbertv2/predictions.jsonl` | 539 | `974e2168901bde326d9e1d58bd10152b383bbb0d32c6e63a46ec163fe11ee054` | benchmark_xorqa:test=539 | 0 | 539 | 0 | 0 |
 | `data/processed/evaluation/retrieval/predictions.jsonl` | 1039 | `c1b4f6b6d91cb872d3f34ba9d39b72e9e625d8b3d4d22cb5cd8bef8055a3b02c` | benchmark_xorqa:dev=500, test=539 | 500 | 539 | 0 | 0 |
+| `data/processed/evaluation/retrieval/roadmap_2026-09-25/bm25_dev/predictions.jsonl` | 500 | `3f7df640f9a27f4fc565a9f890eb87c20d14061f59e682bc818704bfb5eccd29` | benchmark_xorqa:dev=500 | 500 | 0 | 0 | 0 |
+| `data/processed/evaluation/translation/accuracy_dev/predictions.jsonl` | 997 | `354bb782ed8c4c1361320a736e45ffe1043198bf08a248fbea24644d79bb0a2b` | benchmark_flores:dev=997 | 997 | 0 | 0 | 0 |
 | `data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy/predictions.jsonl` | 32 | `74f81962cd5c791f5a719c71b4e6e4ab2ddb9afc35f910a959260f7828a2721e` | benchmark_flores:test=32 | 0 | 32 | 0 | 0 |
 | `data/processed/evaluation/translation/nllb_hindi_proxy/predictions.jsonl` | 32 | `75d0f73c5b4300fbb8e5a210951734f2e6e8b3faa4f7900e686e4d28e72fbd33` | benchmark_flores:test=32 | 0 | 32 | 0 | 0 |
 | `data/processed/evaluation/translation/predictions.jsonl` | 1012 | `759c28e6ec78f8ad5c70a6f500c9c773dcc2ab2e16860f5c940b62532c1bc73f` | benchmark_flores:test=1012 | 0 | 1012 | 0 | 0 |
@@ -184,7 +186,7 @@ Sources: [https://huggingface.co/ARTPARK-IISc/SraVaani-1.0](https://huggingface.
 - **asr:** test=112, validation=269. Exact row IDs and hashes are in the local-only JSON ledger.
 - **asr_expanded_human:** test=112, validation=269. Exact row IDs and hashes are in the local-only JSON ledger.
 - **asr_experimental:** test=112, validation=282. Exact row IDs and hashes are in the local-only JSON ledger.
-- **benchmark_flores:** test=1012. Exact row IDs and hashes are in the local-only JSON ledger.
+- **benchmark_flores:** dev=997, test=1012. Exact row IDs and hashes are in the local-only JSON ledger.
 - **benchmark_xorqa:** dev=500, test=539. Exact row IDs and hashes are in the local-only JSON ledger.
 - **instructions_v0.2:** test=134, validation=144. Exact row IDs and hashes are in the local-only JSON ledger.
 - **tts:** test=112, validation=269. Exact row IDs and hashes are in the local-only JSON ledger.

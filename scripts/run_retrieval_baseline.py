@@ -17,9 +17,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / 'benchmarks/indicgenbench_xorqa.jsonl'
 OUTPUT = ROOT / 'data/processed/evaluation/retrieval'
-TEST_PILOT_RECORDS = 128
-
-
 def normalize(text):
     return re.sub(r'\s+', ' ', unicodedata.normalize('NFC', str(text)).casefold()).strip()
 
@@ -44,16 +41,43 @@ def context_id(context):
 def build_documents(rows):
     contexts = {}
     relevant_ids = []
-    for row in rows:
+    source_ids = defaultdict(set)
+    for row_index, row in enumerate(rows):
         context = row['source_example']['context']
         document_id = context_id(context)
         contexts.setdefault(document_id, context)
         relevant_ids.append(document_id)
+        source_ids[document_id].add(row.get('record_id') or f'source_row:{row_index:08d}')
     documents = [
         {'document_id': document_id, 'text': contexts[document_id]}
         for document_id in sorted(contexts)
     ]
-    return documents, relevant_ids
+    return documents, relevant_ids, {
+        document_id: sorted(record_ids)
+        for document_id, record_ids in sorted(source_ids.items())
+    }
+
+
+def provenance(input_path, documents, source_ids, evaluated_rows):
+    canonical_corpus = ''.join(
+        json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n'
+        for row in documents
+    ).encode('utf-8')
+    duplicate_groups = {
+        document_id: record_ids
+        for document_id, record_ids in source_ids.items()
+        if len(record_ids) > 1
+    }
+    return {
+        'input_manifest_sha256': hashlib.sha256(Path(input_path).read_bytes()).hexdigest(),
+        'passage_corpus_sha256': hashlib.sha256(canonical_corpus).hexdigest(),
+        'evaluated_record_ids': sorted(
+            row.get('record_id') or f'evaluation_row:{index:08d}'
+            for index, row in enumerate(evaluated_rows)
+        ),
+        'passage_source_record_ids': source_ids,
+        'duplicate_passage_groups': duplicate_groups,
+    }
 
 
 class BM25Index:
@@ -97,42 +121,54 @@ class BM25Index:
 
 
 def metric_summary(results):
-    ranks = [row['rank'] for row in results]
+    ranks = [row['rank'] for row in results if row['rank'] is not None]
+    query_count = len(results)
     return {
-        'queries': len(results),
-        'recall_at_1': round(sum(rank <= 1 for rank in ranks) / max(1, len(ranks)), 8),
-        'recall_at_5': round(sum(rank <= 5 for rank in ranks) / max(1, len(ranks)), 8),
-        'recall_at_10': round(sum(rank <= 10 for rank in ranks) / max(1, len(ranks)), 8),
+        'queries': query_count,
+        'retrieved_queries': len(ranks),
+        'not_retrieved_queries': query_count - len(ranks),
+        'recall_at_1': round(sum(rank <= 1 for rank in ranks) / max(1, query_count), 8),
+        'recall_at_5': round(sum(rank <= 5 for rank in ranks) / max(1, query_count), 8),
+        'recall_at_10': round(sum(rank <= 10 for rank in ranks) / max(1, query_count), 8),
         'mrr_at_10': round(
-            sum(1 / rank for rank in ranks if rank <= 10) / max(1, len(ranks)),
+            sum(1 / rank for rank in ranks if rank <= 10) / max(1, query_count),
             8,
         ),
-        'mean_rank': round(sum(ranks) / max(1, len(ranks)), 6),
+        'mean_rank': round(sum(ranks) / len(ranks), 6) if ranks else None,
         'median_rank': round(statistics.median(ranks), 6) if ranks else None,
         'zero_relevant_score_queries': sum(row['relevant_score'] == 0 for row in results),
     }
 
 
-def evaluate(rows, relevant_ids, index, query_field):
+def evaluate(rows, relevant_ids, index, query_field, selection_split='dev'):
+    if selection_split != 'dev':
+        raise ValueError('retrieval selection supports only dev; test rows are not eligible')
     results = []
     requested = 0
     for row, relevant_id in zip(rows, relevant_ids):
-        if row.get('split') not in {'dev', 'test'}:
+        if row.get('split') != selection_split:
             continue
         requested += 1
         query = row['source_example'].get(query_field, '').strip()
         if not query:
             continue
         ranked = index.rank(query, top_k=len(index.documents))
-        rank = next(position for position, item in enumerate(ranked, 1)
-                    if item['document_id'] == relevant_id)
-        relevant_score = ranked[rank - 1]['score']
+        relevant = next(
+            (
+                (position, item)
+                for position, item in enumerate(ranked, 1)
+                if item['document_id'] == relevant_id and item['score'] > 0
+            ),
+            None,
+        )
+        rank = relevant[0] if relevant else None
+        relevant_score = relevant[1]['score'] if relevant else 0.0
         results.append({
             'record_id': row.get('record_id'),
             'split': row['split'],
             'rank': rank,
             'relevant_score': relevant_score,
-            'top_10': ranked[:10],
+            'top_10': [item for item in ranked if item['score'] > 0][:10],
         })
     return {
         'query_coverage': {
@@ -141,15 +177,17 @@ def evaluate(rows, relevant_ids, index, query_field):
             'missing': requested - len(results),
         },
         'overall': metric_summary(results),
-        'dev': metric_summary([row for row in results if row['split'] == 'dev']),
-        'test': metric_summary([row for row in results if row['split'] == 'test']),
+        'dev': metric_summary(results),
+        'test': None,
     }, results
 
 
-def run(input_path=INPUT, output_dir=OUTPUT):
+def run(input_path=INPUT, output_dir=OUTPUT, selection_split='dev'):
+    if selection_split != 'dev':
+        raise ValueError('retrieval selection supports only dev; test rows are not eligible')
     with Path(input_path).open(encoding='utf-8') as handle:
         rows = [json.loads(line) for line in handle if line.strip()]
-    documents, relevant_ids = build_documents(rows)
+    documents, relevant_ids, source_ids = build_documents(rows)
     word_index = BM25Index(documents, word_tokens)
     character_index = BM25Index(documents, character_ngrams)
     configurations = {
@@ -159,18 +197,12 @@ def run(input_path=INPUT, output_dir=OUTPUT):
     }
     baselines = {}
     predictions = {}
-    test_pilot_ids = {
-        row.get('record_id')
-        for row in sorted(
-            (row for row in rows if row.get('split') == 'test'),
-            key=lambda row: row.get('record_id', ''),
-        )[:TEST_PILOT_RECORDS]
-    }
+    evaluated_rows = [row for row in rows if row.get('split') == selection_split]
     for name, (index, query_field) in configurations.items():
-        metrics, results = evaluate(rows, relevant_ids, index, query_field)
-        metrics['test_pilot'] = metric_summary([
-            row for row in results if row['record_id'] in test_pilot_ids
-        ])
+        metrics, results = evaluate(
+            rows, relevant_ids, index, query_field, selection_split=selection_split
+        )
+        metrics['test_pilot'] = None
         baselines[name] = metrics
         for result in results:
             predictions.setdefault(result['record_id'], {
@@ -181,14 +213,17 @@ def run(input_path=INPUT, output_dir=OUTPUT):
                 'relevant_score': result['relevant_score'],
                 'top_10': result['top_10'],
             }
-    evaluated = [row for row in rows if row.get('split') in {'dev', 'test'}]
+    evaluated = evaluated_rows
     report = {
         'run_id': 'garhwali-xorqa-retrieval-baselines-v0.1',
         'benchmark': 'IndicGenBench XORQA Garhwali',
         'corpus_documents': len(documents),
         'source_rows': len(rows),
         'evaluation_queries': len(evaluated),
-        'test_pilot_records': len(test_pilot_ids),
+        'selection_split': selection_split,
+        'evaluation_status': 'development_selection_only',
+        'test_scored': False,
+        'test_pilot_records': 0,
         'splits': Counter(row['split'] for row in evaluated),
         'answer_text_present_queries': sum(
             any(normalize(answer.get('text', '')) in normalize(row['source_example']['context'])
@@ -198,7 +233,12 @@ def run(input_path=INPUT, output_dir=OUTPUT):
         'retrieval_scope': 'all_unique_xorqa_contexts',
         'training_use': 'none; train-labelled queries are indexed as passages but not evaluated',
         'baselines': baselines,
-        'metric_note': 'Recall and reciprocal rank treat the row-associated deduplicated context as relevant.',
+        'metric_note': (
+            'Recall and reciprocal rank use the row-associated deduplicated context as relevant. '
+            'A zero-score BM25 positive has null rank and is not retrieved; mean and median rank '
+            'summarize retrieved positives only.'
+        ),
+        **provenance(input_path, documents, source_ids, evaluated),
     }
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -218,8 +258,14 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', type=Path, default=INPUT)
     parser.add_argument('--output', type=Path, default=OUTPUT)
+    parser.add_argument('--selection-split', choices=('dev',), default='dev')
     args = parser.parse_args()
-    print(json.dumps(run(args.input, args.output), ensure_ascii=False, indent=2, sort_keys=True))
+    print(json.dumps(
+        run(args.input, args.output, selection_split=args.selection_split),
+        ensure_ascii=False,
+        indent=2,
+        sort_keys=True,
+    ))
 
 
 if __name__ == '__main__':

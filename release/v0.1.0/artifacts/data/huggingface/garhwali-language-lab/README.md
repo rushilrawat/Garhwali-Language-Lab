@@ -73,6 +73,11 @@ configs:
 
 Release: **garhwali-language-lab-v0.1.0**
 
+> This card preserves the `v0.1.0` package snapshot and its counts. It is not the
+> current release decision: some structured records and text values were later
+> excluded from the rights-filtered profile. See the [current project README](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/README.md)
+> and [final report](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/finalreport.md).
+
 
 
 Versioned Garhwali (`gbm`) text, speech, lexicon, instruction, geographic,

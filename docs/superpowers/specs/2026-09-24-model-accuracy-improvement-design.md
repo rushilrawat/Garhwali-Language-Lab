@@ -20,11 +20,13 @@ baselines, data manifests, promotion decisions, and limitations.
 
 ## Evidence informing the sequence
 
-- On the existing 112-record VAANI comparison, SraVaani 1.0 leads at 42.761%
-  WER / 17.606% CER. The 61-trial selected decoder lowers validation WER to
-  42.711% but scores 43.528% WER on the previously frozen test; the expanded
-  human-transcript adaptation scores 43.289% test WER. Keep the original model
-  as baseline; do not promote either adaptation.
+- SraVaani 1.0's base report scores 42.761% WER / 17.606% CER on a pinned
+  112-record VAANI test manifest. The 61-trial and expanded-human reports have
+  lower selected validation WERs (42.711% and 42.209%) and historical test
+  aggregates (43.528% and 43.289%), but those reports omit test-manifest hashes.
+  The earlier 102-step adaptation report uses a different manifest hash from
+  the base report. Treat test comparisons as unverified until row identity is
+  reconciled; do not promote a fine-tune from these results.
 - Two Whisper machine-transcript curriculum pilots worsened fixed validation.
   Do not scale that pseudo-label recipe.
 - The public Meta Omnilingual Garhwali subset has 2,927 audio/transcript pairs

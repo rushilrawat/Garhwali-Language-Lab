@@ -1,23 +1,30 @@
 # Documentation index
 
-This page is the map for the project’s Markdown documentation. It inventories all **113 Markdown files tracked by Git as of 2026-09-25**; this index is additional. Ignored caches, downloaded dependency documentation, and local model outputs are not repository documentation.
+This page is the map for the project’s Markdown documentation. It inventories repository Markdown files other than this index, including reports currently in the working tree. Ignored caches, downloaded dependency documentation, and local model outputs are not repository documentation.
 
 ## Read these first
 
 - [README.md](../README.md) — Project overview and current narrative.
 - [finalreport.md](../finalreport.md) — Authoritative release verdict, counts, and blockers.
 - [DEEP_DIVE_FINAL_AUDIT.md](../DEEP_DIVE_FINAL_AUDIT.md) — Detailed code, data, and release audit.
-- [benchmark-research-status-2026-09-25.md](../research/benchmark-research-status-2026-09-25.md) — Measured benchmark and model-research status.
+- [benchmark-research-status-2026-09-25.md](../research/benchmark-research-status-2026-09-25.md) — Measured benchmark and model-research snapshot with the latest translation addendum.
+- [benchmark-model-roadmap.md](../research/benchmark-model-roadmap.md) — Phased benchmark and model-research plan, metrics, tooling, and release gates.
+- [issues & improvement plan](../research/issues%26improvement%20plan.md) — Evidence-backed issue log and blockers for roadmap implementation.
+- [asr-baseline-consolidation-2026-09-26.md](../research/asr-baseline-consolidation-2026-09-26.md) — Saved ASR comparison, validation alignment, and local inference blockers.
+- [translation-quality-2026-09-26.md](../research/translation-quality-2026-09-26.md) — Development-only translation metrics and NLLB runtime preflight.
+- [retrieval-quality-2026-09-25.md](../research/retrieval-quality-2026-09-25.md) — Development retrieval scores and dense-model blockers.
+- [generation-quality-2026-09-25.md](../research/generation-quality-2026-09-25.md) — mT0 generation diagnostics and historical test limits.
 - [corpus-preparation-status.md](../research/corpus-preparation-status.md) — Chronological corpus-preparation log.
 
 ## How to keep the docs consistent
 
 - Treat `finalreport.md` as the current release decision and consolidated audit summary.
-- Treat `research/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard; older experiment reports are historical snapshots.
+- Treat `research/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard with later dated addenda; older experiment reports are historical snapshots.
+- The latest scorecard refresh is dated 2026-09-26. It reports development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
 - Keep dated research reports as records of the data and model version used at that time. Update the current status docs when new evidence supersedes them; do not rewrite history.
-- Treat `release/v0.1.0/` and `release/v0.1.1/` as frozen snapshots. Their repeated cards and reports are intentional so each release package is self-contained.
+- Treat `release/v0.1.0/` and `release/v0.1.1/` as frozen snapshots. Their repeated cards and reports preserve each package's own counts and terms; the root README and final report carry current status.
 - Keep dataset-card and policy copies inside each Hugging Face package aligned with the root policies when preparing a new package.
-- Add an entry here when adding or removing a tracked Markdown file.
+- Add an entry here when adding or removing a project Markdown file. This index currently covers 119 Markdown files outside itself, including current working-tree reports.
 
 ## Exact duplicate files
 
@@ -99,6 +106,9 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/asr-weighted-trainer-2026-09-14.md`](../research/asr-weighted-trainer-2026-09-14.md) — Weighted curriculum trainer and dry-run audit
 - [`research/automated-pre-release-quality-plan.md`](../research/automated-pre-release-quality-plan.md) — Automated Pre-release Quality Plan
 - [`research/benchmark-research-status-2026-09-25.md`](../research/benchmark-research-status-2026-09-25.md) — Benchmark and research suite: measured status
+- [`research/benchmark-model-roadmap.md`](../research/benchmark-model-roadmap.md) — Garhwali Benchmark and Model Research Roadmap
+- [`research/issues&improvement plan.md`](../research/issues%26improvement%20plan.md) — Benchmark and model roadmap issues & improvement plan
+- [`research/asr-baseline-consolidation-2026-09-26.md`](../research/asr-baseline-consolidation-2026-09-26.md) — ASR baseline consolidation — 2026-09-26
 - [`research/controlled-modeling-2026-09-12.md`](../research/controlled-modeling-2026-09-12.md) — Controlled Garhwali modeling: continuation and instruction tuning
 - [`research/controlled-text-scaling-2026-09-11.md`](../research/controlled-text-scaling-2026-09-11.md) — Controlled Garhwali text-scaling experiment
 - [`research/corpus-preparation-status.md`](../research/corpus-preparation-status.md) — Corpus preparation status
@@ -123,7 +133,8 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/model-accuracy-preflight-2026-09-24.md`](../research/model-accuracy-preflight-2026-09-24.md) — Model accuracy improvement status and local preflight
 - [`research/model-assisted-text-cleanup-2026-09-11.md`](../research/model-assisted-text-cleanup-2026-09-11.md) — Model-assisted text cleanup and ablation
 - [`research/mt0-16384-validation-2026-09-16.md`](../research/mt0-16384-validation-2026-09-16.md) — mT0 16,384-step validation continuation
-- [`research/mt0-32768-partial-2026-09-16.md`](../research/mt0-32768-partial-2026-09-16.md) — Partial mT0 32,768-step continuation
+- [`research/mt0-32768-partial-2026-09-16.md`](../research/mt0-32768-partial-2026-09-16.md) — Initial canceled mT0 continuation attempt; later seed-43 recovery is documented
+- [`research/generation-quality-2026-09-25.md`](../research/generation-quality-2026-09-25.md) — Reconciled three-seed mT0 generation quality and test history
 - [`research/mt0-cloud-continuation-2026-09-16.md`](../research/mt0-cloud-continuation-2026-09-16.md) — mT0 Garhwali instruction continuation
 - [`research/mt0-extended-validation-2026-09-16.md`](../research/mt0-extended-validation-2026-09-16.md) — Extended mT0 validation-only continuation
 - [`research/multilingual-model-audit-2026-09-11.md`](../research/multilingual-model-audit-2026-09-11.md) — Multilingual model audit
@@ -132,6 +143,7 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/outreach-drafts.md`](../research/outreach-drafts.md) — Outreach drafts for Garhwali dataset access
 - [`research/popular-song-ingestion-2026-09-15.md`](../research/popular-song-ingestion-2026-09-15.md) — Garhwali popular-song ingestion — 2026-09-15
 - [`research/retrieval-baseline-2026-09-11.md`](../research/retrieval-baseline-2026-09-11.md) — Garhwali cross-lingual retrieval baseline
+- [`research/retrieval-quality-2026-09-25.md`](../research/retrieval-quality-2026-09-25.md) — Current dev-only retrieval rerun, corrected zero-score BM25 handling, and dense-model preflight
 - [`research/semantic-duplicate-audit-2026-09-16.md`](../research/semantic-duplicate-audit-2026-09-16.md) — Semantic duplicate and split-leakage audit
 - [`research/semantic-duplicate-refinement-2026-09-16.md`](../research/semantic-duplicate-refinement-2026-09-16.md) — Semantic duplicate refinement
 - [`research/social-media-ingestion-2026-09-10.md`](../research/social-media-ingestion-2026-09-10.md) — Garhwali social-media ingestion
@@ -153,6 +165,7 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/text-source-rights-audit-2026-09-15.md`](../research/text-source-rights-audit-2026-09-15.md) — Text source and rights audit
 - [`research/thematic-vocabulary-report.md`](../research/thematic-vocabulary-report.md) — Garhwali thematic vocabulary web pass
 - [`research/translation-baseline-2026-09-11.md`](../research/translation-baseline-2026-09-11.md) — Garhwali-to-English translation baseline
+- [`research/translation-quality-2026-09-26.md`](../research/translation-quality-2026-09-26.md) — Development-only translation baseline refresh and NLLB preflight
 - [`research/vaani-audit-2026-09-09.md`](../research/vaani-audit-2026-09-09.md) — VAANI Garhwali metadata audit
 - [`research/vaani-collection-completion-2026-09-09.md`](../research/vaani-collection-completion-2026-09-09.md) — VAANI Garhwali collection completion
 - [`research/vaani-full-use-plan.md`](../research/vaani-full-use-plan.md) — Project VAANI: remaining work for full Garhwali use
