@@ -44,6 +44,9 @@
     "instructions/train": 1516,
     "instructions/validation": 220,
     "lexicon/train": 661,
+    "record_index/train": 257807,
+    "record_sources/train": 277637,
+    "source_catalog/train": 590,
     "sravaani_drafts/train": 104534,
     "text/test": 422,
     "text/train": 8037,
@@ -70,7 +73,7 @@
   },
   "errors": [],
   "exported_rows": 146684,
-  "generated": "2026-09-26",
+  "generated": "2026-09-27",
   "leakage": {
     "asr_audio_cross_split": 0,
     "asr_speaker_cross_split": 0,
@@ -94,7 +97,30 @@
     "text_admission_metadata_missing": 0,
     "text_language_scope_failures": 0
   },
+  "reference_index": {
+    "errors": [],
+    "record_rows": 257807,
+    "record_source_links": 277637,
+    "records_by_family": {
+      "asr": 5894,
+      "catalog": 28755,
+      "geography": 50,
+      "historical_terms": 36,
+      "instructions": 3230,
+      "lexicon": 1114,
+      "literary_people": 26,
+      "literary_works": 66,
+      "popular_songs": 30,
+      "sravaani_drafts": 104534,
+      "text": 114064,
+      "university_research": 8
+    },
+    "records_with_public_content": 122118,
+    "source_catalog_rows": 590,
+    "status": "passed"
+  },
   "release_id": "garhwali-language-lab-v0.1.1",
+  "repository_rows_including_reference_tables": 682718,
   "shard_hash_failures": 0,
   "status": "passed",
   "structured_knowledge": {

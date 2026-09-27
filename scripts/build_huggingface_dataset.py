@@ -155,7 +155,8 @@ def public_speaker_id(row):
     return f'speaker_{hashlib.sha256(value).hexdigest()[:16]}'
 
 
-def audio_row(row, transcript_field, include_audio_reference=True):
+def audio_row(row, transcript_field, include_audio_reference=True,
+              serialize_evidence=False):
     keep = (
         'audio_sha256', 'duration_seconds', 'language', 'district', 'state',
         'gender', 'languages_known', 'source', 'license',
@@ -172,6 +173,29 @@ def audio_row(row, transcript_field, include_audio_reference=True):
         'audio_grounded_review',
     )
     exported = {key: row.get(key) for key in keep if key in row}
+    if serialize_evidence:
+        # Draft evidence is sparse and nested. JSON strings keep one stable
+        # Arrow schema across shards while preserving every nested value.
+        json_fields = (
+            'machine_transcript_quality', 'recovery_confidence',
+            'source_conflict_evidence', 'recovery_adjudication',
+            'recovery_third_checkpoint', 'audio_grounded_review',
+        )
+        for key in json_fields:
+            value = row.get(key)
+            exported[key] = (
+                json.dumps(value, ensure_ascii=False, sort_keys=True,
+                           separators=(',', ':'))
+                if value is not None else ''
+            )
+        for key in ('quality_flags', 'training_quality_flags'):
+            exported[key] = json.dumps(
+                row.get(key) or [], ensure_ascii=False, separators=(',', ':')
+            )
+        exported['active_for_source_error_analysis'] = bool(
+            row.get('active_for_source_error_analysis', False)
+        )
+        exported['language_scope_status'] = row.get('language_scope_status') or ''
     if include_audio_reference:
         exported['audio'] = content_audio_path(row['audio_sha256'])
     exported['speaker_id'] = public_speaker_id(row)
@@ -349,8 +373,8 @@ def text_row(row, parent_quality=None):
         'script': script,
         'split': row['split'],
         'duplicate_component_id': row.get('duplicate_component_id'),
-        'original_split': row.get('original_split'),
-        'split_assignment': row.get('split_assignment'),
+        'original_split': row.get('original_split') or '',
+        'split_assignment': row.get('split_assignment') or '',
         'quality_flags': row.get('quality_flags') or [],
         'provenance': provenance_items(row),
         'public_rights_basis': [
@@ -672,15 +696,18 @@ def dataset_card(report):
     config_word = 'configuration' if config_count == 1 else 'configurations'
     config_blocks = []
     for name in config_names:
-        files = []
+        splits = set()
         for key, value in sorted(nonempty_configs.items()):
             config, split = key.split('/', 1)
             if config != name:
                 continue
-            files.extend(
-                f'  - split: {split}\n    path: data/{name}/{filename}'
-                for filename in value.get('files') or [f'{split}-*.jsonl']
-            )
+            # Dataset metadata accepts one declaration per split. Use a shard
+            # glob so multiple JSONL shards do not become duplicate split names.
+            splits.add(split)
+        files = [
+            f'  - split: {split}\n    path: data/{name}/{split}-*.jsonl'
+            for split in sorted(splits)
+        ]
         config_blocks.append(
             f'- config_name: {name}\n  data_files:\n' + '\n'.join(files)
         )
@@ -718,18 +745,19 @@ metadata attached.'''
         resource_summary = '''This rights-filtered profile contains Garhwali
 text, human transcripts, lexicon and instructions, plus experimental SraVaani
 drafts. Geography, historical terms, literary people and works, songs, and
-university-research records are excluded where the complete structured record
-does not have a compatible public-rights basis.'''
+university-research records are present in the source-reference tables; their
+full contents are not redistributed when source rights are unresolved.'''
         catalog_summary = f'''The `catalog` configuration publicly accounts for all
 **{report['catalog_records']:,} exact-unique collected text records**. Rows whose
 source terms do not permit redistribution retain their stable content hash,
 source URL, rights status, quality tier, language evidence, and review reasons;
 only the protected text value is redacted. Nothing is silently omitted.'''
         excluded = sum(report.get('structured_knowledge_excluded_for_rights', {}).values())
-        access_notice = f'''This public profile omits **{excluded:,} structured-knowledge records**
+        access_notice = f'''Public content tables withhold full content from **{excluded:,} structured-knowledge records**
 whose provenance does not include an explicit compatible public-rights basis.
-They remain intact in the complete all-data package. No source license is
-inferred from a URL. The text catalog records each collected text identity and
+Their full records remain in the access-controlled all-data package. The
+reference tables expose source pointers and factual metadata, not full content.
+No source license is inferred from a URL. The text catalog records each text identity and
 redacts values without compatible redistribution evidence. Native-speaker
 review and dialect annotation are deferred; benchmark and model scores are
 automated research results, not native-validated claims.'''
@@ -786,6 +814,11 @@ human-reference calibration evidence. They still require listening review.
 The draft layer also preserves **{report['draft_source_label_conflicts']:,}
 source-label conflict recordings**. These remain available for auditing but are
 explicitly ineligible for Garhwali training.
+
+To keep Dataset Viewer schemas stable across shards, the SraVaani draft
+configuration stores nested evidence objects and draft quality-flag arrays as
+compact JSON strings. Parse those columns with a JSON parser; their values are
+preserved without flattening or omission.
 
 This package uses multiple upstream licenses. Inspect each row's provenance
 before redistribution or model release. Full documentation, limitations, and the
@@ -949,7 +982,8 @@ def _build_at(output, profile='public', include_audio=False,
         )
     audio_sources.extend(unique_drafts)
     report['configs']['sravaani_drafts/train'] = write_shards(
-        (audio_row(row, 'machine_transcript', include_audio) for row in unique_drafts),
+        (audio_row(row, 'machine_transcript', include_audio,
+                   serialize_evidence=True) for row in unique_drafts),
         output / 'data/sravaani_drafts', 'train', shard_rows,
     )
 

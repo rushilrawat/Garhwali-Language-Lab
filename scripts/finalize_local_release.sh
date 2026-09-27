@@ -26,6 +26,7 @@ export PYTHONDONTWRITEBYTECODE=1
 "$PYTHON_BIN" scripts/build_huggingface_dataset.py \
   --profile public \
   --output data/huggingface/garhwali-language-lab
+"$PYTHON_BIN" scripts/build_hf_reference_index.py
 "$PYTHON_BIN" scripts/build_huggingface_dataset.py \
   --profile all-data \
   --output data/huggingface/garhwali-language-lab-all-data

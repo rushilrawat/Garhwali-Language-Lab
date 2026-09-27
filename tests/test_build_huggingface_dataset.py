@@ -203,6 +203,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertEqual(exported['script'], 'Deva')
         self.assertEqual(exported['public_rights_basis'][0]['source_id'], 'open')
         self.assertEqual(exported['language'], 'und')
+        self.assertEqual(exported['original_split'], '')
+        self.assertEqual(exported['split_assignment'], '')
         self.assertEqual(m.text_row({**base, 'text': 'garhwali'})['script'], 'Latn')
 
     def test_text_export_does_not_label_english_or_mixed_context_as_garhwali(self):
@@ -363,6 +365,39 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertNotIn('config_name: literary_works', card)
         self.assertNotIn('config_name: university_research', card)
 
+    def test_dataset_card_declares_each_split_once_for_sharded_configs(self):
+        report = {
+            'release_id': 'test',
+            'profile': 'all-data',
+            'configs': {
+                'catalog/train': {
+                    'records': 2,
+                    'files': ['train-00000.jsonl', 'train-00001.jsonl'],
+                },
+                'record_index/train': {
+                    'records': 2,
+                    'files': ['train-00000.jsonl'],
+                },
+            },
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'draft_unique_audio': 0,
+            'catalog_records': 2,
+            'catalog_redacted_text_records': 0,
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+        }
+
+        card = m.dataset_card(report)
+
+        self.assertEqual(card.count('  - split: train'), 2)
+        self.assertIn('path: data/catalog/train-*.jsonl', card)
+        self.assertIn('path: data/record_index/train-*.jsonl', card)
+        self.assertNotIn('path: data/catalog/train-00001.jsonl', card)
+
     def test_public_card_discloses_structured_metadata_clearance_gap(self):
         report = {
             'release_id': 'test',
@@ -383,11 +418,11 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         card = m.dataset_card(report)
         self.assertIn('public-profile package', card)
         self.assertIn('across 1 named configuration (1 config/split entries)', card)
-        self.assertIn('omits **50 structured-knowledge records**', card)
+        self.assertIn('withhold full content from **50 structured-knowledge records**', card)
         self.assertIn('Geography, historical terms, literary people and works', card)
         self.assertNotIn('university-research resources built by the Garhwali Language Lab', card)
         self.assertNotIn('config_name: geography', card)
-        self.assertIn('They remain intact in the complete all-data package', card)
+        self.assertIn('Their full records remain in the access-controlled all-data package', card)
         self.assertIn('Garhwali Speech', card)
         self.assertIn('rushilrawat/garhwali-speech', card)
 
@@ -471,6 +506,37 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertFalse(exported['recovery_adjudication']['automatic_correction'])
         self.assertFalse(exported['recovery_third_checkpoint']['confidence_is_calibrated'])
         self.assertTrue(exported['audio_grounded_review']['human_listening_review_required'])
+
+    def test_draft_evidence_json_is_stable_and_preserves_sparse_values(self):
+        row = {
+            'audio_sha256': 'ab' * 32,
+            'machine_transcript': 'गढ़वाली',
+            'machine_transcript_quality': {'flags': ['mixed_script']},
+            'quality_flags': [],
+            'training_quality_flags': ['needs_review'],
+            'recovery_adjudication': {'automatic_correction': False},
+        }
+
+        exported = m.audio_row(
+            row, 'machine_transcript', serialize_evidence=True
+        )
+
+        self.assertEqual(
+            json.loads(exported['machine_transcript_quality']),
+            {'flags': ['mixed_script']},
+        )
+        self.assertEqual(json.loads(exported['quality_flags']), [])
+        self.assertEqual(
+            json.loads(exported['training_quality_flags']), ['needs_review']
+        )
+        self.assertEqual(
+            json.loads(exported['recovery_adjudication']),
+            {'automatic_correction': False},
+        )
+        self.assertEqual(exported['recovery_confidence'], '')
+        self.assertEqual(exported['audio_grounded_review'], '')
+        self.assertFalse(exported['active_for_source_error_analysis'])
+        self.assertEqual(exported['language_scope_status'], '')
 
     def test_recovery_adjudication_join_omits_local_review_paths(self):
         rows = [{'audio_sha256': 'a', 'machine_transcript': 'मूल'}]

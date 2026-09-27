@@ -62,7 +62,19 @@ bash scripts/refresh_incoming_pdfs.sh
 ```
 
 The refresh is local and resumable; it does not spend Hugging Face GPU credit.
-It rebuilds the all-data package, but does not upload it. Before a public release,
-review the resulting provenance and source-specific rights; the current text
-repository remains owner-private, and the public-profile build may redact values
-or omit records without compatible redistribution evidence.
+It rebuilds the all-data content package but does not update or upload the public
+Hugging Face package. To refresh the release after PDF ingestion, run
+`bash scripts/finalize_local_release.sh`; that rebuilds the public content profile
+and complete metadata-reference tables, then audits the release. Review the audit
+and source-specific rights before uploading the generated public package:
+
+```bash
+hf upload rushilrawat/garhwali-corpus \
+  data/huggingface/garhwali-language-lab . \
+  --type dataset
+```
+
+The public corpus repo is available, but the full all-data source payload remains
+local/access-controlled. The reference index can include every record as factual
+metadata and a source pointer; it does not turn restricted or rights-pending
+source content into redistributable data.

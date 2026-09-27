@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import unicodedata
+from collections import Counter
 from datetime import date
 from pathlib import Path
 
@@ -35,6 +36,26 @@ REQUIRED_CONFIGS = {
     'geography/train', 'historical_terms/train', 'literary_people/train',
     'literary_works/train', 'popular_songs/train', 'university_research/train',
 }
+REFERENCE_CONFIGS = {
+    'record_index/train', 'source_catalog/train', 'record_sources/train',
+}
+REFERENCE_INDEX_FIELDS = {
+    'record_ref', 'record_family', 'source_split', 'record_title_or_name',
+    'local_name_or_term', 'creators_json', 'record_type', 'year_or_period',
+    'topics_json', 'language_scope_json', 'language', 'script',
+    'record_rights_status', 'public_profile_content_available',
+    'source_ref_ids_json', 'quality_summary_json', 'bibliographic_metadata_json',
+}
+SOURCE_CATALOG_FIELDS = {
+    'source_ref_id', 'source_id', 'source_title', 'source_url',
+    'source_authority', 'attribution', 'source_kind', 'license_id',
+    'license_url', 'rights_status', 'genre', 'modality', 'iso_639_3',
+}
+REFERENCE_FORBIDDEN_FIELDS = {
+    'text', 'transcript', 'lyrics', 'audio', 'audio_sha256', 'speaker_id',
+    'text_sha256', 'source_text_sha256', 'source_pdf', 'source_file',
+    'local_path', 'file', 'path', 'notes', 'context_en', 'theme_summary_en',
+}
 KNOWLEDGE_GROUPS = {
     'geography', 'historical_terms', 'literary_people',
     'literary_works', 'popular_songs', 'university_research',
@@ -46,6 +67,172 @@ def read_jsonl(path):
         for line in handle:
             if line.strip():
                 yield json.loads(line)
+
+
+def structured_object(value):
+    """Read an evidence object from JSONL or its Viewer-safe JSON string form."""
+    if isinstance(value, dict):
+        return value
+    if value in (None, ''):
+        return {}
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+        except json.JSONDecodeError:
+            return None
+        return parsed if isinstance(parsed, dict) else None
+    return None
+
+
+def audit_reference_index(dataset_root, package_manifest):
+    """Validate that public reference tables are complete and contain no payloads."""
+    root = Path(dataset_root).resolve()
+    report = package_manifest.get('reference_index')
+    errors = []
+    if not isinstance(report, dict):
+        return {'status': 'not_present', 'errors': []}
+    if report.get('profile') != 'metadata_only_complete_reference_index':
+        errors.append('reference index profile is not declared metadata-only')
+    tables = report.get('tables') or {}
+    if set(tables) != {'record_index', 'source_catalog', 'record_sources'}:
+        errors.append('reference index does not declare all three normalized tables')
+
+    table_paths = {}
+    table_counts = {}
+    for name, details in tables.items():
+        relative = Path(str(details.get('file') or ''))
+        path = (root / relative).resolve()
+        try:
+            path.relative_to(root)
+        except ValueError:
+            errors.append(f'reference index {name} path escapes dataset package')
+            continue
+        if not relative.parts or not path.is_file():
+            errors.append(f'reference index {name} table is missing')
+            continue
+        digest = hashlib.sha256()
+        with path.open('rb') as stream:
+            for chunk in iter(lambda: stream.read(1024 * 1024), b''):
+                digest.update(chunk)
+        if details.get('sha256') != digest.hexdigest():
+            errors.append(f'reference index {name} checksum mismatch')
+        try:
+            row_count = sum(1 for _ in read_jsonl(path))
+        except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+            errors.append(f'reference index {name} is not valid JSONL: {exc}')
+            continue
+        if row_count != details.get('records'):
+            errors.append(f'reference index {name} row count disagrees with manifest')
+        config_key = f'{name}/train'
+        config = package_manifest.get('configs', {}).get(config_key)
+        if not config or config.get('records') != row_count:
+            errors.append(f'reference index {name} count disagrees with dataset config')
+        table_paths[name] = path
+        table_counts[name] = row_count
+
+    record_path = table_paths.get('record_index')
+    source_path = table_paths.get('source_catalog')
+    links_path = table_paths.get('record_sources')
+    record_ids = set()
+    source_ids = set()
+    family_counts = Counter()
+    published_count = 0
+    link_count = 0
+
+    def nested_has_forbidden(value):
+        if isinstance(value, dict):
+            return any(
+                str(key).casefold() in REFERENCE_FORBIDDEN_FIELDS
+                or nested_has_forbidden(item)
+                for key, item in value.items()
+            )
+        if isinstance(value, list):
+            return any(nested_has_forbidden(item) for item in value)
+        return False
+
+    if source_path:
+        for row in read_jsonl(source_path):
+            if set(row) - SOURCE_CATALOG_FIELDS or not row.get('source_ref_id'):
+                errors.append('source_catalog row has an invalid schema')
+                break
+            source_id = row['source_ref_id']
+            if source_id in source_ids:
+                errors.append('source_catalog has a duplicate source reference')
+                break
+            source_ids.add(source_id)
+            if row.get('source_url') and not str(row['source_url']).startswith(('https://', 'http://')):
+                errors.append('source_catalog contains a non-web source URL')
+                break
+            if any('/Users/' in str(value) or str(value).startswith('/') for value in row.values()):
+                errors.append('source_catalog contains a local path')
+                break
+
+    links_iter = iter(read_jsonl(links_path)) if links_path else iter(())
+    if record_path:
+        for row in read_jsonl(record_path):
+            if set(row) != REFERENCE_INDEX_FIELDS:
+                errors.append('record_index row has an unexpected schema')
+                break
+            record_id = row.get('record_ref')
+            if not record_id or record_id in record_ids:
+                errors.append('record_index has a missing or duplicate record reference')
+                break
+            record_ids.add(record_id)
+            family_counts[str(row.get('record_family') or '')] += 1
+            published_count += bool(row.get('public_profile_content_available'))
+            try:
+                source_ref_ids = json.loads(row['source_ref_ids_json'])
+                for field in ('creators_json', 'topics_json', 'language_scope_json',
+                              'quality_summary_json', 'bibliographic_metadata_json'):
+                    value = json.loads(row[field])
+                    if nested_has_forbidden(value):
+                        errors.append(f'record_index includes a forbidden payload field in {field}')
+                        break
+                if not isinstance(source_ref_ids, list) or not all(
+                    isinstance(item, str) for item in source_ref_ids
+                ) or len(source_ref_ids) != len(set(source_ref_ids)):
+                    errors.append('record_index source references are malformed')
+                    break
+            except (TypeError, json.JSONDecodeError):
+                errors.append('record_index contains malformed JSON metadata')
+                break
+            for source_id in source_ref_ids:
+                link = next(links_iter, None)
+                link_count += link is not None
+                if source_id not in source_ids:
+                    errors.append('record_index contains a dangling source reference')
+                    break
+                if link != {'record_ref': record_id, 'source_ref_id': source_id}:
+                    errors.append('record_sources join table disagrees with record_index references')
+                    break
+            if errors and errors[-1] in {
+                'record_index contains a dangling source reference',
+                'record_sources join table disagrees with record_index references',
+            }:
+                break
+    if next(links_iter, None) is not None:
+        errors.append('record_sources contains extra or dangling join rows')
+
+    if family_counts != Counter(report.get('records_by_family') or {}):
+        errors.append('reference index family counts disagree with manifest')
+    if table_counts.get('record_index', 0) != report.get('records'):
+        errors.append('reference index total record count disagrees with manifest')
+    if table_counts.get('source_catalog', 0) != report.get('source_catalog_records'):
+        errors.append('reference source catalog count disagrees with manifest')
+    if table_counts.get('record_sources', 0) != report.get('record_source_links'):
+        errors.append('reference record-source link count disagrees with manifest')
+    if published_count != report.get('records_with_content_in_public_profile'):
+        errors.append('reference index public-content count disagrees with manifest')
+
+    return {
+        'status': 'passed' if not errors else 'failed',
+        'errors': errors,
+        'record_rows': table_counts.get('record_index', 0),
+        'source_catalog_rows': table_counts.get('source_catalog', 0),
+        'record_source_links': table_counts.get('record_sources', 0),
+        'records_by_family': dict(sorted(family_counts.items())),
+        'records_with_public_content': published_count,
+    }
 
 
 def overlap_error(label, split_values):
@@ -283,7 +470,23 @@ def audit(index, dataset_root, benchmark_root=None):
     missing_configs = sorted(required_configs - available_configs)
     if missing_configs:
         errors.append(f'missing configs: {", ".join(missing_configs)}')
-    unexpected_configs = sorted(available_configs - REQUIRED_CONFIGS)
+    reference_index_report = audit_reference_index(dataset_root, manifest)
+    errors.extend(
+        f'reference index audit: {error}'
+        for error in reference_index_report.get('errors', [])
+    )
+    allowed_reference_configs = (
+        REFERENCE_CONFIGS if manifest.get('reference_index') else set()
+    )
+    if manifest.get('reference_index'):
+        missing_reference = sorted(REFERENCE_CONFIGS - available_configs)
+        if missing_reference:
+            errors.append(
+                f'missing reference-index configs: {", ".join(missing_reference)}'
+            )
+    unexpected_configs = sorted(
+        available_configs - REQUIRED_CONFIGS - allowed_reference_configs
+    )
     if unexpected_configs:
         errors.append(f'unexpected configs: {", ".join(unexpected_configs)}')
 
@@ -496,7 +699,10 @@ def audit(index, dataset_root, benchmark_root=None):
                     errors.append(f'sravaani_drafts contains duplicate audio hash {digest}')
                 draft_hashes.add(digest)
                 empty_drafts += not bool(row.get('transcript'))
-                draft_quality_missing += not bool(row.get('machine_transcript_quality'))
+                quality = structured_object(row.get('machine_transcript_quality'))
+                draft_quality_missing += not bool(quality)
+                if quality is None:
+                    errors.append('SraVaani draft has invalid machine quality JSON')
                 supervised_drafts += row.get('training_eligible') is True
                 if row.get('language_scope_status') == 'source_label_conflict':
                     source_conflict_drafts += 1
@@ -505,7 +711,9 @@ def audit(index, dataset_root, benchmark_root=None):
                         or row.get('experimental_training_eligible')
                         or not row.get('active_for_source_error_analysis')
                     )
-                adjudication = row.get('recovery_adjudication')
+                adjudication = structured_object(row.get('recovery_adjudication'))
+                if adjudication is None:
+                    errors.append('SraVaani draft has invalid recovery adjudication JSON')
                 if adjudication:
                     recovery_adjudications += 1
                     invalid_recovery_adjudications += bool(
@@ -515,14 +723,18 @@ def audit(index, dataset_root, benchmark_root=None):
                         or adjudication.get('recommended_for_machine_label_training')
                         or not adjudication.get('original_transcript_preserved')
                     )
-                third_checkpoint = row.get('recovery_third_checkpoint')
+                third_checkpoint = structured_object(row.get('recovery_third_checkpoint'))
+                if third_checkpoint is None:
+                    errors.append('SraVaani draft has invalid third-checkpoint JSON')
                 if third_checkpoint:
                     third_checkpoint_records += 1
                     invalid_third_checkpoint_records += bool(
                         third_checkpoint.get('confidence_is_calibrated')
                         or third_checkpoint.get('human_reference_available')
                     )
-                audio_review = row.get('audio_grounded_review')
+                audio_review = structured_object(row.get('audio_grounded_review'))
+                if audio_review is None:
+                    errors.append('SraVaani draft has invalid audio-grounded review JSON')
                 if audio_review:
                     audio_grounded_review_records += 1
                     invalid_audio_grounded_review_records += bool(
@@ -726,7 +938,11 @@ def audit(index, dataset_root, benchmark_root=None):
         'errors': errors,
         'warnings': warnings,
         'configs': actual_counts,
-        'exported_rows': sum(actual_counts.values()),
+        'exported_rows': sum(
+            count for key, count in actual_counts.items() if key in REQUIRED_CONFIGS
+        ),
+        'repository_rows_including_reference_tables': sum(actual_counts.values()),
+        'reference_index': reference_index_report,
         'audio': {
             'included': bool(manifest.get('include_audio')),
             'referenced_unique_files': len(expected_audio),

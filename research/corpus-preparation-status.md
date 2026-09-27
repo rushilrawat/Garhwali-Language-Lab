@@ -1,11 +1,20 @@
 # Corpus preparation status
 
-Updated 2026-09-24. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-09-27. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
 
 ## Hugging Face publication
 
+### Current corpus release (2026-09-27)
+
+- [`Garhwali Corpus`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) is public. It combines 146,684 rights-filtered content rows across 12 config/split views with a content-free reference index covering all 257,807 rows in the local all-data archive. The index contains 590 deduplicated source records and 277,637 record-to-source links; 216 geography, history, literature, music, and research records are present as factual metadata and source pointers.
+- The public content profile still redacts 24,566 catalog values and does not redistribute the full content of those 216 structured records without compatible reuse evidence. The reference tables do not contain text, lyrics, transcripts, audio, speaker identifiers, local paths, or content hashes. Their links and factual metadata do not grant rights to the underlying works. Counts include overlapping views, not unique examples.
+- The public corpus was rebuilt and uploaded at commit [`a49a3f0bf5087d3ad0a7c8c5d399f8b4b301bcb2`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/a49a3f0bf5087d3ad0a7c8c5d399f8b4b301bcb2). It adds the complete reference inventory and normalizes draft evidence for stable JSONL schemas. The repo API confirms public visibility, 34 files, all three reference tables, and 11 SraVaani draft shards. Hugging Face now exposes all 15 splits and 15 Parquet files; its size endpoint reports 682,718 rows over nine configs and overlapping views. All nine config previews, search, and filter checks pass. Statistics work for seven configs, but the HF statistics service returns HTTP 500 on `text` and `sravaani_drafts` because it cannot histogram constant-valued columns. Local `datasets` 5.0.1 loads all nine configs; release audit and index validation pass.
+- [`Garhwali Speech`](https://huggingface.co/datasets/rushilrawat/garhwali-speech) remains public with separate VAANI and Meta Omnilingual configs: 110,436 VAANI rows / 135.510 hours and 2,927 Meta rows / 19.136 hours. The combined release is 113,363 rows / 154.646 hours.
+
+### Earlier publication snapshot (2026-09-24; superseded for corpus visibility)
+
 - [`Garhwali Speech`](https://huggingface.co/datasets/rushilrawat/garhwali-speech) is public with separate VAANI and Meta Omnilingual configs: 110,436 VAANI rows / 135.510 hours and 2,927 Meta rows / 19.136 hours. The combined release is 113,363 rows / 154.646 hours. Commit `914eb221b6f58f88d85a8d5dd826acac827ee1c4` adds 50 Meta Parquet shards; all remote sizes and SHA-256 hashes match the local manifests.
-- [`Garhwali Corpus`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) is owner-private. The public-profile export contains redacted catalog values and excludes 216 structured records without compatible redistribution evidence; it does not meet the project's no-redactions release requirement.
+- At that time, [`Garhwali Corpus`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) was owner-private. The repo is now public with the complete reference tables, while protected content remains out of the public payload.
 - The complete local all-data corpus remains unchanged. No paid Hugging Face compute job or storage purchase was used for these uploads.
 - The speech release omits raw filenames, reference images, speaker IDs, stay-duration, and fine-grained location fields. It retains source CC BY 4.0 attribution and split metadata; transcripts remain unreviewed references or model hypotheses. The first post-upload Dataset Viewer check returned a temporary HTTP 500 while indexing; a later retry succeeded for splits, validity, Parquet listing, and a Meta validation preview. Both configs expose train/validation/test splits, and the validity endpoint reports preview, viewer, search, filter, and statistics enabled.
 - The candidate-source overlap audit and exact duplicate decisions are in [`huggingface-release-overlap-audit-2026-09-24.md`](huggingface-release-overlap-audit-2026-09-24.md). Card-only Hub commit `b64f0c4b914296c979947cf551ec976a0342d8af` now tells users to filter split-safety fields: all 2,927 rows remain published, while 2,857 pass both leakage-safety flags.
@@ -52,7 +61,7 @@ Updated 2026-09-24. This is a chronological preparation log: model-result paragr
 
 ## Model-assisted text cleanup
 
-The rebuilt complete package contains 257,807 rows and the rights-filtered public profile contains 146,684 rows. The public package excludes 216 structured records with unassessed or incompatible rights; the all-data package retains them. Both package validations pass with zero strict cross-split identity overlap, zero normalized instruction-prompt overlap, 81 distinct provenance sources in all-data, traceable source locators on every structured record, and no deleted or mutated source records. Native-speaker review and dialect annotation are deferred; this release is labeled an automated candidate.
+The rebuilt complete package contains 257,807 rows and the rights-filtered public content profile contains 146,684 rows. Its content tables withhold full payloads for 216 structured records with unresolved or incompatible rights; the public metadata index references all 216, and the full payload remains in all-data. Both package validations pass with zero strict cross-split identity overlap, zero normalized instruction-prompt overlap, 81 distinct provenance sources in all-data, traceable source locators on every structured record, and no deleted or mutated source records. Native-speaker review and dialect annotation are deferred; this release is labeled an automated candidate.
 
 - The original model-assisted cleanup run covered 27,987 parent texts before the source-grounded re-extraction. Its immutable proposal artifact remains a historical model snapshot; the current canonical corpus contains 28,755 texts.
 - Pinned IndicBERTv2 scored 4,096 OCR-, language-, spelling-, and dialect-priority records over 81,116 deterministic masked tokens. The 90th-percentile loss threshold identifies 410 model/source disagreements for inspection without changing source labels.
@@ -276,7 +285,7 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The current full-suite run passes **519 tests**. Structured records have standardized provenance and quality
+The current full-suite run passes **525 tests**. Structured records have standardized provenance and quality
 metadata, including URLs or capture fingerprints for every source reference.
 A web review added source-specific rights findings to the 186 formerly
 unassessed records, but did not establish a compatible public-rights basis for

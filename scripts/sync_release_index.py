@@ -22,6 +22,7 @@ KNOWLEDGE_CONFIGS = (
     'geography', 'historical_terms', 'literary_people',
     'literary_works', 'popular_songs', 'university_research',
 )
+REFERENCE_CONFIGS = {'record_index', 'source_catalog', 'record_sources'}
 
 
 def config_records(manifest, prefix):
@@ -31,8 +32,12 @@ def config_records(manifest, prefix):
     )
 
 
-def package_records(manifest):
-    return sum(value['records'] for value in manifest['configs'].values())
+def package_records(manifest, exclude=()):
+    excluded = set(exclude)
+    return sum(
+        value['records'] for key, value in manifest['configs'].items()
+        if key.split('/', 1)[0] not in excluded
+    )
 
 
 def refresh(index, splits, text, public, all_data, benchmark=None, resources=None,
@@ -62,7 +67,14 @@ def refresh(index, splits, text, public, all_data, benchmark=None, resources=Non
             public['catalog_records'] - public['catalog_redacted_text_records']
         ),
         'rights_pending_catalog_records': public['catalog_redacted_text_records'],
-        'transcript_only_package_rows': package_records(public),
+        'transcript_only_package_rows': package_records(public, REFERENCE_CONFIGS),
+        'reference_index_records': (public.get('reference_index') or {}).get('records', 0),
+        'reference_source_catalog_records': (public.get('reference_index') or {}).get(
+            'source_catalog_records', 0
+        ),
+        'reference_source_link_rows': (public.get('reference_index') or {}).get(
+            'record_source_links', 0
+        ),
     })
     index['evaluation_candidates']['text'] = splits['evaluation_candidates']['text_records']
     if benchmark:

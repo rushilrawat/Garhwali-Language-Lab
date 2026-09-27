@@ -233,6 +233,73 @@ class FinalReleaseAuditTests(unittest.TestCase):
         }
         return index
 
+    def reference_fixture(self, root):
+        source_id = 'a' * 64
+        tables = {
+            'record_index': ('data/record_index/train-00000.jsonl', [{
+                'record_ref': 'release:all-data:text:train:000001',
+                'record_family': 'text', 'source_split': 'train',
+                'record_title_or_name': '', 'local_name_or_term': '',
+                'creators_json': '[]', 'record_type': '', 'year_or_period': '',
+                'topics_json': '[]', 'language_scope_json': '["gbm"]',
+                'language': 'gbm', 'script': 'Deva',
+                'record_rights_status': 'rights_pending',
+                'public_profile_content_available': False,
+                'source_ref_ids_json': json.dumps([source_id]),
+                'quality_summary_json': '{}',
+                'bibliographic_metadata_json': '{}',
+            }]),
+            'source_catalog': ('data/source_catalog/train-00000.jsonl', [{
+                'source_ref_id': source_id, 'source_id': 'test-source',
+                'source_url': 'https://example.org/item',
+                'license_id': 'CC-BY-4.0', 'rights_status': 'rights_pending',
+            }]),
+            'record_sources': ('data/record_sources/train-00000.jsonl', [{
+                'record_ref': 'release:all-data:text:train:000001',
+                'source_ref_id': source_id,
+            }]),
+        }
+        details = {}
+        configs = {}
+        for name, (relative, rows) in tables.items():
+            path = root / relative
+            write_jsonl(path, rows)
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            details[name] = {'file': relative, 'records': len(rows), 'sha256': digest}
+            configs[f'{name}/train'] = {'records': len(rows)}
+        return {
+            'configs': configs,
+            'reference_index': {
+                'profile': 'metadata_only_complete_reference_index',
+                'records': 1, 'records_by_family': {'text': 1},
+                'records_with_content_in_public_profile': 0,
+                'source_catalog_records': 1, 'record_source_links': 1,
+                'tables': details,
+            },
+        }
+
+    def test_reference_index_audit_checks_normalized_join_tables(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            report = m.audit_reference_index(root, self.reference_fixture(root))
+        self.assertEqual(report['status'], 'passed')
+        self.assertEqual(report['record_rows'], 1)
+        self.assertEqual(report['record_source_links'], 1)
+
+    def test_reference_index_audit_rejects_embedded_transcript_payload(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = self.reference_fixture(root)
+            path = root / manifest['reference_index']['tables']['record_index']['file']
+            row = json.loads(path.read_text(encoding='utf-8'))
+            row['bibliographic_metadata_json'] = '{"transcript":"not metadata"}'
+            write_jsonl(path, [row])
+            details = manifest['reference_index']['tables']['record_index']
+            details['sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+            report = m.audit_reference_index(root, manifest)
+        self.assertEqual(report['status'], 'failed')
+        self.assertTrue(any('forbidden payload field' in item for item in report['errors']))
+
     def test_accepts_complete_package_and_reports_draft_warning(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -241,6 +308,52 @@ class FinalReleaseAuditTests(unittest.TestCase):
         self.assertEqual(report['errors'], [])
         self.assertEqual(report['drafts']['empty_transcripts'], 1)
         self.assertIn('audio_not_included', report['warnings'])
+
+    def test_accepts_viewer_safe_json_strings_for_draft_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            path = root / 'data/sravaani_drafts/train-00000.jsonl'
+            row = json.loads(path.read_text(encoding='utf-8'))
+            row['machine_transcript_quality'] = json.dumps({'level': 'high_risk'})
+            row['recovery_adjudication'] = json.dumps({
+                'automatic_correction': False,
+                'human_reference_available': False,
+                'supervised_training_eligible': False,
+                'recommended_for_machine_label_training': False,
+                'original_transcript_preserved': True,
+            })
+            row['recovery_third_checkpoint'] = json.dumps({
+                'confidence_is_calibrated': False,
+                'human_reference_available': False,
+            })
+            row['audio_grounded_review'] = json.dumps({
+                'machine_audio_review_complete': True,
+                'human_listening_review_required': True,
+                'automatic_correction': False,
+                'human_reference_available': False,
+                'supervised_training_eligible': False,
+                'recommended_for_machine_label_training': False,
+                'original_transcript_preserved': True,
+            })
+            write_jsonl(path, [row])
+            manifest_path = root / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+            config = manifest['configs']['sravaani_drafts/train']
+            config['file_sha256']['train-00000.jsonl'] = hashlib.sha256(
+                path.read_bytes()
+            ).hexdigest()
+            manifest['draft_three_checkpoint_review_records'] = 1
+            manifest['draft_third_checkpoint_records'] = 1
+            manifest['draft_audio_grounded_review_records'] = 1
+            manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+
+            report = m.audit(index, root)
+
+        self.assertEqual(report['status'], 'passed')
+        self.assertEqual(report['drafts']['recovery_adjudications'], 1)
+        self.assertEqual(report['drafts']['third_checkpoint_records'], 1)
+        self.assertEqual(report['drafts']['audio_grounded_review_records'], 1)
 
     def test_public_audit_allows_structured_configs_to_be_filtered(self):
         with tempfile.TemporaryDirectory() as directory:

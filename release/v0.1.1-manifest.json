@@ -1,7 +1,7 @@
 {
   "release_id": "garhwali-language-lab-v0.1.1",
   "status": "release_ready_with_public_rights_filtered_export",
-  "generated": "2026-09-25",
+  "generated": "2026-09-27",
   "language": "Garhwali (gbm)",
   "local_storage_gb_approx": 34,
   "text": {
@@ -33,7 +33,10 @@
     "strict_records_using_open_overlap": 1906,
     "native_or_source_review_queue": 176,
     "source_attested_linguistic_transcriptions": 392,
-    "transcript_only_package_rows": 146684
+    "transcript_only_package_rows": 146684,
+    "reference_index_records": 257807,
+    "reference_source_catalog_records": 590,
+    "reference_source_link_rows": 277637
   },
   "native_review": {
     "text_accuracy_packets": 176,
