@@ -70,3 +70,17 @@ source-family grouping rule into the v0.2 benchmark contract and evaluate
 whether a grouped diagnostic split is useful. Semantic/paraphrase and
 cross-language equivalence checks remain outside this scan. The project still
 has zero approved independent final-accuracy areas out of five.
+
+## Source-page family addendum — 2026-09-28
+
+The follow-up page-title audit grouped XORQA rows by the exact normalized page
+segment before `_parentSection:` in the upstream title locator. It parsed all
+1,139 rows into 993 page families and found 54 families (134 rows) crossing
+source splits; 32 families contain distinct context passages. The local usage
+overlay now labels 138 unique rows, adding 71 rows to the earlier 67-record
+overlay. All rows and original splits remain intact and available for open
+diagnostics. These labels reflect shared source lineage, not confirmed answer
+leakage or model exposure. The v0.2 draft carries the page-family hash on
+XORQA records. See the [source-page family review](benchmark-source-page-families-2026-09-28.md)
+for methods, hashes, and limitations. Semantic relationships and source-family
+coverage in other tasks remain open.

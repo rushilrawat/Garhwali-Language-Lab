@@ -8,8 +8,20 @@ This page is the map for the project’s Markdown documentation. It inventories 
 - [finalreport.md](../finalreport.md) — Authoritative release verdict, counts, and blockers.
 - [DEEP_DIVE_FINAL_AUDIT.md](../DEEP_DIVE_FINAL_AUDIT.md) — Detailed code, data, and release audit.
 - [benchmark-research-status-2026-09-25.md](../research/benchmark-research-status-2026-09-25.md) — Measured benchmark and model-research snapshot with the latest translation addendum.
+- [task-result-eligibility-2026-09-28.md](../research/task-result-eligibility-2026-09-28.md) — Current split labels, prior test use, and result-claim limits.
+- [model-accuracy-lineage-2026-09-28.md](../research/model-accuracy-lineage-2026-09-28.md) — Fresh split-manifest and saved-prediction matching audit.
+- [asr-heldout-lineage-audit-2026-09-28.md](../research/asr-heldout-lineage-audit-2026-09-28.md) — Paired post-hoc comparison of five saved ASR runs on the same held-out rows.
 - [benchmark-model-roadmap.md](../research/benchmark-model-roadmap.md) — Phased benchmark and model-research plan, metrics, tooling, and release gates.
 - [issues & improvement plan](../research/issues%26improvement%20plan.md) — Evidence-backed issue log and blockers for roadmap implementation.
+- [benchmark-nested-overlap-review-2026-09-27.md](../research/benchmark-nested-overlap-review-2026-09-27.md) — Nested benchmark overlap findings and retained-row review labels.
+- [benchmark-cross-language-exact-overlap-2026-09-28.md](../research/benchmark-cross-language-exact-overlap-2026-09-28.md) — Supplemental exact-string check across XORQA English/Garhwali answer labels.
+- [benchmark-source-page-families-2026-09-28.md](../research/benchmark-source-page-families-2026-09-28.md) — Exact XORQA page-title families crossing source splits and their retained-row diagnostic labels.
+- [benchmark-parent-safe-split-audit-2026-09-28.md](../research/benchmark-parent-safe-split-audit-2026-09-28.md) — Historical parent-document split leakage, corrected candidate hashes, and source-family limits.
+- [retrieval-source-page-cluster-uncertainty-2026-09-28.md](../research/retrieval-source-page-cluster-uncertainty-2026-09-28.md) — Cluster-bootstrap intervals for saved XORQA BM25 dev predictions.
+- [retrieval-miss-analysis-2026-09-28.md](../research/retrieval-miss-analysis-2026-09-28.md) — Gold-passage coverage and rank diagnosis for saved XORQA BM25 dev predictions.
+- [generation-output-diagnostics-2026-09-28.md](../research/generation-output-diagnostics-2026-09-28.md) — Task-local mode collapse, length, Unicode, and script diagnostics for saved mT0 validation outputs.
+- [asr-validation-run-manifest-2026-09-27.md](../research/asr-validation-run-manifest-2026-09-27.md) — Hash-linked post-hoc ASR validation comparison.
+- [mt0-validation-run-manifest-2026-09-27.md](../research/mt0-validation-run-manifest-2026-09-27.md) — Hash-linked post-hoc manifests for three mT0 validation runs.
 - [asr-baseline-consolidation-2026-09-26.md](../research/asr-baseline-consolidation-2026-09-26.md) — Saved ASR comparison, validation alignment, and local inference blockers.
 - [translation-quality-2026-09-26.md](../research/translation-quality-2026-09-26.md) — Development-only translation metrics and NLLB runtime preflight.
 - [retrieval-quality-2026-09-25.md](../research/retrieval-quality-2026-09-25.md) — Development retrieval scores and dense-model blockers.
@@ -20,11 +32,11 @@ This page is the map for the project’s Markdown documentation. It inventories 
 
 - Treat `finalreport.md` as the current release decision and consolidated audit summary.
 - Treat `research/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard with later dated addenda; older experiment reports are historical snapshots.
-- The latest scorecard refresh is dated 2026-09-26. It reports development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
+- The latest scorecard refresh is dated 2026-09-28. It reports development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
 - Keep dated research reports as records of the data and model version used at that time. Update the current status docs when new evidence supersedes them; do not rewrite history.
 - Treat `release/v0.1.0/` and `release/v0.1.1/` as frozen snapshots. Their repeated cards and reports preserve each package's own counts and terms; the root README and final report carry current status.
 - Keep dataset-card and policy copies inside each Hugging Face package aligned with the root policies when preparing a new package.
-- Add an entry here when adding or removing a project Markdown file. This index currently covers 119 Markdown files outside itself, including current working-tree reports.
+- Add an entry here when adding or removing a project Markdown file. This index currently covers 134 Markdown files outside itself, including current working-tree reports.
 
 ## Exact duplicate files
 
@@ -102,11 +114,19 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/asr-curriculum-stage1-pilot-2026-09-14.md`](../research/asr-curriculum-stage1-pilot-2026-09-14.md) — ASR curriculum stage-1 machine-label pilot
 - [`research/asr-training-curriculum-2026-09-14.md`](../research/asr-training-curriculum-2026-09-14.md) — Confidence-aware ASR training curriculum
 - [`research/asr-validation-error-analysis-2026-09-24.md`](../research/asr-validation-error-analysis-2026-09-24.md) — Saved ASR validation comparison
+- [`research/asr-heldout-lineage-audit-2026-09-28.md`](../research/asr-heldout-lineage-audit-2026-09-28.md) — Paired post-hoc comparison of five saved ASR runs on the same held-out rows
 - [`research/asr-weighted-batch-ablation-2026-09-14.md`](../research/asr-weighted-batch-ablation-2026-09-14.md) — ASR normalized weighted-batch ablation
 - [`research/asr-weighted-trainer-2026-09-14.md`](../research/asr-weighted-trainer-2026-09-14.md) — Weighted curriculum trainer and dry-run audit
 - [`research/automated-pre-release-quality-plan.md`](../research/automated-pre-release-quality-plan.md) — Automated Pre-release Quality Plan
 - [`research/benchmark-research-status-2026-09-25.md`](../research/benchmark-research-status-2026-09-25.md) — Benchmark and research suite: measured status
+- [`research/retrieval-source-page-cluster-uncertainty-2026-09-28.md`](../research/retrieval-source-page-cluster-uncertainty-2026-09-28.md) — Clustered uncertainty for XORQA BM25 development retrieval
+- [`research/retrieval-miss-analysis-2026-09-28.md`](../research/retrieval-miss-analysis-2026-09-28.md) — Gold-passage availability and BM25 miss types for saved XORQA dev queries
+- [`research/generation-output-diagnostics-2026-09-28.md`](../research/generation-output-diagnostics-2026-09-28.md) — Task-local output concentration and structural checks for saved mT0 validation predictions
 - [`research/benchmark-model-roadmap.md`](../research/benchmark-model-roadmap.md) — Garhwali Benchmark and Model Research Roadmap
+- [`research/benchmark-parent-safe-split-audit-2026-09-28.md`](../research/benchmark-parent-safe-split-audit-2026-09-28.md) — Parent-document split correction and source-family audit
+- [`research/benchmark-overlap-adjudication-2026-09-26.md`](../research/benchmark-overlap-adjudication-2026-09-26.md) — Reviewed XORQA split-overlap findings and retained-row usage labels
+- [`research/benchmark-v02-export-2026-09-26.md`](../research/benchmark-v02-export-2026-09-26.md) — Initial local v0.2 adapter/export snapshot
+- [`research/garhwali-bench-v0.2-schema-contract.md`](../research/garhwali-bench-v0.2-schema-contract.md) — Draft v0.2 schema, metrics, and validation contract
 - [`research/issues&improvement plan.md`](../research/issues%26improvement%20plan.md) — Benchmark and model roadmap issues & improvement plan
 - [`research/asr-baseline-consolidation-2026-09-26.md`](../research/asr-baseline-consolidation-2026-09-26.md) — ASR baseline consolidation — 2026-09-26
 - [`research/controlled-modeling-2026-09-12.md`](../research/controlled-modeling-2026-09-12.md) — Controlled Garhwali modeling: continuation and instruction tuning
@@ -130,6 +150,8 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/intensive-quality-audit-2026-09-14.md`](../research/intensive-quality-audit-2026-09-14.md) — Intensive quality audit
 - [`research/language-quality-status-2026-09-10.md`](../research/language-quality-status-2026-09-10.md) — Garhwali language-quality status
 - [`research/model-accuracy-lineage-2026-09-24.md`](../research/model-accuracy-lineage-2026-09-24.md) — Model accuracy split and evaluation lineage audit
+- [`research/model-accuracy-lineage-2026-09-28.md`](../research/model-accuracy-lineage-2026-09-28.md) — Current split and saved-prediction lineage audit
+- [`research/task-result-eligibility-2026-09-28.md`](../research/task-result-eligibility-2026-09-28.md) — Current task-result eligibility decisions
 - [`research/model-accuracy-preflight-2026-09-24.md`](../research/model-accuracy-preflight-2026-09-24.md) — Model accuracy improvement status and local preflight
 - [`research/model-assisted-text-cleanup-2026-09-11.md`](../research/model-assisted-text-cleanup-2026-09-11.md) — Model-assisted text cleanup and ablation
 - [`research/mt0-16384-validation-2026-09-16.md`](../research/mt0-16384-validation-2026-09-16.md) — mT0 16,384-step validation continuation
@@ -137,6 +159,7 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/generation-quality-2026-09-25.md`](../research/generation-quality-2026-09-25.md) — Reconciled three-seed mT0 generation quality and test history
 - [`research/mt0-cloud-continuation-2026-09-16.md`](../research/mt0-cloud-continuation-2026-09-16.md) — mT0 Garhwali instruction continuation
 - [`research/mt0-extended-validation-2026-09-16.md`](../research/mt0-extended-validation-2026-09-16.md) — Extended mT0 validation-only continuation
+- [`research/mt0-validation-run-manifest-2026-09-27.md`](../research/mt0-validation-run-manifest-2026-09-27.md) — Reconciled saved mT0 validation predictions and per-seed manifests
 - [`research/multilingual-model-audit-2026-09-11.md`](../research/multilingual-model-audit-2026-09-11.md) — Multilingual model audit
 - [`research/native-reference-review-readiness-2026-09-15.md`](../research/native-reference-review-readiness-2026-09-15.md) — Native-reference review readiness
 - [`research/ocr-proposal-validation-2026-09-16.md`](../research/ocr-proposal-validation-2026-09-16.md) — OCR and spelling proposal validation

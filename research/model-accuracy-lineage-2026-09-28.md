@@ -2,8 +2,6 @@
 
 This deterministic audit inventories frozen input manifests and saved prediction files. It does not modify corpus rows or model artifacts.
 
-**Historical snapshot:** current result-eligibility decisions and a fresh lineage inventory are recorded in [model-accuracy-lineage-2026-09-28.md](model-accuracy-lineage-2026-09-28.md) and [task-result-eligibility-2026-09-28.md](task-result-eligibility-2026-09-28.md). Use those reports for current status.
-
 Model training lineage and upstream pretraining overlap are recorded as unknown unless an artifact records them. Any matched validation, development, or test rows have prior evaluation evidence; test rows must not be described as blind.
 
 ## Frozen manifests
@@ -90,11 +88,11 @@ No current split is approved as an independent held-out confirmation. A row-set 
 |---|---|---:|---:|---|
 | crosssum_test | unresolved | 500 / 500 | 0 | historical_or_unresolved_only; no blind-test claim |
 
-- **crosssum_test:** No local prediction match was found, but upstream model pretraining overlap has not been established; do not call it blind.
-| flores_test | development_only | 1012 / 1012 | 1012 | historical_or_unresolved_only; no blind-test claim |
+- **crosssum_test:** No local prediction match is currently known, but upstream model pretraining overlap has not been established; do not call it blind.
+| flores_test | historical_only | 1012 / 1012 | 1012 | historical_or_unresolved_only; no blind-test claim |
 
 - **flores_test:** All 1,012 rows have saved translation predictions; this set is already examined.
-| instructions_test | development_only | 260 / 260 | 134 | historical_or_unresolved_only; no blind-test claim |
+| instructions_test | historical_only | 260 / 260 | 134 | historical_or_unresolved_only; no blind-test claim |
 
 - **instructions_test:** 134 of 260 current rows match saved test predictions. Another 126 lack a match, which is not proof they were unseen; an older mT0 test sidecar has a different split membership.
 | meta_omnilingual_test | unresolved | 292 / 300 | 0 | historical_or_unresolved_only; no blind-test claim |
@@ -103,10 +101,10 @@ No current split is approved as an independent held-out confirmation. A row-set 
 | meta_omnilingual_validation | development_only | 271 / 298 | 0 | development_selection_and_error_analysis_only |
 
 - **meta_omnilingual_validation:** Use the internally safe rows for development selection/error analysis only. Upstream checkpoint exposure is unknown, so results cannot establish independent generalization.
-| text_recommended_test | unresolved | 398 / 398 | 0 | historical_or_unresolved_only; no blind-test claim |
+| text_recommended_test | historical_only | 398 / 398 | 0 | historical_or_unresolved_only; no blind-test claim |
 
-- **text_recommended_test:** No local prediction match was found, but base-checkpoint pretraining exposure is unknown. Cross-view exact-text overlaps also require the workstream to use this family in isolation.
-| vaani_asr_test | development_only | 112 / 112 | 112 | historical_or_unresolved_only; no blind-test claim |
+- **text_recommended_test:** The 398-row candidate was already scored by the aggregate character-bigram baseline in build_garhwali_benchmark.py; no row-level predictions were saved. Neural-checkpoint exposure remains unknown, and cross-view exact-text overlaps still require isolation.
+| vaani_asr_test | historical_only | 112 / 112 | 112 | historical_or_unresolved_only; no blind-test claim |
 
 - **vaani_asr_test:** No further tuning or blind-test claim. All 112 rows have saved predictions, and SraVaani's exact VAANI exposure is unspecified upstream.
 | vaani_asr_validation | development_only | 269 / 269 | 269 | development_selection_and_error_analysis_only |
@@ -115,7 +113,7 @@ No current split is approved as an independent held-out confirmation. A row-set 
 | xorqa_dev | development_only | 500 / 500 | 500 | development_selection_and_error_analysis_only |
 
 - **xorqa_dev:** All 500 rows have saved retrieval predictions; use only as historical development evidence.
-| xorqa_test | development_only | 539 / 539 | 539 | historical_or_unresolved_only; no blind-test claim |
+| xorqa_test | historical_only | 539 / 539 | 539 | historical_or_unresolved_only; no blind-test claim |
 
 - **xorqa_test:** All 539 rows have saved retrieval predictions; this set is already examined.
 
@@ -167,6 +165,7 @@ Sources: [https://huggingface.co/ARTPARK-IISc/SraVaani-1.0](https://huggingface.
 | `data/processed/evaluation/asr/sravaani_refined_61/cloud_output/held-out-test-predictions.json` | 112 | `f07852166d2f5462b1956d680dcb27a005af5b8ed4b2e49c023fc44857799ace` | asr:test=112; asr_expanded_human:test=112; asr_experimental:test=112; tts:test=112; tts_language_resources:test=89 | 0 | 537 | 0 | 0 |
 | `data/processed/evaluation/asr/sravaani_six_config_sweep/cloud_output/best-validation-predictions.json` | 269 | `3f95538c9bc63def0ebacbbb77e6c9b500203bb60b33989235bff66a41880085` | asr:validation=269; asr_expanded_human:validation=269; asr_experimental:validation=269; tts:validation=269; tts_language_resources:validation=225 | 1301 | 0 | 0 | 0 |
 | `data/processed/evaluation/asr/sravaani_six_config_sweep/cloud_output/held-out-test-predictions.json` | 112 | `b2ae21718e230b74c8dfcd1ae9c7d0d6182ac7f96406c4aa6c2fab95738d28f6` | asr:test=112; asr_expanded_human:test=112; asr_experimental:test=112; tts:test=112; tts_language_resources:test=89 | 0 | 537 | 0 | 0 |
+| `data/processed/evaluation/asr/validation_comparison_manifested_2026-09-27/predictions.jsonl` | 269 | `e2609b183427bc5c1f9300ec68d8de7db7b3a3f7558a07057a1478026f8c1e7c` | asr:validation=269; asr_expanded_human:validation=269; asr_experimental:validation=269; tts:validation=269; tts_language_resources:validation=225 | 1301 | 0 | 0 | 0 |
 | `data/processed/evaluation/asr/whisper_small_zero_shot/predictions.jsonl` | 112 | `66a7a58f95fb5f45b652d8202c992d09be678c844d6e6f8c9ebd8dcb1ec3dfc3` | asr:test=112; asr_expanded_human:test=112; asr_experimental:test=112; tts:test=112; tts_language_resources:test=89 | 0 | 537 | 0 | 0 |
 | `data/processed/evaluation/asr/whisper_tiny_zero_shot/predictions.jsonl` | 112 | `f3edcd1be166c7e563b4a6dd0fd6fa2de6ef38c45772e6587e23715f6dc0c446` | asr:test=112; asr_expanded_human:test=112; asr_experimental:test=112; tts:test=112; tts_language_resources:test=89 | 0 | 537 | 0 | 0 |
 | `data/processed/evaluation/controlled_modeling/instruction_base_audit/mt0-small-predictions.jsonl` | 130 | `e5d37348719cc1cd4aeccd57c5fe3249263717527bf284664a47f44dc634ef65` | instructions_v0.2:validation=130 | 130 | 0 | 0 | 0 |
@@ -176,11 +175,14 @@ Sources: [https://huggingface.co/ARTPARK-IISc/SraVaani-1.0](https://huggingface.
 | `data/processed/evaluation/controlled_modeling/mt0_instruction_v0.2/test_predictions.jsonl` | 1032 | `ec771ac72e1971d6c34ed10ecfda059ea58d39865b5ab5d7e71ad3b5f430c3db` | instructions_v0.2:test=134, train=114, validation=10 | 10 | 134 | 0 | 0 |
 | `data/processed/evaluation/controlled_modeling/mt5_instruction/test_predictions.jsonl` | 336 | `1bc275a14fcaa298211b4eb7283240c11000b4326b3db2a5b44e4e2923081eea` | unmatched | 0 | 0 | 0 | 336 |
 | `data/processed/evaluation/retrieval/indicbertv2/predictions.jsonl` | 539 | `974e2168901bde326d9e1d58bd10152b383bbb0d32c6e63a46ec163fe11ee054` | benchmark_xorqa:test=539 | 0 | 539 | 0 | 0 |
+| `data/processed/evaluation/retrieval/phase4_manifest_dev/predictions.jsonl` | 500 | `3f7df640f9a27f4fc565a9f890eb87c20d14061f59e682bc818704bfb5eccd29` | benchmark_xorqa:dev=500 | 500 | 0 | 0 | 0 |
 | `data/processed/evaluation/retrieval/predictions.jsonl` | 1039 | `c1b4f6b6d91cb872d3f34ba9d39b72e9e625d8b3d4d22cb5cd8bef8055a3b02c` | benchmark_xorqa:dev=500, test=539 | 500 | 539 | 0 | 0 |
 | `data/processed/evaluation/retrieval/roadmap_2026-09-25/bm25_dev/predictions.jsonl` | 500 | `3f7df640f9a27f4fc565a9f890eb87c20d14061f59e682bc818704bfb5eccd29` | benchmark_xorqa:dev=500 | 500 | 0 | 0 | 0 |
 | `data/processed/evaluation/translation/accuracy_dev/predictions.jsonl` | 997 | `354bb782ed8c4c1361320a736e45ffe1043198bf08a248fbea24644d79bb0a2b` | benchmark_flores:dev=997 | 997 | 0 | 0 | 0 |
 | `data/processed/evaluation/translation/nllb_garhwali_adapter_hindi_proxy/predictions.jsonl` | 32 | `74f81962cd5c791f5a719c71b4e6e4ab2ddb9afc35f910a959260f7828a2721e` | benchmark_flores:test=32 | 0 | 32 | 0 | 0 |
 | `data/processed/evaluation/translation/nllb_hindi_proxy/predictions.jsonl` | 32 | `75d0f73c5b4300fbb8e5a210951734f2e6e8b3faa4f7900e686e4d28e72fbd33` | benchmark_flores:test=32 | 0 | 32 | 0 | 0 |
+| `data/processed/evaluation/translation/phase4_manifest_dev/predictions.jsonl` | 997 | `354bb782ed8c4c1361320a736e45ffe1043198bf08a248fbea24644d79bb0a2b` | benchmark_flores:dev=997 | 997 | 0 | 0 | 0 |
+| `data/processed/evaluation/translation/phase4_manifest_dev_gated/predictions.jsonl` | 997 | `354bb782ed8c4c1361320a736e45ffe1043198bf08a248fbea24644d79bb0a2b` | benchmark_flores:dev=997 | 997 | 0 | 0 | 0 |
 | `data/processed/evaluation/translation/predictions.jsonl` | 1012 | `759c28e6ec78f8ad5c70a6f500c9c773dcc2ab2e16860f5c940b62532c1bc73f` | benchmark_flores:test=1012 | 0 | 1012 | 0 | 0 |
 
 ## Exact previously scored rows

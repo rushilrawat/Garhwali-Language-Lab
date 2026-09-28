@@ -9,6 +9,7 @@ from build_benchmark_v02 import (
     build_export_from_views,
     metric_contracts,
     validate_export_artifacts,
+    validate_usage_overlay,
 )
 
 
@@ -17,6 +18,30 @@ def sha(value):
 
 
 class BuildBenchmarkV02Tests(unittest.TestCase):
+    def test_usage_overlay_validates_nested_oracle_question_hash(self):
+        question = 'A repeated English oracle question with a stable hash?'
+        question_hash = sha('a repeated english oracle question with a stable hash')
+        row = {
+            'record_id': 'indicgenbench_xorqa:dev:8', 'split': 'dev',
+            'source_example': {'oracle_question': question},
+        }
+        overlay = {
+            'counts': {'affected_records': 1},
+            'labels': [{
+                'record_id': row['record_id'], 'original_split': 'dev',
+                'record_retained': True,
+                'evidence_types': ['exact_nested_oracle_question'],
+                'normalized_oracle_question_sha256': question_hash,
+            }],
+        }
+
+        self.assertEqual(validate_usage_overlay([row], overlay), [])
+        overlay['labels'][0]['normalized_oracle_question_sha256'] = '0' * 64
+        self.assertTrue(any(
+            'oracle-question hash does not match' in error
+            for error in validate_usage_overlay([row], overlay)
+        ))
+
     def test_external_record_keeps_original_and_scoring_text_separate(self):
         row = {
             'record_id': 'flores:test:1',
@@ -87,6 +112,7 @@ class BuildBenchmarkV02Tests(unittest.TestCase):
             'provenance': {'url': 'https://example.test/source', 'sha256': 'a' * 64},
             'source_example': {
                 'context': 'A long enough source context for the question.',
+                'title': 'title:Example Article_parentSection:Intro',
                 'question': 'प्रश्न?', 'answers': [{'text': 'उत्तर', 'answer_start': 0}],
             },
         }
@@ -95,16 +121,50 @@ class BuildBenchmarkV02Tests(unittest.TestCase):
             'record_retained': True,
             'source_family_sha256': 'b' * 64,
             'normalized_context_sha256': 'c' * 64,
+            'source_page_family_sha256': 'd' * 64,
+            'normalized_source_page_title_sha256': 'e' * 64,
             'open_diagnostic_eligible': True,
             'independent_source_generalization_eligible': False,
         }
 
         record = adapt_record('external/xorqa', row, overlay)
+        from audit_xorqa_source_page_families import source_page_hashes
 
         self.assertEqual(record['example_id'], 'xorqa:dev:1')
         self.assertEqual(record['usage']['usage_label'], overlay['usage_label'])
         self.assertEqual(record['lineage']['overlay_source_family_sha256'], 'b' * 64)
+        self.assertEqual(record['lineage']['overlay_source_page_family_sha256'], 'd' * 64)
+        self.assertEqual(record['lineage']['source_page_family_sha256'], source_page_hashes(row)[1])
         self.assertTrue(record['usage']['record_retained'])
+
+    def test_usage_overlay_validates_exact_source_page_title_evidence(self):
+        from build_benchmark_v02 import validate_usage_overlay
+
+        row = {
+            'record_id': 'indicgenbench_xorqa:train:9', 'split': 'train',
+            'source_example': {'title': 'title:Example Article_parentSection:Intro'},
+        }
+        title_hash = sha('example article')
+        family_hash = sha(f'source_page_title_sha256:{title_hash}')
+        label = {
+            'record_id': row['record_id'],
+            'original_split': 'train',
+            'record_retained': True,
+            'evidence_types': ['exact_source_page_title'],
+            'normalized_source_page_title_sha256': title_hash,
+            'source_page_family_sha256': family_hash,
+        }
+
+        self.assertEqual(
+            validate_usage_overlay([row], {'counts': {'affected_records': 1}, 'labels': [label]}),
+            [],
+        )
+
+        label['source_page_family_sha256'] = 'f' * 64
+        self.assertIn(
+            'indicgenbench_xorqa:train:9: overlay source-page hash does not match source row',
+            validate_usage_overlay([row], {'counts': {'affected_records': 1}, 'labels': [label]}),
+        )
 
     def test_asr_preserves_target_and_marks_local_audio_private(self):
         row = {
@@ -170,6 +230,26 @@ class BuildBenchmarkV02Tests(unittest.TestCase):
         self.assertIn('signature', contracts['translation']['metrics'][0])
         self.assertEqual(contracts['translation']['status'], 'draft_not_release_frozen')
         self.assertFalse(contracts['translation']['scores_computed'])
+
+    def test_qa_and_summary_metrics_bind_to_versioned_local_implementations(self):
+        contracts = metric_contracts()
+
+        self.assertEqual(
+            contracts['question_answering']['metrics'][0]['id'],
+            'garhwali-qa-em-token-f1-v1',
+        )
+        self.assertEqual(
+            contracts['question_answering']['metrics'][0]['implementation_status'],
+            'implemented_dependency_free; runner reports missing-reference exclusions',
+        )
+        summary_metric = next(
+            metric for metric in contracts['summarization']['metrics']
+            if metric['id'] == 'garhwali-rouge-l-f1-v1'
+        )
+        self.assertEqual(
+            summary_metric['implementation_status'],
+            'implemented_dependency_free; runner reports missing-reference exclusions',
+        )
 
     def test_export_validator_detects_written_view_drift(self):
         row = {

@@ -13,6 +13,7 @@ from collections import Counter
 from pathlib import Path
 
 from audit_benchmark_overlap_candidates import normalize_text as normalize_overlap_text
+from audit_xorqa_source_page_families import source_page_hashes
 
 
 SCHEMA_VERSION = 'garhwali-bench-record-v0.2-draft'
@@ -59,29 +60,37 @@ METRICS = {
                 'implementation_status': 'reuse_candidate_not_yet_bound_to_crosssum',
             },
             {
-                'id': 'rouge-l-fmeasure-v1-draft',
-                'signature': 'token-level LCS precision/recall F1; tokenizer, normalization, and multi-reference policy not yet frozen',
-                'implementation_status': 'not_implemented',
+                'id': 'garhwali-rouge-l-f1-v1',
+                'signature': (
+                    'NFC+casefold; Unicode punctuation and symbols become spaces; '
+                    'collapsed whitespace tokens; token LCS F1; macro mean of '
+                    'per-record maximum across non-empty references; empty hypotheses '
+                    'score zero and remain in the denominator; '
+                    'scripts/benchmark_metrics.py:score_rouge_l'
+                ),
+                'implementation_status': 'implemented_dependency_free; runner reports missing-reference exclusions',
             },
         ],
-        'limitations': 'Do not compute or compare scores until tokenizer, source/summary fields, empty-output policy, and source-family aggregation are frozen.',
+        'limitations': 'No CrossSum model scores are computed here; source-family uncertainty is not aggregated by the scorer.',
     },
     'question_answering': {
         'status': 'draft_not_release_frozen',
         'scores_computed': False,
         'metrics': [
             {
-                'id': 'garhwali-qa-exact-match-v1-draft',
-                'signature': 'normalized prediction equals any normalized reference; normalization and answerability policy not yet frozen',
-                'implementation_status': 'not_implemented',
-            },
-            {
-                'id': 'garhwali-qa-token-f1-v1-draft',
-                'signature': 'maximum token-overlap F1 over references; tokenizer and empty-answer handling not yet frozen',
-                'implementation_status': 'not_implemented',
+                'id': 'garhwali-qa-em-token-f1-v1',
+                'signature': (
+                    'NFC+casefold; Unicode punctuation and symbols become spaces; '
+                    'collapsed whitespace tokens; exact match and multiset token F1; '
+                    'maximum per-record score across non-empty references; macro mean; '
+                    'empty hypotheses score zero and remain in the denominator; '
+                    'records without a non-empty reference are rejected; '
+                    'scripts/benchmark_metrics.py:score_qa_answers'
+                ),
+                'implementation_status': 'implemented_dependency_free; runner reports missing-reference exclusions',
             },
         ],
-        'limitations': 'Exact source-context overlap labels restrict the 62 flagged XORQA rows to open diagnostics; source-generalization eligibility remains false for those rows.',
+        'limitations': 'No XORQA model scores are computed here. Explicit no-answer scoring is unsupported; rows without a target-language reference are excluded and reported. The current usage overlay marks 138 records with exact context, source-page, question, or oracle-question overlap as open-diagnostic-only for independent source-generalization claims.',
     },
     'language_modeling': {
         'status': 'draft_not_release_frozen',
@@ -363,12 +372,16 @@ def adapt_record(view_name: str, row: dict, overlay: dict | None = None) -> dict
     context_family_hash = (
         sha256_text(f'source_content_sha256:{context_hash}') if context_hash else None
     )
+    page_hashes = source_page_hashes(row) if view_name == 'external/xorqa' else None
     lineage = {
         'exact_text_group_sha256': text_fields['text_scoring_sha256'],
         'source_context_group_sha256': context_family_hash,
         'normalized_source_context_sha256': context_hash,
         'overlay_source_family_sha256': overlay.get('source_family_sha256') if overlay else None,
         'overlay_normalized_context_sha256': overlay.get('normalized_context_sha256') if overlay else None,
+        'source_page_family_sha256': page_hashes[1] if page_hashes else None,
+        'normalized_source_page_title_sha256': page_hashes[0] if page_hashes else None,
+        'overlay_source_page_family_sha256': overlay.get('source_page_family_sha256') if overlay else None,
         'duplicate_component_id': row.get('duplicate_component_id'),
         'segment_sha256': row.get('segment_sha256'),
         'audio_sha256': row.get('audio_sha256'),
@@ -446,6 +459,17 @@ def validate_usage_overlay(xorqa_rows: list[dict], overlay: dict) -> list[str]:
             question = normalize_overlap_text(row.get('text_normalized') or row.get('text_original') or '')
             if label.get('normalized_question_sha256') != sha256_text(question):
                 errors.append(f'{record_id}: overlay question hash does not match source row')
+        if 'exact_nested_oracle_question' in evidence:
+            oracle_question = row.get('source_example', {}).get('oracle_question')
+            normalized_oracle_question = normalize_overlap_text(oracle_question)
+            if label.get('normalized_oracle_question_sha256') != sha256_text(normalized_oracle_question):
+                errors.append(f'{record_id}: overlay oracle-question hash does not match source row')
+        if 'exact_source_page_title' in evidence:
+            page_hashes = source_page_hashes(row)
+            if page_hashes is None or label.get('normalized_source_page_title_sha256') != page_hashes[0]:
+                errors.append(f'{record_id}: overlay source-page title hash does not match source row')
+            elif label.get('source_page_family_sha256') != page_hashes[1]:
+                errors.append(f'{record_id}: overlay source-page hash does not match source row')
     counts = overlay.get('counts') or {}
     if counts.get('affected_records') != len(labels):
         errors.append('usage overlay affected-record count does not match label rows')

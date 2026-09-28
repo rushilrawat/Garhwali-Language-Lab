@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import re
 from pathlib import Path
 
 from asr_metrics import normalize, score
+from evaluation_run_manifest import write_run_artifacts
 
 
 def _row_set_sha256(rows: list[dict]) -> str:
@@ -109,6 +111,7 @@ def build_report(
                         comparison[right][metric_key] += 1
         rows.append(
             {
+                "record_id": f"asr:validation:{audio_hash}",
                 "row_idx": manifest_row.get("row_idx"),
                 "audio_sha256": audio_hash,
                 "reference_words": len(normalize(reference).split()),
@@ -143,6 +146,56 @@ def build_report(
         "rows": rows,
         "limitation": "Automated-reference comparison only; this validation split has prior evaluation history and does not establish native-speaker correctness or blind generalization.",
     }
+
+
+def write_analysis_artifacts(
+    report: dict,
+    output_dir: str | Path,
+    *,
+    model_metadata: dict | None = None,
+    code_paths=(),
+    git_root: str | Path | None = None,
+) -> dict:
+    """Write a post-hoc ASR comparison with a shared hash-linked manifest."""
+    report = dict(report)
+    rows = list(report.get("rows") or [])
+    record_ids = [str(row.get("record_id") or "") for row in rows]
+    if any(not record_id for record_id in record_ids):
+        raise ValueError("ASR validation comparison row is missing a stable record ID")
+    report["evaluation_records"] = len(rows)
+    report["selected_record_ids"] = record_ids
+    report["selected_rows_sha256"] = report.get("row_set_sha256")
+    report["run_id"] = "asr-validation-paired-posthoc"
+    predictions = [
+        {
+            "record_id": row["record_id"],
+            "audio_sha256": row["audio_sha256"],
+            "models": row["models"],
+        }
+        for row in rows
+    ]
+    return write_run_artifacts(
+        output_dir,
+        predictions,
+        report,
+        config={
+            "task": "automatic_speech_recognition",
+            "evaluation_split": "asr/validation",
+            "purpose": "posthoc_scoring_of_saved_model_predictions",
+            "metric_normalizer": report.get("metric_normalizer"),
+            "uses_only_frozen_validation_audio_hashes": True,
+            "test_rows_scored": False,
+            "input_sha256": report.get("input_sha256", {}),
+        },
+        model={
+            "kind": "paired_saved_prediction_comparison",
+            "models": model_metadata or {},
+        },
+        runtime={"inference": "not_run; existing predictions rescored locally"},
+        device="cpu_posthoc_scoring",
+        code_paths=code_paths,
+        git_root=git_root,
+    )
 
 
 def _read_jsonl(path: Path) -> list[dict]:
@@ -213,6 +266,13 @@ def render_markdown(report: dict) -> str:
 
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=root / "data/processed/evaluation/asr/validation_comparison_manifested_2026-09-27",
+    )
+    args = parser.parse_args()
     manifest = root / "data/processed/model_ready/splits/asr/validation.jsonl"
     prediction_paths = {
         "sravaani": root / "data/processed/evaluation/asr/confidence_calibration/sravaani/predictions.jsonl",
@@ -227,14 +287,30 @@ def main() -> None:
     inputs = {"validation_manifest": _sha256_file(manifest)}
     inputs.update({name: _sha256_file(path) for name, path in prediction_paths.items()})
     report = build_report(manifest_rows, predictions, inputs)
-    prefix = root / "research/asr-validation-error-analysis-2026-09-24"
-    prefix.with_suffix(".json").write_text(
-        json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
-        encoding="utf-8",
+    model_metadata = {}
+    for name, path in prediction_paths.items():
+        metadata_path = path.with_name("report.json")
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        model_metadata[name] = {
+            key: metadata.get(key)
+            for key in ("model_id", "revision", "model_artifact_sha256", "run_id")
+            if metadata.get(key) is not None
+        }
+    output_dir = args.output_dir if args.output_dir.is_absolute() else root / args.output_dir
+    manifest = write_analysis_artifacts(
+        report,
+        output_dir,
+        model_metadata=model_metadata,
+        code_paths=(Path(__file__), Path(__file__).with_name("asr_metrics.py"),
+                    Path(__file__).with_name("evaluation_run_manifest.py")),
+        git_root=root,
     )
-    prefix.with_suffix(".md").write_text(render_markdown(report), encoding="utf-8")
-    print(f"Wrote {prefix.with_suffix('.json').relative_to(root)}")
-    print(f"Wrote {prefix.with_suffix('.md').relative_to(root)}")
+    print(json.dumps({
+        "output_dir": str(output_dir),
+        "records": report["record_count"],
+        "models": report["models"],
+        "manifest": manifest,
+    }, ensure_ascii=False, indent=2, sort_keys=True))
 
 
 if __name__ == "__main__":

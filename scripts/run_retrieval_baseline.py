@@ -7,11 +7,14 @@ import argparse
 import hashlib
 import json
 import math
+import platform
 import re
 import statistics
 import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
+
+from evaluation_run_manifest import write_run_artifacts
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -196,8 +199,14 @@ def run(input_path=INPUT, output_dir=OUTPUT, selection_split='dev'):
         'oracle_english_word_bm25': (word_index, 'oracle_question'),
     }
     baselines = {}
-    predictions = {}
     evaluated_rows = [row for row in rows if row.get('split') == selection_split]
+    predictions = {
+        str(row.get('record_id') or f'evaluation_row:{index:08d}'): {
+            'record_id': str(row.get('record_id') or f'evaluation_row:{index:08d}'),
+            'split': row['split'],
+        }
+        for index, row in enumerate(evaluated_rows)
+    }
     for name, (index, query_field) in configurations.items():
         metrics, results = evaluate(
             rows, relevant_ids, index, query_field, selection_split=selection_split
@@ -240,16 +249,51 @@ def run(input_path=INPUT, output_dir=OUTPUT, selection_split='dev'):
         ),
         **provenance(input_path, documents, source_ids, evaluated),
     }
-    output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    (output_dir / 'predictions.jsonl').write_text(
-        ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n'
-                for row in predictions.values()),
-        encoding='utf-8',
-    )
-    (output_dir / 'report.json').write_text(
-        json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
-        encoding='utf-8',
+    selected_record_ids = [
+        str(row.get('record_id') or f'evaluation_row:{index:08d}')
+        for index, row in enumerate(evaluated_rows)
+    ]
+    selected_bytes = ''.join(
+        json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n'
+        for row in evaluated_rows
+    ).encode('utf-8')
+    report.update({
+        'evaluation_records': len(evaluated_rows),
+        'evaluation_split': selection_split,
+        'selected_record_ids': selected_record_ids,
+        'input_sha256': report['input_manifest_sha256'],
+        'selected_rows_sha256': hashlib.sha256(selected_bytes).hexdigest(),
+    })
+    config = {
+        'task': 'retrieval',
+        'split': selection_split,
+        'candidate_corpus_sha256': report['passage_corpus_sha256'],
+        'bm25': {
+            'k1': 1.5,
+            'b': 0.75,
+            'word_analyzer': 'unicode_words_casefold_nfc_v1',
+            'character_analyzer': 'boundary_padded_3_4_5_grams_v1',
+        },
+        'retrievers': {
+            'garhwali_word_bm25': 'question',
+            'garhwali_character_bm25': 'question',
+            'oracle_english_word_bm25': 'oracle_question',
+        },
+    }
+    write_run_artifacts(
+        output_dir,
+        list(predictions.values()),
+        report,
+        config=config,
+        model={'id': 'local-bm25-retrieval', 'revision': 'garhwali-xorqa-bm25-v0.1'},
+        runtime={
+            'python': platform.python_version(),
+            'implementation': platform.python_implementation(),
+            'platform': platform.platform(),
+        },
+        device='cpu',
+        code_paths=(__file__, Path(__file__).with_name('evaluation_run_manifest.py')),
+        git_root=ROOT,
     )
     return report
 

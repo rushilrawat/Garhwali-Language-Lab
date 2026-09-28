@@ -54,8 +54,10 @@ class GarhwaliBenchmarkTests(unittest.TestCase):
                 eval_asr,
                 None,
                 root / 'out',
+                release_id='parent-safe-benchmark-v0.2',
             )
 
+            self.assertEqual(report['release_id'], 'parent-safe-benchmark-v0.2')
             self.assertEqual(report['records']['external_total'], 4)
             self.assertEqual(report['records']['text_evaluation'], 1)
             self.assertEqual(report['records']['asr_evaluation'], 1)

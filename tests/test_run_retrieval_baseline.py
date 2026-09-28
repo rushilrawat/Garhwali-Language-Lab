@@ -64,6 +64,11 @@ class RetrievalBaselineTests(unittest.TestCase):
             )
             self.assertEqual(report['test_pilot_records'], 0)
             self.assertIsNone(report['baselines']['garhwali_word_bm25']['test_pilot'])
+            manifest = json.loads((root / 'out/run_manifest.json').read_text())
+            self.assertEqual(manifest['evaluation_split'], 'dev')
+            self.assertEqual(manifest['selected_record_ids'], ['dev:mountain'])
+            self.assertEqual(manifest['model']['id'], 'local-bm25-retrieval')
+            self.assertIn('report.json', manifest['outputs'])
             predictions = [
                 json.loads(line)
                 for line in (root / 'out/predictions.jsonl').read_text().splitlines()

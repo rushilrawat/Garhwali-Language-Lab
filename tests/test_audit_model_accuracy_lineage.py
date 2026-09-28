@@ -188,6 +188,33 @@ class LineageReportTests(unittest.TestCase):
             )
             self.assertEqual(prediction["model_metadata"]["model_id"], "example/model")
             self.assertEqual(prediction["model_metadata"]["test_sha256"], "frozen-test-hash")
+            self.assertEqual(
+                report["evaluation_decisions"]["vaani_asr_test"]["status"],
+                "historical_only",
+            )
+
+    def test_internal_text_candidate_is_historical_after_aggregate_baseline(self):
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            self._write_required_manifests(root)
+
+            report = build_report(root)
+
+            decision = report["evaluation_decisions"]["text_recommended_test"]
+            self.assertEqual(decision["status"], "historical_only")
+            self.assertIn("aggregate", decision["reason"])
+            self.assertEqual(decision["previously_scored_row_count"], 0)
+
+    def test_known_previously_scored_test_splits_are_historical_only(self):
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            self._write_required_manifests(root)
+
+            decisions = build_report(root)["evaluation_decisions"]
+
+            for name in ("flores_test", "instructions_test", "vaani_asr_test", "xorqa_test"):
+                with self.subTest(evaluation=name):
+                    self.assertEqual(decisions[name]["status"], "historical_only")
 
     def test_report_serialization_is_deterministic(self):
         with TemporaryDirectory() as temp_dir:
@@ -347,6 +374,34 @@ class LineageReportTests(unittest.TestCase):
             self.assertEqual(len(decision["row_set_sha256"]), 64)
             self.assertFalse(decision["eligible_for_heldout_claim"])
             self.assertIn("upstream", decision["reason"])
+
+    def test_any_saved_test_prediction_makes_the_split_historical_only(self):
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            self._write_required_manifests(root)
+            meta_path = root / SINGLE_MANIFESTS["meta_omnilingual"]["path"]
+            rows = read_jsonl(meta_path)
+            test_row = next(row for row in rows if row["split"] == "test")
+            prediction_path = (
+                root / "data/processed/evaluation/asr/meta_test_predictions.jsonl"
+            )
+            prediction_path.parent.mkdir(parents=True, exist_ok=True)
+            prediction = {
+                "record_id": test_row["record_id"],
+                "audio_sha256": test_row["audio_sha256"],
+                "hypothesis": "saved output",
+            }
+            prediction_path.write_text(
+                json.dumps(prediction) + "\n",
+                encoding="utf-8",
+            )
+
+            report = build_report(root)
+
+            decision = report["evaluation_decisions"]["meta_omnilingual_test"]
+            self.assertEqual(decision["status"], "historical_only")
+            self.assertEqual(decision["previously_scored_row_count"], 1)
+            self.assertFalse(decision["eligible_for_heldout_claim"])
 
     def test_same_audio_conflicting_transcripts_are_reported_without_removing_rows(self):
         with TemporaryDirectory() as temp_dir:

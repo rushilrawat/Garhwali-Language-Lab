@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-525%20passing-success.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-584%20passed-brightgreen.svg)](research/corpus-preparation-status.md)
 [![Hugging Face Speech](https://img.shields.io/badge/Hugging%20Face-Speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 [![Hugging Face Corpus](https://img.shields.io/badge/Hugging%20Face-Corpus%20(public)-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
@@ -38,7 +38,31 @@ for every record.
 
 ## Current benchmark and model stage
 
-The 2026-09-26 roadmap snapshot has **Phase 1 inventory/reproducibility complete; Phases 2–3 in progress; Phase 4 started with translation-run manifests; and Phase 5 baseline consolidation partial**. Later uncertainty analysis, eligibility decisions, and benchmark-card/release work remain. The local v0.2 draft covers eight views and 12,622 rows; it is not a frozen benchmark or an accuracy certification. The full automated test suite passes **525 tests**.
+**Split-audit correction (2026-09-28):** the historical text split kept exact
+segments separate but placed segments from 50 parent documents (1,523 rows)
+across train/test or train/validation. The builder now groups parent-document
+segments before duplicate reassignment. A separate local candidate reports
+zero parent-document crossings and has not replaced historical files. The
+separate benchmark candidate recomputed a deterministic character-bigram
+diagnostic on already-scored rows; it was not used for model selection.
+CrossSum exact source/target URLs do not repeat across
+splits; FLORES has no row-level source URLs, so that source-family check remains
+unresolved. See the [full split audit](research/benchmark-parent-safe-split-audit-2026-09-28.md).
+
+The 2026-09-28 roadmap status has **Phase 1 inventory/reproducibility complete; Phase 2 configured exact text, nested-field, cross-language-label, and XORQA source-page checks complete; the parent-safe split candidate is not yet promoted and semantic comparison remains open; Phase 3 has versioned QA, summary, and translation metrics but remains a draft; Phase 4 has hash-linked translation, NLLB, CrossSum/XORQA, BM25 retrieval, and saved-prediction ASR and generation manifests; Phase 5 baseline consolidation is partial; and Phase 8 result eligibility is reconciled for the configured splits**. Phase 7 has paired record-level translation uncertainty, source-page-clustered XORQA retrieval intervals, fixed-corpus retrieval miss analysis, and structural diagnostics of saved generation outputs. All 500 dev gold passages are present in the candidate corpus; the Garhwali word baseline has 496 zero-score misses, while the character baseline has 493 zero-score misses and two passages ranked below 10. The 500 saved BM25 dev queries span 461 source pages; the paired character-minus-word Recall@10 difference is +0.2 percentage points (95% CI 0.0–0.6), so the result is inconclusive. Those intervals are conditional on the fixed 1,059-document corpus drawn from all original splits, not unseen-page generalization. The mT0 generation audit reconciles 390 validation predictions and finds no empty outputs, prompt copies, control tokens, or selected Unicode anomalies; the Garhwali-to-English lexicon slice has a largest repeated-answer mode of 23/29 for seed 43, a diagnostic concentration signal rather than a correctness judgment. The local v0.2 draft covers eight views and 12,622 rows; it is not a frozen benchmark or an accuracy certification. The exact nested scan found 41 same-field cross-split groups and no long exact match to recommended training text. A supplemental scan found 50 short exact strings shared across English/Garhwali answer labels; 10 span source splits, but all are only 2–6 normalized characters, so they remain common-answer candidates rather than confirmed leakage. A source-page audit found 54 exact XORQA page families crossing splits (134 rows); 32 families include distinct passages. The retained-row XORQA overlay now labels 138 records for open diagnostics: 134 in cross-split page families and four additional exact-question/oracle-question cases. Answer-span repeats remain documented candidates, not automatic leakage findings. CrossSum has 100/100 dev summary references and XORQA has 499/500 target-answer references; the missing Garhwali answer stays in the output but is excluded from the metric denominator. Rescoring existing translation-memory predictions reproduced the 997-row dev baseline exactly; its paired record bootstrap remains unclustered. Saved ASR predictions were re-scored on 269 validation hashes, while saved mT0 predictions have three hash-linked 130-row manifests. The mT0 primary-reference scores reproduce the saved report; unreviewed alternate references shift chrF2 by 0.0019–0.0025, a sensitivity check rather than an accuracy gain. These are post-hoc audits; the parent-safe benchmark rebuild also computed a deterministic character-bigram diagnostic on the already-scored 392-row open text test (perplexity 14.123460). It was not used for model selection, and no neural inference ran. The original mT0 sampling parameters and adapter hashes are missing. Phase 8 now records **zero independent-final-eligible results**; see the [eligibility report](research/task-result-eligibility-2026-09-28.md) and [fresh prediction-lineage audit](research/model-accuracy-lineage-2026-09-28.md). Fresh checks pass **584/584 pytest tests** and **582/582 unittest tests**. Run pytest with `PYTHONPATH=.venv/lib/python3.12/site-packages:scripts pytest -q` so the project LangGraph packages are visible.
+
+**ASR lineage correction (2026-09-28):** the base, decoder-sweep, 61-trial,
+expanded-human, and original 102-step test predictions now reconcile to the
+same 112 audio hashes and cleaned references. Speaker-clustered paired
+intervals overlap zero for every candidate, so the historical test does not
+support a model improvement claim. See the
+[held-out lineage audit](research/asr-heldout-lineage-audit-2026-09-28.md).
+The older 269-row SraVaani validation comparator is also traced to its saved
+prediction file and reproduces 2,161 word / 3,282 character errors. Its 3-word /
+4-character difference from the later greedy-sweep aggregate remains open
+because the sweep did not save row-level greedy predictions.
+
+Full retrieval intervals and the bootstrap method are in the [XORQA source-page-cluster report](research/retrieval-source-page-cluster-uncertainty-2026-09-28.md); gold availability and miss types are in the [retrieval miss report](research/retrieval-miss-analysis-2026-09-28.md). Saved-generation structure and repeated-answer concentration are in the [mT0 output diagnostics](research/generation-output-diagnostics-2026-09-28.md). These are saved-dev analyses only; they neither improve the model nor estimate performance on unseen pages.
 
 Estimated effort to a reproducible benchmark/model research release candidate is **50–75 focused hours, or roughly 6–9 weeks at 8–10 focused hours per week**. This estimate excludes the API/community product, native-speaker review and dialect annotation (deferred), and fresh model runs that require missing local weights or dependencies. The detailed work order and blockers are in [`research/benchmark-model-roadmap.md`](research/benchmark-model-roadmap.md).
 
@@ -119,7 +143,7 @@ research use; some are restricted, rights-pending, experimental, or awaiting a
 native-speaker decision. Keeping those differences visible is part of the work,
 not a defect in the dataset.
 
-## ✨ Current snapshot
+## ✨ Corpus snapshot (2026-09-26)
 
 See [`finalreport.md`](finalreport.md) for the current release decision, verified
 counts, audit gaps, and remaining work.
@@ -173,13 +197,17 @@ counts, audit gaps, and remaining work.
   112 recordings.
 - **GarhwaliBench v0.1 candidate:** 3,847 external task records across three
   valid schemas, 398 strict automated text rows, and 112 speaker-safe ASR rows.
-  The internal text and ASR checks find zero measured training overlap. One
-  exact XORQA primary-text group spans its source `train` and `dev` splits; the
-  records are retained and flagged. No current task has an approved independent
-  final-accuracy score.
+  The historical text candidate has zero exact segment-hash matches against
+  training, and the ASR candidate has zero audio-hash or identified-speaker
+  overlap. A later parent-document audit found 50 parent documents / 1,523
+  segments crossing text splits; the corrected local candidate groups these
+  documents and has zero parent crossings. One exact XORQA primary-text group
+  spans its source `train` and `dev` splits; records remain flagged. No current
+  task has an approved independent final-accuracy score.
 - **Recommended-view character bigram baseline:** 14.122106 perplexity on the
-  398-row candidate, trained on 7,490 recommended Garhwali rows with zero exact
-  train/evaluation overlap. Using the same scorer and candidate, the earlier
+  historical 398-row candidate, trained on 7,490 recommended Garhwali rows
+  with zero exact segment-hash overlap. The parent-document issue means it is
+  not independent source-level evaluation. Using the same scorer and candidate, the earlier
   broad 106,915-row view scored 17.000058. These are automated text-model
   baselines, not native-language accuracy scores.
 - **Multilingual tokenizer audit:** IndicBERTv2 leads five candidates at 1.532
@@ -246,11 +274,14 @@ These figures describe the preparation snapshot updated through 2026-09-26. Raw
 downloads, VAANI audio, generated JSONL, caches, and model artifacts stay outside
 Git through `.gitignore`.
 
-### Latest benchmark and model checks (2026-09-26)
+### Historical benchmark and model baseline (2026-09-26)
 
-The benchmark and model work is in **baseline consolidation and validation**, not
-final accuracy certification. The candidate benchmark passes its automated
-integrity checks, but none of the five task areas has an approved independent
+This section preserves the measured baseline from 2026-09-26. The current
+2026-09-28 audit and roadmap state are summarized in
+[Current benchmark and model stage](#current-benchmark-and-model-stage) above;
+this dated snapshot is not the newest status. At the time, the benchmark and
+model work was in **baseline consolidation and validation**, not final accuracy
+certification. None of the five task areas had an approved independent
 final-accuracy set. Native review and dialect annotation remain deferred.
 
 - **ASR:** five saved SraVaani decoder/training candidates were re-scored against
@@ -275,27 +306,38 @@ final-accuracy set. Native review and dialect annotation remain deferred.
   spanning source splits. Eleven connect training to dev/test, including four
   that include train and test. Four near-duplicate candidates remain within
   their existing split. Follow-up verification confirmed 27 source-context
-  groups spanning splits and labeled 62 rows open-diagnostic-only for
-  independent source-generalization claims; all rows remain available. The
+  groups spanning splits. A source-page-title audit found 54 page families
+  (134 rows) crossing splits; 32 families have distinct passages. The current
+  overlay labels 138 records open-diagnostic-only for independent
+  source-generalization claims, while retaining all source rows and allowing
+  open diagnostics.
+  The nested audit found 41 same-field cross-split groups and no long exact
+  training overlap; repeated answer spans remain candidates. The
   four near pairs were reviewed: three share same-split train duplicate
   components and one shares a context/answer within dev. The 398 text records
   mirrored between internal evaluation and recommended test are same-split
-  copies. See the [adjudication report](research/benchmark-overlap-adjudication-2026-09-26.md).
+  copies. See the [adjudication report](research/benchmark-overlap-adjudication-2026-09-26.md)
+  and [source-page family review](research/benchmark-source-page-families-2026-09-28.md).
 - **v0.2 benchmark draft:** a deterministic local adapter now exports all eight
   views / 12,622 rows with separate source/scoring fields where available,
-  normalizer IDs, per-view hashes, and the 62-row XORQA usage overlay. Every
+  normalizer IDs, per-view hashes, and the 138-row XORQA usage overlay. Every
   source row is retained. The package is local-only; raw text is unavailable in
   some legacy views, metric signatures remain draft, and rights are not cleared.
   See the [v0.2 contract](research/garhwali-bench-v0.2-schema-contract.md) and
   [export report](research/benchmark-v02-export-2026-09-26.md).
-- **Phase 4 evaluation runners:** translation and NLLB runs now write a shared
-  `run_manifest.json` with split/input/selected-row hashes, config hash, code
-  commit and dirty state, runtime/device, timestamps, and prediction/report
-  hashes. NLLB validates inputs and local checkpoints before loading Torch or
-  Transformers. Both runners require an extra opt-in for historical test
-  scoring. Runner work is in progress; uncached NLLB weights still prevent a
-  real model run.
-- **Verification:** 523 project tests pass. These checks validate code and
+- **Phase 4 evaluation runners:** translation/NLLB, post-hoc CrossSum/XORQA
+  scoring, BM25 retrieval, and paired saved-prediction ASR validation write
+  shared hash-linked run manifests. The retrieval manifest reconciles all 500
+  dev query IDs; the ASR manifest reconciles the fixed 269-row validation set
+  and reproduces the prior metrics. Saved mT0 validation predictions now also
+  have per-seed manifests; their selected IDs match the recorded validation
+  hash, but the original sampling parameters and adapter checkpoint hashes are
+  unavailable. NLLB
+  validates inputs and local checkpoints before loading Torch or Transformers;
+  its pinned weights remain uncached.
+- **Verification:** The full pytest suite passes 584/584 with the project
+  package directory on `PYTHONPATH`; the documented unittest runner passes 582/582.
+  These checks validate code and
   artifact integrity; they do not establish that every Garhwali word, transcript,
   or reference is linguistically correct.
 
@@ -322,9 +364,9 @@ outputs and local diagnostics; it launched no paid Hugging Face jobs.
 | ---: | ---: | ---: | ---: |
 | English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
 
-| `257,807` | `146,684` | `257,807` | `523` |
+| `257,807` | `146,684` | `257,807` | `584/584` |
 | ---: | ---: | ---: | ---: |
-| all-data archive rows | public content-profile rows | complete reference-index rows | passing tests |
+| all-data archive rows | public content-profile rows | complete reference-index rows | local tests passing / collected* |
 
 </div>
 
@@ -568,15 +610,22 @@ OCR, transcription, or native-speaker review.
   hashes.
 - [x] Resolve all 332 cross-document segment conflicts with connected-component,
   document-aware splitting; zero exact segments now cross splits.
-- [x] Publish deterministic document-aware text splits and preserve the official
-  speaker-disjoint VAANI ASR partitions.
+- [x] Publish the historical deterministic text split and preserve the official
+  speaker-disjoint VAANI ASR partitions; a later audit found parent-document
+  crossings in the text split, corrected in the separate candidate below.
 - [x] Publish strict ASR/TTS candidate splits for 2,002 clean rows from 248
   identified speakers; placeholder-speaker rows remain in the broader manifests.
-- [x] Freeze checksum-addressed, automatically screened text and ASR evaluation
-  candidates with zero measured split leakage.
+- [x] Freeze checksum-addressed, automatically screened ASR evaluation
+  candidates; retain the historical text candidate with its known-use labels.
+- [x] Keep all segments from each parent document together before duplicate-based
+  reassignment; the corrected candidate reports zero parent-document crossings.
+- [ ] Promote the candidate only after evaluation eligibility and model-exposure
+  history are reconciled. Historical published files and scores stay unchanged.
 
 See the [`dataset split status`](research/dataset-splits-2026-09-10.md) for exact
 selection rules, exclusions, counts, and leakage checks.
+The 2026-09-28 finding and correction are documented in the
+[`parent-safe split audit`](research/benchmark-parent-safe-split-audit-2026-09-28.md).
 
 ### 7. Pipeline engineering — Medium
 
@@ -731,7 +780,7 @@ with provenance.
 | Literary, cultural, and university additions | Complete | Automated validation |
 | Local corpus package candidate | Automated build complete: 257,807 all-data rows; 146,684 public content rows; 257,807 public reference rows | Full all-data payload is access-controlled; public content redacts 24,566 values, while reference tables inventory every row and all 216 structured records |
 | Benchmark/model research release candidate | **50–75 focused hours / about 6–9 weeks** at 8–10 hours per week | Close Phase 2/3 split and schema gaps; extend Phase 4 manifests; consolidate baselines; quantify uncertainty; finish eligibility labels, cards, and release checks. Missing model weights/dependencies may block fresh inference. |
-| SraVaani experiments | Saved runs are complete; no fine-tune is promoted, and some historical test aggregates lack row-level manifest hashes | No Hugging Face Jobs are running or scheduled; fresh local inference needs compatible dependencies and weights |
+| SraVaani experiments | Saved runs are complete; a post-hoc audit matches five runs to the same 112 audio/reference pairs and computes speaker-clustered paired intervals. No candidate shows a reliable held-out improvement, and none is promoted. | All test results remain historical; example-level VAANI pretraining exposure and native reference correctness remain unresolved. Fresh local inference needs compatible dependencies and weights. |
 | Hugging Face datasets | 2026-09-27: Speech and Corpus are public; corpus now includes the full metadata-reference index | Speech has 113,363 rows. Corpus has 146,684 content rows plus 257,807 reference rows, 590 sources, and 277,637 source links. Restricted payload values are not redistributed. |
 | Native language review and dialect annotation | Deferred; separate effort not included in the estimate above | Garhwali-speaking reviewers and a review protocol |
 | Sellable text-first API MVP | 30–60 additional focused hours / roughly 1–2 full-time weeks | Dataset/schema freeze, hosting, authentication, billing, and monitoring |
@@ -826,9 +875,10 @@ accuracy cannot be established from machine scores alone.
 19. [x] **SraVaani human-reference training — Xhigh:** Hugging Face Job
     [`6aa9e33af76d6a098a70ec01`](https://huggingface.co/jobs/rushilrawat/6aa9e33af76d6a098a70ec01)
     completed the 102-step decoder/joint adaptation on `l4x1`. Its one-time
-    112-record test report gives 43.528% WER / 17.452% CER. The recorded test
-    manifest hash differs from the base report, so the values are not a verified
-    paired comparison. The experimental checkpoint is not promoted.
+    112-record test report gives 43.528% WER / 17.452% CER. Its saved
+    predictions match the base test's audio hashes and cleaned references; a
+    post-hoc paired speaker-cluster analysis remains inconclusive. The differing
+    manifest-byte hash is unexplained. The experimental checkpoint is not promoted.
 20. [x] **Structured knowledge packaging — Medium:** geography, historical terms,
     literary people, literary works, popular songs, and university research are
     first-class Hugging Face configurations with 216 records and stable IDs.
@@ -840,18 +890,19 @@ accuracy cannot be established from machine scores alone.
 22. [x] **Refined SraVaani decision — Xhigh:** Job
     [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768)
     completed all 61 trials. The selected checkpoint improved validation WER to
-    42.711%; its saved historical test aggregate is 43.528%. The fine-tune report
-    does not record a test-manifest hash, so direct comparison with the base
-    result is unverified. The checkpoint is retained for research, not promoted.
+    42.711%; its saved historical test aggregate is 43.528%. The saved
+    predictions reconcile to the same 112 audio/reference pairs as the base;
+    the paired speaker-cluster interval includes zero. The checkpoint is
+    retained for research, not promoted.
 23. [x] **Expanded human-transcript SraVaani — Xhigh:** train on 5,513 human
     transcripts (8.112 hours) after excluding every fixed validation/test audio
     hash and every known benchmark speaker; select on the unchanged 269-record
     validation set and evaluate the frozen 112-record test at most once. Job
     [`6aaaa754f76d6a098a70f2f`](https://huggingface.co/jobs/rushilrawat/6aaaa754f76d6a098a70f2f)
     completed 346 steps. Validation WER improved to 42.209%; its saved historical
-    test aggregate is 43.289%. The fine-tune report omits a test-manifest hash,
-    so direct comparison with the base result is unverified; the checkpoint
-    remains experimental.
+    test aggregate is 43.289%. The saved predictions reconcile to the same 112
+    audio/reference pairs as the base; the paired speaker-cluster interval
+    includes zero. The checkpoint remains experimental.
 24. [x] **IndicBERTv2 continuation — Xhigh:** Job
     [`6aaaad62f76d6a098a71100f`](https://huggingface.co/jobs/rushilrawat/6aaaad62f76d6a098a71100f)
     completed three 4,096-step seeds against the current 106,804-record training
@@ -1056,7 +1107,7 @@ traceability alone does not grant reuse rights. The audit reopens all five
 benchmark artifacts and verifies package shard hashes and content-derived text IDs. See
 [`finalreport.md`](finalreport.md) and
 [`DEEP_DIVE_FINAL_AUDIT.md`](DEEP_DIVE_FINAL_AUDIT.md) for details. The
-The current complete suite passes **525 tests**. The pipeline tracks **367 source snapshots**.
+The latest local test run passed **584/584 pytest tests** using the installed pytest executable and project package directory on `PYTHONPATH`; the repository's documented unittest runner also passed **582/582**. The pipeline tracks **367 source snapshots**.
 
 ## Dataset packages and Hugging Face release
 

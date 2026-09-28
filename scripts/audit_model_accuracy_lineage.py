@@ -895,7 +895,7 @@ def _evaluation_decisions(
             "Selection and error analysis only. All 269 rows already have saved predictions; this is not fresh confirmation.",
         ),
         "vaani_asr_test": (
-            "asr", "test", False, "development_only",
+            "asr", "test", False, "historical_only",
             "No further tuning or blind-test claim. All 112 rows have saved predictions, and SraVaani's exact VAANI exposure is unspecified upstream.",
         ),
         "meta_omnilingual_validation": (
@@ -907,11 +907,11 @@ def _evaluation_decisions(
             "Do not use as a final held-out claim until upstream checkpoint pretraining/fine-tuning overlap is resolved. The internal safety flags only address duplicates within this Meta manifest.",
         ),
         "instructions_test": (
-            "instructions_v0.2", "test", False, "development_only",
+            "instructions_v0.2", "test", False, "historical_only",
             "134 of 260 current rows match saved test predictions. Another 126 lack a match, which is not proof they were unseen; an older mT0 test sidecar has a different split membership.",
         ),
         "flores_test": (
-            "benchmark_flores", "test", False, "development_only",
+            "benchmark_flores", "test", False, "historical_only",
             "All 1,012 rows have saved translation predictions; this set is already examined.",
         ),
         "xorqa_dev": (
@@ -919,16 +919,16 @@ def _evaluation_decisions(
             "All 500 rows have saved retrieval predictions; use only as historical development evidence.",
         ),
         "xorqa_test": (
-            "benchmark_xorqa", "test", False, "development_only",
+            "benchmark_xorqa", "test", False, "historical_only",
             "All 539 rows have saved retrieval predictions; this set is already examined.",
         ),
         "crosssum_test": (
             "benchmark_crosssum", "test", False, "unresolved",
-            "No local prediction match was found, but upstream model pretraining overlap has not been established; do not call it blind.",
+            "No local prediction match is currently known, but upstream model pretraining overlap has not been established; do not call it blind.",
         ),
         "text_recommended_test": (
-            "text_recommended", "test", False, "unresolved",
-            "No local prediction match was found, but base-checkpoint pretraining exposure is unknown. Cross-view exact-text overlaps also require the workstream to use this family in isolation.",
+            "text_recommended", "test", False, "historical_only",
+            "The 398-row candidate was already scored by the aggregate character-bigram baseline in build_garhwali_benchmark.py; no row-level predictions were saved. Neural-checkpoint exposure remains unknown, and cross-view exact-text overlaps still require isolation.",
         ),
     }
     result = {}
@@ -942,6 +942,16 @@ def _evaluation_decisions(
             if not require_safe_flag or row["split_safe_for_evaluation"] is True
         ]
         seen = previously_scored.get(family, {}).get(split, [])
+        effective_status = status
+        effective_reason = reason
+        if split == "test" and seen:
+            effective_status = "historical_only"
+            if status != "historical_only":
+                effective_reason = (
+                    f"{len(seen)} rows have saved test prediction matches; "
+                    "this split is historical-only. "
+                    f"{reason}"
+                )
         manifests = families[family]["manifests"]
         manifest = next(
             (item for item in manifests if item.get("split") == split),
@@ -950,7 +960,7 @@ def _evaluation_decisions(
         result[name] = {
             "family": family,
             "split": split,
-            "status": status,
+            "status": effective_status,
             "permitted_use": (
                 "development_selection_and_error_analysis_only"
                 if split in {"validation", "dev"}
@@ -964,7 +974,7 @@ def _evaluation_decisions(
             "previously_scored_row_count": len(seen),
             "previously_scored_row_set_sha256": _row_set_sha256(seen),
             "eligible_for_heldout_claim": False,
-            "reason": reason,
+            "reason": effective_reason,
         }
     return result
 

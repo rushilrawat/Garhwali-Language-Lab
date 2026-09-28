@@ -1,9 +1,46 @@
 import unittest
+import hashlib
+import json
+import tempfile
+from pathlib import Path
 
-from analyze_saved_asr_validation import build_report
+from analyze_saved_asr_validation import build_report, write_analysis_artifacts
 
 
 class SavedAsrValidationTests(unittest.TestCase):
+    def test_writes_hash_linked_validation_only_run_manifest(self):
+        manifest = [{
+            "row_idx": 7, "split": "validation", "audio_sha256": "val-a",
+            "asr_target_clean": "एक घर",
+        }]
+        predictions = {
+            "sravaani": [{"audio_sha256": "val-a", "reference": "एक घर", "hypothesis": "एक घर"}],
+            "whisper": [{"audio_sha256": "val-a", "reference": "एक घर", "hypothesis": "एक"}],
+        }
+        report = build_report(manifest, predictions, {"validation_manifest": "a" * 64})
+
+        with tempfile.TemporaryDirectory() as temp:
+            output_dir = Path(temp) / "run"
+            run_manifest = write_analysis_artifacts(
+                report,
+                output_dir,
+                model_metadata={"sravaani": {"revision": "rev-a"}},
+                code_paths=(),
+                git_root=None,
+            )
+            predictions_bytes = (output_dir / "predictions.jsonl").read_bytes()
+            saved_report = json.loads((output_dir / "report.json").read_text())
+
+        self.assertEqual(run_manifest["selected_record_count"], 1)
+        self.assertEqual(run_manifest["evaluation_split"], "asr/validation")
+        self.assertEqual(run_manifest["selected_record_ids"], ["asr:validation:val-a"])
+        self.assertEqual(
+            run_manifest["outputs"]["predictions.jsonl"],
+            hashlib.sha256(predictions_bytes).hexdigest(),
+        )
+        self.assertEqual(saved_report["evaluation_records"], 1)
+        self.assertEqual(saved_report["models"]["sravaani"]["word_errors"], 0)
+
     def test_scores_only_frozen_validation_hashes_and_pairs_both_models(self):
         manifest = [
             {

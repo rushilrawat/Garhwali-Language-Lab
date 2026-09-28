@@ -51,9 +51,9 @@ Updated 2026-09-27. This is a chronological preparation log: model-result paragr
 - Whisper-small zero-shot evaluation on 20 validation rows scored 134.3% WER and 94.8% CER. A speaker-safe Whisper-tiny fine-tune improved the 112-row strict speaker-disjoint candidate result to 74.3% WER and 40.4% CER after the initial pass plus two lower-learning-rate passes. Because this candidate set informed iteration, it is not the future frozen native benchmark, and the model remains unsafe for automatic pseudo-label promotion.
 - A resumable 100-record draft-transcription pilot completed with file-level provenance and uncalibrated token confidence. Median confidence is 0.174; every draft is marked `machine_draft_noisy_experimental` and remains active only in the noisy experimental view.
 - The base-model report and both zero-shot Whisper reports pin the same 112-row manifest (SHA-256 `2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52`). Zero-shot Whisper-tiny scores 147.939% WER / 136.810% CER; zero-shot Whisper-small scores 97.172% / 57.822%. The two local tiny fine-tunes were reported at 79.051% / 42.907% and 74.305% / 40.440%; the [speech baseline comparison](speech-baseline-comparison-2026-09-11.md) records an independent match of all 112 audio hashes and references for both, so those comparisons are row-aligned.
-- The human-reference SraVaani decoder/joint adaptation completed 102 steps on 1,621 training clips. Its report records 43.528% WER / 17.452% CER on a 112-record test manifest, but that manifest hash differs from the base report. Matching counts do not establish the same rows, so the previously reported 16-word-error WER comparison is not verified as paired; retain both as historical and do not promote the adaptation.
-- A refined validation-first sweep completed all 61 decoder/joint trials without failure. Its selected `5e-5`, two-epoch, seed-17 checkpoint improves validation WER from 43.454% to 42.711%. Its historical test aggregate is 43.528%, but the report omits a test-manifest hash; exact comparison with the base test is unverified. It is not promoted. The next experimental package contains 5,513 human-transcribed training clips / 8.112 hours with zero training overlap against the prepared validation/test hashes and zero identified-speaker overlap; 3,886 training rows retain incomplete speaker identity.
-- Expanded human-reference SraVaani training completed 346 steps on all 5,513 eligible clips. Validation WER improves to 42.209%; its historical test aggregate is 43.289%, with no test-manifest hash in the report. Exact comparison with base SraVaani is unverified; the checkpoint remains experimental.
+- The human-reference SraVaani decoder/joint adaptation completed 102 steps on 1,621 training clips. Its report records 43.528% WER / 17.452% CER. A 2026-09-28 post-hoc audit matched its 112 saved predictions to the fixed test audio hashes and cleaned references despite the report's different manifest-byte hash. Speaker-clustered comparison to the base remains inconclusive; retain the result as historical and do not promote the adaptation.
+- A refined validation-first sweep completed all 61 decoder/joint trials without failure. Its selected `5e-5`, two-epoch, seed-17 checkpoint improves validation WER from 43.454% to 42.711%. Its historical test aggregate is 43.528%; the later post-hoc audit confirms identical test rows and finds no reliable paired WER/CER improvement over base. It is not promoted. The next experimental package contains 5,513 human-transcribed training clips / 8.112 hours with zero training overlap against the prepared validation/test hashes and zero identified-speaker overlap; 3,886 training rows retain incomplete speaker identity.
+- Expanded human-reference SraVaani training completed 346 steps on all 5,513 eligible clips. Validation WER improves to 42.209%; its historical test aggregate is 43.289%. The later post-hoc audit confirms identical test rows and finds no reliable paired WER/CER improvement over base; the checkpoint remains experimental.
 - The resumable SraVaani path completed all 104,542 untranscribed source rows, covering 104,534 unique audio hashes with zero missing or unexpected hashes. Eight duplicate hashes are inherited from distinct VAANI source filenames and produce identical drafts. Thirty-four drafts are empty. All rows remain preserved; 98 source-label-conflict drafts are active for source analysis but excluded from Garhwali training.
 - Independent Whisper-large-v3-turbo evidence covers 65,000 unique SraVaani drafts, including 157 exact transcript agreements. This evidence is attached without replacing any SraVaani transcript. A later 15,000-row batch job (`6aac7f02b1dc2b62dc58fb5c`) is marked `CANCELED`; its last log reports 13,840/15,000 processed, but the local batch directory has no predictions or report, so those rows are not included in the integrated evidence. Hugging Face reported no cancellation reason, and the log contains no rate-limit error; the cause is unconfirmed. There are currently no running or scheduled Hugging Face jobs.
 - A second local Whisper checkpoint now supplies a third hypothesis and uncalibrated acoustic score for every one of the 1,188 recovery recordings. The resulting 1,090-record Garhwali review layer has 325 clean related-checkpoint consensus proposals, 730 clean low-consensus proposals, and 35 structurally unresolved proposals. It preserves every source value and makes no human-reference or training promotion.
@@ -170,7 +170,7 @@ The rebuilt complete package contains 257,807 rows and the rights-filtered publi
 
 ## SraVaani quality sweep
 
-- Completed Hugging Face Job [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768) ran all 61 validation-first trials. The selected adaptation improved validation WER; its saved test aggregate is historical and lacks a manifest hash, so a paired held-out WER comparison is unverified. Paid Hugging Face processing is no longer active. See [`sravaani-refined-61-result-2026-09-16.md`](sravaani-refined-61-result-2026-09-16.md).
+- Completed Hugging Face Job [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768) ran all 61 validation-first trials. Its saved test aggregate lacks a run-time manifest hash; a later post-hoc audit matched all 112 audio hashes and cleaned references to the fixed test and found the paired speaker-cluster intervals inconclusive. Results remain historical and the checkpoint is not promoted. See [`sravaani-refined-61-result-2026-09-16.md`](sravaani-refined-61-result-2026-09-16.md) and the [held-out lineage audit](asr-heldout-lineage-audit-2026-09-28.md). Paid Hugging Face processing is no longer active.
 
 ## Review queues
 
@@ -200,9 +200,11 @@ CC BY 4.0 evidence, and cross-split audio/speaker leakage is zero. The decoder-o
 102-step plan and official 1,796,208,640-byte NeMo checkpoint were verified. The
 `l4x1` Hugging Face Job completed training, persisted a 1,796,198,400-byte
 adapted checkpoint, and completed the held-out evaluation. The result is
-43.528% WER / 17.452% CER on the report's 112-record manifest. Its manifest
-hash differs from the base report, so the direct WER comparison is unverified;
-the model remains experimental pending split-lineage reconciliation.
+43.528% WER / 17.452% CER. Its report's manifest hash differs from the base
+report, but the later post-hoc audit reconciled every prediction's audio hash
+and cleaned reference to the fixed 112-row test. The paired speaker-cluster
+interval includes zero; the result remains historical and the model remains
+experimental. See the [held-out lineage audit](asr-heldout-lineage-audit-2026-09-28.md).
 
 The current GarhwaliBench v0.1 candidate indexes 3,847 external task records,
 398 strict automated text rows, and 112 speaker-safe ASR rows. The benchmark
@@ -285,7 +287,7 @@ python3 scripts/segment_long_audio.py
 python3 scripts/build_release_manifest.py
 ```
 
-The current full-suite run passes **525 tests**. Structured records have standardized provenance and quality
+The preceding integrity refresh passed 559/559 project-environment pytest tests and 557/557 documented unittest tests; the later source-page integration verification is recorded below. The benchmark work also added hash-linked scoring for translation, CrossSum, XORQA, BM25 retrieval, post-hoc 269-row ASR validation, and three saved mT0 validation runs. A label-agnostic exact-text scan also found 50 short strings shared by English and Garhwali XORQA answer fields, with 10 across splits; all are 2–6 normalized characters and remain candidates. The ASR and generation manifests reproduce existing artifacts and do not include held-out rows or new inference; mT0 adapter hashes and original sampling parameters are unavailable. Re-scoring mT0 validation outputs against the current unreviewed alternate references raises chrF2 by 0.0019–0.0025 across seeds; this is reference sensitivity, not evidence of improved model accuracy. A 2,000-resample paired development-set translation analysis was also added. Structured records have standardized provenance and quality
 metadata, including URLs or capture fingerprints for every source reference.
 A web review added source-specific rights findings to the 186 formerly
 unassessed records, but did not establish a compatible public-rights basis for
@@ -297,3 +299,90 @@ automated candidate. See
 [`finalreport.md`](../finalreport.md) and
 [`DEEP_DIVE_FINAL_AUDIT.md`](../DEEP_DIVE_FINAL_AUDIT.md) for the release
 decision and [`structured-rights-web-review-2026-09-23.md`](structured-rights-web-review-2026-09-23.md) for source findings.
+
+## Benchmark lineage update — 2026-09-28
+
+The next Phase 2 source-family pass audited the upstream XORQA page-title
+locators. All 1,139 rows parsed into 993 exact page families; 54 families
+(134 rows) cross source splits, and 32 contain more than one distinct exact
+context. The review-only usage overlay now marks 138 unique rows for open
+diagnostics. Every row remains present in its original split. The v0.2 local
+draft was rebuilt with page-family hashes and retains all 12,622 records across
+eight views. No model inference, test scoring, paid compute, or publication
+occurred. At that pre-cluster checkpoint, 565/565 pytest tests and 563/563
+unittest tests passed; Python compilation and the eight-asset v0.2 validator
+also passed. The
+report and hashes are in
+[`benchmark-source-page-families-2026-09-28.md`](benchmark-source-page-families-2026-09-28.md);
+semantic matching and source-family review for other tasks remain open.
+
+The next Phase 7 job added a source-page-cluster bootstrap for the 500 saved
+XORQA BM25 dev predictions. The analysis verified all prediction IDs, confirmed
+the parent report's benchmark hash, and reproduced the saved point metrics
+before writing results. The 500 queries form 461 source-page families, including
+34 multi-query families (73 rows). With 2,000 family resamples, character BM25's
+Recall@10 is 1.0% (95% CI 0.2–2.0%) versus word BM25's 0.8% (0.2–1.6%); the
+paired difference interval is 0.0–0.6 percentage points, so the small gain is
+inconclusive. The fixed 1,059-document candidate set contains all source
+splits, so this is conditional dev-query uncertainty rather than unseen-page
+generalization. No test was scored. The updated project passes 569/569 pytest
+tests and 567/567 unittest tests; compileall, `git diff --check`, and the
+eight-asset v0.2 validator pass. Reproducible code and details are in
+[`retrieval-source-page-cluster-uncertainty-2026-09-28.md`](retrieval-source-page-cluster-uncertainty-2026-09-28.md).
+
+The next Phase 7 retrieval pass diagnosed the saved BM25 dev misses. Hash and
+ID reconciliation passed, and all 500/500 gold passages were found in the
+fixed 1,059-passage candidate corpus. Word BM25 had 496 zero-score misses;
+character BM25 had 493 zero-score misses and two additional gold passages
+ranked below 10. The English-oracle diagnostic had 74 misses at 10. The corpus
+contains train, dev, and test passages, so this is not an unseen-page result;
+no test predictions or new inference were used. The report and command are in
+[`retrieval-miss-analysis-2026-09-28.md`](retrieval-miss-analysis-2026-09-28.md)
+and [`scripts/README.md`](../scripts/README.md). The corrected analysis
+regression test also verifies exact duplicate-context-group counting. Current
+verification passes 572/572 pytest tests and 570/570 unittest tests.
+
+The next Phase 7 generation pass audited the three saved mT0 validation runs.
+It verified 390 packaged predictions against the frozen validation input,
+source prediction/report hashes, per-seed manifests, and saved report/output
+hashes. The task-local 29-row Garhwali-to-English lexicon slice has largest
+repeated-answer modes of 9/29, 13/29, and 23/29 across seeds 17, 29, and 43;
+this is a diagnostic concentration signal, not a language-correctness label.
+All 390 outputs are non-empty and have zero exact instruction copies, model
+control tokens, replacement/surrogate code points, unexpected control
+characters, and selected invisible/bidirectional controls. Two focused
+regression tests were added. Current verification passes 574/574 pytest,
+572/572 unittest, and Python compilation. No inference, held-out scoring, or
+source-data changes occurred. Details and reproduction are in
+[`generation-output-diagnostics-2026-09-28.md`](generation-output-diagnostics-2026-09-28.md).
+
+The Phase 8 benchmark result-eligibility pass corrected stale labels in the
+model-lineage audit. Previously scored test splits now render as
+`historical_only`, including partial-match splits; the internal text candidate
+is also historical because its exact 398-row text set was already scored by an
+aggregate character-bigram baseline. CrossSum and Meta Omnilingual test rows
+remain unresolved where model exposure is unknown. The fresh audit inventories
+11 manifest families and 38 prediction artifacts. No data rows, predictions,
+or model outputs changed. See the [eligibility report](task-result-eligibility-2026-09-28.md)
+and [current lineage audit](model-accuracy-lineage-2026-09-28.md). Focused
+lineage tests pass 20/20; full pytest passes 577/577, unittest passes 575/575,
+and Python compilation succeeds. Phase 8 is complete for the configured
+decisions; Phase 9 task cards and the final research report remain.
+
+## Parent-document split correction — 2026-09-28
+
+A follow-up source-hash audit found that the historical text split had 50 parent
+documents / 1,523 segments across train/test or train/validation even though no
+exact segment hashes crossed. `scripts/build_dataset_splits.py` now groups all
+segments from the same parent before applying normalized and supported-semantic
+links, rejects any remaining parent split, and writes input hashes into its
+report. The rebuilt, Git-ignored candidate retains all 114,064 segments and
+reports zero parent-document crossings. It reassigns 1,624 segments across the
+full split and moves six recommended-view rows from test to train; it does not
+delete data or overwrite historical scores. CrossSum exact source/target URLs
+do not repeat across splits. FLORES has no row-level source URL, so that finer
+source-family check remains unavailable. See the [parent-safe split audit](benchmark-parent-safe-split-audit-2026-09-28.md).
+
+The builder regression suite passes 6/6; current full verification passes
+584/584 pytest and 582/582 unittest tests. Semantic/paraphrase comparisons and
+evaluation eligibility for the corrected candidate remain open.

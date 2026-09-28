@@ -32,6 +32,14 @@ def write_jsonl(path, rows):
     return {'records': len(rows), 'sha256': hashlib.sha256(payload.encode()).hexdigest()}
 
 
+def file_sha256(path):
+    digest = hashlib.sha256()
+    with Path(path).open('rb') as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b''):
+            digest.update(block)
+    return digest.hexdigest()
+
+
 def identified_speaker(row):
     return str(row.get('speaker_id') or '').strip().casefold() not in PLACEHOLDER_SPEAKERS
 
@@ -77,6 +85,16 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
         if left_root != right_root:
             parent[max(left_root, right_root)] = min(left_root, right_root)
 
+    document_segments = defaultdict(list)
+    for identity, row in by_id.items():
+        for source_document in row.get('parents', []):
+            document_id = source_document.get('text_sha256')
+            if document_id:
+                document_segments[str(document_id)].append(identity)
+    for identities in document_segments.values():
+        for identity in identities[1:]:
+            union(identities[0], identity)
+
     normalized_groups = defaultdict(list)
     for identity, row in by_id.items():
         key = normalized_text_key(row.get('text'))
@@ -121,6 +139,8 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
                 moved += 1
             row['duplicate_component_id'] = root
     return list(by_id.values()), {
+        'parent_documents': len(document_segments),
+        'parent_document_links': sum(len(identities) - 1 for identities in document_segments.values()),
         'normalized_edges': normalized_edges,
         'supported_semantic_edges': semantic_edges,
         'components': len(components),
@@ -129,7 +149,8 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
 
 
 def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT,
-                 semantic_path=SEMANTIC_EDGES):
+                 semantic_path=SEMANTIC_EDGES,
+                 release_id='garhwali-splits-candidate-2026-09-10'):
     text_rows = sorted(read_jsonl(text_path), key=lambda row: row['segment_sha256'])
     text_rows, text_component_report = component_safe_text_splits(
         text_rows, semantic_path
@@ -137,10 +158,20 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT,
     audio_rows = sorted(read_jsonl(audio_path), key=lambda row: row['audio_sha256'])
 
     text_hash_splits = defaultdict(set)
+    parent_document_splits = defaultdict(set)
     for row in text_rows:
         text_hash_splits[row['segment_sha256']].add(row['split'])
+        for source_document in row.get('parents', []):
+            document_id = source_document.get('text_sha256')
+            if document_id:
+                parent_document_splits[str(document_id)].add(row['split'])
     if any(len(splits) > 1 for splits in text_hash_splits.values()):
         raise ValueError('text segment crosses splits')
+    parent_document_cross_split = sum(
+        len(splits) > 1 for splits in parent_document_splits.values()
+    )
+    if parent_document_cross_split:
+        raise ValueError('parent document crosses splits')
 
     excluded = Counter()
     strict_audio = []
@@ -213,8 +244,17 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT,
     )
 
     report = {
-        'release_id': 'garhwali-splits-candidate-2026-09-10',
+        'release_id': release_id,
         'release_status': 'integrated_experimental_candidate',
+        'source_hashes': {
+            'text_segments': file_sha256(text_path),
+            'audio_supervised': file_sha256(audio_path),
+            'semantic_edges': (
+                file_sha256(semantic_path)
+                if semantic_path and Path(semantic_path).is_file()
+                else None
+            ),
+        },
         'text': {'records': dict(sorted(text_counts.items()))},
         'asr_strict': {
             'records': dict(sorted(audio_counts.items())),
@@ -247,6 +287,7 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT,
             'text_hash_cross_split': 0,
             'normalized_text_cross_split': 0,
             'supported_semantic_edge_cross_split': 0,
+            'parent_document_cross_split': parent_document_cross_split,
             'identified_speaker_cross_split': 0,
         },
         'text_duplicate_components': text_component_report,

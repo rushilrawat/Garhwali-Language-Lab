@@ -124,6 +124,7 @@ def build_benchmark(
     evaluation_asr_path=EVAL_ASR,
     quality_catalog_path=QUALITY_CATALOG,
     output_dir=OUT,
+    release_id='garhwali-bench-v0.1-experimental',
 ):
     benchmarks_dir = Path(benchmarks_dir)
     output_dir = Path(output_dir)
@@ -184,7 +185,7 @@ def build_benchmark(
         raise ValueError('ASR evaluation speakers overlap training speakers')
 
     report = {
-        'release_id': 'garhwali-bench-v0.1-experimental',
+        'release_id': release_id,
         'status': 'strict_automated_candidate_pending_native_review',
         'native_reviewed': False,
         'dialect_aware': False,
@@ -260,7 +261,9 @@ def build_benchmark(
         encoding='utf-8',
     )
     baseline = report['baselines']['character_bigram']
-    markdown = f"""# GarhwaliBench v0.1 experimental baseline
+    markdown = f"""# GarhwaliBench experimental baseline
+
+Release ID: `{release_id}`
 
 This checksum-addressed benchmark contains {external_total:,} external task records,
 {len(evaluation_text_rows):,} held-out text segments, and {len(evaluation_asr_rows):,}
