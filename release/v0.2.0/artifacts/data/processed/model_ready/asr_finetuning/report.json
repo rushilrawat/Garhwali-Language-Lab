@@ -1,0 +1,14 @@
+{
+  "all_rows_included": true,
+  "hours": {
+    "test": 0.6757546527777772,
+    "train": 7.16616418402778,
+    "validation": 0.9618053819444433
+  },
+  "records": {
+    "test": 450,
+    "train": 4778,
+    "validation": 666
+  },
+  "total_records": 5894
+}

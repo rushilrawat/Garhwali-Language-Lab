@@ -1,0 +1,101 @@
+{
+  "adaptation_scope": "MLM prediction transform and output bias; encoder frozen",
+  "baseline_validation": {
+    "accuracy": 0.21747212,
+    "cross_entropy": 6.67816411,
+    "masked_tokens": 538,
+    "records": 128
+  },
+  "configuration": {
+    "device": "cpu",
+    "evaluation_mask_seed": 101,
+    "learning_rate": 5e-05,
+    "mask_rate": 0.15,
+    "max_length": 128,
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 64,
+    "training_pool_records_per_seed": 512,
+    "validation_records": 128
+  },
+  "elapsed_seconds": 52.359,
+  "integrity": {
+    "encoder_frozen": true,
+    "frozen_test_records_used": 0,
+    "selection_split": "validation",
+    "source_text_mutated": false,
+    "training_split_only": true
+  },
+  "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+  "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+  "run_id": "indicbertv2-garhwali-mlm-head-adaptation-v0.1",
+  "runs": [
+    {
+      "checkpoint": "models/controlled_modeling/indicbert_head_v0.1/seed-17.pt",
+      "seed": 17,
+      "training": {
+        "final_training_loss": 7.62480354,
+        "masked_tokens": 213,
+        "mean_training_loss": 6.49092397,
+        "steps": 64,
+        "unique_training_records": 64
+      },
+      "validation": {
+        "accuracy": 0.22118959,
+        "cross_entropy": 6.59027704,
+        "masked_tokens": 538,
+        "records": 128
+      }
+    },
+    {
+      "checkpoint": "models/controlled_modeling/indicbert_head_v0.1/seed-29.pt",
+      "seed": 29,
+      "training": {
+        "final_training_loss": 9.05688381,
+        "masked_tokens": 239,
+        "mean_training_loss": 6.69847492,
+        "steps": 64,
+        "unique_training_records": 64
+      },
+      "validation": {
+        "accuracy": 0.21747212,
+        "cross_entropy": 6.55747535,
+        "masked_tokens": 538,
+        "records": 128
+      }
+    },
+    {
+      "checkpoint": "models/controlled_modeling/indicbert_head_v0.1/seed-43.pt",
+      "seed": 43,
+      "training": {
+        "final_training_loss": 3.83666968,
+        "masked_tokens": 244,
+        "mean_training_loss": 5.95880898,
+        "steps": 64,
+        "unique_training_records": 64
+      },
+      "validation": {
+        "accuracy": 0.21933086,
+        "cross_entropy": 6.58790465,
+        "masked_tokens": 538,
+        "records": 128
+      }
+    }
+  ],
+  "status": "validation_only_transfer_pilot",
+  "summary": {
+    "improved_seed_count": 3,
+    "mean_accuracy": 0.21933086,
+    "mean_accuracy_delta": 0.00185874,
+    "mean_cross_entropy": 6.57855235,
+    "mean_cross_entropy_delta": -0.09961176,
+    "promotion_status": "advance_to_encoder_adaptation",
+    "std_accuracy": 0.00151765,
+    "std_cross_entropy": 0.01493512
+  },
+  "total_parameters": 278292880,
+  "trainable_parameters": 842128
+}

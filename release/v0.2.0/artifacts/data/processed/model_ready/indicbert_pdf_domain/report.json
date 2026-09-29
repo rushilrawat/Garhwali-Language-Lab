@@ -1,0 +1,20 @@
+{
+  "digests": {
+    "test": "0af8447cb13cfbba45f42d6ffe404b5bd8e0f071ca9287592fb49902b26afeba",
+    "train": "e19dd1cfa81966a15e2f11fc1475639e4a821ecc9fb244c65239e4ef7e729d86",
+    "validation": "5fb6e2fbd405e7f86072e50f02fa9138859f084103e828a4bc3351c709a881cb"
+  },
+  "records": {
+    "test": 1328,
+    "train": 25983,
+    "validation": 615
+  },
+  "run_id": "indicbert-pdf-domain-input-v0.1",
+  "segment_hash_overlap": {
+    "train_test": 0,
+    "train_validation": 0,
+    "validation_test": 0
+  },
+  "test_records_written": 0,
+  "test_used_for_training_or_selection": false
+}

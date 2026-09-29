@@ -52,5 +52,21 @@ class HuggingFaceUploadPlanTests(unittest.TestCase):
             root = Path(directory)
             self.package(root, 'public')
             report = m.build(root, visibility='public')
-        self.assertEqual(report['target_repo'], 'rushilrawat/garhwali-language-lab')
+        self.assertEqual(report['target_repo'], 'rushilrawat/garhwali-corpus')
         self.assertEqual(report['publication_status'], 'ready_after_final_approval')
+
+    def test_public_reference_index_manifest_is_an_expected_package_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.package(root, 'public')
+            (root / 'reference_index_manifest.json').write_text('{}\n')
+            manifest_path = root / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text())
+            manifest['reference_index'] = {'records': 1}
+            manifest_path.write_text(json.dumps(manifest))
+            report = m.build(root, visibility='public')
+        self.assertEqual(report['files'], 4)
+        self.assertIn(
+            'reference_index_manifest.json',
+            {artifact['path'] for artifact in report['artifacts']},
+        )

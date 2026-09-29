@@ -5,19 +5,21 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from datetime import date
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX = ROOT / 'release/v0.1.1-manifest.json'
+RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')
+DEFAULT_INDEX = ROOT / f'release/v{RELEASE_VERSION}-manifest.json'
 DEFAULT_SPLITS = ROOT / 'data/processed/model_ready/splits/report.json'
 DEFAULT_TEXT = ROOT / 'data/processed/text/report.json'
 DEFAULT_PUBLIC = ROOT / 'data/huggingface/garhwali-language-lab/manifest.json'
 DEFAULT_ALL_DATA = ROOT / 'data/huggingface/garhwali-language-lab-all-data/manifest.json'
 DEFAULT_BENCHMARK = ROOT / 'data/processed/evaluation/garhwali_bench/manifest.json'
 DEFAULT_RESOURCES = ROOT / 'data/processed/model_ready/language_resources/report.json'
-DEFAULT_FINAL_AUDIT = ROOT / 'release/v0.1.1/final-audit.json'
+DEFAULT_FINAL_AUDIT = ROOT / f'release/v{RELEASE_VERSION}/final-audit.json'
 KNOWLEDGE_CONFIGS = (
     'geography', 'historical_terms', 'literary_people',
     'literary_works', 'popular_songs', 'university_research',

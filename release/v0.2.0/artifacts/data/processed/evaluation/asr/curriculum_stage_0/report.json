@@ -1,0 +1,63 @@
+{
+  "checkpoint_weights_copied": false,
+  "curriculum_stage": 0,
+  "human_checkpoint_candidates": {
+    "whisper_tiny_v0.1": {
+      "model_sha256": "d4b4ebeb5f7ffde5aae9268b5723110dc690a05776d5fbf759be21554fdce096",
+      "path": "models/whisper-tiny-garhwali-v0.1",
+      "training_report": "models/whisper-tiny-garhwali-v0.1/report.json",
+      "training_report_sha256": "29b8c26bcf6f07f092a63dbc67ee94a336b9b37770e834b4df4036544b3cc42d",
+      "validation": {
+        "cer": 0.49596355668319686,
+        "character_errors": 8601,
+        "records": 269,
+        "reference_characters": 17342,
+        "reference_words": 4980,
+        "wer": 0.8751004016064257,
+        "word_errors": 4358
+      }
+    },
+    "whisper_tiny_v0.2": {
+      "model_sha256": "598546b068c3aa509ef5036ee4ff12502fbb3c0dc507096a56d1a2a3143d6225",
+      "path": "models/whisper-tiny-garhwali-v0.2",
+      "training_report": "models/whisper-tiny-garhwali-v0.2/report.json",
+      "training_report_sha256": "6bcf74ae50e85bcc87af32f8cb00c9297d71f8e65ea8724804809a8291745351",
+      "validation": {
+        "cer": 0.4629800484373198,
+        "character_errors": 8029,
+        "records": 269,
+        "reference_characters": 17342,
+        "reference_words": 4980,
+        "wer": 0.7805220883534136,
+        "word_errors": 3887
+      }
+    }
+  },
+  "run_id": "garhwali-whisper-curriculum-stage-0-selection-v0.1",
+  "selected_checkpoint": "whisper_tiny_v0.2",
+  "selected_checkpoint_path": "models/whisper-tiny-garhwali-v0.2",
+  "selection_criterion": "lowest_validation_cer_among_human_only_checkpoints",
+  "sravaani_comparator": {
+    "cer": 0.1892515280821128,
+    "character_errors": 3282,
+    "records": 269,
+    "reference_characters": 17342,
+    "reference_words": 4980,
+    "wer": 0.43393574297188753,
+    "word_errors": 2161
+  },
+  "training_equivalence": {
+    "curriculum_manifest": "data/processed/model_ready/asr_curriculum/train.jsonl",
+    "curriculum_manifest_sha256": "8d2ee398a27362a55a028c5f46c712c1b735d85f999700318bfe6e064f49a6fb",
+    "duplicate_audio_hashes": 0,
+    "records": 1621,
+    "same_audio_hashes": true,
+    "same_targets": true,
+    "strict_manifest": "data/processed/model_ready/splits/asr/train.jsonl",
+    "strict_manifest_sha256": "87ea08229a3a445460043127a2296112a131e914ea0d507c4a35ee0f5ee33ec8"
+  },
+  "training_scope": "human_reference_only",
+  "validation_manifest": "data/processed/model_ready/splits/asr/validation.jsonl",
+  "validation_manifest_sha256": "65b0acefa0deb166e95bd8aa29fe37ee5b693e06b11afdc76dca8b5a91dfac66",
+  "validation_records": 269
+}

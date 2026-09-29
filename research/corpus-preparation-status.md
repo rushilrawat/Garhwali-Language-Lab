@@ -1,10 +1,19 @@
 # Corpus preparation status
 
-Updated 2026-09-27. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-09-29. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+
+## v0.2.0 current preparation snapshot (2026-09-29)
+
+- Four Garhwali-only source intakes produced **696 source rows / 180,043 characters**, with **671 exact-new strings** after exact deduplication against prior corpus layers. The breakdown, source pins, terms, and quality flags are in [`garhwali-data-expansion-2026-09-29.md`](garhwali-data-expansion-2026-09-29.md).
+- The canonical text view now has **31,790 source records from 46 files**, **29,426 exact-unique parent texts**, and **9,325,936 characters**. Segmentation produces **122,391 source occurrences / 115,785 exact-unique segments**.
+- The all-data package has **260,199 rows** across overlapping views and retains all 29,426 collected text values. The public-profile package has **150,065 rows**, including a complete metadata-only index with 260,199 archive references, 600 source records, and 283,752 source links.
+- The public corpus package redacts **24,565** catalog values and withholds full content for 216 structured records without compatible public-rights evidence. The all-data package remains local/access-controlled; the public export is rights-filtered.
+- The public and all-data cloud preflights, final release audit, release-index validation, and bundle hash/path check pass. Pytest passes **607/607** and unittest passes **605/605**. Native-speaker review and dialect annotation remain deferred; the new LSI OCR and translated story text remain unreviewed.
+- Hugging Face v0.2.0 is public at verified commit [`cb631488`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927); all 34 uploaded files match the local manifest by size and hash. The Hub exposes all 15 split Parquet conversions, and all 15 split validity/preview checks returned HTTP 200 on 2026-09-29. A sample text preview loaded. GitHub v0.2.0 publication is pending the final push/tag check.
 
 ## Hugging Face publication
 
-### Current corpus release (2026-09-27)
+### Earlier corpus release snapshot v0.1.1 (2026-09-27)
 
 - [`Garhwali Corpus`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) is public. It combines 146,684 rights-filtered content rows across 12 config/split views with a content-free reference index covering all 257,807 rows in the local all-data archive. The index contains 590 deduplicated source records and 277,637 record-to-source links; 216 geography, history, literature, music, and research records are present as factual metadata and source pointers.
 - The public content profile still redacts 24,566 catalog values and does not redistribute the full content of those 216 structured records without compatible reuse evidence. The reference tables do not contain text, lyrics, transcripts, audio, speaker identifiers, local paths, or content hashes. Their links and factual metadata do not grant rights to the underlying works. Counts include overlapping views, not unique examples.
@@ -19,17 +28,21 @@ Updated 2026-09-27. This is a chronological preparation log: model-result paragr
 - The speech release omits raw filenames, reference images, speaker IDs, stay-duration, and fine-grained location fields. It retains source CC BY 4.0 attribution and split metadata; transcripts remain unreviewed references or model hypotheses. The first post-upload Dataset Viewer check returned a temporary HTTP 500 while indexing; a later retry succeeded for splits, validity, Parquet listing, and a Meta validation preview. Both configs expose train/validation/test splits, and the validity endpoint reports preview, viewer, search, filter, and statistics enabled.
 - The candidate-source overlap audit and exact duplicate decisions are in [`huggingface-release-overlap-audit-2026-09-24.md`](huggingface-release-overlap-audit-2026-09-24.md). Card-only Hub commit `b64f0c4b914296c979947cf551ec976a0342d8af` now tells users to filter split-safety fields: all 2,927 rows remain published, while 2,857 pass both leakage-safety flags.
 
-## Text
+## Text preparation chronology
 
-- 31,094 source records from 42 files; 28,755 unique normalized texts / 9,145,955 characters.
-- 2,123 duplicate rows retained in 2,022 provenance groups.
+The current v0.2.0 counts appear above; dated entries below describe earlier
+preparation snapshots unless explicitly revised.
+
+- v0.1.1 snapshot: 31,094 source records from 42 files; 28,755 unique normalized texts / 9,145,955 characters. The v0.2.0 canonical view now has 31,790 source records from 46 files and 29,426 exact-unique texts.
+- v0.1.1 snapshot: 2,123 duplicate rows retained in 2,022 provenance groups. The v0.2.0 build retains 2,148 duplicate rows in 2,040 groups.
 - PahariLI's 15,000 records explicitly labeled `gbm` are active in the complete experimental corpus and in `data/processed/text/paharili_garhwali.jsonl`; source provenance remains unchanged.
 - The final web-learning pass archived 189 phrase or example rows from three eUttaranchal lessons, LanguagesHome, and Omniglot. Exact deduplication contributed 139 new unique texts; all 189 are active for local experiments and retain source URLs and no-open-license flags.
-- All 28,755 canonical normalized texts, including experimental and restricted provenance, are active in `data/processed/text/all_garhwali.jsonl`.
-- Conservative cleanup retained all 28,755 texts without rewriting spelling or dialect forms.
-- Sentence-like re-extraction exposes 119,679 occurrences / 114,064 exact-unique segments while retaining every parent and provenance chain. Connected-component assignment leaves zero exact segment crossing train, validation and test.
+- All 29,426 v0.2.0 canonical texts, including experimental and restricted provenance, are active in `data/processed/text/all_garhwali.jsonl`.
+- Conservative cleanup retains all 29,426 texts without rewriting spelling or dialect forms.
+- v0.2.0 sentence-like re-extraction exposes 122,391 occurrences / 115,785 exact-unique segments while retaining every parent and provenance chain. Connected-component assignment leaves zero exact segment crossing train, validation and test.
 - Deterministic document-aware parent partitions: train 25,862; validation 1,452; test 1,441. Connected-component assignment keeps related documents together.
-- Quality signals: 71 low quality; 28,684 review band.
+- v0.2.0 quality signals: 103 low-quality records and 29,323 review-band records.
+- v0.2.0 additions: 632 LSI dialect-table rows (609 exact unique), nine LSI Garhwali-language specimens, five source-marked Garhwali Upreti proverbs, and 50 pinned CC BY-SA 4.0 Door43 stories. These yield 671 net-new exact strings; OCR/story accuracy remains unreviewed.
 - Seven incoming PDFs were hash-checked. Six unique books yielded 769 active page records and 1,774,697 characters; the seventh exactly matches the already ingested 370-record *Gadwali LokGeet* scan. The new pages contribute 27,926 Hugging Face text segment identities with full book, page, hash, OCR, rights, and quality provenance. Seven neighboring JSON records now preserve verified title-page and catalog bibliography, including roles, editions, publication dates and places, publishers, identifiers, extent, subjects, source links, duplicate relationships, and rights evidence.
 - Structured Wiktionary extraction now yields 77 Garhwali lemmas, alternative forms, and examples in place of 56 flattened raw page blobs. Conservative wikitext rendering removes page scaffolding while preserving source prose.
 - Source-aware treatment preserves 392 scholarly Garhwali transcriptions in their published notation. The public accuracy queue fell from 628 to 176; none of these source-grounded resolutions is described as native review.

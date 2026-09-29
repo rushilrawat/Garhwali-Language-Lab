@@ -1,0 +1,33 @@
+{
+  "all_records_active_experimentally": true,
+  "automatic_promotion_to_human_transcript": false,
+  "counts": {
+    "flag:bengali_script": 257,
+    "flag:empty_transcript": 34,
+    "flag:frequent_identical_hypothesis": 121,
+    "flag:implausibly_long_for_duration": 2,
+    "flag:mixed_script": 25,
+    "flag:no_devanagari_letters": 1026,
+    "flag:repeated_token_loop": 17,
+    "flagged_records": 1188,
+    "level:flagged": 105,
+    "level:high_risk": 1083,
+    "level:standard": 103354,
+    "records": 104542
+  },
+  "inherited_duplicate_audio_rows": 8,
+  "input": "data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl",
+  "input_sha256": "9282e13478d76a10fe50b7344bf86c16baccd98131512f4e7ae62d4199dbb9d5",
+  "output": "data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl",
+  "records": 104542,
+  "run_id": "sravaani-full-draft-quality-v0.1",
+  "thresholds": {
+    "frequent_identical_hypothesis": 10,
+    "maximum_characters_per_second": 25,
+    "maximum_tokens_per_second": 7,
+    "minimum_characters_per_second_for_5s_audio": 0.5,
+    "repeated_identical_token_run": 4
+  },
+  "unique_audio_hashes": 104534,
+  "unique_hypotheses": 103996
+}

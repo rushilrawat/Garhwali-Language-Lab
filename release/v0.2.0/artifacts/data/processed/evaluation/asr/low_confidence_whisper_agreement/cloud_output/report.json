@@ -1,0 +1,12 @@
+{
+  "run_id": "garhwali-low-confidence-openai--whisper-small-agreement-v0.1",
+  "records": 500,
+  "model_id": "openai/whisper-small",
+  "revision": "973afd24965f72e36ca33b3055d56a652f456b4d",
+  "mean_agreement_wer": 1.45731677,
+  "mean_agreement_cer": 0.98675316,
+  "exact_agreement_records": 1,
+  "empty_whisper_outputs": 0,
+  "elapsed_seconds": 87.383,
+  "policy": "agreement evidence only; no human ground truth; no automatic promotion"
+}

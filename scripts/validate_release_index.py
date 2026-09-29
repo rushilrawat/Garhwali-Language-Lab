@@ -3,11 +3,13 @@
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX = ROOT / 'release/v0.1.1-manifest.json'
+RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')
+DEFAULT_INDEX = ROOT / f'release/v{RELEASE_VERSION}-manifest.json'
 
 
 def validate(index):

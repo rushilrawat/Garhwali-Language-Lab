@@ -1,0 +1,16 @@
+{
+  "candidate_pairs": 29903,
+  "cross_split_candidate_pairs": 2839,
+  "model_id": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+  "neighbors_per_record": 12,
+  "records": 114082,
+  "records_deleted_or_mutated": 0,
+  "review_required_before_deduplication": true,
+  "run_id": "garhwali-semantic-near-duplicate-audit-v0.1",
+  "split_records": {
+    "test": 4164,
+    "train": 106804,
+    "validation": 3114
+  },
+  "threshold": 0.92
+}

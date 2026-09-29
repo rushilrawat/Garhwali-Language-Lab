@@ -5,13 +5,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ALL_DATA = ROOT / "data/huggingface/garhwali-language-lab-all-data"
 PUBLIC_DATA = ROOT / "data/huggingface/garhwali-language-lab"
-RELEASE_ID = "garhwali-language-lab-v0.1.1"
+RELEASE_ID = f"garhwali-language-lab-v{os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')}"
 
 TABLES = {
     "record_index": PUBLIC_DATA / "data/record_index/train-00000.jsonl",

@@ -1,6 +1,6 @@
 # Garhwali public-source search catalog
 
-Verified through 2026-09-16. This is the durable record of the public-source search
+Verified through 2026-09-29. This is the durable record of the public-source search
 performed for the language-lab corpus. A source is listed even when it was
 catalogued but not copied into a training layer. Public visibility alone was
 not treated as permission to redistribute text, audio, images, or user posts.
@@ -40,6 +40,10 @@ not treated as permission to redistribute text, audio, images, or user posts.
 | Open cultural media | Wikimedia Commons `Category:Garhwali people` | 754 unique item records | Complete paginated item metadata; media URLs and item-level licenses retained without bulk binary download |
 | Thematic vocabulary | [Wiktionary Swadesh list](https://en.wiktionary.org/wiki/Appendix:Garhwali_Swadesh_list), two attributed animal/bird lists, GarhwaliLanguage dictionary, an attributed occupation list, [Mountain Voices](https://mountainvoices.org/i_glossary.html), and a Government of India Ramman source | 666 source records / 642 distinct normalized written forms | `research/garhwali-thematic-lexicon.json` plus a restricted JSONL; every entry is active experimentally with uncertainty and reuse terms retained |
 | Idioms and proverbs | [Balakrishna D. Dhyani, *Garhwali Muhavare Aur Kahavaten*](https://sites.google.com/view/dhyani/%E0%A4%97%E0%A4%A2%E0%A4%B5%E0%A4%B3-%E0%A4%95%E0%A4%95%E0%A4%B7/%E0%A4%97%E0%A4%A2%E0%A4%B5%E0%A4%B2-%E0%A4%AE%E0%A4%B9%E0%A4%B5%E0%A4%B0-%E0%A4%94%E0%A4%B0-%E0%A4%95%E0%A4%B9%E0%A4%B5%E0%A4%A4) | 99 exact-unique Garhwali records: 69 credited standalone entries and 30 comparison entries | Raw HTML and structured JSONL stored under Git-ignored `data/`; translations and explanations retained; no open license recorded |
+| Garhwali story translations | [Door43/TLF Garhwali Open Bible Stories](https://git.door43.org/OBS-TLF/gbm_obs) | 50 | `data/extracted/obs_tlf_v1/records.jsonl`; v1 pinned to revision `f08afc73e1770129fbcd3089181f2faf2abbf54d`; archive manifest and license checked as CC BY-SA 4.0; translation quality remains unreviewed |
+| Historical Garhwali dialect table | [Linguistic Survey of India IX.4](https://commons.wikimedia.org/wiki/File:Linguistic_Survey_of_India_Vol_9_Part_4.djvu) | 632 rows / 609 within-source exact-unique strings | `data/extracted/historical/lsi_1916_garhwali_dialect_table.jsonl`; explicitly labeled Standard, Rathi, and Tehri columns; 496 low-confidence OCR rows remain flagged |
+| Historical Garhwali narrative specimens | [Linguistic Survey of India IX.4](https://commons.wikimedia.org/wiki/File:Linguistic_Survey_of_India_Vol_9_Part_4.djvu) | 9 dialect specimens, including five newly extracted varieties | `data/extracted/historical/lsi_1916_garhwali_specimens.jsonl`; Srinagar, Tehri, Lohbya, Badhani, Dasaulya, Nagpuriya, and Salani; page-level OCR provenance retained |
+| Historical explicitly Garhwali proverbs | [Upreti, *Proverbs & Folklore of Kumaun and Garhwal* (1894)](https://archive.org/details/cu31924089930774) | 5 | `data/extracted/folklore/upreti_1894_garhwali_proverbs.jsonl`; only sayings with explicit Garhwali labels are extracted; spelling and transliteration remain as printed |
 | Social media | Public Reddit language discussions and Ghaseri YouTube folk-story pages | 12 exact-unique records / 3,494 characters; 6 additional profiles catalogued | Git-ignored `data/extracted/social_garhwali/`; community vocabulary requires native review; sampled YouTube videos expose no transcript |
 | Popular music | [Garhwali popular-song catalog](../../research/garhwali-popular-song-catalog.json), eUttaranchal editorial lists, official/label YouTube channels, Apple Music, and classic-song references | 30 metadata records (16 added in the second pass); 21 include Narendra Singh Negi; 5 lyric-source pointers; 3 meaning/translation pointers; 6 checked videos had no public caption track | Tracked metadata and source links in `research/`; no full modern lyrics, third-party translations, or audio copied; reuse requires an explicit compatible license |
 | Geography | [Garhwal Mandal official introduction](https://garhwal.uk.gov.in/about-department/introduction/), [Uttarakhand district portal](https://uttarakhand.s3waas.gov.in/), [Wikipedia Garhwal division](https://en.wikipedia.org/wiki/Garhwal_division), tehsil list, and OpenStreetMap lookup | 50 records: 36 settlements and 14 geographic/cultural features across all seven Garhwal districts | `research/garhwali-geography-catalog.json`; Hindi names, place types, district relationships, Wikipedia and map pointers retained; coordinates intentionally await authoritative gazetteer enrichment |
@@ -62,6 +66,7 @@ not treated as permission to redistribute text, audio, images, or user posts.
 | Gated corpora | [GlotLID corpus](https://huggingface.co/datasets/cis-lmu/glotlid-corpus), [Chaashini](https://huggingface.co/datasets/kapturecx/Chaashini) | Chaashini remains the sole verified VAANI-like gate and currently advertises only one 2.2-second Garhwali clip. GlotLID remains gated, but its current tree exposes no `gbm`/Garhwali payload. |
 | Current research and models | [SraVaani 1.0](https://vaani.iisc.ac.in/models/sravaani), [Dhasmana et al. 2026](https://aclanthology.org/2026.vardial-1.12/), [Batra et al. 2026](https://arxiv.org/abs/2608.10670), [Garhwali-ASR repository](https://github.com/soodashima91/Garhwali-ASR) | SraVaani already supports Garhwali in a 65-language ASR model. The papers and reproducibility metadata use official gated VAANI splits or publish aggregate results, so they inform baseline design rather than adding independent training text. |
 | Institutional text | [IGNCA oral-tradition volume](https://ignca.gov.in/eBooks/100007.pdf), [Central Hindi Directorate *Bhasha* 2019](https://www.chdpublication.education.gov.in/ebook/pdf/Bhasha%20Sep-Oct%202019.pdf) | Both contain valuable Garhwali linguistic or lexical material but no verified open text license. IGNCA was saved reference-only; the Directorate request timed out and remains catalog-only. |
+| Institutional language corpus | [CIIL/LDC-IL](https://www.ldcil.org/) Garhwali Parallel Text Corpus listing | Product listed; no text ingested | The accessible official site lists a Garhwali parallel-text product, but the language-specific file, price, and reuse terms were not verifiable from the public listing during this pass. Treat as an acquisition request; do not scrape or infer permission. |
 | Large web-corpus partitions | FineWeb-2, GlotCC V1, HPLT 2.0 Cleaned | Current split indexes (3,740 / 1,255 / 191 splits) exposed no separate `gbm`, `garh1243`, or Garhwali partition. |
 
 ## Exact deduplication
@@ -81,6 +86,13 @@ after comparison with every input layer.
 The fourth wave found one SAND, two Chan, and nine LSI CLDF exact-text overlaps
 against prior or earlier fourth-wave records. The 67 translated numeral examples
 and 50 Open Bible Stories had no exact prior match.
+
+The v0.2.0 expansion pipeline reads 696 source rows from four Garhwali-only
+outputs (180,043 characters), with 673 unique strings inside the intake and 671
+exact-new strings versus the prior corpus layers. Its report is
+[`garhwali-data-expansion-2026-09-29.md`](../../research/garhwali-data-expansion-2026-09-29.md)
+and its ignored checksum/count artifact is produced by
+`scripts/audit_garhwali_expansion.py`.
 
 ## Rate limits and blocked endpoints
 

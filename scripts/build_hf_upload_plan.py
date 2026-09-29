@@ -6,13 +6,15 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from datetime import date
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
-DEFAULT_OUTPUT = ROOT / 'release/v0.1.1/huggingface-all-data-upload.json'
+RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')
+DEFAULT_OUTPUT = ROOT / f'release/v{RELEASE_VERSION}/huggingface-all-data-upload.json'
 
 
 def sha256(path):
@@ -35,7 +37,7 @@ def build(package, target_repo=None, visibility='private'):
         raise ValueError('Package manifest is missing release_id or configs')
     if target_repo is None:
         target_repo = (
-            'rushilrawat/garhwali-language-lab'
+            'rushilrawat/garhwali-corpus'
             if profile == 'public'
             else 'rushilrawat/garhwali-language-lab-all-data'
         )
@@ -43,6 +45,8 @@ def build(package, target_repo=None, visibility='private'):
         'README.md', 'manifest.json', 'LICENSE_POLICY.md',
         'ATTRIBUTION.md', 'REMOVAL_POLICY.md',
     }
+    if manifest.get('reference_index'):
+        expected_files.add('reference_index_manifest.json')
     for key, config in manifest['configs'].items():
         group, _ = key.split('/', 1)
         expected_files.update(

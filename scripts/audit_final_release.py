@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import unicodedata
 from collections import Counter
 from datetime import date
@@ -23,9 +24,10 @@ from validate_release_index import validate
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX = ROOT / 'release/v0.1.1-manifest.json'
+RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')
+DEFAULT_INDEX = ROOT / f'release/v{RELEASE_VERSION}-manifest.json'
 DEFAULT_DATASET = ROOT / 'data/huggingface/garhwali-language-lab'
-DEFAULT_OUTPUT = ROOT / 'release/v0.1.1/final-audit.json'
+DEFAULT_OUTPUT = ROOT / f'release/v{RELEASE_VERSION}/final-audit.json'
 RECOMMENDED_TEXT_TRAIN = 'data/processed/model_ready/splits/text_recommended/train.jsonl'
 REQUIRED_CONFIGS = {
     'text/train', 'text/validation', 'text/test',
@@ -931,7 +933,7 @@ def audit(index, dataset_root, benchmark_root=None):
         warnings.append('empty_machine_drafts_retained_with_quality_flags')
 
     return {
-        'audit_id': 'garhwali-final-release-audit-v0.1',
+        'audit_id': f'garhwali-final-release-audit-v{RELEASE_VERSION}',
         'generated': date.today().isoformat(),
         'release_id': index.get('release_id'),
         'status': 'passed' if not errors else 'failed',

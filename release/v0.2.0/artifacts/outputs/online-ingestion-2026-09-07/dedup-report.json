@@ -1,0 +1,2793 @@
+{
+  "method": "exact SHA-256 of each record text_normalized; Unicode normalization was performed by source extractors",
+  "total_records": 33156,
+  "unique_normalized_texts": 31052,
+  "duplicate_rows": 2104,
+  "layer_counts": {
+    "corpus": 3560,
+    "benchmarks": 3847,
+    "restricted": 1450,
+    "experimental": 23202,
+    "extracted/historical": 1097
+  },
+  "layer_unique_texts": {
+    "corpus": 3492,
+    "benchmarks": 3844,
+    "restricted": 1426,
+    "experimental": 23125,
+    "extracted/historical": 1082
+  },
+  "file_counts": {
+    "corpus/asjp.jsonl": 91,
+    "corpus/chan_numerals_garhwali.jsonl": 40,
+    "corpus/incubator_wt.jsonl": 4,
+    "corpus/mamta_southasia_examples.jsonl": 67,
+    "corpus/meta_omni.jsonl": 2927,
+    "corpus/opus_translatewiki_gbm.jsonl": 181,
+    "corpus/sand_garhwali.jsonl": 123,
+    "corpus/tatoeba.jsonl": 36,
+    "corpus/wikimedia.jsonl": 35,
+    "corpus/wiktionary_en.jsonl": 56,
+    "benchmarks/indicgenbench_crosssum.jsonl": 699,
+    "benchmarks/indicgenbench_flores.jsonl": 2009,
+    "benchmarks/indicgenbench_xorqa.jsonl": 1139,
+    "restricted/archive_folksong_thesis.jsonl": 1,
+    "restricted/hindialect_gbm.jsonl": 128,
+    "restricted/obs_garhwali.jsonl": 50,
+    "restricted/panlex_gbm.jsonl": 13,
+    "restricted/thematic_web_lexicon.jsonl": 666,
+    "restricted/uou_cgl_pages.jsonl": 436,
+    "restricted/uou_more_pages.jsonl": 156,
+    "experimental/dcad_gbm.jsonl": 119,
+    "experimental/hikinegi_garhwali.jsonl": 53,
+    "experimental/indic_dialect_asr_gbm.jsonl": 7823,
+    "experimental/madlad400_gbm_clean.jsonl": 18,
+    "experimental/paharili_gbm.jsonl": 15000,
+    "experimental/web_learning_garhwali.jsonl": 189,
+    "extracted/historical/archive_1865.jsonl": 1,
+    "extracted/historical/cultural_references.jsonl": 317,
+    "extracted/historical/hill_dialects_1900.jsonl": 25,
+    "extracted/historical/kellogg_1893.jsonl": 34,
+    "extracted/historical/lsi.jsonl": 93,
+    "extracted/historical/lsi_cldf_garhwali.jsonl": 185,
+    "extracted/historical/proverbs1894.jsonl": 440,
+    "extracted/historical/walton_gazetteer_1910.jsonl": 2
+  },
+  "file_unique_texts": {
+    "corpus/asjp.jsonl": 89,
+    "corpus/chan_numerals_garhwali.jsonl": 40,
+    "corpus/incubator_wt.jsonl": 4,
+    "corpus/mamta_southasia_examples.jsonl": 67,
+    "corpus/meta_omni.jsonl": 2864,
+    "corpus/opus_translatewiki_gbm.jsonl": 181,
+    "corpus/sand_garhwali.jsonl": 123,
+    "corpus/tatoeba.jsonl": 36,
+    "corpus/wikimedia.jsonl": 35,
+    "corpus/wiktionary_en.jsonl": 56,
+    "benchmarks/indicgenbench_crosssum.jsonl": 699,
+    "benchmarks/indicgenbench_flores.jsonl": 2009,
+    "benchmarks/indicgenbench_xorqa.jsonl": 1136,
+    "restricted/archive_folksong_thesis.jsonl": 1,
+    "restricted/hindialect_gbm.jsonl": 128,
+    "restricted/obs_garhwali.jsonl": 50,
+    "restricted/panlex_gbm.jsonl": 13,
+    "restricted/thematic_web_lexicon.jsonl": 642,
+    "restricted/uou_cgl_pages.jsonl": 436,
+    "restricted/uou_more_pages.jsonl": 156,
+    "experimental/dcad_gbm.jsonl": 119,
+    "experimental/hikinegi_garhwali.jsonl": 53,
+    "experimental/indic_dialect_asr_gbm.jsonl": 7796,
+    "experimental/madlad400_gbm_clean.jsonl": 18,
+    "experimental/paharili_gbm.jsonl": 15000,
+    "experimental/web_learning_garhwali.jsonl": 188,
+    "extracted/historical/archive_1865.jsonl": 1,
+    "extracted/historical/cultural_references.jsonl": 317,
+    "extracted/historical/hill_dialects_1900.jsonl": 25,
+    "extracted/historical/kellogg_1893.jsonl": 34,
+    "extracted/historical/lsi.jsonl": 93,
+    "extracted/historical/lsi_cldf_garhwali.jsonl": 170,
+    "extracted/historical/proverbs1894.jsonl": 440,
+    "extracted/historical/walton_gazetteer_1910.jsonl": 2
+  },
+  "pairwise_unique_text_overlap": {
+    "corpus <> benchmarks": 0,
+    "corpus <> restricted": 4,
+    "corpus <> experimental": 1904,
+    "corpus <> extracted/historical": 3,
+    "benchmarks <> restricted": 0,
+    "benchmarks <> experimental": 0,
+    "benchmarks <> extracted/historical": 0,
+    "restricted <> experimental": 0,
+    "restricted <> extracted/historical": 7,
+    "experimental <> extracted/historical": 0
+  },
+  "duplicate_group_count": 2006,
+  "largest_duplicate_groups": [
+    {
+      "text_sha256": "0b09901e1731fd63d51e0d14f8990a01d02b4ad5e4124b8992c774b0ef84f0fd",
+      "text_length": 266,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 500,
+          "record_id": "meta_omni:spk15:f026:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2091,
+          "record_id": "meta_omni:spk05:f026:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 187,
+          "record_id": "indic_dialect_asr_gbm:186",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1474,
+          "record_id": "indic_dialect_asr_gbm:1473",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "163cd3514e0b8c5da2af31842771c0965d050449bc55306e14403296466eff47",
+      "text_length": 311,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 501,
+          "record_id": "meta_omni:spk15:f027:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2092,
+          "record_id": "meta_omni:spk05:f027:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 188,
+          "record_id": "indic_dialect_asr_gbm:187",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1475,
+          "record_id": "indic_dialect_asr_gbm:1474",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "19480010c07faa3533587ae40023c4419df62a0086ae0222d3fd7d1eb8bdcaa8",
+      "text_length": 404,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 483,
+          "record_id": "meta_omni:spk15:f043:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1233,
+          "record_id": "meta_omni:spk10:f043:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 170,
+          "record_id": "indic_dialect_asr_gbm:169",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 717,
+          "record_id": "indic_dialect_asr_gbm:716",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "2fb3ac56747fdf4a2f87d19fb21f1596811dbab14f445c395bb5ba8163ce0feb",
+      "text_length": 152,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 506,
+          "record_id": "meta_omni:spk15:f014:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1699,
+          "record_id": "meta_omni:spk07:f014:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 193,
+          "record_id": "indic_dialect_asr_gbm:192",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1116,
+          "record_id": "indic_dialect_asr_gbm:1115",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "371f1e5ffa31cb0c9eace713f125a4c9ea1110f36f71396a2bd9dc1dfb4b15a5",
+      "text_length": 450,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 473,
+          "record_id": "meta_omni:spk15:h017:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1228,
+          "record_id": "meta_omni:spk10:h017:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 160,
+          "record_id": "indic_dialect_asr_gbm:159",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 714,
+          "record_id": "indic_dialect_asr_gbm:713",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "3b503bf3290d579a5be6675b6f2a26b7d89335971899984288a44fb19e544ed8",
+      "text_length": 432,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 487,
+          "record_id": "meta_omni:spk15:h014:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1225,
+          "record_id": "meta_omni:spk10:h014:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 174,
+          "record_id": "indic_dialect_asr_gbm:173",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 712,
+          "record_id": "indic_dialect_asr_gbm:711",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "3bd4189cfc161483ab94882fbe22f64ff0f598f4246d2bf391d8f07fad236c5a",
+      "text_length": 361,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 472,
+          "record_id": "meta_omni:spk15:h016:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1227,
+          "record_id": "meta_omni:spk10:h016:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 159,
+          "record_id": "indic_dialect_asr_gbm:158",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 713,
+          "record_id": "indic_dialect_asr_gbm:712",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "3ddd532e0187a3edb1117ebea23fc03a5f6d71fa59b7349d3a3eb56931155919",
+      "text_length": 377,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 311,
+          "record_id": "meta_omni:spk16:x002:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 865,
+          "record_id": "meta_omni:spk12:x002:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 13,
+          "record_id": "indic_dialect_asr_gbm:12",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 455,
+          "record_id": "indic_dialect_asr_gbm:454",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "4e341967fa7063c0990323ca48e1d19ffecc19e9208e2f86b99401e64425a01c",
+      "text_length": 376,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 503,
+          "record_id": "meta_omni:spk15:f029:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2094,
+          "record_id": "meta_omni:spk05:f029:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 190,
+          "record_id": "indic_dialect_asr_gbm:189",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1477,
+          "record_id": "indic_dialect_asr_gbm:1476",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "5822ae5d4c4949e435a9bfb10499e4726c1639575149992c6ba5c51386a35229",
+      "text_length": 146,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 339,
+          "record_id": "meta_omni:spk16:r059:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 605,
+          "record_id": "meta_omni:spk14:r059:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 38,
+          "record_id": "indic_dialect_asr_gbm:37",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 279,
+          "record_id": "indic_dialect_asr_gbm:278",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "617586fb1c8ce72bde52831accb0e133bf0c8d8857e72d3f9ca798bd12b01057",
+      "text_length": 318,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 459,
+          "record_id": "meta_omni:spk15:h032:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2043,
+          "record_id": "meta_omni:spk05:h032:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 147,
+          "record_id": "indic_dialect_asr_gbm:146",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1432,
+          "record_id": "indic_dialect_asr_gbm:1431",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "630d03700ddbbf4554c64863397c2e99305668324b6ed364cc6b18f11e0e1138",
+      "text_length": 349,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 510,
+          "record_id": "meta_omni:spk15:f018:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2106,
+          "record_id": "meta_omni:spk05:f018:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 197,
+          "record_id": "indic_dialect_asr_gbm:196",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1489,
+          "record_id": "indic_dialect_asr_gbm:1488",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "8322487d2f1353cab361ee59ff3cae0352a7a3a36a95f45bab4204f5904e67f3",
+      "text_length": 178,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 351,
+          "record_id": "meta_omni:spk16:r053:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 909,
+          "record_id": "meta_omni:spk12:r053:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 50,
+          "record_id": "indic_dialect_asr_gbm:49",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 499,
+          "record_id": "indic_dialect_asr_gbm:498",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "835f3ba85ab7c52f0f3e6bd7cec9a9906eeb83f6b67e11e57e7957bc761585c9",
+      "text_length": 268,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 502,
+          "record_id": "meta_omni:spk15:f028:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2093,
+          "record_id": "meta_omni:spk05:f028:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 189,
+          "record_id": "indic_dialect_asr_gbm:188",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1476,
+          "record_id": "indic_dialect_asr_gbm:1475",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "85a227ad724876db7e211b254368367ec3600e573e6cfa0c06f4a48c231b95a3",
+      "text_length": 240,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 489,
+          "record_id": "meta_omni:spk15:f032:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2084,
+          "record_id": "meta_omni:spk05:f032:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 176,
+          "record_id": "indic_dialect_asr_gbm:175",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1467,
+          "record_id": "indic_dialect_asr_gbm:1466",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "98828342d0f431e49a1ee841a7704d4074ce1c2a70560e22d9168043b7def0b7",
+      "text_length": 259,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 349,
+          "record_id": "meta_omni:spk16:p066:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 907,
+          "record_id": "meta_omni:spk12:p066:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 48,
+          "record_id": "indic_dialect_asr_gbm:47",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 497,
+          "record_id": "indic_dialect_asr_gbm:496",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "9a215e52f83e66e25ac0939e83c4842575e32addbb15d79438fbc30eb5f70e35",
+      "text_length": 382,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 490,
+          "record_id": "meta_omni:spk15:f033:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2085,
+          "record_id": "meta_omni:spk05:f033:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 177,
+          "record_id": "indic_dialect_asr_gbm:176",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1468,
+          "record_id": "indic_dialect_asr_gbm:1467",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "9af6e6b368d1794a3ad4f9bae20d08b8c1471a2070f83ddbaad137e8b33f1cb0",
+      "text_length": 224,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 511,
+          "record_id": "meta_omni:spk15:f019:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2095,
+          "record_id": "meta_omni:spk05:f019:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 198,
+          "record_id": "indic_dialect_asr_gbm:197",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1478,
+          "record_id": "indic_dialect_asr_gbm:1477",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "9c69c63f8aa509fc2e030b8e77ae6740bb33ada6ab399885539d5e3a1b50f3cc",
+      "text_length": 343,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 512,
+          "record_id": "meta_omni:spk15:f020:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2096,
+          "record_id": "meta_omni:spk05:f020:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 199,
+          "record_id": "indic_dialect_asr_gbm:198",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1479,
+          "record_id": "indic_dialect_asr_gbm:1478",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "a470b4dbf62b95ef6e967a24446abd23ed5959acdc5fd291dd7092c12c76f9c9",
+      "text_length": 454,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 484,
+          "record_id": "meta_omni:spk15:f044:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1234,
+          "record_id": "meta_omni:spk10:f044:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 171,
+          "record_id": "indic_dialect_asr_gbm:170",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 718,
+          "record_id": "indic_dialect_asr_gbm:717",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "a5d45e41a0dc87ae3dc6d25637d4b7e580255b8ca74b3dcf643ced0fc5191e52",
+      "text_length": 115,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 508,
+          "record_id": "meta_omni:spk15:f016:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1701,
+          "record_id": "meta_omni:spk07:f016:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 195,
+          "record_id": "indic_dialect_asr_gbm:194",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1118,
+          "record_id": "indic_dialect_asr_gbm:1117",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "b92c55945d2df27bf96d59327f9cdfa59a5cc681b44989e2f603d9429ea58b2c",
+      "text_length": 276,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 513,
+          "record_id": "meta_omni:spk15:f021:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2097,
+          "record_id": "meta_omni:spk05:f021:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 200,
+          "record_id": "indic_dialect_asr_gbm:199",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1480,
+          "record_id": "indic_dialect_asr_gbm:1479",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "ba4918aec79c7748ea08d0941492fe861ea4f907a1a3e4ba9fd590b930e7555c",
+      "text_length": 313,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 499,
+          "record_id": "meta_omni:spk15:f025:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2090,
+          "record_id": "meta_omni:spk05:f025:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 186,
+          "record_id": "indic_dialect_asr_gbm:185",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1473,
+          "record_id": "indic_dialect_asr_gbm:1472",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "d050b2b8e0d1952336f6a63b0324d2015069e556e4abbfd104efc7df679a0d94",
+      "text_length": 229,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 509,
+          "record_id": "meta_omni:spk15:f017:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2105,
+          "record_id": "meta_omni:spk05:f017:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 196,
+          "record_id": "indic_dialect_asr_gbm:195",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1488,
+          "record_id": "indic_dialect_asr_gbm:1487",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "d0fa698cfe6032b5b99e26eaed99cde0607d21cfcd46c68c785b4f000d93a3e5",
+      "text_length": 360,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 514,
+          "record_id": "meta_omni:spk15:f022:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2098,
+          "record_id": "meta_omni:spk05:f022:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 201,
+          "record_id": "indic_dialect_asr_gbm:200",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1481,
+          "record_id": "indic_dialect_asr_gbm:1480",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "e3b42f0ef637f999174f3f27711ca707cb0d05aef91bdb1d9c977416a82e5e9e",
+      "text_length": 190,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 519,
+          "record_id": "meta_omni:spk15:a047:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1706,
+          "record_id": "meta_omni:spk07:a047:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 206,
+          "record_id": "indic_dialect_asr_gbm:205",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1122,
+          "record_id": "indic_dialect_asr_gbm:1121",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "f0fba63e76670b15b8635dcd9699dd8e1c36b763e8eb4cb2df8d49432208c779",
+      "text_length": 193,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 507,
+          "record_id": "meta_omni:spk15:f015:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1700,
+          "record_id": "meta_omni:spk07:f015:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 194,
+          "record_id": "indic_dialect_asr_gbm:193",
+          "source_id": "indic_dialect_asr_gbm"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1117,
+          "record_id": "indic_dialect_asr_gbm:1116",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "046c9e3f35beacc2a2c9846b612a1a9e75503739e7bccf1a891ac6ec95398f6f",
+      "text_length": 118,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 68,
+          "record_id": "meta_omni:spk17:h021:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 477,
+          "record_id": "meta_omni:spk15:h021:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 164,
+          "record_id": "indic_dialect_asr_gbm:163",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0bf6dc4114366d9a93df591480453cae12bf11ac268109df01ecc5121b38cca1",
+      "text_length": 408,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 569,
+          "record_id": "meta_omni:spk14:t010:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2646,
+          "record_id": "meta_omni:spk13:t010:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 252,
+          "record_id": "indic_dialect_asr_gbm:251",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0fbd005cbb732dc556bcbea0402ce14d5a0e1619d1031650ca6b19ea6628fdc6",
+      "text_length": 224,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 220,
+          "record_id": "meta_omni:spk11:h025:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1508,
+          "record_id": "meta_omni:spk08:h025:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 946,
+          "record_id": "indic_dialect_asr_gbm:945",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "123f8aabab6161b612adf95525ebb43146d78507b8ebb3e4d11828fd63b377d8",
+      "text_length": 5,
+      "records": [
+        {
+          "layer": "extracted/historical",
+          "file": "extracted/historical/lsi_cldf_garhwali.jsonl",
+          "line": 47,
+          "record_id": "lsi_cldf_garhwali:GARHWALI-88_dogmale-1",
+          "source_id": "lsi_cldf_garhwali"
+        },
+        {
+          "layer": "extracted/historical",
+          "file": "extracted/historical/lsi_cldf_garhwali.jsonl",
+          "line": 49,
+          "record_id": "lsi_cldf_garhwali:GARHWALI-90_dogs-1",
+          "source_id": "lsi_cldf_garhwali"
+        },
+        {
+          "layer": "extracted/historical",
+          "file": "extracted/historical/lsi_cldf_garhwali.jsonl",
+          "line": 176,
+          "record_id": "lsi_cldf_garhwali:GARHWALI-56_dog-1",
+          "source_id": "lsi_cldf_garhwali"
+        }
+      ]
+    },
+    {
+      "text_sha256": "16a7c115c033f644b8d2b552822faf86060326d6a2ab1c6428b6a13724010673",
+      "text_length": 156,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 227,
+          "record_id": "meta_omni:spk11:h014:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1373,
+          "record_id": "meta_omni:spk09:h014:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 811,
+          "record_id": "indic_dialect_asr_gbm:810",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "1b1c6ad931e286e6d1a8dd5bd30998bc2dad2110ff46b6a4f1a5184b60c713ef",
+      "text_length": 366,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 615,
+          "record_id": "meta_omni:spk14:r052:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2681,
+          "record_id": "meta_omni:spk13:r052:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 288,
+          "record_id": "indic_dialect_asr_gbm:287",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "28b031febd7a976ace944ab943e298cefc98238ce2b87e39c9438b201fd37f88",
+      "text_length": 530,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 482,
+          "record_id": "meta_omni:spk15:f042:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1232,
+          "record_id": "meta_omni:spk10:f042:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 169,
+          "record_id": "indic_dialect_asr_gbm:168",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "331287e3075ff1990bcd0c9450a3c74953efe8179c89fefbac9db5de06786cc2",
+      "text_length": 2,
+      "records": [
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 10,
+          "record_id": "wiktionary_swadesh_thematic:3:6",
+          "source_id": "wiktionary_swadesh_thematic"
+        },
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 17,
+          "record_id": "wiktionary_swadesh_thematic:6:4",
+          "source_id": "wiktionary_swadesh_thematic"
+        },
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 19,
+          "record_id": "wiktionary_swadesh_thematic:7:1",
+          "source_id": "wiktionary_swadesh_thematic"
+        }
+      ]
+    },
+    {
+      "text_sha256": "39906fbdc3acb8f78a97a5f6834e4b07e09986e827812c0c7865162f917fd8c7",
+      "text_length": 173,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 214,
+          "record_id": "meta_omni:spk11:h019:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1378,
+          "record_id": "meta_omni:spk09:h019:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 816,
+          "record_id": "indic_dialect_asr_gbm:815",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "460911824162244ae2ccf7eb6749b6d91d273650978b2eeb9f7b0f7714e7b5c6",
+      "text_length": 2,
+      "records": [
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 5,
+          "record_id": "wiktionary_swadesh_thematic:3:1",
+          "source_id": "wiktionary_swadesh_thematic"
+        },
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 14,
+          "record_id": "wiktionary_swadesh_thematic:6:1",
+          "source_id": "wiktionary_swadesh_thematic"
+        },
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 21,
+          "record_id": "wiktionary_swadesh_thematic:8:1",
+          "source_id": "wiktionary_swadesh_thematic"
+        }
+      ]
+    },
+    {
+      "text_sha256": "5826abb09b757e81672284f6093bdd901119c9b3e93370b0f079e8820406e74c",
+      "text_length": 222,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 219,
+          "record_id": "meta_omni:spk11:h024:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1521,
+          "record_id": "meta_omni:spk08:h024:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 959,
+          "record_id": "indic_dialect_asr_gbm:958",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "6212453671f3bb22485e2fcaf206f58e649fda8f2eca252680c152395c6c649f",
+      "text_length": 159,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 217,
+          "record_id": "meta_omni:spk11:h022:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1519,
+          "record_id": "meta_omni:spk08:h022:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 957,
+          "record_id": "indic_dialect_asr_gbm:956",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "63f041d60900c937a4b27ed612ba2d6bbc5dacc9e3c39f3fde7892bbae0e266d",
+      "text_length": 145,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 56,
+          "record_id": "meta_omni:spk17:h027:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 468,
+          "record_id": "meta_omni:spk15:h027:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 155,
+          "record_id": "indic_dialect_asr_gbm:154",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "63f4995afa48e8fd87f28be5efe78caa1b6b2f9bda69972fa302c635bf384ed5",
+      "text_length": 467,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 488,
+          "record_id": "meta_omni:spk15:h015:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1226,
+          "record_id": "meta_omni:spk10:h015:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 175,
+          "record_id": "indic_dialect_asr_gbm:174",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "68d05d2e28cded79da7afabfcc6050272b1669359cca383e3db66b97ed9f1241",
+      "text_length": 2,
+      "records": [
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 11,
+          "record_id": "wiktionary_swadesh_thematic:3:7",
+          "source_id": "wiktionary_swadesh_thematic"
+        },
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 18,
+          "record_id": "wiktionary_swadesh_thematic:6:5",
+          "source_id": "wiktionary_swadesh_thematic"
+        },
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 20,
+          "record_id": "wiktionary_swadesh_thematic:7:2",
+          "source_id": "wiktionary_swadesh_thematic"
+        }
+      ]
+    },
+    {
+      "text_sha256": "6a7ab5fddbeb83f79d513bf0478308349caf860254d1783350aeaa2781a8fe8c",
+      "text_length": 129,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 86,
+          "record_id": "meta_omni:spk17:f038:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 496,
+          "record_id": "meta_omni:spk15:f039:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 183,
+          "record_id": "indic_dialect_asr_gbm:182",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "7b381500365253cc994475bf16d72481887c6fbaf6be65b23946f704d6460377",
+      "text_length": 219,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 221,
+          "record_id": "meta_omni:spk11:h026:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1509,
+          "record_id": "meta_omni:spk08:h026:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 947,
+          "record_id": "indic_dialect_asr_gbm:946",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "7c6f018a6e37d4346fd81abf5e7469c9cbb451584aa65b5e58a825a000c029e3",
+      "text_length": 168,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 230,
+          "record_id": "meta_omni:spk11:h017:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1376,
+          "record_id": "meta_omni:spk09:h017:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 814,
+          "record_id": "indic_dialect_asr_gbm:813",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "7fd43ab952d429f10ea3d0c329d349fb7a399adc4e49f8c65486436f5124d0f8",
+      "text_length": 176,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 213,
+          "record_id": "meta_omni:spk11:h018:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1377,
+          "record_id": "meta_omni:spk09:h018:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 815,
+          "record_id": "indic_dialect_asr_gbm:814",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "83258e2e651fbfbb4a325cfab9797399eeaa358d97503a8ec36cbe9174905270",
+      "text_length": 2,
+      "records": [
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 9,
+          "record_id": "wiktionary_swadesh_thematic:3:5",
+          "source_id": "wiktionary_swadesh_thematic"
+        },
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 16,
+          "record_id": "wiktionary_swadesh_thematic:6:3",
+          "source_id": "wiktionary_swadesh_thematic"
+        },
+        {
+          "layer": "restricted",
+          "file": "restricted/thematic_web_lexicon.jsonl",
+          "line": 22,
+          "record_id": "wiktionary_swadesh_thematic:8:2",
+          "source_id": "wiktionary_swadesh_thematic"
+        }
+      ]
+    },
+    {
+      "text_sha256": "86a6f2973f34458964bbe6c75dc25376c70ca34ef890ba645d37dba470a187c6",
+      "text_length": 149,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 85,
+          "record_id": "meta_omni:spk17:f037:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 495,
+          "record_id": "meta_omni:spk15:f038:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 182,
+          "record_id": "indic_dialect_asr_gbm:181",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "880f1818eddb0c36ca871e063763255e41f3d5611574df27ec6117c03567981f",
+      "text_length": 258,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 218,
+          "record_id": "meta_omni:spk11:h023:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1520,
+          "record_id": "meta_omni:spk08:h023:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 958,
+          "record_id": "indic_dialect_asr_gbm:957",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "89762a9d7960e4834ef6bdfe6d34119b60329a008aa49455f812c23b5199ef3a",
+      "text_length": 3,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/asjp.jsonl",
+          "line": 91,
+          "record_id": "asjp:100",
+          "source_id": "asjp"
+        },
+        {
+          "layer": "restricted",
+          "file": "restricted/panlex_gbm.jsonl",
+          "line": 8,
+          "record_id": "panlex_gbm:gbm-000:7",
+          "source_id": "panlex_gbm"
+        },
+        {
+          "layer": "extracted/historical",
+          "file": "extracted/historical/lsi_cldf_garhwali.jsonl",
+          "line": 5,
+          "record_id": "lsi_cldf_garhwali:GARHWALI-9_nine-1",
+          "source_id": "lsi_cldf_garhwali"
+        }
+      ]
+    },
+    {
+      "text_sha256": "89b150d2b3bfc1ec4d58ed18ad27f82736b2c00ce1c68606521ead7bfdb5483d",
+      "text_length": 165,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 87,
+          "record_id": "meta_omni:spk17:f039:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 480,
+          "record_id": "meta_omni:spk15:f040:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 167,
+          "record_id": "indic_dialect_asr_gbm:166",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "8e120d48cdc36c457b01763fbe883f393e853bb02d94e071d3349a59ad42d0af",
+      "text_length": 160,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 229,
+          "record_id": "meta_omni:spk11:h016:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1375,
+          "record_id": "meta_omni:spk09:h016:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 813,
+          "record_id": "indic_dialect_asr_gbm:812",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "93d5c7bffbf9ef113d0cddf8954808b6401de96694026641e7f1841b6eec28f4",
+      "text_length": 221,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 216,
+          "record_id": "meta_omni:spk11:h021:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1518,
+          "record_id": "meta_omni:spk08:h021:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 956,
+          "record_id": "indic_dialect_asr_gbm:955",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "95affca977c4236dce2c69fff4311269bea94f1605a160ae7f92d731e1538a0a",
+      "text_length": 124,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 72,
+          "record_id": "meta_omni:spk17:h025:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 466,
+          "record_id": "meta_omni:spk15:h025:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 153,
+          "record_id": "indic_dialect_asr_gbm:152",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "970d3b77eba739f53beda414777a152bbc6f330e4a4f17397c3b95c284f01a4d",
+      "text_length": 192,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 228,
+          "record_id": "meta_omni:spk11:h015:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1374,
+          "record_id": "meta_omni:spk09:h015:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 812,
+          "record_id": "indic_dialect_asr_gbm:811",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "9753a43423bf37b613545dba50dc6031bdfa7393145e52f6505567e16f777473",
+      "text_length": 186,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 66,
+          "record_id": "meta_omni:spk17:h019:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 475,
+          "record_id": "meta_omni:spk15:h019:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 162,
+          "record_id": "indic_dialect_asr_gbm:161",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "9c03900ae611f3d55a46391f017fc1f94b3f47b0016dd65929d81aa67d4e684f",
+      "text_length": 185,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2549,
+          "record_id": "meta_omni:spk01:n032:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2697,
+          "record_id": "meta_omni:spk13:n032:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1866,
+          "record_id": "indic_dialect_asr_gbm:1865",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "9c5427bd795974745d894f5b9e3c647928ff9ddbc1025ad563fa34f8af935c0d",
+      "text_length": 199,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2620,
+          "record_id": "meta_omni:spk01:a009:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2771,
+          "record_id": "meta_omni:spk13:a009:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1926,
+          "record_id": "indic_dialect_asr_gbm:1925",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "a0d44384093c2998dd4b47f625bcbe3b85bc3f85a8e8664da4de5ad0594454fd",
+      "text_length": 217,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 158,
+          "record_id": "meta_omni:spk11:i088:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1998,
+          "record_id": "meta_omni:spk05:i088:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1391,
+          "record_id": "indic_dialect_asr_gbm:1390",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "a4b2a4153e4d46c78cb8dff7980dd346ba813975205c5b4e1104ba431ef61ec2",
+      "text_length": 4,
+      "records": [
+        {
+          "layer": "extracted/historical",
+          "file": "extracted/historical/lsi_cldf_garhwali.jsonl",
+          "line": 55,
+          "record_id": "lsi_cldf_garhwali:GARHWALI-95_maledeer-1",
+          "source_id": "lsi_cldf_garhwali"
+        },
+        {
+          "layer": "extracted/historical",
+          "file": "extracted/historical/lsi_cldf_garhwali.jsonl",
+          "line": 56,
+          "record_id": "lsi_cldf_garhwali:GARHWALI-96_femaledeer-1",
+          "source_id": "lsi_cldf_garhwali"
+        },
+        {
+          "layer": "extracted/historical",
+          "file": "extracted/historical/lsi_cldf_garhwali.jsonl",
+          "line": 57,
+          "record_id": "lsi_cldf_garhwali:GARHWALI-97_deer-1",
+          "source_id": "lsi_cldf_garhwali"
+        }
+      ]
+    },
+    {
+      "text_sha256": "a4ee84ce92c3c75e233c0f4e0832afaedec16de812da0702d6faedd01d1b5005",
+      "text_length": 226,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 215,
+          "record_id": "meta_omni:spk11:h020:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1517,
+          "record_id": "meta_omni:spk08:h020:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 955,
+          "record_id": "indic_dialect_asr_gbm:954",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "b3ac309a8a6204dca8fe1c4c2de53901c6c5159f9f0d6b20519a3da94bd5ae51",
+      "text_length": 78,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 95,
+          "record_id": "meta_omni:spk17:f034:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 492,
+          "record_id": "meta_omni:spk15:f035:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 179,
+          "record_id": "indic_dialect_asr_gbm:178",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "b8e4a2fbb75081228937cd44255651fa2b5f8d23cc063439b6511cc87510989f",
+      "text_length": 232,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 222,
+          "record_id": "meta_omni:spk11:h027:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1510,
+          "record_id": "meta_omni:spk08:h027:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 948,
+          "record_id": "indic_dialect_asr_gbm:947",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "bf413879326f99dc6dc70db8c3142cabcc8ad4dad6845ff1b211a166d4c04af4",
+      "text_length": 150,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 782,
+          "record_id": "meta_omni:spk14:f011:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 783,
+          "record_id": "meta_omni:spk14:f012:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 398,
+          "record_id": "indic_dialect_asr_gbm:397",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "c2deae38cd4307362f9754a8d62576d445ad5bc7a5ecd12b64b7003686afce22",
+      "text_length": 405,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 61,
+          "record_id": "meta_omni:spk17:h032:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1014,
+          "record_id": "meta_omni:spk12:h032:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 594,
+          "record_id": "indic_dialect_asr_gbm:593",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "c7445fa380cd6719aa85cbf3f8a8379983a62e65c9475b70f510117d76c96db0",
+      "text_length": 555,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 486,
+          "record_id": "meta_omni:spk15:h013:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1224,
+          "record_id": "meta_omni:spk10:h013:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 173,
+          "record_id": "indic_dialect_asr_gbm:172",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "c9d9d2c4be976b707a1acdcaba8495e7e0a7089579da6625a71083d5b0c6bddf",
+      "text_length": 3,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/asjp.jsonl",
+          "line": 60,
+          "record_id": "asjp:67",
+          "source_id": "asjp"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/asjp.jsonl",
+          "line": 79,
+          "record_id": "asjp:86",
+          "source_id": "asjp"
+        },
+        {
+          "layer": "extracted/historical",
+          "file": "extracted/historical/lsi_cldf_garhwali.jsonl",
+          "line": 78,
+          "record_id": "lsi_cldf_garhwali:GARHWALI-115_but-1",
+          "source_id": "lsi_cldf_garhwali"
+        }
+      ]
+    },
+    {
+      "text_sha256": "d6227085c198c7a0ef2620be66ba59ea54137c26bd73c6570e1febd66ec2494c",
+      "text_length": 472,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 485,
+          "record_id": "meta_omni:spk15:f045:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1223,
+          "record_id": "meta_omni:spk10:f045:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 172,
+          "record_id": "indic_dialect_asr_gbm:171",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "da96a12f2a5e34dcfae85bb1466e8ea984188b86479e184589457f8e98e69d3d",
+      "text_length": 234,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 111,
+          "record_id": "meta_omni:spk17:f013:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1078,
+          "record_id": "meta_omni:spk12:f013:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 632,
+          "record_id": "indic_dialect_asr_gbm:631",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "dbf2fe40de25fde3d94f4083b7806d94780082c786aeba1d13f0c90b1c65cae2",
+      "text_length": 217,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 84,
+          "record_id": "meta_omni:spk17:f036:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 494,
+          "record_id": "meta_omni:spk15:f037:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 181,
+          "record_id": "indic_dialect_asr_gbm:180",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "e1c44a19e852f9a0231d125417b358e23f1f9d92508e3d48a80c56fffd84e439",
+      "text_length": 142,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 226,
+          "record_id": "meta_omni:spk11:h013:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1372,
+          "record_id": "meta_omni:spk09:h013:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 810,
+          "record_id": "indic_dialect_asr_gbm:809",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "003361a7ddd76edffe6ffa724b25e34b054b80bc31964393ef7e194061e68afa",
+      "text_length": 301,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1637,
+          "record_id": "meta_omni:spk07:i059:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1066,
+          "record_id": "indic_dialect_asr_gbm:1065",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0037bff96e3350517d933b125410d9e03db36eae4ebe18ab8fdb8765c17916c0",
+      "text_length": 239,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 426,
+          "record_id": "meta_omni:spk16:c093:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 117,
+          "record_id": "indic_dialect_asr_gbm:116",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "007aa92bf27c2b9c40086d2f5c03a579939bacc9ab0c38f7cb935d38f542bc70",
+      "text_length": 223,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1760,
+          "record_id": "meta_omni:spk06:w051:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1161,
+          "record_id": "indic_dialect_asr_gbm:1160",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "00822c854cf96e5115c67c9ef84dcc13ea4e186cf2081f7352f346e3a2ed582f",
+      "text_length": 212,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 685,
+          "record_id": "meta_omni:spk14:i059:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 332,
+          "record_id": "indic_dialect_asr_gbm:331",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "00a0bac8bc84d3d3b3645e85973b3f64ecc5e350d76d4ed2a9d4fcd440734f89",
+      "text_length": 4,
+      "records": [
+        {
+          "layer": "restricted",
+          "file": "restricted/panlex_gbm.jsonl",
+          "line": 5,
+          "record_id": "panlex_gbm:gbm-000:4",
+          "source_id": "panlex_gbm"
+        },
+        {
+          "layer": "extracted/historical",
+          "file": "extracted/historical/lsi_cldf_garhwali.jsonl",
+          "line": 10,
+          "record_id": "lsi_cldf_garhwali:GARHWALI-4_four-1",
+          "source_id": "lsi_cldf_garhwali"
+        }
+      ]
+    },
+    {
+      "text_sha256": "00d769ed80c2d5394e3672ad7545b67950eb641b9417b031402dce30ebdef57d",
+      "text_length": 205,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1557,
+          "record_id": "meta_omni:spk08:a048:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 995,
+          "record_id": "indic_dialect_asr_gbm:994",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "00e99a2779d0c3c1708d2b40fba75e26918953095e979e090435e25537be614c",
+      "text_length": 293,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 833,
+          "record_id": "meta_omni:spk14:a023:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 431,
+          "record_id": "indic_dialect_asr_gbm:430",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "00f887d62474d8f08844d08ed9a328f7ec842226553aa4f954b88cccf7f78637",
+      "text_length": 313,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2140,
+          "record_id": "meta_omni:spk05:a035:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1522,
+          "record_id": "indic_dialect_asr_gbm:1521",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0116fe19ba6e5ff8125a4e5a79bab61b74b1a4c93f6250181d16f131c7e58285",
+      "text_length": 28,
+      "records": [
+        {
+          "layer": "experimental",
+          "file": "experimental/hikinegi_garhwali.jsonl",
+          "line": 15,
+          "record_id": "hikinegi_garhwali:14",
+          "source_id": "hikinegi_garhwali"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/web_learning_garhwali.jsonl",
+          "line": 39,
+          "record_id": "euttaranchal_2:15",
+          "source_id": "euttaranchal_2"
+        }
+      ]
+    },
+    {
+      "text_sha256": "011a8f0c9b0aabcf06c58fc49aa994e4a59ce39d4ab390ae408e668d7a378b87",
+      "text_length": 31,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 634,
+          "record_id": "meta_omni:spk14:n025:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 307,
+          "record_id": "indic_dialect_asr_gbm:306",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "011ba9145086e3eaf50918d31b5a87fe32267ffca7a719ca2dc16593355f52fe",
+      "text_length": 205,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1561,
+          "record_id": "meta_omni:spk08:f014:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 999,
+          "record_id": "indic_dialect_asr_gbm:998",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0131fa654ce547fe1dfc9eafa9cfe338a6a5173890462230449ffca6bc0ea158",
+      "text_length": 120,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1740,
+          "record_id": "meta_omni:spk07:a018:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1141,
+          "record_id": "indic_dialect_asr_gbm:1140",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "014fe85159edd902be3f29b198f9fdf4a4e90d8546aa71b4d7caf1b2f0a91e8e",
+      "text_length": 230,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 452,
+          "record_id": "meta_omni:spk15:n044:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 140,
+          "record_id": "indic_dialect_asr_gbm:139",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "015333cbd93c578b4f7d7288e58619ab5ddf968916cafe19e86327b8df81e9d4",
+      "text_length": 372,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2321,
+          "record_id": "meta_omni:spk04:a001:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1643,
+          "record_id": "indic_dialect_asr_gbm:1642",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0156a54efc89abc0f2213a74e1bd16889de87cf09fc0c1041f29f4f48ad3eaeb",
+      "text_length": 182,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1538,
+          "record_id": "meta_omni:spk08:f032:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 976,
+          "record_id": "indic_dialect_asr_gbm:975",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0168ac30d66033da6e688ba446c56a13eb79d3072650497e68a95b083afad43e",
+      "text_length": 173,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 886,
+          "record_id": "meta_omni:spk12:s016:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 476,
+          "record_id": "indic_dialect_asr_gbm:475",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0171ed5a57f6bbab03f09753fc29ca9313edb81380429696818d4ce1489d1e67",
+      "text_length": 327,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 441,
+          "record_id": "meta_omni:spk16:a004:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 129,
+          "record_id": "indic_dialect_asr_gbm:128",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "01a53a59cba1fe760e6138637c82b31e7d8e07482c842478350cd4ea7e166aff",
+      "text_length": 202,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1763,
+          "record_id": "meta_omni:spk06:t003:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1164,
+          "record_id": "indic_dialect_asr_gbm:1163",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "01b4d70a484a6acb14002a484f7e737a48f83a559ff561984b3d9429d042bae9",
+      "text_length": 240,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1088,
+          "record_id": "meta_omni:spk12:f006:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 638,
+          "record_id": "indic_dialect_asr_gbm:637",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "021444ea31f69c0e805e84ac3d1041dbaa6fb3c626983af7eedc9e62c80482e9",
+      "text_length": 308,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2023,
+          "record_id": "meta_omni:spk05:i055:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1416,
+          "record_id": "indic_dialect_asr_gbm:1415",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0217f712e6a3bfeaf01d3826997a8bf78175b3c717d09f1bccfe5fca02dacd6f",
+      "text_length": 302,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2014,
+          "record_id": "meta_omni:spk05:i067:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1407,
+          "record_id": "indic_dialect_asr_gbm:1406",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0229f23fb372728bc607450d98f6f7f355d55518d154230a3ae4403712418cdd",
+      "text_length": 148,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1448,
+          "record_id": "meta_omni:spk09:a015:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 886,
+          "record_id": "indic_dialect_asr_gbm:885",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "023dd8ac00c2c002279cd6aba7f6fa9e715e1427801a9d380461dde82f393c8a",
+      "text_length": 160,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 978,
+          "record_id": "meta_omni:spk12:i065:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 565,
+          "record_id": "indic_dialect_asr_gbm:564",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "0242d5e5c0b51e0c6afb04574aa4da620f51a5bf768d81db8b2a8cb5ed5e46f2",
+      "text_length": 200,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1571,
+          "record_id": "meta_omni:spk08:a032:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1008,
+          "record_id": "indic_dialect_asr_gbm:1007",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "02452ea45404a8385b979fc8392fc5cbbd555f5b47aee0ef695e5b3038ab4b7a",
+      "text_length": 343,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1639,
+          "record_id": "meta_omni:spk07:h037:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1068,
+          "record_id": "indic_dialect_asr_gbm:1067",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "028472358a5ee9fe5cc8cd0deac2567669f08f48492750b677a1322fa3371497",
+      "text_length": 205,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 913,
+          "record_id": "meta_omni:spk12:p055:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 503,
+          "record_id": "indic_dialect_asr_gbm:502",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "028b61bc92447e48f3ef3f69af19e33f49f4d84c4ae346bdeec958ae5a95f9a1",
+      "text_length": 363,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 2496,
+          "record_id": "meta_omni:spk01:t012:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 1816,
+          "record_id": "indic_dialect_asr_gbm:1815",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "02a95915f332bd35cab3fb1bc26e7ae63604e27e892eba4ad64527535c0770b6",
+      "text_length": 87,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1135,
+          "record_id": "meta_omni:spk12:a024:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 672,
+          "record_id": "indic_dialect_asr_gbm:671",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    },
+    {
+      "text_sha256": "02a9da02d396cefa2020748226798ff3e9d71b27dda0bbfcfdc15611c9735388",
+      "text_length": 445,
+      "records": [
+        {
+          "layer": "corpus",
+          "file": "corpus/meta_omni.jsonl",
+          "line": 1211,
+          "record_id": "meta_omni:spk10:h033:s01",
+          "source_id": "meta_omni"
+        },
+        {
+          "layer": "experimental",
+          "file": "experimental/indic_dialect_asr_gbm.jsonl",
+          "line": 707,
+          "record_id": "indic_dialect_asr_gbm:706",
+          "source_id": "indic_dialect_asr_gbm"
+        }
+      ]
+    }
+  ]
+}

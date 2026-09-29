@@ -1,0 +1,18 @@
+{
+  "cer": 1.3680964395850854,
+  "character_errors": 9760,
+  "device": "cpu",
+  "elapsed_seconds": 70.852,
+  "evaluation_manifest": "data/processed/model_ready/splits/asr/test.jsonl",
+  "evaluation_manifest_sha256": "2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52",
+  "evaluation_records": 112,
+  "language_prompt": "hi",
+  "max_target_tokens": 128,
+  "model_id": "openai/whisper-tiny",
+  "reference_characters": 7134,
+  "reference_words": 2086,
+  "revision": "169d4a4341b33bc18d8881c4b69c2e104e1cc0af",
+  "run_id": "openai--whisper-tiny-garhwali-speaker-safe-v0.1",
+  "wer": 1.4793863854266538,
+  "word_errors": 3086
+}

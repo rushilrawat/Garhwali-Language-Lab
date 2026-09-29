@@ -1,0 +1,18 @@
+{
+  "batch_size": 4,
+  "cer": 0.18540611210982186,
+  "character_errors": 4538,
+  "device": "cpu",
+  "elapsed_seconds": 184.36,
+  "evaluation_manifest": "data/processed/evaluation/asr/confidence_calibration/manifest.jsonl",
+  "evaluation_manifest_sha256": "5c1e24349e0e956c1b1eab96ce0f3d62ffff010ff7a2f0cf414d3bb766c2900d",
+  "evaluation_records": 381,
+  "model_artifact_sha256": "789a21b6df8b0bb2ea2cc1c120edbfd4b898d3a26e6c6673cca45d14b64a47f2",
+  "model_id": "ARTPARK-IISc/SraVaani-1.0",
+  "reference_characters": 24476,
+  "reference_words": 7066,
+  "revision": "f5dd5358325a5208775b91dad98918e079ea2b27",
+  "run_id": "ARTPARK-IISc--SraVaani-1.0-garhwali-speaker-safe-v0.1",
+  "wer": 0.4320690631191622,
+  "word_errors": 3053
+}

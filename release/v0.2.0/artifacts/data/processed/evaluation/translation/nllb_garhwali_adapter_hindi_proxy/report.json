@@ -1,0 +1,19 @@
+{
+  "adapter_id": "Gaurav17/garhwali-nllb-v12",
+  "adapter_language_token_mapping": "undocumented",
+  "adapter_revision": "c17ad35a9fc522aae5da231adb5a0ecf1258e4a3",
+  "corpus_bleu_smoothed": 0.09546021,
+  "corpus_chrf2": 0.46047417,
+  "device": "cpu",
+  "elapsed_seconds": 130.77,
+  "evaluation_records": 32,
+  "exact_match": 0.0,
+  "max_source_tokens": 256,
+  "max_target_tokens": 64,
+  "model_id": "facebook/nllb-200-distilled-600M",
+  "revision": "f8d333a098d19b4fd9a8b18f94170487ad3f821d",
+  "run_id": "garhwali-nllb-v12-hindi-proxy-v0.1",
+  "source_language_token": "hin_Deva",
+  "source_language_token_status": "explicit_proxy_because_nllb_has_no_garhwali_token",
+  "target_language_token": "eng_Latn"
+}

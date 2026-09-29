@@ -1,0 +1,12 @@
+{
+  "run_id": "garhwali-low-confidence-openai--whisper-large-v3-turbo-agreement-v0.1",
+  "records": 5000,
+  "model_id": "openai/whisper-large-v3-turbo",
+  "revision": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+  "mean_agreement_wer": 0.86097651,
+  "mean_agreement_cer": 0.48071752,
+  "exact_agreement_records": 18,
+  "empty_whisper_outputs": 0,
+  "elapsed_seconds": 983.388,
+  "policy": "agreement evidence only; no human ground truth; no automatic promotion"
+}

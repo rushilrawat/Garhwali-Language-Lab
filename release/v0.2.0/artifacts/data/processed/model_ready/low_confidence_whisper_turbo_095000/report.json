@@ -1,0 +1,7 @@
+{
+  "records": 8346,
+  "selection_offset": 95000,
+  "excluded_existing_third_checkpoint": 1188,
+  "selection": "lowest-confidence-first, deterministic hash tie-break",
+  "total_duration_seconds": 36454.18
+}

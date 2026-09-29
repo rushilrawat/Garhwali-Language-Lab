@@ -1,0 +1,14 @@
+{
+  "run_id": "garhwali-semantic-near-duplicate-refinement-v0.2",
+  "input_candidate_pairs": 29903,
+  "model_id": "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+  "decisions": {
+    "high_confidence_near_duplicate": 267,
+    "likely_false_positive": 14257,
+    "review_required": 14022,
+    "supported_candidate": 1357
+  },
+  "cross_split_supported_pairs": 92,
+  "records_deleted_or_mutated": 0,
+  "policy": "evidence_only; preserve source records"
+}

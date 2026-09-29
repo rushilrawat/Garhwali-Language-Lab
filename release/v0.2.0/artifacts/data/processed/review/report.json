@@ -1,0 +1,10 @@
+{
+  "queue_sizes": {
+    "text_low_quality": 62,
+    "text_review": 100,
+    "vaani_audio_review": 3,
+    "vaani_transcript_review": 13
+  },
+  "speaker_cross_split_count": 0,
+  "speaker_cross_split_examples": {}
+}

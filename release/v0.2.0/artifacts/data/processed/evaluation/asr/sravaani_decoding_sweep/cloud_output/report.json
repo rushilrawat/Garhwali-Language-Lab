@@ -1,0 +1,114 @@
+{
+  "checkpoint_sha256": "cb206f88afbe179d10229a8002e92c74789eed77557ef38a33533e26b69067af",
+  "configurations": [
+    {
+      "config_id": "rnnt-greedy-batch",
+      "decoder": "rnnt",
+      "status": "completed",
+      "strategy": "greedy_batch",
+      "validation": {
+        "cer": 0.18948218198593011,
+        "character_errors": 3286,
+        "reference_characters": 17342,
+        "reference_words": 4980,
+        "wer": 0.43453815261044176,
+        "word_errors": 2164
+      }
+    },
+    {
+      "beam_size": 2,
+      "config_id": "rnnt-beam-2",
+      "decoder": "rnnt",
+      "status": "completed",
+      "strategy": "beam",
+      "validation": {
+        "cer": 0.18971283588974744,
+        "character_errors": 3290,
+        "reference_characters": 17342,
+        "reference_words": 4980,
+        "wer": 0.43393574297188753,
+        "word_errors": 2161
+      }
+    },
+    {
+      "beam_size": 4,
+      "config_id": "rnnt-beam-4",
+      "decoder": "rnnt",
+      "status": "completed",
+      "strategy": "beam",
+      "validation": {
+        "cer": 0.1896551724137931,
+        "character_errors": 3289,
+        "reference_characters": 17342,
+        "reference_words": 4980,
+        "wer": 0.43393574297188753,
+        "word_errors": 2161
+      }
+    },
+    {
+      "beam_size": 8,
+      "config_id": "rnnt-beam-8",
+      "decoder": "rnnt",
+      "status": "completed",
+      "strategy": "beam",
+      "validation": {
+        "cer": 0.18919386460615845,
+        "character_errors": 3281,
+        "reference_characters": 17342,
+        "reference_words": 4980,
+        "wer": 0.43253012048192774,
+        "word_errors": 2154
+      }
+    },
+    {
+      "beam_size": 4,
+      "config_id": "rnnt-tsd-4",
+      "decoder": "rnnt",
+      "error": "Transducer model of tdt type does not support tsd strategy. Supported strategies: beam, malsd_batch, greedy_batch, maes, greedy",
+      "error_type": "NotImplementedError",
+      "status": "failed",
+      "strategy": "tsd"
+    },
+    {
+      "config_id": "ctc-greedy-batch",
+      "decoder": "ctc",
+      "status": "completed",
+      "strategy": "greedy_batch",
+      "validation": {
+        "cer": 0.2028601084073348,
+        "character_errors": 3518,
+        "reference_characters": 17342,
+        "reference_words": 4980,
+        "wer": 0.45843373493975903,
+        "word_errors": 2283
+      }
+    }
+  ],
+  "model_id": "ARTPARK-IISc/SraVaani-1.0",
+  "run_id": "garhwali-sravaani-decoding-sweep-v0.1",
+  "selected_configuration": {
+    "beam_size": 8,
+    "config_id": "rnnt-beam-8",
+    "decoder": "rnnt",
+    "status": "completed",
+    "strategy": "beam",
+    "validation": {
+      "cer": 0.18919386460615845,
+      "character_errors": 3281,
+      "reference_characters": 17342,
+      "reference_words": 4980,
+      "wer": 0.43253012048192774,
+      "word_errors": 2154
+    }
+  },
+  "selected_test": {
+    "cer": 0.1740958788898234,
+    "character_errors": 1242,
+    "reference_characters": 7134,
+    "reference_words": 2086,
+    "wer": 0.4276126558005753,
+    "word_errors": 892
+  },
+  "selection_metric": "validation_wer_then_cer",
+  "selection_used_test_split": false
+}

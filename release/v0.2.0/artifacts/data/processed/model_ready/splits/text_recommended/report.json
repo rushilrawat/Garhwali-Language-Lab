@@ -1,0 +1,42 @@
+{
+  "artifacts": {
+    "test.jsonl": {
+      "records": 402,
+      "sha256": "3cf169697cfbd4d1f2e9667c4807cb07a66f33aa7fb2069c54acdca4c8533e78"
+    },
+    "train.jsonl": {
+      "records": 9486,
+      "sha256": "477f096fe24f20f7e816807831c9be8185caff64d377fe550ef5a2552bb2b072"
+    },
+    "validation.jsonl": {
+      "records": 454,
+      "sha256": "bd70e1dc0d450b73842df6a6e75a2385821c05b06ae6e51b50054336ab583235"
+    }
+  },
+  "counts": {
+    "test": {
+      "excluded_records": 2484,
+      "recommended_records": 402,
+      "source_records": 2886
+    },
+    "train": {
+      "excluded_records": 100599,
+      "recommended_records": 9486,
+      "source_records": 110085
+    },
+    "validation": {
+      "excluded_records": 2360,
+      "recommended_records": 454,
+      "source_records": 2814
+    }
+  },
+  "policy": "Keep only Garhwali-only source labels, strict automated quality candidates, no active quality flags, and compatible public rights. Native review is still pending; this is not a gold corpus.",
+  "quality_catalog_sha256": "09aea7ce70c168f808caf245283e5841759b2392b1b7b8acc30f3c243eac1c83",
+  "records_removed_from_full_corpus": 0,
+  "run_id": "garhwali-recommended-text-view-v0.1",
+  "source_hashes": {
+    "test": "e67d678795f8b139f87c97462404486aedf90ca07f9f28e649eeac7e82064446",
+    "train": "9d49d23fa632297650ca0cb66f76adb5114be139891b542684733c06400bf744",
+    "validation": "fbbb8058c40bec22c710607069441e15a6d447aebc3d6e4cec14e8c57eccd3e4"
+  }
+}

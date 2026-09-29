@@ -1,0 +1,12 @@
+{
+  "clips": 1204,
+  "episodes": 66,
+  "experimental_training_eligible": true,
+  "max_segment_seconds": 29.5,
+  "public_redistribution_eligible": false,
+  "reason": "active local experimental audio; creator copyright blocks public redistribution",
+  "rendered_clips": 1204,
+  "source_audio_unchanged": true,
+  "strict_training_eligible": false,
+  "total_duration_hours": 8.928764
+}

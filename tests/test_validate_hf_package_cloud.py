@@ -11,6 +11,50 @@ import validate_hf_package_cloud as m
 
 
 class HuggingFaceCloudValidationTests(unittest.TestCase):
+    def test_public_reference_index_tables_are_validated_as_rows(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = root / 'package'
+            rows = {
+                'record_index': {'record_ref': 'r1'},
+                'source_catalog': {'source_ref_id': 's1'},
+                'record_sources': {'record_ref': 'r1', 'source_ref_id': 's1'},
+            }
+            configs = {}
+            table_report = {}
+            for name, row in rows.items():
+                shard = package / f'data/{name}/train-00000.jsonl'
+                shard.parent.mkdir(parents=True, exist_ok=True)
+                shard.write_text(json.dumps(row) + '\n')
+                digest = m.sha256(shard)
+                configs[f'{name}/train'] = {
+                    'files': [shard.name], 'records': 1,
+                    'file_sha256': {shard.name: digest},
+                }
+                table_report[name] = {
+                    'file': f'data/{name}/{shard.name}',
+                    'records': 1, 'sha256': digest,
+                }
+            (package / 'reference_index_manifest.json').write_text('{}\n')
+            (package / 'manifest.json').write_text(json.dumps({
+                'release_id': 'garhwali-language-lab-v0.2.0',
+                'profile': 'public',
+                'reference_index': {'tables': table_report},
+                'configs': configs,
+            }))
+            output = root / 'preflight.json'
+            with patch.object(sys, 'argv', [
+                'validate_hf_package_cloud.py', '--package', str(package),
+                '--output', str(output),
+            ]), contextlib.redirect_stdout(io.StringIO()):
+                m.main()
+            report = json.loads(output.read_text())
+        self.assertEqual(report['status'], 'passed')
+        self.assertEqual(report['errors'], [])
+        self.assertEqual(
+            report['run_id'], 'garhwali-hf-public-cloud-validation-v0.2.0'
+        )
+
     def test_duplicate_identity_fails_and_json_output_is_exact_path(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -1,0 +1,24 @@
+{
+  "release_id": "garhwali-language-lab-v0.2.0",
+  "verified_at_utc": "2026-09-29 19:25:33 UTC",
+  "repo_id": "rushilrawat/garhwali-corpus",
+  "repo_type": "dataset",
+  "visibility": "public",
+  "commit": "cb6314880b8a28c3bf3dcc025d8ff9ebe062c927",
+  "expected_package_files": 34,
+  "verified_package_files": 34,
+  "expected_package_bytes": 511370865,
+  "package_aggregate_sha256": "472670f8e6c0e6eaf09a663396e197188c5046070e8c6a4cfc1ffdaa06f11a5d",
+  "all_package_file_sizes_and_hashes_match": true,
+  "viewer": {
+    "split_count": 15,
+    "parquet_conversion_count": 15,
+    "all_15_split_validity_checks_http_200": true,
+    "all_15_splits_viewer_enabled": true,
+    "all_15_splits_preview_enabled": true,
+    "sample_text_preview_http": 200,
+    "sample_text_preview_rows": 1,
+    "previous_http_500s_recovered": true,
+    "note": "All 15 split validity endpoints and a text preview returned HTTP 200 at verification time."
+  }
+}

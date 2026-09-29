@@ -44,6 +44,14 @@ def script_profile(text):
 
 
 def identity(config, row):
+    if config == "record_index":
+        return row.get("record_ref")
+    if config == "source_catalog":
+        return row.get("source_ref_id")
+    if config == "record_sources":
+        record_ref = row.get("record_ref")
+        source_ref_id = row.get("source_ref_id")
+        return f"{record_ref}\0{source_ref_id}" if record_ref and source_ref_id else None
     if config == "asr" or config == "sravaani_drafts":
         return row.get("audio_sha256")
     if config == "instructions":
@@ -214,6 +222,8 @@ def main():
         'README.md', 'manifest.json', 'LICENSE_POLICY.md',
         'ATTRIBUTION.md', 'REMOVAL_POLICY.md',
     }
+    if manifest.get('reference_index'):
+        expected_files.add('reference_index_manifest.json')
     for key, config in manifest['configs'].items():
         group, _ = key.split('/', 1)
         expected_files.update(
@@ -229,8 +239,10 @@ def main():
     for path in sorted(path for path in args.package.rglob('*') if path.is_symlink()):
         errors.append(f'symlink:{path.relative_to(args.package).as_posix()}')
 
+    release_suffix = str(manifest.get('release_id') or '').rsplit('-v', 1)
+    release_version = release_suffix[-1] if len(release_suffix) == 2 else '0.1'
     report = {
-        "run_id": f"garhwali-hf-{manifest['profile']}-cloud-validation-v0.1",
+        "run_id": f"garhwali-hf-{manifest['profile']}-cloud-validation-v{release_version}",
         "release_id": manifest["release_id"],
         "status": "passed" if not errors else "failed",
         "manifest_profile": manifest["profile"],

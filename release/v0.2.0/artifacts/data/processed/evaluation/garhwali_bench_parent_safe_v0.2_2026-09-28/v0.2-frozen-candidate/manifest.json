@@ -1,0 +1,209 @@
+{
+  "all_source_rows_retained": true,
+  "benchmark_id": "garhwali-bench-v0.2",
+  "input_hashes": {
+    "external/crosssum": "fcb10709e25c9a7a174df3e97501dc59c061601687fa253f214dedeb44856e4b",
+    "external/flores": "7c96d63be5f43e6a65fc229238c6d295d983fe46be032e9f8418d32150225097",
+    "external/xorqa": "e69be06befb0227395ba0feb58220388134279d4f95659ba8442e0b8e3d13ed6",
+    "internal/asr": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220",
+    "internal/text": "8ef6e278ff52c4fb9bfda863a2f4f7cd04e927cb81c4ac824176a5fc67cbf843",
+    "text_recommended/test": "9d9205fe03d912e1d3383beaecfb0ab47843db0398eef8ad8e01aafa27c54698",
+    "text_recommended/train": "fc7b2357361b0ec0ce902e18a3b0bae87af01e8382508d3065b0b2c1ff168ee9",
+    "text_recommended/validation": "f2e5d78cf0456516b1f2eed0c68db402d4f11701c14dc8e46187a6e521aac8ea"
+  },
+  "local_only": true,
+  "metric_contracts": {
+    "asr": {
+      "limitations": "Exclude and list rows with an empty normalized reference; blank hypotheses count as errors. Use summed edit counts divided by summed reference words/characters for corpus WER/CER; report macro per-record means separately. Existing historical reports with inconsistent aggregate counters require reconciliation before comparison.",
+      "metrics": [
+        {
+          "id": "garhwali-asr-wer-v1",
+          "implementation_status": "frozen_per_record_and_micro_aggregate_protocol",
+          "signature": "scripts/asr_metrics.py: NFC, casefold, punctuation/symbol to spaces, whitespace collapse; edit distance over whitespace words; preserve corpus edit and reference-word totals"
+        },
+        {
+          "id": "garhwali-asr-cer-v1",
+          "implementation_status": "frozen_per_record_and_micro_aggregate_protocol",
+          "signature": "same normalization; edit distance over normalized characters with spaces removed; preserve corpus edit and reference-character totals"
+        }
+      ],
+      "scores_computed": false,
+      "status": "protocol_frozen"
+    },
+    "language_modeling": {
+      "limitations": "This character model is a small diagnostic baseline, not a neural language-model result. Values are comparable only when order, training rows, normalization, and boundary policy match.",
+      "metrics": [
+        {
+          "id": "character-ngram-perplexity-v1",
+          "implementation_status": "frozen_protocol; current saved baseline is character bigram order 2",
+          "signature": "NFC+whitespace-collapse; add-one-smoothed character n-gram; record order and training corpus hash; include explicit boundary symbols; report negative log likelihood per evaluated character, character denominator, and exp(loss) perplexity; compare only identical orders and preprocessing."
+        }
+      ],
+      "scores_computed": false,
+      "status": "protocol_frozen"
+    },
+    "question_answering": {
+      "limitations": "The export computes no model scores. Explicit no-answer scoring is unsupported; rows without a non-empty Garhwali answer reference are retained but excluded and listed. The current usage overlay marks 138 records with exact context, source-page, question, or oracle-question overlap as open-diagnostic-only for independent source-generalization claims.",
+      "metrics": [
+        {
+          "id": "garhwali-qa-em-token-f1-v1",
+          "implementation_status": "implemented_dependency_free; runner reports missing-reference exclusions",
+          "signature": "NFC+casefold; Unicode punctuation and symbols become spaces; collapsed whitespace tokens; exact match and multiset token F1; maximum per-record score across non-empty references; macro mean; empty hypotheses score zero and remain in the denominator; records without a non-empty reference are rejected; scripts/benchmark_metrics.py:score_qa_answers"
+        }
+      ],
+      "scores_computed": false,
+      "status": "protocol_frozen"
+    },
+    "retrieval": {
+      "limitations": "Candidate corpus identity and its all-source-split composition must be stated. The fixed-corpus development score does not measure unseen-page generalization; source-page bootstrap is a separate uncertainty analysis.",
+      "metrics": [
+        {
+          "id": "garhwali-retrieval-recall-mrr-v1",
+          "implementation_status": "frozen_protocol; implemented by scripts/run_retrieval_baseline.py",
+          "signature": "Rank the fixed, hash-identified candidate corpus by descending BM25 score with document-ID ascending as the deterministic tie-break. One row-associated deduplicated gold document is relevant per query. Recall@k is 1 when that document has positive score and rank <= k, else 0; MRR@10 is 1/rank for positive-scored ranks <= 10, else 0. The denominator includes every evaluated non-empty query, including zero-score misses; macro-average across that denominator; report requested, scored, missing-query and zero-score counts."
+        }
+      ],
+      "scores_computed": false,
+      "status": "protocol_frozen"
+    },
+    "summarization": {
+      "limitations": "The export computes no model scores. Rows without a non-empty summary reference are retained but excluded from scoring and listed by ID. The score does not validate summary meaning or reference quality.",
+      "metrics": [
+        {
+          "id": "garhwali-custom-chrf2-v1",
+          "implementation_status": "frozen_custom_definition; implemented by scripts/run_translation_baseline.py:corpus_chrf",
+          "signature": "NFC+casefold+whitespace-collapse; remove whitespace for character n-grams; orders 1-6; corpus precision and recall per order; beta=2 F-score per order; arithmetic mean across orders; empty hypotheses contribute zero precision."
+        },
+        {
+          "id": "garhwali-rouge-l-f1-v1",
+          "implementation_status": "implemented_dependency_free; runner reports missing-reference exclusions",
+          "signature": "NFC+casefold; Unicode punctuation and symbols become spaces; collapsed whitespace tokens; token LCS F1; macro mean of per-record maximum across non-empty references; empty hypotheses score zero and remain in the denominator; scripts/benchmark_metrics.py:score_rouge_l"
+        }
+      ],
+      "scores_computed": false,
+      "status": "protocol_frozen"
+    },
+    "translation": {
+      "limitations": "The exported scorer uses one non-empty reference per included row. This custom metric is not SacreBLEU and does not establish translation correctness.",
+      "metrics": [
+        {
+          "id": "garhwali-custom-add1-bleu-v1",
+          "implementation_status": "existing_nonstandard_custom_scorer",
+          "signature": "NFC+casefold+whitespace-collapse; corpus word n-grams orders 1-4; add-one precision smoothing per order; corpus brevity penalty; scripts/run_translation_baseline.py:corpus_bleu"
+        },
+        {
+          "id": "garhwali-custom-chrf2-v1",
+          "implementation_status": "existing_custom_scorer_not_sacrebleu",
+          "signature": "NFC+casefold+whitespace-collapse; character n-grams orders 1-6; beta=2; per-order corpus precision/recall F-beta macro-average; scripts/run_translation_baseline.py:corpus_chrf"
+        }
+      ],
+      "scores_computed": false,
+      "status": "protocol_frozen"
+    }
+  },
+  "migration_gaps": [
+    "Some legacy views do not contain original raw text; the adapter records that absence rather than relabeling normalized view text as raw.",
+    "Metric signatures are draft definitions, not release-frozen protocols; no scores are computed by this export.",
+    "No row has been rights-cleared by this schema adapter; release eligibility remains an independent gate.",
+    "Model exposure and semantic/cross-language contamination remain unresolved unless row-level evidence is available."
+  ],
+  "public_upload_allowed": false,
+  "schema_version": "garhwali-bench-export-v0.2",
+  "source_manifest_path": "data/processed/evaluation/garhwali_bench_parent_safe_v0.2_2026-09-28/manifest.json",
+  "source_manifest_sha256": "61b2e5bb8da443cb74e38efd4b6bf7a7081a56ac45cc28eb56caaf035e4004d5",
+  "source_release_id": "garhwali-bench-parent-safe-candidate-2026-09-28",
+  "source_split_report_sha256": "d32d3170f1727d3c24ff5d0f5d905f4c0ba2bd1bcc5372cf6a87b8424d8da567",
+  "source_split_root": "data/processed/model_ready/splits_parent_safe_v0.2_2026-09-28",
+  "source_validation_errors": 0,
+  "source_validation_status": "pass",
+  "status": "candidate_local_only_not_release_ready",
+  "total_records": 12616,
+  "usage_overlay_sha256": "deb49ebee8dc9b41de9ec0c87116b8934c14d2796dbb633aa4714b6f254def22",
+  "views": {
+    "external/crosssum": {
+      "input_sha256": "fcb10709e25c9a7a174df3e97501dc59c061601687fa253f214dedeb44856e4b",
+      "output_sha256": "24b85de65cfe444ac9ee9e88cfe720a42da1d2753374502dadf6abf21884bc73",
+      "path": "external__crosssum.jsonl",
+      "records": 699,
+      "split_counts": {
+        "dev": 100,
+        "test": 500,
+        "train": 99
+      },
+      "task": "summarization"
+    },
+    "external/flores": {
+      "input_sha256": "7c96d63be5f43e6a65fc229238c6d295d983fe46be032e9f8418d32150225097",
+      "output_sha256": "4cd652d4b5b028c385dc19fe53eed3615340b5f4a26571c687d224aaaec2eaaa",
+      "path": "external__flores.jsonl",
+      "records": 2009,
+      "split_counts": {
+        "dev": 997,
+        "test": 1012
+      },
+      "task": "translation"
+    },
+    "external/xorqa": {
+      "input_sha256": "e69be06befb0227395ba0feb58220388134279d4f95659ba8442e0b8e3d13ed6",
+      "output_sha256": "53054a038035abb6eb8a7daf18e5c8fd986fa5557f5995b7ea22df08b3384300",
+      "path": "external__xorqa.jsonl",
+      "records": 1139,
+      "split_counts": {
+        "dev": 500,
+        "test": 539,
+        "train": 100
+      },
+      "task": "question_answering"
+    },
+    "internal/asr": {
+      "input_sha256": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220",
+      "output_sha256": "097efb7547b85a329fb45ce6f8416e14dc9934e4c808b0d48f3a088d136c0d8c",
+      "path": "internal__asr.jsonl",
+      "records": 112,
+      "split_counts": {
+        "test": 112
+      },
+      "task": "asr"
+    },
+    "internal/text": {
+      "input_sha256": "8ef6e278ff52c4fb9bfda863a2f4f7cd04e927cb81c4ac824176a5fc67cbf843",
+      "output_sha256": "0457315741bcde6092c605d86294fd6aa8a20d0c5abfe4893b546ce6f9c9fdc8",
+      "path": "internal__text.jsonl",
+      "records": 392,
+      "split_counts": {
+        "test": 392
+      },
+      "task": "language_modeling"
+    },
+    "text_recommended/test": {
+      "input_sha256": "9d9205fe03d912e1d3383beaecfb0ab47843db0398eef8ad8e01aafa27c54698",
+      "output_sha256": "1a6fbb48440cbddeeaf50c7d5360c9a49aad3a8bca0bb58b1843292258923581",
+      "path": "text_recommended__test.jsonl",
+      "records": 392,
+      "split_counts": {
+        "test": 392
+      },
+      "task": "language_modeling"
+    },
+    "text_recommended/train": {
+      "input_sha256": "fc7b2357361b0ec0ce902e18a3b0bae87af01e8382508d3065b0b2c1ff168ee9",
+      "output_sha256": "cacad141238709f2c06deb5a83a5382748a06742dc149337b1d0b6816e215363",
+      "path": "text_recommended__train.jsonl",
+      "records": 7496,
+      "split_counts": {
+        "train": 7496
+      },
+      "task": "language_modeling"
+    },
+    "text_recommended/validation": {
+      "input_sha256": "f2e5d78cf0456516b1f2eed0c68db402d4f11701c14dc8e46187a6e521aac8ea",
+      "output_sha256": "91981ab4dca718077a5dad9c99b6b9bc8090f459c33e4ab06453fd6a63ef2619",
+      "path": "text_recommended__validation.jsonl",
+      "records": 377,
+      "split_counts": {
+        "validation": 377
+      },
+      "task": "language_modeling"
+    }
+  }
+}

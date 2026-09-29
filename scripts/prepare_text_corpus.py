@@ -36,6 +36,14 @@ DOCUMENT_PROVENANCE_FIELDS = (
     "original_ocr_text", "original_ocr_text_sha256", "reocr_evidence",
     "parameter_table_provenance",
     "license_or_rights_statement", "rights_evidence_url", "notes",
+    "source_version", "source_revision", "source_file", "source_archive_sha256",
+    "source_snapshot_sha256", "retrieved_at", "source_citation",
+    "source_printed_pages", "source_pdf_pages", "source_language_evidence",
+    "source_pdf_page", "printed_page", "table_item", "source_table_column",
+    "source_row_alignment_method", "source_standard_form_ocr",
+    "source_cell_ocr_confidence", "english_gloss_ocr",
+    "english_gloss_ocr_confidence", "ocr_model", "ocr_model_sha256",
+    "ocr_mean_confidence", "source_ocr_method",
 )
 
 

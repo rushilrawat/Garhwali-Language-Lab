@@ -1,0 +1,141 @@
+{
+  "audio": {
+    "included": false,
+    "missing_files": 0,
+    "present_files": 0,
+    "referenced_unique_files": 0,
+    "unexpected_files": 0
+  },
+  "audit_id": "garhwali-final-release-audit-v0.2.0",
+  "benchmark": {
+    "artifact_failures": 0,
+    "artifacts_checked": 6,
+    "errors": [],
+    "leakage": {
+      "asr_audio_train_or_validation_overlap": 0,
+      "asr_speaker_train_or_validation_overlap": 0,
+      "external_exact_recommended_train_text": 0,
+      "internal_text_exact_train_text": 0
+    },
+    "record_counts": {
+      "asr_train": 1621,
+      "asr_validation": 269,
+      "internal_asr": 112,
+      "internal_text": 402,
+      "recommended_text_train": 9486
+    },
+    "status": "passed",
+    "warnings": [
+      "GarhwaliBench task xorqa has 1 exact primary-text group(s) across source splits; source rows are preserved"
+    ]
+  },
+  "catalog": {
+    "invalid_release_hashes": 0,
+    "missing_evidence": 0,
+    "records": 29426,
+    "redacted_text_records": 24565
+  },
+  "configs": {
+    "asr/test": 112,
+    "asr/train": 1621,
+    "asr/validation": 269,
+    "catalog/train": 29426,
+    "instructions/test": 136,
+    "instructions/train": 1516,
+    "instructions/validation": 220,
+    "lexicon/train": 661,
+    "record_index/train": 260199,
+    "record_sources/train": 283752,
+    "source_catalog/train": 600,
+    "sravaani_drafts/train": 104534,
+    "text/test": 458,
+    "text/train": 10583,
+    "text/validation": 529
+  },
+  "drafts": {
+    "audio_grounded_review_records": 35,
+    "complete": true,
+    "draft_inherited_duplicate_rows": 8,
+    "draft_queue_records": 104542,
+    "draft_records": 104542,
+    "draft_unique_audio": 104534,
+    "empty_transcripts": 34,
+    "exported_unique_audio": 104534,
+    "invalid_audio_grounded_review_records": 0,
+    "invalid_recovery_adjudications": 0,
+    "invalid_source_label_conflicts": 0,
+    "invalid_third_checkpoint_records": 0,
+    "quality_metadata_missing": 0,
+    "recovery_adjudications": 1090,
+    "source_label_conflicts": 98,
+    "supervised_training_eligible": 0,
+    "third_checkpoint_records": 1188
+  },
+  "errors": [],
+  "exported_rows": 150065,
+  "generated": "2026-09-29",
+  "leakage": {
+    "asr_audio_cross_split": 0,
+    "asr_speaker_cross_split": 0,
+    "instruction_prompt_cross_split": 0,
+    "normalized_text_cross_split": 0,
+    "semantic_component_cross_split": 0,
+    "text_id_cross_split": 0
+  },
+  "provenance": {
+    "asr_missing_transcript_source_or_license": 0,
+    "instruction_attribution_or_license_missing": 0,
+    "instruction_reference_metadata_missing": 0,
+    "invalid_text_training_recommendations": 0,
+    "knowledge_missing_standardized_rows": 0,
+    "knowledge_public_rights_failures": 0,
+    "knowledge_quality_metadata_missing": 0,
+    "knowledge_rights_unassessed": 0,
+    "knowledge_source_untraceable_rows": 0,
+    "missing_rows": 0,
+    "public_rights_failures": 0,
+    "text_admission_metadata_missing": 0,
+    "text_language_scope_failures": 0
+  },
+  "reference_index": {
+    "errors": [],
+    "record_rows": 260199,
+    "record_source_links": 283752,
+    "records_by_family": {
+      "asr": 5894,
+      "catalog": 29426,
+      "geography": 50,
+      "historical_terms": 36,
+      "instructions": 3230,
+      "lexicon": 1114,
+      "literary_people": 26,
+      "literary_works": 66,
+      "popular_songs": 30,
+      "sravaani_drafts": 104534,
+      "text": 115785,
+      "university_research": 8
+    },
+    "records_with_public_content": 125500,
+    "source_catalog_rows": 600,
+    "status": "passed"
+  },
+  "release_id": "garhwali-language-lab-v0.2.0",
+  "repository_rows_including_reference_tables": 694616,
+  "shard_hash_failures": 0,
+  "status": "passed",
+  "structured_knowledge": {
+    "configs": [],
+    "provenance_missing": 0,
+    "public_rights_failures": 0,
+    "quality_metadata_missing": 0,
+    "records": 0,
+    "rights_unassessed": 0,
+    "source_untraceable": 0
+  },
+  "text_id_hash_failures": 0,
+  "warnings": [
+    "audio_not_included",
+    "inherited_source_audio_duplicates_collapsed",
+    "empty_machine_drafts_retained_with_quality_flags"
+  ]
+}

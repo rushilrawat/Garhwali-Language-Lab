@@ -1,0 +1,9 @@
+{
+  "run_id": "incoming-pdf-reocr-integration-v0.1",
+  "source_records": 769,
+  "candidate_records": 659,
+  "promoted_consensus_records": 69,
+  "original_ocr_preserved": true,
+  "minimum_exact_layout_agreement": 2,
+  "minimum_mean_word_confidence": 80
+}

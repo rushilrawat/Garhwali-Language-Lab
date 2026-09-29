@@ -1,0 +1,84 @@
+{
+  "automatic_change_counts": {
+    "double_period_normalized": 29
+  },
+  "manual_review_required": 13,
+  "no_additional_issue": 3722,
+  "policy": {
+    "confidence": "Dimensions report evidence and review state; they are not accuracy probabilities.",
+    "linguistic_values": "No automatic spelling, transliteration, language, or dialect correction.",
+    "privacy": "High-confidence Indian phone-number patterns are redacted in release_text; original_text remains preserved locally.",
+    "regional_terms": "Regional place/language mentions trigger review but never automatic relabeling."
+  },
+  "quality_dimension_status_counts": {
+    "language_identity": {
+      "existing_high_confidence_evidence": 3559,
+      "source_declared_garhwali_pending_native_validation": 176
+    },
+    "orthography": {
+      "mechanically_normalized": 29,
+      "romanized_source_form_pending_native_review": 4,
+      "source_attested_linguistic_notation": 392,
+      "source_form_preserved": 3301,
+      "source_form_with_surface_review_pending": 9
+    },
+    "semantic_alignment": {
+      "not_applicable_or_not_available": 3535,
+      "source_attested_parallel_alignment": 25,
+      "translation_or_alignment_pending_native_validation": 175
+    },
+    "source_evidence": {
+      "multiple_source_records_observed": 1900,
+      "native_accuracy_unverified": 367,
+      "single_source_record": 1298,
+      "structured_historical_derivative": 170
+    },
+    "surface_form": {
+      "mechanically_normalized": 29,
+      "no_detected_surface_issue": 3693,
+      "review_required": 13
+    }
+  },
+  "records": 3735,
+  "remaining_cleanup_flag_counts": {
+    "very_short": 7
+  },
+  "resolved_cleanup_flag_counts": {
+    "html_markup": 19,
+    "mixed_latin_devanagari": 23,
+    "no_devanagari": 396,
+    "very_short": 59
+  },
+  "review_priority_counts": {
+    "romanized_orthography": 4,
+    "source_accuracy": 163,
+    "surface_or_scaffolding": 9
+  },
+  "review_queue_records": 176,
+  "review_signal_counts": {
+    "romanized_text_requires_native_review": 4,
+    "slash_separated_variants": 1,
+    "very_short_fragment": 8
+  },
+  "source_record_counts": {
+    "asjp": 91,
+    "chan_numerals_garhwali": 24,
+    "emagazine_animals": 2,
+    "garhwalilanguage_dictionary": 5,
+    "incubator_wt": 2,
+    "indic_dialect_asr_gbm": 1922,
+    "lsi_cldf_garhwali": 185,
+    "mamta_southasia_examples": 25,
+    "meta_omni": 2915,
+    "opus_translatewiki_gbm": 175,
+    "paharili_gbm": 1,
+    "panlex_gbm": 13,
+    "sand_garhwali": 90,
+    "tatoeba": 36,
+    "uttarakhandiwords_animals": 2,
+    "wikimedia": 24,
+    "wiktionary_en": 77,
+    "wiktionary_swadesh_thematic": 203
+  },
+  "values_automatically_changed": 29
+}

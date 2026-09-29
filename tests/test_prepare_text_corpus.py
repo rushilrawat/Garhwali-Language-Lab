@@ -89,6 +89,66 @@ class TextPreparationTests(unittest.TestCase):
             )
             self.assertEqual(provenance["attribution"], "Example contributors")
 
+    def test_prepare_preserves_versioned_archive_provenance(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / 'data' / 'extracted' / 'stories.jsonl'
+            source.parent.mkdir(parents=True)
+            source.write_text(json.dumps({
+                'record_id': 'stories:1',
+                'text_normalized': 'गढ़वाली कथा',
+                'source_url': 'https://example.test/repository',
+                'source_version': 'v1',
+                'source_revision': 'abc123',
+                'source_file': 'content/01.md',
+                'source_archive_sha256': 'a' * 64,
+                'source_snapshot_sha256': 'b' * 64,
+                'retrieved_at': '2026-09-28',
+                'source_citation': 'कथा स्रोत',
+            }) + '\n', encoding='utf-8')
+
+            m.prepare([source], root / 'out', root=root)
+            record = json.loads((root / 'out/canonical.jsonl').read_text())
+            provenance = record['provenance'][0]
+
+        self.assertEqual(provenance['source_version'], 'v1')
+        self.assertEqual(provenance['source_revision'], 'abc123')
+        self.assertEqual(provenance['source_file'], 'content/01.md')
+        self.assertEqual(provenance['source_archive_sha256'], 'a' * 64)
+        self.assertEqual(provenance['source_snapshot_sha256'], 'b' * 64)
+        self.assertEqual(provenance['retrieved_at'], '2026-09-28')
+        self.assertEqual(provenance['source_citation'], 'कथा स्रोत')
+
+    def test_prepare_preserves_historical_ocr_alignment_and_quality_evidence(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / 'data' / 'extracted' / 'historical_table.jsonl'
+            source.parent.mkdir(parents=True)
+            source.write_text(json.dumps({
+                'record_id': 'lsi:355:001:standard',
+                'text_normalized': 'Garhwali form',
+                'source_pdf_page': 370,
+                'printed_page': 355,
+                'table_item': 1,
+                'source_table_column': 'Garhwali (Standard)',
+                'source_row_alignment_method': 'number-anchor fit',
+                'source_cell_ocr_confidence': 42.5,
+                'english_gloss_ocr': 'example gloss',
+                'ocr_model': 'Tesseract 5',
+                'ocr_mean_confidence': 42.5,
+            }) + '\n', encoding='utf-8')
+
+            m.prepare([source], root / 'out', root=root)
+            record = json.loads((root / 'out/canonical.jsonl').read_text())
+            provenance = record['provenance'][0]
+
+        self.assertEqual(provenance['source_pdf_page'], 370)
+        self.assertEqual(provenance['printed_page'], 355)
+        self.assertEqual(provenance['table_item'], 1)
+        self.assertEqual(provenance['source_row_alignment_method'], 'number-anchor fit')
+        self.assertEqual(provenance['source_cell_ocr_confidence'], 42.5)
+        self.assertEqual(provenance['english_gloss_ocr'], 'example gloss')
+
     def test_prepare_preserves_structured_extraction_metadata(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

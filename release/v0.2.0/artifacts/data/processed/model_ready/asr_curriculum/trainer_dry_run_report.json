@@ -1,0 +1,31 @@
+{
+  "audio_hours": 129.310351,
+  "batching_strategy": "one_record_per_optimizer_step",
+  "curriculum_stage": 4,
+  "duplicate_audio_hashes": 0,
+  "effective_weight_mass": 3241.999996,
+  "empty_evaluation_targets": 0,
+  "empty_targets": 0,
+  "evaluation_records": 269,
+  "evaluation_split": "validation",
+  "failures": [],
+  "full_stage_train_records": 106057,
+  "missing_audio_files": 0,
+  "model_source": "openai/whisper-tiny",
+  "pilot_human_records": 0,
+  "pilot_machine_records": 0,
+  "previous_stage": null,
+  "projected_training_steps": 106057,
+  "records_by_tier": {
+    "human_reference": 1621,
+    "recovery_low": 35,
+    "recovery_medium": 30,
+    "recovery_very_low": 1025,
+    "standard_sravaani": 103346
+  },
+  "resume_from": null,
+  "run_id": "garhwali-whisper-curriculum-dry-run-v0.1",
+  "status": "passed",
+  "train_records": 106057,
+  "training_complete": true
+}

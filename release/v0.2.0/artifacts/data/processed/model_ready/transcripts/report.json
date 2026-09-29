@@ -1,0 +1,14 @@
+{
+  "batch_size": 1000,
+  "empty_asr_targets": 0,
+  "review_flags": {
+    "bengali-script-in-garhwali-config": 8,
+    "bengali-script-under-garhwali-label": 8,
+    "bengali_script": 8,
+    "manual-transcript-review": 6
+  },
+  "review_records": 13,
+  "supervised_records": 5894,
+  "transcription_batches": 105,
+  "untranscribed_records": 104542
+}

@@ -25,8 +25,8 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The latest full pytest run passed 584/584 using the project `.venv`
-dependencies on `PYTHONPATH`; the documented unittest runner passed 582/582. Plain system
+The v0.2.0 full pytest run passed 607/607; the documented unittest runner
+passed 605/605. Plain system
 pytest does not see the `.venv` packages, so it cannot import the pinned
 `langgraph` dependency. Use `PYTHONPATH=.venv/lib/python3.12/site-packages:scripts pytest -q`
 or the documented `.venv/bin/python -m unittest` command. CI installs the

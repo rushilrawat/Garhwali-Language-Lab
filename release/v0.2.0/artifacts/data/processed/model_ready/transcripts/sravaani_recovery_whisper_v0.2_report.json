@@ -1,0 +1,41 @@
+{
+  "automatic_promotions": 0,
+  "candidate_quality_flags": {
+    "decoding_replacement_character": 32,
+    "frequent_identical_hypothesis": 19,
+    "implausibly_long_for_duration": 15,
+    "mixed_script": 2,
+    "repeated_token_loop": 49
+  },
+  "candidates_with_frequency_gte_10": 19,
+  "candidates_with_replacement_character": 32,
+  "candidates_without_automated_flags": 1089,
+  "coverage": {
+    "expected_unique_audio_hashes": 1188,
+    "missing_audio_hashes": 0,
+    "unexpected_audio_hashes": 0
+  },
+  "empty_candidates": 0,
+  "exact_transcript_matches": 19,
+  "model": "whisper-tiny-garhwali-v0.2",
+  "originals_preserved": true,
+  "records": 1188,
+  "run_id": "sravaani-recovery-whisper-v0.2",
+  "source_quality_flags": {
+    "bengali_script": 257,
+    "empty_transcript": 34,
+    "frequent_identical_hypothesis": 121,
+    "implausibly_long_for_duration": 2,
+    "mixed_script": 25,
+    "no_devanagari_letters": 1026,
+    "repeated_token_loop": 17
+  },
+  "structural_preferences": {
+    "sravaani_original": 34,
+    "whisper_candidate": 1154
+  },
+  "structurally_equal": 26,
+  "structurally_improved": 1154,
+  "structurally_worse": 8,
+  "unique_audio_hashes": 1188
+}

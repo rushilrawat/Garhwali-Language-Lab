@@ -1,0 +1,14 @@
+{
+  "all_models_match_reference": 0,
+  "device": "cpu",
+  "listening_review_required": 5,
+  "models": [
+    "whisper-tiny-garhwali-v0.1",
+    "whisper-tiny-garhwali-v0.2"
+  ],
+  "models_agree": 0,
+  "policy": "Model output is supporting evidence and never replaces a human reference automatically.",
+  "records": 5,
+  "references_changed": 0,
+  "release_values_changed": 2
+}

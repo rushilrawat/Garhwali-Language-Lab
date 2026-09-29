@@ -15,6 +15,14 @@ from audit_xorqa_source_page_families import source_page_hashes
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def project_path(path: Path) -> str:
+    path = Path(path).resolve()
+    try:
+        return path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.name
 DEFAULT_BENCHMARK = ROOT / 'benchmarks/indicgenbench_xorqa.jsonl'
 DEFAULT_PREDICTIONS = ROOT / 'data/processed/evaluation/retrieval/roadmap_2026-09-25/bm25_dev/predictions.jsonl'
 DEFAULT_RETRIEVAL_REPORT = ROOT / 'data/processed/evaluation/retrieval/roadmap_2026-09-25/bm25_dev/report.json'
@@ -286,11 +294,11 @@ def run(
             'cluster_unit': 'NFKC + casefold + whitespace-collapsed upstream Wikipedia title page segment',
         },
         'lineage': {
-            'benchmark_path': str(benchmark_path),
+            'benchmark_path': project_path(benchmark_path),
             'benchmark_sha256': benchmark_sha,
-            'predictions_path': str(predictions_path),
+            'predictions_path': project_path(predictions_path),
             'predictions_sha256': predictions_sha,
-            'retrieval_report_path': str(retrieval_report_path),
+            'retrieval_report_path': project_path(retrieval_report_path),
             'retrieval_report_sha256': retrieval_report_sha,
             'retrieval_report_benchmark_sha256_verified': True,
             'candidate_corpus_sha256': retrieval_report.get('passage_corpus_sha256'),
@@ -307,8 +315,8 @@ def run(
             'Bootstrap intervals do not establish independent accuracy or statistical significance for model selection.',
         ],
         'outputs': {
-            'json': str(output_dir / 'report.json'),
-            'markdown': str(output_dir / 'report.md'),
+            'json': project_path(output_dir / 'report.json'),
+            'markdown': project_path(output_dir / 'report.md'),
         },
     }
     output_dir.mkdir(parents=True, exist_ok=True)

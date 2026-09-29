@@ -1,0 +1,117 @@
+{
+  "elapsed_seconds": 145.024,
+  "families": {
+    "base": {
+      "accuracy_delta_vs_base": 0.0,
+      "cross_entropy_delta_vs_base": 0.0,
+      "mean_accuracy": 0.20443587,
+      "mean_cross_entropy": 6.65932994,
+      "runs": 1,
+      "std_accuracy": 0.0,
+      "std_cross_entropy": 0.0
+    },
+    "encoder_lora_256_steps": {
+      "accuracy_delta_vs_base": 0.00835744,
+      "cross_entropy_delta_vs_base": -0.64523707,
+      "mean_accuracy": 0.21279331,
+      "mean_cross_entropy": 6.01409287,
+      "runs": 3,
+      "std_accuracy": 0.00045458,
+      "std_cross_entropy": 0.00882765
+    },
+    "head_only_64_steps": {
+      "accuracy_delta_vs_base": 0.00032144,
+      "cross_entropy_delta_vs_base": -0.12209431,
+      "mean_accuracy": 0.20475731,
+      "mean_cross_entropy": 6.53723563,
+      "runs": 3,
+      "std_accuracy": 0.00240544,
+      "std_cross_entropy": 0.02242641
+    }
+  },
+  "integrity": {
+    "source_text_mutated": false,
+    "test_used_for_further_tuning": false,
+    "train_test_exact_text_overlap": 0,
+    "validation_selected_hyperparameters": true
+  },
+  "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+  "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+  "run_id": "indicbertv2-garhwali-transfer-frozen-test-v0.1",
+  "runs": {
+    "base": [
+      {
+        "accuracy": 0.20443587,
+        "cross_entropy": 6.65932994,
+        "masked_tokens": 1037,
+        "records": 256,
+        "seed": null
+      }
+    ],
+    "encoder_lora_256_steps": [
+      {
+        "accuracy": 0.21311475,
+        "checkpoint": "models/controlled_modeling/indicbert_lora_v0.1/seed-17",
+        "cross_entropy": 6.02195169,
+        "masked_tokens": 1037,
+        "records": 256,
+        "seed": 17
+      },
+      {
+        "accuracy": 0.21311475,
+        "checkpoint": "models/controlled_modeling/indicbert_lora_v0.1/seed-29",
+        "cross_entropy": 6.00176285,
+        "masked_tokens": 1037,
+        "records": 256,
+        "seed": 29
+      },
+      {
+        "accuracy": 0.21215043,
+        "checkpoint": "models/controlled_modeling/indicbert_lora_v0.1/seed-43",
+        "cross_entropy": 6.01856406,
+        "masked_tokens": 1037,
+        "records": 256,
+        "seed": 43
+      }
+    ],
+    "head_only_64_steps": [
+      {
+        "accuracy": 0.20540019,
+        "checkpoint": "models/controlled_modeling/indicbert_head_v0.1/seed-17.pt",
+        "cross_entropy": 6.55738433,
+        "masked_tokens": 1037,
+        "records": 256,
+        "seed": 17
+      },
+      {
+        "accuracy": 0.20154291,
+        "checkpoint": "models/controlled_modeling/indicbert_head_v0.1/seed-29.pt",
+        "cross_entropy": 6.50594953,
+        "masked_tokens": 1037,
+        "records": 256,
+        "seed": 29
+      },
+      {
+        "accuracy": 0.20732883,
+        "checkpoint": "models/controlled_modeling/indicbert_head_v0.1/seed-43.pt",
+        "cross_entropy": 6.54837302,
+        "masked_tokens": 1037,
+        "records": 256,
+        "seed": 43
+      }
+    ]
+  },
+  "selection": {
+    "family": "encoder_lora_256_steps",
+    "future_test_tuning_allowed": false,
+    "metric": "mean_frozen_test_cross_entropy"
+  },
+  "status": "frozen_test_evaluation_complete",
+  "test_subset": {
+    "evaluated_records": 256,
+    "masked_tokens": 1037,
+    "selection_seed": 211,
+    "sha256": "943cd7bf66ac462fb0e6db9e10783ceca727ee131aefceb0da62774ae6c060e3",
+    "source_records": 2492
+  }
+}

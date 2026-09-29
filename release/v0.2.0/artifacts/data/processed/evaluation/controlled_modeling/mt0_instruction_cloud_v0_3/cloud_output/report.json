@@ -1,0 +1,127 @@
+{
+  "adaptation_scope": "LoRA on encoder and decoder attention q/v projections",
+  "baseline_validation": {
+    "cross_entropy": 5.78050459,
+    "records": 130,
+    "target_tokens": 697
+  },
+  "configuration": {
+    "batch_size": 1,
+    "device": "cuda",
+    "generation_control_tokens_removed": true,
+    "learning_rate": 0.0002,
+    "lora_alpha": 8,
+    "lora_rank": 4,
+    "max_input_length": 96,
+    "max_new_tokens": 32,
+    "max_target_length": 72,
+    "model_path": "/tmp/mt0-small",
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "steps_per_seed": 2048,
+    "target_modules": [
+      "q",
+      "v"
+    ],
+    "training_pool_records_per_seed": 2046
+  },
+  "dataset": {
+    "tasks": {
+      "english_to_garhwali": 440,
+      "english_to_garhwali_lexicon": 589,
+      "garhwali_to_english": 440,
+      "garhwali_to_english_lexicon": 589,
+      "garhwali_to_hindi_lexicon": 253,
+      "hindi_to_garhwali_lexicon": 253
+    },
+    "test_records": 256,
+    "test_sha256": "dca09fc2aa50ced416937b52e020d4fb04bb946ff64a9f8200c66ad295c6fe36",
+    "train_records": 2178,
+    "train_sha256": "d5f2b42e7bd43501e542ec8bb1b8abc02d861cb005c57e2bdcc6c7841aa5b61d",
+    "validation_records": 130,
+    "validation_sha256": "8e6d9667f80d659eedb518b58be721340161c159c5587243f9ba0616cd7cea44"
+  },
+  "elapsed_seconds": 383.908,
+  "integrity": {
+    "all_records_active_for_experiment": true,
+    "selection_split": "validation",
+    "source_text_mutated": false,
+    "test_evaluation_skipped": true,
+    "test_opened_after_training_and_selection": false,
+    "test_records_used_for_training": 0,
+    "training_split_only": true
+  },
+  "model_id": "bigscience/mt0-small",
+  "revision": "8116a34237e19160ec003147e758f065876d95f0",
+  "run_id": "garhwali-mt0-instruction-lora-cloud-v0.3",
+  "runs": [
+    {
+      "checkpoint": "/output/checkpoints/seed-17",
+      "seed": 17,
+      "training": {
+        "examples_seen": 2048,
+        "final_training_loss": 2.95777416,
+        "mean_training_loss": 4.92535213,
+        "steps": 2048,
+        "target_tokens": 11525,
+        "unique_training_records": 2046
+      },
+      "validation": {
+        "cross_entropy": 4.63107213,
+        "records": 130,
+        "target_tokens": 697
+      }
+    },
+    {
+      "checkpoint": "/output/checkpoints/seed-29",
+      "seed": 29,
+      "training": {
+        "examples_seen": 2048,
+        "final_training_loss": 5.13758659,
+        "mean_training_loss": 4.92024457,
+        "steps": 2048,
+        "target_tokens": 11399,
+        "unique_training_records": 2046
+      },
+      "validation": {
+        "cross_entropy": 4.6256284,
+        "records": 130,
+        "target_tokens": 697
+      }
+    },
+    {
+      "checkpoint": "/output/checkpoints/seed-43",
+      "seed": 43,
+      "training": {
+        "examples_seen": 2048,
+        "final_training_loss": 3.16924644,
+        "mean_training_loss": 4.89432242,
+        "steps": 2048,
+        "target_tokens": 11473,
+        "unique_training_records": 2046
+      },
+      "validation": {
+        "cross_entropy": 4.62815322,
+        "records": 130,
+        "target_tokens": 697
+      }
+    }
+  ],
+  "status": "completed_multi_seed_instruction_tuning",
+  "summary": {
+    "best_seed": 29,
+    "best_validation_cross_entropy": 4.6256284,
+    "generation_promotion_status": "not_evaluated",
+    "improved_seed_count": 3,
+    "mean_cross_entropy": 4.62828458,
+    "mean_cross_entropy_delta": -1.15222001,
+    "std_cross_entropy": 0.00222433,
+    "test_evaluation_status": "skipped_for_validation_only_continuation"
+  },
+  "test_systems": {},
+  "total_parameters": 300176768,
+  "trainable_parameters": 172032
+}

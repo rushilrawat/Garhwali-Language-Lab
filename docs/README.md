@@ -27,6 +27,7 @@ This page is the map for the project’s Markdown documentation. It inventories 
 - [retrieval-quality-2026-09-25.md](../research/retrieval-quality-2026-09-25.md) — Development retrieval scores and dense-model blockers.
 - [generation-quality-2026-09-25.md](../research/generation-quality-2026-09-25.md) — mT0 generation diagnostics and historical test limits.
 - [corpus-preparation-status.md](../research/corpus-preparation-status.md) — Chronological corpus-preparation log.
+- [garhwali-data-expansion-2026-09-29.md](../research/garhwali-data-expansion-2026-09-29.md) — Deduplicated, rights-documented v0.2.0 Garhwali-only source intake.
 
 ## How to keep the docs consistent
 
@@ -34,9 +35,17 @@ This page is the map for the project’s Markdown documentation. It inventories 
 - Treat `research/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard with later dated addenda; older experiment reports are historical snapshots.
 - The latest scorecard refresh is dated 2026-09-28. It reports development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
 - Keep dated research reports as records of the data and model version used at that time. Update the current status docs when new evidence supersedes them; do not rewrite history.
-- Treat `release/v0.1.0/` and `release/v0.1.1/` as frozen snapshots. Their repeated cards and reports preserve each package's own counts and terms; the root README and final report carry current status.
+- Treat `release/v0.1.0/` and `release/v0.1.1/` as frozen snapshots. Their repeated cards and reports preserve each package's own counts and terms. The current v0.2.0 local package and release checks are recorded below; the root README and final report carry remote publication state.
 - Keep dataset-card and policy copies inside each Hugging Face package aligned with the root policies when preparing a new package.
-- Add an entry here when adding or removing a project Markdown file. This index currently covers 134 Markdown files outside itself, including current working-tree reports.
+- Add an entry here when adding or removing a project Markdown file. This index currently covers 147 Markdown files outside itself, including current working-tree reports.
+
+## Release snapshot v0.2.0
+
+- [`release/v0.2.0/README.md`](../release/v0.2.0/README.md) — v0.2.0 release summary, source intake, package counts, and verification.
+- [`release/v0.2.0/artifacts/data/huggingface/garhwali-language-lab/README.md`](../release/v0.2.0/artifacts/data/huggingface/garhwali-language-lab/README.md) — v0.2.0 public Hugging Face dataset card.
+- [`release/v0.2.0/final-audit.json`](../release/v0.2.0/final-audit.json) — Machine-readable final release audit.
+- [`release/v0.2.0/huggingface-publication.json`](../release/v0.2.0/huggingface-publication.json) — Verified Hub commit, file hashes, and Dataset Viewer status.
+- [`research/garhwali-data-expansion-2026-09-29.md`](../research/garhwali-data-expansion-2026-09-29.md) — Source-level data addition and deduplication report.
 
 ## Exact duplicate files
 

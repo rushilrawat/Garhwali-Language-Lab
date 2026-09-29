@@ -1,0 +1,15 @@
+{
+  "run_id": "sravaani-whisper-turbo-evidence-integration-v0.1",
+  "records": 104542,
+  "evidence_records": 65000,
+  "evidence_files": [
+    "data/processed/evaluation/asr/low_confidence_whisper_turbo_agreement/cloud_output/predictions.jsonl",
+    "data/processed/evaluation/asr/low_confidence_whisper_turbo_offset_005000/cloud_output/predictions.jsonl",
+    "data/processed/evaluation/asr/low_confidence_whisper_turbo_offset_020000/cloud_output/predictions.jsonl",
+    "data/processed/evaluation/asr/low_confidence_whisper_turbo_offset_035000/cloud_output/predictions.jsonl",
+    "data/processed/evaluation/asr/low_confidence_whisper_turbo_offset_050000/cloud_output/predictions.jsonl"
+  ],
+  "exact_agreement_records": 157,
+  "original_transcripts_changed": 0,
+  "policy": "Independent ASR evidence only; source transcripts are preserved."
+}

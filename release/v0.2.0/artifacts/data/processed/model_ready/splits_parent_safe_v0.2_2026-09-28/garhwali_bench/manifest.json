@@ -1,0 +1,96 @@
+{
+  "baselines": {
+    "character_bigram": {
+      "evaluated_characters_with_boundaries": 37328,
+      "model": "add-one-smoothed_character_bigram",
+      "negative_log_likelihood_per_character": 2.647837,
+      "oov_character_rate": 0.0,
+      "perplexity": 14.12346,
+      "train_character_vocabulary": 110
+    }
+  },
+  "dialect_aware": false,
+  "internal_evaluation": {
+    "asr": {
+      "path": "data/processed/model_ready/splits_parent_safe_v0.2_2026-09-28/evaluation/asr_candidate.jsonl",
+      "sha256": "d7201cd5e51739d899660d37b56172c8466f6cb9029e7c88e5f4b89abd625220"
+    },
+    "text": {
+      "path": "data/processed/model_ready/splits_parent_safe_v0.2_2026-09-28/garhwali_bench/internal_text.jsonl",
+      "sha256": "8ef6e278ff52c4fb9bfda863a2f4f7cd04e927cb81c4ac824176a5fc67cbf843"
+    }
+  },
+  "leakage": {
+    "asr_speaker_overlap": 0,
+    "external_cross_split_primary_text_groups": 1,
+    "external_cross_split_primary_text_rows": 2,
+    "external_exact_train_text": 0,
+    "internal_text_exact_train_text": 0
+  },
+  "native_reviewed": false,
+  "quality_policy": "Internal text is restricted to automated strict Garhwali candidates. It remains experimental until native review and dialect annotation.",
+  "records": {
+    "asr_evaluation": 112,
+    "external_total": 3847,
+    "text_evaluation": 392
+  },
+  "release_id": "garhwali-bench-parent-safe-candidate-2026-09-28",
+  "status": "strict_automated_candidate_pending_native_review",
+  "tasks": {
+    "crosssum": {
+      "cross_split_text_overlap": {
+        "group_count": 0,
+        "groups": [],
+        "row_count": 0
+      },
+      "path": "benchmarks/indicgenbench_crosssum.jsonl",
+      "records": 699,
+      "schema_errors": 0,
+      "sha256": "fcb10709e25c9a7a174df3e97501dc59c061601687fa253f214dedeb44856e4b",
+      "usage": "evaluation_only"
+    },
+    "flores": {
+      "cross_split_text_overlap": {
+        "group_count": 0,
+        "groups": [],
+        "row_count": 0
+      },
+      "path": "benchmarks/indicgenbench_flores.jsonl",
+      "records": 2009,
+      "schema_errors": 0,
+      "sha256": "7c96d63be5f43e6a65fc229238c6d295d983fe46be032e9f8418d32150225097",
+      "usage": "evaluation_only"
+    },
+    "xorqa": {
+      "cross_split_text_overlap": {
+        "group_count": 1,
+        "groups": [
+          {
+            "record_ids": [
+              "indicgenbench_xorqa:dev:296",
+              "indicgenbench_xorqa:train:64"
+            ],
+            "splits": [
+              "dev",
+              "train"
+            ],
+            "text_sha256": "681064aff251f593856efe1dc9328f32f879bae12c3410750a42bead8abeaf59"
+          }
+        ],
+        "row_count": 2
+      },
+      "path": "benchmarks/indicgenbench_xorqa.jsonl",
+      "records": 1139,
+      "schema_errors": 0,
+      "sha256": "e69be06befb0227395ba0feb58220388134279d4f95659ba8442e0b8e3d13ed6",
+      "usage": "evaluation_only"
+    }
+  },
+  "training": {
+    "text": {
+      "path": "data/processed/model_ready/splits_parent_safe_v0.2_2026-09-28/text_recommended/train.jsonl",
+      "records": 7496,
+      "sha256": "fc7b2357361b0ec0ce902e18a3b0bae87af01e8382508d3065b0b2c1ff168ee9"
+    }
+  }
+}

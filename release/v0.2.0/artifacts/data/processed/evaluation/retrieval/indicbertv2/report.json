@@ -1,0 +1,23 @@
+{
+  "batch_size": 8,
+  "corpus_documents": 1059,
+  "device": "cpu",
+  "elapsed_seconds": 80.942,
+  "evaluation_queries": 539,
+  "evaluation_split": "test",
+  "max_document_tokens": 192,
+  "max_query_tokens": 64,
+  "mean_rank": 316.046382,
+  "median_rank": 207,
+  "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+  "mrr_at_10": 0.04660747,
+  "pooling": "attention_mask_mean_pooling_l2_normalized",
+  "queries": 539,
+  "recall_at_1": 0.02226345,
+  "recall_at_10": 0.1038961,
+  "recall_at_5": 0.08163265,
+  "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+  "run_id": "indicbertv2-garhwali-xorqa-retrieval-v0.1",
+  "training": "zero_shot; no retrieval fine-tuning",
+  "zero_relevant_score_queries": 0
+}

@@ -1,0 +1,47 @@
+{
+  "artifacts": {
+    "all_proposals": "data/processed/model_ready/text_cleanup/proposals.jsonl",
+    "priority_proposals": "data/processed/model_ready/text_cleanup/priority.jsonl"
+  },
+  "model": {
+    "device": "cpu",
+    "incremental_rescore_seconds": 10.854,
+    "mask_rate": 0.15,
+    "masked_tokens": 81116,
+    "max_length": 256,
+    "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+    "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+    "scored_records": 4096,
+    "seed": 29,
+    "selection": "deterministic priority ranking; spelling evidence is train-only",
+    "truncated_records": 1485
+  },
+  "model_high_loss_threshold_p90": 9.851011,
+  "policy": {
+    "all_records_active_for_experiment": true,
+    "application": "proposal_only",
+    "automatic_dialect_inference": false,
+    "automatic_hindi_garhwali_relabeling": false,
+    "originals_preserved": true,
+    "spelling_variants_preserved": true
+  },
+  "records": {
+    "active_for_experiment": 27987,
+    "dialect_priority": 10660,
+    "excluded": 0,
+    "hindi_garhwali_ambiguity": 2327,
+    "model_scored": 4096,
+    "model_source_disagreement": 410,
+    "ocr_source_priority": 2328,
+    "spelling_candidate_pairs": 35864,
+    "total": 27987,
+    "with_any_proposal": 16687,
+    "with_mechanical_change": 108,
+    "with_spelling_candidates": 10200
+  },
+  "run_id": "garhwali-model-assisted-text-cleanup-v0.1",
+  "vocabulary": {
+    "high_frequency_candidate_types": 2856,
+    "trusted_devanagari_types": 56479
+  }
+}

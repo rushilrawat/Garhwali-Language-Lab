@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "audit_type": "posthoc_saved_asr_test_lineage",
+  "inference_run": false,
+  "model_selection_run": false,
+  "fixed_manifest": {
+    "path": "data/processed/evaluation/asr/audio_score_calibration_manifest.jsonl",
+    "sha256": "2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52",
+    "record_count": 112,
+    "unique_audio_hashes": 112,
+    "reference_field": "asr_target_clean"
+  },
+  "runs": [
+    {
+      "name": "SraVaani 1.0 base",
+      "report_path": "data/processed/evaluation/asr/sravaani_1_0/report.json",
+      "report_sha256": "91009cc9c42cd19b8fcae8ee7dbf2507d2a08c8c9d318541e35b509ef68f57cd",
+      "predictions_path": "data/processed/evaluation/asr/sravaani_1_0/predictions.jsonl",
+      "predictions_sha256": "d8f6e1299dd91a167293a9c4609a967c5f7ad9632885bd23dfb166698fdc14be",
+      "checkpoint_sha256": null,
+      "declared_manifest_sha256": "2cc0defa1745deb4247e04e1a8cd478576cd1893842047baf81652102951bc52",
+      "declared_manifest_matches_current_bytes": true,
+      "test_used_for_training_or_selection": null,
+      "aggregate": {
+        "word_errors": 892,
+        "reference_words": 2086,
+        "character_errors": 1256,
+        "reference_characters": 7134,
+        "wer": 0.4276126558005753,
+        "cer": 0.17605831230726102
+      },
+      "row_reconciliation": {
+        "record_count": 112,
+        "audio_ids_match": 112,
+        "clean_references_match": 112,
+        "ordered_audio_ids_match": true,
+        "audio_id_set_sha256": "9240b0028d5f0f59414917b98cf010d8af44b6f4b7d3204b804c7abb07c14642",
+        "manifest_ordered_audio_ids_sha256": "9240b0028d5f0f59414917b98cf010d8af44b6f4b7d3204b804c7abb07c14642",
+        "reference_id_pairs_sha256": "2b157a1a230bfac72e189fab5bb9d620c29e9af7641ee606b92b89da585ce44e",
+        "word_errors": 892,
+        "reference_words": 2086,
+        "character_errors": 1256,
+        "reference_characters": 7134,
+        "wer": 0.4276126558005753,
+        "cer": 0.17605831230726102
+      }
+    },
+    {
+      "name": "Six-configuration decoder sweep, selected configuration",
+      "report_path": "data/processed/evaluation/asr/sravaani_decoding_sweep/cloud_output/report.json",
+      "report_sha256": "c0fa940696b65116d615b0acdacdbfb00a3d2c78835c180a6b11504f519d4025",
+      "predictions_path": "data/processed/evaluation/asr/sravaani_decoding_sweep/cloud_output/selected-test-predictions.json",
+      "predictions_sha256": "04f2af74461b18b5972575c3217a92a65f4634e70611c2161878076f9510882c",
+      "checkpoint_sha256": "cb206f88afbe179d10229a8002e92c74789eed77557ef38a33533e26b69067af",
+      "declared_manifest_sha256": null,
+      "declared_manifest_matches_current_bytes": false,
+      "test_used_for_training_or_selection": false,
+      "aggregate": {
+        "word_errors": 892,
+        "reference_words": 2086,
+        "character_errors": 1242,
+        "reference_characters": 7134,
+        "wer": 0.4276126558005753,
+        "cer": 0.1740958788898234
+      },
+      "row_reconciliation": {
+        "record_count": 112,
+        "audio_ids_match": 112,
+        "clean_references_match": 112,
+        "ordered_audio_ids_match": true,
+        "audio_id_set_sha256": "9240b0028d5f0f59414917b98cf010d8af44b6f4b7d3204b804c7abb07c14642",
+        "manifest_ordered_audio_ids_sha256": "9240b0028d5f0f59414917b98cf010d8af44b6f4b7d3204b804c7abb07c14642",
+        "reference_id_pairs_sha256": "2b157a1a230bfac72e189fab5bb9d620c29e9af7641ee606b92b89da585ce44e",
+        "word_errors": 892,
+        "reference_words": 2086,
+        "character_errors": 1242,
+        "reference_characters": 7134,
+        "wer": 0.4276126558005753,
+        "cer": 0.1740958788898234
+      }
+    },
+    {
+      "name": "61-trial decoder/joint fine-tune",
+      "report_path": "data/processed/evaluation/asr/sravaani_refined_61/cloud_output/report.json",
+      "report_sha256": "66fd72f1fac9f366833b2160592148c84f7fb48d8f8b23b077a0575dc028b359",
+      "predictions_path": "data/processed/evaluation/asr/sravaani_refined_61/cloud_output/held-out-test-predictions.json",
+      "predictions_sha256": "f07852166d2f5462b1956d680dcb27a005af5b8ed4b2e49c023fc44857799ace",
+      "checkpoint_sha256": "f1a29db9c7a70566e456fe657051f558c7d77d1731585e6f80ab9b889e414a4e",
+      "declared_manifest_sha256": null,
+      "declared_manifest_matches_current_bytes": false,
+      "test_used_for_training_or_selection": false,
+      "aggregate": {
+        "word_errors": 908,
+        "reference_words": 2086,
+        "character_errors": 1248,
+        "reference_characters": 7134,
+        "wer": 0.43528283796740175,
+        "cer": 0.17493692178301093
+      },
+      "row_reconciliation": {
+        "record_count": 112,
+        "audio_ids_match": 112,
+        "clean_references_match": 112,
+        "ordered_audio_ids_match": true,
+        "audio_id_set_sha256": "9240b0028d5f0f59414917b98cf010d8af44b6f4b7d3204b804c7abb07c14642",
+        "manifest_ordered_audio_ids_sha256": "9240b0028d5f0f59414917b98cf010d8af44b6f4b7d3204b804c7abb07c14642",
+        "reference_id_pairs_sha256": "2b157a1a230bfac72e189fab5bb9d620c29e9af7641ee606b92b89da585ce44e",
+        "word_errors": 908,
+        "reference_words": 2086,
+        "character_errors": 1248,
+        "reference_characters": 7134,
+        "wer": 0.43528283796740175,
+        "cer": 0.17493692178301093
+      }
+    },
+    {
+      "name": "Expanded-human-transcript fine-tune",
+      "report_path": "data/processed/evaluation/asr/sravaani_expanded_human/cloud_output/report.json",
+      "report_sha256": "3f8bff1427879892cf9e7d2561ae4d11022d9cd196f2ab9f79f42401e1d2de06",
+      "predictions_path": "data/processed/evaluation/asr/sravaani_expanded_human/cloud_output/held-out-test-predictions.json",
+      "predictions_sha256": "0348118a3749aaceeca5b6881664fba72bddfa62cb7bd2afa29e9d9ae5002b23",
+      "checkpoint_sha256": "684f18cadabdd27263d14b7c66e884e863a061e7a30898557bcc949cd10680f3",
+      "declared_manifest_sha256": null,
+      "declared_manifest_matches_current_bytes": false,
+      "test_used_for_training_or_selection": false,
+      "aggregate": {
+        "word_errors": 903,
+        "reference_words": 2086,
+        "character_errors": 1241,
+        "reference_characters": 7134,
+        "wer": 0.43288590604026844,
+        "cer": 0.17395570507429212
+      },
+      "row_reconciliation": {
+        "record_count": 112,
+        "audio_ids_match": 112,
+        "clean_references_match": 112,
+        "ordered_audio_ids_match": true,
+        "audio_id_set_sha256": "9240b0028d5f0f59414917b98cf010d8af44b6f4b7d3204b804c7abb07c14642",
+        "manifest_ordered_audio_ids_sha256": "9240b0028d5f0f59414917b98cf010d8af44b6f4b7d3204b804c7abb07c14642",
+        "reference_id_pairs_sha256": "2b157a1a230bfac72e189fab5bb9d620c29e9af7641ee606b92b89da585ce44e",
+        "word_errors": 903,
+        "reference_words": 2086,
+        "character_errors": 1241,
+        "reference_characters": 7134,
+        "wer": 0.43288590604026844,
+        "cer": 0.17395570507429212
+      }
+    },
+    {
+      "name": "Original 102-step human-reference adaptation",
+      "report_path": "data/processed/evaluation/asr/sravaani_finetune/cloud_output/held_out_evaluation/report.json",
+      "report_sha256": "13e7b6a6fa46e4486b570d1eeffd80aa8e77f92547ffa1ff9814395519dd07ff",
+      "predictions_path": "data/processed/evaluation/asr/sravaani_finetune/cloud_output/held_out_evaluation/predictions.jsonl",
+      "predictions_sha256": "b9edfc8ab3982cc088285b76b65e6ccc122e6a7b2b471706d3b418679cfb1868",
+      "checkpoint_sha256": "986800b39d402c0075e4e170480282db3971f247663f3fcb92274d77490383ea",
+      "declared_manifest_sha256": "d9202d6c8e659aef86a1170409a726f42a65b4ae87825c3cd82a0530d55483a1",
+      "declared_manifest_matches_current_bytes": false,
+      "test_used_for_training_or_selection": false,
+      "aggregate": {
+        "word_errors": 908,
+        "reference_words": 2086,
+        "character_errors": 1245,
+        "reference_characters": 7134,
+        "wer": 0.43528283796740175,
+        "cer": 0.17451640033641716
+      },
+      "row_reconciliation": {
+        "record_count": 112,
+        "audio_ids_match": 112,
+        "clean_references_match": 112,
+        "ordered_audio_ids_match": true,
+        "audio_id_set_sha256": "9240b0028d5f0f59414917b98cf010d8af44b6f4b7d3204b804c7abb07c14642",
+        "manifest_ordered_audio_ids_sha256": "9240b0028d5f0f59414917b98cf010d8af44b6f4b7d3204b804c7abb07c14642",
+        "reference_id_pairs_sha256": "2b157a1a230bfac72e189fab5bb9d620c29e9af7641ee606b92b89da585ce44e",
+        "word_errors": 908,
+        "reference_words": 2086,
+        "character_errors": 1245,
+        "reference_characters": 7134,
+        "wer": 0.43528283796740175,
+        "cer": 0.17451640033641716
+      }
+    }
+  ],
+  "paired_speaker_bootstrap_vs_base": {
+    "Six-configuration decoder sweep, selected configuration": {
+      "record_count": 112,
+      "speaker_cluster_count": 19,
+      "bootstrap_replicates": 10000,
+      "seed": 1729,
+      "wer_delta_candidate_minus_base": 0.0,
+      "wer_delta_ci95": [
+        -0.005828005346313775,
+        0.006562397480661467
+      ],
+      "cer_delta_candidate_minus_base": -0.0019624334174376257,
+      "cer_delta_ci95": [
+        -0.003913197493806619,
+        0.0
+      ]
+    },
+    "61-trial decoder/joint fine-tune": {
+      "record_count": 112,
+      "speaker_cluster_count": 19,
+      "bootstrap_replicates": 10000,
+      "seed": 1729,
+      "wer_delta_candidate_minus_base": 0.007670182166826467,
+      "wer_delta_ci95": [
+        -0.0010708223643624128,
+        0.015907944925140534
+      ],
+      "cer_delta_candidate_minus_base": -0.0011213905242500877,
+      "cer_delta_ci95": [
+        -0.006827822896199114,
+        0.0038407497158788667
+      ]
+    },
+    "Expanded-human-transcript fine-tune": {
+      "record_count": 112,
+      "speaker_cluster_count": 19,
+      "bootstrap_replicates": 10000,
+      "seed": 1729,
+      "wer_delta_candidate_minus_base": 0.005273250239693161,
+      "wer_delta_ci95": [
+        -0.007102603155943653,
+        0.015184381778741873
+      ],
+      "cer_delta_candidate_minus_base": -0.0021026072329689005,
+      "cer_delta_ci95": [
+        -0.00948818185912561,
+        0.0036606521377603386
+      ]
+    },
+    "Original 102-step human-reference adaptation": {
+      "record_count": 112,
+      "speaker_cluster_count": 19,
+      "bootstrap_replicates": 10000,
+      "seed": 1729,
+      "wer_delta_candidate_minus_base": 0.007670182166826467,
+      "wer_delta_ci95": [
+        -0.003070186661638752,
+        0.016828445676324792
+      ],
+      "cer_delta_candidate_minus_base": -0.0015419119708438567,
+      "cer_delta_ci95": [
+        -0.009355866131156635,
+        0.003977258954475747
+      ]
+    }
+  },
+  "conclusion": {
+    "same_fixed_test_ids_and_clean_references": true,
+    "runs_with_row_level_prediction_reconciliation": 5,
+    "run_count": 5,
+    "historical_only": true,
+    "limitations": [
+      "These test rows and aggregate metrics were used previously; this audit does not establish independent accuracy.",
+      "SraVaani upstream exposure and native-speaker reference correctness remain unresolved.",
+      "The original 102-step run declares a different input-manifest byte hash; its saved per-row audio hashes and cleaned references nevertheless reconcile exactly to the fixed current manifest."
+    ]
+  }
+}

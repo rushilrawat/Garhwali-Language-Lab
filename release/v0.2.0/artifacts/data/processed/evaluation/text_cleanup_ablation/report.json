@@ -1,0 +1,84 @@
+{
+  "method": {
+    "candidate_lexicon": "train-only medium/high-confidence Garhwali candidates",
+    "primary_metric": "add-one-smoothed character-bigram perplexity",
+    "secondary_metrics": [
+      "test token OOV rate",
+      "train singleton types"
+    ],
+    "source_text_mutated": false,
+    "split": "existing fixed document-level train/test assignments"
+  },
+  "partitions": {
+    "test": 1393,
+    "train": 25169,
+    "validation": 1425
+  },
+  "promotion": {
+    "mechanical": {
+      "reason": "Only reversible Unicode, invisible-character, whitespace, and repeated-punctuation changes were tested.",
+      "status": "not_promoted"
+    },
+    "spelling": {
+      "reason": "Corpus-neighbor substitutions can erase valid dialect and spelling forms even when aggregate metrics improve.",
+      "status": "not_promoted"
+    }
+  },
+  "records": {
+    "active_for_experiment": 27987,
+    "excluded": 0,
+    "total": 27987
+  },
+  "run_id": "garhwali-text-cleanup-ablation-v0.1",
+  "variants": {
+    "baseline": {
+      "changed_records": 0,
+      "character_bigram_cross_entropy": 2.82642539,
+      "character_bigram_perplexity": 16.88499549,
+      "evaluated_characters_with_boundaries": 360786,
+      "test_devanagari_tokens": 48131,
+      "test_records": 1393,
+      "test_token_oov_rate": 0.06995491,
+      "train_character_vocabulary": 328,
+      "train_devanagari_types": 94667,
+      "train_records": 25169,
+      "train_singleton_types": 56158
+    },
+    "mechanical": {
+      "changed_records": 108,
+      "character_bigram_cross_entropy": 2.82655962,
+      "character_bigram_perplexity": 16.88726214,
+      "delta_vs_baseline": {
+        "character_bigram_perplexity": 0.00226665,
+        "test_token_oov_rate": 0.0,
+        "train_singleton_types": 0
+      },
+      "evaluated_characters_with_boundaries": 360688,
+      "test_devanagari_tokens": 48131,
+      "test_records": 1393,
+      "test_token_oov_rate": 0.06995491,
+      "train_character_vocabulary": 328,
+      "train_devanagari_types": 94667,
+      "train_records": 25169,
+      "train_singleton_types": 56158
+    },
+    "spelling": {
+      "changed_records": 10244,
+      "character_bigram_cross_entropy": 2.81941726,
+      "character_bigram_perplexity": 16.76707705,
+      "delta_vs_baseline": {
+        "character_bigram_perplexity": -0.11791844,
+        "test_token_oov_rate": -0.00978579,
+        "train_singleton_types": -7838
+      },
+      "evaluated_characters_with_boundaries": 360136,
+      "test_devanagari_tokens": 48131,
+      "test_records": 1393,
+      "test_token_oov_rate": 0.06016912,
+      "train_character_vocabulary": 328,
+      "train_devanagari_types": 80600,
+      "train_records": 25169,
+      "train_singleton_types": 48320
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "all_records_preserved_for_source_error_analysis": true,
+  "garhwali_training_eligible": 0,
+  "human_transcribed_records": 8,
+  "policy": "Repeated cross-layer script evidence marks a source-label conflict; it does not assert audio language ground truth.",
+  "records_removed_or_quarantined": 0,
+  "source_conflict_records": 106,
+  "source_conflict_speakers": 1,
+  "speaker_profiles": {
+    "Uttarkashi:98459": {
+      "evidence": [
+        "repeated_human_bengali_script",
+        "repeated_machine_bengali_script",
+        "human_and_machine_evidence_agree_by_speaker"
+      ],
+      "human_bengali_transcripts": 8,
+      "human_transcripts": 8,
+      "inference_scope": "source_label_conflict_not_audio_language_ground_truth",
+      "machine_bengali_drafts": 98,
+      "machine_drafts": 98
+    }
+  },
+  "untranscribed_records": 98
+}

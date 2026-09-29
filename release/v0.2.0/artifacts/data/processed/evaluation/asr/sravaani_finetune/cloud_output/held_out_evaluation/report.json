@@ -1,0 +1,20 @@
+{
+  "adaptation": "decoder_and_joint_only_encoder_frozen",
+  "batch_size": 4,
+  "cer": 0.17451640033641716,
+  "character_errors": 1245,
+  "checkpoint": "sravaani-garhwali-decoder-pilot-v0.1.nemo",
+  "checkpoint_sha256": "986800b39d402c0075e4e170480282db3971f247663f3fcb92274d77490383ea",
+  "device": "NVIDIA L4",
+  "elapsed_seconds": 6.228,
+  "evaluation_archive_sha256": "8eb4d109e9fb70e6f04d6b699f5190e3ba3d668a61411e78cdbb8f37e8901d10",
+  "evaluation_manifest_sha256": "d9202d6c8e659aef86a1170409a726f42a65b4ae87825c3cd82a0530d55483a1",
+  "evaluation_records": 112,
+  "model_id": "ARTPARK-IISc/SraVaani-1.0",
+  "reference_characters": 7134,
+  "reference_words": 2086,
+  "run_id": "garhwali-sravaani-decoder-pilot-v0.1-held-out-test",
+  "test_used_for_training_or_selection": false,
+  "wer": 0.43528283796740175,
+  "word_errors": 908
+}

@@ -1,0 +1,111 @@
+{
+  "run_id": "garhwali-ocr-spelling-validation-v0.1",
+  "input_priority_records": 18620,
+  "scored_candidate_records": 1894,
+  "decisions": {
+    "inconclusive": 1300,
+    "model_rejects_proposal": 491,
+    "model_supported_proposal": 103
+  },
+  "seeds": [
+    17,
+    29,
+    43
+  ],
+  "ocr_only": true,
+  "adapter_path": "/adapter",
+  "model_runs": [
+    {
+      "seed": 17,
+      "original": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 1894,
+        "masked_tokens": 70105,
+        "mask_rate": 0.15,
+        "seed": 17,
+        "max_length": 256,
+        "truncated_records": 1675,
+        "device": "cuda",
+        "adapter_path": "/adapter",
+        "elapsed_seconds": 28.098
+      },
+      "proposed": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 1894,
+        "masked_tokens": 69975,
+        "mask_rate": 0.15,
+        "seed": 17,
+        "max_length": 256,
+        "truncated_records": 1648,
+        "device": "cuda",
+        "adapter_path": "/adapter",
+        "elapsed_seconds": 28.213
+      }
+    },
+    {
+      "seed": 29,
+      "original": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 1894,
+        "masked_tokens": 70148,
+        "mask_rate": 0.15,
+        "seed": 29,
+        "max_length": 256,
+        "truncated_records": 1675,
+        "device": "cuda",
+        "adapter_path": "/adapter",
+        "elapsed_seconds": 28.015
+      },
+      "proposed": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 1894,
+        "masked_tokens": 69996,
+        "mask_rate": 0.15,
+        "seed": 29,
+        "max_length": 256,
+        "truncated_records": 1648,
+        "device": "cuda",
+        "adapter_path": "/adapter",
+        "elapsed_seconds": 28.108
+      }
+    },
+    {
+      "seed": 43,
+      "original": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 1894,
+        "masked_tokens": 70120,
+        "mask_rate": 0.15,
+        "seed": 43,
+        "max_length": 256,
+        "truncated_records": 1675,
+        "device": "cuda",
+        "adapter_path": "/adapter",
+        "elapsed_seconds": 28.112
+      },
+      "proposed": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 1894,
+        "masked_tokens": 69985,
+        "mask_rate": 0.15,
+        "seed": 43,
+        "max_length": 256,
+        "truncated_records": 1648,
+        "device": "cuda",
+        "adapter_path": "/adapter",
+        "elapsed_seconds": 28.133
+      }
+    }
+  ],
+  "policy": {
+    "originals_preserved": true,
+    "automatic_application": false,
+    "native_review_required": true
+  }
+}

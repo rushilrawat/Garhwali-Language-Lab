@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-584%20passed-brightgreen.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-607%20passed-brightgreen.svg)](research/corpus-preparation-status.md)
 [![Hugging Face Speech](https://img.shields.io/badge/Hugging%20Face-Speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 [![Hugging Face Corpus](https://img.shields.io/badge/Hugging%20Face-Corpus%20(public)-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
@@ -19,6 +19,21 @@ language resources, review queues, and reproducible model datasets out.*
 ---
 
 > **Documentation map:** [Browse all project docs, research reports, plans, and frozen release notes](docs/README.md).
+
+## Current release snapshot — v0.2.0 (2026-09-29)
+
+The new Garhwali-only intake adds **671 exact-unique texts net of prior-corpus
+duplicates** from 696 source rows (LSI dialect table/specimens, explicitly
+Garhwali Upreti proverbs, and pinned Door43 stories). The rebuilt local corpus
+has **29,426 exact-unique parent texts** and **115,785 exact-unique segments**.
+The all-data package has 260,199 overlapping rows; the rights-filtered public
+package has 150,065 rows and a content-free reference index for the full archive.
+The release audit and both package preflights pass; 607 pytest and 605
+unittest tests pass. Hugging Face now serves the public v0.2.0 corpus at
+commit [`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927); the GitHub v0.2.0 release is being finalized.
+Native-speaker review remains deferred, and OCR/story quality is not described
+as speaker-verified. See the [v0.2.0 release notes](release/v0.2.0/README.md)
+and [source-by-source intake report](research/garhwali-data-expansion-2026-09-29.md).
 
 ## 🎯 The project goal
 
@@ -30,9 +45,9 @@ for every record.
 
 ## 🤗 Hugging Face datasets
 
-- **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** was checked live on 2026-09-27 and remains public. Its two source configs contain 113,363 rows (113,350 unique audio hashes), 154.65 hours, and about 16.91 GiB of audio. The Dataset Viewer preview loaded; Hub metadata says the repo was last updated 2026-09-24.
-- **Official GitHub text-corpus release:** the rights-filtered, text-only profile is publicly available in the [v0.1.1 GitHub release](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.1.1). It contains 146,684 rows across 12 config/split entries, no audio, 24,566 redacted catalog values, and excludes 216 structured records without compatible public-rights evidence. It has no blanket content license; follow the included per-record provenance and source terms.
-- **[Garhwali Corpus on Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)** is public at commit [`a49a3f0`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/a49a3f0bf5087d3ad0a7c8c5d399f8b4b301bcb2). It has 146,684 rights-filtered content rows plus a metadata index for all 257,807 archive rows: 590 sources and 277,637 record-to-source links. Hugging Face reports 682,718 total rows across all nine overlapping configs and 15 splits; these are not unique examples. The index provides available names/titles, provenance, rights, and quality status, not protected source text or media. The public content still redacts 24,566 catalog values and omits full content from 216 rights-unresolved structured records; all are represented in the index. `not_recorded` applies to 228,836 index rows and does not clear them for reuse. The Hub confirms all 15 splits, 15 Parquet files, config previews, search, and filters. Statistics work for seven configs; Hugging Face's statistics service errors on constant-valued columns in `text` and `sravaani_drafts`. Locally, Datasets 5.0.1 loads all nine configs, and the release audit passes.
+- **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** was checked live on 2026-09-27 and remains public. Its two source configs contain 113,363 rows (113,350 unique audio hashes), 154.65 hours, and about 16.91 GiB of audio. The v0.2.0 corpus release changes text only; the speech payload was not reuploaded.
+- **[Garhwali Corpus on Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)** is public at verified commit [`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927). All 34 package files match the local manifest by size and hash. The release has 150,065 rights-filtered content rows across overlapping views and a metadata-only reference index covering 260,199 archive rows, 600 sources, and 283,752 links. It redacts 24,565 catalog values and excludes full content for 216 structured records without compatible public-rights evidence. The Hub lists all 15 split Parquet conversions; all 15 split validity checks now return HTTP 200 with Viewer and preview enabled, and a text preview loads. No blanket content license is claimed.
+- **GitHub v0.2.0 release:** the release files are prepared locally; the final tag/push is pending.
 
 **Hugging Face Jobs checked 2026-09-27:** no jobs are running and no scheduled jobs are active. There are 34 historical jobs. One semantic-duplicate audit attempt failed but has a completed retry; a separate 15,000-row Whisper agreement job was canceled after its last log showed 13,840 rows, and its output is not integrated into the corpus.
 
@@ -143,15 +158,17 @@ research use; some are restricted, rights-pending, experimental, or awaiting a
 native-speaker decision. Keeping those differences visible is part of the work,
 not a defect in the dataset.
 
-## ✨ Corpus snapshot (2026-09-26)
+## ✨ Historical corpus snapshot (2026-09-26; superseded by v0.2.0)
 
 See [`finalreport.md`](finalreport.md) for the current release decision, verified
 counts, audit gaps, and remaining work.
 
-- **31,094 source text records** from 42 files, deduplicated to **28,755 unique
-  texts** and 9,145,955 characters.
-- **119,679 sentence-like occurrences** exposed from page-sized and long records,
-  producing **114,064 exact-unique segments** with parent provenance retained.
+- The v0.1.1 snapshot held **31,094 source text records** from 42 files,
+  deduplicated to **28,755 unique texts** and 9,145,955 characters. Current
+  v0.2.0 totals are in the release snapshot and scale table above.
+- The historical v0.1.1 view had 119,679 sentence-like occurrences and 114,064
+  exact-unique segments. Current v0.2.0 has 122,391 occurrences and 115,785
+  exact-unique segments.
 - **769 active page records from six newly supplied PDFs**, including two
   dictionaries, grammar and syntax research, literature, and cultural material;
   one exact duplicate PDF reuses its existing 370-record extraction.
@@ -180,11 +197,11 @@ counts, audit gaps, and remaining work.
 - **8 university and research records** preserve institution, access level,
   topics, and deduplication status; the existing UOU materials are linked rather
   than ingested twice.
-- **257,807 all-data archive rows** span text, human and machine speech
-  transcripts, lexicon, instructions, and six structured knowledge
-  configurations. The public Hugging Face corpus has **146,684 content rows**
-  plus metadata references for all **257,807** archive rows; 216 structured
-  records have references but not full content in the public payload.
+- The v0.1.1 package had **257,807 all-data archive rows** across text, human
+  and machine speech transcripts, lexicon, instructions, and structured
+  knowledge configurations. Current v0.2.0 package totals are in the scale
+  table above; its public HF corpus has 150,065 content rows plus metadata
+  references for all 260,199 archive rows.
 - **2,002 strict speaker-identified ASR/TTS candidates** across 248 speakers,
   totaling 3.562 hours with zero identified-speaker split leakage.
 - **1,736 normalized derived WAVs** rendered from unflagged strict candidates;
@@ -352,11 +369,11 @@ outputs and local diagnostics; it launched no paid Hugging Face jobs.
 
 <div align="center">
 
-| `~71.6 GiB` | `110,436` | `135.5 h` | `28,755` |
+| `~73 GB` | `110,436` | `135.5 h` | `29,426` |
 | --- | ---: | ---: | ---: |
 | local `data/` workspace footprint* | recordings | audio duration | unique text lines |
 
-| `9.15M` | `1.76M` | `114,064` | `1,114` |
+| `9.33M` | `1.80M` | `115,785` | `1,114` |
 | ---: | ---: | ---: | ---: |
 | text characters | whitespace tokens* | unique segments | lexicon candidates |
 
@@ -364,15 +381,14 @@ outputs and local diagnostics; it launched no paid Hugging Face jobs.
 | ---: | ---: | ---: | ---: |
 | English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
 
-| `257,807` | `146,684` | `257,807` | `584/584` |
+| `260,199` | `150,065` | `260,199` | `607/607` |
 | ---: | ---: | ---: | ---: |
 | all-data archive rows | public content-profile rows | complete reference-index rows | local tests passing / collected* |
 
 </div>
 
-*Measured with `du` on 2026-09-26, the ignored `data/` tree uses about 71.6 GiB:
-30.1 GiB of VAANI files, 21.1 GiB of processed outputs, 17.7 GiB of staged
-Hugging Face packages, and 2.7 GiB of downloads. This is the local workspace
+*Measured with `du -sh data` on 2026-09-29, the ignored `data/` tree uses about
+73 GB. This is the local workspace
 footprint, including generated artifacts; it is not the size of a single
 redistributable dataset. Whitespace tokens are an engineering count from the
 canonical text view, not a linguistic tokenization.*
@@ -742,7 +758,7 @@ The 2026-09-28 finding and correction are documented in the
 
 | Stage | Status | Primary artifact | Remaining success condition |
 | --- | --- | --- | --- |
-| **1. Corpus v0.1 candidate** | Public rights-filtered content plus a complete metadata-reference index for all 257,807 archive rows; 216 structured records appear as factual metadata and source pointers | `GarhwaliCorpus` | Keep payload and reference scope explicit; add full protected content only when compatible source-specific rights are established |
+| **1. Corpus v0.2.0** | Published rights-filtered content: 150,065 overlapping rows; reference index covers 260,199 archive rows, 600 sources, and 283,752 links | `GarhwaliCorpus` | Continue exact deduplication, source coverage, OCR quality work, and row-level rights verification |
 | **2. Benchmark candidate** | 5 task artifacts built; 3/3 external schemas pass; one XORQA train/dev duplicate is flagged; 0/5 independent final-accuracy sets approved | `GarhwaliBench` | Freeze model choices on development data and establish eligible final sets; keep automated-candidate wording |
 | **3. Baseline audit** | Saved ASR outputs are aligned on 269 development rows; translation and retrieval have fresh development-only diagnostics; older test reports have incomplete lineage | `Garhwali Model Report` | Reconcile test manifests and exposure, then use only eligible hash-frozen evaluation sets |
 | **4. Controlled modeling** | Text, generation, translation, retrieval, and ASR experiments are documented; no fine-tuned model is promoted for production | `GarhwaliGPT` plus adapted models | Restore a compatible local runtime or use separately authorized compute; select only on development data |
@@ -778,10 +794,10 @@ with provenance.
 | Deliverable | Focused effort from the current state | Main dependency |
 | --- | ---: | --- |
 | Literary, cultural, and university additions | Complete | Automated validation |
-| Local corpus package candidate | Automated build complete: 257,807 all-data rows; 146,684 public content rows; 257,807 public reference rows | Full all-data payload is access-controlled; public content redacts 24,566 values, while reference tables inventory every row and all 216 structured records |
+| Local corpus package candidate | v0.2.0: 260,199 all-data rows; 150,065 public content rows; 260,199 public reference rows | Full all-data payload is access-controlled; public content redacts 24,565 values and references the full inventory |
 | Benchmark/model research release candidate | **50–75 focused hours / about 6–9 weeks** at 8–10 hours per week | Close Phase 2/3 split and schema gaps; extend Phase 4 manifests; consolidate baselines; quantify uncertainty; finish eligibility labels, cards, and release checks. Missing model weights/dependencies may block fresh inference. |
 | SraVaani experiments | Saved runs are complete; a post-hoc audit matches five runs to the same 112 audio/reference pairs and computes speaker-clustered paired intervals. No candidate shows a reliable held-out improvement, and none is promoted. | All test results remain historical; example-level VAANI pretraining exposure and native reference correctness remain unresolved. Fresh local inference needs compatible dependencies and weights. |
-| Hugging Face datasets | 2026-09-27: Speech and Corpus are public; corpus now includes the full metadata-reference index | Speech has 113,363 rows. Corpus has 146,684 content rows plus 257,807 reference rows, 590 sources, and 277,637 source links. Restricted payload values are not redistributed. |
+| Hugging Face datasets | v0.2.0 corpus is public at commit `cb631488`; Speech remains a separate linked dataset | Corpus has 150,065 rights-filtered rows plus 260,199 metadata references, 600 sources, and 283,752 source links. Viewer exposes 15 Parquet splits; all 15 validity/preview checks returned HTTP 200 on 2026-09-29. |
 | Native language review and dialect annotation | Deferred; separate effort not included in the estimate above | Garhwali-speaking reviewers and a review protocol |
 | Sellable text-first API MVP | 30–60 additional focused hours / roughly 1–2 full-time weeks | Dataset/schema freeze, hosting, authentication, billing, and monitoring |
 | Translation and ASR beta | Additional weeks after the benchmark candidate | Better references and measured quality gains; production claims require language-aware evaluation |
@@ -1107,7 +1123,7 @@ traceability alone does not grant reuse rights. The audit reopens all five
 benchmark artifacts and verifies package shard hashes and content-derived text IDs. See
 [`finalreport.md`](finalreport.md) and
 [`DEEP_DIVE_FINAL_AUDIT.md`](DEEP_DIVE_FINAL_AUDIT.md) for details. The
-The latest local test run passed **584/584 pytest tests** using the installed pytest executable and project package directory on `PYTHONPATH`; the repository's documented unittest runner also passed **582/582**. The pipeline tracks **367 source snapshots**.
+The v0.2.0 verification run passed **607/607 pytest tests** with `PYTHONPATH=.venv/lib/python3.12/site-packages:scripts pytest -q` and **605/605 unittest tests** with the documented runner. The canonical inventory uses 46 source files; the release provenance index tracks 600 source catalog entries.
 
 ## Dataset packages and Hugging Face release
 
@@ -1125,14 +1141,14 @@ Hugging Face compute job or storage purchase was needed for publication.
 packages with Garhwali text, human VAANI transcripts, SraVaani machine drafts,
 lexicon, instruction splits, geography, historical terms, literary people,
 literary works, popular-song metadata, and university research. The **all-data
-package** contains **257,807 rows** across overlapping views, including all
+package** contains **260,199 rows** across overlapping views, including all
 collected text values and all **216 structured cultural and scholarly records**.
-The **146,684-row public content profile** redacts 24,566 catalog values and
+The **150,065-row public content profile** redacts 24,565 catalog values and
 does not redistribute the full content of the 216 structured records whose
 rights are unresolved. Those 216 records are still represented in the public
 metadata-reference tables, with factual names/titles, source pointers, rights,
 and quality status. The reference index covers every all-data row and contains
-257,807 row-level references, 590 deduplicated source records, and 277,637
+260,199 row-level references, 600 deduplicated source records, and 283,752
 record-to-source links. It excludes source text, lyrics, transcripts, audio,
 speaker IDs, local paths, and content hashes. All-data and public package
 records contain overlapping representations and are not counts of unique
@@ -1141,7 +1157,7 @@ benchmark remains an automated candidate. See [`finalreport.md`](finalreport.md)
 for the current release status.
 
 ```bash
-# Build the complete transcript-only all-data package (257,807 rows)
+# Build the complete transcript-only all-data package (260,199 rows)
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py \
   --profile all-data
 
@@ -1190,24 +1206,22 @@ paid GPU job or storage purchase was made.
 
 The generated `README.md` is the Hugging Face dataset card, while
 `manifest.json` records configuration counts, shard names, draft completeness,
-and whether audio was included. The all-data catalog includes all **28,755**
+and whether audio was included. The all-data catalog includes all **29,426**
 exact-unique text values with **zero redactions**. The package also contains all
-**114,064** prepared text segments, **1,114** lexicon rows, and **3,230**
-instruction rows. The public catalog remains a transparent redistribution view.
+**115,785** prepared text segments, **1,114** lexicon rows, and **3,230**
+instruction rows. The public catalog remains a rights-filtered redistribution view.
 When an exact duplicate has both open and blocked provenance,
 `public_rights_basis` identifies the open copy while retaining both source
 histories. The source-level audit is documented in
 [`research/text-source-rights-audit-2026-09-15.md`](research/text-source-rights-audit-2026-09-15.md).
 The current all-data package report is
 [`research/all-data-package-2026-09-19.md`](research/all-data-package-2026-09-19.md).
-The generated package snapshot carries release ID `v0.1.1`. The historical
-`v0.1.0` tag remains unchanged; local annotated tag `v0.1.1` resolves to
-the reviewed release commit. The index is
-[`release/v0.1.1-manifest.json`](release/v0.1.1-manifest.json). Compact
-generated reports and visual evidence are tracked under
-[`release/v0.1.1/`](release/v0.1.1/README.md). Hugging Face publication status
-is tracked above; remote datasets are separate from the local Git release. The
-source-by-source duplicate and current upload audit is
+The generated package snapshot carries release ID `v0.2.0`. Its manifest is
+[`release/v0.2.0-manifest.json`](release/v0.2.0-manifest.json), and compact
+release evidence is tracked under [`release/v0.2.0/`](release/v0.2.0/README.md).
+The public Hugging Face corpus is verified at commit
+[`cb631488`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927); GitHub release status is listed above. The
+source-by-source duplicate and upload audit is
 [`research/huggingface-release-overlap-audit-2026-09-24.md`](research/huggingface-release-overlap-audit-2026-09-24.md).
 
 ## 🤝 Contributing

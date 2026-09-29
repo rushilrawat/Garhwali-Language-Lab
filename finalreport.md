@@ -1,5 +1,66 @@
 # Garhwali Language Lab — final review report
 
+## Current release status — v0.2.0 (2026-09-29)
+
+The v0.2.0 package has been rebuilt locally and is **release-ready for the
+rights-filtered public profile**. Hugging Face is updated at verified commit
+[`cb631488`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927); GitHub publication is pending.
+
+### New Garhwali-only material
+
+The four source intakes contribute 696 source rows and 180,043 characters.
+Exact deduplication finds 673 values unique within the new intake and **671
+net-new exact-unique texts** against the existing corpus. The intake is 632
+LSI dialect-table rows (609 unique forms), nine LSI language specimens, five
+Upreti (1894) sayings explicitly marked Garhwali, and 50 pinned Door43/TLF
+Garhwali Open Bible Stories. The 50 story texts are CC BY-SA 4.0; the historical
+LSI/Upreti extracts carry source-specific Public Domain Mark evidence. All rows
+retain citations, checksums or page/revision locations, rights, and quality
+status. 496 LSI table rows have OCR confidence below 60/100; all OCR and the
+story translation remain unreviewed.
+
+The canonical inventory now contains **31,790 source records from 46 files**,
+**29,426 exact-unique parent texts**, and **9,325,936 characters**. The sentence
+view has **122,391 occurrences / 115,785 exact-unique segments**. Counts are
+not claims of 29,426 validated Garhwali lexical items: the corpus includes
+historical forms, OCR excerpts, translated narratives, speech, and experimental
+material with distinct quality labels.
+
+### Package and checks
+
+| v0.2.0 profile | Current result |
+| --- | ---: |
+| Complete local/access-controlled package | 260,199 rows across overlapping views; all collected text values retained |
+| Rights-filtered public package | 150,065 rows across overlapping views |
+| Public metadata-only reference index | 260,199 archive references; 600 sources; 283,752 record-to-source links |
+| Public catalog values redacted for reuse rights | 24,565 |
+| Structured records withheld from public content | 216 |
+| Exact-new Garhwali-only texts in this intake | 671 |
+| Pytest | 607/607 passed |
+| Unittest | 605/605 passed |
+
+Final release audit, public and all-data preflights, release-index validation,
+and the compact bundle check pass. The uploaded Hub package has 34/34 file sizes
+and hashes matching the release plan; the Hub lists all 15 split Parquet
+conversions. All 15 split validity checks now return HTTP 200 with Viewer and
+preview enabled, and a text sample preview loads. The audit reports zero public-rights
+failures, zero hash failures, zero deleted/mutated rows, and zero configured
+text/audio/speaker split overlap; it retains one XORQA upstream train/dev exact
+repeat warning. The public profile is not the complete unrestricted archive:
+24,565 catalog payloads and 216 structured records without compatible public
+rights evidence remain out of public content tables. Their values remain in the
+local/access-controlled all-data package. No blanket corpus license is claimed.
+
+The source expansion and v0.2.0 process do not change benchmark status: native
+language adjudication and dialect review remain deferred, and new OCR/story
+material is not a native-validated benchmark. The GitHub v0.2.0 tag/release
+remains pending. Detailed intake:
+[`research/garhwali-data-expansion-2026-09-29.md`](research/garhwali-data-expansion-2026-09-29.md).
+
+---
+
+## Historical v0.1.1 review (2026-09-28)
+
 **Review date:** 2026-09-28
 **Reviewed package ID:** `garhwali-language-lab-v0.1.1`
 **Decision:** **The public Hugging Face corpus now pairs a rights-filtered content profile with a complete metadata-reference index of the all-data archive.** Its reference tables cover every one of the 257,807 all-data rows; they do not contain the protected source text or media. The content profile still redacts 24,566 catalog values and omits the full payload of 216 structured records with unresolved reuse rights. Native-speaker review and dialect annotation are deferred, so the release is an automated candidate, not a native-validated corpus or gold benchmark.

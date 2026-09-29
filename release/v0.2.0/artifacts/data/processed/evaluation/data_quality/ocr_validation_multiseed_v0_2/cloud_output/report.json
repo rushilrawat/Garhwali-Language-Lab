@@ -1,0 +1,103 @@
+{
+  "run_id": "garhwali-ocr-spelling-validation-v0.1",
+  "input_priority_records": 18620,
+  "scored_candidate_records": 10856,
+  "decisions": {
+    "inconclusive": 6627,
+    "model_rejects_proposal": 2448,
+    "model_supported_proposal": 1781
+  },
+  "seeds": [
+    17,
+    29,
+    43
+  ],
+  "model_runs": [
+    {
+      "seed": 17,
+      "original": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 10856,
+        "masked_tokens": 138631,
+        "mask_rate": 0.15,
+        "seed": 17,
+        "max_length": 256,
+        "truncated_records": 1930,
+        "device": "cuda",
+        "elapsed_seconds": 112.28
+      },
+      "proposed": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 10856,
+        "masked_tokens": 137499,
+        "mask_rate": 0.15,
+        "seed": 17,
+        "max_length": 256,
+        "truncated_records": 1900,
+        "device": "cuda",
+        "elapsed_seconds": 112.792
+      }
+    },
+    {
+      "seed": 29,
+      "original": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 10856,
+        "masked_tokens": 138687,
+        "mask_rate": 0.15,
+        "seed": 29,
+        "max_length": 256,
+        "truncated_records": 1930,
+        "device": "cuda",
+        "elapsed_seconds": 112.778
+      },
+      "proposed": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 10856,
+        "masked_tokens": 137574,
+        "mask_rate": 0.15,
+        "seed": 29,
+        "max_length": 256,
+        "truncated_records": 1900,
+        "device": "cuda",
+        "elapsed_seconds": 112.722
+      }
+    },
+    {
+      "seed": 43,
+      "original": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 10856,
+        "masked_tokens": 138157,
+        "mask_rate": 0.15,
+        "seed": 43,
+        "max_length": 256,
+        "truncated_records": 1930,
+        "device": "cuda",
+        "elapsed_seconds": 112.961
+      },
+      "proposed": {
+        "model_id": "ai4bharat/IndicBERTv2-MLM-only",
+        "revision": "8598f13fe52443bc3fc054fcd665944560145b5c",
+        "scored_records": 10856,
+        "masked_tokens": 137037,
+        "mask_rate": 0.15,
+        "seed": 43,
+        "max_length": 256,
+        "truncated_records": 1900,
+        "device": "cuda",
+        "elapsed_seconds": 112.882
+      }
+    }
+  ],
+  "policy": {
+    "originals_preserved": true,
+    "automatic_application": false,
+    "native_review_required": true
+  }
+}

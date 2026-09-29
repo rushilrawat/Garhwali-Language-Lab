@@ -1,5 +1,43 @@
 # Garhwali Language Lab — deep final audit
 
+## Current v0.2.0 audit refresh (2026-09-29)
+
+The four new Garhwali-only source ingesters and the rebuilt v0.2.0 packages pass
+local checks. The intake adds **671 exact-new unique texts** (696 source rows;
+180,043 characters) from the LSI dialect table/specimens, five explicitly
+Garhwali Upreti proverbs, and 50 pinned Door43/TLF stories. Current scale is
+**29,426 exact-unique parent texts** and **115,785 exact-unique sentence
+segments**. The local all-data package has 260,199 overlapping rows; the
+public-profile package has 150,065 rows and metadata references for every
+all-data row.
+
+Verification on 2026-09-29: pytest **607/607 passed** and unittest **605/605 passed**; public and all-data HF
+package cloud preflights passed; final release audit passed with no hash,
+provenance, or compatible-rights failures; release index validation passed; the
+compact bundle contains 160 files / 4,303,470 bytes and its hash/path check
+passed. The cloud preflight was corrected to validate identities for the three
+metadata-only reference tables and to recognize their manifest file. Two
+retrieval reports were regenerated with repository-relative paths so the
+release bundle no longer includes local machine paths.
+
+The release audit retains one XORQA upstream train/dev exact-text warning. New
+LSI OCR is still unreviewed (496/632 table rows have OCR confidence below
+60/100); the 50 story translations are not speaker-reviewed. Rights and
+quality remain row-level: the public profile redacts 24,565 catalog values and
+omits 216 structured payloads without a compatible public-rights basis. The
+complete all-data package retains those values locally/access-controlled.
+Native-speaker review and dialect annotation remain deferred, so v0.2.0 is not
+a native-validated benchmark. Hugging Face v0.2.0 is verified at commit
+`cb6314880b8a28c3bf3dcc025d8ff9ebe062c927`; the GitHub tag/release is pending.
+
+See the [v0.2.0 source expansion report](research/garhwali-data-expansion-2026-09-29.md),
+[release notes](release/v0.2.0/README.md), and
+[`release/v0.2.0/final-audit.json`](release/v0.2.0/final-audit.json).
+
+---
+
+## Historical audit (2026-09-28; v0.1.1 snapshot)
+
 **Audit date:** 2026-09-28
 **Scope:** current working tree, generated public/all-data Hugging Face package snapshots, model-data selection scripts, release and preflight validators, research status, and test coverage.
 **Purpose:** identify defects that can make corpus claims, source reuse, evaluation, or model-quality conclusions incorrect; record verified fixes and the remaining release gates.

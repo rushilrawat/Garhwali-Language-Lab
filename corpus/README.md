@@ -1,8 +1,8 @@
 # Garhwali corpus: first ingestion
 
 This directory documents the project's initial openly licensed text sources; it
-is not the full current corpus. The current integrated snapshot contains 28,755
-exact-unique parent texts, 114,064 segments, speech and experimental views, and
+is not the full current corpus. The v0.2.0 integrated snapshot contains 29,426
+exact-unique parent texts, 115,785 exact-unique segments, speech and experimental views, and
 separate rights-filtered exports. See the [project overview](../README.md) and
 [final review](../finalreport.md) for current counts, Hugging Face state, and
 release limits. This folder's source files retain their own licenses and review

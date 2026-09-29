@@ -9,10 +9,10 @@ The collector records every attempted URL in
 error. No credentials, paywalls, robots restrictions or access controls were
 bypassed, and no remote audio or video was bulk downloaded.
 
-## Current project context (2026-09-26)
+## Current project context (2026-09-29)
 
-The integrated project now contains **28,755 exact-unique parent texts** and
-**114,064 prepared text segments**; these are project-wide counts, not totals for
+The v0.2.0 integrated project now contains **29,426 exact-unique parent texts** and
+**115,785 exact-unique prepared text segments**; these are project-wide counts, not totals for
 the initial online crawl. The current inventory also includes seven supplied
 PDFs (six unique books, 769 active page records, and one exact duplicate),
 structured literature, songs, geography, historical terms, and university
@@ -20,6 +20,12 @@ research records. The current release and rights counts are maintained in the
 [root README](../../README.md) and [final report](../../finalreport.md). Source
 discovery and acquisition history remain in this register; each later addition
 retains its own provenance and rights status.
+
+The v0.2.0 historical-language intake adds 671 net-new exact texts from the LSI
+dialect table and specimens, five source-marked Garhwali proverbs from Upreti
+(1894), and 50 pinned Door43/TLF Garhwali stories. See the
+[`v0.2.0 source expansion report`](../../research/garhwali-data-expansion-2026-09-29.md)
+for deduplication, OCR quality, revision, and rights details.
 
 ## Material promoted into the project
 

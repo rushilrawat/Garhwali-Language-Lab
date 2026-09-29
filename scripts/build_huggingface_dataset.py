@@ -18,7 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab'
 ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
-RELEASE_ID = 'garhwali-language-lab-v0.1.1'
+RELEASE_ID = f"garhwali-language-lab-v{os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')}"
 KNOWLEDGE_CONFIGS = {
     'geography': ROOT / 'data/extracted/geography/records.jsonl',
     'historical_terms': ROOT / 'data/extracted/historical_terms/records.jsonl',
@@ -761,6 +761,36 @@ No source license is inferred from a URL. The text catalog records each text ide
 redacts values without compatible redistribution evidence. Native-speaker
 review and dialect annotation are deferred; benchmark and model scores are
 automated research results, not native-validated claims.'''
+    source_expansion = ''
+    if str(report.get('release_id', '')).endswith('v0.2.0'):
+        source_expansion = '''
+
+## Garhwali-only additions in v0.2.0
+
+This release adds **671 exact-unique source texts** after normalization and
+cross-corpus deduplication (696 source rows; 673 unique values within this
+intake, including two exact matches already held in earlier layers):
+
+- 632 Garhwali entries from the dialect-comparison table in the
+  [Linguistic Survey of India, Vol. IX, Part IV](https://archive.org/details/LSIV0-V11),
+  representing 609 exact-unique forms explicitly tagged Standard, Rathi, or
+  Tehri. 496 table rows have OCR confidence below 60/100; all OCR remains
+  machine-produced and unreviewed.
+- Nine Devanagari Garhwali language specimens from the same historical volume.
+  These are source-grounded OCR excerpts, not modern conversational speech.
+- Five sayings explicitly identified as Garhwali in Upreti's 1894
+  [*Proverbs & Folklore of Kumaun and Garhwal*](https://archive.org/details/cu31924089930774).
+- Fifty Garhwali Open Bible Stories from the pinned
+  [Door43 OBS-TLF source](https://git.door43.org/OBS-TLF/gbm_obs), revision
+  `f08afc73e1770129fbcd3089181f2faf2abbf54d`, licensed CC BY-SA 4.0.
+
+The historical excerpts use a recorded Public Domain Mark basis; each story
+retains the upstream attribution and CC BY-SA terms. The corpus rows preserve
+page, source revision or checksum, rights, script/language evidence, and quality
+status. The OCR and translated stories have not received native-speaker review.
+For the public profile, only rows passing the project's rights filter carry
+full text; the all-data package retains every collected value locally.
+'''
     return f'''---
 language:
 {language_header}
@@ -778,6 +808,7 @@ configs:
 Release: **{report['release_id']}**
 
 {access_notice}
+{source_expansion}
 
 {resource_summary}
 

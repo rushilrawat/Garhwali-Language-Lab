@@ -1,0 +1,189 @@
+{
+  "agreement_bands": {
+    "minimal": 1074,
+    "moderate": 36,
+    "strong": 49,
+    "weak": 29
+  },
+  "automatic_promotions": 0,
+  "calibration": {
+    "all": {
+      "agreement_to_sravaani_cer_pearson": -0.49871690560233395,
+      "agreement_to_whisper_cer_pearson": -0.9205532030075547,
+      "lower_cer_model_counts": {
+        "sravaani": 369,
+        "tie": 4,
+        "whisper": 8
+      },
+      "records": 381,
+      "sravaani": {
+        "cer": 0.18540611210982186,
+        "character_errors": 4538,
+        "reference_characters": 24476,
+        "reference_words": 7066,
+        "wer": 0.4320690631191622,
+        "word_errors": 3053
+      },
+      "whisper": {
+        "cer": 0.44590619382252,
+        "character_errors": 10914,
+        "reference_characters": 24476,
+        "reference_words": 7066,
+        "wer": 0.7694593829606566,
+        "word_errors": 5437
+      }
+    },
+    "minimal": {
+      "lower_cer_model_counts": {
+        "sravaani": 9
+      },
+      "records": 9,
+      "sravaani": {
+        "cer": 0.28932038834951457,
+        "character_errors": 149,
+        "reference_characters": 515,
+        "reference_words": 148,
+        "wer": 0.6216216216216216,
+        "word_errors": 92
+      },
+      "whisper": {
+        "cer": 0.8330097087378641,
+        "character_errors": 429,
+        "reference_characters": 515,
+        "reference_words": 148,
+        "wer": 1.0810810810810811,
+        "word_errors": 160
+      }
+    },
+    "moderate": {
+      "lower_cer_model_counts": {
+        "sravaani": 217,
+        "tie": 2,
+        "whisper": 6
+      },
+      "records": 225,
+      "sravaani": {
+        "cer": 0.17951268025857783,
+        "character_errors": 2527,
+        "reference_characters": 14077,
+        "reference_words": 4019,
+        "wer": 0.4274695197810401,
+        "word_errors": 1718
+      },
+      "whisper": {
+        "cer": 0.4119485685870569,
+        "character_errors": 5799,
+        "reference_characters": 14077,
+        "reference_words": 4019,
+        "wer": 0.7663597909927843,
+        "word_errors": 3080
+      }
+    },
+    "strong": {
+      "lower_cer_model_counts": {
+        "sravaani": 64,
+        "tie": 2,
+        "whisper": 2
+      },
+      "records": 68,
+      "sravaani": {
+        "cer": 0.11143773383217531,
+        "character_errors": 417,
+        "reference_characters": 3742,
+        "reference_words": 1126,
+        "wer": 0.31616341030195383,
+        "word_errors": 356
+      },
+      "whisper": {
+        "cer": 0.22234099412079103,
+        "character_errors": 832,
+        "reference_characters": 3742,
+        "reference_words": 1126,
+        "wer": 0.5337477797513321,
+        "word_errors": 601
+      }
+    },
+    "weak": {
+      "lower_cer_model_counts": {
+        "sravaani": 79
+      },
+      "records": 79,
+      "sravaani": {
+        "cer": 0.2352653858677955,
+        "character_errors": 1445,
+        "reference_characters": 6142,
+        "reference_words": 1773,
+        "wer": 0.5002820078962211,
+        "word_errors": 887
+      },
+      "whisper": {
+        "cer": 0.6274829045913384,
+        "character_errors": 3854,
+        "reference_characters": 6142,
+        "reference_words": 1773,
+        "wer": 0.9001692047377327,
+        "word_errors": 1596
+      }
+    }
+  },
+  "confidence_bands": {
+    "low": 35,
+    "medium": 30,
+    "very_low": 1123
+  },
+  "confidence_definition": {
+    "maximum_band_without_same_record_reference": "medium",
+    "out_of_matching_calibration_band_penalty": 0.5,
+    "scope": "review priority, not transcript correctness probability",
+    "score": "(1 - benchmark-bin CER) * (0.5 + 0.5 * cross-model agreement) * structural-flag penalty * calibration-support penalty",
+    "structural_flag_penalty": 0.25
+  },
+  "coverage": {
+    "expected_unique_audio_hashes": 1188,
+    "missing_audio_hashes": 0,
+    "unexpected_audio_hashes": 0
+  },
+  "data_grain": "one row per recovery audio SHA-256",
+  "human_reference_audit": {
+    "calibration_records": 381,
+    "calibration_unique_audio_hashes": 381,
+    "calibration_whisper_training_overlap": 0,
+    "same_record_reference_matches": 0,
+    "supervised_unique_audio_hashes": 5894,
+    "supervised_vaani_records": 5894
+  },
+  "inputs": {
+    "recovery": {
+      "path": "data/processed/model_ready/transcripts/sravaani_recovery_whisper_v0.2.jsonl",
+      "sha256": "09da519f57ddf07626075a4844b93e8f38e709c24f5d835c7a9345e987846751"
+    },
+    "sravaani_benchmark_predictions": {
+      "path": "data/processed/evaluation/asr/confidence_calibration/sravaani/predictions.jsonl",
+      "sha256": "78b9509b5682474f391fb388a1a5ed1d25b5c48f527824eb9cf4cb879219f73a"
+    },
+    "supervised_vaani": {
+      "path": "data/processed/vaani/supervised.jsonl",
+      "sha256": "8fa72169d6e6225c47e9d20e172eb1adf8350d614a046c7bb34cca385a15f8d8"
+    },
+    "whisper_benchmark_predictions": {
+      "path": "data/processed/evaluation/asr/confidence_calibration/whisper_v0.2/predictions.jsonl",
+      "sha256": "4f068f4c2d5949a9be285c84fb956f0467e9ebe6ab5347eb1c58e41fe735a723"
+    },
+    "whisper_training_manifest": {
+      "path": "data/processed/model_ready/splits/asr/train.jsonl",
+      "sha256": "87ea08229a3a445460043127a2296112a131e914ea0d507c4a35ee0f5ee33ec8"
+    }
+  },
+  "originals_preserved": true,
+  "out_of_matching_calibration_band_records": 0,
+  "output": "data/processed/model_ready/transcripts/sravaani_recovery_confidence.jsonl",
+  "records": 1188,
+  "run_id": "sravaani-recovery-confidence-v0.2",
+  "selected_candidate_flagged_records": 99,
+  "structural_preferences": {
+    "sravaani_original": 34,
+    "whisper_candidate": 1154
+  },
+  "supervised_training_eligible": 0,
+  "unique_audio_hashes": 1188
+}

@@ -1,0 +1,277 @@
+{
+  "all_collected_text_values_included": false,
+  "catalog_records": 29426,
+  "catalog_redacted_text_records": 24565,
+  "catalog_refined_text_records": 3735,
+  "configs": {
+    "asr/test": {
+      "file_sha256": {
+        "test-00000.jsonl": "7c6fa105a4eb3c293421207b6b6015ecf9285ba929d9d17f780a513f071a7723"
+      },
+      "files": [
+        "test-00000.jsonl"
+      ],
+      "records": 112,
+      "shards": 1
+    },
+    "asr/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "642ac24972d82edc33229ad0a61c2d577b6d33590327762526bc91bfbedf1946"
+      },
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 1621,
+      "shards": 1
+    },
+    "asr/validation": {
+      "file_sha256": {
+        "validation-00000.jsonl": "715546377b0fa612213d9040c91ae84d2dd29cbed5efa9dbb77b871ef016ede2"
+      },
+      "files": [
+        "validation-00000.jsonl"
+      ],
+      "records": 269,
+      "shards": 1
+    },
+    "catalog/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "741c3cd459afde6841d6f98e5e216e3233d4cfb767afc614dd040d790c008ed7",
+        "train-00001.jsonl": "95d793667c246ccf509062f07904e832d0c2520efe7f1b1adc84a0d6e0a3891f",
+        "train-00002.jsonl": "4195e76ce57fa94f05c98a28510e1e72d453392e5160254d2f82fb9a4999f7eb"
+      },
+      "files": [
+        "train-00000.jsonl",
+        "train-00001.jsonl",
+        "train-00002.jsonl"
+      ],
+      "records": 29426,
+      "shards": 3
+    },
+    "instructions/test": {
+      "file_sha256": {
+        "test-00000.jsonl": "acf1ed0954433996cd0ea9414562a7827a56a6a208bc457b303fa08e7ee19f3d"
+      },
+      "files": [
+        "test-00000.jsonl"
+      ],
+      "records": 136,
+      "shards": 1
+    },
+    "instructions/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "54c81a75d5b864d42b7b174c95ff2e05c2b1af77a8360b516ca97d57e63a81b6"
+      },
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 1516,
+      "shards": 1
+    },
+    "instructions/validation": {
+      "file_sha256": {
+        "validation-00000.jsonl": "b85bbfb0d270363b0e62d04e0ec29881a1e40b01d64b489b953bf011e6cfa5f6"
+      },
+      "files": [
+        "validation-00000.jsonl"
+      ],
+      "records": 220,
+      "shards": 1
+    },
+    "lexicon/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "782186261b14bba17d6c9a1e08256c00c460fb70f07b1e942088b1e3999a4fa8"
+      },
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "records": 661,
+      "shards": 1
+    },
+    "sravaani_drafts/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "84918d1b77be0f5253d3c31a445450a3ec42aa10997c766d463c266ea37519ed",
+        "train-00001.jsonl": "1a7d57d06bdee768b60496fef777f862a9b44e97124be6043fa1cca1b4e4a99b",
+        "train-00002.jsonl": "c8df528997f9c09560976f47e3340af68ca307f0063e27714485f8afc84fc5d0",
+        "train-00003.jsonl": "7ee4e93182c3503e2fee680a5e5445b743d18c011a3dd0a56b6a383dc7bc0cb4",
+        "train-00004.jsonl": "0bc43881f353fdc1ca94d64c04ed9b9aae8726393e3a639d615fb967d61f5a42",
+        "train-00005.jsonl": "02a771416e30ce84bb34c623fdc5a07ed4cb3aa39e89775fa844bf58cd6fbf0b",
+        "train-00006.jsonl": "7add589b7cbe0a75fbda7fd0a8df3c9eb14a6d0fa896ed060384e7b325cff295",
+        "train-00007.jsonl": "72559dd008f413ef15227fbb66e8381b28f6b8b9b1585bfe3f77e82e611eef80",
+        "train-00008.jsonl": "14f745902cfb5c59b8d0b505519b61a60901007cc5ba9fc0ba046a7bae81788a",
+        "train-00009.jsonl": "30c0d15913a751d5775b1eb4b962483420990422c174af01660dc5a6d97c8b19",
+        "train-00010.jsonl": "763b721bdd4f835ecc44c996b4b24d9b2c50a7f77044c62414327c121d5b4e93"
+      },
+      "files": [
+        "train-00000.jsonl",
+        "train-00001.jsonl",
+        "train-00002.jsonl",
+        "train-00003.jsonl",
+        "train-00004.jsonl",
+        "train-00005.jsonl",
+        "train-00006.jsonl",
+        "train-00007.jsonl",
+        "train-00008.jsonl",
+        "train-00009.jsonl",
+        "train-00010.jsonl"
+      ],
+      "records": 104534,
+      "shards": 11
+    },
+    "text/test": {
+      "file_sha256": {
+        "test-00000.jsonl": "d0f8b5c2ff6ba35b9517d78111b3bb14e8140ad3518592b34601cdfbc5d46de7"
+      },
+      "files": [
+        "test-00000.jsonl"
+      ],
+      "records": 458,
+      "shards": 1
+    },
+    "text/train": {
+      "file_sha256": {
+        "train-00000.jsonl": "655ccd40439c6f3d1d3148dea0a7730e11be22881cf898073e7a5fc39fa81745",
+        "train-00001.jsonl": "eb52f7f3e036e7e40ca6301004e4c5b8186a3e5c53be30bf2b8f609a55cde08d"
+      },
+      "files": [
+        "train-00000.jsonl",
+        "train-00001.jsonl"
+      ],
+      "records": 10583,
+      "shards": 2
+    },
+    "text/validation": {
+      "file_sha256": {
+        "validation-00000.jsonl": "09acee5b2e7ff59fc32bd25b4128d2ec2cf193b5befe3bafd6d23fc3b3703564"
+      },
+      "files": [
+        "validation-00000.jsonl"
+      ],
+      "records": 529,
+      "shards": 1
+    },
+    "record_index/train": {
+      "records": 260199,
+      "shards": 1,
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "file_sha256": {
+        "train-00000.jsonl": "c149b083ee40ff414e220f9d18743a58a507f3a0eb9fdf4c3e511971d28e84a3"
+      }
+    },
+    "source_catalog/train": {
+      "records": 600,
+      "shards": 1,
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "file_sha256": {
+        "train-00000.jsonl": "37565fe48e5f447e2a52c877953b86b6fc5474f9a10d15f921ea846b4f550681"
+      }
+    },
+    "record_sources/train": {
+      "records": 283752,
+      "shards": 1,
+      "files": [
+        "train-00000.jsonl"
+      ],
+      "file_sha256": {
+        "train-00000.jsonl": "f1cd9c39c2a98b5742a45c6a824a2541b766a4439889cd2477ce1b0d1ce7a44a"
+      }
+    }
+  },
+  "draft_audio_grounded_review_records": 35,
+  "draft_inherited_duplicate_rows": 8,
+  "draft_queue_records": 104542,
+  "draft_records": 104542,
+  "draft_source": "data/processed/model_ready/transcripts/machine_drafts_sravaani_verified.jsonl",
+  "draft_source_label_conflicts": 98,
+  "draft_third_checkpoint_records": 1188,
+  "draft_three_checkpoint_review_records": 1090,
+  "draft_unique_audio": 104534,
+  "drafts_complete": true,
+  "include_audio": false,
+  "linked_audio_files": 0,
+  "newly_linked_audio_files": 0,
+  "profile": "public",
+  "release_id": "garhwali-language-lab-v0.2.0",
+  "removed_audio_files": 0,
+  "structured_knowledge_excluded_for_rights": {
+    "geography": 50,
+    "historical_terms": 36,
+    "literary_people": 26,
+    "literary_works": 66,
+    "popular_songs": 30,
+    "university_research": 8
+  },
+  "reference_index": {
+    "release_id": "garhwali-language-lab-v0.2.0",
+    "profile": "metadata_only_complete_reference_index",
+    "records": 260199,
+    "records_by_family": {
+      "asr": 5894,
+      "catalog": 29426,
+      "geography": 50,
+      "historical_terms": 36,
+      "instructions": 3230,
+      "lexicon": 1114,
+      "literary_people": 26,
+      "literary_works": 66,
+      "popular_songs": 30,
+      "sravaani_drafts": 104534,
+      "text": 115785,
+      "university_research": 8
+    },
+    "records_with_content_in_public_profile": 125500,
+    "public_profile_package_rows": 150065,
+    "public_content_records_by_family": {
+      "asr": 2002,
+      "catalog": 4861,
+      "instructions": 1872,
+      "lexicon": 661,
+      "sravaani_drafts": 104534,
+      "text": 11570
+    },
+    "record_rights_status_counts": {
+      "metadata_only_commercial_recording_lyrics_not_licensed_for_reuse": 1,
+      "metadata_only_commercial_recording_no_reuse_license_stated": 10,
+      "metadata_only_cover_and_original_rights_not_cleared": 1,
+      "metadata_only_foundation_upload_no_reuse_license_stated": 1,
+      "metadata_only_full_lyrics_and_translation_not_licensed_for_reuse": 2,
+      "metadata_only_full_lyrics_not_licensed_for_reuse": 3,
+      "metadata_only_label_upload_lyrics_and_audio_not_licensed_for_reuse": 1,
+      "metadata_only_label_upload_lyrics_not_licensed_for_reuse": 1,
+      "metadata_only_no_licensed_transcript_located": 6,
+      "metadata_only_official_recording_reuse_terms_not_stated": 1,
+      "metadata_only_recording_and_arrangement_rights_not_cleared": 1,
+      "metadata_only_recording_and_lyrics_rights_not_cleared": 1,
+      "metadata_only_recording_rights_not_cleared": 1,
+      "not_recorded": 230557,
+      "reviewed_rights_unresolved": 186,
+      "rights_cleared": 4861,
+      "rights_pending": 24565
+    },
+    "source_catalog_records": 600,
+    "record_source_links": 283752,
+    "tables": {
+      "record_index": {
+        "file": "data/record_index/train-00000.jsonl",
+        "records": 260199,
+        "sha256": "c149b083ee40ff414e220f9d18743a58a507f3a0eb9fdf4c3e511971d28e84a3"
+      },
+      "source_catalog": {
+        "file": "data/source_catalog/train-00000.jsonl",
+        "records": 600,
+        "sha256": "37565fe48e5f447e2a52c877953b86b6fc5474f9a10d15f921ea846b4f550681"
+      },
+      "record_sources": {
+        "file": "data/record_sources/train-00000.jsonl",
+        "records": 283752,
+        "sha256": "f1cd9c39c2a98b5742a45c6a824a2541b766a4439889cd2477ce1b0d1ce7a44a"
+      }
+    },
+    "payload_policy": "No corpus text, transcript, lyrics, audio, speaker identifier, text hash, local source path, or scan is included.",
+    "reference_policy": "Source URLs and factual bibliographic metadata are pointers and do not grant redistribution rights to referenced works."
+  }
+}
