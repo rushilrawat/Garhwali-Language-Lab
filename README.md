@@ -29,8 +29,8 @@ has **29,426 exact-unique parent texts** and **115,785 exact-unique segments**.
 The all-data package has 260,199 overlapping rows; the rights-filtered public
 package has 150,065 rows and a content-free reference index for the full archive.
 The release audit and both package preflights pass; 607 pytest and 605
-unittest tests pass. Hugging Face now serves the public v0.2.0 corpus at
-commit [`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927); the GitHub v0.2.0 release is being finalized.
+unittest tests pass. Hugging Face serves the public v0.2.0 corpus at
+commit [`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927), and the matching [GitHub v0.2.0 release](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0) is published.
 Native-speaker review remains deferred, and OCR/story quality is not described
 as speaker-verified. See the [v0.2.0 release notes](release/v0.2.0/README.md)
 and [source-by-source intake report](research/garhwali-data-expansion-2026-09-29.md).
@@ -47,7 +47,7 @@ for every record.
 
 - **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** was checked live on 2026-09-27 and remains public. Its two source configs contain 113,363 rows (113,350 unique audio hashes), 154.65 hours, and about 16.91 GiB of audio. The v0.2.0 corpus release changes text only; the speech payload was not reuploaded.
 - **[Garhwali Corpus on Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)** is public at verified commit [`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927). All 34 package files match the local manifest by size and hash. The release has 150,065 rights-filtered content rows across overlapping views and a metadata-only reference index covering 260,199 archive rows, 600 sources, and 283,752 links. It redacts 24,565 catalog values and excludes full content for 216 structured records without compatible public-rights evidence. The Hub lists all 15 split Parquet conversions; all 15 split validity checks now return HTTP 200 with Viewer and preview enabled, and a text preview loads. No blanket content license is claimed.
-- **GitHub v0.2.0 release:** the release files are prepared locally; the final tag/push is pending.
+- **GitHub v0.2.0 release:** [published from tag `v0.2.0`](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0), commit `e2fdf5b`.
 
 **Hugging Face Jobs checked 2026-09-27:** no jobs are running and no scheduled jobs are active. There are 34 historical jobs. One semantic-duplicate audit attempt failed but has a completed retry; a separate 15,000-row Whisper agreement job was canceled after its last log showed 13,840 rows, and its output is not integrated into the corpus.
 

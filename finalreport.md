@@ -4,7 +4,7 @@
 
 The v0.2.0 package has been rebuilt locally and is **release-ready for the
 rights-filtered public profile**. Hugging Face is updated at verified commit
-[`cb631488`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927); GitHub publication is pending.
+[`cb631488`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927), and GitHub published the matching [v0.2.0 release](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0) from commit `e2fdf5b`.
 
 ### New Garhwali-only material
 
@@ -54,7 +54,7 @@ local/access-controlled all-data package. No blanket corpus license is claimed.
 The source expansion and v0.2.0 process do not change benchmark status: native
 language adjudication and dialect review remain deferred, and new OCR/story
 material is not a native-validated benchmark. The GitHub v0.2.0 tag/release
-remains pending. Detailed intake:
+is published. Detailed intake:
 [`research/garhwali-data-expansion-2026-09-29.md`](research/garhwali-data-expansion-2026-09-29.md).
 
 ---

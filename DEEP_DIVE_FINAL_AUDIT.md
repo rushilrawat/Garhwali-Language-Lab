@@ -28,7 +28,8 @@ omits 216 structured payloads without a compatible public-rights basis. The
 complete all-data package retains those values locally/access-controlled.
 Native-speaker review and dialect annotation remain deferred, so v0.2.0 is not
 a native-validated benchmark. Hugging Face v0.2.0 is verified at commit
-`cb6314880b8a28c3bf3dcc025d8ff9ebe062c927`; the GitHub tag/release is pending.
+`cb6314880b8a28c3bf3dcc025d8ff9ebe062c927`; GitHub published tag `v0.2.0`
+from commit `e2fdf5b`.
 
 See the [v0.2.0 source expansion report](research/garhwali-data-expansion-2026-09-29.md),
 [release notes](release/v0.2.0/README.md), and

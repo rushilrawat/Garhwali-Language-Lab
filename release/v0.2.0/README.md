@@ -28,7 +28,7 @@ Counts across package configurations are not unique example counts. The all-data
 - Pytest: **607 passed**; unittest: **605 passed**.
 - Public Hugging Face corpus: [v0.2.0 commit `cb631488`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927). All 34 package files match the upload manifest by size and hash.
 - Dataset Viewer: all 15 split validity checks returned HTTP 200 with preview and viewer enabled; one text preview loaded on 2026-09-29.
-- GitHub tag/release: pending final publication.
+- GitHub release: [v0.2.0](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0), commit `e2fdf5b`.
 - Hugging Face cloud preflights: public and all-data passed.
 - Final audit: passed with zero package rights failures, zero cross-split text/audio/speaker identity overlap in the configured splits, and one retained XORQA train/dev duplicate warning.
 - New source QA: all 696 rows passed the GBM/Garhwali scope check; 671 strings are net-new after exact deduplication.
