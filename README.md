@@ -47,7 +47,7 @@ for every record.
 
 ## 🤗 Hugging Face datasets
 
-- **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** was checked live on 2026-09-29 and remains public. Its two source configs contain 113,363 rows (113,350 unique audio hashes), 154.65 hours, and about 16.91 GiB of audio. The v0.2.0 corpus release changes text only; the speech payload was not reuploaded.
+- **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** was checked live on 2026-09-30 and remains public. Its two source configs contain 113,363 rows (113,350 unique audio hashes), 154.65 hours, and about 16.91 GiB of audio. The v0.2.0 corpus release changes text only; the speech payload was not reuploaded.
 - **[Garhwali Corpus on Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)** is public at verified commit [`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927). All 34 package files match the local manifest by size and hash. The release has 150,065 rights-filtered content rows across overlapping views and a metadata-only reference index covering 260,199 archive rows, 600 sources, and 283,752 links. It redacts 24,565 catalog values and excludes full content for 216 structured records without compatible public-rights evidence. The Hub lists all 15 split Parquet conversions; all 15 split validity checks now return HTTP 200 with Viewer and preview enabled, and a text preview loads. No blanket content license is claimed.
 - **GitHub v0.2.0 release:** [published from tag `v0.2.0`](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0), commit `e2fdf5b`.
 
@@ -100,7 +100,7 @@ diagnostics; no fresh independent accuracy claim is supported.
    reproducibility gates pass. Native review and dialect annotation remain
    deferred as requested.
 
-**Verification:** the 2026-09-29 local working-tree review passed 622/622
+**Verification:** the 2026-09-30 local working-tree review passed 622/622
 pytest tests and 620/620 unittest tests. The frozen v0.2.0 release run recorded 607/607 and
 605/605 respectively; those are historical release-time counts.
 
@@ -396,7 +396,7 @@ final-accuracy set. Native review and dialect annotation remain deferred.
   validates inputs and local checkpoints before loading Torch or Transformers;
   its pinned weights remain uncached.
 - **Verification:** The 2026-09-28 snapshot passed 584/584 pytest and 582/582
-  unittest tests. The latest 2026-09-29 local working-tree review passed
+  unittest tests. The latest 2026-09-30 local working-tree review passed
   622/622 pytest and 620/620 unittest tests; the frozen v0.2.0 release counts
   remain 607/605. These checks validate code and
   artifact integrity; they do not establish that every Garhwali word, transcript,
