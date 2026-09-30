@@ -19,7 +19,8 @@ candidates remain rights-unassessed and experimental, with no public full-text
 release. The rights-filtered package is live under `releases/v2.0.0/` at
 [payload commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); the corrected cards are at
 [commit `53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). Uploads were additive and did not delete older data or release files. The
-GitHub code/documentation push is recorded after completion below.
+GitHub `main` now contains the code, reports, tests, and refresh pipeline at
+commit [`5f8636d`](https://github.com/rushilrawat/Garhwali-Language-Lab/commit/5f8636dc624e979a866f52764f2222c6fc615be2). GitHub Actions CI run [67](https://github.com/rushilrawat/Garhwali-Language-Lab/actions/runs/36765092886) passed.
 
 This is a corpus and pipeline update, not a language-accuracy or model-score
 release. No new model inference occurred. Native-speaker validation and dialect
