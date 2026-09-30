@@ -971,7 +971,7 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
 - Detailed file paths listed above: **917**.
 - Ignored or otherwise unlisted payload files: **225,953** (98,063,890,622 bytes).
-- Total workspace bytes counted: **98,079,798,792**.
+- Total workspace bytes counted: **98,079,800,009**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
