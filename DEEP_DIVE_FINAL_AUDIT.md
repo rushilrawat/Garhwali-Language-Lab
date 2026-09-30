@@ -1,6 +1,31 @@
 # Garhwali Language Lab — deep final audit
 
-## Current v0.2.0 audit refresh (2026-09-29)
+## V2.0 corpus release — 2026-09-30
+
+The latest ingestion refresh retains **34,505 source rows from 49 files** and
+produces **32,072 exact-unique parent texts**, **16,089,764 characters**,
+**2,935,379 whitespace-separated tokens**, and **151,690 exact-unique
+segments**. All-data and public-profile package views contain 300,915 and
+155,516 overlapping rows respectively; the public profile has 129,186 content
+rows and a metadata-only index over 300,915 records. The added source is the
+MIT-labelled Garhwali Language Library (164 exact-new strings); Jambu and
+Hikinegi were exact-deduplicated with zero net-new strings.
+
+The repeatable refresh, generated file map, rights-profile preflight, and
+additive Hub upload are complete. The V2.0 payload is live at
+[Hugging Face commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); the corrected dataset cards are at
+[commit `53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). No older corpus records or
+release paths were deleted. Public content still redacts 26,330 text values and
+withholds 216 structured payloads for unresolved reuse terms. Rights-unclear
+web candidates remain in the local experimental layer; no new model inference
+or accuracy claim was made. Native review remains deferred. The pre-V2 web-wave
+metrics below are retained as historical, not current, measurements.
+
+The current full working-tree suite passes **656/656 unittest** tests. These
+verify code and data contracts, not linguistic
+correctness, rights clearance, or independent model accuracy.
+
+## Frozen v0.2.0 audit snapshot (2026-09-29)
 
 The four new Garhwali-only source ingesters and the rebuilt v0.2.0 packages pass
 local checks. The intake adds **671 exact-new unique texts** (696 source rows;
@@ -34,6 +59,46 @@ from commit `e2fdf5b`.
 See the [v0.2.0 source expansion report](research/garhwali-data-expansion-2026-09-29.md),
 [release notes](release/v0.2.0/README.md), and
 [`release/v0.2.0/final-audit.json`](release/v0.2.0/final-audit.json).
+
+## Post-release local web expansion before V2 refresh (2026-09-30)
+
+The counts in this section are an interim pre-V2 snapshot and are retained for
+history; the current corpus values are at the top of this audit.
+
+The tenth ingestion wave scanned 6,844 entries from the Uttarakhand e-Magazine
+Blogger feed plus two Khabar Saar short-story pages. It selected 1,818 page
+candidates, skipped 46 exact duplicates, and added 1,772 exact-new records
+(6,758,808 source characters) to the local experimental layer. No page was
+promoted to a rights-cleared or native-reviewed dataset.
+
+The refreshed working tree contains 33,562 source rows from 47 files,
+31,198 exact-unique parent texts, 16,084,744 characters, and 150,814
+exact-unique segments. The segment-split report reports zero exact cross-split
+leakage. Language-quality buckets for this wave are 1,147 mixed-script review,
+543 Romanized Garhwali candidates, and 82 scope-unverified candidates. Rights
+are unassessed for every new page. Full text remains in the Git-ignored local
+all-data view; public Hugging Face received zero new full-text rows and the
+remote v0.2.0 release was not changed.
+
+The local package previews carry development release ID `garhwali-language-lab-v0.2.1-dev`:
+all-data is 297,000 overlapping-view rows; the public-profile preview is
+151,812 rows including redacted catalog rows, with 125,475 records exposing
+profile content. Its content-free index contains 297,000 rows, 4,144 source
+entries, and 324,338 links. None of these local-preview changes have been
+uploaded.
+
+The ingestion itself is repeatable through the LangGraph tenth wave. The new
+`scripts/refresh_corpus_after_ingestion.py` command chains the existing
+canonicalization, quality, split, language-resource, benchmark, instruction,
+package-preview, and reference-index builders, then regenerates the current
+metrics block in `README.md`. Its scope and limitations are in
+[`PIPELINE.md`](PIPELINE.md) and the
+[web-goldmine intake report](research/garhwali-web-goldmines-2026-09-30.md).
+The pre-V2 post-ingestion test suite passed **635 pytest** and **633
+unittest** tests. The latest V2 suite passes **656 pytest** and **654
+unittest** tests. The pytest runner available in this workspace is the system
+installation with the project virtualenv's dependency path supplied; the
+`.venv` itself does not contain pytest.
 
 ---
 

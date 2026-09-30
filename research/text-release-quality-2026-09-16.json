@@ -1,21 +1,25 @@
 {
   "run_id": "garhwali-text-release-quality-v0.1",
   "grain": "one exact-unique text segment per split row",
-  "records": 114082,
+  "records": 151690,
   "splits": {
-    "train": 106804,
-    "validation": 3114,
-    "test": 4164
+    "train": 144731,
+    "validation": 3520,
+    "test": 3439
   },
-  "incoming_pdf_records": 27926,
+  "incoming_pdf_records": 27907,
   "length_characters": {
     "min": 1,
-    "median": 56.0,
-    "p95": 209,
-    "max": 2193
+    "median": 60.0,
+    "p95": 259,
+    "max": 8665
   },
-  "distinct_sources": 53,
+  "distinct_sources": 61,
   "largest_sources": [
+    [
+      "emagazineofuttarakhand",
+      35323
+    ],
     [
       "paharili_gbm",
       15269
@@ -26,7 +30,7 @@
     ],
     [
       "incoming_garhwali_hindi_dictionary",
-      12453
+      12449
     ],
     [
       "indic_dialect_asr_gbm",
@@ -58,7 +62,7 @@
     ],
     [
       "incoming_garhwali_language_and_culture",
-      3329
+      3331
     ],
     [
       "dcad_gbm",
@@ -77,8 +81,12 @@
       2357
     ],
     [
+      "obs_tlf_gbm_v1",
+      1795
+    ],
+    [
       "incoming_garhwali_bhasha_linguistic_grammatical_study",
-      1682
+      1687
     ],
     [
       "obs_garhwali",
@@ -87,14 +95,6 @@
     [
       "kellogg_1893",
       1288
-    ],
-    [
-      "incoming_chandola_syntactic_sketch",
-      720
-    ],
-    [
-      "hill_dialects_1900",
-      666
     ]
   ],
   "checks": {

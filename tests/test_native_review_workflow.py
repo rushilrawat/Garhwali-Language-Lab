@@ -185,12 +185,135 @@ class NativeReviewWorkflowTests(unittest.TestCase):
             with (root / 'templates/text_accuracy.csv').open(encoding='utf-8', newline='') as handle:
                 rows = list(csv.DictReader(handle))
             self.assertEqual(report['template_counts'], {'text_accuracy': 1})
+            self.assertIn('Import only final context-form rows', report['instructions'])
             self.assertEqual(rows[0]['target_id'], 'text-1')
             self.assertEqual(rows[0]['source_text'], 'नव पन्ना')
             self.assertEqual(rows[0]['aligned_meanings'], 'New page')
             self.assertEqual(rows[0]['decision'], '')
             self.assertEqual(rows[0]['reviewer_id'], '')
             self.assertEqual(rows[0]['round'], '')
+
+    def test_transcript_template_has_blind_first_pass_without_reference_or_hypotheses(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            packet_dir = root / 'packets'
+            packet_dir.mkdir()
+            m.write_jsonl(packet_dir / 'transcript.jsonl', [{
+                'review_type': 'transcript',
+                'target_id': 'audio-1',
+                'review_context': {
+                    'audio_path': '/local/audio.wav',
+                    'duration_seconds': 5.2,
+                    'reference_text': 'reference text',
+                    'model_hypotheses': {'whisper': 'model text'},
+                },
+                'payload': {},
+            }])
+
+            report = m.write_review_templates(packet_dir, root / 'templates')
+
+            with (root / 'templates/transcript_blind.csv').open(encoding='utf-8', newline='') as handle:
+                rows = list(csv.DictReader(handle))
+                fields = rows[0].keys()
+            self.assertEqual(report['template_counts']['transcript_blind'], 1)
+            self.assertEqual(rows[0]['audio_path'], '/local/audio.wav')
+            self.assertEqual(rows[0]['blind_transcription'], '')
+            self.assertNotIn('source_text', fields)
+            self.assertNotIn('model_hypotheses', fields)
+            self.assertNotIn('reference_text', fields)
+
+    def test_blind_transcription_import_maps_transcription_to_review_decision(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / 'blind.csv'
+            with source.open('w', encoding='utf-8', newline='') as handle:
+                writer = csv.DictWriter(handle, fieldnames=(
+                    'review_type', 'target_id', 'blind_transcription',
+                    'reviewer_id', 'round',
+                ))
+                writer.writeheader()
+                writer.writerow({
+                    'review_type': 'transcript', 'target_id': 'audio-1',
+                    'blind_transcription': 'गढ़वाळी वाक्य',
+                    'reviewer_id': 'native-1', 'round': '1',
+                })
+
+            report = m.import_review_csv_files([source], root / 'decisions.jsonl')
+
+            rows = m.read_jsonl(root / 'decisions.jsonl')
+            self.assertEqual(report['decisions'], 1)
+            self.assertEqual(rows[0]['decision'], 'blind_transcription')
+            self.assertEqual(rows[0]['corrected_text'], 'गढ़वाळी वाक्य')
+            self.assertEqual(rows[0]['reviewer_id'], 'native-1')
+
+    def test_template_regeneration_preserves_reviewer_completed_csvs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            packet_dir = root / 'packets'
+            template_dir = root / 'templates'
+            packet_dir.mkdir()
+            template_dir.mkdir()
+            completed = template_dir / 'reviewer-native-1.csv'
+            completed.write_text('completed reviewer work\n', encoding='utf-8')
+            m.write_jsonl(packet_dir / 'text_accuracy.jsonl', [{
+                'review_type': 'text_accuracy', 'target_id': 'text-1',
+                'review_context': {'display_text': 'गढ़वाली'}, 'payload': {},
+            }])
+
+            m.write_review_templates(packet_dir, template_dir)
+
+            self.assertEqual(completed.read_text(encoding='utf-8'), 'completed reviewer work\n')
+
+    def test_import_merges_existing_decisions_without_replacing_them(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output = root / 'decisions.jsonl'
+            output.write_text(json.dumps({
+                'review_type': 'text_accuracy', 'target_id': 'old',
+                'reviewer_id': 'native-1', 'round': 1, 'decision': 'accept_source_form',
+            }) + '\n', encoding='utf-8')
+            source = root / 'new.csv'
+            with source.open('w', encoding='utf-8', newline='') as handle:
+                writer = csv.DictWriter(handle, fieldnames=(
+                    'review_type', 'target_id', 'decision', 'reviewer_id', 'round',
+                ))
+                writer.writeheader()
+                writer.writerow({
+                    'review_type': 'text_accuracy', 'target_id': 'new',
+                    'decision': 'accept_source_form', 'reviewer_id': 'native-2', 'round': '1',
+                })
+
+            report = m.import_review_csv_files([source], output)
+
+            rows = m.read_jsonl(output)
+            self.assertEqual(report['decisions'], 1)
+            self.assertEqual({row['target_id'] for row in rows}, {'old', 'new'})
+
+    def test_duplicate_import_preserves_existing_decision_and_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output = root / 'decisions.jsonl'
+            existing = {
+                'review_type': 'text_accuracy', 'target_id': 'same',
+                'reviewer_id': 'native-1', 'round': 1,
+                'decision': 'accept_source_form',
+            }
+            output.write_text(json.dumps(existing) + '\n', encoding='utf-8')
+            source = root / 'duplicate.csv'
+            with source.open('w', encoding='utf-8', newline='') as handle:
+                writer = csv.DictWriter(handle, fieldnames=(
+                    'review_type', 'target_id', 'decision', 'reviewer_id', 'round',
+                ))
+                writer.writeheader()
+                writer.writerow({
+                    'review_type': 'text_accuracy', 'target_id': 'same',
+                    'decision': 'reject_wrong_language', 'reviewer_id': 'native-1', 'round': '2',
+                })
+
+            with self.assertRaisesRegex(ValueError, 'already has a decision'):
+                m.import_review_csv_files([source], output)
+
+            self.assertEqual(m.read_jsonl(output), [existing])
 
     def test_flat_templates_skip_packet_types_without_review_context(self):
         with tempfile.TemporaryDirectory() as tmp:

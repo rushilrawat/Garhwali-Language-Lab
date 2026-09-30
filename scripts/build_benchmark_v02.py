@@ -109,17 +109,29 @@ METRICS = {
         'scores_computed': False,
         'metrics': [
             {
-                'id': 'garhwali-asr-wer-v1-draft',
-                'signature': 'scripts/asr_metrics.py: NFC, casefold, punctuation/symbol to spaces, whitespace collapse; edit distance over whitespace words; preserve corpus edit and reference-word totals',
-                'implementation_status': 'existing_per_record_scorer; corpus aggregation contract still open',
+                'id': 'garhwali-asr-corpus-wer-v1',
+                'signature': (
+                    'NFC+casefold+punctuation/symbol-to-space+whitespace-collapse; '
+                    'whitespace-word edit distance; micro aggregate from summed '
+                    'errors/reference words; empty hypotheses count as deletions; '
+                    'empty references are excluded and listed; '
+                    'scripts/asr_metrics.py:score_corpus'
+                ),
+                'implementation_status': 'implemented_tested_integrated_in_shared_benchmark_scorer',
             },
             {
-                'id': 'garhwali-asr-cer-v1-draft',
-                'signature': 'same normalization; edit distance over normalized characters with spaces removed; preserve corpus edit and reference-character totals',
-                'implementation_status': 'existing_per_record_scorer; corpus aggregation contract still open',
+                'id': 'garhwali-asr-corpus-cer-v1',
+                'signature': (
+                    'same normalization; code-point edit distance over normalized '
+                    'characters with spaces removed; micro aggregate from summed '
+                    'errors/reference characters; empty hypotheses count as deletions; '
+                    'empty references are excluded and listed; '
+                    'scripts/asr_metrics.py:score_corpus'
+                ),
+                'implementation_status': 'implemented_tested_integrated_in_shared_benchmark_scorer',
             },
         ],
-        'limitations': 'Empty-reference handling and corpus-vs-record aggregation need an explicit frozen policy before new comparisons.',
+        'limitations': 'The shared scorer emits corpus and per-record WER/CER with explicit empty-reference policy; existing local ASR comparisons remain historical and are not native-validated or independent.',
     },
 }
 

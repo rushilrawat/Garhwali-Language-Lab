@@ -18,6 +18,18 @@ def sha(value):
 
 
 class BuildBenchmarkV02Tests(unittest.TestCase):
+    def test_asr_metric_contract_records_corpus_aggregation_and_empty_policy(self):
+        metrics = metric_contracts()['asr']['metrics']
+
+        self.assertEqual(
+            [metric['id'] for metric in metrics],
+            ['garhwali-asr-corpus-wer-v1', 'garhwali-asr-corpus-cer-v1'],
+        )
+        for metric in metrics:
+            self.assertIn('micro aggregate from summed errors', metric['signature'])
+            self.assertIn('empty references are excluded and listed', metric['signature'])
+            self.assertIn('integrated_in_shared_benchmark_scorer', metric['implementation_status'])
+
     def test_usage_overlay_validates_nested_oracle_question_hash(self):
         question = 'A repeated English oracle question with a stable hash?'
         question_hash = sha('a repeated english oracle question with a stable hash')

@@ -1,12 +1,8 @@
 # Text release quality audit
 
-> Historical snapshot from 2026-09-16 (114,082 segments). The current package
-> has 114,064 prepared segments; see [`finalreport.md`](../finalreport.md) for
-> current release status.
-
 **Grain:** one exact-unique text segment per split row
 
-**Records:** 114,082
+**Records:** 151,690
 
 ## Split and integrity checks
 
@@ -22,8 +18,8 @@
 
 ## Coverage
 
-- Incoming-PDF segments: **27,926**
-- Distinct source identifiers: **53**
-- Character length: median **56**, p95 **209**, maximum **2,193**
+- Incoming-PDF segments: **27,907**
+- Distinct source identifiers: **61**
+- Character length: median **60**, p95 **259**, maximum **8,665**
 
 No record was changed or removed. Model-backed semantic and language/noise audits remain additive review evidence.

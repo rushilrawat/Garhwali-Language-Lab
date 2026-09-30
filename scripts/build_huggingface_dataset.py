@@ -18,6 +18,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab'
 ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
+V2_PUBLIC_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-v2.0.0-staging'
+V2_ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data-v2.0.0-local'
+MANAGED_OUTPUTS = {
+    DEFAULT_OUTPUT.resolve(), ALL_DATA_OUTPUT.resolve(),
+    V2_PUBLIC_OUTPUT.resolve(), V2_ALL_DATA_OUTPUT.resolve(),
+}
 RELEASE_ID = f"garhwali-language-lab-v{os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')}"
 KNOWLEDGE_CONFIGS = {
     'geography': ROOT / 'data/extracted/geography/records.jsonl',
@@ -56,8 +62,7 @@ def profile_includes_all_data(profile):
 def prepare_package_output(output):
     output = Path(output)
     resolved = output.resolve()
-    managed = {DEFAULT_OUTPUT.resolve(), ALL_DATA_OUTPUT.resolve()}
-    if output.exists() and resolved not in managed:
+    if output.exists() and resolved not in MANAGED_OUTPUTS:
         raise ValueError(
             'refusing to replace an existing custom output directory; use a new '
             'path or one of the managed Hugging Face package paths'
@@ -679,6 +684,30 @@ def sha256_file(path):
     return digest.hexdigest()
 
 
+def source_expansion_metrics():
+    """Read the pinned-source intake manifests for the current major release."""
+    jambu_path = ROOT / 'corpus/jambu_garhwali_manifest.json'
+    library_path = ROOT / 'corpus/garhwali_language_library_manifest.json'
+    jambu = json.loads(jambu_path.read_text(encoding='utf-8'))
+    library = json.loads(library_path.read_text(encoding='utf-8'))
+    return {
+        'jambu': {
+            'source_records': jambu.get('records', 0),
+            'unique_forms': jambu.get('unique_forms', 0),
+            'cross_source_overlap': jambu.get('exact_overlap_with_existing_unique_forms', 0),
+            'new_vs_other_sources': jambu.get('exact_new_unique_forms', 0),
+            'already_in_current_corpus': jambu.get('already_in_current_corpus_unique_forms', 0),
+        },
+        'language_library': {
+            'source_records': library.get('source_records', 0),
+            'unique_strings': library.get('unique_surface_forms', 0),
+            'cross_source_overlap': library.get('exact_overlap_with_existing_unique_forms', 0),
+            'new_vs_current_corpus': library.get('exact_new_unique_forms', 0),
+            'records_by_type': library.get('records_by_type', {}),
+        },
+    }
+
+
 def dataset_card(report):
     draft_status = 'complete' if report['drafts_complete'] else 'partial'
     exported_rows = sum(item['records'] for item in report['configs'].values())
@@ -762,7 +791,41 @@ redacts values without compatible redistribution evidence. Native-speaker
 review and dialect annotation are deferred; benchmark and model scores are
 automated research results, not native-validated claims.'''
     source_expansion = ''
-    if str(report.get('release_id', '')).endswith('v0.2.0'):
+    if str(report.get('release_id', '')).endswith('v2.0.0'):
+        expansion = report.get('source_expansion') or {}
+        jambu = expansion.get('jambu') or {}
+        library = expansion.get('language_library') or {}
+        type_counts = ', '.join(
+            f'{kind} {count:,}'
+            for kind, count in sorted((library.get('records_by_type') or {}).items())
+        )
+        source_expansion = f'''
+
+## Garhwali source additions and deduplication in v2.0.0
+
+- **Jambu Garhwali reflex lexicon:** {jambu.get('source_records', 0):,} source rows and
+  {jambu.get('unique_forms', 0):,} distinct forms. This source was already in the
+  preceding local corpus snapshot; the V2 refresh revalidates its pinned local
+  snapshot and adds **{max(0, jambu.get('unique_forms', 0) - jambu.get('already_in_current_corpus', 0)):,}**
+  new forms (the current snapshot already contains {jambu.get('already_in_current_corpus', 0):,}).
+  Its earlier intake comparison found {jambu.get('cross_source_overlap', 0):,}
+  forms shared with other sources and {jambu.get('new_vs_other_sources', 0):,}
+  forms absent from those sources. It is an attributed CC BY 4.0 lexical source,
+  not conversational text, and remains unreviewed by native speakers.
+- **Garhwali Language Library 1.0.0:** {library.get('source_records', 0):,} pinned static
+  word, phrase, proverb, and riddle entries; {library.get('unique_strings', 0):,}
+  distinct strings, {library.get('cross_source_overlap', 0):,} exact overlaps with
+  the existing corpus, and {library.get('new_vs_current_corpus', 0):,} exact-new
+  strings. Types: {type_counts}. The static files are attributed under MIT;
+  generated inflection forms are excluded and are not counted as corpus examples.
+
+Both additions retain their upstream spellings, provenance, license and review
+state. Exact matches keep source attribution without counting again as new text.
+The public profile includes a row only when its rights filter passes. Neither
+source entry has received native-speaker review or been promoted into
+recommended training splits.
+'''
+    elif str(report.get('release_id', '')).endswith('v0.2.0'):
         source_expansion = '''
 
 ## Garhwali-only additions in v0.2.0
@@ -867,6 +930,8 @@ def _build_at(output, profile='public', include_audio=False,
         'configs': {},
         'structured_knowledge_excluded_for_rights': {},
     }
+    if RELEASE_ID.endswith('v2.0.0'):
+        report['source_expansion'] = source_expansion_metrics()
 
     quality_catalog = list(read_jsonl(
         ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
@@ -1060,8 +1125,7 @@ def build(output, profile='public', include_audio=False, allow_partial_drafts=Fa
           shard_rows=10_000):
     """Build in a sibling staging directory, then replace the managed package."""
     output = Path(output)
-    managed = {DEFAULT_OUTPUT.resolve(), ALL_DATA_OUTPUT.resolve()}
-    if output.exists() and output.resolve() not in managed:
+    if output.exists() and output.resolve() not in MANAGED_OUTPUTS:
         raise ValueError(
             'refusing to replace an existing custom output directory; use a new '
             'path or one of the managed Hugging Face package paths'

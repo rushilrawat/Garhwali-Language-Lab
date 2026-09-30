@@ -1,9 +1,12 @@
 # Garhwali corpus: first ingestion
 
 This directory documents the project's initial openly licensed text sources; it
-is not the full current corpus. The v0.2.0 integrated snapshot contains 29,426
-exact-unique parent texts, 115,785 exact-unique segments, speech and experimental views, and
-separate rights-filtered exports. See the [project overview](../README.md) and
+is not the full current corpus. The v0.2.0 release snapshot contains 29,426
+exact-unique parent texts. The published V2.0 corpus release contains 32,072
+exact-unique parent texts and 151,690 exact-unique segments, with speech and
+experimental views plus separate rights-filtered exports. The V2.0 public
+package is live on [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
+at payload commit [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1). See the [project overview](../README.md) and
 [final review](../finalreport.md) for current counts, Hugging Face state, and
 release limits. This folder's source files retain their own licenses and review
 status.

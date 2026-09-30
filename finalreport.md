@@ -1,6 +1,32 @@
 # Garhwali Language Lab — final review report
 
-## Current release status — v0.2.0 (2026-09-29)
+## V2.0 corpus release — 2026-09-30
+
+The ordered post-ingestion pipeline has rebuilt the local corpus from **49
+source files / 34,505 source records** into **32,072 exact-unique parent texts**
+(+164 over the pre-refresh 31,908), **16,089,764 characters**, **2,935,379
+whitespace-separated tokens**, and **151,690 exact-unique segments**. Exact
+segment overlap across the text splits is zero. The local all-data package has
+300,915 rows across overlapping views; the rights-filtered public profile has
+155,516 rows, including 129,186 content rows, and its metadata-only index
+covers 300,915 records, 4,911 sources, and 328,728 links. Automated quality
+tiers and all privacy, licensing, and accuracy limits are detailed in the
+[V2 report](research/v2.0-release-report-2026-09-30.md).
+
+The pinned Garhwali Language Library contributed 164 net-new lexical strings;
+Jambu contributed zero after exact deduplication. The existing 1,772 web-page
+candidates remain rights-unassessed and experimental, with no public full-text
+release. The rights-filtered package is live under `releases/v2.0.0/` at
+[payload commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); the corrected cards are at
+[commit `53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). Uploads were additive and did not delete older data or release files. The
+GitHub code/documentation push is recorded after completion below.
+
+This is a corpus and pipeline update, not a language-accuracy or model-score
+release. No new model inference occurred. Native-speaker validation and dialect
+annotation remain deferred at the owner's direction, and GarhwaliBench remains
+a local research draft with independent-result eligibility at 0/5.
+
+## Published release snapshot — v0.2.0 (2026-09-29)
 
 The v0.2.0 package has been rebuilt locally and is **release-ready for the
 rights-filtered public profile**. Hugging Face is updated at verified commit
@@ -56,6 +82,39 @@ language adjudication and dialect review remain deferred, and new OCR/story
 material is not a native-validated benchmark. The GitHub v0.2.0 tag/release
 is published. Detailed intake:
 [`research/garhwali-data-expansion-2026-09-29.md`](research/garhwali-data-expansion-2026-09-29.md).
+
+## Interim local experimental expansion before V2 refresh — 2026-09-30
+
+This is the checkpoint immediately before the V2 lexical refresh below, not
+the current working-tree count.
+
+After the frozen v0.2.0 release, the tenth web wave scanned 6,844 Blogger feed
+entries and two Garhwali-labelled short-story pages. It selected 1,818
+candidate pages, skipped 46 exact duplicate rows, and added **1,772 exact-new
+page records / 6,758,808 source characters** to the local experimental
+pipeline. This is an increase in collected candidate pages, not a claim of
+1,772 verified Garhwali texts. Automatic language review marked 1,147
+mixed-script, 543 Romanized Garhwali candidates, and 82 scope-unverified rows;
+none has native review.
+
+All 1,772 rows retain rights-unassessed status and remain in the Git-ignored
+local experimental/all-data view. The public Hugging Face content profile
+received zero new full-text rows, and its published v0.2.0 commit is unchanged.
+Current local working-tree figures are **31,198 exact-unique parent texts**,
+**16,084,744 characters**, and **150,814 exact-unique segments**. The local
+all-data development package contains **297,000 overlapping-view rows**. The
+local public-profile preview has **151,812 rows including redacted catalog
+entries**, of which 125,475 contain public-profile content; its content-free
+reference index has 297,000 rows, 4,144 source entries, and 324,338
+record/source links. All 1,772 new texts are preserved in the local all-data
+preview and redacted from the local public preview. The package previews and
+reference index were regenerated, but were not uploaded.
+The pre-V2 working-tree test runs passed **635/635 pytest** and
+**633/633 unittest** tests. The latest V2 working-tree run passed **656/656
+unittest** tests. Neither run validates language identity or reuse
+rights of the web candidates.
+See the [wave report](research/garhwali-web-goldmines-2026-09-30.md) and the
+auto-updated README metrics table for the working-tree counts.
 
 ---
 

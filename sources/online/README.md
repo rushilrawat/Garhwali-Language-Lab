@@ -9,23 +9,31 @@ The collector records every attempted URL in
 error. No credentials, paywalls, robots restrictions or access controls were
 bypassed, and no remote audio or video was bulk downloaded.
 
-## Current project context (2026-09-29)
+## Current project context (V2.0 corpus release, 2026-09-30)
 
-The v0.2.0 integrated project now contains **29,426 exact-unique parent texts** and
-**115,785 exact-unique prepared text segments**; these are project-wide counts, not totals for
-the initial online crawl. The current inventory also includes seven supplied
+The V2.0 project contains **32,072 exact-unique parent texts** from
+34,505 source rows / 49 source files and **151,690 exact-unique prepared text
+segments**; these are project-wide counts, not totals for the initial online
+crawl. The current inventory also includes seven supplied
 PDFs (six unique books, 769 active page records, and one exact duplicate),
 structured literature, songs, geography, historical terms, and university
-research records. The current release and rights counts are maintained in the
+research records. The rights-filtered package is public on [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
+under `releases/v2.0.0/`, uploaded at commit [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1). The current release and rights counts are maintained in the
 [root README](../../README.md) and [final report](../../finalreport.md). Source
 discovery and acquisition history remain in this register; each later addition
 retains its own provenance and rights status.
 
-The v0.2.0 historical-language intake adds 671 net-new exact texts from the LSI
+The v0.2.0 historical-language intake added 671 net-new exact texts from the LSI
 dialect table and specimens, five source-marked Garhwali proverbs from Upreti
 (1894), and 50 pinned Door43/TLF Garhwali stories. See the
 [`v0.2.0 source expansion report`](../../research/garhwali-data-expansion-2026-09-29.md)
 for deduplication, OCR quality, revision, and rights details.
+
+The V2 refresh added 164 exact-new static lexical entries from the MIT-labelled
+Garhwali Language Library. Jambu's 738 unique forms and Hikinegi's 53 target
+strings were already present, so both rechecks added zero. The additive V2
+package preserves the earlier Hub release paths; its latest card correction is
+at commit [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). See the [V2 report](../../research/v2.0-release-report-2026-09-30.md).
 
 ## Material promoted into the project
 

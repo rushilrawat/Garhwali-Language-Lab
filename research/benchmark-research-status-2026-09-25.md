@@ -1,8 +1,87 @@
 # Benchmark and research suite: measured status
 
-**Checked:** 2026-09-28 for overlap, environment, and metric-contract progress; model-score tables remain the 2026-09-26 measured snapshot
+**Original scorecard:** 2026-09-25; dated evidence below includes historical refreshes through 2026-09-28.
+**Current refresh:** 2026-09-30. The public V2.0 corpus release is complete,
+but benchmark v0.2 remains local-only. The adapter validates eight views /
+**14,703 view rows** (3,847 external, 402 internal text, 112 ASR, and
+recommended text split 9,486/454/402), with zero structural errors. The 402
+internal-text rows intentionally mirror recommended test rows. The
+character-bigram perplexity of 14.397995 is matched to exact historical/open
+test rows. Six local draft task cards remain local. The shared scorer now
+includes ASR corpus/per-record WER/CER and generation EM/chrF2. The generation
+follow-up reconciles three saved seeds to 130 of the current 320 validation
+rows; 190 have no saved prediction, and no fresh inference was run. All 14,703
+benchmark rows remain upload-blocked; 2,077 recommended-text rows have
+compatible recorded source assessments, 8,265 have item-level rights status
+unrecorded, and component rights remain unresolved. Semantic/paraphrase and
+upstream model exposure are also unresolved. The owner approved work toward
+independent evidence across all five task areas; **eligibility remains 0/5**.
+Latest full tests: 656/656 unittest; v0.2.0 release-time counts (607/605) are
+historical. See the [roadmap](benchmark-model-roadmap.md),
+[rights inventory](garhwali-bench-v0.2-rights-inventory-2026-09-29.md),
+[ASR integration check](asr-corpus-metric-integration-2026-09-29.md),
+[generation scorer report](generation-scoring-integration-2026-09-30.md), and
+[issue log](issues%26improvement%20plan.md).
+**Checked:** 2026-09-30 current counts and lineage; older model-score tables remain historical snapshots.
 **Priority:** GarhwaliBench integrity, then controlled model research  
 **Execution:** local only; no Hugging Face jobs or paid compute
+
+### Current evidence — refreshed 2026-09-30
+
+| Check | Current result | Meaning/limit |
+| --- | --- | --- |
+| v0.2 adapter and structural validation | 8 views / 14,703 rows; 0 errors; adapter manifest SHA-256 `43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8`; validator JSON SHA-256 `170476050d38da75b4a21f55d50bd3fdfc76f0fd4f4d954be1dd0cef26a02583` | Sum of views, not unique records; includes 402 intentional internal-text/recommended-test mirrors. Draft remains local-only and `public_upload_allowed=false`. |
+| Recommended text split | 9,486 train / 454 validation / 402 test; all 10,342 IDs map to source segments covering 3,246 parent-text hashes and 3,072 duplicate components | Zero parent-hash/component split crossings. Nine of 11 broad ingestion-file pointers span splits, but these files cover multiple works and are not document identities. Compared with the earlier 8,265-row candidate: +2,077, all prior IDs retained, none removed or moved across splits. |
+| Exact/near overlap refresh | 14,591 text-relevant rows; 411 exact groups; 1 group crosses source splits; 402 expected cross-view mirrors; 4 near-text candidates, all same-split. The 2026-09-30 lineage audit additionally finds 15 recommended-train exact text matches in instruction test and 29 in validation. | The single within-source split crossing is the known XORQA train/dev repeat. Cross-view matches are retained and flagged; no semantic/paraphrase clearance is implied. |
+| Speech/model cross-split overlap | Meta Omnilingual has 4 train/test audio and 4 train/test transcript-text groups, plus 27 train/validation text groups. Expanded-human ASR train overlaps experimental test in 338 audio / 575 transcript-text groups, and validation in 397 audio / 683 text groups. | These are direct split conflicts for models trained on those views; affected records remain in the corpus. Full row IDs remain in the ignored speaker-safe lineage ledger. |
+| Source-family scan | 1,995 groups; 29 cross-split families (27 content-linked XORQA plus two broad URL candidates) | Broad collection/book URLs are not proof that all grouped records are duplicates. |
+| Nested fields and XORQA page families | 10,571 fields; 41 same-field cross-split groups; 0 cross-field groups and 0 long exact training overlaps; 50 short cross-language-label groups (10 across splits). 993 page families; 54 cross-split / 134 rows; 32 with multiple contexts; 0 unparsed titles. | Exact short-answer or source-page reuse is a review signal, not automatic leakage. All source rows remain. |
+| XORQA page overlay | 138 retained records labeled open-diagnostic; overlay SHA-256 `deb49ebee8dc9b41de9ec0c87116b8934c14d2796dbb633aa4714b6f254def22` | Labels document split/source-page overlap; records remain present. |
+| Current text-test score lineage | Exact 402-row match; character-bigram PPL 14.397995; row-set SHA-256 `d1ed8310f891926ba91e24f79367554dc4e22aeeeb56ad26be01e15c8246d06a` | Aggregate baseline evidence now recorded separately from row-level predictions; test is historical/open, not independent-final. |
+| Release/accuracy gate | 0/5 task areas independent-final; benchmark card pack is local-only | Component rights, semantic exposure, and metric/reproducibility freeze still block benchmark publication and independent claims. |
+
+## Four requested improvement tracks — active status, 2026-09-29
+
+| Track | Work completed or verified in this pass | What still blocks the claimed outcome |
+| --- | --- | --- |
+| Better neural model scores | Rechecked local runtimes and model artifacts. The project `.venv` has no PyTorch, Transformers, NeMo, PEFT, PyArrow, SentenceTransformers, or Datasets. Fine-tuned SraVaani `.nemo` checkpoints and adapters exist, but required base assets/runtime are not usable in this environment. Existing outputs and sweeps remain preserved. | No fresh NLLB, dense retrieval, or SraVaani inference was run. All available test scores are historical or exposure-unknown. A fresh run needs compatible weights/runtime and a verified, explicitly capped compute budget; this refresh incurred $0. |
+| Independent accuracy | Owner approved work in all five task areas; evidence eligibility remains 0/5. Existing public tests have saved predictions or unknown upstream model exposure. | A new, sealed post-freeze evaluation set must be newly authored/recorded, source-grouped, rights-cleared, and kept out of model selection/training. Existing public data cannot be relabeled as blind. |
+| Public benchmark release | Revalidated 8 views / 14,703 view rows with zero structural errors. Shared scoring covers ASR corpus/per-record WER/CER and saved generation validation predictions with exact ID coverage and metric/code hashes. | All 14,703 draft view rows currently say `public_release_cleared=false`, and the manifest remains `public_upload_allowed=false`. Full component/field-level rights review remains open. See the [rights inventory](garhwali-bench-v0.2-rights-inventory-2026-09-29.md). |
+| Native-validated claims | Regenerated two-reviewer packets and templates. Transcript reviewers now have a blind first-pass CSV that omits references and model hypotheses; current packets include 176 priority text rows and 113 transcript rows. | Zero decisions/adjudications exist. Two independent Garhwali reviewers must complete the queue; automated checks and model agreement cannot establish linguistic correctness. No dialect claim is being made. |
+
+### Source terms checked for benchmark payloads
+
+The current draft contains mixed upstream material, so one umbrella license is
+not a safe description of the whole benchmark. The official Google HF cards
+declare **CC BY-SA 4.0** for IndicGenBench FLORES and **CC BY-NC-SA 4.0** for
+CrossSum; CrossSum examples include English article text and source URLs. The
+XORQA card declares **MIT**, while the original XORQA project and its upstream
+data lineage still require a component-by-component compatibility review. The
+VAANI card declares **CC BY 4.0** and requires gated access acceptance; the
+local ASR manifest additionally contains speaker IDs and local audio/image
+locators that are not public-card fields. These declarations are evidence to
+retain, not a blanket clearance of the adapted v0.2 package. See the [FLORES
+card](https://huggingface.co/datasets/google/IndicGenBench_flores_in),
+[CrossSum card](https://huggingface.co/datasets/google/IndicGenBench_crosssum_in),
+[XORQA card](https://huggingface.co/datasets/google/IndicGenBench_xorqa_in),
+[original XORQA repository](https://github.com/AkariAsai/XORQA), and
+[VAANI card](https://huggingface.co/datasets/ARTPARK-IISc/Vaani).
+
+The ASR metric implementation is in
+[`scripts/asr_metrics.py`](../scripts/asr_metrics.py), with synthetic edge-case
+coverage in [`tests/test_asr_metrics.py`](../tests/test_asr_metrics.py). The
+native-review workflow and current zero-decision status are detailed in
+[`native-reference-review-readiness-2026-09-15.md`](native-reference-review-readiness-2026-09-15.md).
+The task-by-task data collection and exposure protocol is
+[`independent-evaluation-protocol-2026-09-29.md`](independent-evaluation-protocol-2026-09-29.md);
+it is a protocol, not evidence that new items or reviews already exist.
+
+The six local draft cards are in
+[`garhwali-bench-v0.2-draft-cards.md`](garhwali-bench-v0.2-draft-cards.md).
+No source values, audio, speaker IDs, or test payloads were copied into that
+document. Older metric tables below retain their original measured snapshots;
+do not compare scores across different input manifests as if they were one
+current evaluation.
 
 ## What “done” means here
 
@@ -19,9 +98,9 @@ accurate measure of Garhwali. The counts below separate those gates.
 | Parent-safe benchmark candidate | 392 text rows, 112 ASR rows, and 3,847 external task records; internal text IDs/text match the corrected recommended test view | Historical/open diagnostic only; no independent-accuracy claim |
 | Internal ASR candidate | 112 rows; 0 audio-hash or identified-speaker overlaps against ASR train/validation | Pass for automated split integrity |
 | External source-split repeats | 1 exact primary-text group / 2 rows in XORQA `train` and `dev`; neither row is in `test` | Flagged; rows preserved |
-| Independent final accuracy sets | 0 of 5 task areas approved: language modeling, translation, retrieval, generation, and ASR | Not established |
+| Independent final accuracy sets | 0 of 5 currently eligible: language modeling, translation, retrieval, generation, and ASR. Owner approved work across all five on 2026-09-30. | Not established |
 | Native-language validation | 0 adjudications | Deferred at the owner's direction |
-| Automated project tests | Latest pytest run: 584/584 passed; documented unittest runner: 582/582 passed | Pass; run `PYTHONPATH=.venv/lib/python3.12/site-packages:scripts pytest -q` |
+| Automated project tests | Current 2026-09-30 V2 review: 656/656 unittest; v0.2.0 release-time snapshot: 607/607 pytest and 605/605 unittest; 2026-09-28 snapshot: 584/584 and 582/582 | Current full suite passes; counts verify code/contracts, not language correctness or rights |
 
 “Pass” above means only that the automated, checksum-addressed files satisfy the
 listed checks. It does not certify spelling, meaning, dialect, or reference

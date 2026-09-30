@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-607%20release%20checks-brightgreen.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-656%20unittest%20checks-brightgreen.svg)](research/corpus-preparation-status.md)
 [![Hugging Face Speech](https://img.shields.io/badge/Hugging%20Face-Speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 [![Hugging Face Corpus](https://img.shields.io/badge/Hugging%20Face-Corpus%20(public)-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
@@ -20,22 +20,53 @@ language resources, review queues, and reproducible model datasets out.*
 
 > **Documentation map:** [Browse all project docs, research reports, plans, and frozen release notes](docs/README.md).
 
-## Current release snapshot — v0.2.0 (2026-09-29)
+## V2.0 corpus release — published 2026-09-30
 
-The new Garhwali-only intake adds **671 exact-unique texts net of prior-corpus
-duplicates** from 696 source rows (LSI dialect table/specimens, explicitly
-Garhwali Upreti proverbs, and pinned Door43 stories). The rebuilt local corpus
-has **29,426 exact-unique parent texts** and **115,785 exact-unique segments**.
-The all-data package has 260,199 overlapping rows; the rights-filtered public
-package has 150,065 rows and a content-free reference index for the full archive.
-The release audit and both package preflights pass; the frozen release-time test
-run recorded 607 pytest and 605 unittest passes. Hugging Face serves the public v0.2.0 corpus at
-commit [`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927), and the matching [GitHub v0.2.0 release](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0) is published.
-Native-speaker review remains deferred, and OCR/story quality is not described
-as speaker-verified. See the [v0.2.0 release notes](release/v0.2.0/README.md),
-the [source-by-source intake report](research/garhwali-data-expansion-2026-09-29.md),
-the [product progress graphs](research/product-progress-2026-09-29.md), and the
-[announcement readiness roadmap](research/v0.2-public-announcement-roadmap-2026-09-29.md).
+The complete local pipeline now contains **32,072 exact-unique parent texts**
+from **34,505 source rows across 49 source files**. This is **164 net-new
+distinct strings** compared with the immediately preceding local corpus (31,908),
+from the pinned Garhwali Language Library: 131 words, 33 phrases, 10 proverbs,
+and 6 riddles. The 763-row Jambu source was revalidated; all 738 of its forms
+were already present, so it added zero new strings. Source lineage and review
+status remain attached, and no old corpus rows were deleted.
+
+The rebuilt text inventory has **16,089,764 characters**, **2,935,379
+whitespace-separated tokens** (an engineering count), and **151,690 exact-unique
+segments** with zero exact segment leakage across splits. Automated quality
+tiers are 3,786 strict candidates, 21,659 experimental-review, 1,743
+rights-pending, and 4,884 non-strict context records. These figures describe
+collection and automated checks, not native-verified Garhwali accuracy.
+
+The public-profile package published on Hugging Face contains **155,516 rows
+across overlapping views**, of which 129,186 have content; its metadata-only
+reference index covers 300,915 archive rows, 4,911 sources, and 328,728 source
+links. It redacts 26,330 text values and withholds the full content of 216
+structured records whose source terms do not establish public redistribution
+rights. The complete experimental view remains local. V2.0 was added under the
+versioned `releases/v2.0.0/` path without deleting the earlier release files.
+The dataset payload is at [HF commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); a later card-only correction is at [commit `53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). The V2 public profile does not include audio.
+See the [V2 source and release report](research/v2.0-release-report-2026-09-30.md)
+and [project file map](PROJECT_FILE_MAP.md).
+
+The frozen **v0.2.0** release remains available at verified Hugging Face commit
+[`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927)
+and its [GitHub release](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0).
+Its release-time tests were 607 pytest / 605 unittest; those counts describe
+that frozen snapshot only. Native-speaker review and dialect annotation remain
+deferred.
+
+### Additional-source check (2026-09-30)
+
+The 53-row `hikinegi/Garhwali-Dataset` Hub source is already integrated in the
+experimental layer: all 53 Romanized target strings match existing corpus
+strings, and the source has no published license. ASJP's 91 Garhwali concepts
+were already ingested. The newly pinned MIT-labelled language-library source
+is the only net-new source in this refresh. The follow-up search checked the
+official LDC-IL listing, the research-described 70,000-sentence corpus, Hindwi
+and HimLingo dictionary leads, the one-word UKC lexicon, and community-published
+dictionary claims. No additional downloadable corpus with verified Garhwali
+scope and compatible reuse terms was found. The large leads remain acquisition
+requests; see the [V2 source-acquisition report](research/v2.0-release-report-2026-09-30.md).
 
 ## 🎯 The project goal
 
@@ -48,14 +79,15 @@ for every record.
 ## 🤗 Hugging Face datasets
 
 - **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** was checked live on 2026-09-30 and remains public. Its two source configs contain 113,363 rows (113,350 unique audio hashes), 154.65 hours, and about 16.91 GiB of audio. The v0.2.0 corpus release changes text only; the speech payload was not reuploaded.
-- **[Garhwali Corpus on Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)** is public at verified commit [`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927). All 34 package files match the local manifest by size and hash. The release has 150,065 rights-filtered content rows across overlapping views and a metadata-only reference index covering 260,199 archive rows, 600 sources, and 283,752 links. It redacts 24,565 catalog values and excludes full content for 216 structured records without compatible public-rights evidence. The Hub lists all 15 split Parquet conversions; all 15 split validity checks now return HTTP 200 with Viewer and preview enabled, and a text preview loads. No blanket content license is claimed.
+- **[Garhwali Corpus on Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)** is public at V2.0 payload commit [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1), with the corrected cards at [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). The V2.0 package has 155,516 rights-filtered rows across overlapping views and a metadata-only reference index for 300,915 archive rows, 4,911 sources, and 328,728 links. It redacts 26,330 catalog values and withholds full content for 216 structured records without compatible public-rights evidence. Hugging Face currently lists 15 Parquet split conversions. The prior release files remain present; the new package is under `releases/v2.0.0/`. No blanket content license is claimed.
+- The V2.0 versioned package contains **36 files / 561,166,047 bytes**. It carries 164 net-new MIT-labelled lexical strings. The Hub upload did not include audio; speech remains a separate linked dataset.
 - **GitHub v0.2.0 release:** [published from tag `v0.2.0`](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0), commit `e2fdf5b`.
 
 **Hugging Face Jobs checked 2026-09-27:** no jobs are running and no scheduled jobs are active. There are 34 historical jobs. One semantic-duplicate audit attempt failed but has a completed retry; a separate 15,000-row Whisper agreement job was canceled after its last log showed 13,840 rows, and its output is not integrated into the corpus.
 
 ## Current benchmark and model stage
 
-**Current status (2026-09-29, refreshed):** GarhwaliBench remains a local draft.
+**Current status (2026-09-30):** GarhwaliBench remains a local draft.
 Its eight views contain **14,703 rows** (not unique examples), and the contract
 validator reports zero structural/integrity errors. The views include 3,847
 external task rows, 112 ASR rows, 402 internal text rows, and a recommended
@@ -73,10 +105,30 @@ All 10,342 recommended text rows map to source segments spanning 3,246 parent
 text hashes and 3,072 duplicate components with zero split crossings; coarser
 ingestion-file pointers span splits and are not parent-document identities.
 Semantic/paraphrase overlap and upstream checkpoint exposure remain unresolved.
-**0 of 5 task areas qualify for independent final-accuracy claims.** The
+The 2026-09-30 lineage audit adds concrete cross-view findings: 15 exact text
+hashes from recommended training appear in instruction test, 29 in instruction
+validation, and Meta Omnilingual has 4 train/test audio and 4 train/test text
+overlap groups plus 27 train/validation text groups. These rows remain in the
+data and are flagged; the cross-view matches create exposure risk if the same
+text entered model training, but do not prove that a particular checkpoint
+consumed every matching row. The Meta and expanded-human ASR partitions have
+direct train/evaluation duplicates and must not be called held out.
+Expanded-human ASR train also overlaps the experimental test in 338 audio-hash
+and 575 transcript-text groups (397 audio / 683 text groups in validation), so
+those experimental partitions are not held out. The row-level ledger stays
+local because it contains speaker identifiers.
+The owner approved active work toward independent final-accuracy evidence in
+all five areas (language modeling, translation, retrieval, generation, and
+ASR). **Evidence eligibility remains 0/5.** The
 benchmark cards and example payloads remain local pending source-specific
 rights clearance; the public status report describes the limits without
 publishing candidate benchmark content.
+
+The saved generation predictions are now scored through the shared benchmark
+runner: three historical seeds match 130 of 320 current validation rows, while
+190 have no saved predictions. This adds reproducible development diagnostics,
+not fresh inference or independent accuracy; the [generation report](research/generation-scoring-integration-2026-09-30.md)
+documents the scores and limits.
 
 The rights audit found that all 14,703 benchmark view rows remain uncleared for
 upload: 2,077 recommended-text rows have compatible recorded source
@@ -95,14 +147,16 @@ diagnostics; no fresh independent accuracy claim is supported.
 3. Complete remaining run manifests and validation-only baselines. Fresh NLLB,
    dense retrieval, and SraVaani inference need local weights/runtime.
 4. Add source-cluster uncertainty where trustworthy group metadata exists;
-   create a fresh independent evaluation set before making final claims.
+   create a fresh independent evaluation set before making final claims. The
+   [five-task readiness matrix and protocol](research/independent-evaluation-protocol-2026-09-29.md)
+   show the current gate for each area.
 5. Promote versioned cards/artifacts only after integrity, rights, and
    reproducibility gates pass. Native review and dialect annotation remain
    deferred as requested.
 
-**Verification:** the 2026-09-30 local working-tree review passed 622/622
-pytest tests and 620/620 unittest tests. The frozen v0.2.0 release run recorded 607/607 and
-605/605 respectively; those are historical release-time counts.
+**Verification:** the latest 2026-09-30 local working-tree review passed
+656/656 unittest tests. The frozen v0.2.0 release run recorded 607/607 pytest
+and 605/605 unittest tests; those are historical release-time counts.
 
 Native-speaker review and dialect annotation remain deferred as requested. The
 ordered plan is in the [benchmark/model roadmap](research/benchmark-model-roadmap.md)
@@ -263,7 +317,7 @@ counts, audit gaps, and remaining work.
   segments crossing text splits; the corrected local candidate groups these
   documents and has zero parent crossings. One exact XORQA primary-text group
   spans its source `train` and `dev` splits; records remain flagged. No current
-  task has an approved independent final-accuracy score.
+  task has evidence supporting an independent final-accuracy score.
 - **Recommended-view character bigram baseline:** 14.122106 perplexity on the
   historical 398-row candidate, trained on 7,490 recommended Garhwali rows
   with zero exact segment-hash overlap. The parent-document issue means it is
@@ -397,8 +451,8 @@ final-accuracy set. Native review and dialect annotation remain deferred.
   its pinned weights remain uncached.
 - **Verification:** The 2026-09-28 snapshot passed 584/584 pytest and 582/582
   unittest tests. The latest 2026-09-30 local working-tree review passed
-  622/622 pytest and 620/620 unittest tests; the frozen v0.2.0 release counts
-  remain 607/605. These checks validate code and
+  656/656 unittest tests; the frozen v0.2.0 release counts remain 607/605.
+  These checks validate code and
   artifact integrity; they do not establish that every Garhwali word, transcript,
   or reference is linguistically correct.
 
@@ -413,31 +467,41 @@ outputs and local diagnostics; it launched no paid Hugging Face jobs.
 
 <div align="center">
 
-| `~73 GB` | `113,363` | `154.65 h` | `29,426` |
-| --- | ---: | ---: | ---: |
-| local `data/` workspace footprint* | speech source rows | audio duration | unique text lines |
-
-| `9.33M` | `1.80M` | `115,785` | `1,114` |
-| ---: | ---: | ---: | ---: |
-| text characters | whitespace tokens* | unique segments | lexicon candidates |
-
-| `455` | `1,187` | `5,894` | `104,542` |
-| ---: | ---: | ---: | ---: |
-| English–Garhwali pairs | grammar-source candidates | provider-transcribed VAANI rows | unreviewed SraVaani draft rows |
-
-| `260,199` | `150,065` | `260,199` | `607/607` |
-| ---: | ---: | ---: | ---: |
-| all-data archive rows | public content-profile rows | complete reference-index rows | frozen v0.2.0 pytest passing / collected* |
+<!-- AUTO-CORPUS-METRICS:START -->
+| Metric | Current local working tree |
+| --- | ---: |
+| Canonical source records before exact deduplication | 34,505 |
+| Exact-unique parent texts | 32,072 |
+| Parent text characters | 16,089,764 |
+| Whitespace tokens (engineering count) | 2,935,379 |
+| Exact-unique prepared segments | 151,690 |
+| Segment occurrences before exact deduplication | 163,045 |
+| Text quality tiers (strict / experimental / rights-pending) | 3,786/21,659/1,743 |
+| All-data local package rows (overlapping views) | 300,915 |
+| Public-profile package rows, including redacted catalog (overlapping views) | 155,516 |
+| Public-profile rows with content (overlapping views) | 129,186 |
+| Metadata-only reference-index rows | 300,915 |
+| Reference sources / record-source links | 4,911 / 328,728 |
+| New web candidates before deduplication | 1,818 |
+| Exact duplicate web records skipped | 46 |
+| Exact-new web records (rights-unassessed; local experimental) | 1,772 |
+| New web-source characters before package normalization | 6,758,808 |
+| New web rows in public Hugging Face profile | 0 |
+| Jambu source rows / distinct Garhwali forms | 763 / 738 |
+| Jambu forms already present in the pre-refresh corpus | 738 |
+| Jambu net-new forms this refresh | 0 |
+| Jambu historically new forms versus non-Jambu sources | 710 |
+| Language Library static rows / distinct strings | 180 / 180 |
+| Language Library exact-new strings after cross-corpus deduplication | 164 |
+| Language Library source rows by type | lexicon 131, phrase 33, proverb 10, riddle 6 |
+<!-- AUTO-CORPUS-METRICS:END -->
 
 </div>
 
-*Measured with `du -sh data` on 2026-09-29, the ignored `data/` tree uses about
-73 GB. This is the local workspace
-footprint, including generated artifacts; it is not the size of a single
-redistributable dataset. The 622 pytest / 620 unittest run below was made on
-the current local development tree; the frozen v0.2.0 GitHub release records
-607 / 605. Whitespace tokens are an engineering count from the
-canonical text view, not a linguistic tokenization.*
+These figures describe the current local corpus inventory and published V2.0
+public profile. Package counts include overlapping views. Whitespace tokens are an engineering count, not a
+linguistic tokenization; rights-pending text is kept in the local experimental
+view and does not become public content merely by appearing in a figure.
 
 ## 🧱 How the pipeline fits together
 
@@ -510,6 +574,27 @@ PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
 ### Rebuild the prepared text and audio views
+
+After an online ingestion wave, the shorter, ordered local refresh rebuilds
+corpus views, splits, quality tiers, benchmark/instruction candidates, local
+Hugging Face package previews, the metadata-only reference index, and the
+generated figure block above. It does not upload or publish anything:
+
+```bash
+.venv/bin/python scripts/refresh_corpus_after_ingestion.py
+```
+
+For a new web-source wave, run acquisition/extraction first, then this refresh:
+
+```bash
+.venv/bin/python scripts/ingestion_graph.py run --wave tenth --run-id garhwali-web-YYYY-MM-DD
+.venv/bin/python scripts/refresh_corpus_after_ingestion.py
+```
+
+The `run-id` should be unique for each snapshot. Check/resume an interrupted
+acquisition with `status --run-id ...` and `resume --run-id ...`. For incoming
+PDFs, first use `bash scripts/refresh_incoming_pdfs.sh`, then run the local
+refresh command. Uploading a package remains a separate, explicit release step.
 
 ```bash
 .venv/bin/python scripts/prepare_text_corpus.py
@@ -806,8 +891,8 @@ The 2026-09-28 finding and correction are documented in the
 
 | Stage | Status | Primary artifact | Remaining success condition |
 | --- | --- | --- | --- |
-| **1. Corpus v0.2.0** | Published rights-filtered content: 150,065 overlapping rows; reference index covers 260,199 archive rows, 600 sources, and 283,752 links | `GarhwaliCorpus` | Continue exact deduplication, source coverage, OCR quality work, and row-level rights verification |
-| **2. Benchmark candidate** | 5 task artifacts built; 3/3 external schemas pass; one XORQA train/dev duplicate is flagged; 0/5 independent final-accuracy sets approved | `GarhwaliBench` | Freeze model choices on development data and establish eligible final sets; keep automated-candidate wording |
+| **1. Corpus v2.0.0** | Published rights-filtered content: 155,516 overlapping rows; reference index covers 300,915 archive rows, 4,911 sources, and 328,728 links | `GarhwaliCorpus` | Continue exact deduplication, source coverage, OCR quality work, and row-level rights verification |
+| **2. Benchmark candidate** | 5 task artifacts built; 3/3 external schemas pass; one XORQA train/dev duplicate is flagged; owner approved work across five areas; 0/5 currently eligible for independent final-accuracy claims | `GarhwaliBench` | Freeze models on development data and establish fresh eligible final sets; keep automated-candidate wording |
 | **3. Baseline audit** | Saved ASR outputs are aligned on 269 development rows; translation and retrieval have fresh development-only diagnostics; older test reports have incomplete lineage | `Garhwali Model Report` | Reconcile test manifests and exposure, then use only eligible hash-frozen evaluation sets |
 | **4. Controlled modeling** | Text, generation, translation, retrieval, and ASR experiments are documented; no fine-tuned model is promoted for production | `GarhwaliGPT` plus adapted models | Restore a compatible local runtime or use separately authorized compute; select only on development data |
 | **5. Research experiments** | Baselines and bounded ablations are recorded; external model/runtime prerequisites block some fresh inference | Reproducible ablation suite | Continue low-cost local checks, then run controlled ablations only when weights, dependencies, and eligible evaluation are ready |
@@ -842,10 +927,10 @@ with provenance.
 | Deliverable | Focused effort from the current state | Main dependency |
 | --- | ---: | --- |
 | Literary, cultural, and university additions | Complete | Automated validation |
-| Local corpus package candidate | v0.2.0: 260,199 all-data rows; 150,065 public content rows; 260,199 public reference rows | Full all-data payload is access-controlled; public content redacts 24,565 values and references the full inventory |
+| Corpus release | v2.0.0: 300,915 local all-data rows; 155,516 published public-profile rows; 300,915 public reference rows | Full all-data payload remains local; public content redacts 26,330 catalog values and withholds 216 structured records without compatible public-rights evidence |
 | Benchmark/model research release candidate | **50–75 focused hours / about 6–9 weeks** at 8–10 hours per week | Close Phase 2/3 split and schema gaps; extend Phase 4 manifests; consolidate baselines; quantify uncertainty; finish eligibility labels, cards, and release checks. Missing model weights/dependencies may block fresh inference. |
 | SraVaani experiments | Saved runs are complete; a post-hoc audit matches five runs to the same 112 audio/reference pairs and computes speaker-clustered paired intervals. No candidate shows a reliable held-out improvement, and none is promoted. | All test results remain historical; example-level VAANI pretraining exposure and native reference correctness remain unresolved. Fresh local inference needs compatible dependencies and weights. |
-| Hugging Face datasets | v0.2.0 corpus is public at commit `cb631488`; Speech remains a separate linked dataset | Corpus has 150,065 rights-filtered rows plus 260,199 metadata references, 600 sources, and 283,752 source links. Viewer exposes 15 Parquet splits; all 15 validity/preview checks returned HTTP 200 on 2026-09-29. |
+| Hugging Face datasets | v2.0.0 corpus is public at payload commit `5db26737` and card commit `53a0aff`; Speech remains a separate linked dataset | Corpus has 155,516 rights-filtered rows plus 300,915 metadata references, 4,911 sources, and 328,728 source links. The complete versioned payload is under `releases/v2.0.0/`. |
 | Native language review and dialect annotation | Deferred; separate effort not included in the estimate above | Garhwali-speaking reviewers and a review protocol |
 | Sellable text-first API MVP | 30–60 additional focused hours / roughly 1–2 full-time weeks | Dataset/schema freeze, hosting, authentication, billing, and monitoring |
 | Translation and ASR beta | Additional weeks after the benchmark candidate | Better references and measured quality gains; production claims require language-aware evaluation |

@@ -1,6 +1,6 @@
 # Garhwali public-source search catalog
 
-Verified through 2026-09-29. This is the durable record of the public-source search
+Verified through 2026-09-30. This is the durable record of the public-source search
 performed for the language-lab corpus. A source is listed even when it was
 catalogued but not copied into a training layer. Public visibility alone was
 not treated as permission to redistribute text, audio, images, or user posts.
@@ -9,6 +9,8 @@ not treated as permission to redistribute text, audio, images, or user posts.
 
 | Family | Source and access point | Result | Disposition |
 | --- | --- | ---: | --- |
+| Lexicon, V2 revalidation | [Jambu Garhwali reflex list](https://neojambu.herokuapp.com/languages/Garh) | 763 source rows / 738 distinct forms | `corpus/jambu_garhwali.jsonl` (Git-ignored); all 738 already occur in the current pre-refresh corpus, so **0** new rows this update. The earlier import contributed 710 forms novel versus non-Jambu sources; CC BY 4.0. |
+| Lexicon, V2 addition | [Garhwali Language Library 1.0.0](https://github.com/infoakshatsinghbisht-eng/garhwali-language-library), pinned commit `46564fab21299512c104e7b0cbf8bd3064285efd` | 180 static entries / 180 unique strings; 16 exact overlaps / **164 net-new** | `corpus/garhwali_language_library.jsonl` (Git-ignored); words, phrases, proverbs and riddles under MIT. Generated inflections excluded; no native review and not recommended training data. |
 | Speech transcripts | [Meta Omnilingual ASR](https://huggingface.co/datasets/facebook/omnilingual-asr-corpus), `gbm_Deva` | 2,927 | `corpus/meta_omni.jsonl`, CC BY 4.0 claim retained |
 | Speech aggregation | [Indic Dialect ASR](https://huggingface.co/datasets/grushaaaaa/indic-dialect-asr), pinned revision `ca33c7c2e8ee72e9edc414cb37d1bf0903a3f9ae` | 7,823 | `experimental/indic_dialect_asr_gbm.jsonl`; 1,930 rows cite Meta and 5,893 cite Vaani; active for local experiments with component-lineage and consent flags retained |
 | Official Vaani evidence | [Project Vaani](https://vaani.iisc.ac.in/), [full dataset](https://huggingface.co/datasets/ARTPARK-IISc/Vaani), [transcription subset](https://huggingface.co/datasets/ARTPARK-IISc/Vaani-transcription-part) | 110,410 main recordings plus 26 transcription-only recordings; 5,894 supervised utterances / 8.803724 hours | Access was approved and the pinned Garhwali collection was completed on 2026-09-09. All audio, referenced images, manifests, provenance and hashes are under ignored `data/vaani/`; see `research/vaani-collection-completion-2026-09-09.md` |
@@ -23,6 +25,7 @@ not treated as permission to redistribute text, audio, images, or user posts.
 | Language identification | [PahariLI](https://github.com/rachanagusain/PahariLI) | 15,000 Garhwali labeled sentences | `experimental/paharili_gbm.jsonl`; active for local experiments, with the distinction between repository license and underlying sources retained |
 | Phrase translations | [hikinegi Garhwali-Dataset](https://huggingface.co/datasets/hikinegi/Garhwali-Dataset) | 53 | `experimental/hikinegi_garhwali.jsonl`; active locally with missing license/authorship flags retained |
 | Learning pages | [eUttaranchal lessons 1–3](https://www.euttaranchal.com/culture/learn-garhwali.php), [LanguagesHome](https://www.languageshome.com/English-Garhwali.htm), and [Omniglot](https://omniglot.com/writing/garhwali.htm) | 189 source rows / 139 additions after corpus-wide exact deduplication | `experimental/web_learning_garhwali.jsonl`; 185 Romanized and 4 Devanagari rows, source URLs and raw-response hashes retained, no open license stated |
+| Web literature and folk-text candidates | [Uttarakhand e-Magazine Blogger feed](https://e-magazineofuttarakhand.blogspot.com/), [Jani Mayedi Tani Jayedi](https://uttarakhandkhabarsaar.in/jani-mayedi-tani-jayedi-a-garhwali-short-story/), [Khuded Bhajed](https://uttarakhandkhabarsaar.in/khuded-bhajed-a-garhwali-short-story/) | 6,844 Blogger feed entries scanned; 1,816 title-selected Blogger pages plus 2 story pages; 46 exact duplicate rows skipped; 1,772 exact-new page records / 6,758,808 source characters | `experimental/garhwali_web_goldmines.jsonl` (Git-ignored); local experimental only, rights unassessed, language not confirmed. Pipeline report: [`garhwali-web-goldmines-2026-09-30.md`](../../research/garhwali-web-goldmines-2026-09-30.md) |
 | Web text | [DCAD-2000](https://huggingface.co/datasets/openbmb/DCAD-2000) Garhwali tree | 119 | `experimental/dcad_gbm.jsonl`; active locally with Common Crawl component-rights flags retained |
 | Web text | [MADLAD-400](https://huggingface.co/datasets/allenai/MADLAD-400) `gbm` clean partition, pinned revision `9d886a76bd8fa69b294f2dd3843dacb8388ee5a5` | 137 upstream documents / 18 exact-novel | 119 DCAD duplicates skipped; novel documents stored in `experimental/madlad400_gbm_clean.jsonl`; source-rights flags remain attached |
 | Lexicon | [PanLex mirror](https://huggingface.co/datasets/lbourdois/panlex), filtered `gbm` | 13 forms | `restricted/panlex_gbm.jsonl`; official current PanLex page is CC BY-NC-SA 4.0, applied conservatively |
@@ -62,19 +65,19 @@ not treated as permission to redistribute text, audio, images, or user posts.
 | Hugging Face mirrors | `VarunGumma/IGB_*`, `mteb/IndicGenBenchFloresBitextMining`, `mlexplorer008/hin_dialect_classification`, MMS ULAB mirrors, Omnilingual mirrors, Vaani derivatives, `somu9/gbm-tokenizer` | Mirrors or gated derivatives of already tracked sources. They were checked for duplication and not counted twice. The mlexplorer dataset mirrors the already retained 128 Garhwali HinDialect rows; the tokenizer is gated and exposes no training corpus. |
 | Audio | Common Voice, FLEURS, MMS/ULAB, Vaani, `aoiandroid/mms-multilingual-audio-5to30min` | Vaani is now fully collected locally. Common Voice and FLEURS have no Garhwali config; MMS/YouTube derivatives require source-level duplication and rights review. |
 | Kaggle | Indian Language Identification and Samanantar listings | Public listing pages were checked; no verified Garhwali subset with a downloadable rights statement was established in this pass, so no unauthenticated download was attempted. |
-| Web scraping | GarhwaliLanguage, Garhwalii, Bol Pahadi, Pahadiaavaj, Uttarakhand e-magazine, Vijay Madhur, Kavitakosh, StoryWeaver | Wayback/CDX inventories and landing pages are saved. Sampled pages assert author or poet copyright; they remain discovery references pending permission. |
+| Web scraping | GarhwaliLanguage, Garhwalii, Bol Pahadi, Pahadiaavaj, Vijay Madhur, Kavitakosh, StoryWeaver; Uttarakhand e-Magazine and Khabar Saar were sampled more deeply in wave ten | Wave ten added 1,772 exact-new local experimental page records from the e-Magazine and two Khabar Saar short stories. Their rights remain unassessed and Garhwali identity is unverified; they are not public-HF text. Other landing pages remain discovery references pending source-specific content and reuse review. |
 | Gated corpora | [GlotLID corpus](https://huggingface.co/datasets/cis-lmu/glotlid-corpus), [Chaashini](https://huggingface.co/datasets/kapturecx/Chaashini) | Chaashini remains the sole verified VAANI-like gate and currently advertises only one 2.2-second Garhwali clip. GlotLID remains gated, but its current tree exposes no `gbm`/Garhwali payload. |
 | Current research and models | [SraVaani 1.0](https://vaani.iisc.ac.in/models/sravaani), [Dhasmana et al. 2026](https://aclanthology.org/2026.vardial-1.12/), [Batra et al. 2026](https://arxiv.org/abs/2608.10670), [Garhwali-ASR repository](https://github.com/soodashima91/Garhwali-ASR) | SraVaani already supports Garhwali in a 65-language ASR model. The papers and reproducibility metadata use official gated VAANI splits or publish aggregate results, so they inform baseline design rather than adding independent training text. |
 | Institutional text | [IGNCA oral-tradition volume](https://ignca.gov.in/eBooks/100007.pdf), [Central Hindi Directorate *Bhasha* 2019](https://www.chdpublication.education.gov.in/ebook/pdf/Bhasha%20Sep-Oct%202019.pdf) | Both contain valuable Garhwali linguistic or lexical material but no verified open text license. IGNCA was saved reference-only; the Directorate request timed out and remains catalog-only. |
-| Institutional language corpus | [CIIL/LDC-IL](https://www.ldcil.org/) Garhwali Parallel Text Corpus listing | Product listed; no text ingested | The accessible official site lists a Garhwali parallel-text product, but the language-specific file, price, and reuse terms were not verifiable from the public listing during this pass. Treat as an acquisition request; do not scrape or infer permission. |
+| Institutional language corpus | [CIIL/LDC-IL released datasets](https://www.ldcil.org/releaseddataset) | Official catalogue explicitly lists “Garhwali Parallel Text Corpus: Linguistic Features and Structures”; no text ingested | The public catalogue establishes a product listing, not access to its Garhwali files, sample, price, or reuse terms. Treat as an acquisition request; do not scrape or infer permission. |
 | Large web-corpus partitions | FineWeb-2, GlotCC V1, HPLT 2.0 Cleaned | Current split indexes (3,740 / 1,255 / 191 splits) exposed no separate `gbm`, `garh1243`, or Garhwali partition. |
 
 ## Exact deduplication
 
 [`dedup-report.json`](../../outputs/online-ingestion-2026-09-07/dedup-report.json)
 computes SHA-256 over each `text_normalized` value across all layers. The
-current snapshot has 33,156 source records and 31,052 exact unique normalized
-texts. The 2,104 repeated rows are retained only where source provenance is
+2026-09-07 search snapshot had 33,156 source records and 31,052 exact unique
+normalized texts. The 2,104 repeated rows were retained only where source provenance is
 useful; the OPUS mono export's 60 repeated lines were removed before corpus
 promotion. The largest cross-source overlap is the ASR aggregation: 1,903
 unique texts overlap Meta, and one Tatoeba sentence overlaps PahariLI. Four
@@ -94,6 +97,18 @@ exact-new strings versus the prior corpus layers. Its report is
 and its ignored checksum/count artifact is produced by
 `scripts/audit_garhwali_expansion.py`.
 
+The 2026-09-30 tenth web wave scanned 6,844 Blogger feed entries and two
+Garhwali-labelled short-story pages. It selected 1,818 candidate pages, skipped
+46 exact duplicate rows, and added 1,772 exact-new records (6,758,808
+characters) to the local all-data candidate pipeline. This is page-level
+candidate volume, not a confirmed-Garhwali count: the automated language pass
+keeps all 1,772 in low-confidence or unverified buckets. Rights are
+unassessed, so the full text stays in the Git-ignored local experimental layer;
+the public Hugging Face profile receives no new full-text rows. See the
+[dated wave report](../../research/garhwali-web-goldmines-2026-09-30.md) for
+source, deduplication, review, and pipeline details. Current corpus metrics
+are generated in the repository [README](../../README.md).
+
 ## Rate limits and blocked endpoints
 
 The request ledger is [`requests.jsonl`](requests.jsonl). Wiktionary's 429 was
@@ -109,6 +124,26 @@ was treated as a reason to cross an access boundary.
 The Heidelberg scholarly-book host returned an Anubis JavaScript proof-of-work
 page. Its CC BY-SA metadata was catalogued, but the response was not treated as
 the chapter and the challenge was not automated around.
+
+## Follow-up source sweep — 2026-09-30
+
+| Lead checked | Verified public evidence | Corpus decision |
+| --- | --- | --- |
+| [LDC-IL Garhwali Parallel Text Corpus](https://www.ldcil.org/releaseddataset) | The Ministry of Education/CIIL catalogue lists a Garhwali parallel-text product; the public page does not expose its data payload or applicable component terms. | Acquisition lead only. Request sample, price, source provenance, and model-training/redistribution terms before importing. |
+| [Uniyal English–Garhwali SMT study](https://www.pramanaresearch.org/gallery/prj-p431.pdf) and [HNBGU CV](https://www.hnbgu.ac.in/sites/default/files/2023-09/Arushi_Uniyal_CV_2023.pdf) | Research material describes 40,000 monolingual and 30,000 parallel examples / 70,000 digitized sentences; no dataset payload or license was located. | High-priority acquisition request. Deduplicate by source and text if authorized; do not treat paper counts as available rows. |
+| [Hindwi Garhwali dictionary](https://www.hindwidictionary.com/garhwali) and [HimLingo dictionary](https://himlingo.com/dictionary/) | Public dictionary pages/catalogue describe Garhwali vocabulary. A machine-readable licensed export was not found; HimLingo's terms prohibit unauthorized scraping. | No scraping or text ingestion. Request permission/export; keep as source-discovery references. |
+| [Garhwali UKC lexicon](https://datascientiafoundation.github.io/LiveLanguage/datasets/gbm-ukc-lexicon-/) | The catalogue reports one word/synset and a CC BY-NC-SA license, with Wiktionary/WordNet provenance. | Too small for breadth; noncommercial terms do not support this public release. No text copied. |
+| [Community Garhwali/Kumaoni dictionary app claims](https://www.reddit.com/r/PahariTalks/comments/1w1pnrn/would_you_pay_199_for_one_time_for_a_garhwali/) | A developer post claims a 20,000-plus mixed Garhwali/Kumaoni vocabulary and literary items, but exposes no dataset download, provenance, or license. | Unverified acquisition lead. Request source-level data and rights; do not count claims as records. |
+| [LibreOffice Weblate Garhwali project](https://translations.documentfoundation.org/projects/libo_ui-26-2/dictionarieste_in/gbm/) | The live project has one string and 0% translated; it is not a substantive Garhwali text corpus. | No useful language text to ingest. |
+| [Endangered Languages Project Garhwali profile](https://elcat.colo.hawaii.edu/lang/5632) | Search listings expose language status, dialect labels, and bibliographic metadata, not Garhwali sentence or lexicon payloads; the live profile timed out during direct access. | Reference/metadata lead only; no corpus text ingested. |
+
+This sweep found no second downloadable source with both verifiable Garhwali
+text and terms compatible with public redistribution. The only net-new
+machine-readable source in this refresh remains the 164-string Garhwali
+Language Library addition above. The 53 Hikinegi translation pairs were
+rechecked at pinned revision `1f4c1f45d5dd788b82a153510cd2cb2bade7a6`:
+all 53 target strings already occur in the corpus and its Hub card has no
+license statement, so it contributes zero new public rows.
 
 The claim-level evidence, confidence and remaining gaps are in
 [`source-audit-2026-09-08.md`](source-audit-2026-09-08.md).

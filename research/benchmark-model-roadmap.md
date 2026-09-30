@@ -1,10 +1,86 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Status snapshot:** 2026-09-28
+**Status snapshot:** 2026-09-30 (generation scorer and current prediction lineage refreshed)
 **Scope:** GarhwaliBench and the model-research suite in this repository
-**Execution:** Local-first; no paid Hugging Face Jobs. Native-speaker review and dialect annotation remain deferred at the owner's direction.
+**Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 
 This is the working plan for moving from useful but mixed-history experiments to a reproducible, accurately described benchmark and model-research program. It records what exists, what evidence permits us to say, what happens next, the tools to use, and the gate for each phase.
+
+## Current position and remaining work — 2026-09-30
+
+The public **GarhwaliCorpus v0.2.0** release is complete for its rights-filtered
+profile. That release does not freeze the benchmark or make model results
+independent. On 2026-09-30, the owner approved active work toward independent
+final-accuracy results across language modeling, translation, retrieval,
+generation, and ASR. That approval sets the work priority; current evidence
+eligibility remains 0/5.
+
+| Workstream | Current verified position | Remaining gate |
+| --- | --- | --- |
+| Benchmark artifacts | Five candidate task artifacts; three external schemas cover 3,847 records. | Source/model exposure and reference suitability still limit independent claims. |
+| Benchmark contract | Local validator/export passes across eight views and 14,703 view rows; ASR corpus-WER/CER, generation EM/chrF2, and retrieval ranking policies are explicit in tested scorers. | Freeze the complete metric/task contract; finish rights and release review. |
+| Split integrity | Recommended text candidate has 9,486 train / 454 validation / 402 test; its test mirrors the internal text view. All 10,342 candidate IDs map to source segments covering 3,246 parent-text hashes with zero parent-hash crossings; 3,072 duplicate-component IDs also stay within one split. The 2026-09-30 model-lineage scan additionally finds 15 exact text overlaps from recommended train to instruction test and 29 to instruction validation; Meta Omnilingual has 4 train/test audio and 4 train/test text overlap groups, plus 27 train/validation text overlap groups. | Retain and flag overlapping rows. The exact cross-view matches are exposure risks unless model-training lineage proves non-use; the direct Meta and expanded-human ASR train/evaluation duplicates are not held-out. Coarse collection-file pointers span splits (9/11) and cannot establish document-level leakage; semantic/paraphrase and checkpoint exposure remain open. |
+| Evaluation and baselines | Hash-linked QA, summary, translation, BM25, ASR, and generation evidence exists. Saved generation outputs were reconciled to 130 of 320 current validation rows and rescored with the shared scorer; the current 402-row text test is historical/open. | Fresh neural inference needs model runtimes/weights; score only matched dev rows and do not reselect on used test sets. |
+| Independent evaluation | Owner approved work across all five areas; evidence eligibility remains 0/5. | Fresh frozen task sets, defensible source/model exposure, and suitable reference evidence are still required. |
+| Publication | Corpus and speech datasets are public; benchmark v0.2 remains local-only (`public_upload_allowed=false`; all 14,703 view rows currently carry `public_release_cleared=false`). | Resolve source/component rights and finish the metric/reproducibility gate before uploading benchmark payloads. |
+
+### Ordered work still open
+
+1. **Phase 2 — split and contamination (partially complete):** exact, nested,
+   cross-language-string, source-page, parent-document, and local source-file
+   checks are recorded. They identify one exact external train/dev repeat,
+   broad source families, four same-split near-text candidates, and 138 retained
+   XORQA diagnostic labels. The 2026-09-30 lineage scan finds 15 exact text
+   overlaps from recommended training to instruction test and 29 to validation;
+   Meta Omnilingual has 4 train/test audio and 4 train/test transcript-text
+   groups plus 27 train/validation transcript-text groups. Expanded-human ASR
+   train also overlaps experimental test in 338 audio and 575 transcript-text
+   groups, and validation in 397 audio / 683 text groups. Keep all rows and
+   flag affected evaluations; semantic/paraphrase coverage and upstream model
+   exposure remain unresolved.
+2. **Phase 3 — benchmark contract (draft validated, not release-frozen):** eight
+   views and 14,703 rows pass the structural validator. ASR corpus and
+   per-record WER/CER plus generation exact-match/chrF2 are integrated in the
+   shared scorer; retrieval rank/tie/zero-score policies are explicit. Complete
+   release evidence, rights/use decisions, and model exposure remain open.
+3. **Phases 4–5 — reproducibility and baselines (substantial historical work
+   recorded):** task-level QA, summary, translation, retrieval, LM, generation,
+   and ASR artifacts are inventoried. Current text aggregate evidence is
+   reconciled to 402/402 test rows. New NLLB, dense retrieval, and SraVaani
+   inference remain blocked in the project environment by missing compatible
+   local runtimes/weights. No new paid jobs were launched in this pass; do not
+   rescore historical tests.
+4. **Phases 6–7 — bounded research and uncertainty (partially complete):**
+   saved development uncertainty and failure analyses exist for translation,
+   XORQA retrieval, generation, and ASR. Coverage remains task-specific; no
+   fresh model inference was run in this refresh, and remaining source-cluster
+   analyses depend on reliable lineage.
+5. **Phases 8–9 — eligibility and release (labels reconciled; local cards
+   prepared):** task areas remain candidate/development/historical/unresolved;
+   the owner approved work across all five areas, while evidence eligibility
+   remains 0/5. The local task-card pack documents
+   the suite but cannot authorize upload: `public_upload_allowed=false` and
+   rights are not cleared by the adapter.
+6. **Phase 10 — maintenance (policy drafted, operational gate open):** add
+   sources only through versioned updates with provenance, overlap checks,
+   regression validation, and unchanged prior-release snapshots. No new source
+   ingestion is part of this benchmark refresh.
+
+### Current blockers and explicit deferrals
+
+- Fresh NLLB, dense IndicBERT retrieval, and SraVaani inference need compatible
+  local runtimes and checkpoint assets. The project environment lacks these
+  dependencies; this refresh did not start a new job. Any future paid run must
+  have a verified balance, a hard runtime cap, and a per-run cost ceiling.
+- Prior evaluation and undocumented upstream pretraining exposure cannot be
+  undone; affected results remain historical or unresolved.
+- Native-speaker review and dialect annotation are deferred at the owner's
+  direction. They are not prerequisites for internal automated diagnostics, but
+  their absence prevents native-validated or gold-benchmark claims.
+- The v0.2.0 release verification historically reported 607/607 pytest and
+  605/605 unittest passing. The current 2026-09-30 V2 working-tree run passed
+  656/656 unittest tests; historical snapshots later in this file are not
+  current counts.
 
 ## 1. What we are building
 
@@ -19,12 +95,12 @@ Native or dialect review is not a prerequisite for internal automated experiment
 
 ## 2. Honest status at this snapshot
 
-The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md](benchmark-research-status-2026-09-25.md); this translation workstream has a [2026-09-26 dev-only refresh](translation-quality-2026-09-26.md), the ASR tasks have a [2026-09-26 baseline consolidation](asr-baseline-consolidation-2026-09-26.md), and the living issues are in the [issues and improvement plan](issues%26improvement%20plan.md). Current split and prediction lineage is in [model-accuracy-lineage-2026-09-28.md](model-accuracy-lineage-2026-09-28.md), with the full [task-result eligibility report](task-result-eligibility-2026-09-28.md); the 2026-09-24 lineage report is a historical snapshot.
+The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md](benchmark-research-status-2026-09-25.md), with a current 2026-09-29 refresh at its top; task cards are in [the local v0.2 draft card pack](garhwali-bench-v0.2-draft-cards.md). Translation, ASR, and detailed eligibility evidence remain in the linked dated reports. The fresh machine-readable model-lineage audit is generated locally at `data/processed/evaluation/garhwali_bench/model-accuracy-lineage-2026-09-29.json`; do not publish that file because it contains speaker identifiers.
 
 | Area | Verified state | What the evidence supports |
 | --- | --- | --- |
 | Benchmark artifacts | Five candidate artifacts exist: FLORES, CrossSum, XORQA, internal text, internal ASR. Three external schemas pass validation across 3,847 records. | A machine-checkable candidate suite exists; it is not yet a fully independent or native-validated benchmark. |
-| Internal text | 398 candidate rows; zero exact overlap against the 7,490-row recommended Garhwali training view. Character-bigram perplexity is 14.122106 on that candidate versus 17.000058 for the broad 106,915-row view, using the same deterministic scorer. | A controlled data/modeling floor, not neural-model accuracy or proof that all training rows are correct. |
+| Internal text | 402 candidate rows; exact test text/IDs match the recommended split's 402-row test. There is zero exact parent-document/source-file split crossing in the recommended split. Current character-bigram perplexity is 14.397995 using the 9,486-row train view. | This exact test was aggregate-scored, so it is historical/open evidence, not independent accuracy. |
 | Language modeling | IndicBERTv2's 4,096-step continuation has mean validation cross-entropy 5.089108 across three seeds. | Validation loss only; tokenizer and model differences limit comparisons, and no independent final set is approved. |
 | Translation | FLORES copy and translation-memory baselines cover 997 dev and 1,012 historical test rows. A shared scorer re-ran the saved 997-row dev translation-memory predictions and exactly reproduced the old report; a 2,000-resample paired record bootstrap compared them with source-copy. | Dev-only diagnostic: BLEU delta +0.01892665 (95% CI [0.01411908, 0.02385223]); chrF2 delta +0.23002697 ([0.22559907, 0.23435906]). The translation memory uses other dev targets, and intervals do not account for source-family clusters. It is not independent translation accuracy. The tiny NLLB Hindi-token proxy remains exploratory. |
 | Retrieval | XORQA has 539 test questions with prior predictions; best saved IndicBERTv2 Recall@10 is 0.103896. The 500-query dev-only BM25 rerun gets 0.8% word and 1.0% character Recall@10; source-page-clustered 95% intervals are 0.2–1.6% and 0.2–2.0%, respectively. English-oracle BM25 gets 85.2% (clustered interval 82.1–88.3%). | A historical test baseline and clear Garhwali-to-English retrieval gap. Character-vs-word paired intervals touch zero; this dev result does not establish a reliable winner. Dense dev inference is blocked by missing local runtime/weights; the test is not fresh. |
@@ -34,8 +110,8 @@ The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md]
 | ASR fine-tuning: expanded human transcripts | Training used 5,513 hash-filtered human-transcript clips (8.112 hours); 3,886 rows lacked complete speaker identity. Validation WER/CER are 42.209%/18.302%. Post-hoc audit matches all 112 test audio hashes and cleaned references; test WER/CER are 43.289%/17.396%. | Historical paired deltas vs base: WER +0.527 pp (95% interval −0.710 to +1.518); CER −0.210 pp (−0.949 to +0.366). Both include zero; no promotion. Training speaker metadata is incomplete and upstream exposure unresolved. |
 | ASR references and independence | VAANI validation/test predictions already exist. SraVaani's model card identifies VAANI as an upstream source and reports 31,255 hours of VAANI pretraining plus about 31,270 hours of labeled fine-tuning from VAANI and other open speech data; it does not expose example-level overlap. | VAANI results are development/historical evidence, not independent estimates of generalization. Do not rescore test to choose a model. |
 | TTS | Speech manifests and readiness checks exist; no TTS system has a valid Garhwali quality result. | Readiness and pair-integrity only. MOS or naturalness needs listeners and cannot be inferred from automated checks. |
-| Independent final accuracy | Zero of five task areas are approved for independent final-accuracy claims: language modeling, translation, retrieval, generation, and ASR. | There is no defensible single project-wide model-accuracy score today. |
-| Review and tests | Native adjudications remain deferred. Latest pytest run: 584/584 passed; documented unittest runner: 582/582 passed. | Run `PYTHONPATH=.venv/lib/python3.12/site-packages:scripts pytest -q`; passing checks do not certify language labels. |
+| Independent final accuracy | Evidence eligibility is 0/5 across language modeling, translation, retrieval, generation, and ASR; the owner approved active work toward each area on 2026-09-30. | There is no defensible single project-wide model-accuracy score today; existing sets are reused or model exposure is unresolved. |
+| Review and tests | Native adjudications remain deferred. Fresh 2026-09-29 unittest results are listed in the verification log; prior v0.2.0 release counts are historical. | Test passes establish code/integrity properties only, not linguistic correctness. |
 
 ### Key test-history rule
 
@@ -54,7 +130,7 @@ Saved outputs for the 61-trial, six-decoder, and expanded-human runs are under *
 7. **Separate task metrics.** WER, BLEU, Recall@10, cross-entropy, and OCR CER measure different behaviors. Never average them into a single accuracy score.
 8. **Show uncertainty and slices.** Report row count and coverage with every metric; include paired confidence intervals where sample size allows. Cluster resampling by speaker, source work, or question family where examples are dependent. Mark small slices as descriptive.
 9. **Keep quality and rights separate.** Rights determine redistribution; quality determines fitness for a task. A permissive license does not certify language quality, and uncertain rights do not mean the local source record should be erased.
-10. **No paid cloud in this plan.** Use existing local artifacts and installed tools. If weights, compatible dependencies, or local compute are absent, record a preflight blocker and stop before downloading or launching paid compute.
+10. **Bound compute spend.** Prefer existing local artifacts and installed tools. Before any paid job, verify available credit, set an explicit runtime timeout and cost ceiling, run jobs sequentially, and stop at the cap. If current balance cannot be verified, do not launch.
 
 ## 4. Benchmark data contract
 
@@ -75,7 +151,7 @@ Every prediction should carry benchmark record ID, input hash, raw prediction, s
 
 | Task | Candidate data and baseline | Primary metrics | Required diagnostics and caveats |
 | --- | --- | --- | --- |
-| Text modeling | Recommended 7,490-row Garhwali training view; 398-row internal candidate; character-bigram baseline and IndicBERTv2 continuation. | Token cross-entropy/perplexity within the same tokenizer/model; character bits-per-character for a fixed character model. | Record tokenizer and token fertility. Perplexities from different tokenizers are not fair direct comparisons. Break down by source and script. |
+| Text modeling | Current recommended 9,486-row Garhwali training view; 402-row internal candidate/test mirror; character-bigram baseline and IndicBERTv2 continuation. | Token cross-entropy/perplexity within the same tokenizer/model; character bits-per-character for a fixed character model. | Current text test was aggregate-scored (PPL 14.397995), so it is historical/open; record tokenizer and token fertility. Perplexities from different tokenizers are not fair direct comparisons. Break down by source and script. |
 | Machine translation | Garhwali-to-English FLORES candidate; copy-source and development translation-memory baselines; existing NLLB Hindi-token proxy. | SacreBLEU with full signature and chrF2; exact match only for canonical-answer tasks. | Report direction, tokenization, normalization, references, and copy baseline. FLORES test is already scored. The 32-row Hindi proxy is exploratory. |
 | Cross-lingual summarization | CrossSum candidate. | chrF2 and ROUGE-L; BLEU optional only for continuity. | Add source/target copy, length ratio, repetition, empty/malformed output, language checks. Verify source-family split isolation. |
 | Question answering | XORQA candidate. | Exact match and token F1 under pinned normalization. | Separate answer generation from evidence retrieval; record answerability and evidence passage. Preserve and flag the known exact train/dev repeat; neither repeated row is in test. |
@@ -377,8 +453,9 @@ parameters and per-seed adapter hashes are unavailable. Details are in the
 
 Fresh ASR inference/training, IndicBERT retrieval, masked-LM, runtime locks,
 and representative local model reruns remain before Phase 4 is complete. The
-saved mT0 outputs now have post-hoc manifests, but no fresh generation scoring
-runner or per-seed checkpoint hashes are available.
+saved mT0 outputs now have post-hoc manifests and shared validation scoring;
+per-seed checkpoint hashes remain unavailable. See the
+[2026-09-30 generation scoring report](generation-scoring-integration-2026-09-30.md).
 
 ### Phase 5 — Reproduce and consolidate baselines
 
@@ -547,12 +624,12 @@ Use these labels:
 **Current assignments**
 - The configured split decisions and saved test artifacts were reconciled on 2026-09-28; see the [eligibility report](task-result-eligibility-2026-09-28.md) and [fresh lineage audit](model-accuracy-lineage-2026-09-28.md).
 - FLORES test (1,012 rows), XORQA test (539), VAANI ASR test (112), and instructions test (260; 134 exact saved-prediction matches) are historical-only.
-- The 398-row internal text test is historical-only because the exact rows were scored by the aggregate character-bigram baseline, despite having no row-level prediction artifact.
+- The current 402-row internal text test is historical-only because the exact rows were scored by the aggregate character-bigram baseline, despite having no row-level prediction artifact. The new lineage implementation verifies manifest hash, text input hash, exact IDs/text, count, and row-set fingerprint before making that assignment.
 - CrossSum test (500) and Meta Omnilingual test (292 internally safe of 300) remain unresolved because checkpoint exposure is unknown; eight Meta rows are excluded from that evaluation view by internal safety flags but remain preserved.
 - CrossSum's 100-row dev references are available for development, but no saved prediction is reconciled to that split. FLORES/XORQA development results and VAANI/Meta/instruction validation results are development-only. The complete counts and prior-use evidence are in the eligibility report.
 - No task result is independent-final eligible; native-reviewed count remains zero at the owner's direction.
 
-**Status (2026-09-28):** configured split/result labels reconciled and covered by regression tests. Phase 9 task cards and the final research report remain. No result is called blind, final, or native-validated without meeting that definition.
+**Status (2026-09-29):** configured split/result labels and aggregate text-score history are reconciled and covered by regression tests. Six local review cards now document the candidate suite. Rights, exposure, and reproducibility gates still prevent public benchmark release; no result is called blind, final, or native-validated without meeting that definition.
 
 ### Phase 9 — Publish reports, benchmark cards, and reproducible artifacts
 
@@ -608,7 +685,7 @@ If every test reference is published openly, that is a valid open-benchmark choi
 | Tool | Role | Decision |
 | --- | --- | --- |
 | Python 3, JSONL, hashlib, pathlib | Deterministic manifests, hashes, task runners, reports | Use now; matches the repository. |
-| unittest and existing CI | Regression checks for splits, metrics, provenance, report rules | Use now; latest run: pytest 584/584, documented unittest 582/582. |
+| unittest and existing CI | Regression checks for splits, metrics, provenance, report rules | Current 2026-09-30 V2 review: 656/656 unittest; v0.2.0 release-time counts 607/605 are historical. |
 | Draft v0.2 contract validator | Validate counts, hashes, normalization, references, provenance, rights, splits, and local ASR hashes | Use now; `scripts/validate_benchmark_v02.py` passes against eight views. |
 | Existing benchmark/lineage scripts | Build and audit current task files and prior-use ledger | Reuse; extend for a concrete missing check. |
 | PyTorch, Transformers, PEFT | Local IndicBERT/mT0 inference and adaptation | Only after local preflight; the project `.venv` lacks these packages, while the optional cached runtime has PyTorch/Transformers but not PEFT. |
@@ -619,20 +696,62 @@ If every test reference is published openly, that is a valid open-benchmark choi
 | EleutherAI lm-evaluation-harness | Standard causal-LM tasks it supports | Optional reference; do not force it onto custom low-resource tasks or lineage-sensitive rows. |
 | BEIR/MTEB methodology | Retrieval task separation and Recall/MRR/nDCG metrics | Use as design references; project data/source grouping remain authoritative. |
 | LangChain/LangGraph | App orchestration and tool workflows | Not needed for scoring, split audits, training reproducibility, or metrics. Deterministic scripts are simpler and auditable. |
-| Hugging Face Hub/Jobs | Model/dataset hosting and optional remote compute | No paid jobs in this roadmap. Hub publication is a later rights-reviewed release action. |
+| Hugging Face Hub/Jobs | Model/dataset hosting and optional remote compute | Use for a new model run only after current balance, exact task/configuration, timeout, and cost ceiling are verified. Hub publication remains a separate rights-reviewed release action. |
 | LLM-as-judge | Possible exploratory triage | Not a primary metric; Garhwali judge capability and bias are not calibrated here. |
 
-## 9. Immediate work order from this snapshot
+## 9. Immediate work order from the 2026-09-29 refresh
 
-1. **Complete — correct the status record.** The 61-trial, six-decoder, and expanded-human SraVaani outcomes are recorded; the fine-tunes completed and were not promoted.
-2. **Complete — refresh integrity evidence.** The benchmark builder, final release audit, and lineage audit were rerun; hashes and test output are in the status report. Existing test results were not rescored.
-3. **Complete — run the no-download local preflight.** The active project environment lacks model dependencies and SraVaani base weights. No packages, weights, data, or paid compute were obtained.
-4. **In progress — close Phase 2 split/source-family gaps.** Exact nested-field, cross-language-label exact-string, and XORQA page-title scans are complete for configured fields. The historical text split had 50 parent-document crossings (1,523 rows); the corrected local candidate has zero and is input-hash linked. CrossSum exact source/target URLs do not repeat across splits; FLORES lacks row-level source URLs. The XORQA source-page audit found 54 page families (134 rows) crossing splits; 32 have distinct context passages. The current retained-row overlay at `data/processed/evaluation/garhwali_bench/benchmark_usage_labels.jsonl` flags 138 records for open diagnostics. Four same-split near pairs are documented in the [adjudication report](benchmark-overlap-adjudication-2026-09-26.md), with details in the [nested-overlap review](benchmark-nested-overlap-review-2026-09-27.md), [source-page review](benchmark-source-page-families-2026-09-28.md), and [parent-safe split audit](benchmark-parent-safe-split-audit-2026-09-28.md). Remaining work is semantic/paraphrase and cross-language analysis, better source metadata where missing, and candidate evaluation-eligibility review; exact strings cannot clear those risks. No source row was removed.
-5. **In progress — v0.2 schema/export.** The validator and deterministic adapter cover eight views and 12,622 rows; the refreshed draft manifest SHA-256 is `2ca84a51cf916d336d7a4e92c5fb34f313b19c72900b7b47f6fa79728e82e25e`. QA, summary, translation, BM25 retrieval, post-hoc ASR, and saved mT0 validation predictions have hash-linked manifests. The XORQA adapter now carries exact source-page family hashes and the expanded 138-row usage overlay. Next, extend manifests/preflight to fresh ASR runs and IndicBERT retrieval/masked-LM; recover original text only where provenance verifies it; finish semantic/cross-language review and source-cluster uncertainty for translation and other tasks (the XORQA retrieval cluster interval is now complete); then freeze v0.2. The mT0 selected-ID hash matches its training report, but original sample parameters and per-seed adapter hashes are not recorded.
-6. **Finish Phase 5 baseline consolidation** without rescoring historical tests. NLLB, dense-retrieval, and fresh SraVaani inference require local prerequisites that are currently missing.
-7. **Continue validation-safe experiments** only after the relevant local checkpoint/runtime preflight passes. Pre-register each experiment and stop when split/runtime checks fail.
-8. **Complete — reconcile configured result eligibility.** Saved test matches now force historical-only labels; the internal text candidate is historical due to an aggregate score on the exact fixed test rows. CrossSum and Meta Omnilingual test exposure remains unresolved. Continue source-family uncertainty analysis where needed, then publish task cards and write the final research report. Keep independent-final and native-reviewed counts at zero until criteria are met. See [the eligibility report](task-result-eligibility-2026-09-28.md).
-9. **Prepare releases only after rights and split audits.** Public open-test scores must not be described as blind; dataset publication and model promotion are separate decisions.
+The following six workstreams were executed locally in sequence for this refresh.
+The first three produced updated artifacts; remaining work is recorded with
+explicit blockers rather than described as completed:
+
+1. **Phase 2 — contamination/splits:** rebuilt exact and near-text scans,
+   nested/cross-language/source-page checks, parent/source-file checks, and
+   lineage review. Exact local checks are current; semantic/paraphrase
+   independence and upstream pretraining exposure remain unresolved.
+2. **Phase 3 — benchmark contract:** rebuilt and validated the eight-view,
+   14,703-row draft (manifest SHA-256
+   `43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8`).
+   Validation reports zero errors. ASR corpus/per-record scoring and retrieval
+   rank policies are explicit; a validation-only real-data check reproduces
+   the saved ASR aggregate. On 2026-09-30, generation scoring was integrated
+   and three saved seeds were rescored on their matched 130-row development
+   subset; rights, raw-text migration, and remaining release contracts remain
+   open.
+3. **Phases 4–5 — run records and baselines:** repaired model-lineage handling
+   so aggregate-scored rows are checked separately from saved predictions.
+   It verified the current text test exactly (402 rows, PPL 14.397995). Fresh
+   NLLB/dense/ASR inference could not run without local weights and runtime.
+4. **Phases 6–7 — validation-safe research/uncertainty:** recorded existing
+   development uncertainty and failure analyses in the task cards. No new
+   inference or held-out scoring was run. Remaining source-cluster intervals
+   require trustworthy grouping metadata.
+5. **Phases 8–9 — eligibility/cards:** reconciled the current text-test label
+   as historical/open and prepared six local task cards. All five independent
+   final-result categories remain 0/5; cards do not authorize publishing data
+   whose component rights are unresolved.
+6. **Phase 10 — maintenance:** documented a versioned additive-update and
+   regression-audit procedure in the suite card. A repeatable ingestion-to-new
+   benchmark release still awaits a frozen contract and approved sources.
+
+**2026-09-30 follow-up:** generation scoring is now integrated and the three
+saved seeds are reconciled to their exact 130-row current validation subset;
+190 rows remain unscored. Metrics and limitations are in the
+[generation scoring report](generation-scoring-integration-2026-09-30.md).
+This does not change 0/5 independent-evidence eligibility. The next model-suite
+work remains blocked on missing compatible weights/runtime for new NLLB,
+dense-retrieval, and SraVaani inference; no fresh model run was made.
+
+Next actionable work is a rights/provenance pass for each benchmark component;
+the current per-view and item-status counts are in the
+[rights inventory](garhwali-bench-v0.2-rights-inventory-2026-09-29.md), and the
+reproducible audit is `scripts/audit_benchmark_v02_rights.py`. After the source
+and component rights are resolved, complete semantic/exposure checks and
+prepare a genuinely fresh evaluation set with recorded model exposure. Native
+review remains deferred; automated checks cannot certify linguistic accuracy.
+No new paid Hugging Face job, model download, or Hub upload was started in this
+refresh. The account does have historical completed/canceled jobs; do not
+describe this as a zero-job history.
 
 ## 10. Research basis
 

@@ -21,12 +21,16 @@ Each ingestion batch needs a stable run ID.
 .venv/bin/python scripts/ingestion_graph.py run --wave seventh --run-id scholarly-open-2026-09-09
 .venv/bin/python scripts/ingestion_graph.py run --wave eighth --run-id cultural-open-2026-09-09
 .venv/bin/python scripts/ingestion_graph.py run --wave ninth --run-id thematic-vocabulary-2026-09-09
+.venv/bin/python scripts/ingestion_graph.py run --wave tenth --run-id garhwali-web-2026-09-30
 .venv/bin/python scripts/ingestion_graph.py status --run-id uou-more-2026-09-08
 .venv/bin/python scripts/ingestion_graph.py resume --run-id uou-more-2026-09-08
+.venv/bin/python scripts/refresh_corpus_after_ingestion.py
 ```
 
-The graph executes acquisition, extraction, exact deduplication, and full
-verification in order. Acquisition retries HTTP 429 and transient 5xx, timeout,
+The default graph executes acquisition, extraction, exact deduplication, and
+verification in order. With `--refresh-derived`, it executes acquisition and
+extraction, then runs the complete refresh workflow, which performs those checks
+and rebuilds all derived views. Acquisition retries HTTP 429 and transient 5xx, timeout,
 and connection-reset failures with exponential backoff. Confirmed schema errors,
 403 responses, and 404 responses remain logged for review instead of looping.
 
@@ -44,9 +48,70 @@ reuses completed downloads rather than appending duplicate records.
   Wikisource references, and open Wikimedia cultural-media metadata.
 - `ninth`: themed Garhwali vocabulary from rendered dictionary pages, animal
   and bird lists, occupations, and a Government of India instrument list.
+- `tenth`: resumable acquisition of robots-allowed Blogger and Uttarakhand
+  Khabar Saar web candidates, followed by article extraction and corpus-wide
+  exact deduplication. It currently contributes 1,772 exact-new local
+  experimental records from 6,844 Blogger feed entries and two short-story
+  pages. Their language is unverified and reuse rights are unassessed; they do
+  not enter the public Hugging Face text profile.
 
 Add a new wave by defining `<name>_wave_acquire` and `<name>_wave_extract` in
 `scripts/collect_online.py`, then registering the pair in `wave_actions()`.
+
+## Refresh all derived corpus figures
+
+Acquisition waves update source snapshots and experimental records. For a
+single-command ingestion plus refresh, run:
+
+```bash
+.venv/bin/python scripts/ingestion_graph.py run \
+  --wave tenth --run-id garhwali-web-YYYY-MM-DD --refresh-derived
+```
+
+Resume or inspect that run with the same `--run-id` and `--refresh-derived`
+flag. For an already completed ingestion, run
+`scripts/refresh_corpus_after_ingestion.py` directly. It
+rebuilds canonical and cleaned text, language tags, exact-deduplicated
+segments, leakage-aware splits, lexicon/language resources, benchmark and
+instruction candidates, quality tiers, both local Hugging Face package
+profiles, and the content-free reference index. It then writes ignored
+`data/extracted/current_corpus_metrics.json` and replaces the marked current
+metrics table in `README.md`. The wrapper stops on the first failed command;
+all commands can also be run individually for diagnosis. It does not invent or
+rewrite source-specific rights and language findings; add a dated intake report
+and source-catalog entry for each new source wave.
+
+The package profiles and reference index are local previews only. This helper
+never uploads to Hugging Face or changes repository visibility. Rights-pending
+source text remains in the local all-data package and is omitted from public
+content output; candidate counts are not a measure of verified Garhwali.
+
+The V2.0 release rebuilt 32,072 exact-unique parent texts from 49 source files
+and is public under `releases/v2.0.0/`. For a later release, bump the version
+and output paths. For example, after a new source intake:
+
+```bash
+GARHWALI_RELEASE_VERSION=2.1.0 .venv/bin/python scripts/ingestion_graph.py run \
+  --wave tenth --run-id next-garhwali-wave-2026-10-01 --refresh-derived
+```
+
+For an additive V2.1.0 package, stage it with a new prefix and unique ignored
+output paths:
+
+```bash
+GARHWALI_RELEASE_VERSION=2.1.0 .venv/bin/python scripts/prepare_hf_additive_upload.py \
+  --prefix releases/v2.1.0 \
+  --output data/huggingface/garhwali-corpus-v2.1.0-additive-upload \
+  --plan data/huggingface/garhwali-corpus-v2.1.0-upload-plan.json
+```
+
+Review the plan, verify the prefix is unused, and run its generated upload
+command only after checks pass. It writes under the new version path and uses no
+deletion operations. The V2.0 payload is at [HF commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); the corrected cards are at [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504).
+
+The package is limited to the rights-filtered public profile. This procedure
+preserves old versioned files and updates the root card to point at the new
+release. The local refresh helper never launches an upload by itself.
 
 ## Verification
 

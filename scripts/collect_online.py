@@ -2296,9 +2296,23 @@ def eighth_wave_extract():
                       'commons_media_records': len(media)}, indent=2))
 
 
+def tenth_wave_acquire():
+    """Acquire robots-allowed Garhwali-named web goldmine sources."""
+    from ingest_web_goldmines import acquire
+
+    acquire()
+
+
+def tenth_wave_extract():
+    """Extract and exact-deduplicate local experimental web-source records."""
+    from ingest_web_goldmines import extract
+
+    extract()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['survey', 'meta', 'probes', 'wiktionary', 'acquire', 'extract', 'downloads', 'restricted', 'uou', 'wayback', 'archive_open', 'archive_extract', 'more_acquire', 'more_extract', 'historical_more_acquire', 'historical_more_extract', 'opus_acquire', 'opus_extract', 'indic_asr_acquire', 'indic_asr_range_acquire', 'indic_asr_extract', 'panlex_acquire', 'panlex_extract', 'third_wave_acquire', 'third_wave_extract', 'fourth_wave_acquire', 'fourth_wave_extract', 'fifth_wave_acquire', 'fifth_wave_extract', 'sixth_wave_acquire', 'sixth_wave_extract', 'seventh_wave_acquire', 'seventh_wave_extract', 'eighth_wave_acquire', 'eighth_wave_extract', 'ninth_wave_acquire', 'ninth_wave_extract'])
+    parser.add_argument('action', choices=['survey', 'meta', 'probes', 'wiktionary', 'acquire', 'extract', 'downloads', 'restricted', 'uou', 'wayback', 'archive_open', 'archive_extract', 'more_acquire', 'more_extract', 'historical_more_acquire', 'historical_more_extract', 'opus_acquire', 'opus_extract', 'indic_asr_acquire', 'indic_asr_range_acquire', 'indic_asr_extract', 'panlex_acquire', 'panlex_extract', 'third_wave_acquire', 'third_wave_extract', 'fourth_wave_acquire', 'fourth_wave_extract', 'fifth_wave_acquire', 'fifth_wave_extract', 'sixth_wave_acquire', 'sixth_wave_extract', 'seventh_wave_acquire', 'seventh_wave_extract', 'eighth_wave_acquire', 'eighth_wave_extract', 'ninth_wave_acquire', 'ninth_wave_extract', 'tenth_wave_acquire', 'tenth_wave_extract'])
     args = parser.parse_args()
     print('result', globals()[args.action]())
 

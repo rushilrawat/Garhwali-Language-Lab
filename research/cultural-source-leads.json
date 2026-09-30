@@ -1,23 +1,250 @@
 {
   "purpose": "Cultural sources discovered publicly but not copied into an open corpus without adequate rights or actual Garhwali content",
-  "updated": "2026-09-10",
+  "updated": "2026-09-30",
   "sources": [
-    {"title":"Garhwali Folktales podcast","url":"https://podcasts.apple.com/us/podcast/garhwali-folktales/id1536704188","content":"66 narrated Garhwali folk-story episodes","status":"archived_gitignored_rights_pending","reason":"All 66 enclosures exposed by the official RSS feed were archived locally with hashes and source URLs; the listing names the creator and displays an explicit copyright notice.","next_action":"Transcribe locally, retain the rights-pending label, and seek consent and an explicit dataset license before redistribution."},
-    {"title":"Garhwali Lokgeet by Govind Chatak","url":"https://tufs.repo.nii.ac.jp/records/24025","content":"Garhwali folk-song collection with Hindi translations","status":"bibliographic_only","reason":"The repository exposes cover and contents files without a verified open license for the book text.","next_action":"Contact the rights holder or locate an authorized open edition."},
-    {"title":"Gadwali Lokgeet by Govind Chatak (1956 Internet Archive scan)","url":"https://archive.org/details/in.ernet.dli.2015.404620","content":"Volume 1, Laghu Git: a Garhwali folk-song collection with a downloadable Digital Library of India scan","status":"archived_and_extracted_gitignored_rights_pending","reason":"The PDF, OCR text, DjVu XML and metadata were archived; 370 OCR page records were extracted. Internet Archive metadata supplies neither a rights statement nor an open-content license.","next_action":"Clean and language-segment locally while retaining provenance and the rights-pending label."},
-    {"title":"Garhwali folk literature critical study by Mohanlal Babulkar (1964)","url":"https://books.google.com/books?id=TmhJAAAAMAAJ","content":"307-page critical study of Garhwali folk literature, digitized from the University of Michigan","status":"snippet_and_bibliographic_only","reason":"Google Books exposes search snippets rather than a reusable open edition, and no open license was found.","next_action":"Locate a licensed edition or obtain permission from the author estate and publisher."},
-    {"title":"Garhwali folk art and folk literature comparative study by Shanti Chaudhary (1994)","url":"https://archive.org/details/in.ernet.dli.2015.481134","content":"Hindi research book with Garhwali folk-literature material from an Internet Archive/DLI scan","status":"archived_and_extracted_gitignored_rights_pending","reason":"The PDF, OCR text, DjVu XML and metadata were archived; 298 OCR page records were extracted. Archive metadata supplies no open license or rights statement.","next_action":"Clean and language-segment locally while retaining provenance and the rights-pending label."},
-    {"title":"Garhwali idioms and proverbs collection by Pushkar Singh Kandari","url":"https://tufs.repo.nii.ac.jp/records/17829","content":"Dictionary-scale idiom and proverb collection","status":"bibliographic_only","reason":"Only cover and contents files are public and no open-content license is shown.","next_action":"Seek a licensed digital export."},
-    {"title":"Himalayan Folklore by E. S. Oakley and Tara Dutt Gairola","url":"https://uttarakhandhub.com/library/himalayan-folklore","content":"English translations of Kumaoni and Garhwali heroic ballads and folklore","status":"jurisdiction_restricted_reference","reason":"Public domain in India; likely United States copyright through 2031 after restoration.","next_action":"Re-evaluate for international release in 2032 or obtain legal review."},
-    {"title":"Sadei and Garhwali Kavitavali","url":"https://e-magazineofuttarakhand.blogspot.com/2010/06/introductory-note-for-garhwali.html","content":"Early modern Garhwali poetry associated with Tara Dutt Gairola","status":"edition_and_jurisdiction_review","reason":"Publication dates, contributor deaths, edition rights, scans, and United States restoration terms require item-level review.","next_action":"Locate authoritative first-edition scans and establish contributor-level rights."},
-    {"title":"Garhwali, the historical periodical","url":"https://baramasa.in/title/story-of-historical-garhwali-newspaper-of-uttarakhand/","content":"Garhwali-language and regional periodical published from 1905 into the mid-twentieth century","status":"archive_location_needed","reason":"No complete issue archive with issue-level rights and stable scans was found.","next_action":"Search state, university, memorial, and national-library catalogues."},
-    {"title":"StoryWeaver open stories","url":"https://storyweaver.org.in/en/open-content","content":"CC BY 4.0 multilingual children's stories","status":"no_garhwali_partition_found","reason":"The checked public source repository contained 18 language directories but no gbm or Garhwali directory.","next_action":"Recheck the live catalogue and ingest future Garhwali translations with attribution."},
-    {"title":"Modern Garhwali plays and story collections named by UOU","url":"https://uou.ac.in/sites/default/files/slm/MAHL-204.pdf","content":"Bibliography and short educational excerpts covering Garhwali theatre, stories and novels","status":"component_rights_required","reason":"UOU terms do not establish redistribution rights for complete underlying modern works.","next_action":"Approach authors, estates, theatre groups, publishers, and UOU for licensed editions."},
-    {"title":"Garhwali Folktales digitalization research chapter","url":"https://www.iipseries.org/assets/docupload/rsl20246DACF9680A02A37.pdf","content":"Current discussion and bibliography for Garhwali folklore digitization","status":"reference_only_no_open_license_verified","reason":"Public PDF access did not establish an open-content license for training-data extraction.","next_action":"Use its bibliography for rights outreach and community collection planning."},
-    {"title":"Kumauni Archives Garhwali-filtered catalogue","url":"https://kumauniarchives.com/search","content":"Searchable non-profit catalogue with a Garhwali language filter and literature, ballad, folk-tale, flora, fauna and linguistic categories","status":"new_catalogue_lead","reason":"The search interface is public, but item-level files, language identity and reuse rights must be checked before ingestion.","next_action":"Enumerate Garhwali-filtered results and rights-audit each item."},
-    {"title":"Lucknow Digital Library Garhwali folk-literature holdings","url":"https://lucknowdigitallibrary.com/publication-category/digitized-books-books/page/326","content":"Digitized-book listing includes Garhwali folk-literature research","status":"new_library_lead","reason":"Search results establish a holding, not an open reuse license or a Garhwali-text payload.","next_action":"Open the item record, identify scan access and complete edition-level rights review."},
-    {"title":"Nehru Memorial Museum and Library Garhwali periodical microfilm","url":"https://www.tamildigitallibrary.in/admin/assets/book/TVA_BOK_0011516_Newspapers_and_periodicals_on_microfilm.pdf","content":"Catalogue reports Garhwali fortnightly microfilm holdings for 1916–1926, with gaps","status":"physical_or_microfilm_archive_lead","reason":"The catalogue lists reels rather than openly downloadable issues.","next_action":"Request access and digitization metadata from the holding institution."},
-    {"title":"UK Academe Garhwali bird dictionary pages","url":"https://ukacademe.com/UKPedia/Birds/Word/Sparrow","content":"Individual bird terms with Garhwali, Hindi and English examples","status":"copyrighted_reference_only","reason":"The site states all rights reserved; overlapping terms were already recorded from other sources.","next_action":"Request a licensed structured export and contributor provenance."}
-    ,{"title":"Balakrishna D. Dhyani, Garhwali Muhavare Aur Kahavaten","url":"https://sites.google.com/view/dhyani/%E0%A4%97%E0%A4%A2%E0%A4%B5%E0%A4%B3-%E0%A4%95%E0%A4%95%E0%A4%B7/%E0%A4%97%E0%A4%A2%E0%A4%B5%E0%A4%B2-%E0%A4%AE%E0%A4%B9%E0%A4%B5%E0%A4%B0-%E0%A4%94%E0%A4%B0-%E0%A4%95%E0%A4%B9%E0%A4%B5%E0%A4%A4","content":"Garhwali idioms and proverbs, including Hindi and English explanations for comparison entries","status":"archived_and_extracted_gitignored_rights_pending","reason":"The public page was archived and yielded 99 exact-unique Garhwali records; the page does not state an open-content license.","next_action":"Normalize spelling and have a native speaker review boundaries and meanings."}
+    {
+      "title": "Garhwali Folktales podcast",
+      "url": "https://podcasts.apple.com/us/podcast/garhwali-folktales/id1536704188",
+      "content": "66 narrated Garhwali folk-story episodes",
+      "status": "archived_gitignored_rights_pending",
+      "reason": "All 66 enclosures exposed by the official RSS feed were archived locally with hashes and source URLs; the listing names the creator and displays an explicit copyright notice.",
+      "next_action": "Transcribe locally, retain the rights-pending label, and seek consent and an explicit dataset license before redistribution."
+    },
+    {
+      "title": "Garhwali Lokgeet by Govind Chatak",
+      "url": "https://tufs.repo.nii.ac.jp/records/24025",
+      "content": "Garhwali folk-song collection with Hindi translations",
+      "status": "bibliographic_only",
+      "reason": "The repository exposes cover and contents files without a verified open license for the book text.",
+      "next_action": "Contact the rights holder or locate an authorized open edition."
+    },
+    {
+      "title": "Gadwali Lokgeet by Govind Chatak (1956 Internet Archive scan)",
+      "url": "https://archive.org/details/in.ernet.dli.2015.404620",
+      "content": "Volume 1, Laghu Git: a Garhwali folk-song collection with a downloadable Digital Library of India scan",
+      "status": "archived_and_extracted_gitignored_rights_pending",
+      "reason": "The PDF, OCR text, DjVu XML and metadata were archived; 370 OCR page records were extracted. Internet Archive metadata supplies neither a rights statement nor an open-content license.",
+      "next_action": "Clean and language-segment locally while retaining provenance and the rights-pending label."
+    },
+    {
+      "title": "Garhwali folk literature critical study by Mohanlal Babulkar (1964)",
+      "url": "https://books.google.com/books?id=TmhJAAAAMAAJ",
+      "content": "307-page critical study of Garhwali folk literature, digitized from the University of Michigan",
+      "status": "snippet_and_bibliographic_only",
+      "reason": "Google Books exposes search snippets rather than a reusable open edition, and no open license was found.",
+      "next_action": "Locate a licensed edition or obtain permission from the author estate and publisher."
+    },
+    {
+      "title": "Garhwali folk art and folk literature comparative study by Shanti Chaudhary (1994)",
+      "url": "https://archive.org/details/in.ernet.dli.2015.481134",
+      "content": "Hindi research book with Garhwali folk-literature material from an Internet Archive/DLI scan",
+      "status": "archived_and_extracted_gitignored_rights_pending",
+      "reason": "The PDF, OCR text, DjVu XML and metadata were archived; 298 OCR page records were extracted. Archive metadata supplies no open license or rights statement.",
+      "next_action": "Clean and language-segment locally while retaining provenance and the rights-pending label."
+    },
+    {
+      "title": "Garhwali idioms and proverbs collection by Pushkar Singh Kandari",
+      "url": "https://tufs.repo.nii.ac.jp/records/17829",
+      "content": "Dictionary-scale idiom and proverb collection",
+      "status": "bibliographic_only",
+      "reason": "Only cover and contents files are public and no open-content license is shown.",
+      "next_action": "Seek a licensed digital export."
+    },
+    {
+      "title": "Himalayan Folklore by E. S. Oakley and Tara Dutt Gairola",
+      "url": "https://uttarakhandhub.com/library/himalayan-folklore",
+      "content": "English translations of Kumaoni and Garhwali heroic ballads and folklore",
+      "status": "jurisdiction_restricted_reference",
+      "reason": "Public domain in India; likely United States copyright through 2031 after restoration.",
+      "next_action": "Re-evaluate for international release in 2032 or obtain legal review."
+    },
+    {
+      "title": "Sadei and Garhwali Kavitavali",
+      "url": "https://e-magazineofuttarakhand.blogspot.com/2010/06/introductory-note-for-garhwali.html",
+      "content": "Early modern Garhwali poetry associated with Tara Dutt Gairola",
+      "status": "edition_and_jurisdiction_review",
+      "reason": "Publication dates, contributor deaths, edition rights, scans, and United States restoration terms require item-level review.",
+      "next_action": "Locate authoritative first-edition scans and establish contributor-level rights."
+    },
+    {
+      "title": "Garhwali, the historical periodical",
+      "url": "https://baramasa.in/title/story-of-historical-garhwali-newspaper-of-uttarakhand/",
+      "content": "Garhwali-language and regional periodical published from 1905 into the mid-twentieth century",
+      "status": "archive_location_needed",
+      "reason": "No complete issue archive with issue-level rights and stable scans was found.",
+      "next_action": "Search state, university, memorial, and national-library catalogues."
+    },
+    {
+      "title": "StoryWeaver open stories",
+      "url": "https://storyweaver.org.in/en/open-content",
+      "content": "CC BY 4.0 multilingual children's stories",
+      "status": "no_garhwali_partition_found",
+      "reason": "The checked public source repository contained 18 language directories but no gbm or Garhwali directory.",
+      "next_action": "Recheck the live catalogue and ingest future Garhwali translations with attribution."
+    },
+    {
+      "title": "Modern Garhwali plays and story collections named by UOU",
+      "url": "https://uou.ac.in/sites/default/files/slm/MAHL-204.pdf",
+      "content": "Bibliography and short educational excerpts covering Garhwali theatre, stories and novels",
+      "status": "component_rights_required",
+      "reason": "UOU terms do not establish redistribution rights for complete underlying modern works.",
+      "next_action": "Approach authors, estates, theatre groups, publishers, and UOU for licensed editions."
+    },
+    {
+      "title": "Garhwali Folktales digitalization research chapter",
+      "url": "https://www.iipseries.org/assets/docupload/rsl20246DACF9680A02A37.pdf",
+      "content": "Current discussion and bibliography for Garhwali folklore digitization",
+      "status": "reference_only_no_open_license_verified",
+      "reason": "Public PDF access did not establish an open-content license for training-data extraction.",
+      "next_action": "Use its bibliography for rights outreach and community collection planning."
+    },
+    {
+      "title": "Kumauni Archives Garhwali-filtered catalogue",
+      "url": "https://kumauniarchives.com/search",
+      "content": "Searchable non-profit catalogue with a Garhwali language filter and literature, ballad, folk-tale, flora, fauna and linguistic categories",
+      "status": "catalogue_discovery_only_copying_prohibited",
+      "reason": "The interface exposes a Garhwali-filtered cultural catalogue, but its terms prohibit copying/mirroring. Items also need language and rights assessment.",
+      "next_action": "Use for bibliographic discovery only; seek written permission or licensed exports before acquiring item text."
+    },
+    {
+      "title": "Lucknow Digital Library Garhwali folk-literature holdings",
+      "url": "https://lucknowdigitallibrary.com/publication-category/digitized-books-books/page/326",
+      "content": "Digitized-book listing includes Garhwali folk-literature research",
+      "status": "new_library_lead",
+      "reason": "Search results establish a holding, not an open reuse license or a Garhwali-text payload.",
+      "next_action": "Open the item record, identify scan access and complete edition-level rights review."
+    },
+    {
+      "title": "Nehru Memorial Museum and Library Garhwali periodical microfilm",
+      "url": "https://www.tamildigitallibrary.in/admin/assets/book/TVA_BOK_0011516_Newspapers_and_periodicals_on_microfilm.pdf",
+      "content": "Catalogue reports Garhwali fortnightly microfilm holdings for 1916–1926, with gaps",
+      "status": "physical_or_microfilm_archive_lead",
+      "reason": "The catalogue lists reels rather than openly downloadable issues.",
+      "next_action": "Request access and digitization metadata from the holding institution."
+    },
+    {
+      "title": "UK Academe Garhwali bird dictionary pages",
+      "url": "https://ukacademe.com/UKPedia/Birds/Word/Sparrow",
+      "content": "Individual bird terms with Garhwali, Hindi and English examples",
+      "status": "copyrighted_reference_only",
+      "reason": "The site states all rights reserved; overlapping terms were already recorded from other sources.",
+      "next_action": "Request a licensed structured export and contributor provenance."
+    },
+    {
+      "title": "Balakrishna D. Dhyani, Garhwali Muhavare Aur Kahavaten",
+      "url": "https://sites.google.com/view/dhyani/%E0%A4%97%E0%A4%A2%E0%A4%B5%E0%A4%B3-%E0%A4%95%E0%A4%95%E0%A4%B7/%E0%A4%97%E0%A4%A2%E0%A4%B5%E0%A4%B2-%E0%A4%AE%E0%A4%B9%E0%A4%B5%E0%A4%B0-%E0%A4%94%E0%A4%B0-%E0%A4%95%E0%A4%B9%E0%A4%B5%E0%A4%A4",
+      "content": "Garhwali idioms and proverbs, including Hindi and English explanations for comparison entries",
+      "status": "archived_and_extracted_gitignored_rights_pending",
+      "reason": "The public page was archived and yielded 99 exact-unique Garhwali records; the page does not state an open-content license.",
+      "next_action": "Normalize spelling and have a native speaker review boundaries and meanings."
+    },
+    {
+      "title": "Uttarakhand e-Magazine Blogger feed — tenth-wave candidate intake",
+      "url": "https://e-magazineofuttarakhand.blogspot.com/",
+      "content": "6,844 Blogger feed entries scanned; 1,770 exact-new candidate page texts retained locally (6,755,681 source characters).",
+      "status": "archived_gitignored_rights_unassessed_experimental_only",
+      "reason": "The public feed is robots-allowed, but public access is not an open reuse license. The title/URL filter can select Hindi, regional-history, mixed-language, or other non-Garhwali text. Automatic language tagging left these records low-confidence or scope-unverified.",
+      "next_action": "Keep provenance and full text in the local experimental layer; review language identity and item-level reuse terms before training promotion or public distribution."
+    },
+    {
+      "title": "Uttarakhand Khabar Saar — two Garhwali-labelled short stories",
+      "url": "https://uttarakhandkhabarsaar.in/jani-mayedi-tani-jayedi-a-garhwali-short-story/",
+      "content": "Two story pages: Jani Mayedi Tani Jayedi and Khuded Bhajed; 3,127 source characters retained locally.",
+      "status": "archived_gitignored_rights_unassessed_experimental_only",
+      "reason": "The pages label the stories Garhwali, but no compatible open-content license was found. The text is not native-reviewed.",
+      "next_action": "Preserve the local experimental copies and source citations; request or verify reuse permission before redistribution."
+    },
+    {
+      "title": "Garhwali Language Library 1.0.0 — pinned static text files",
+      "url": "https://github.com/infoakshatsinghbisht-eng/garhwali-language-library",
+      "content": "180 static word, phrase, proverb, and riddle rows; 180 distinct strings, 16 exact overlaps with the existing corpus, and 164 exact-new strings. Generated inflection outputs are not included.",
+      "status": "ingested_v2_experimental_mit",
+      "reason": "Pinned commit 46564fab21299512c104e7b0cbf8bd3064285efd and source-file Git blob hashes are recorded. Repository declares MIT; language labels and gloss quality are upstream assertions and remain unreviewed.",
+      "next_action": "Keep all 180 rows provenance-linked in the experimental lexical layer; seek native review before recommending training.",
+      "license": "MIT",
+      "revision": "46564fab21299512c104e7b0cbf8bd3064285efd"
+    },
+    {
+      "title": "Jambu Garhwali reflex lexicon — revalidated for v2.0",
+      "url": "https://neojambu.herokuapp.com/languages/Garh",
+      "content": "763 source rows and 738 distinct forms. All 738 forms already exist in the pre-refresh corpus snapshot; this v2 refresh adds zero new rows from Jambu. The original intake had 28 exact overlaps with other sources and 710 forms novel relative to those other sources.",
+      "status": "revalidated_existing_cc_by_4_intake",
+      "reason": "The pinned local HTML snapshot and row IDs are verified; source advertises CC BY 4.0. This is a lexical reflex list, not natural conversational prose, and remains unreviewed.",
+      "next_action": "Retain as a deduplicated source contribution; use its forms for lexical coverage and language-identification analyses, not as an incremental v2 source claim.",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "title": "LDC-IL Garhwali Parallel Text Corpus: Linguistic Features and Structures",
+      "url": "https://www.ldcil.org/releaseddataset",
+      "content": "The official LDC-IL released-dataset catalogue explicitly lists a Garhwali parallel-text product. Its individual product details, sample, public payload, price, and redistribution license were not resolved in this pass.",
+      "status": "official_catalogue_acquisition_lead_not_ingested",
+      "reason": "Catalogue listing is not a downloadable corpus or an open license. LDC-IL's portal documents separate commercial and non-commercial undertakings and price per language component.",
+      "next_action": "Inspect the live Garhwali product record, request its sample and exact terms/price, and compare item-level text against all current corpus hashes before considering acquisition."
+    },
+    {
+      "title": "LDC-IL Are Parallel Text Corpus: Linguistic Features and Structures",
+      "url": "https://data.ldcil.org/are-parallel-text-corpus-linguistic-features-and-structures",
+      "content": "The official product page describes English-linked material for 146 mother tongues, 5,332 sentences/phrases per language, and a single-language-component price. The available page does not establish whether the Garhwali component is included in this product or its exact access terms.",
+      "status": "official_product_metadata_only_payment_and_terms_unresolved",
+      "reason": "No Garhwali payload or open redistribution license was found. The source is a high-value acquisition lead, not data already in the project.",
+      "next_action": "Ask LDC-IL to confirm Garhwali coverage, item-level sample, price, and redistribution/model-training rights; deduplicate any authorized export against the project before ingestion."
+    },
+    {
+      "title": "English–Garhwali SMT corpora described by Arushi Uniyal",
+      "url": "https://www.pramanaresearch.org/gallery/prj-p431.pdf",
+      "content": "The 2019 article describes a 40,000-sentence Garhwali monolingual collection (magazine OCR, Bible excerpts, web blogs) and a 30,000-sentence English–Garhwali parallel corpus. Dr. Uniyal's HNBGU CV separately says 70,000 Garhwali sentences were digitized.",
+      "status": "paper_and_cv_metadata_only_dataset_payload_not_found",
+      "reason": "The cited research explains the corpus but does not expose the data or a reuse license. Likely source overlap with existing web, scripture, and magazine material is substantial; row-level source lineage is essential.",
+      "next_action": "Request the original dataset, alignment/provenance manifest, and redistribution/model-training permission from the researcher or university; run exact and fuzzy overlap checks before any promotion.",
+      "related_reference": "https://www.hnbgu.ac.in/sites/default/files/2023-09/Arushi_Uniyal_CV_2023.pdf"
+    },
+    {
+      "title": "Creative Uttarakhand Garhwali children's-song and folklore publications",
+      "url": "https://creativeuttarakhand.aipan.org/initiatives/publications/",
+      "content": "Catalogue lists Hem Pant's Ghuguti Basuti — Bhag 2 as Garhwali children's songs and Nyauli Sankalan as a cultural archive; digital books can be requested directly.",
+      "status": "catalogue_and_request_channel_only_not_ingested",
+      "reason": "The listed works are not openly downloadable from the page and no dataset reuse license is stated.",
+      "next_action": "Request an authorized digital copy and explicit text-mining, model-training, and redistribution terms; preserve item and performer attribution."
+    },
+    {
+      "title": "Hindwi Garhwali dictionary",
+      "url": "https://www.hindwidictionary.com/garhwali",
+      "content": "A public Garhwali dictionary with word meanings and usage information; no machine-readable open-license export was identified.",
+      "status": "dictionary_reference_no_reuse_export_found",
+      "reason": "Public page access does not establish permission to scrape or redistribute the dictionary entries.",
+      "next_action": "Request a licensed export and source/contributor provenance from Rekhta Foundation."
+    },
+    {
+      "title": "HimLingo Garhwali and Kumaoni dictionary",
+      "url": "https://himlingo.com/dictionary/",
+      "content": "Public dictionary/app pages describe Garhwali and Kumaoni vocabulary, phrases, and cultural content; the project reports restrictions on unauthorized scraping.",
+      "status": "discovery_only_scraping_not_authorized",
+      "reason": "No licensed public machine-readable export was found, and the site's terms prohibit unauthorized scraping.",
+      "next_action": "Ask the maintainers for permission, a provenance-bearing export, and model-training and redistribution terms."
+    },
+    {
+      "title": "Community-published Garhwali/Kumaoni dictionary app claim",
+      "url": "https://www.reddit.com/r/PahariTalks/comments/1w1pnrn/would_you_pay_199_for_one_time_for_a_garhwali/",
+      "content": "A developer post claims a 20,000-plus mixed Garhwali/Kumaoni vocabulary and literary material, without a downloadable corpus or source-level evidence.",
+      "status": "unverified_community_acquisition_lead",
+      "reason": "The row count, language split, provenance, quality, and reuse license are unverified; the post does not publish the dataset.",
+      "next_action": "Request an export, per-record language/source/license metadata, and permission before evaluating or ingesting it."
+    },
+    {
+      "title": "Endangered Languages Project Garhwali profile",
+      "url": "https://elcat.colo.hawaii.edu/lang/5632",
+      "content": "The profile search result exposes dialect and language-status bibliography, but no sentence or lexical payload; direct access timed out during the latest check.",
+      "status": "metadata_reference_only_access_unverified",
+      "reason": "The available result is linguistic metadata rather than reusable Garhwali language examples, and the page could not be fetched for detailed verification.",
+      "next_action": "Recheck the profile and use its references to find primary Garhwali material; do not count metadata as corpus text."
+    },
+    {
+      "title": "LibreOffice Weblate Garhwali localization project",
+      "url": "https://translations.documentfoundation.org/projects/libo_ui-26-2/dictionarieste_in/gbm/",
+      "content": "The live localization project reports one string and 0% translated, with no useful Garhwali target text.",
+      "status": "checked_no_substantive_garhwali_rows",
+      "reason": "The available translation target is empty and contributes no language data.",
+      "next_action": "No ingestion unless the project later gains translated Garhwali strings."
+    }
   ]
 }

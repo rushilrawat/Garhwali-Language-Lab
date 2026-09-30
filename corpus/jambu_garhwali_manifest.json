@@ -1,0 +1,185 @@
+{
+  "already_in_current_corpus_unique_forms": 738,
+  "duplicate_source_rows": 25,
+  "exact_new_unique_forms": 710,
+  "exact_overlap_with_existing_unique_forms": 28,
+  "license_id": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "native_reviewed_records": 0,
+  "pages": [
+    {
+      "bytes": 61989,
+      "first": 1,
+      "last": 50,
+      "page": 1,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-01.html",
+      "sha256": "de619cdd0c509569220efbbe3dc8f0dfb7ddb847d75d57d128be0e6f8b3e98b3",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh"
+    },
+    {
+      "bytes": 61393,
+      "first": 51,
+      "last": 100,
+      "page": 2,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-02.html",
+      "sha256": "59e7f72b49e087376e097c0d4062d54e9e7a0b3f3ddd27673754c8250c4016f2",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=2"
+    },
+    {
+      "bytes": 61891,
+      "first": 101,
+      "last": 150,
+      "page": 3,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-03.html",
+      "sha256": "2dfaba871faf0c89a6ac36bf583a47263327c9d143b714591deb6d468ce7a414",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=3"
+    },
+    {
+      "bytes": 61569,
+      "first": 151,
+      "last": 200,
+      "page": 4,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-04.html",
+      "sha256": "3809c1106aae69d56100ac88b8efe93ee71100d4211f1128b2acf7b018546603",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=4"
+    },
+    {
+      "bytes": 61557,
+      "first": 201,
+      "last": 250,
+      "page": 5,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-05.html",
+      "sha256": "23b47e8f62fe7d994f5f06389023a016e4a898d3ac85946eed4730b037f1766a",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=5"
+    },
+    {
+      "bytes": 61875,
+      "first": 251,
+      "last": 300,
+      "page": 6,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-06.html",
+      "sha256": "f1e77449bccc7faf8b577251f4e87a83c265bb84b7f7bdc786ebb9d3b2dfac2a",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=6"
+    },
+    {
+      "bytes": 61321,
+      "first": 301,
+      "last": 350,
+      "page": 7,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-07.html",
+      "sha256": "2699c6dd98b4e5927ef7bb34ce955aa4edbcc78036a513f2505553607b4bbc99",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=7"
+    },
+    {
+      "bytes": 62695,
+      "first": 351,
+      "last": 400,
+      "page": 8,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-08.html",
+      "sha256": "31b36aeb98c0b087336497a4b6b85d82491795f359c6c3a13d211662cb02eed5",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=8"
+    },
+    {
+      "bytes": 62100,
+      "first": 401,
+      "last": 450,
+      "page": 9,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-09.html",
+      "sha256": "6dc6428dffbcaacd8d2223c24301d93213aefc8432e1f85d60e37cf3e711385d",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=9"
+    },
+    {
+      "bytes": 61520,
+      "first": 451,
+      "last": 500,
+      "page": 10,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-10.html",
+      "sha256": "6d0fda9ab57e1156c5ab593a6ba812dcbc36df6825c3e7858c88da22ce84897e",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=10"
+    },
+    {
+      "bytes": 61831,
+      "first": 501,
+      "last": 550,
+      "page": 11,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-11.html",
+      "sha256": "777224bb491cea1e92fbe27ba4d0c1ece76d43cbf96402383b521e630f165658",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=11"
+    },
+    {
+      "bytes": 61761,
+      "first": 551,
+      "last": 600,
+      "page": 12,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-12.html",
+      "sha256": "4285f7ae704eeda7801d852ba1afc056d953e493c28a5aa0745d16cd1b2f0bd1",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=12"
+    },
+    {
+      "bytes": 61795,
+      "first": 601,
+      "last": 650,
+      "page": 13,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-13.html",
+      "sha256": "90328a450ed858fbf0d0bf2bb82881afd798dbeb74f4de5899554d183bfa9a0f",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=13"
+    },
+    {
+      "bytes": 62717,
+      "first": 651,
+      "last": 700,
+      "page": 14,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-14.html",
+      "sha256": "68e8f4008086b0ce3b195f75ff1704a1e4adf9eb8d304008fcecc16c59d00d85",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=14"
+    },
+    {
+      "bytes": 61836,
+      "first": 701,
+      "last": 750,
+      "page": 15,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-15.html",
+      "sha256": "ef7edb79a3b89cfd4f6fbf89f3242438f39681b323e47948330ca659fd7e609c",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=15"
+    },
+    {
+      "bytes": 25410,
+      "first": 751,
+      "last": 763,
+      "page": 16,
+      "raw_path": "data/downloads/jambu_garhwali/pages/page-16.html",
+      "sha256": "8862279d32b2b8a21494e3953f6e005a2b7f8d6abfe458c259f94edd39fb3b74",
+      "total": 763,
+      "url": "https://neojambu.herokuapp.com/languages/Garh?page=16"
+    }
+  ],
+  "records": 763,
+  "retrieved_at": "2026-09-30T17:28:29.106308+00:00",
+  "rights_evidence_url": "https://neojambu.herokuapp.com/languages/Garh",
+  "rows_with_english_gloss": 462,
+  "source": "Jambu Garhwali [Garh] reflex listing",
+  "source_citation_counts": {
+    "P1984": 1,
+    "T1962—1966": 762
+  },
+  "source_file": "corpus/jambu_garhwali.jsonl",
+  "source_file_sha256": "ad0c00152f6539174169973199a7be5dc65169e0ebb5f20f91c54a23444da26e",
+  "source_url": "https://neojambu.herokuapp.com/languages/Garh",
+  "training_eligible_records": 0,
+  "unique_forms": 738
+}

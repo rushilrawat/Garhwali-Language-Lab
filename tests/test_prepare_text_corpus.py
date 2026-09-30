@@ -171,6 +171,38 @@ class TextPreparationTests(unittest.TestCase):
             self.assertEqual(provenance['linguistic_metadata']['relation'], 'alternative_form')
             self.assertEqual(provenance['linguistic_metadata']['headword'], 'रिख')
 
+    def test_prepare_preserves_dictionary_and_cultural_entry_metadata(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / 'corpus' / 'language_library.jsonl'
+            source.parent.mkdir()
+            source.write_text(json.dumps({
+                'record_id': 'library:word:1',
+                'text_normalized': 'ब्वै',
+                'iso_639_3': 'gbm',
+                'category': 'kinship',
+                'pos': 'noun',
+                'gender': 'F',
+                'dialect_variants': {'tehri': 'ब्वे'},
+                'audio_hint': 'audio-example',
+                'literal': 'literal rendering',
+                'solution': 'answer',
+                'english_hint': 'riddle hint',
+            }, ensure_ascii=False) + '\n', encoding='utf-8')
+
+            m.prepare([source], root / 'out', root=root)
+            row = json.loads((root / 'out/canonical.jsonl').read_text())
+            metadata = row['provenance'][0]['linguistic_metadata']
+
+        self.assertEqual(metadata['category'], 'kinship')
+        self.assertEqual(metadata['pos'], 'noun')
+        self.assertEqual(metadata['gender'], 'F')
+        self.assertEqual(metadata['dialect_variants'], {'tehri': 'ब्वे'})
+        self.assertEqual(metadata['audio_hint'], 'audio-example')
+        self.assertEqual(metadata['literal'], 'literal rendering')
+        self.assertEqual(metadata['solution'], 'answer')
+        self.assertEqual(metadata['english_hint'], 'riddle hint')
+
     def test_prepare_preserves_pdf_page_provenance(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

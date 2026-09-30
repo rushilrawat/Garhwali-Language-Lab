@@ -97,7 +97,10 @@ def build_resources(text_path=TEXT, lexicon_path=LEXICON, audio_dir=AUDIO, outpu
                 'source_phonetic_segments_unverified'
                 if source_segments else 'grapheme_only_unverified'
             ),
-            'experimental_training_eligible': True,
+            'experimental_training_eligible': any(
+                bool(item.get('experimental_training_eligible'))
+                for item in row.get('provenance', [])
+            ),
             'glosses': row.get('glosses', {}),
             'dialect_quality': row.get('dialect_quality', {}),
             'provenance': row.get('provenance', []),

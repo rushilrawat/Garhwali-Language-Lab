@@ -18,6 +18,20 @@ the architecture and
 - `train_*`, `run_*`, `evaluate_*`, and `sweep_*`: model experiments
 - `*_hf_job.sh`: Hugging Face Jobs container entry points
 
+For a graph-managed source wave, use `ingestion_graph.py` with a unique
+`--run-id` and `--refresh-derived`. This checkpointed mode acquires and extracts
+the selected source wave, then rebuilds corpus-derived local views, package
+previews, the file map, and the managed metrics block in `README.md`. If the run
+stops, resume it with the same run ID and `--refresh-derived` flag. The command
+does not publish to GitHub or upload packages to Hugging Face; those remain
+explicit release actions after the generated checks pass.
+
+`prepare_hf_additive_upload.py` validates the rights-filtered public package,
+its declared hashes, file inventory, and absence of source/audio payloads. It
+stages a release under a versioned Hub path without deletion operations. The
+script does not upload; publication is a separate authenticated step after the
+remote destination prefix is checked.
+
 Unit tests live in `tests/` and mirror the Python command name. Run all tests
 with:
 
@@ -25,12 +39,10 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The v0.2.0 full pytest run passed 607/607; the documented unittest runner
-passed 605/605. Plain system
-pytest does not see the `.venv` packages, so it cannot import the pinned
-`langgraph` dependency. Use `PYTHONPATH=.venv/lib/python3.12/site-packages:scripts pytest -q`
-or the documented `.venv/bin/python -m unittest` command. CI installs the
-dependency from `requirements-pipeline.txt`. Current benchmark refreshes use saved ASR outputs
+The current V2.0 working-tree suite passes **656/656 unittest** tests. The
+frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
+The project's CI uses the documented `.venv/bin/python -m unittest` command and
+installs dependencies from `requirements-pipeline.txt`. Current benchmark refreshes use saved ASR outputs
 and dependency-free local translation/retrieval diagnostics; fresh NLLB, dense
 retrieval, and SraVaani inference are blocked by uncached model weights and
 missing runtime packages. No paid Hugging Face job was started for those
@@ -128,14 +140,22 @@ produced. The package contains local ASR identifiers and must not be uploaded
 as-is. See
 [`benchmark-v02-export-2026-09-26.md`](../research/benchmark-v02-export-2026-09-26.md).
 
-`score_benchmark_predictions.py` scores existing Garhwali-to-English FLORES,
-CrossSum, or XORQA predictions on dev by default and writes predictions, a
+`audit_benchmark_v02_rights.py` summarizes upstream license declarations,
+item-level rights evidence, and the upload/clearance flags from the draft. It
+checks its total against the package manifest. It does not make legal
+determinations or change any release flag. The current inventory and its
+interpretation are in
+[`garhwali-bench-v0.2-rights-inventory-2026-09-29.md`](../research/garhwali-bench-v0.2-rights-inventory-2026-09-29.md).
+
+`score_benchmark_predictions.py` scores existing ASR, Garhwali-to-English
+FLORES, CrossSum, or XORQA predictions on dev by default and writes predictions, a
 metric report, and the shared hash-linked run manifest. It maps references to
 `source_example.target`, `source_example.summary`, and
 `source_example.translated_answers[*].text`; requires exact row-ID coverage;
 and requires `--allow-historical-test` for test scoring. It preserves rows with
 missing target-language references while excluding them from the metric
-denominator. Translation BLEU/chrF remain explicitly identified as the
+denominator. ASR reports pooled and per-record WER/CER; its run manifest hashes
+the metric implementation. Translation BLEU/chrF remain explicitly identified as the
 project's custom metrics, not SacreBLEU. Re-scoring saved translation-memory
 dev predictions reproduced 997/997 IDs and the original baseline metrics.
 

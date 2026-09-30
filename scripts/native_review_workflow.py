@@ -207,7 +207,7 @@ def _cell(value):
 
 
 def write_review_templates(packet_dir=PACKET_DIR, output_dir=TEMPLATES):
-    """Write flat copies that two reviewers can fill independently."""
+    """Write context and blind-first-pass copies for independent reviewers."""
     fields = (
         'review_type', 'target_id', 'source_text', 'aligned_meanings',
         'source_ids', 'review_priority', 'review_reasons', 'audio_path',
@@ -218,8 +218,6 @@ def write_review_templates(packet_dir=PACKET_DIR, output_dir=TEMPLATES):
     counts = {}
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    for stale in output_dir.glob('*.csv'):
-        stale.unlink()
     for path in sorted(Path(packet_dir).glob('*.jsonl')):
         packets = read_jsonl(path)
         if not packets or not any(packet.get('review_context') for packet in packets):
@@ -255,10 +253,43 @@ def write_review_templates(packet_dir=PACKET_DIR, output_dir=TEMPLATES):
                     'round': '',
                 })
         counts[path.stem] = len(packets)
+        if path.stem == 'transcript':
+            blind_target = output_dir / 'transcript_blind.csv'
+            blind_fields = (
+                'review_type', 'target_id', 'audio_path', 'duration_seconds',
+                'blind_transcription', 'decision', 'language', 'notes',
+                'reviewer_id', 'round',
+            )
+            with blind_target.open('w', encoding='utf-8', newline='') as handle:
+                writer = csv.DictWriter(handle, fieldnames=blind_fields)
+                writer.writeheader()
+                for packet in packets:
+                    context = packet.get('review_context') or {}
+                    writer.writerow({
+                        'review_type': packet['review_type'],
+                        'target_id': packet['target_id'],
+                        'audio_path': _cell(context.get('audio_path')),
+                        'duration_seconds': _cell(context.get('duration_seconds')),
+                        'blind_transcription': '',
+                        'decision': '',
+                        'language': '',
+                        'notes': '',
+                        'reviewer_id': '',
+                        'round': '',
+                    })
+            counts['transcript_blind'] = len(packets)
     report = {
         'template_counts': dict(sorted(counts.items())),
         'required_independent_reviews': 2,
-        'instructions': 'Give separate template copies to two reviewers; import completed rows into data/review_decisions/native_reviews.jsonl.',
+        'instructions': (
+            'Give separate copies to two reviewers. For transcript review, collect '
+            'transcript_blind.csv first without showing reference text or model '
+            'hypotheses; reveal transcript.csv only after both blind passes. After '
+            'discussion of the reference and hypotheses, enter each reviewer\'s final '
+            'decision once in transcript.csv. Import only final context-form rows '
+            'for transcript review, avoiding duplicate decisions from the blind form.'
+            ' Import completed rows into data/review_decisions/native_reviews.jsonl.'
+        ),
     }
     (output_dir / 'report.json').write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
@@ -270,11 +301,18 @@ def write_review_templates(packet_dir=PACKET_DIR, output_dir=TEMPLATES):
 def import_review_csv_files(paths, output=DECISIONS):
     """Import completed reviewer copies into the two-pass decision stream."""
     decisions = []
-    seen = set()
+    output = Path(output)
+    existing = read_jsonl(output)
+    seen = {
+        (row['review_type'], row['target_id'], row['reviewer_id'])
+        for row in existing
+    }
     for path in map(Path, paths):
         with path.open(encoding='utf-8', newline='') as handle:
             for row in csv.DictReader(handle):
-                if not (row.get('decision') or '').strip():
+                decision_value = (row.get('decision') or '').strip()
+                blind_transcription = (row.get('blind_transcription') or '').strip()
+                if not decision_value and not blind_transcription:
                     continue
                 review_type = (row.get('review_type') or '').strip()
                 target_id = (row.get('target_id') or '').strip()
@@ -287,14 +325,14 @@ def import_review_csv_files(paths, output=DECISIONS):
                     raise ValueError(f'Completed decision in {path} has invalid round') from error
                 key = (review_type, target_id, reviewer_id)
                 if key in seen:
-                    raise ValueError(f'Duplicate reviewer decision: {key}')
+                    raise ValueError(f'Record already has a decision from this reviewer: {key}')
                 seen.add(key)
                 decision = {
                     'review_type': review_type,
                     'target_id': target_id,
                     'reviewer_id': reviewer_id,
                     'round': round_number,
-                    'decision': row['decision'].strip(),
+                    'decision': decision_value or 'blind_transcription',
                 }
                 for field in CONSENSUS_FIELDS[1:] + ('notes',):
                     value = (row.get(field) or '').strip()
@@ -304,11 +342,17 @@ def import_review_csv_files(paths, output=DECISIONS):
                         [item.strip() for item in value.split('|') if item.strip()]
                         if field == 'dialect_labels' else value
                     )
+                if blind_transcription:
+                    decision['corrected_text'] = blind_transcription
                 decisions.append(decision)
     decisions.sort(key=lambda row: (
         row['review_type'], row['target_id'], row['reviewer_id'], row['round']
     ))
-    write_jsonl(output, decisions)
+    combined = existing + decisions
+    combined.sort(key=lambda row: (
+        row['review_type'], row['target_id'], row['reviewer_id'], row.get('round', 0)
+    ))
+    write_jsonl(output, combined)
     return {
         'files': len(paths),
         'decisions': len(decisions),

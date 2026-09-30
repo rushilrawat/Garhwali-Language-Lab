@@ -17,6 +17,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             marker.write_text('previous')
             with (
                 patch.object(m, 'DEFAULT_OUTPUT', output),
+                patch.object(m, 'MANAGED_OUTPUTS', {output.resolve()}),
                 patch.object(m, '_build_at', side_effect=RuntimeError('failed')),
                 self.assertRaisesRegex(RuntimeError, 'failed'),
             ):
@@ -425,6 +426,51 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIn('Their full records remain in the access-controlled all-data package', card)
         self.assertIn('Garhwali Speech', card)
         self.assertIn('rushilrawat/garhwali-speech', card)
+
+    def test_v2_public_card_documents_source_delta_and_keeps_quality_limits(self):
+        report = {
+            'release_id': 'garhwali-language-lab-v2.0.0',
+            'profile': 'public',
+            'configs': {'text/train': {'records': 2}},
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'draft_unique_audio': 1,
+            'catalog_records': 2,
+            'catalog_redacted_text_records': 1,
+            'structured_knowledge_excluded_for_rights': {},
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+            'source_expansion': {
+                'jambu': {
+                    'source_records': 763,
+                    'unique_forms': 738,
+                    'cross_source_overlap': 28,
+                    'new_vs_other_sources': 710,
+                    'already_in_current_corpus': 738,
+                },
+                'language_library': {
+                    'source_records': 180,
+                    'unique_strings': 180,
+                    'cross_source_overlap': 16,
+                    'new_vs_current_corpus': 164,
+                    'records_by_type': {'lexicon': 131, 'phrase': 33, 'proverb': 10, 'riddle': 6},
+                },
+            },
+        }
+
+        card = m.dataset_card(report)
+
+        self.assertIn('164 exact-new', card)
+        self.assertIn('strings. Types: lexicon 131', card)
+        self.assertRegex(card, r'adds \*\*0\*\*\s+new forms')
+        self.assertIn('generated inflection forms are excluded', card)
+        self.assertIn(
+            'Neither source entry has received native-speaker review',
+            ' '.join(card.split()),
+        )
 
     def test_catalog_includes_open_text(self):
         row = {

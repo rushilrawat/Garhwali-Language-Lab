@@ -1,0 +1,44 @@
+{
+  "data_limitations": [
+    "Only static word, phrase, proverb, and riddle entries are included; generated inflection output is not corpus data.",
+    "Garhwali labels, translations, and dialect-variant labels are upstream claims and have not been independently or natively reviewed.",
+    "Rows are experimental lexical/cultural evidence and are excluded from recommended model training."
+  ],
+  "duplicate_source_rows": 0,
+  "exact_new_unique_forms": 164,
+  "exact_overlap_with_existing_unique_forms": 16,
+  "experimental_training_eligible_records": 180,
+  "license_id": "MIT",
+  "license_url": "https://opensource.org/license/mit/",
+  "native_reviewed_records": 0,
+  "output_file": "corpus/garhwali_language_library.jsonl",
+  "output_sha256": "69046ccc6e78fae20e3a98fb05d8b8f18cdefb7796b471f1b056e3c658e9c876",
+  "recommended_training_eligible_records": 0,
+  "records_by_type": {
+    "lexicon": 131,
+    "phrase": 33,
+    "proverb": 10,
+    "riddle": 6
+  },
+  "retrieved_at": "2026-09-30T18:07:46.987007+00:00",
+  "rights_evidence_url": "https://pypi.org/project/garhwali/1.0.0/",
+  "source": "Garhwali Language Library static word/phrase/proverb/riddle files",
+  "source_file_sha256": {
+    "phrases.json": "c4813c7b350b41a5b1b5819191b7e13c2df43713ce0bbb0bdffb5643d501ea1e",
+    "proverbs.json": "ff4926207be26d18a2c0135eefcb34d48aba78034a5f985eb8800a18a9414f8f",
+    "riddles.json": "c7da87a01546bb9574a420cdf1ea96f0436e57124ad458ae6e0b05e333ea3351",
+    "words.json": "f10a31349bd75d03d27369e21acf9bfcab25c1b3dbe7205711b854e5e8c4d749"
+  },
+  "source_git_blob_sha1": {
+    "phrases.json": "86200850bec1af210001af400f748f8fc24757dd",
+    "proverbs.json": "d40448e532ef5b1aa765d84123cacda95b7103f9",
+    "riddles.json": "0f0892a2539761911b685cf10027565ce5a4fc5b",
+    "words.json": "ee3c3b5f974bba8e2c4eac887bb7d6096d9d76e1"
+  },
+  "source_id": "garhwali-language-library",
+  "source_records": 180,
+  "source_revision": "46564fab21299512c104e7b0cbf8bd3064285efd",
+  "source_url": "https://github.com/infoakshatsinghbisht-eng/garhwali-language-library",
+  "source_version": "1.0.0",
+  "unique_surface_forms": 180
+}

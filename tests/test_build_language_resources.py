@@ -28,7 +28,10 @@ class LanguageResourceTests(unittest.TestCase):
                     'text_sha256': 'c',
                     'form': 'चार',
                     'glosses': {'english': ['four']},
-                    'provenance': [{'linguistic_metadata': {'segments': 'tʃ aː r'}}],
+                    'provenance': [{
+                        'linguistic_metadata': {'segments': 'tʃ aː r'},
+                        'experimental_training_eligible': True,
+                    }],
                 },
                 {
                     'text_sha256': 'd',
@@ -57,7 +60,8 @@ class LanguageResourceTests(unittest.TestCase):
             pronunciations = [json.loads(line) for line in (out / 'pronunciation/lexicon.jsonl').read_text().splitlines()]
             self.assertEqual(pronunciations[0]['source_phonetic_segments'], ['tʃ', 'aː', 'r'])
             self.assertEqual(pronunciations[1]['pronunciation_status'], 'grapheme_only_unverified')
-            self.assertTrue(pronunciations[1]['experimental_training_eligible'])
+            self.assertTrue(pronunciations[0]['experimental_training_eligible'])
+            self.assertFalse(pronunciations[1]['experimental_training_eligible'])
             tts = [json.loads(line) for line in (out / 'tts/train.jsonl').read_text().splitlines()]
             self.assertEqual(tts[0]['text'], 'गढ़वाली भाषा')
             self.assertEqual(tts[0]['audio'], 'derived.wav')

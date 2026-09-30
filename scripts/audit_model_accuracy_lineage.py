@@ -885,8 +885,80 @@ def _row_set_sha256(rows: list[dict]) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
+def _aggregate_text_baseline_evidence(root: Path, selected: list[dict]) -> dict | None:
+    """Reconcile the character-bigram aggregate run to the current text test rows."""
+    relative_manifest = Path("data/processed/evaluation/garhwali_bench/manifest.json")
+    relative_input = Path("data/processed/evaluation/garhwali_bench/internal_text.jsonl")
+    manifest_path = root / relative_manifest
+    input_path = root / relative_input
+    split_path = root / SPLIT_MANIFESTS["text_recommended"]["test"]
+    if not manifest_path.is_file() or not input_path.is_file() or not split_path.is_file():
+        return None
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        internal_rows = read_jsonl(input_path)
+        split_rows = read_jsonl(root / split_path)
+    except (OSError, json.JSONDecodeError, ValueError):
+        return None
+
+    baseline = (manifest.get("baselines") or {}).get("character_bigram")
+    internal_ref = (manifest.get("internal_evaluation") or {}).get("text") or {}
+    if not isinstance(baseline, dict) or not isinstance(internal_ref, dict):
+        return None
+    if baseline.get("model") != "add-one-smoothed_character_bigram":
+        return None
+    expected_hash = internal_ref.get("sha256")
+    if not isinstance(expected_hash, str) or _sha256_file(input_path) != expected_hash:
+        return None
+    expected_count = (manifest.get("records") or {}).get("text_evaluation")
+    if expected_count != len(internal_rows) or expected_count != len(selected):
+        return None
+
+    def keyed_text(rows: list[dict]) -> dict[str, str] | None:
+        values = {}
+        for row in rows:
+            identity = next(
+                (row.get(field) for field in (
+                    "id", "row_id", "example_id", "record_id", "segment_sha256",
+                ) if row.get(field) not in (None, "")),
+                None,
+            )
+            text = row.get("text")
+            if identity is None or not isinstance(text, str) or not text.strip():
+                return None
+            identity = str(identity)
+            if identity in values:
+                return None
+            values[identity] = " ".join(unicodedata.normalize("NFC", text).split())
+        return values
+
+    evaluated_by_id = keyed_text(internal_rows)
+    current_by_id = keyed_text(split_rows)
+    selected_ids = {str(row.get("row_id")) for row in selected}
+    if (
+        evaluated_by_id is None
+        or current_by_id is None
+        or set(evaluated_by_id) != selected_ids
+        or set(current_by_id) != selected_ids
+        or evaluated_by_id != current_by_id
+    ):
+        return None
+
+    return {
+        "row_count": len(selected),
+        "row_set_sha256": _row_set_sha256(selected),
+        "metric": "character_bigram_perplexity",
+        "model": baseline["model"],
+        "score": baseline.get("perplexity"),
+        "manifest_path": relative_manifest.as_posix(),
+        "manifest_sha256": _sha256_file(manifest_path),
+        "evaluation_input_path": relative_input.as_posix(),
+        "evaluation_input_sha256": expected_hash,
+    }
+
+
 def _evaluation_decisions(
-    families: dict, records: list[dict], previously_scored: dict
+    root: Path, families: dict, records: list[dict], previously_scored: dict
 ) -> dict:
     """Attach explicit use limits and row-set fingerprints to key evaluations."""
     specs = {
@@ -927,8 +999,8 @@ def _evaluation_decisions(
             "No local prediction match is currently known, but upstream model pretraining overlap has not been established; do not call it blind.",
         ),
         "text_recommended_test": (
-            "text_recommended", "test", False, "historical_only",
-            "The 398-row candidate was already scored by the aggregate character-bigram baseline in build_garhwali_benchmark.py; no row-level predictions were saved. Neural-checkpoint exposure remains unknown, and cross-view exact-text overlaps still require isolation.",
+            "text_recommended", "test", False, "unresolved",
+            "No row-level saved-prediction match is known. Reconcile the aggregate character-bigram score to the exact current test rows before classifying score history.",
         ),
     }
     result = {}
@@ -942,8 +1014,37 @@ def _evaluation_decisions(
             if not require_safe_flag or row["split_safe_for_evaluation"] is True
         ]
         seen = previously_scored.get(family, {}).get(split, [])
+        aggregate_evidence = (
+            _aggregate_text_baseline_evidence(root, selected)
+            if name == "text_recommended_test"
+            else None
+        )
         effective_status = status
         effective_reason = reason
+        if name == "text_recommended_test":
+            if aggregate_evidence:
+                effective_status = "historical_only"
+                effective_reason = (
+                    f"All {aggregate_evidence['row_count']} current rows were scored by the "
+                    f"aggregate character-bigram baseline (perplexity "
+                    f"{aggregate_evidence['score']}); no row-level predictions were saved. "
+                    "This is a historical/open diagnostic, not independent accuracy; "
+                    "neural-checkpoint exposure remains unknown."
+                )
+            else:
+                effective_status = "historical_only" if seen else "unresolved"
+                if seen:
+                    effective_reason = (
+                        f"{len(seen)} rows have saved prediction matches, and the aggregate "
+                        "baseline could not be reconciled to the complete current test set. "
+                        "Treat the split as historical; no blind-test claim is supported."
+                    )
+                else:
+                    effective_reason = (
+                        "Aggregate baseline evidence could not be reconciled to the exact "
+                        "current test IDs and texts; no row-level saved-prediction match is "
+                        "known, so score history is unresolved."
+                    )
         if split == "test" and seen:
             effective_status = "historical_only"
             if status != "historical_only":
@@ -973,6 +1074,13 @@ def _evaluation_decisions(
             "row_set_sha256": _row_set_sha256(selected),
             "previously_scored_row_count": len(seen),
             "previously_scored_row_set_sha256": _row_set_sha256(seen),
+            "aggregate_scored_row_count": (
+                aggregate_evidence["row_count"] if aggregate_evidence else 0
+            ),
+            "aggregate_scored_row_set_sha256": (
+                aggregate_evidence["row_set_sha256"] if aggregate_evidence else None
+            ),
+            "aggregate_scoring_evidence": aggregate_evidence,
             "eligible_for_heldout_claim": False,
             "reason": effective_reason,
         }
@@ -1122,7 +1230,7 @@ def build_report(project_root: str | Path) -> dict:
         "predictions": predictions,
         "previously_scored_rows": previously_scored_rows,
         "evaluation_decisions": _evaluation_decisions(
-            families, records, previously_scored_rows
+            root, families, records, previously_scored_rows
         ),
         "model_lineage_evidence": MODEL_LINEAGE_EVIDENCE,
         "lineage_limits": {
@@ -1244,14 +1352,15 @@ def render_markdown(report: dict) -> str:
             "",
             "No current split is approved as an independent held-out confirmation. A row-set fingerprint identifies each exact subset; its manifest SHA-256 and any previously scored row IDs/hashes are in the local-only JSON ledger, which contains VAANI speaker identifiers and is excluded from Git and public packages.",
             "",
-            "| Evaluation | Status | Selected rows | Previously scored | Permitted use |",
-            "|---|---|---:|---:|---|",
+            "| Evaluation | Status | Selected rows | Prediction rows previously scored | Aggregate-scored rows | Permitted use |",
+            "|---|---|---:|---:|---:|---|",
         ]
     )
     for name, decision in sorted(report.get("evaluation_decisions", {}).items()):
         lines.append(
             f"| {name} | {decision['status']} | {decision['selected_row_count']} / "
             f"{decision['manifest_row_count']} | {decision['previously_scored_row_count']} | "
+            f"{decision['aggregate_scored_row_count']} | "
             f"{decision['permitted_use']} |"
         )
         lines.append(f"\n- **{name}:** {decision['reason']}")

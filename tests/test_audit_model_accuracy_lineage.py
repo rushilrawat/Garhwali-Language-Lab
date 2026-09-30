@@ -2,6 +2,7 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import json
+import hashlib
 
 from audit_model_accuracy_lineage import (
     BENCHMARKS,
@@ -198,12 +199,67 @@ class LineageReportTests(unittest.TestCase):
             root = Path(temp_dir)
             self._write_required_manifests(root)
 
+            test_path = root / SPLIT_MANIFESTS["text_recommended"]["test"]
+            test_rows = read_jsonl(test_path)
+            test_rows[0]["text"] = "Garhwali example"
+            test_path.write_text(
+                "".join(json.dumps(row) + "\n" for row in test_rows),
+                encoding="utf-8",
+            )
+
+            internal_path = root / "data/processed/evaluation/garhwali_bench/internal_text.jsonl"
+            internal_path.parent.mkdir(parents=True, exist_ok=True)
+            internal_path.write_text(
+                json.dumps({"record_id": test_rows[0]["record_id"], "text": "Garhwali example"}) + "\n",
+                encoding="utf-8",
+            )
+            internal_sha256 = hashlib.sha256(internal_path.read_bytes()).hexdigest()
+            benchmark_manifest_path = root / "data/processed/evaluation/garhwali_bench/manifest.json"
+            benchmark_manifest_path.write_text(
+                json.dumps({
+                    "records": {"text_evaluation": 1},
+                    "internal_evaluation": {"text": {"sha256": internal_sha256}},
+                    "baselines": {"character_bigram": {"model": "add-one-smoothed_character_bigram", "perplexity": 1.5}},
+                }),
+                encoding="utf-8",
+            )
+
             report = build_report(root)
 
             decision = report["evaluation_decisions"]["text_recommended_test"]
             self.assertEqual(decision["status"], "historical_only")
             self.assertIn("aggregate", decision["reason"])
             self.assertEqual(decision["previously_scored_row_count"], 0)
+            self.assertEqual(decision["aggregate_scored_row_count"], 1)
+            self.assertEqual(len(decision["aggregate_scored_row_set_sha256"]), 64)
+
+    def test_text_candidate_score_is_unresolved_when_aggregate_rows_do_not_match(self):
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            self._write_required_manifests(root)
+
+            internal_path = root / "data/processed/evaluation/garhwali_bench/internal_text.jsonl"
+            internal_path.parent.mkdir(parents=True, exist_ok=True)
+            internal_path.write_text(
+                json.dumps({"record_id": "unrelated-row", "text": "different row"}) + "\n",
+                encoding="utf-8",
+            )
+            internal_sha256 = hashlib.sha256(internal_path.read_bytes()).hexdigest()
+            benchmark_manifest_path = root / "data/processed/evaluation/garhwali_bench/manifest.json"
+            benchmark_manifest_path.write_text(
+                json.dumps({
+                    "records": {"text_evaluation": 1},
+                    "internal_evaluation": {"text": {"sha256": internal_sha256}},
+                    "baselines": {"character_bigram": {"model": "add-one-smoothed_character_bigram", "perplexity": 1.5}},
+                }),
+                encoding="utf-8",
+            )
+
+            decision = build_report(root)["evaluation_decisions"]["text_recommended_test"]
+
+            self.assertEqual(decision["status"], "unresolved")
+            self.assertEqual(decision["aggregate_scored_row_count"], 0)
+            self.assertIn("could not be reconciled", decision["reason"])
 
     def test_known_previously_scored_test_splits_are_historical_only(self):
         with TemporaryDirectory() as temp_dir:

@@ -1,8 +1,8 @@
 # GarhwaliBench v0.2 schema contract (draft)
 
-**Updated:** 2026-09-28
+**Updated:** 2026-09-30
 
-**Status:** validation baseline passed; QA, summarization, and translation scoring paths are implemented, while v0.2 migration and release gates remain open.
+**Status:** eight-view validation passes; task-specific scorers exist for QA, summarization, translation, retrieval, ASR, and generation. The shared runner emits corpus and per-record ASR WER/CER with explicit empty-reference policy, and validation-only generation EM/chrF2 plus output diagnostics. Full release review and independent/native evidence remain open.
 **Purpose:** specify the record, split, provenance, rights, and reporting fields
 that a versioned v0.2 benchmark export must carry. This contract does not alter
 the v0.1 candidate files or authorize public release.
@@ -126,6 +126,45 @@ beta=2); it does not claim SacreBLEU compatibility. CrossSum reports the
 existing custom chrF2 alongside ROUGE-L. The metric signatures and normalizers
 are recorded in the task run config.
 
+**ASR corpus aggregation (2026-09-29):**
+[`scripts/asr_metrics.py`](../scripts/asr_metrics.py) now exposes `score_corpus`.
+It uses `asr-nfc-casefold-punctuation-symbol-space-v1`, computes corpus WER and
+CER from summed edit counts divided by summed reference words/characters, and
+returns both raw totals and denominators. A blank hypothesis is retained and
+scored as deletions. A reference that normalizes to no words or characters is
+excluded with its record ID and reason; the scorer fails if no valid reference
+remains. This is the project contract `garhwali-asr-corpus-wer-v1` /
+`garhwali-asr-corpus-cer-v1`; it does not make existing VAANI scores independent
+or references native-validated.
+
+The shared [`score_benchmark_predictions.py`](../scripts/score_benchmark_predictions.py)
+runner accepts `--task asr`, uses `text.text_scoring` as the reference, enforces
+exact row-ID coverage, and writes the scorer's corpus totals plus per-record
+WER/CER into its report. Its run manifest fingerprints `asr_metrics.py` along
+with the runner and shared metric modules. Per-record rates are descriptive;
+the corpus metric remains the pooled edit-count rate.
+
+**Generation scoring integration (2026-09-30):** the same runner accepts
+`--task generation --split validation` for saved `instructions_v0.2`
+predictions. It uses stable instruction hashes, scores exact match against any
+accepted response plus multi-reference chrF2, reports repetition/empty/copy/
+control-token diagnostics, and fingerprints the scoring implementation.
+Three historical mT0 seed runs were reconciled to 130 exact current validation
+rows; 190 of the current 320 validation rows have no saved prediction. The
+scores are development diagnostics, not new inference or independent accuracy.
+See the [generation integration report](generation-scoring-integration-2026-09-30.md).
+
+**Retrieval contract already implemented:** the candidate corpus is the
+deduplicated set of XORQA contexts, identified by the `passage_corpus_sha256`
+in each run. Recall@k counts a query as retrieved only when its associated
+context has a nonzero score and appears in the first k positions; MRR@10 is
+zero for a null/out-of-top-10 rank. Ties are broken by stable document ID.
+Reports keep the full query denominator and separately expose retrieved and
+zero-score queries. Current BM25 reports use 1,059 fixed contexts and 500 dev
+questions; this is a known benchmark collection, not unseen-corpus retrieval.
+The implemented contract does not include nDCG, so nDCG claims must not be
+reported until relevance grades and its scorer are defined.
+
 The 2026-09-27 local reference preflight found 100/100 CrossSum dev rows with a
 non-empty target summary. XORQA had 499/500 dev rows with a non-empty target
 answer reference; one row has an English answer but no Garhwali reference. The
@@ -135,12 +174,15 @@ re-scored through the shared scorer and matched their earlier custom metrics
 exactly; no fresh neural-model predictions were run. The v0.2 contract still
 needs:
 
-- ASR: corpus WER/CER from summed errors/reference units, plus per-record
-  distribution and empty-reference policy.
-- Translation/generation: generation still needs an integrated scorer; existing
+- ASR: corpus scoring, per-record rates, exact ID checks, and empty-reference
+  accounting are integrated and tested. Existing ASR model comparisons remain
+  historical, with unknown upstream exposure and unreviewed references.
+- Translation/generation: generation scoring is integrated for the saved
+  validation outputs; broader metric/reference review remains open. Existing
   translation custom scores must not be relabeled as a different library's metric.
-- Retrieval: fixed candidate corpus hash, Recall@k/MRR/nDCG definitions, tie and
-  no-answer handling, and source-group-aware uncertainty.
+- Retrieval: the fixed candidate corpus hash, Recall@k/MRR, stable tie order, and
+  zero-score policy are now documented. nDCG remains unsupported until graded
+  relevance exists; source-cluster uncertainty remains an analysis layer.
 - Question answering: source-context groups for clustered uncertainty and an
   explicit answerability field before no-answer scoring is supported.
 - Language modeling: explicit tokenizer/model identity and loss denominator;
@@ -149,7 +191,7 @@ needs:
 The open development package and any future final-claim protocol must be
 separate. No current public split should be described as blind.
 
-## Current v0.1 asset baseline
+## Current v0.1 asset baseline — refreshed 2026-09-29
 
 The dependency-free validator is
 [`validate_benchmark_v02.py`](../scripts/validate_benchmark_v02.py). It reads
@@ -157,21 +199,23 @@ the existing v0.1 manifest, validates source records and local audio hashes,
 and writes ignored local output under
 `data/processed/evaluation/garhwali_bench/v0.2_contract_validation.*`.
 
-The current manifest SHA-256 is
-`ce93c7c1c06680d04bf9b861cbfdf8ca11b6cf9bf1968ba9cf19687655b8865b`. The
-validation report passes with **zero structural/integrity errors** across
-eight views and 12,622 rows:
+The source manifest SHA-256 is
+`b833f81400d849ef80a14d2aae1b9803aab114dcac58f09e9e7b44de02b98b39`. The
+fresh validation report passes with **zero structural/integrity errors** over
+eight views and 14,703 rows. This is the sum of view rows, not unique examples:
+the 402 internal-text records are intentionally mirrored by the recommended
+test view.
 
 | View | Count | Split counts |
 | --- | ---: | --- |
 | FLORES | 2,009 | dev 997; test 1,012 |
 | CrossSum | 699 | train 99; dev 100; test 500 |
 | XORQA | 1,139 | train 100; dev 500; test 539 |
-| Internal Garhwali text candidate | 398 | test 398 |
+| Internal Garhwali text candidate | 402 | test 402 |
 | Internal VAANI ASR candidate | 112 | test 112 |
-| Recommended text train | 7,490 | train 7,490 |
-| Recommended text validation | 377 | validation 377 |
-| Recommended text test | 398 | test 398 |
+| Recommended text train | 9,486 | train 9,486 |
+| Recommended text validation | 454 | validation 454 |
+| Recommended text test | 402 | test 402 |
 
 All external task rows have unique IDs, nonempty required task references,
 NFC-trimmed normalized primary text whose hash matches, and explicit source,
@@ -193,24 +237,32 @@ See [the nested-overlap review](benchmark-nested-overlap-review-2026-09-27.md)
 and [the source-page family review](benchmark-source-page-families-2026-09-28.md)
 for exact-field and source-lineage evidence and their limits.
 
-The generated validation JSON has SHA-256
-`2e0f2dc6286a6a96f8043ce1c6ef6d09ae1987f3ff486974c7cb32e828d4c32c`.
+The current validation JSON SHA-256 is
+`170476050d38da75b4a21f55d50bd3fdfc76f0fd4f4d954be1dd0cef26a02583`. Older
+counts and hashes in dated audit notes are historical snapshots, not current
+adapter state.
 
 ## Current local v0.2 draft adapter
 
 [`build_benchmark_v02.py`](../scripts/build_benchmark_v02.py) now produces a
 deterministic, ignored, local-only draft at
 `data/processed/evaluation/garhwali_bench/v0.2-draft/`. It adapts all eight
-views and 12,622 rows, keeps each full v0.1 row under `legacy_record`, carries
+views and 14,703 rows, keeps each full v0.1 row under `legacy_record`, carries
 the XORQA usage overlay, preserves source/scoring values separately where
 available, records normalizer and draft metric IDs, and verifies output file
-hashes, counts, and retained-row flags. The initial adapter snapshot manifest
-SHA-256 was `0352298d966d4ebcf1540bad913db283bc1cb9e69dfd85b7ea9e5b4fd8525fd1`.
-After the source-page update, the current manifest SHA-256 is
-`2ca84a51cf916d336d7a4e92c5fb34f313b19c72900b7b47f6fa79728e82e25e`; all eight
-views and 12,622 rows validate with zero errors. XORQA rows carry exact
-source-page family hashes alongside context hashes and overlay evidence. This
-refreshed build remains a local draft.
+hashes, counts, and retained-row flags. The current adapter manifest SHA-256 is
+`43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8`; all eight
+views and 14,703 rows validate with zero errors. XORQA rows carry exact
+source-page family hashes alongside context hashes and the 138-row overlay.
+The recommended text split is 9,486/454/402; every row from the prior 8,265-row
+candidate remains present, with 2,077 added and none reassigned across splits.
+All 10,342 recommended IDs map to source segments across 3,246 parent-text
+hashes and 3,072 duplicate components, with zero parent-hash/component split
+crossings (`all_segments.jsonl` SHA-256
+`c77b54aa8ec7a550068b65ef2d07d65cfe8cfe65ae70c617890ae80246d5f429`). Nine of
+11 coarse ingestion-file pointers span splits; those collection files can hold
+multiple works and are not parent-document identities.
+This build remains local-only and its manifest sets `public_upload_allowed=false`.
 
 Rows from the internal-text and recommended-text views do not carry a verified
 raw-original value in v0.1, so `text_raw` is null and the available field is
@@ -219,6 +271,13 @@ redistribution-cleared. The ASR view carries local audio and speaker locators;
 therefore the generated package is local-only and cannot be uploaded as-is.
 Metric entries are explicit draft signatures, not release-frozen protocols;
 the export computes no new model scores.
+
+The separate current character-bigram baseline did score the exact 402-row
+text test (perplexity 14.397995), so the lineage audit labels that test
+historical/open rather than independent-final. The local task-card pack is
+[`garhwali-bench-v0.2-draft-cards.md`](garhwali-bench-v0.2-draft-cards.md).
+It contains six documentation cards and aggregate evidence only, no benchmark
+payload text, audio, speaker identifiers, or publication authorization.
 
 ## Migration blockers before v0.2 can be frozen
 
@@ -247,4 +306,5 @@ Validation command:
 
 ```bash
 PYTHONPATH=scripts .venv/bin/python scripts/validate_benchmark_v02.py
+PYTHONPATH=scripts .venv/bin/python scripts/audit_benchmark_v02_rights.py
 ```

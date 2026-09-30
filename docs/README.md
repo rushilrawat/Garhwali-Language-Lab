@@ -5,6 +5,9 @@ This page indexes the project Markdown intended for the shared repository. It in
 ## Read these first
 
 - [README.md](../README.md) — Project overview and current narrative.
+- [PROJECT_FILE_MAP.md](../PROJECT_FILE_MAP.md) — Generated inventory of tracked and non-ignored project files plus ignored payload totals.
+- [v2.0-release-report-2026-09-30.md](../research/v2.0-release-report-2026-09-30.md) — V2 intake, metrics, rights-aware package, and publication record.
+- [product-progress-2026-09-29.md](../research/product-progress-2026-09-29.md) — Completion bars for corpus, benchmark, research, model, community, API, and infrastructure work.
 - [finalreport.md](../finalreport.md) — Authoritative release verdict, counts, and blockers.
 - [DEEP_DIVE_FINAL_AUDIT.md](../DEEP_DIVE_FINAL_AUDIT.md) — Detailed code, data, and release audit.
 - [benchmark-research-status-2026-09-25.md](../research/benchmark-research-status-2026-09-25.md) — Measured benchmark and model-research snapshot with the latest translation addendum.
@@ -29,16 +32,19 @@ This page indexes the project Markdown intended for the shared repository. It in
 - [generation-quality-2026-09-25.md](../research/generation-quality-2026-09-25.md) — mT0 generation diagnostics and historical test limits.
 - [corpus-preparation-status.md](../research/corpus-preparation-status.md) — Chronological corpus-preparation log.
 - [garhwali-data-expansion-2026-09-29.md](../research/garhwali-data-expansion-2026-09-29.md) — Deduplicated, rights-documented v0.2.0 Garhwali-only source intake.
+- [garhwali-web-goldmines-2026-09-30.md](../research/garhwali-web-goldmines-2026-09-30.md) — Tenth-wave web acquisition, exact deduplication, candidate language/rights status, and repeatable local refresh workflow.
 
 ## How to keep the docs consistent
 
 - Treat `finalreport.md` as the current release decision and consolidated audit summary.
 - Treat `research/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard with later dated addenda; older experiment reports are historical snapshots.
-- The latest scorecard refresh is dated 2026-09-29. It reports development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
+- The latest scorecard refresh is dated 2026-09-30. It reports development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
 - Keep dated research reports as records of the data and model version used at that time. Update the current status docs when new evidence supersedes them; do not rewrite history.
-- Treat `release/v0.1.0/` and `release/v0.1.1/` as frozen snapshots. Their repeated cards and reports preserve each package's own counts and terms. The current v0.2.0 local package and release checks are recorded below; the root README and final report carry remote publication state.
+- Treat `release/v0.1.0/`, `release/v0.1.1/`, and `release/v0.2.0/` as frozen snapshots. Their cards and reports preserve each package's own counts and terms. The V2.0 public corpus package is live on Hugging Face; its exact revisions and current counts are in the root README and V2 report.
 - Keep dataset-card and policy copies inside each Hugging Face package aligned with the root policies when preparing a new package.
-- Add an entry here when adding or removing a shared project Markdown file. This index currently covers 150 Markdown files outside itself: 147 already tracked at the previous commit and three announcement/support reports prepared for this update.
+- The V2.0 corpus contains 32,072 exact-unique parent texts; 164 were added in the latest refresh and published in the versioned V2.0 package. See the V2 report for source overlap and publication state; older release sections below remain historical.
+- For the next source wave, `PIPELINE.md` documents one checkpointed command that ingests a pinned wave, refreshes all derived views and figures, and stages a separately versioned additive Hub upload.
+- Add an entry here when adding or removing a shared project Markdown file. The generated file map covers the Git-visible and non-ignored file inventory; this index focuses on project documentation.
 
 ## Release snapshot v0.2.0
 
@@ -47,6 +53,7 @@ This page indexes the project Markdown intended for the shared repository. It in
 - [`release/v0.2.0/final-audit.json`](../release/v0.2.0/final-audit.json) — Machine-readable final release audit.
 - [`release/v0.2.0/huggingface-publication.json`](../release/v0.2.0/huggingface-publication.json) — Verified Hub commit, file hashes, and Dataset Viewer status.
 - [`research/garhwali-data-expansion-2026-09-29.md`](../research/garhwali-data-expansion-2026-09-29.md) — Source-level data addition and deduplication report.
+- [`research/garhwali-web-goldmines-2026-09-30.md`](../research/garhwali-web-goldmines-2026-09-30.md) — Tenth-wave web candidate intake and repeatable corpus-refresh report.
 
 ## Exact duplicate files
 

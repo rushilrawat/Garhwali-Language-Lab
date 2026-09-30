@@ -1,86 +1,91 @@
 # Benchmark and model roadmap issues & improvement plan
 
-**Updated:** 2026-09-28
+**Updated:** 2026-09-30 (V2.0 corpus release and generation-scoring follow-up)
 
 **Scope:** issues found while executing the benchmark/model roadmap and its
 immediately preceding retrieval, generation, and ASR work. This is a living
 issue log, not a claim that every project file or dataset has been re-audited.
 
 Every item records evidence, impact, action, and remaining status. Data and
-model outputs stay local and Git-ignored. No Hugging Face jobs, paid compute,
-downloads, uploads, or visibility changes were used in this pass.
+model outputs stay local and Git-ignored. Living status documents are refreshed
+after each material benchmark/research milestone; dated experiment and release
+snapshots remain historical. The 2026-09-29 refresh rebuilt local benchmark
+artifacts, repaired aggregate score-lineage reporting, added six local draft
+cards, integrated corpus/per-record ASR scoring, and inventoried benchmark
+rights. On 2026-09-30 the owner approved active work toward independent
+final-accuracy evidence across all five task areas. Generation scoring was
+added to the shared runner and saved outputs were reconciled to current
+validation rows. The V2.0 corpus package was published additively to the
+existing public Hugging Face dataset at payload commit `5db2673`; the root and
+versioned cards were corrected at `53a0aff`. No paid job or visibility change
+occurred. The pipeline now has a tested one-command resumable ingest-and-refresh
+mode. Use this current summary for present benchmark counts; dated entries
+below preserve earlier evidence.
 
-## Current roadmap position
+## Current roadmap position — 2026-09-30
 
-Phase 1's inventory/reproducibility refresh is complete for the 2026-09-26
-workspace snapshot: the benchmark was rebuilt, the release and model-lineage
-audits were rerun, the no-download runtime preflight was checked, and the full
-suite passed 508 tests at the Phase 3 snapshot, 516 after the first Phase 4
-slice, 518 after preflight checks, and now 519 after historical-test gating.
-Phase 2 is in progress: exact primary/nested-field, cross-language-label, and
-XORQA page-title scanning is complete for the configured fields. The refreshed
-overlay labels 138 XORQA records for open diagnostics; all remain retained.
-The split builder had also missed parent-document crossings created when duplicate components reassigned individual segments. A corrected local candidate now reports zero parent-document overlap while historical manifests remain unchanged. CrossSum exact URL checks are clean; FLORES has no row-level source URLs. Semantic/paraphrase and source-lineage gaps remain open. Phase 3 has started: a
-v0.2 schema contract, validator, and deterministic local adapter cover the
-existing eight views. The refreshed adapter links the overlay and keeps all
-12,622 source rows. QA
-exact-match/token-F1, summary ROUGE-L/chrF, and custom translation BLEU/chrF
-now have versioned scoring paths. Saved translation-memory dev outputs were
-re-scored and a paired record bootstrap was added; no fresh neural-model
-predictions were generated. Source-page-clustered uncertainty and fixed-corpus
-miss diagnostics now cover saved XORQA BM25 dev retrieval; translation and
-other task clusters, metric/schema freeze, and semantic/cross-language review
-remain open. Phase 8 result-eligibility labels are now reconciled for the
-configured splits; see the [eligibility report](task-result-eligibility-2026-09-28.md).
-Saved mT0 generation-output diagnostics cover task-local output concentration
-and structural checks. The latest pytest run passed 584/584; the documented
-unittest runner passed 582/582. Run pytest with
-`PYTHONPATH=.venv/lib/python3.12/site-packages:scripts pytest -q` so the
-project LangGraph packages are visible. CI installs pinned packages from
-`requirements-pipeline.txt`.
+The V2.0 corpus release is public, but GarhwaliBench remains a local draft:
+five candidate task artifacts exist, three external schemas pass across 3,847
+records, and the current v0.2 adapter validates eight views / 14,703 rows
+(manifest SHA-256 `43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8`).
+The 9,486/454/402 recommended text split retains all rows from the prior
+8,265-row candidate and adds 2,077 without moving prior rows between splits.
+The adapter and metric contract are not fully release-frozen; ASR corpus and
+per-record aggregation plus retrieval rank/tie policies are now explicit and
+tested. The 138-row
+XORQA usage overlay remains intact. Exact/family scans are updated, but semantic/paraphrase and
+checkpoint exposure remain open. The 2026-09-30 row-level audit also finds 15
+exact-text overlaps from recommended training in instruction test and 29 in
+instruction validation; the Meta Omnilingual family has four train/test audio
+and four train/test text groups, plus 27 train/validation text groups. Keep all
+rows and flag the affected eval records. The current internal text test's 402 rows
+were aggregate-scored (character-bigram PPL 14.397995), so evidence eligibility
+remains 0/5 for independent final-accuracy claims despite the owner's approval
+to work toward all five areas.
 
-**2026-09-28 ASR lineage update:** a post-hoc audit now reconciles the base,
-decoder sweep, 61-trial, expanded-human, and 102-step saved predictions to the
-same 112 audio hashes and cleaned references. Speaker-clustered paired
-intervals compare each candidate with the base; all include zero or touch it,
-so no model promotion is supported. Test results remain historical. See the
-[ASR held-out lineage audit](asr-heldout-lineage-audit-2026-09-28.md).
+The [rights inventory](garhwali-bench-v0.2-rights-inventory-2026-09-29.md)
+found all 14,703 draft view rows still marked `public_upload_allowed=false`;
+2,077 recommended-text rows have source components assessed compatible, 8,265
+have item-level rights status not recorded, and external/audio components need
+separate review. The component candidate counts are not publication clearance.
+The [ASR scorer integration check](asr-corpus-metric-integration-2026-09-29.md)
+reproduces the saved 269-row validation aggregate with the new corpus and
+per-record metrics. The current row-level lineage output is kept under ignored
+`data/processed/evaluation/garhwali_bench/model_accuracy_lineage_2026-09-30`
+because its JSON includes speaker IDs. The [generation scorer follow-up](generation-scoring-integration-2026-09-30.md)
+records the shared scorer and 130/320 matched-validation reconciliation; the
+other 190 rows have no saved predictions.
 
-Phase 5, baseline consolidation, is **partially complete**. The dependency-free
-copy and translation-memory baselines cover all 997 FLORES development rows,
-and the ASR candidates are consolidated from saved validation predictions and
-aggregate test reports in [the ASR comparison](asr-baseline-consolidation-2026-09-26.md).
-The ASR sweep, 61-trial, and expanded-human jobs represented by those reports
-completed; none is known to have stopped because of a usage limit. Phase 5
-still has other task areas and blockers, including NLLB inference. Phase 6 and
-later gates remain open.
+**Open work, in order:**
 
-### What is paused or stopping progress
+1. Finish semantic/paraphrase, cross-language, and source-family checks. Keep
+   the newly detected 15/29 recommended-train-to-instruction text overlaps and
+   Meta audio/transcript cross-split groups flagged; do not delete their source
+   rows. Update task eligibility overlays and document which examples remain
+   open-diagnostic, development-only, historical, or unresolved.
+2. Freeze the v0.2 schema, normalization/metric contracts, split manifests,
+   public/local field cards, and missing-reference denominator rules.
+3. Complete standardized manifests and baseline consolidation for remaining
+   tasks without rescoring historical test rows.
+4. Add source-cluster uncertainty and failure analysis where usable source
+   lineage exists; keep XORQA dev retrieval intervals conditional on its fixed
+   all-split candidate corpus.
+5. Publish benchmark cards/artifacts only after rights, integrity, and
+   reproducibility gates pass.
 
-- **No recorded rate-limit pause in the completed ASR experiments:** saved
-  reports show 6/6, 61/61, and 1/1 trials complete. This says nothing about
-  unrelated remote jobs; no Hugging Face job status was checked in this
-  local-only pass.
-- **Fresh SraVaani inference is locally blocked:** the Hugging Face cache has
-  metadata but no base-model weights; the local ASR runtime has PyTorch and
-  Transformers only when `PYTHONPATH=.cache/asr-runtime` is set, and lacks
-  NeMo. PyArrow and common audio readers (SoundFile, librosa, torchaudio) are
-  also absent. `ffmpeg` is installed. Existing fine-tuned `.nemo` checkpoints
-  and the Whisper-tiny model weights are present, but this pass did not run a
-  new inference job.
-- **Independent final ASR accuracy is not available:** the fixed VAANI test
-  already has saved scores, SraVaani's upstream VAANI exposure is not
-  item-level auditable, and references have not been native-adjudicated.
-  Native review and dialect annotation remain deferred at the owner's
-  direction.
-- **One baseline provenance discrepancy remains:** a legacy 269-row SraVaani
-  validation comparator differs from the current decoder-sweep greedy output
-  by 3 word errors and 4 character errors. Its exact decoder/checkpoint/run is
-  not recorded, so both values remain visible until provenance is resolved.
-- **ASR held-out row identity is verified post hoc:** five saved SraVaani runs
-  reconcile to the same 112 audio/reference pairs, and paired speaker-cluster
-  intervals were computed. Their results remain historical; upstream exposure
-  and reference correctness are still open. See BMR-012 below.
+The v0.2.0 release verification's 607/607 pytest and 605/605 unittest counts
+are historical; the latest 2026-09-30 V2 full review passed 656/656 unittest
+tests.
+Fresh NLLB, dense IndicBERT retrieval, and SraVaani inference remain blocked:
+the project `.venv` has no PyTorch/Transformers/NeMo/PEFT/PyArrow, while the
+optional cached runtime lacks NeMo/PEFT/audio readers and the necessary NLLB/
+IndicBERT base weights are not present in the project-local model cache. A
+legacy 269-row SraVaani comparator still
+differs from the later greedy-sweep aggregate by 3 word and 4 character errors;
+the original row-level greedy output is missing. Native review and dialect
+annotation remain deferred at the owner's direction; a blind-first-pass
+transcript packet is prepared, but zero native decisions exist. Automated
+diagnostics cannot be called native-validated.
 
 ## Issues
 
@@ -337,6 +342,18 @@ later gates remain open.
   and remain open for diagnostic use. The v0.2 adapter carries page-family
   hashes. See
   [the source-page review](benchmark-source-page-families-2026-09-28.md).
+- **Full input refresh (2026-09-29):** the detector scanned 14,591
+  text-relevant rows across the current benchmark views. It found 411 exact-text
+  groups, one exact group across source splits (the known XORQA train/dev
+  repeat), 402 expected exact cross-view mirrors for the same internal text
+  test records, and four near-text candidates; each near pair is in one split
+  and matches previously reviewed pair IDs. Source-family grouping found 1,995
+  groups and 29 cross-split families: 27 content/source-linked XORQA families
+  plus two broad URL families (a TLF collection URL and a book URL). Those two
+  are grouping candidates, not evidence that all records in either collection
+  are duplicates. The 138-row overlay is unchanged. Detector JSON SHA-256:
+  `23e454a2ced303457866e26fa55b9ca5386f30fb26f38cfda6b3fe199266294a`;
+  generated local report: `data/processed/evaluation/garhwali_bench/overlap_candidates.md`.
 - **Impact:** Exact-match clearance cannot establish source-family or
   cross-language independence. Candidate benchmark rows must remain
   historical/open/development-only according to their existing use decisions;
@@ -369,28 +386,28 @@ later gates remain open.
 - **Evidence:** The draft contract is in
   [garhwali-bench-v0.2-schema-contract.md](garhwali-bench-v0.2-schema-contract.md).
   The dependency-free validator `scripts/validate_benchmark_v02.py` passes
-  eight views / 12,622 rows with zero structural or integrity errors, including
-  112/112 local ASR audio hashes. Its local JSON report SHA-256 is
-  `2e0f2dc6286a6a96f8043ce1c6ef6d09ae1987f3ff486974c7cb32e828d4c32c`.
-  The deterministic adapter `scripts/build_benchmark_v02.py` now writes all
-  eight views / 12,622 rows to an ignored local-only package; its manifest
-  SHA-256 is
-  `8b6953da2bb4a45d2a72274617ca13949ad1cfdddb21b9fec54fb110194e03f1`. It
+  eight views / 14,703 rows with zero structural or integrity errors, including
+  112/112 local ASR audio hashes. The 2026-09-29 validation JSON SHA-256 is
+  `170476050d38da75b4a21f55d50bd3fdfc76f0fd4f4d954be1dd0cef26a02583`.
+  The deterministic adapter `scripts/build_benchmark_v02.py` writes all eight
+  views / 14,703 rows to an ignored local-only package; its current manifest
+  SHA-256 is `43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8`. It
   links the 62-row overlay from that historical export snapshot, preserves each legacy source row, records available
   raw/scoring text separately, and self-validates output hashes/counts.
-  The shared scorer now covers FLORES translation, CrossSum, and XORQA,
+  The shared scorer now covers FLORES translation, CrossSum, XORQA, and ASR,
   including prediction-ID reconciliation, split gates, and missing-reference
-  reporting. The refreshed 2026-09-28 export has manifest SHA-256
-  `2ca84a51cf916d336d7a4e92c5fb34f313b19c72900b7b47f6fa79728e82e25e` and links
-  the 138-record overlay, including source-page family hashes; all eight assets
-  validate with zero errors. At the 2026-09-28 source-page-cluster checkpoint,
+  reporting. ASR run manifests fingerprint their metric implementation; its
+  real-data validation check reproduced saved aggregate counts exactly. The
+  current export links the 138-record overlay, including
+  source-page family hashes; all eight assets validate with zero errors. At
+  the 2026-09-28 source-page-cluster checkpoint,
   pytest passed 569/569 and the documented unittest runner passed 567/567;
   current test totals are listed at the top of this plan.
 - **Known migration gaps:** verified original raw text is absent from some
   internal/recommended v0.1 rows; the adapter explicitly leaves those raw
-  values unavailable. QA, summary, and translation metric paths are integrated,
-  but source-page uncertainty is now measured for XORQA BM25 dev; translation
-  and other source-group uncertainty, ASR/LM/generation scoring contracts, and
+  values unavailable. QA, summary, translation, and ASR metric paths are
+  integrated, but source-page uncertainty is now measured for XORQA BM25 dev;
+  translation and other source-group uncertainty, LM/generation scoring contracts, and
   explicit no-answer support remain open. The overlap audit
   still cannot establish semantic or cross-language independence. Rights remain
   a separate release gate; schema validation is not rights clearance.
@@ -538,15 +555,16 @@ later gates remain open.
 ### BMR-019 — Evaluation status labels did not reflect recorded prior use
 
 - **Severity/status:** High; fixed 2026-09-28.
-- **Evidence:** The lineage audit hardcoded several test splits with saved
-  predictions as `development_only`. The 398-row internal text candidate had
-  also been scored by the aggregate character-bigram baseline, but its audit
-  decision was marked unresolved because no row-level prediction file existed.
-- **Fix:** Test decisions now become `historical_only` when saved predictions
-  match any row in the fixed test split. The internal text candidate is
-  explicitly historical because its aggregate baseline used the exact same
-  398 normalized test texts. An additional unresolved split retains that label
-  when no local prior-use match exists and model exposure is unknown.
+- **Evidence:** The original lineage audit hardcoded several test splits with
+  saved predictions as `development_only`. At the time, the 398-row internal
+  text candidate had also been scored by an aggregate character-bigram
+  baseline, but the audit marked it unresolved because no row-level prediction
+  file existed.
+- **Fix:** Test decisions become `historical_only` when saved predictions match
+  any row in the fixed test split. Aggregate-only scoring is independently
+  matched by the 2026-09-29 follow-up under BMR-021. The current text set has
+  402 rows, all exactly matched to the aggregate baseline input. A split stays
+  unresolved when no local prior-use match exists and model exposure is unknown.
 - **Reports:** [Task-result eligibility](task-result-eligibility-2026-09-28.md)
   and the [fresh lineage audit](model-accuracy-lineage-2026-09-28.md) record
   the corrected assignments and counts. No data rows changed.
@@ -589,6 +607,38 @@ later gates remain open.
   crossings; all output artifact hashes and counts independently match the
   report. No source rows were removed and no neural inference ran.
 
+### BMR-021 — Aggregate-scored test rows were not reconciled to current lineage
+
+- **Severity/status:** High; audit logic fixed locally on 2026-09-29.
+- **Evidence:** The prior lineage audit treated the current internal-text test
+  as unresolved because it found no row-level prediction file. The current
+  benchmark had computed an aggregate character-bigram score on that exact set,
+  so prediction-row matching alone understated prior test use.
+- **Fix:** `scripts/audit_model_accuracy_lineage.py` now verifies the benchmark
+  manifest and internal-text input hashes, selected test IDs and normalized
+  text, row count, row-set fingerprint, baseline identity, and aggregate score.
+  Its report keeps aggregate-scored rows distinct from saved per-row
+  predictions. Mismatched manifests or row sets are not counted as evidence.
+- **Current result:** 402/402 recommended text-test rows match the aggregate
+  baseline input; PPL is 14.397995 and the row-set SHA-256 is
+  `d1ed8310f891926ba91e24f79367554dc4e22aeeeb56ad26be01e15c8246d06a`. The
+  decision is historical/open, not independent-final. No row-level prediction
+  output was saved and this audit computed no new score.
+- **Split cross-check:** all 10,342 current recommended IDs map to source
+  segments with 3,246 parent-text hashes and 3,072 duplicate-component IDs;
+  neither group type crosses splits. The source file
+  `all_segments.jsonl` hashes to
+  `c77b54aa8ec7a550068b65ef2d07d65cfe8cfe65ae70c617890ae80246d5f429`. A
+  coarser `provenance.file` scan finds nine of 11 ingestion files in multiple
+  splits; those files can contain several works and are not parent-document
+  identifiers, so source-work-level isolation is still not established.
+- **Artifacts:** machine-readable evidence is generated locally at
+  `data/processed/evaluation/garhwali_bench/model-accuracy-lineage-2026-09-29.json`
+  (SHA-256 `a7f167fa3e007178814f352ebbe8a9a86577a16bb5a628d08a87442d7c134833`).
+  It includes VAANI speaker identifiers and stays Git-ignored/local-only.
+- **Verification:** focused regression tests cover an exact aggregate row-set
+  match and rejection of a mismatched set; full-suite result is recorded below.
+
 ## Verification log
 
 | Date | Check | Result |
@@ -628,6 +678,11 @@ later gates remain open.
 | 2026-09-28 | Parent-safe split correction and source-family audit | Historical manifests: 50 parent documents / 1,523 segments cross train/test or train/validation; rebuilt ignored split and benchmark candidate: zero parent-document crossings and 392 text rows aligned to candidate test; CrossSum exact URLs do not repeat; FLORES lacks row-level source URLs; pytest 580/580, unittest 578/578, split tests 6/6; deterministic historical bigram diagnostic only, no neural inference or model selection |
 | 2026-09-28 | ASR held-out identity and paired audit | Five saved runs reconciled to 112/112 audio hashes and cleaned references; 10,000-resample speaker-cluster intervals for four candidate-vs-base comparisons all include/touch zero; no inference/selection; focused tests 4/4; pytest 584/584, unittest 582/582 |
 | 2026-09-28 | Legacy SraVaani validation source recovery | Legacy comparator input hash matched the 381-row saved SraVaani file; its 269-row selected per-record errors exactly reproduce the later manifested run (2,161 WER errors / 3,282 CER errors); 3/4-error gap to greedy sweep remains because sweep per-row outputs/config are unavailable |
+| 2026-09-29 | Six-workstream benchmark refresh | Rebuilt v0.2 draft: 8 views / 14,703 rows; adapter SHA-256 `f1355a1096ab272c113c64e07199c6db9814731e6b06e1431806cb000383b98d`; validation 8 assets / 0 errors; recommended text 9,486/454/402, +2,077 versus prior candidate with all old rows retained and no split moves; 10,342 rows map to 3,246 parent-text hashes with no crossings; overlap audit 14,591 text-relevant inputs, 1 exact cross-split group, 402 intentional cross-view mirrors, 4 same-split near pairs, and 29 cross-split source-family groups; current aggregate text-test score lineage matched at PPL 14.397995; six local review cards added; full tests: pytest 608 and unittest 606; no inference, download, or upload |
+| 2026-09-29 | ASR scorer integration | Shared scorer now emits corpus and per-record WER/CER, enforces exact record-ID coverage, lists empty-reference exclusions, and fingerprints ASR metric code in the run manifest; focused ASR/scorer tests passed; no inference, download, or upload |
+| 2026-09-29 | ASR/rights audit verification | ASR shared scorer reproduced saved 269-row validation aggregates exactly; rights audit confirms 14,703/14,703 rows uncleared, 2,077 compatible-status and 8,265 unrecorded recommended-text rows, 112/112 ASR rows carry local audio/identifier flags; builder/validator pass with 0 errors; full pytest 622/622 and unittest 620/620; compileall and `git diff --check` passed; no paid job, inference, or upload |
+| 2026-09-30 | Generation scorer and saved-output reconciliation | Integrated generation EM/chrF2 and failure diagnostics into the shared runner; reconciled three saved mT0 seeds to 130 matching rows in current validation, with 190/320 rows unscored; rescored only development predictions; see [generation report](generation-scoring-integration-2026-09-30.md); full pytest 624/624 and unittest 622/622; no new inference, paid job, download, or upload |
+| 2026-09-30 | Five-area evaluation-lineage refresh | Re-audited 11 manifest families and 41 saved prediction files; found 15/29 recommended-train-to-instruction exact-text overlaps, 4 Meta Omnilingual train/test audio and 4 text groups plus 27 train/validation text groups, and 338 audio / 575 text groups from expanded-human train to experimental ASR test; experimental validation also has 397 audio / 683 text groups. Test sets remain historical/unresolved; 0/5 independent final-accuracy eligibility. Row-level ledger saved under ignored `data/processed/evaluation/garhwali_bench/model_accuracy_lineage_2026-09-30` because it includes speaker identifiers. |
 
 See the [benchmark/model roadmap](benchmark-model-roadmap.md) for remaining
 phases and the [benchmark research status](benchmark-research-status-2026-09-25.md)

@@ -10,8 +10,12 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ALL_DATA = ROOT / "data/huggingface/garhwali-language-lab-all-data"
-PUBLIC_DATA = ROOT / "data/huggingface/garhwali-language-lab"
+ALL_DATA = ROOT / os.environ.get(
+    "GARHWALI_HF_ALL_DATA_OUTPUT", "data/huggingface/garhwali-language-lab-all-data"
+)
+PUBLIC_DATA = ROOT / os.environ.get(
+    "GARHWALI_HF_PUBLIC_OUTPUT", "data/huggingface/garhwali-language-lab"
+)
 RELEASE_ID = f"garhwali-language-lab-v{os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')}"
 
 TABLES = {

@@ -12,9 +12,11 @@ from collections import Counter
 from pathlib import Path
 
 from benchmark_metrics import normalize_metric_text, score_qa_answers, score_rouge_l
+from asr_metrics import normalize as normalize_asr_text, score_corpus as score_asr_corpus
 from evaluation_run_manifest import write_run_artifacts
 from run_translation_baseline import corpus_chrf, metric_summary as translation_metric_summary
 from run_translation_baseline import normalize as normalize_translation_text
+from run_mt5_instruction_tuning import generation_diagnostics
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,6 +32,17 @@ TASKS = {
     'question_answering': {
         'reference_field': 'source_example.translated_answers[*].text',
         'metric_ids': ['garhwali-qa-em-token-f1-v1'],
+    },
+    'asr': {
+        'reference_field': 'text.text_scoring',
+        'metric_ids': ['garhwali-asr-corpus-wer-v1', 'garhwali-asr-corpus-cer-v1'],
+    },
+    'generation': {
+        'reference_field': 'acceptable_responses[*] (fallback: response)',
+        'metric_ids': [
+            'garhwali-generation-em-multi-ref-v1',
+            'garhwali-generation-chrf2-multi-ref-v1',
+        ],
     },
 }
 
@@ -63,7 +76,26 @@ def _references(task: str, row: dict) -> list[str]:
             answer.get('text', '') if isinstance(answer, dict) else str(answer)
             for answer in answers
         ]
+    if task == 'asr':
+        text = row.get('text') or {}
+        reference = text.get('text_scoring')
+        return [reference if isinstance(reference, str) else '']
+    if task == 'generation':
+        alternatives = row.get('acceptable_responses')
+        if isinstance(alternatives, list) and alternatives:
+            return [reference for reference in alternatives if isinstance(reference, str)]
+        reference = row.get('response')
+        return [reference] if isinstance(reference, str) else []
     raise ValueError(f'unsupported task: {task}')
+
+
+def _record_id(task: str, row: dict) -> str:
+    record_id = row.get('record_id')
+    if task == 'generation' and not record_id:
+        instruction_hash = row.get('instruction_sha256')
+        if isinstance(instruction_hash, str) and instruction_hash.strip():
+            record_id = f'instruction:{instruction_hash.strip().lower()}'
+    return str(record_id or '')
 
 
 def _canonical_jsonl(rows: list[dict]) -> bytes:
@@ -87,8 +119,8 @@ def evaluate_rows(
     """Score one explicit split after exact prediction-ID reconciliation."""
     if task not in TASKS:
         raise ValueError(f'unsupported task: {task}')
-    if split not in {'dev', 'test'}:
-        raise ValueError('scoring supports only dev or historical test')
+    if split not in {'dev', 'validation', 'test'}:
+        raise ValueError('scoring supports only dev, validation, or historical test')
     if split == 'test' and not allow_historical_test:
         raise ValueError('test scoring requires --allow-historical-test')
     if not prediction_field:
@@ -97,7 +129,7 @@ def evaluate_rows(
     selected = [row for row in benchmark_rows if row.get('split') == split]
     if not selected:
         raise ValueError(f'benchmark has no rows in requested split: {split}')
-    selected_ids = [str(row.get('record_id') or '') for row in selected]
+    selected_ids = [_record_id(task, row) for row in selected]
     if any(not record_id for record_id in selected_ids):
         raise ValueError('selected benchmark rows require record_id')
     if len(selected_ids) != len(set(selected_ids)):
@@ -128,6 +160,8 @@ def evaluate_rows(
     reference_is_nonempty = (
         (lambda reference: bool(normalize_translation_text(reference)))
         if task == 'translation'
+        else (lambda reference: bool(normalize_asr_text(reference)))
+        if task == 'asr'
         else (lambda reference: bool(normalize_metric_text(reference)))
     )
     metric_indices = [
@@ -140,22 +174,44 @@ def evaluate_rows(
     ]
     if not metric_indices:
         raise ValueError('no selected records have a non-empty reference for this task')
-    metrics = (
-        translation_metric_summary(
+    if task == 'asr':
+        metrics = score_asr_corpus(
+            [alternatives[0] for alternatives in references],
+            hypotheses,
+            record_ids=selected_ids,
+        )
+    elif task == 'translation':
+        metrics = translation_metric_summary(
             [references[index][0] for index in metric_indices],
             [hypotheses[index] for index in metric_indices],
         )
-        if task == 'translation'
-        else score_rouge_l(
+    elif task == 'summarization':
+        metrics = score_rouge_l(
             [hypotheses[index] for index in metric_indices],
             [references[index] for index in metric_indices],
         )
-        if task == 'summarization'
-        else score_qa_answers(
+    elif task == 'generation':
+        metric_rows = []
+        for index in metric_indices:
+            row = dict(selected[index])
+            row['acceptable_responses'] = references[index]
+            row['response'] = references[index][0]
+            metric_rows.append(row)
+        metrics, generation_details = generation_diagnostics(
+            metric_rows,
+            [hypotheses[index] for index in metric_indices],
+        )
+        metrics.update({
+            'metric_ids': TASKS[task]['metric_ids'],
+            'normalizer_id': 'mt0-generation-nfc-casefold-whitespace-v1',
+            'tokenizer_id': 'whitespace-tokens-and-codepoint-ngrams-v1',
+            'aggregation': 'exact_match_any_valid_reference_and_chrf2_best_reference_per_record',
+        })
+    else:
+        metrics = score_qa_answers(
             [hypotheses[index] for index in metric_indices],
             [references[index] for index in metric_indices],
         )
-    )
     if task == 'translation':
         metrics.update({
             'metric_ids': TASKS[task]['metric_ids'],
@@ -169,20 +225,32 @@ def evaluate_rows(
             [hypotheses[index] for index in metric_indices],
         )
         metrics['metric_ids'] = TASKS[task]['metric_ids']
-    else:
+    elif task == 'question_answering':
         metrics['metric_ids'] = TASKS[task]['metric_ids']
     selected_hash = hashlib.sha256(_canonical_jsonl(selected)).hexdigest()
     ordered_predictions = [
-        {
+        dict({
             'record_id': record_id,
             'hypothesis': prediction_map[record_id],
             'metric_included': index in metric_indices,
             'metric_exclusion_reason': (
                 None if index in metric_indices else 'missing_nonempty_target_reference'
             ),
-        }
+        }, **({
+            'generation_diagnostics': generation_details[
+                metric_indices.index(index)
+            ] | {'acceptable_responses': references[index]}
+        } if task == 'generation' and index in metric_indices else {}))
         for index, record_id in enumerate(selected_ids)
     ]
+    source_split_counts = (
+        dict(sorted(Counter(
+            str((row.get('source_example') or {}).get('split') or 'unspecified')
+            for row in selected
+        ).items()))
+        if task != 'generation'
+        else {}
+    )
     report = {
         'schema_version': 1,
         'run_id': None,
@@ -209,10 +277,7 @@ def evaluate_rows(
         },
         'metric_scored_record_ids': [selected_ids[index] for index in metric_indices],
         'excluded_record_ids': [selected_ids[index] for index in excluded_indices],
-        'source_split_counts': dict(sorted(Counter(
-            str((row.get('source_example') or {}).get('split') or 'unspecified')
-            for row in selected
-        ).items())),
+        'source_split_counts': source_split_counts,
         'metrics': metrics,
         'limitations': [
             'Metric scores do not validate Garhwali spelling, meaning, or reference quality.',
@@ -280,8 +345,11 @@ def run(
         seed=seed,
         code_paths=(
             __file__,
+            Path(__file__).with_name('asr_metrics.py'),
             Path(__file__).with_name('benchmark_metrics.py'),
             Path(__file__).with_name('evaluation_run_manifest.py'),
+            Path(__file__).with_name('run_mt5_instruction_tuning.py'),
+            Path(__file__).with_name('run_translation_baseline.py'),
         ),
         git_root=git_root,
     )
@@ -298,7 +366,7 @@ def main() -> int:
     parser.add_argument('--model-id', required=True)
     parser.add_argument('--model-revision', required=True)
     parser.add_argument('--checkpoint-sha256')
-    parser.add_argument('--split', choices=('dev', 'test'), default='dev')
+    parser.add_argument('--split', choices=('dev', 'validation', 'test'), default='dev')
     parser.add_argument('--allow-historical-test', action='store_true')
     parser.add_argument('--device', default='cpu')
     parser.add_argument('--seed', type=int)

@@ -9,6 +9,7 @@ class IngestionGraphTests(unittest.TestCase):
         self.assertEqual(module.wave_actions('seventh'), ('seventh_wave_acquire', 'seventh_wave_extract'))
         self.assertEqual(module.wave_actions('eighth'), ('eighth_wave_acquire', 'eighth_wave_extract'))
         self.assertEqual(module.wave_actions('ninth'), ('ninth_wave_acquire', 'ninth_wave_extract'))
+        self.assertEqual(module.wave_actions('tenth'), ('tenth_wave_acquire', 'tenth_wave_extract'))
         with self.assertRaises(ValueError):
             module.wave_actions('unknown')
 
@@ -18,6 +19,7 @@ class IngestionGraphTests(unittest.TestCase):
         self.assertTrue(module.retryable_acquisition_error(RuntimeError('HTTP 429')))
         self.assertTrue(module.retryable_acquisition_error(RuntimeError('HTTP 504')))
         self.assertTrue(module.retryable_acquisition_error(RuntimeError('operation timed out')))
+        self.assertTrue(module.retryable_acquisition_error(RuntimeError('curl: (6) Could not resolve host')))
         self.assertFalse(module.retryable_acquisition_error(RuntimeError('HTTP 404')))
         self.assertFalse(module.retryable_acquisition_error(ValueError('bad schema')))
 
@@ -58,6 +60,29 @@ class IngestionGraphTests(unittest.TestCase):
             ('verify', None),
         ])
         self.assertEqual(state['completed_steps'], ['acquire', 'extract', 'dedup', 'verify'])
+        self.assertEqual(state['status'], 'complete')
+
+    def test_refresh_mode_runs_all_derived_builds_after_extraction(self):
+        import ingestion_graph as module
+        from langgraph.checkpoint.memory import InMemorySaver
+
+        calls = []
+        graph = module.build_ingestion_graph(
+            acquire=lambda wave: calls.append(('acquire', wave)),
+            extract=lambda wave: calls.append(('extract', wave)),
+            dedup=lambda: calls.append(('dedup', None)),
+            verify=lambda: calls.append(('verify', None)),
+            refresh=lambda: calls.append(('refresh', None)),
+            checkpointer=InMemorySaver(),
+        )
+
+        state = graph.invoke(
+            {'wave': 'tenth', 'completed_steps': []},
+            {'configurable': {'thread_id': 'refresh-run'}},
+        )
+
+        self.assertEqual(calls, [('acquire', 'tenth'), ('extract', 'tenth'), ('refresh', None)])
+        self.assertEqual(state['completed_steps'], ['acquire', 'extract', 'refresh'])
         self.assertEqual(state['status'], 'complete')
 
 
