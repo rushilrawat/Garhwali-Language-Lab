@@ -1,6 +1,6 @@
 # Documentation index
 
-This page is the map for the project’s Markdown documentation. It inventories repository Markdown files other than this index, including reports currently in the working tree. Ignored caches, downloaded dependency documentation, and local model outputs are not repository documentation.
+This page indexes the project Markdown intended for the shared repository. It includes current release and status documents, plus the three announcement/support reports prepared in the working tree for publication. Local-only draft artifacts, ignored caches, downloaded dependency documentation, and model outputs are not part of this public-facing index.
 
 ## Read these first
 
@@ -12,6 +12,7 @@ This page is the map for the project’s Markdown documentation. It inventories 
 - [model-accuracy-lineage-2026-09-28.md](../research/model-accuracy-lineage-2026-09-28.md) — Fresh split-manifest and saved-prediction matching audit.
 - [asr-heldout-lineage-audit-2026-09-28.md](../research/asr-heldout-lineage-audit-2026-09-28.md) — Paired post-hoc comparison of five saved ASR runs on the same held-out rows.
 - [benchmark-model-roadmap.md](../research/benchmark-model-roadmap.md) — Phased benchmark and model-research plan, metrics, tooling, and release gates.
+- [v0.2-public-announcement-roadmap-2026-09-29.md](../research/v0.2-public-announcement-roadmap-2026-09-29.md) — Verification, disclosure, documentation sync, and LinkedIn preparation for a truthful v0.2.0 announcement.
 - [issues & improvement plan](../research/issues%26improvement%20plan.md) — Evidence-backed issue log and blockers for roadmap implementation.
 - [benchmark-nested-overlap-review-2026-09-27.md](../research/benchmark-nested-overlap-review-2026-09-27.md) — Nested benchmark overlap findings and retained-row review labels.
 - [benchmark-cross-language-exact-overlap-2026-09-28.md](../research/benchmark-cross-language-exact-overlap-2026-09-28.md) — Supplemental exact-string check across XORQA English/Garhwali answer labels.
@@ -33,11 +34,11 @@ This page is the map for the project’s Markdown documentation. It inventories 
 
 - Treat `finalreport.md` as the current release decision and consolidated audit summary.
 - Treat `research/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard with later dated addenda; older experiment reports are historical snapshots.
-- The latest scorecard refresh is dated 2026-09-28. It reports development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
+- The latest scorecard refresh is dated 2026-09-29. It reports development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
 - Keep dated research reports as records of the data and model version used at that time. Update the current status docs when new evidence supersedes them; do not rewrite history.
 - Treat `release/v0.1.0/` and `release/v0.1.1/` as frozen snapshots. Their repeated cards and reports preserve each package's own counts and terms. The current v0.2.0 local package and release checks are recorded below; the root README and final report carry remote publication state.
 - Keep dataset-card and policy copies inside each Hugging Face package aligned with the root policies when preparing a new package.
-- Add an entry here when adding or removing a project Markdown file. This index currently covers 147 Markdown files outside itself, including current working-tree reports.
+- Add an entry here when adding or removing a shared project Markdown file. This index currently covers 150 Markdown files outside itself: 147 already tracked at the previous commit and three announcement/support reports prepared for this update.
 
 ## Release snapshot v0.2.0
 
@@ -116,6 +117,7 @@ The four exact-duplicate groups below are package/release copies, not competing 
 
 ### Research archive
 
+- [`research/product-progress-2026-09-29.md`](../research/product-progress-2026-09-29.md) — Product progress graphs across corpus, benchmark, research, models, community, API, and public infrastructure
 - [`research/all-data-package-2026-09-15.md`](../research/all-data-package-2026-09-15.md) — Complete all-data package
 - [`research/all-data-package-2026-09-19.md`](../research/all-data-package-2026-09-19.md) — Complete all-data package — 2026-09-19
 - [`research/asr-baseline-2026-09-10.md`](../research/asr-baseline-2026-09-10.md) — Garhwali ASR baseline
@@ -128,10 +130,12 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/asr-weighted-trainer-2026-09-14.md`](../research/asr-weighted-trainer-2026-09-14.md) — Weighted curriculum trainer and dry-run audit
 - [`research/automated-pre-release-quality-plan.md`](../research/automated-pre-release-quality-plan.md) — Automated Pre-release Quality Plan
 - [`research/benchmark-research-status-2026-09-25.md`](../research/benchmark-research-status-2026-09-25.md) — Benchmark and research suite: measured status
+- [`research/garhwali-bench-v0.2-rights-inventory-2026-09-29.md`](../research/garhwali-bench-v0.2-rights-inventory-2026-09-29.md) — Current component and item-level rights inventory for GarhwaliBench v0.2
 - [`research/retrieval-source-page-cluster-uncertainty-2026-09-28.md`](../research/retrieval-source-page-cluster-uncertainty-2026-09-28.md) — Clustered uncertainty for XORQA BM25 development retrieval
 - [`research/retrieval-miss-analysis-2026-09-28.md`](../research/retrieval-miss-analysis-2026-09-28.md) — Gold-passage availability and BM25 miss types for saved XORQA dev queries
 - [`research/generation-output-diagnostics-2026-09-28.md`](../research/generation-output-diagnostics-2026-09-28.md) — Task-local output concentration and structural checks for saved mT0 validation predictions
 - [`research/benchmark-model-roadmap.md`](../research/benchmark-model-roadmap.md) — Garhwali Benchmark and Model Research Roadmap
+- [`research/v0.2-public-announcement-roadmap-2026-09-29.md`](../research/v0.2-public-announcement-roadmap-2026-09-29.md) — v0.2.0 public announcement readiness roadmap
 - [`research/benchmark-parent-safe-split-audit-2026-09-28.md`](../research/benchmark-parent-safe-split-audit-2026-09-28.md) — Parent-document split correction and source-family audit
 - [`research/benchmark-overlap-adjudication-2026-09-26.md`](../research/benchmark-overlap-adjudication-2026-09-26.md) — Reviewed XORQA split-overlap findings and retained-row usage labels
 - [`research/benchmark-v02-export-2026-09-26.md`](../research/benchmark-v02-export-2026-09-26.md) — Initial local v0.2 adapter/export snapshot

@@ -9,7 +9,7 @@ language resources, review queues, and reproducible model datasets out.*
 
 [![python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![langgraph](https://img.shields.io/badge/orchestration-LangGraph-1C3C3C.svg)](PIPELINE.md)
-[![tests](https://img.shields.io/badge/tests-607%20passed-brightgreen.svg)](research/corpus-preparation-status.md)
+[![tests](https://img.shields.io/badge/tests-607%20release%20checks-brightgreen.svg)](research/corpus-preparation-status.md)
 [![Hugging Face Speech](https://img.shields.io/badge/Hugging%20Face-Speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 [![Hugging Face Corpus](https://img.shields.io/badge/Hugging%20Face-Corpus%20(public)-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![language](https://img.shields.io/badge/language-Garhwali%20%7C%20gbm-orange.svg)](https://glottolog.org/resource/languoid/id/gadh1239)
@@ -28,12 +28,14 @@ Garhwali Upreti proverbs, and pinned Door43 stories). The rebuilt local corpus
 has **29,426 exact-unique parent texts** and **115,785 exact-unique segments**.
 The all-data package has 260,199 overlapping rows; the rights-filtered public
 package has 150,065 rows and a content-free reference index for the full archive.
-The release audit and both package preflights pass; 607 pytest and 605
-unittest tests pass. Hugging Face serves the public v0.2.0 corpus at
+The release audit and both package preflights pass; the frozen release-time test
+run recorded 607 pytest and 605 unittest passes. Hugging Face serves the public v0.2.0 corpus at
 commit [`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927), and the matching [GitHub v0.2.0 release](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0) is published.
 Native-speaker review remains deferred, and OCR/story quality is not described
-as speaker-verified. See the [v0.2.0 release notes](release/v0.2.0/README.md)
-and [source-by-source intake report](research/garhwali-data-expansion-2026-09-29.md).
+as speaker-verified. See the [v0.2.0 release notes](release/v0.2.0/README.md),
+the [source-by-source intake report](research/garhwali-data-expansion-2026-09-29.md),
+the [product progress graphs](research/product-progress-2026-09-29.md), and the
+[announcement readiness roadmap](research/v0.2-public-announcement-roadmap-2026-09-29.md).
 
 ## 🎯 The project goal
 
@@ -45,7 +47,7 @@ for every record.
 
 ## 🤗 Hugging Face datasets
 
-- **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** was checked live on 2026-09-27 and remains public. Its two source configs contain 113,363 rows (113,350 unique audio hashes), 154.65 hours, and about 16.91 GiB of audio. The v0.2.0 corpus release changes text only; the speech payload was not reuploaded.
+- **[Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech)** was checked live on 2026-09-29 and remains public. Its two source configs contain 113,363 rows (113,350 unique audio hashes), 154.65 hours, and about 16.91 GiB of audio. The v0.2.0 corpus release changes text only; the speech payload was not reuploaded.
 - **[Garhwali Corpus on Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)** is public at verified commit [`cb63148`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927). All 34 package files match the local manifest by size and hash. The release has 150,065 rights-filtered content rows across overlapping views and a metadata-only reference index covering 260,199 archive rows, 600 sources, and 283,752 links. It redacts 24,565 catalog values and excludes full content for 216 structured records without compatible public-rights evidence. The Hub lists all 15 split Parquet conversions; all 15 split validity checks now return HTTP 200 with Viewer and preview enabled, and a text preview loads. No blanket content license is claimed.
 - **GitHub v0.2.0 release:** [published from tag `v0.2.0`](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0), commit `e2fdf5b`.
 
@@ -53,18 +55,59 @@ for every record.
 
 ## Current benchmark and model stage
 
-**Split-audit correction (2026-09-28):** the historical text split kept exact
-segments separate but placed segments from 50 parent documents (1,523 rows)
-across train/test or train/validation. The builder now groups parent-document
-segments before duplicate reassignment. A separate local candidate reports
-zero parent-document crossings and has not replaced historical files. The
-separate benchmark candidate recomputed a deterministic character-bigram
-diagnostic on already-scored rows; it was not used for model selection.
-CrossSum exact source/target URLs do not repeat across
-splits; FLORES has no row-level source URLs, so that source-family check remains
-unresolved. See the [full split audit](research/benchmark-parent-safe-split-audit-2026-09-28.md).
+**Current status (2026-09-29, refreshed):** GarhwaliBench remains a local draft.
+Its eight views contain **14,703 rows** (not unique examples), and the contract
+validator reports zero structural/integrity errors. The views include 3,847
+external task rows, 112 ASR rows, 402 internal text rows, and a recommended
+text split of 9,486 train / 454 validation / 402 test. The internal-text view
+and recommended test intentionally mirror the same 402 examples. The v0.2
+adapter manifest is `43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8`;
+it remains local-only with `public_upload_allowed=false`.
 
-The 2026-09-28 roadmap status has **Phase 1 inventory/reproducibility complete; Phase 2 configured exact text, nested-field, cross-language-label, and XORQA source-page checks complete; the parent-safe split candidate is not yet promoted and semantic comparison remains open; Phase 3 has versioned QA, summary, and translation metrics but remains a draft; Phase 4 has hash-linked translation, NLLB, CrossSum/XORQA, BM25 retrieval, and saved-prediction ASR and generation manifests; Phase 5 baseline consolidation is partial; and Phase 8 result eligibility is reconciled for the configured splits**. Phase 7 has paired record-level translation uncertainty, source-page-clustered XORQA retrieval intervals, fixed-corpus retrieval miss analysis, and structural diagnostics of saved generation outputs. All 500 dev gold passages are present in the candidate corpus; the Garhwali word baseline has 496 zero-score misses, while the character baseline has 493 zero-score misses and two passages ranked below 10. The 500 saved BM25 dev queries span 461 source pages; the paired character-minus-word Recall@10 difference is +0.2 percentage points (95% CI 0.0–0.6), so the result is inconclusive. Those intervals are conditional on the fixed 1,059-document corpus drawn from all original splits, not unseen-page generalization. The mT0 generation audit reconciles 390 validation predictions and finds no empty outputs, prompt copies, control tokens, or selected Unicode anomalies; the Garhwali-to-English lexicon slice has a largest repeated-answer mode of 23/29 for seed 43, a diagnostic concentration signal rather than a correctness judgment. The local v0.2 draft covers eight views and 12,622 rows; it is not a frozen benchmark or an accuracy certification. The exact nested scan found 41 same-field cross-split groups and no long exact match to recommended training text. A supplemental scan found 50 short exact strings shared across English/Garhwali answer labels; 10 span source splits, but all are only 2–6 normalized characters, so they remain common-answer candidates rather than confirmed leakage. A source-page audit found 54 exact XORQA page families crossing splits (134 rows); 32 families include distinct passages. The retained-row XORQA overlay now labels 138 records for open diagnostics: 134 in cross-split page families and four additional exact-question/oracle-question cases. Answer-span repeats remain documented candidates, not automatic leakage findings. CrossSum has 100/100 dev summary references and XORQA has 499/500 target-answer references; the missing Garhwali answer stays in the output but is excluded from the metric denominator. Rescoring existing translation-memory predictions reproduced the 997-row dev baseline exactly; its paired record bootstrap remains unclustered. Saved ASR predictions were re-scored on 269 validation hashes, while saved mT0 predictions have three hash-linked 130-row manifests. The mT0 primary-reference scores reproduce the saved report; unreviewed alternate references shift chrF2 by 0.0019–0.0025, a sensitivity check rather than an accuracy gain. These are post-hoc audits; the parent-safe benchmark rebuild also computed a deterministic character-bigram diagnostic on the already-scored 392-row open text test (perplexity 14.123460). It was not used for model selection, and no neural inference ran. The original mT0 sampling parameters and adapter hashes are missing. Phase 8 now records **zero independent-final-eligible results**; see the [eligibility report](research/task-result-eligibility-2026-09-28.md) and [fresh prediction-lineage audit](research/model-accuracy-lineage-2026-09-28.md). Fresh checks pass **584/584 pytest tests** and **582/582 unittest tests**. Run pytest with `PYTHONPATH=.venv/lib/python3.12/site-packages:scripts pytest -q` so the project LangGraph packages are visible.
+The 402-row character-bigram result (perplexity 14.397995) is now matched to
+the exact test IDs/text and marked historical/open. The local split audit finds
+one exact cross-split source-text group, 402 expected cross-view mirrors, four
+same-split near-text candidates, 29 source-family cross-split groups (including
+two very broad URL candidates), and a retained 138-row XORQA review overlay.
+All 10,342 recommended text rows map to source segments spanning 3,246 parent
+text hashes and 3,072 duplicate components with zero split crossings; coarser
+ingestion-file pointers span splits and are not parent-document identities.
+Semantic/paraphrase overlap and upstream checkpoint exposure remain unresolved.
+**0 of 5 task areas qualify for independent final-accuracy claims.** The
+benchmark cards and example payloads remain local pending source-specific
+rights clearance; the public status report describes the limits without
+publishing candidate benchmark content.
+
+The rights audit found that all 14,703 benchmark view rows remain uncleared for
+upload: 2,077 recommended-text rows have compatible recorded source
+assessments, 8,265 have unrecorded item-level rights status, and the external
+task/audio components still need component-specific review. The [rights
+inventory](research/garhwali-bench-v0.2-rights-inventory-2026-09-29.md)
+documents the remaining gates. Existing model results are task-specific
+diagnostics; no fresh independent accuracy claim is supported.
+
+**Remaining, in order:**
+
+1. Resolve the 8,265 unassessed recommended-text rows and component/source
+   terms; keep the draft local until distribution terms are documented.
+2. Finish semantic/paraphrase and checkpoint-exposure analysis, then freeze
+   benchmark schemas, metric/denominator contracts, and source-use labels.
+3. Complete remaining run manifests and validation-only baselines. Fresh NLLB,
+   dense retrieval, and SraVaani inference need local weights/runtime.
+4. Add source-cluster uncertainty where trustworthy group metadata exists;
+   create a fresh independent evaluation set before making final claims.
+5. Promote versioned cards/artifacts only after integrity, rights, and
+   reproducibility gates pass. Native review and dialect annotation remain
+   deferred as requested.
+
+**Verification:** the 2026-09-29 local working-tree review passed 622/622
+pytest tests and 620/620 unittest tests. The frozen v0.2.0 release run recorded 607/607 and
+605/605 respectively; those are historical release-time counts.
+
+Native-speaker review and dialect annotation remain deferred as requested. The
+ordered plan is in the [benchmark/model roadmap](research/benchmark-model-roadmap.md)
+and [living issue log](research/issues%26improvement%20plan.md); detailed
+analyses are linked from those documents.
 
 **ASR lineage correction (2026-09-28):** the base, decoder-sweep, 61-trial,
 expanded-human, and original 102-step test predictions now reconcile to the
@@ -335,8 +378,8 @@ final-accuracy set. Native review and dialect annotation remain deferred.
   mirrored between internal evaluation and recommended test are same-split
   copies. See the [adjudication report](research/benchmark-overlap-adjudication-2026-09-26.md)
   and [source-page family review](research/benchmark-source-page-families-2026-09-28.md).
-- **v0.2 benchmark draft:** a deterministic local adapter now exports all eight
-  views / 12,622 rows with separate source/scoring fields where available,
+- **Initial v0.2 benchmark draft snapshot (2026-09-26):** a deterministic local
+  adapter exported all eight views / 12,622 rows with separate source/scoring fields where available,
   normalizer IDs, per-view hashes, and the 138-row XORQA usage overlay. Every
   source row is retained. The package is local-only; raw text is unavailable in
   some legacy views, metric signatures remain draft, and rights are not cleared.
@@ -352,9 +395,10 @@ final-accuracy set. Native review and dialect annotation remain deferred.
   unavailable. NLLB
   validates inputs and local checkpoints before loading Torch or Transformers;
   its pinned weights remain uncached.
-- **Verification:** The full pytest suite passes 584/584 with the project
-  package directory on `PYTHONPATH`; the documented unittest runner passes 582/582.
-  These checks validate code and
+- **Verification:** The 2026-09-28 snapshot passed 584/584 pytest and 582/582
+  unittest tests. The latest 2026-09-29 local working-tree review passed
+  622/622 pytest and 620/620 unittest tests; the frozen v0.2.0 release counts
+  remain 607/605. These checks validate code and
   artifact integrity; they do not establish that every Garhwali word, transcript,
   or reference is linguistically correct.
 
@@ -369,9 +413,9 @@ outputs and local diagnostics; it launched no paid Hugging Face jobs.
 
 <div align="center">
 
-| `~73 GB` | `110,436` | `135.5 h` | `29,426` |
+| `~73 GB` | `113,363` | `154.65 h` | `29,426` |
 | --- | ---: | ---: | ---: |
-| local `data/` workspace footprint* | recordings | audio duration | unique text lines |
+| local `data/` workspace footprint* | speech source rows | audio duration | unique text lines |
 
 | `9.33M` | `1.80M` | `115,785` | `1,114` |
 | ---: | ---: | ---: | ---: |
@@ -379,18 +423,20 @@ outputs and local diagnostics; it launched no paid Hugging Face jobs.
 
 | `455` | `1,187` | `5,894` | `104,542` |
 | ---: | ---: | ---: | ---: |
-| English–Garhwali pairs | grammar-source candidates | supervised transcripts | untranscribed clips |
+| English–Garhwali pairs | grammar-source candidates | provider-transcribed VAANI rows | unreviewed SraVaani draft rows |
 
 | `260,199` | `150,065` | `260,199` | `607/607` |
 | ---: | ---: | ---: | ---: |
-| all-data archive rows | public content-profile rows | complete reference-index rows | local tests passing / collected* |
+| all-data archive rows | public content-profile rows | complete reference-index rows | frozen v0.2.0 pytest passing / collected* |
 
 </div>
 
 *Measured with `du -sh data` on 2026-09-29, the ignored `data/` tree uses about
 73 GB. This is the local workspace
 footprint, including generated artifacts; it is not the size of a single
-redistributable dataset. Whitespace tokens are an engineering count from the
+redistributable dataset. The 622 pytest / 620 unittest run below was made on
+the current local development tree; the frozen v0.2.0 GitHub release records
+607 / 605. Whitespace tokens are an engineering count from the
 canonical text view, not a linguistic tokenization.*
 
 ## 🧱 How the pipeline fits together
@@ -449,7 +495,7 @@ diagnostics, and no new paid cloud run was started.
 | `data/processed/` | Generated canonical, cleaned, tagged, segmented, and model views | Git-ignored JSONL and reports |
 | `research/` | Source audits, gap plans, reports, and decisions | Human-readable provenance and limitations |
 
-The complete source inventory is [`sources/online/deep-search-catalog.md`](sources/online/deep-search-catalog.md). The current workspace scan found no directory or package configuration named quarantine, hold, or unusable. All 1,450 nonempty text rows in the ignored `restricted/` input layer match canonical corpus content by normalized hash; the all-data text split retains 16,375 segments with restricted-source provenance. These source files remain Git-ignored and their payloads are not uploaded. The public corpus does publish the complete metadata-reference index. Its content profile passes the rights audit by redacting 24,566 catalog values and withholding full content for 216 structured records without compatible public-rights evidence; the index exposes facts and source pointers for those records but does not clear their content for redistribution.
+The complete source inventory is [`sources/online/deep-search-catalog.md`](sources/online/deep-search-catalog.md). The current workspace scan found no directory or package configuration named quarantine, hold, or unusable. All 1,450 nonempty text rows in the ignored `restricted/` input layer match canonical corpus content by normalized hash; the all-data text split retains 16,375 segments with restricted-source provenance. These source files remain Git-ignored and their payloads are not uploaded. The public corpus does publish the complete metadata-reference index. Its content profile passes the rights audit by redacting 24,565 catalog values and withholding full content for 216 structured records without compatible public-rights evidence; the index exposes facts and source pointers for those records but does not clear their content for redistribution.
 The catalog records sources that were inspected but not promoted, including blocked,
 gated, mirrored, copyrighted, and permission-dependent material.
 
@@ -564,8 +610,9 @@ OCR, transcription, or native-speaker review.
 - [x] Keep spelling, meaning, and dialect uncertainty as metadata rather than a
   data exclusion gate; later native corrections can be merged non-destructively.
 - [x] Score 4,096 priority texts with pinned IndicBERTv2 and attach reversible
-  OCR, spelling, language-ambiguity, and dialect-evidence proposals to all 28,755
-  parent texts without excluding or overwriting any record.
+  OCR, spelling, language-ambiguity, and dialect-evidence proposals to all
+  28,755 parent texts in the then-current v0.1.1 inventory without excluding or
+  overwriting any record.
 - [x] Ablate mechanical and bulk spelling variants on the fixed document split;
   neither variant was promoted into canonical text.
 
@@ -722,7 +769,7 @@ The 2026-09-28 finding and correction are documented in the
 - [x] Replace the coarse public-text confidence queue with separate language,
   orthography, alignment, source, and surface evidence; rank all 176 unresolved
   records without discarding or guessing any value.
-- [x] Audit all 28,755 exact-unique texts by source; restore lost license IDs,
+- [x] Audit all 28,755 exact-unique texts in the v0.1.1 inventory by source; restore lost license IDs,
   normalize rights-warning syntax, and attach an explicit public rights basis to
   1,913 mixed-rights exact duplicates without dropping blocked provenance.
 - [x] Replace 56 flattened Wiktionary page blobs with 77 structured Garhwali
@@ -738,8 +785,9 @@ The 2026-09-28 finding and correction are documented in the
   attached to all 1,090 Garhwali recovery records; audio-grounded human review
   remains. Eight additional supervised rows are already isolated as Bengali-
   script source-label conflicts.
-- [x] Build the complete all-data package with every one of the 28,755 collected
-  text values present and active for quality work; zero catalog texts are redacted.
+- [x] Build the v0.1.1 all-data package with every one of its 28,755 collected
+  text values active for quality work; the current v0.2.0 inventory contains
+  29,426 exact-unique text values, with zero catalog redactions in the all-data view.
 - [x] Keep a separate public redistribution catalog with provenance and quality
   metadata for records whose source terms remain unresolved.
 
@@ -898,11 +946,12 @@ accuracy cannot be established from machine scores alone.
 20. [x] **Structured knowledge packaging — Medium:** geography, historical terms,
     literary people, literary works, popular songs, and university research are
     first-class Hugging Face configurations with 216 records and stable IDs.
-21. [x] **Release reconciliation — High:** the 257,807-row all-data package and
-    146,684-row public content package are rebuilt, the tracked release index is
-    synced, and the rights-filtered export passes provenance, count, rights, and
-    leakage checks. A public reference index now covers all 257,807 all-data rows,
-    including metadata for the 216 structured records without full-content rights.
+21. [x] **Release reconciliation — High:** the v0.2.0 package contains 260,199
+    all-data rows and 150,065 rights-filtered public content rows across
+    overlapping views. The public reference index covers all 260,199 archive
+    rows, with 600 sources and 283,752 record-to-source links; it includes
+    metadata for the 216 structured records without compatible full-content
+    rights.
 22. [x] **Refined SraVaani decision — Xhigh:** Job
     [`6aaa1726f76d6a098a70f768`](https://huggingface.co/jobs/rushilrawat/6aaa1726f76d6a098a70f768)
     completed all 61 trials. The selected checkpoint improved validation WER to
@@ -956,7 +1005,7 @@ accuracy cannot be established from machine scores alone.
     exact cross-split overlap, or missing source identifiers. Missing rights
     assertions are now represented explicitly as `not_recorded` rather than null.
 32. [x] **Model-backed text noise audit — High:** pinned IndicBERTv2 scored all
-    28,755 canonical texts, yielding 2,876 model/source disagreements, 2,987
+    28,755 canonical texts in the v0.1.1 snapshot, yielding 2,876 model/source disagreements, 2,987
     OCR priorities, and 47,165 reversible spelling candidates without changing
     or excluding any original record.
 33. [x] **OCR proposal validation — High:** one deterministic mask seed scored
@@ -980,9 +1029,9 @@ accuracy cannot be established from machine scores alone.
     an 86-row test after selection; that test is historical, and its 172
     prediction rows are not mapped to the current local manifest inventory. Details:
     [`research/generation-quality-2026-09-25.md`](research/generation-quality-2026-09-25.md).
-37. [x] **Dataset publication — High:** publish the rights-filtered content
-    package and complete metadata-reference tables to the public Hugging Face
-    corpus repo. Every one of the 257,807 archive rows has a reference entry;
+37. [x] **Dataset publication — High:** publish the v0.2.0 rights-filtered
+    content package and complete metadata-reference tables to the public
+    Hugging Face corpus repo. Every one of the 260,199 archive rows has a
     source text and media whose reuse rights are unresolved remain outside the
     public payload. Keep the complete rights-pending all-data package private.
 38. [ ] **Text-first API MVP — High:** implement versioned search, lexicon,
@@ -1115,15 +1164,18 @@ git diff --check
 The public package now excludes the 216 structured records without compatible
 rights evidence; all remain intact in the complete all-data package. The public
 preflight and final audit pass with zero rights failures. The all-data package
-also passes preflight and retains all 28,755 collected text values with zero
+also passes preflight and retains all 29,426 collected text values with zero
 catalog redactions. Native-speaker review and dialect annotation are deferred;
 the benchmark remains explicitly an automated candidate. Every structured
 source reference resolves to a source URL or capture fingerprint, but that
 traceability alone does not grant reuse rights. The audit reopens all five
 benchmark artifacts and verifies package shard hashes and content-derived text IDs. See
 [`finalreport.md`](finalreport.md) and
-[`DEEP_DIVE_FINAL_AUDIT.md`](DEEP_DIVE_FINAL_AUDIT.md) for details. The
-The v0.2.0 verification run passed **607/607 pytest tests** with `PYTHONPATH=.venv/lib/python3.12/site-packages:scripts pytest -q` and **605/605 unittest tests** with the documented runner. The canonical inventory uses 46 source files; the release provenance index tracks 600 source catalog entries.
+[`DEEP_DIVE_FINAL_AUDIT.md`](DEEP_DIVE_FINAL_AUDIT.md) for details. The frozen
+v0.2.0 release verification run passed **607/607 pytest tests** and **605/605
+unittest tests** at release time. The current working-tree run is reported near
+the top of this README. The canonical inventory uses 46 source files; the
+release provenance index tracks 600 source catalog entries.
 
 ## Dataset packages and Hugging Face release
 
