@@ -17,6 +17,8 @@ Updated 2026-10-01. This is a chronological preparation log: model-result paragr
   [commit `a2d8716`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/a2d8716d0dfdc49e5bce440b22312be4b94f9b98).
   Speech card correction:
   [commit `1a9cf07`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/1a9cf07176bc5a2dc4598dc3e0fa7321b8f982e5).
+- Clarified the speech card's split scope at
+  [commit `2808ad7`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/2808ad7d4c59becbd842f76ed38af1ee06274ba8): VAANI split counts cover all 110,436 audio rows, not just the 5,894 provider-transcribed rows; the linked strict ASR view has 2,002 rows. The card explicitly marks SraVaani outputs as unreviewed drafts. No audio or Parquet payload changed.
 - The linked schema, quick-start, license policy, and rights-resolution log were
   aligned to v0.2.1 at corpus commit
   [`796b5c4`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/796b5c45e6395c1d2559fbbc12cb2f795d0138fc).
@@ -36,7 +38,7 @@ Updated 2026-10-01. This is a chronological preparation log: model-result paragr
 - The Dataset Viewer API returned HTTP 500 with a temporary busy response after
   upload. Repository visibility, cards, commit revisions, and file trees were
   verified; Viewer preview availability is not yet confirmed.
-- Full configured-environment test suite: **682 passed**. These tests and
+- Full configured-environment test suite: **683 passed**. These tests and
   audits validate package structure and metadata, not Garhwali linguistic
   correctness or native-speaker acceptance.
 
@@ -99,7 +101,7 @@ Updated 2026-10-01. This is a chronological preparation log: model-result paragr
 - The canonical text view now has **31,790 source records from 46 files**, **29,426 exact-unique parent texts**, and **9,325,936 characters**. Segmentation produces **122,391 source occurrences / 115,785 exact-unique segments**.
 - The all-data package has **260,199 rows** across overlapping views and retains all 29,426 collected text values. The public-profile package has **150,065 rows**, including a complete metadata-only index with 260,199 archive references, 600 source records, and 283,752 source links.
 - The public corpus package redacts **24,565** catalog values and withholds full content for 216 structured records without compatible public-rights evidence. The all-data package remains local/access-controlled; the public export is rights-filtered.
-- The public and all-data cloud preflights, final release audit, release-index validation, and bundle hash/path check pass. The frozen v0.2.0 release run passed **607/607 pytest** and **605/605 unittest** tests. The pre-refresh 2026-09-30 working-tree check passed 635/635 pytest and 633/633 unittest; the next source-refresh check passed 656/656 unittest. The current v0.2.1 configured-environment suite passes **682 tests**. These counts do not describe the frozen v0.2.0 tag. Native-speaker review and dialect annotation remain deferred; the new LSI OCR and translated story text remain unreviewed.
+- The public and all-data cloud preflights, final release audit, release-index validation, and bundle hash/path check pass. The frozen v0.2.0 release run passed **607/607 pytest** and **605/605 unittest** tests. The pre-refresh 2026-09-30 working-tree check passed 635/635 pytest and 633/633 unittest; the next source-refresh check passed 656/656 unittest. The current v0.2.1 configured-environment suite passes **683 tests**. These counts do not describe the frozen v0.2.0 tag. Native-speaker review and dialect annotation remain deferred; the new LSI OCR and translated story text remain unreviewed.
 - Hugging Face v0.2.0 is public at verified commit [`cb631488`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927); all 34 uploaded files matched the local manifest by size and hash at release verification. The Hub exposed all 15 split Parquet conversions, and all 15 split validity/preview checks returned HTTP 200 on 2026-09-29. A fresh 2026-09-30 browser check confirmed the public corpus and speech pages still load Dataset Viewer previews and expose their expected config/split controls. GitHub published tag [`v0.2.0`](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0) from commit `e2fdf5b`.
 
 ## Pre-refresh local working-tree snapshot after web wave ten (2026-09-30)

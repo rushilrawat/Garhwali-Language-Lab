@@ -7,7 +7,7 @@
 Text, speech, folklore, scholarship, and local knowledge are organized into reusable datasets with source and quality information attached.
 
 [![Python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-682%20passing-brightgreen.svg)](research/corpus-preparation-status.md)
+[![Tests](https://img.shields.io/badge/tests-683%20passing-brightgreen.svg)](research/corpus-preparation-status.md)
 [![Speech dataset](https://img.shields.io/badge/Hugging%20Face-speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 [![Corpus dataset](https://img.shields.io/badge/Hugging%20Face-corpus-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 
@@ -24,7 +24,7 @@ The aim is to make Garhwali easier to study and support future language tools. T
 Last checked: **1 October 2026**.
 
 - **Text:** 32,072 exact-unique values are in the local corpus. The public Hugging Face profile exposes 12,606 values under their recorded terms or narrow fact-only treatment; 19,466 full texts remain in the local all-data package pending a compatible public basis. The public corpus repository is live on **v0.2.1**.
-- **Speech:** the separate public speech dataset contains 113,363 rows, about 154.65 hours, across VAANI and Meta Omnilingual configurations. Its **v0.2.1** release is live.
+- **Speech:** the separate public dataset has 113,363 audio rows (about 154.65 hours), including 5,894 VAANI provider transcripts. The VAANI train/validation/test counts split all 110,436 audio rows; the linked corpus offers a narrower 2,002-row strict ASR view. Its 104,508 non-empty SraVaani outputs are unreviewed machine drafts, not ground truth. Its **v0.2.1** release is live.
 - **Knowledge records:** 216 geography, history, literature, songs, and research records are publicly listed as factual and bibliographic metadata.
 - **Benchmark and models:** the benchmark is still a local draft. Independent accuracy claims and native-language validation are not complete.
 
@@ -57,8 +57,7 @@ See the [license policy](LICENSE_POLICY.md), [corpus status](research/corpus-pre
 | Stage | Milestone |
 | --- | --- |
 | **v0.1.x** | Established the first reproducible corpus and release pipeline. |
-| **v0.2.0** | Added a deduplicated Garhwali-only source wave and expanded benchmark and model research. |
-| **v0.2.0** | First public Garhwali-only corpus release and reproducible preparation workflow; its frozen snapshot remains available. |
+| **v0.2.0** | Added deduplicated Garhwali-only sources, established the first public corpus and reproducible preparation workflow, and expanded benchmark/model research; the frozen snapshot remains available. |
 | **v0.2.1 — 1 Oct 2026** | Follow-up release: added 164 exact-new texts, resolved more public-profile rights bases, listed factual metadata for all 216 structured records, published the speech companion, and added common quality/rights fields, a stable schema, exact-count quick-start, and searchable lexicon example. Earlier files remain available. |
 
 Release notes are concise; source-specific reuse terms are summarized in [Data and reuse](#data-and-reuse) and the [license policy](LICENSE_POLICY.md).

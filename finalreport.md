@@ -14,7 +14,8 @@ explain the project history, package scope, data lineage, use limits, and
 copy-paste access in order. After this review caught incorrect `v2.x` labels,
 the corpus card and manifests were corrected at
 [commit `a2d8716`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/a2d8716d0dfdc49e5bce440b22312be4b94f9b98), and the speech card at
-[commit `1a9cf07`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/1a9cf07176bc5a2dc4598dc3e0fa7321b8f982e5). These metadata-only updates preserve the existing file paths and data payloads. Both packages carry the
+[commit `1a9cf07`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/1a9cf07176bc5a2dc4598dc3e0fa7321b8f982e5). A speech-card follow-up at
+[commit `2808ad7`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/2808ad7d4c59becbd842f76ed38af1ee06274ba8) clarifies that the VAANI split counts cover all 110,436 audio rows, distinguishes the 5,894 provider-transcribed rows and 2,002 strict ASR rows, and labels SraVaani outputs as unreviewed drafts. It changes no audio or Parquet payloads. These metadata-only updates preserve the existing file paths and data payloads. Both packages carry the
 versioned v1.0.0 record envelope for rights, reuse scope, license labels,
 quality status, and quality flags; the text package also includes exact config
 counts, Hugging Face Datasets/pandas/DuckDB examples, schema documentation, and
@@ -184,7 +185,7 @@ reference index were regenerated, but were not uploaded.
 The pre-refresh working-tree test runs passed **635/635 pytest** and
 **633/633 unittest** tests. The later rights-review snapshot passed **671/671
 pytest** and **669/669 unittest** tests. The current v0.2.1 working tree passes
-**682/682 configured-environment tests**. These checks validate package/code contracts; they
+**683/683 configured-environment tests**. These checks validate package/code contracts; they
 do not validate linguistic correctness or grant reuse rights to pending sources.
 See the [wave report](research/garhwali-web-goldmines-2026-09-30.md) and the
 auto-updated README metrics table for the working-tree counts.

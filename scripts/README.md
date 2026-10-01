@@ -39,7 +39,7 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current v0.2.1 configured-environment suite passes **682 tests**. The
+The current v0.2.1 configured-environment suite passes **683 tests**. The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
 installs dependencies from `requirements-pipeline.txt`. Current benchmark refreshes use saved ASR outputs

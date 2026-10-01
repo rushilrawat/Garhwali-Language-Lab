@@ -85,7 +85,7 @@ overlap, so do not add the table to calculate unique training examples.
 | --- | ---: | --- |
 | `text` | 18,949 | Rights-filtered text examples; train 17,289, validation 895, test 765 |
 | `lexicon` | 1,493 | Word forms, gloss candidates, and pronunciation metadata |
-| `asr` | 2,002 | Provider transcripts; 1,621 train, 269 validation, 112 test; unadjudicated |
+| `asr` | 2,002 | Strict speaker-disjoint subset of 5,894 VAANI provider transcripts; 1,621 train, 269 validation, 112 test; not native-adjudicated |
 | `sravaani_drafts` | 104,534 | Machine-generated transcript drafts; experimental, not ground truth |
 | `instructions` | 3,228 | Instruction/response examples; train 2,686, validation 356, test 186 |
 | `catalog` | 32,072 | Exact-unique text inventory; 12,606 values exposed, 19,466 text values redacted |

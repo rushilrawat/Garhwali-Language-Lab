@@ -21,7 +21,7 @@ rights-filtered text-package views and **300,915** all-data archive views. All
 local lexicon example loaded through Hugging Face Datasets and queried through
 pandas and DuckDB. These checks validate structure and lineage only; they do
 not establish native-speaker accuracy. The complete unit suite passes
-**682/682**. The Dataset Viewer API returned a temporary HTTP 500 busy response
+**683/683**. A speech-card follow-up at [commit `2808ad7`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/2808ad7d4c59becbd842f76ed38af1ee06274ba8) clarifies that VAANI split counts refer to all 110,436 audio rows; the provider-transcribed pool is 5,894 rows and the strict linked ASR view is 2,002 rows. It marks SraVaani outputs as unreviewed drafts. No audio or Parquet payload changed. The Dataset Viewer API returned a temporary HTTP 500 busy response
 after upload; the repository cards, commit revisions, and file trees were
 verified separately.
 
@@ -145,7 +145,7 @@ metrics block in `README.md`. Its scope and limitations are in
 [web-goldmine intake report](research/garhwali-web-goldmines-2026-09-30.md).
 The pre-refresh post-ingestion test suite passed **635 pytest** and **633
 unittest** tests. The next source-refresh suite passed **656 pytest** and **654
-unittest** tests. The current v0.2.1 configured-environment suite passes **682** tests. The pytest runner available in this workspace is the system
+unittest** tests. The current v0.2.1 configured-environment suite passes **683** tests. The pytest runner available in this workspace is the system
 installation with the project virtualenv's dependency path supplied; the
 `.venv` itself does not contain pytest.
 

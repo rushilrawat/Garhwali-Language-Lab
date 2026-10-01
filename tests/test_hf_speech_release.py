@@ -1,6 +1,9 @@
+import tempfile
 import unittest
+from collections import Counter
+from pathlib import Path
 
-from build_hf_speech_release import make_release_record, release_split
+from build_hf_speech_release import make_release_record, release_split, write_cards
 
 
 class HuggingFaceSpeechReleaseTests(unittest.TestCase):
@@ -89,6 +92,31 @@ class HuggingFaceSpeechReleaseTests(unittest.TestCase):
         self.assertEqual(release_split({'split': 'train'}, None), 'train')
         self.assertEqual(release_split({'split': 'train'}, {'split': 'validation'}), 'validation')
         self.assertEqual(release_split(None, {'split': 'test'}), 'test')
+
+    def test_card_separates_all_audio_split_counts_from_transcript_counts(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            counts = Counter({
+                'source_rows': 110_436,
+                'human_transcript': 5_894,
+                'train_rows': 109_320,
+                'validation_rows': 666,
+                'test_rows': 450,
+                'transcript_conflicts': 742,
+                'machine_draft_rows': 104_542,
+                'machine_draft_nonempty': 104_508,
+                'unique_audio_hashes': 110_428,
+                'duration_hours': 135.51,
+                'untranscribed_rows': 104_542,
+            })
+
+            write_cards(Path(temp_dir), counts, 100)
+            card = (Path(temp_dir) / 'README.md').read_text(encoding='utf-8')
+
+        card = ' '.join(card.split())
+        self.assertIn('split counts', card)
+        self.assertIn('cover all VAANI audio rows, including untranscribed records', card)
+        self.assertIn('these are not counts of supervised transcripts', card)
+        self.assertIn('5,894 provider-transcribed rows', card)
 
 
 if __name__ == '__main__':

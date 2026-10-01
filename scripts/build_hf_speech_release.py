@@ -190,8 +190,9 @@ outputs remain distinguishable:
    configuration with audio decoding disabled, then reconciled the main
    recordings with the separate transcription-part repository. That yielded
    {counts['source_rows']:,} VAANI recordings, including {counts['human_transcript']:,}
-   provider-transcribed examples. The provider's train, validation, and test
-   assignments are retained for labeled rows.
+   provider-transcribed examples. The VAANI source split counts below cover all
+   audio rows, not only records with transcripts. The linked corpus `asr`
+   configuration is a smaller screened supervised view.
 2. **Preserve transcript history.** Where VAANI's two repositories disagree,
    both source values are kept and {counts['transcript_conflicts']:,} conflicts
    are flagged; the transcription-part split remains the labeled-row reference.
@@ -203,10 +204,14 @@ outputs remain distinguishable:
 
 ## Contents
 
-- {counts['source_rows']:,} source audio rows ({total_bytes / (1024**3):.2f} GiB audio).
-- {counts['human_transcript']:,} provider-transcribed rows, including the
-  provider's train/validation/test splits (train {counts.get('train_rows', 0):,},
-  validation {counts.get('validation_rows', 0):,}, test {counts.get('test_rows', 0):,}).
+- VAANI contains {counts['source_rows']:,} source audio rows. Its `train`,
+  `validation`, and `test` split counts (train {counts.get('train_rows', 0):,},
+  validation {counts.get('validation_rows', 0):,}, test {counts.get('test_rows', 0):,})
+  cover all VAANI audio rows, including untranscribed records; these are not
+  counts of supervised transcripts.
+- VAANI contains {counts['human_transcript']:,} provider-transcribed rows.
+  The linked corpus `asr` configuration is a smaller screened supervised view;
+  its split counts are documented on the corpus card.
 - {counts['machine_draft_rows']:,} rows with SraVaani draft output, of which
   {counts['machine_draft_nonempty']:,} have non-empty text; all are marked as
   unreviewed hypotheses rather than reference transcripts.
