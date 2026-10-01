@@ -54,30 +54,30 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
         def runner(command, *, cwd, check, env):
             calls.append((command, env.copy()))
 
-        environment = dict(os.environ, GARHWALI_RELEASE_VERSION="2.1.0")
+        environment = dict(os.environ, GARHWALI_RELEASE_VERSION="0.2.1")
         run_pipeline(Path("/repo"), runner=runner, environment=environment)
         builders = [
             command for command, _ in calls
             if command[1].endswith("build_huggingface_dataset.py")
         ]
         self.assertEqual(len(builders), 2)
-        self.assertIn("data/huggingface/garhwali-language-lab-all-data-v2.1.0-local", builders[0])
-        self.assertIn("data/huggingface/garhwali-language-lab-v2.1.0-staging", builders[1])
+        self.assertIn("data/huggingface/garhwali-language-lab-all-data-v0.2.1-local", builders[0])
+        self.assertIn("data/huggingface/garhwali-language-lab-v0.2.1-staging", builders[1])
         self.assertEqual(
             calls[-2][1]["GARHWALI_HF_PUBLIC_OUTPUT"],
-            "data/huggingface/garhwali-language-lab-v2.1.0-staging",
+            "data/huggingface/garhwali-language-lab-v0.2.1-staging",
         )
 
     def test_default_pipeline_version_matches_current_schema_release(self):
         environment = configure_environment({})
-        self.assertEqual(environment['GARHWALI_RELEASE_VERSION'], '2.2.0')
+        self.assertEqual(environment['GARHWALI_RELEASE_VERSION'], '0.2.1')
         self.assertEqual(
             environment['GARHWALI_HF_PUBLIC_OUTPUT'],
-            'data/huggingface/garhwali-language-lab-v2.2.0-staging',
+            'data/huggingface/garhwali-language-lab-v0.2.1-staging',
         )
         self.assertEqual(
             environment['GARHWALI_HF_ALL_DATA_OUTPUT'],
-            'data/huggingface/garhwali-language-lab-all-data-v2.2.0-local',
+            'data/huggingface/garhwali-language-lab-all-data-v0.2.1-local',
         )
 
     def test_pipeline_refreshes_cleaned_text_before_language_quality_tags(self):

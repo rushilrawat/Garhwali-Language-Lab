@@ -165,9 +165,9 @@
       "revision": "46564fab21299512c104e7b0cbf8bd3064285efd"
     },
     {
-      "title": "Jambu Garhwali reflex lexicon — revalidated for v2.0",
+      "title": "Jambu Garhwali reflex lexicon — revalidated for v0.2.1",
       "url": "https://neojambu.herokuapp.com/languages/Garh",
-      "content": "763 source rows and 738 distinct forms. All 738 forms already exist in the pre-refresh corpus snapshot; this v2 refresh adds zero new rows from Jambu. The original intake had 28 exact overlaps with other sources and 710 forms novel relative to those other sources.",
+      "content": "763 source rows and 738 distinct forms. All 738 forms already exist in the pre-refresh corpus snapshot; the v0.2.1 refresh adds zero new rows from Jambu. The original intake had 28 exact overlaps with other sources and 710 forms novel relative to those other sources.",
       "status": "revalidated_existing_cc_by_4_intake",
       "reason": "The pinned local HTML snapshot and row IDs are verified; source advertises CC BY 4.0. This is a lexical reflex list, not natural conversational prose, and remains unreviewed.",
       "next_action": "Retain as a deduplicated source contribution; use its forms for lexical coverage and language-identification analyses, not as an incremental v2 source claim.",

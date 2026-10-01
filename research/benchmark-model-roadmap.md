@@ -78,7 +78,7 @@ eligibility remains 0/5.
   direction. They are not prerequisites for internal automated diagnostics, but
   their absence prevents native-validated or gold-benchmark claims.
 - The v0.2.0 release verification historically reported 607/607 pytest and
-  605/605 unittest passing. The current 2026-09-30 V2 working-tree run passed
+  605/605 unittest passing. The 2026-09-30 source-refresh working-tree run passed
   656/656 unittest tests; historical snapshots later in this file are not
   current counts.
 
@@ -685,7 +685,7 @@ If every test reference is published openly, that is a valid open-benchmark choi
 | Tool | Role | Decision |
 | --- | --- | --- |
 | Python 3, JSONL, hashlib, pathlib | Deterministic manifests, hashes, task runners, reports | Use now; matches the repository. |
-| unittest and existing CI | Regression checks for splits, metrics, provenance, report rules | Current 2026-09-30 V2 review: 656/656 unittest; v0.2.0 release-time counts 607/605 are historical. |
+| unittest and existing CI | Regression checks for splits, metrics, provenance, report rules | Current v0.2.1 working tree: 682/682 tests; frozen v0.2.0 release-time counts 607/605 remain historical. |
 | Draft v0.2 contract validator | Validate counts, hashes, normalization, references, provenance, rights, splits, and local ASR hashes | Use now; `scripts/validate_benchmark_v02.py` passes against eight views. |
 | Existing benchmark/lineage scripts | Build and audit current task files and prior-use ledger | Reuse; extend for a concrete missing check. |
 | PyTorch, Transformers, PEFT | Local IndicBERT/mT0 inference and adaptation | Only after local preflight; the project `.venv` lacks these packages, while the optional cached runtime has PyTorch/Transformers but not PEFT. |

@@ -2,11 +2,11 @@
 
 This directory documents the project's initial openly licensed text sources; it
 is not the full current corpus. The v0.2.0 release snapshot contains 29,426
-exact-unique parent texts. The published V2.0 corpus release contains 32,072
+exact-unique parent texts. The current v0.2.1 corpus release contains 32,072
 exact-unique parent texts and 151,690 exact-unique segments, with speech and
-experimental views plus separate rights-filtered exports. The V2.0 public
+experimental views plus separate rights-filtered exports. The v0.2.1 public
 package is live on [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
-at payload commit [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1). See the [project overview](../README.md) and
+at current release commit [`7cae908`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/7cae908fee51acd2e1e47955acaa9ee035c9bfbc). The initial source-expansion payload is preserved at [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1). See the [project overview](../README.md) and
 [final review](../finalreport.md) for current counts, Hugging Face state, and
 release limits. This folder's source files retain their own licenses and review
 status.

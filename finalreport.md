@@ -1,8 +1,8 @@
 # Garhwali Language Lab — final review report
 
-## Developer-access and Hugging Face v2.2.0 release — 2026-10-01
+## Developer access and Hugging Face v0.2.1 release — 2026-10-01
 
-Both public Hugging Face repositories now have additive v2.2.0 releases. The
+Both public Hugging Face repositories now have additive v0.2.1 releases. The
 [corpus commit `7cae908`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/7cae908fee51acd2e1e47955acaa9ee035c9bfbc)
 adds the versioned text/reference package and chronological card; the
 [speech commit `9da266e`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/9da266e23bfc198f70784a6e81edbf32f946102f)
@@ -11,11 +11,16 @@ preserved. A follow-up
 [corpus documentation commit `0a76bc6`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/0a76bc6a1f403b2ba460ef0ece464050c178c189)
 corrects the versioned quick-start to match the public release. The cards now
 explain the project history, package scope, data lineage, use limits, and
-copy-paste access in order. Both packages carry the
+copy-paste access in order. After this review caught incorrect `v2.x` labels,
+the corpus card and manifests were corrected at
+[commit `a2d8716`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/a2d8716d0dfdc49e5bce440b22312be4b94f9b98), and the speech card at
+[commit `1a9cf07`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/1a9cf07176bc5a2dc4598dc3e0fa7321b8f982e5). These metadata-only updates preserve the existing file paths and data payloads. Both packages carry the
 versioned v1.0.0 record envelope for rights, reuse scope, license labels,
 quality status, and quality flags; the text package also includes exact config
 counts, Hugging Face Datasets/pandas/DuckDB examples, schema documentation, and
-a searchable lexicon example.
+a searchable lexicon example. The linked schema, quick-start, license policy,
+and rights-resolution log were aligned to v0.2.1 at corpus commit
+[`796b5c4`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/796b5c45e6395c1d2559fbbc12cb2f795d0138fc).
 
 The corpus package validates across **821,083 overlapping view rows** in 15
 configs; the all-data package validates across **300,915 source-record views**.
@@ -28,7 +33,7 @@ were verified. The complete test and package-validation results are in the
 latest entry of
 [`research/corpus-preparation-status.md`](research/corpus-preparation-status.md).
 
-## V2.1.0 rights-resolution release — 2026-10-01
+## v0.2.1 rights-resolution update — 2026-10-01
 
 The published release preserves **32,072 exact-unique text values** in
 all-data and exposes **12,606** in the public catalog under distinct bases:
@@ -37,26 +42,27 @@ evidence, 134 CC BY-NC-SA 4.0 values, 198 source-policy values (5 PIB facts and
 193 Mountain Voices headwords), and 16 isolated single-word facts. **19,466
 full text values remain redacted** because compatible redistribution terms or
 a fact-only projection are not established. This reduces redactions by 6,864
-against the v2.0.0 snapshot. V2.1.0 was uploaded additively at
+against the earlier source-expansion snapshot. The rights-resolved profile was
+first uploaded as an interim package at
 [`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b); earlier releases remain available.
 The corpus repository is public, so external users can access the rights-filtered
 Hub revisions; unresolved expressive text remains outside the public content.
 
-All **216 structured entries** are included in the v2.1 public-profile
-release in six metadata-only configurations; only names, titles, dates,
+All **216 structured entries** are included in the v0.2.1 public profile
+in six metadata-only configurations; only names, titles, dates,
 categories, identifiers, and citations are exposed. Pending text is still
 present in the local all-data package (zero catalog redactions); that full
 all-data package is not public. The
 source-by-source evidence, overlapping source queue, and exact decisions are
 in [`research/text-rights-resolution-2026-09-30.md`](research/text-rights-resolution-2026-09-30.md). A documentation-only Hub amendment followed at
-[`f2def9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/f2def9e717390008ebf7aac05decebf1c264fa98); it did not alter the v2.1.0 data payload.
+[`f2def9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/f2def9e717390008ebf7aac05decebf1c264fa98); it did not alter that interim data payload.
 
 The project's requested “release unless explicitly marked private” rule cannot
 be used as a legal clearance test: the Indian Copyright Office says copyright
 arises automatically without formality, and a publicly accessible site is not
 a redistribution license. This review
 therefore maximizes factual metadata and source discovery while keeping
-uncleared expressive text in all-data. Both v2.1 package preflights pass with
+uncleared expressive text in all-data. The v0.2.1 package preflights pass with
 zero errors; the release passes the 216-record factual-field allowlist scan,
 and the catalog audit found zero pending-text payloads exposed publicly. The
 updated tests and package verification are recorded in the rights-resolution
@@ -64,7 +70,7 @@ log. The Dataset Viewer/parquet endpoint returned HTTP 500 on both the first
 request and one retry; preview availability remains unverified, while the
 uploaded file tree and commit were verified separately.
 
-## V2.0 corpus release — 2026-09-30
+## Source expansion checkpoint incorporated into v0.2.1 — 2026-09-30
 
 The ordered post-ingestion pipeline has rebuilt the local corpus from **49
 source files / 34,505 source records** into **32,072 exact-unique parent texts**
@@ -75,12 +81,13 @@ segment overlap across the text splits is zero. The local all-data package has
 155,516 rows, including 129,186 content rows, and its metadata-only index
 covers 300,915 records, 4,911 sources, and 328,728 links. Automated quality
 tiers and all privacy, licensing, and accuracy limits are detailed in the
-[V2 report](research/v2.0-release-report-2026-09-30.md).
+[source-expansion report](research/v2.0-release-report-2026-09-30.md).
 
 The pinned Garhwali Language Library contributed 164 net-new lexical strings;
 Jambu contributed zero after exact deduplication. The existing 1,772 web-page
 candidates remain rights-unassessed and experimental, with no public full-text
-release. The rights-filtered package is live under `releases/v2.0.0/` at
+release. The rights-filtered package was first published under its original
+Hub storage path `releases/v2.0.0/` at
 [payload commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); the corrected cards are at
 [commit `53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). Uploads were additive and did not delete older data or release files. The
 GitHub `main` now contains the code, reports, tests, and refresh pipeline at
@@ -148,9 +155,9 @@ material is not a native-validated benchmark. The GitHub v0.2.0 tag/release
 is published. Detailed intake:
 [`research/garhwali-data-expansion-2026-09-29.md`](research/garhwali-data-expansion-2026-09-29.md).
 
-## Interim local experimental expansion before V2 refresh — 2026-09-30
+## Interim local experimental expansion before the v0.2.1 refresh — 2026-09-30
 
-This is the checkpoint immediately before the V2 lexical refresh below, not
+This is the checkpoint immediately before the v0.2.1 lexical refresh below, not
 the current working-tree count.
 
 After the frozen v0.2.0 release, the tenth web wave scanned 6,844 Blogger feed
@@ -174,10 +181,10 @@ reference index has 297,000 rows, 4,144 source entries, and 324,338
 record/source links. All 1,772 new texts are preserved in the local all-data
 preview and redacted from the local public preview. The package previews and
 reference index were regenerated, but were not uploaded.
-The pre-V2 working-tree test runs passed **635/635 pytest** and
-**633/633 unittest** tests. The earlier V2 working-tree run passed **656/656
-unittest** tests. The current v2.1 working tree passes **671/671 pytest** and
-**669/669 unittest** tests. These checks validate package/code contracts; they
+The pre-refresh working-tree test runs passed **635/635 pytest** and
+**633/633 unittest** tests. The later rights-review snapshot passed **671/671
+pytest** and **669/669 unittest** tests. The current v0.2.1 working tree passes
+**682/682 configured-environment tests**. These checks validate package/code contracts; they
 do not validate linguistic correctness or grant reuse rights to pending sources.
 See the [wave report](research/garhwali-web-goldmines-2026-09-30.md) and the
 auto-updated README metrics table for the working-tree counts.
@@ -243,7 +250,7 @@ rights, or independent model accuracy.
 
 **Review date:** 2026-09-28
 **Reviewed package ID:** `garhwali-language-lab-v0.1.1`
-**Historical decision at that review date:** the then-current public Hugging Face corpus paired a rights-filtered content profile with a metadata-reference index of the 257,807-row all-data archive. Its figures and rights state were superseded by the V2.0 and published V2.1 releases above; they are retained here only as release history.
+**Historical decision at that review date:** the then-current public Hugging Face corpus paired a rights-filtered content profile with a metadata-reference index of the 257,807-row all-data archive. Its figures and rights state were superseded by the later source-expansion and rights-resolution updates summarized above; they are retained here only as release history.
 
 ## Project scope
 
@@ -315,10 +322,10 @@ No native-speaker adjudications are complete, and only 29 of 28,755 parent texts
 
 ### Rights and access
 
-The published V2.1 public profile includes factual/bibliographic
+The current v0.2.1 public profile includes factual/bibliographic
 projections for all 216 structured records and redacts 19,466 of 32,072 unique
 catalog values. All 32,072 texts remain in local all-data. Hugging Face serves
-the additive V2.1 package at commit `53c1ce9`. A source being online or lacking a visible copyright notice does not
+the interim rights-resolution package at commit `53c1ce9`. A source being online or lacking a visible copyright notice does not
 by itself grant republication rights; do not upload the all-data payload.
 
 ### Model evidence

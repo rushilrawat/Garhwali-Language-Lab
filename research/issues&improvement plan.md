@@ -1,6 +1,6 @@
 # Benchmark and model roadmap issues & improvement plan
 
-**Updated:** 2026-09-30 (V2.0 corpus release and generation-scoring follow-up)
+**Updated:** 2026-10-01 (v0.2.1 corpus release and generation-scoring follow-up)
 
 **Scope:** issues found while executing the benchmark/model roadmap and its
 immediately preceding retrieval, generation, and ASR work. This is a living
@@ -15,7 +15,7 @@ cards, integrated corpus/per-record ASR scoring, and inventoried benchmark
 rights. On 2026-09-30 the owner approved active work toward independent
 final-accuracy evidence across all five task areas. Generation scoring was
 added to the shared runner and saved outputs were reconciled to current
-validation rows. The V2.0 corpus package was published additively to the
+validation rows. The v0.2.1 corpus package was published additively to the
 existing public Hugging Face dataset at payload commit `5db2673`; the root and
 versioned cards were corrected at `53a0aff`. No paid job or visibility change
 occurred. The pipeline now has a tested one-command resumable ingest-and-refresh
@@ -24,7 +24,7 @@ below preserve earlier evidence.
 
 ## Current roadmap position — 2026-09-30
 
-The V2.0 corpus release is public, but GarhwaliBench remains a local draft:
+The v0.2.1 corpus release is public, but GarhwaliBench remains a local draft:
 five candidate task artifacts exist, three external schemas pass across 3,847
 records, and the current v0.2 adapter validates eight views / 14,703 rows
 (manifest SHA-256 `43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8`).
@@ -73,9 +73,8 @@ other 190 rows have no saved predictions.
 5. Publish benchmark cards/artifacts only after rights, integrity, and
    reproducibility gates pass.
 
-The v0.2.0 release verification's 607/607 pytest and 605/605 unittest counts
-are historical; the latest 2026-09-30 V2 full review passed 656/656 unittest
-tests.
+The frozen v0.2.0 release verification's 607/607 pytest and 605/605 unittest
+counts are historical; the current v0.2.1 working tree passes 682/682 tests.
 Fresh NLLB, dense IndicBERT retrieval, and SraVaani inference remain blocked:
 the project `.venv` has no PyTorch/Transformers/NeMo/PEFT/PyArrow, while the
 optional cached runtime lacks NeMo/PEFT/audio readers and the necessary NLLB/

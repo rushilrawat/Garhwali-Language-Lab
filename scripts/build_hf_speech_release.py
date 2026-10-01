@@ -170,6 +170,11 @@ differ. This repository has separate configs for Project VAANI and Meta
 Omnilingual speech; choose one source config at a time because their splits and
 transcript histories differ.
 
+This is the speech companion for project release **v0.2.1**. The earlier
+**v0.2.0** release is the frozen corpus snapshot. Existing `releases/v2.2.0/`
+paths are preserved Hub storage locations from the original upload, not release
+numbers; no audio payloads were moved or duplicated for this label correction.
+
 The companion text package and speech package are separate releases with
 different data scope. Current model results and benchmark limits are documented
 in the [project README](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/README.md).

@@ -1,8 +1,11 @@
-# Garhwali source expansion — V2.0 (2026-09-30)
+# Garhwali source expansion included in v0.2.1 (2026-09-30)
+
+This filename is kept for link compatibility; **v0.2.1** is the project release
+identifier.
 
 ## What changed
 
-The V2 refresh pins and re-runs two attributable Garhwali lexical sources through
+The v0.2.1 refresh pins and re-runs two attributable Garhwali lexical sources through
 the existing canonicalization, quality, split, export, and report pipeline. The
 intake comparison is deliberately based on exact normalized text hashes; source
 rows and their provenance remain available even when their text duplicates an
@@ -10,12 +13,12 @@ existing form.
 
 | Source | Source rows | Distinct source strings | Already represented | Exact-new in this update | Treatment |
 | --- | ---: | ---: | ---: | ---: | --- |
-| [Jambu Garhwali reflex list](https://neojambu.herokuapp.com/languages/Garh) | 763 | 738 | 738 | 0 | Previously included in the local corpus; V2 revalidates the pinned snapshot. CC BY 4.0. |
+| [Jambu Garhwali reflex list](https://neojambu.herokuapp.com/languages/Garh) | 763 | 738 | 738 | 0 | Previously included in the local corpus; v0.2.1 revalidates the pinned snapshot. CC BY 4.0. |
 | [Garhwali Language Library 1.0.0](https://github.com/infoakshatsinghbisht-eng/garhwali-language-library) | 180 | 180 | 16 | 164 | Newly integrated static words, phrases, proverbs, and riddles. MIT is recorded; upstream language labels and glosses are not native-reviewed. |
 
 The Jambu source's original comparison found 28 forms overlapping other source
 families and 710 forms not found in those families. Those 710 were already part
-of the current pre-V2 corpus: counting them again as a V2 addition would be
+of the prior local corpus: counting them again as a new v0.2.1 addition would be
 incorrect. Jambu and the static Language Library files have zero exact matches
 to one another. The Language Library's 16 matches retain both source histories
 but do not inflate the unique-text total.
@@ -28,7 +31,7 @@ experimental and ineligible for recommended training pending linguistic review.
 
 The local pipeline's pre-refresh `canonical.jsonl` reported 31,908 exact-unique
 parent texts. The 164 exact-new library strings therefore imply 32,072 after
-rebuild if no unrelated inputs change. The generated V2 metrics and package
+rebuild if no unrelated inputs change. The generated v0.2.1 metrics and package
 manifests are the authoritative post-build counts; see
 [`current_corpus_metrics.json`](../data/extracted/current_corpus_metrics.json)
 and the root [README](../README.md). Package row totals overlap across configs
@@ -83,7 +86,7 @@ PYTHONPATH=scripts .venv/bin/python scripts/refresh_corpus_after_ingestion.py
 This command verifies the pinned Jambu snapshot offline and the four pinned
 Language Library file hashes, checks source ingestion, exact-deduplicates while
 preserving provenance, regenerates normalized/cleaned/quality/split/language
-and benchmark views, rebuilds V2 local and public-profile package previews,
+and benchmark views, rebuilds v0.2.1 local and public-profile package previews,
 refreshes the Hugging Face reference index, updates the current README metric
 block, and regenerates [`PROJECT_FILE_MAP.md`](../PROJECT_FILE_MAP.md). It
 stops on the first failed stage and does not upload anything. Live web
@@ -92,16 +95,16 @@ refresh cannot unexpectedly recrawl sites or silently change a pinned source.
 
 Tests verify source snapshot checksums, required fields and stable row counts,
 overlap accounting, package rights filtering, and pipeline order. The full
-suite and the V2 package's hash/rights preflight are recorded in the current
-corpus-preparation status and V2 release report.
+suite and the v0.2.1 package's hash/rights preflight are recorded in the current
+corpus-preparation status and source-expansion report.
 
-## V2 publication boundary
+## v0.2.1 publication boundary
 
-The V2 public-profile package includes only records that pass the existing
+The v0.2.1 public-profile package includes only records that pass the existing
 row-level rights filter. Jambu and the MIT-labelled static Language Library
 source can be represented with attribution; the new Library rows remain
 marked unreviewed and experimental. Rights-unassessed blog pages, restricted
 book text, machine-generated forms, and noncommercial-only sources remain out
 of public full-text tables. No old release or source rows are deleted. The
-published Hugging Face repository remains v0.2.0 until a V2 additive commit is
-verified on the Hub.
+initial payload remains at the original Hub storage path `releases/v2.0.0/`;
+the complete current project release is v0.2.1.

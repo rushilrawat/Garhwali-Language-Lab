@@ -1,7 +1,7 @@
 # Benchmark and research suite: measured status
 
 **Original scorecard:** 2026-09-25; dated evidence below includes historical refreshes through 2026-09-28.
-**Current refresh:** 2026-09-30. The public V2.0 corpus release is complete,
+**Current refresh:** 2026-10-01. The v0.2.1 corpus release is complete,
 but benchmark v0.2 remains local-only. The adapter validates eight views /
 **14,703 view rows** (3,847 external, 402 internal text, 112 ASR, and
 recommended text split 9,486/454/402), with zero structural errors. The 402
@@ -100,7 +100,7 @@ accurate measure of Garhwali. The counts below separate those gates.
 | External source-split repeats | 1 exact primary-text group / 2 rows in XORQA `train` and `dev`; neither row is in `test` | Flagged; rows preserved |
 | Independent final accuracy sets | 0 of 5 currently eligible: language modeling, translation, retrieval, generation, and ASR. Owner approved work across all five on 2026-09-30. | Not established |
 | Native-language validation | 0 adjudications | Deferred at the owner's direction |
-| Automated project tests | Current 2026-09-30 V2 review: 656/656 unittest; v0.2.0 release-time snapshot: 607/607 pytest and 605/605 unittest; 2026-09-28 snapshot: 584/584 and 582/582 | Current full suite passes; counts verify code/contracts, not language correctness or rights |
+| Automated project tests | Current v0.2.1 working tree: 682/682 tests; frozen v0.2.0 release snapshot: 607/607 pytest and 605/605 unittest; 2026-09-28 snapshot: 584/584 and 582/582 | Current full suite passes; counts verify code/contracts, not language correctness or rights |
 
 “Pass” above means only that the automated, checksum-addressed files satisfy the
 listed checks. It does not certify spelling, meaning, dialect, or reference

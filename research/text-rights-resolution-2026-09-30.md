@@ -2,10 +2,11 @@
 
 ## Decision and release state
 
-This is the source-by-source decision log for the published v2.1.0 release.
-It supersedes the older v2.0 figures below for the current public package.
+This is the source-by-source decision log for the interim rights-resolution
+package, later incorporated into the current **v0.2.1** release. Older
+figures below remain dated snapshots; they do not define the current release.
 
-| V2.1.0 release measure | Count |
+| Rights-resolution snapshot measure | Count |
 | --- | ---: |
 | Exact-unique catalog values | 32,072 |
 | Publicly included text values with an open, exact source-specific, policy, or fact-only basis | 12,606 |
@@ -22,15 +23,15 @@ values are a condition-bearing subset of those public values, not additional
 records. Source-association counts below overlap and must not be summed to get
 the 19,466 distinct redacted texts.
 
-V2.1.0 was uploaded additively to Hugging Face at commit
+The interim package was uploaded additively to Hugging Face at commit
 [`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b).
-It reduces the redacted catalog count by 6,864 from v2.0.0 and adds factual or
+It reduces the redacted catalog count by 6,864 from the preceding source-expansion snapshot and adds factual or
 bibliographic projections for all 216 structured records. The full all-data
 package remains local and retains every text value, including the 19,466 whose
 expressive content still lacks a compatible public reuse basis. Nothing was
 deleted.
 The latest docs-only amendment is at Hub head
-[`f2def9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/f2def9e717390008ebf7aac05decebf1c264fa98); it does not change the v2.1.0 data payload.
+[`f2def9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/f2def9e717390008ebf7aac05decebf1c264fa98); it did not change the interim data payload.
 
 ## What the user's “not explicitly private” rule can safely achieve
 
@@ -244,7 +245,7 @@ association represents a distinct text.
 
 ## Structured records: all 216 accounted for
 
-The public v2.1.0 release makes every structured record discoverable in six
+The v0.2.1 public release makes every structured record discoverable in six
 metadata configurations: geography 50, historical terms 36, literary people
 26, literary works 66, popular songs 30, university research 8. The public
 projection contains no source prose, full abstracts, lyrics, translations,
@@ -254,7 +255,7 @@ source URL only. A metadata row is not an assertion that the underlying work is
 
 ## Release integrity checks
 
-- Public and all-data v2.1.0 packages each pass
+- Public and all-data package builds each pass
   `scripts/validate_hf_package_cloud.py` with zero errors. The public
   preflight checks 162,494 overlapping config/view rows; the all-data
   preflight checks 300,915. These are package-view counts, not unique examples.
@@ -270,7 +271,7 @@ source URL only. A metadata row is not an assertion that the underlying work is
   characters; the longest field is the generic 181-character metadata note.
 - The current code suite passes **671/671 pytest** and **669/669 unittest**
   tests. This is implementation/package verification, not language validation.
-- The public v2.1.0 package has 42 versioned release files / 601,509,542 bytes,
+- The interim public package has 42 versioned release files / 601,509,542 bytes,
   plus the root dataset card (43 upload paths total). The 51-file /
   689,449,417-byte all-data package remains local. The Dataset Viewer/parquet
   endpoint returned HTTP 500 on the initial check and its single retry; preview
@@ -287,8 +288,8 @@ source URL only. A metadata row is not an assertion that the underlying work is
   projection.
 - [x] Share 12,258 compatible-open, 134 NC-SA, 5 PIB-policy, 193 Mountain
   Voices policy, and 16 individual-word fact values with their distinct
-  per-record conditions in the public v2.1.0 package.
-- [x] Upload the public v2.1.0 package additively at Hub commit `53c1ce9`; no
+  per-record conditions in the public package.
+- [x] Upload the interim rights-resolution package additively at Hub commit `53c1ce9`; no
   earlier versioned files were deleted.
 - [ ] Recheck Dataset Viewer/parquet availability after the recorded HTTP 500
   on both the first request and one retry; release-file integrity is verified

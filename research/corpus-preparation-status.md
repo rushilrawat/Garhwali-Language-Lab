@@ -2,9 +2,9 @@
 
 Updated 2026-10-01. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
 
-## Developer access, schema, and Hugging Face v2.2.0 release — 2026-10-01
+## Developer access, schema, and Hugging Face v0.2.1 release — 2026-10-01
 
-- Published both v2.2.0 packages additively. The public corpus repository is
+- Published both v0.2.1 packages additively. The public corpus repository is
   at [commit `7cae908`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/7cae908fee51acd2e1e47955acaa9ee035c9bfbc);
   the public speech repository is at
   [commit `9da266e`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/9da266e23bfc198f70784a6e81edbf32f946102f).
@@ -12,6 +12,14 @@ Updated 2026-10-01. This is a chronological preparation log: model-result paragr
 - Corrected the corpus release's linked quick-start in a docs-only follow-up at
   [commit `0a76bc6`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/0a76bc6a1f403b2ba460ef0ece464050c178c189);
   downloaded the remote file and confirmed its SHA-256 matches the local copy.
+- Corrected the public release labels to v0.2.0/v0.2.1 without changing any
+  data paths or payloads. Corpus card and manifest correction:
+  [commit `a2d8716`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/a2d8716d0dfdc49e5bce440b22312be4b94f9b98).
+  Speech card correction:
+  [commit `1a9cf07`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/1a9cf07176bc5a2dc4598dc3e0fa7321b8f982e5).
+- The linked schema, quick-start, license policy, and rights-resolution log were
+  aligned to v0.2.1 at corpus commit
+  [`796b5c4`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/796b5c45e6395c1d2559fbbc12cb2f795d0138fc).
 - Each row carries the shared v1.0.0 envelope: `rights_status`, `reuse_scope`,
   `license_labels`, `quality_status`, and `record_quality_flags`. The package
   preserves source-specific provenance, transcript status, and review evidence.
@@ -32,7 +40,7 @@ Updated 2026-10-01. This is a chronological preparation log: model-result paragr
   audits validate package structure and metadata, not Garhwali linguistic
   correctness or native-speaker acceptance.
 
-## V2.1.0 public rights-resolution release — 2026-10-01
+## v0.2.1 rights-resolution update — 2026-10-01
 
 - Rebuilt the local public profile with 12,606 catalog texts under distinct
   per-record bases (12,258 compatible open-license/public-domain, 134 CC BY-NC-SA
@@ -52,7 +60,7 @@ Updated 2026-10-01. This is a chronological preparation log: model-result paragr
   [`f2def9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/f2def9e717390008ebf7aac05decebf1c264fa98). Earlier versioned files remain intact.
 - Both regenerated packages pass cloud preflight with zero errors. A full
   catalog scan finds zero pending-text leaks in the public release; all 216
-  factual metadata projections pass the export allowlist. At the v2.1.0 review
+  factual metadata projections pass the export allowlist. At the rights-review
   snapshot, the suite passed 671 pytest / 669 unittest tests. Public and all-data preflights check
   162,494 and 300,915 package-view rows; the base public profile is 345,083,461
   bytes and all-data is 689,449,417 bytes. The additive upload contains 42
@@ -75,14 +83,14 @@ Updated 2026-10-01. This is a chronological preparation log: model-result paragr
   Obtain an authorized source copy before matching any scripture rows; see the
   rights-resolution log.
 
-## V2.0 corpus release and local refresh (2026-09-30)
+## Source expansion included in v0.2.1 and local refresh (2026-09-30)
 
 - Rebuilt **32,072 exact-unique parent texts** from **34,505 source records / 49 files**; this is +164 over the immediately preceding local corpus (31,908). The local text inventory has 16,089,764 characters, 2,935,379 whitespace tokens, 163,045 segment occurrences, and 151,690 exact-unique segments; the current split audit reports zero exact-segment crossings.
 - Revalidated the Jambu source and added the pinned Garhwali Language Library static data: 763 Jambu rows (zero net-new); 180 Library rows, of which 164 are exact-new. Rechecked the 53-row Hikinegi Hub set; its 53 target strings are already represented, so the net-new count is zero.
 - Rebuilt the all-data and public-profile packages (300,915 and 155,516 overlapping-view rows). The public profile carries 129,186 content rows and the complete metadata-only reference index; protected values remain redacted/withheld according to the row-level rights filter.
-- The V2.0 additive Hub package contains 36 versioned files / 561,166,047 bytes. Its payload is live at commit [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); root and release cards were corrected at [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). The current Hub metadata confirms public visibility and the `releases/v2.0.0/` files. The upload used no delete operations, preserving the prior release files.
-- GitHub `main` now contains the V2.0 code, reports, tests, and pipeline at commit [`5f8636d`](https://github.com/rushilrawat/Garhwali-Language-Lab/commit/5f8636dc624e979a866f52764f2222c6fc615be2). GitHub Actions CI run [67](https://github.com/rushilrawat/Garhwali-Language-Lab/actions/runs/36765092886) passed.
-- The local refresh command now has tests for source pins, exact overlap, downstream ordering, package hashes, rights-profile limits, safe release paths, and one-command refresh mode. The full working-tree unittest suite passes **656/656**; this is the current code result, not the frozen v0.2.0 snapshot.
+- The 30 September source-expansion snapshot contains 36 files / 561,166,047 bytes. Its original Hub storage path is `releases/v2.0.0/`, first published at commit [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); cards were corrected at [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). The path keeps its original name as a Hub storage location. The upload used no delete operations, preserving earlier files.
+- GitHub `main` contains the 30 September source-expansion code, reports, tests, and pipeline at commit [`5f8636d`](https://github.com/rushilrawat/Garhwali-Language-Lab/commit/5f8636dc624e979a866f52764f2222c6fc615be2). GitHub Actions CI run [67](https://github.com/rushilrawat/Garhwali-Language-Lab/actions/runs/36765092886) passed.
+- The local refresh command now has tests for source pins, exact overlap, downstream ordering, package hashes, rights-profile limits, safe release paths, and one-command refresh mode. The full working-tree suite for that dated snapshot passed **656/656 unittest** tests; the frozen v0.2.0 snapshot is documented separately below.
 - Web-search follow-up found no additional downloadable source with both verified Garhwali coverage and compatible redistribution terms. LDC-IL and university-described corpora are documented as acquisition leads; their payload and terms are not public. No older data was removed.
 
 ## Frozen v0.2.0 release snapshot (2026-09-29)
@@ -91,10 +99,10 @@ Updated 2026-10-01. This is a chronological preparation log: model-result paragr
 - The canonical text view now has **31,790 source records from 46 files**, **29,426 exact-unique parent texts**, and **9,325,936 characters**. Segmentation produces **122,391 source occurrences / 115,785 exact-unique segments**.
 - The all-data package has **260,199 rows** across overlapping views and retains all 29,426 collected text values. The public-profile package has **150,065 rows**, including a complete metadata-only index with 260,199 archive references, 600 source records, and 283,752 source links.
 - The public corpus package redacts **24,565** catalog values and withholds full content for 216 structured records without compatible public-rights evidence. The all-data package remains local/access-controlled; the public export is rights-filtered.
-- The public and all-data cloud preflights, final release audit, release-index validation, and bundle hash/path check pass. The frozen v0.2.0 release run passed **607/607 pytest** and **605/605 unittest** tests. The pre-V2 2026-09-30 working-tree check passed 635/635 and 633/633; the current V2 working-tree suite passes **656/656 unittest** tests. These counts do not describe the frozen release tag. Native-speaker review and dialect annotation remain deferred; the new LSI OCR and translated story text remain unreviewed.
+- The public and all-data cloud preflights, final release audit, release-index validation, and bundle hash/path check pass. The frozen v0.2.0 release run passed **607/607 pytest** and **605/605 unittest** tests. The pre-refresh 2026-09-30 working-tree check passed 635/635 pytest and 633/633 unittest; the next source-refresh check passed 656/656 unittest. The current v0.2.1 configured-environment suite passes **682 tests**. These counts do not describe the frozen v0.2.0 tag. Native-speaker review and dialect annotation remain deferred; the new LSI OCR and translated story text remain unreviewed.
 - Hugging Face v0.2.0 is public at verified commit [`cb631488`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cb6314880b8a28c3bf3dcc025d8ff9ebe062c927); all 34 uploaded files matched the local manifest by size and hash at release verification. The Hub exposed all 15 split Parquet conversions, and all 15 split validity/preview checks returned HTTP 200 on 2026-09-29. A fresh 2026-09-30 browser check confirmed the public corpus and speech pages still load Dataset Viewer previews and expose their expected config/split controls. GitHub published tag [`v0.2.0`](https://github.com/rushilrawat/Garhwali-Language-Lab/releases/tag/v0.2.0) from commit `e2fdf5b`.
 
-## Pre-V2 local working-tree snapshot after web wave ten (2026-09-30)
+## Pre-refresh local working-tree snapshot after web wave ten (2026-09-30)
 
 - The tenth resumable web wave scanned 6,844 entries from the robots-allowed [Uttarakhand e-Magazine Blogger feed](https://e-magazineofuttarakhand.blogspot.com/) and fetched two [Khabar Saar Garhwali short-story pages](https://uttarakhandkhabarsaar.in/jani-mayedi-tani-jayedi-a-garhwali-short-story/). It selected 1,818 candidate pages, skipped 46 exact duplicate rows, and retained **1,772 exact-new records / 6,758,808 source characters** (1,770 e-Magazine and 2 short-story records).
 - This does **not** establish 1,772 new confirmed Garhwali utterances. Automatic classification marks 1,147 mixed-script review, 543 Romanized Garhwali candidates, and 82 Garhwali-scope-unverified records. All remain low-confidence candidates with no native review.

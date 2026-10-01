@@ -9,7 +9,7 @@ The collector records every attempted URL in
 error. No credentials, paywalls, robots restrictions or access controls were
 bypassed, and no remote audio or video was bulk downloaded.
 
-## Current project context (V2.1 published release, 2026-10-01)
+## Current project context (v0.2.1 published release, 2026-10-01)
 
 The current project contains **32,072 exact-unique parent texts** from
 34,505 source rows / 49 source files and **151,690 exact-unique prepared text
@@ -17,15 +17,15 @@ segments**; these are project-wide counts, not totals for the initial online
 crawl. The current inventory also includes seven supplied
 PDFs (six unique books, 769 active page records, and one exact duplicate),
 structured literature, songs, geography, historical terms, and university
-research records. The earlier V2.0 package remains preserved under `releases/v2.0.0/` at commit [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); V2.1.0 is the current public release. The current release and rights counts are maintained in the
+research records. The v0.2.1 release includes this expansion and the rights-filtered current profile. Earlier Hub storage paths remain for compatibility; the current release and rights counts are maintained in the
 [root README](../../README.md) and [final report](../../finalreport.md). Source
 discovery and acquisition history remain in this register; each later addition
 retains its own provenance and rights status.
 
-The published V2.1 rights-resolution release exposes 12,606/32,072 catalog
+The published v0.2.1 rights-resolution release exposes 12,606/32,072 catalog
 values, redacts 19,466 full texts pending compatible terms or narrower factual
 projection, and exposes the 216 structured records as fact/bibliographic
-metadata. V2.1 is live at Hub commit
+metadata. The rights-resolution snapshot is live at Hub commit
 [`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b). The current rights report also records a newly verified
 CC BY-SA 4.0 Garhwali GHMNT edition by The Love Fellowship; it is not yet tied
 to the unspecified New Testament edition in PahariLI, so those mixed-source
@@ -37,11 +37,11 @@ dialect table and specimens, five source-marked Garhwali proverbs from Upreti
 [`v0.2.0 source expansion report`](../../research/garhwali-data-expansion-2026-09-29.md)
 for deduplication, OCR quality, revision, and rights details.
 
-The V2 refresh added 164 exact-new static lexical entries from the MIT-labelled
+The v0.2.1 refresh added 164 exact-new static lexical entries from the MIT-labelled
 Garhwali Language Library. Jambu's 738 unique forms and Hikinegi's 53 target
-strings were already present, so both rechecks added zero. The additive V2
-package preserves the earlier Hub release paths; its latest card correction is
-at commit [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). See the [V2 report](../../research/v2.0-release-report-2026-09-30.md).
+strings were already present, so both rechecks added zero. The additive v0.2.1
+package preserves earlier Hub storage paths. The earlier source-expansion card
+correction is at [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504); the current version-label correction is at [`a2d8716`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/a2d8716d0dfdc49e5bce440b22312be4b94f9b98), and the linked-doc correction is at [`796b5c4`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/796b5c45e6395c1d2559fbbc12cb2f795d0138fc). See the [source-expansion report](../../research/v2.0-release-report-2026-09-30.md).
 
 ## Material promoted into the project
 

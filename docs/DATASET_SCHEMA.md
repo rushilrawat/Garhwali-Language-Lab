@@ -8,7 +8,7 @@ provenance or turn an upstream source's terms into one corpus-wide license.
 
 Current envelope version: **1.0.0** (recorded in each package manifest).
 
-The v2.2.0 corpus schema adds these fields to every corpus record. The speech
+The v0.2.1 corpus schema adds these fields to every corpus record. The speech
 builders emit the same envelope when the Parquet package is regenerated.
 Existing source-specific rights, license, quality, transcript, and provenance
 columns remain intact.

@@ -21,14 +21,16 @@ from record_schema import normalize_record
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab'
 ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
-V2_PUBLIC_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-v2.0.0-staging'
-V2_ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data-v2.0.0-local'
-RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '2.2.0').removeprefix('v')
+# Preserve these earlier local output paths in the overwrite guard. Their names
+# are historical storage paths, not semantic project release versions.
+LEGACY_PUBLIC_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-v2.0.0-staging'
+LEGACY_ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data-v2.0.0-local'
+RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.2.1').removeprefix('v')
 RELEASE_PUBLIC_OUTPUT = ROOT / f'data/huggingface/garhwali-language-lab-v{RELEASE_VERSION}-staging'
 RELEASE_ALL_DATA_OUTPUT = ROOT / f'data/huggingface/garhwali-language-lab-all-data-v{RELEASE_VERSION}-local'
 MANAGED_OUTPUTS = {
     DEFAULT_OUTPUT.resolve(), ALL_DATA_OUTPUT.resolve(),
-    V2_PUBLIC_OUTPUT.resolve(), V2_ALL_DATA_OUTPUT.resolve(),
+    LEGACY_PUBLIC_OUTPUT.resolve(), LEGACY_ALL_DATA_OUTPUT.resolve(),
     RELEASE_PUBLIC_OUTPUT.resolve(), RELEASE_ALL_DATA_OUTPUT.resolve(),
 }
 RELEASE_ID = f"garhwali-language-lab-v{RELEASE_VERSION}"
@@ -1359,7 +1361,7 @@ their text remains redacted. The current catalog exposes **{report.get('catalog_
         )
         access_notice = f'''All **{metadata_only:,} structured geography, history, literature, song, and research records** appear in factual/bibliographic form; no records are dropped from these metadata configurations. Prose notes, lyrics, translations, abstracts, and source passages are omitted unless separately licensed. The full source texts remain in the access-controlled all-data package. Each text-catalog record carries its specific rights state: CC BY-SA rows require attribution and share-alike; CC BY-NC-SA rows are noncommercial and share-alike; the five PIB instrument terms cite the PIB reproduction policy; and the 193 Mountain Voices glossary headwords carry Panos's attributed-reproduction guideline for press, educational/research institutions, and nonprofits. That guideline does not expressly address commercial scope or model training, so those values are excluded from model-training views. The **{report.get('catalog_factual_word_records', 0):,}** isolated one-token facts are listed without definitions, source record positions, or list ordering. Lexical facts from unlicensed thematic sources are included only when independently present in at least two distinct source collections; all such facts remain catalog-only, outside training views, and retain language-review flags. See the [source-by-source rights-resolution log](research/text-rights-resolution-2026-09-30.md). Native-speaker review and dialect annotation are deferred; benchmark and model scores are automated research results, not native-validated claims.'''
     source_expansion = ''
-    if str(report.get('release_id', '')).endswith('v2.0.0'):
+    if str(report.get('release_id', '')).endswith('v0.2.1'):
         expansion = report.get('source_expansion') or {}
         jambu = expansion.get('jambu') or {}
         library = expansion.get('language_library') or {}
@@ -1369,11 +1371,11 @@ their text remains redacted. The current catalog exposes **{report.get('catalog_
         )
         source_expansion = f'''
 
-## Garhwali source additions and deduplication in v2.0.0
+## Garhwali source additions included in v0.2.1
 
 - **Jambu Garhwali reflex lexicon:** {jambu.get('source_records', 0):,} source rows and
   {jambu.get('unique_forms', 0):,} distinct forms. This source was already in the
-  preceding local corpus snapshot; the V2 refresh revalidates its pinned local
+  preceding local corpus snapshot; the v0.2.1 refresh revalidates its pinned local
   snapshot and adds **{max(0, jambu.get('unique_forms', 0) - jambu.get('already_in_current_corpus', 0)):,}**
   new forms (the current snapshot already contains {jambu.get('already_in_current_corpus', 0):,}).
   Its earlier intake comparison found {jambu.get('cross_source_overlap', 0):,}
@@ -1452,18 +1454,15 @@ available under their own versioned paths:
 2. **v0.2.0 — expand Garhwali-only sources.** A deduplicated source wave added
    671 exact-unique texts, including historical Garhwali specimens and stories.
    Historical OCR and translated stories remain visibly marked as unreviewed.
-3. **v2.0.0 — grow the text inventory (30 September 2026).** The library intake
-   added 164 exact-new strings after deduplication, bringing the exact-unique
-   parent-text inventory to 32,072.
-4. **v2.1.0 — resolve and describe more records (1 October 2026).** No new
-   unique texts were added; 6,864 additional values entered the rights-filtered
-   profile under their recorded bases, and all 216 structured knowledge records
-   gained factual or bibliographic metadata views.
-5. **v2.2.0 — make the package easier to use (1 October 2026).** The release
-   adds a consistent rights-and-quality record envelope, exact-count quick start,
-   schema guide, and searchable lexicon example. It adds no new source texts.
+3. **v0.2.1 — continue the corpus and make it easier to use (30 September–1 October 2026).**
+   The follow-up added 164 exact-new strings after deduplication, brought more
+   values into the rights-filtered profile under their recorded bases, and
+   exposed factual/bibliographic metadata for all 216 structured records. The
+   release also adds a consistent rights-and-quality envelope, exact-count
+   quick start, schema guide, searchable lexicon example, and linked speech
+   dataset. Earlier release files remain available.
 
-The figures below describe the current v2.2.0 package, not a cumulative sum of
+The figures below describe the current v0.2.1 package, not a cumulative sum of
 overlapping views. Row-level terms and quality labels remain authoritative.
 
 ## Developer quick start
@@ -1551,7 +1550,7 @@ def _build_at(output, profile='public', include_audio=False,
         'structured_knowledge_excluded_for_rights': {},
         'structured_knowledge_metadata_only': {},
     }
-    if RELEASE_ID.endswith('v2.0.0'):
+    if RELEASE_ID.endswith('v0.2.1'):
         report['source_expansion'] = source_expansion_metrics()
 
     quality_catalog = list(read_jsonl(

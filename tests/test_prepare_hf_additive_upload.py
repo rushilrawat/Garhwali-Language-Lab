@@ -34,7 +34,7 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             "profile": "metadata_only_complete_reference_index", "tables": {},
         }), encoding="utf-8")
         (package / "manifest.json").write_text(json.dumps({
-            "profile": "public", "release_id": "garhwali-language-lab-v2.0.0",
+            "profile": "public", "release_id": "garhwali-language-lab-v0.2.0",
             "include_audio": False, "linked_audio_files": 0,
             "removed_audio_files": 0,
             "configs": {"catalog/train": {
@@ -53,12 +53,12 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             "[schema](DATASET_SCHEMA.md)\n"
         )
         self.assertEqual(
-            version_card(card, "releases/v2.0.0"),
-            "path: releases/v2.0.0/data/text/train-*.jsonl\n"
-            "[rights report](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v2.0.0/research/text-rights-resolution-2026-09-30.md)\n"
-            "[reference index](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v2.0.0/reference_index_manifest.json)\n"
-            "[developer guide](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v2.0.0/DEVELOPER_QUICKSTART.md)\n"
-            "[schema](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v2.0.0/DATASET_SCHEMA.md)\n",
+            version_card(card, "releases/v0.2.0"),
+            "path: releases/v0.2.0/data/text/train-*.jsonl\n"
+            "[rights report](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v0.2.0/research/text-rights-resolution-2026-09-30.md)\n"
+            "[reference index](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v0.2.0/reference_index_manifest.json)\n"
+            "[developer guide](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v0.2.0/DEVELOPER_QUICKSTART.md)\n"
+            "[schema](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v0.2.0/DATASET_SCHEMA.md)\n",
         )
 
     def test_validates_package_hashes_and_prepares_without_overwrite(self):
@@ -69,14 +69,14 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             output = root / "upload"
             plan = prepare(package, output, root / "plan.json")
             self.assertEqual(plan["file_count"], 12)
-            self.assertIn("releases/v2.0.0/data/catalog/train-*.jsonl", (output / "README.md").read_text())
+            self.assertIn("releases/v0.2.0/data/catalog/train-*.jsonl", (output / "README.md").read_text())
             self.assertIn(
-                "resolve/main/releases/v2.0.0/reference_index_manifest.json",
+                "resolve/main/releases/v0.2.0/reference_index_manifest.json",
                 (output / "README.md").read_text(),
             )
-            self.assertTrue((output / "releases/v2.0.0/data/catalog/train-00000.jsonl").exists())
-            self.assertTrue((output / "releases/v2.0.0/DEVELOPER_QUICKSTART.md").exists())
-            self.assertTrue((output / "releases/v2.0.0/search_garhwali_lexicon.py").exists())
+            self.assertTrue((output / "releases/v0.2.0/data/catalog/train-00000.jsonl").exists())
+            self.assertTrue((output / "releases/v0.2.0/DEVELOPER_QUICKSTART.md").exists())
+            self.assertTrue((output / "releases/v0.2.0/search_garhwali_lexicon.py").exists())
             self.assertEqual((root / "plan.json").stat().st_size > 0, True)
             with self.assertRaises(FileExistsError):
                 prepare(package, output, root / "plan.json")
@@ -111,15 +111,15 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             package = self.make_package(root)
             manifest_path = package / "manifest.json"
             manifest = json.loads(manifest_path.read_text())
-            manifest["release_id"] = "garhwali-language-lab-v2.1.0"
+            manifest["release_id"] = "garhwali-language-lab-v0.2.1"
             manifest_path.write_text(json.dumps(manifest))
 
             plan = prepare(
                 package, root / "upload", root / "plan.json",
-                "releases/v2.1.0",
+                "releases/v0.2.1",
             )
 
-            self.assertIn("Add Garhwali corpus v2.1.0", plan["command"])
+            self.assertIn("Add Garhwali corpus v0.2.1", plan["command"])
 
 
 if __name__ == "__main__":

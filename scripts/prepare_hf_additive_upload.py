@@ -12,7 +12,7 @@ from pathlib import PurePosixPath
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '2.2.0').removeprefix('v')
+RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.2.1').removeprefix('v')
 DEFAULT_PACKAGE = ROOT / f"data/huggingface/garhwali-language-lab-v{RELEASE_VERSION}-staging"
 DEFAULT_OUTPUT = ROOT / f"data/huggingface/garhwali-corpus-v{RELEASE_VERSION}-additive-upload"
 DEFAULT_PLAN = ROOT / f"data/huggingface/garhwali-corpus-v{RELEASE_VERSION}-upload-plan.json"

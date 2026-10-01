@@ -26,7 +26,7 @@ class HuggingFaceCloudValidationTests(unittest.TestCase):
         shard.parent.mkdir(parents=True, exist_ok=True)
         shard.write_text(json.dumps(row) + '\n')
         (package / 'manifest.json').write_text(json.dumps({
-            'release_id': 'garhwali-language-lab-v2.2.0',
+            'release_id': 'garhwali-language-lab-v0.2.1',
             'profile': 'public',
             'record_schema_version': '1.0.0',
             'configs': {'lexicon/train': {

@@ -71,7 +71,7 @@ owner, contributor, or speaker can submit a removal request using the source or
 audio identifier; derived records and future releases must carry the resulting
 exclusion while preserving a private audit entry.
 
-The **published v2.1.0 public package** includes all 216 structured knowledge
+The **v0.2.1 public package** includes all 216 structured knowledge
 records as factual or bibliographic metadata and omits their unresolved prose,
 lyrics, translations, abstracts, and source passages. It also exposes
 source-specific CC BY-NC-SA 4.0 entries, five PIB-policy instrument facts,
@@ -86,6 +86,6 @@ expressly grant commercial or model-training rights. These condition-bearing
 and fact-only values do not enter unrestricted training views. The public
 release exposes 12,606 / 32,072 catalog texts; the local all-data package
 retains every value, including the 19,466 pending full texts.
-The additive v2.1.0 Hugging Face release is at commit
+The earlier rights-resolution snapshot, incorporated into v0.2.1, is at commit
 [`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b). The source-by-source decision log is in
 [`research/text-rights-resolution-2026-09-30.md`](research/text-rights-resolution-2026-09-30.md). The latest docs-only Hub amendment is at [`f2def9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/f2def9e717390008ebf7aac05decebf1c264fa98); no corpus payload was changed by that amendment.

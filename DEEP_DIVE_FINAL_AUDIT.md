@@ -1,8 +1,8 @@
 # Garhwali Language Lab — deep final audit
 
-## Developer-access, schema, and Hub release audit — 2026-10-01
+## Developer access, schema, and v0.2.1 Hub release audit — 2026-10-01
 
-The v2.2.0 text and speech packages add consistent record-level rights and
+The v0.2.1 text and speech packages add consistent record-level rights and
 quality fields without replacing source-specific terms or evidence. The
 package validator checks the five common fields and their types on every row
 when the manifest declares schema v1.0.0, and requires the shipped schema and
@@ -25,14 +25,14 @@ not establish native-speaker accuracy. The complete unit suite passes
 after upload; the repository cards, commit revisions, and file trees were
 verified separately.
 
-## Rights audit addendum — 2026-10-01
+## Rights-resolution update incorporated into v0.2.1 — 2026-10-01
 
-The v2.1.0 public release was rebuilt from the preserved all-data layer. It
+The v0.2.1 public profile was rebuilt from the preserved all-data layer. It
 contains 32,072 unique catalog texts; the public catalog exposes 12,606 under
 open, noncommercial/share-alike, source-policy, or narrowly fact-only bases and
 redacts 19,466 with unresolved reuse rights. All 216 structured knowledge
-records are represented as fact/bibliographic metadata only. The public package
-was uploaded additively at Hugging Face commit
+records are represented as fact/bibliographic metadata only. The interim
+rights-resolution package was uploaded at Hugging Face commit
 [`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b); previous versioned files remain present.
 
 The rights-resolution log now lists exact source-associated pending counts,
@@ -48,7 +48,7 @@ The source log records the exact current preflight, file-size, and test results.
 The public package is audited for zero pending-text leaks and the 216
 metadata projections are checked against the field allowlist.
 
-## V2.0 corpus release — 2026-09-30
+## Source expansion checkpoint incorporated into v0.2.1 — 2026-09-30
 
 The latest ingestion refresh retains **34,505 source rows from 49 files** and
 produces **32,072 exact-unique parent texts**, **16,089,764 characters**,
@@ -60,17 +60,17 @@ MIT-labelled Garhwali Language Library (164 exact-new strings); Jambu and
 Hikinegi were exact-deduplicated with zero net-new strings.
 
 The repeatable refresh, generated file map, rights-profile preflight, and
-additive Hub upload are complete. The V2.0 payload is live at
+additive Hub upload are complete. The initial source-expansion payload is live at
 [Hugging Face commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); the corrected dataset cards are at
 [commit `53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). No older corpus records or
 release paths were deleted. Public content still redacts 26,330 text values and
 withholds 216 structured payloads for unresolved reuse terms. Rights-unclear
 web candidates remain in the local experimental layer; no new model inference
-or accuracy claim was made. Native review remains deferred. The pre-V2 web-wave
+or accuracy claim was made. Native review remains deferred. The earlier web-wave
 metrics below are retained as historical, not current, measurements.
 
-At the earlier v2.0 review snapshot, the full working-tree suite passed
-**656/656 unittest** tests. At the v2.1.0 audit snapshot, the working tree passed
+At the frozen v0.2.0 review snapshot, the full working-tree suite passed
+**656/656 unittest** tests. At the interim rights-review snapshot, the working tree passed
 **671/671 pytest** and **669/669 unittest**. These validate code and data contracts, not
 linguistic correctness, unrestricted reuse rights, or independent model accuracy.
 
@@ -109,9 +109,9 @@ See the [v0.2.0 source expansion report](research/garhwali-data-expansion-2026-0
 [release notes](release/v0.2.0/README.md), and
 [`release/v0.2.0/final-audit.json`](release/v0.2.0/final-audit.json).
 
-## Post-release local web expansion before V2 refresh (2026-09-30)
+## Post-release local web expansion before the v0.2.1 refresh (2026-09-30)
 
-The counts in this section are an interim pre-V2 snapshot and are retained for
+The counts in this section are an interim pre-refresh snapshot and are retained for
 history; the current corpus values are at the top of this audit.
 
 The tenth ingestion wave scanned 6,844 entries from the Uttarakhand e-Magazine
@@ -143,9 +143,9 @@ package-preview, and reference-index builders, then regenerates the current
 metrics block in `README.md`. Its scope and limitations are in
 [`PIPELINE.md`](PIPELINE.md) and the
 [web-goldmine intake report](research/garhwali-web-goldmines-2026-09-30.md).
-The pre-V2 post-ingestion test suite passed **635 pytest** and **633
-unittest** tests. The latest V2 suite passes **656 pytest** and **654
-unittest** tests. The pytest runner available in this workspace is the system
+The pre-refresh post-ingestion test suite passed **635 pytest** and **633
+unittest** tests. The next source-refresh suite passed **656 pytest** and **654
+unittest** tests. The current v0.2.1 configured-environment suite passes **682** tests. The pytest runner available in this workspace is the system
 installation with the project virtualenv's dependency path supplied; the
 `.venv` itself does not contain pytest.
 
@@ -159,7 +159,7 @@ installation with the project virtualenv's dependency path supplied; the
 
 ## Current conclusion
 
-Hugging Face serves the additive V2.1.0 corpus release at commit `53c1ce9`.
+Hugging Face serves the interim rights-resolution corpus update at commit `53c1ce9`.
 The public package has 32,072 unique catalog texts, exposes 12,606 under
 recorded source-specific or narrow fact-only bases, and redacts 19,466 full
 texts still lacking compatible reuse evidence. It exposes all 216 structured
@@ -191,7 +191,7 @@ The package inventory reports 257,807 rows across overlapping all-data views and
 The public and all-data packages contain 216 records in six configurations: geography (50), historical terms (36), literary people (26), literary works (66), popular songs (30), and university research (8). Source hints previously used inconsistent field names such as `evidence`, `source_refs`, `source_ids`, `source_url`, `wikipedia_url`, `lyrics_sources`, and `translation_sources`. The builder now maps source pointers into standardized `provenance`, adds explicit quality/review status, and records rights without inventing a license. A web review has now examined the 186 previously unassessed geography, history, people, works, and university records. Some component sources carry reuse terms, but no whole-record public-rights basis was established for those mixed-source records. Current audit counts are **0 missing provenance**, **0 missing quality metadata**, **0 unreviewed rights statuses**, and **216 rows without compatible public rights**.
 
 The release audit and cloud preflight enforce these fields. The all-data/private
-preflight passed for that snapshot. The published V2.1 release now exposes a
+preflight passed for that snapshot. The current v0.2.1 public release exposes a
 factual/bibliographic projection for each record in six metadata
 configurations. Full expressive payloads remain in all-data because compatible
 reuse evidence has not been established. The projection does not claim that
@@ -270,7 +270,7 @@ The package and release index identify themselves as `garhwali-language-lab-v0.1
 
 The V0.1.1 all-data package preserved 28,755 catalog text values, and that
 snapshot's public profile redacted 24,566 values and omitted the 216 full
-structured records. The current published V2.1 figures are stated in the
+structured records. The current published v0.2.1 figures are stated in the
 rights audit addendum at the top of this report. The PanLex license-classifier
 defect is fixed; keep row-level terms visible in cards and manifests.
 
@@ -280,7 +280,7 @@ The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1`
 
 ## Remediation order
 
-1. **Rights correctness:** the NC/ND classifier fix is implemented. The V2.1 public release exports factual/bibliographic projections for all 216 structured records, while full expressive text remains in all-data pending compatible rights evidence.
+1. **Rights correctness:** the NC/ND classifier fix is implemented. The v0.2.1 public release exports factual/bibliographic projections for all 216 structured records, while full expressive text remains in all-data pending compatible rights evidence.
 2. **Release metadata gates:** standardized source pointers/review status and fail-closed public-rights checks are implemented and pass for v0.1.1.
 3. **Model-data quality:** strict training view and strict-default scripts are ready; run a neural comparison against historical broad-data results on fixed evaluations.
 4. **Audit integrity:** benchmark hashes/counts/leakage, package shard hashes, text IDs, and training recommendations are recomputed; an independently signed release manifest remains optional hardening.

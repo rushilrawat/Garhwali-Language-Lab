@@ -773,9 +773,9 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIn('Garhwali Speech', card)
         self.assertIn('rushilrawat/garhwali-speech', card)
 
-    def test_v2_public_card_documents_source_delta_and_keeps_quality_limits(self):
+    def test_v0_2_1_public_card_documents_source_delta_and_keeps_quality_limits(self):
         report = {
-            'release_id': 'garhwali-language-lab-v2.0.0',
+            'release_id': 'garhwali-language-lab-v0.2.1',
             'profile': 'public',
             'configs': {'text/train': {'records': 2}},
             'linked_audio_files': 0,
@@ -809,9 +809,11 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
 
         card = m.dataset_card(report)
 
+        self.assertIn('Release: **garhwali-language-lab-v0.2.1**', card)
+        self.assertIn('source additions included in v0.2.1', card)
         self.assertIn('164 exact-new', card)
         self.assertLess(card.index('v0.1.x — establish the corpus workflow'),
-                        card.index('v2.2.0 — make the package easier to use'))
+                        card.index('v0.2.1 — continue the corpus and make it easier to use'))
         self.assertIn('strings. Types: lexicon 131', card)
         self.assertRegex(card, r'adds \*\*0\*\*\s+new forms')
         self.assertIn('generated inflection forms are excluded', card)

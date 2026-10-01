@@ -86,28 +86,29 @@ never uploads to Hugging Face or changes repository visibility. Rights-pending
 source text remains in the local all-data package and is omitted from public
 content output; candidate counts are not a measure of verified Garhwali.
 
-The V2.0 release rebuilt 32,072 exact-unique parent texts from 49 source files
-and is public under `releases/v2.0.0/`. For a later release, bump the version
-and output paths. For example, after a new source intake:
+The v0.2.1 release contains 32,072 exact-unique parent texts from 49 source
+files. Its existing Hub payload paths remain unchanged. For a later release,
+bump the project version and output paths to v0.2.2. For example, after a new
+source intake:
 
 ```bash
-GARHWALI_RELEASE_VERSION=2.1.0 .venv/bin/python scripts/ingestion_graph.py run \
+GARHWALI_RELEASE_VERSION=0.2.2 .venv/bin/python scripts/ingestion_graph.py run \
   --wave tenth --run-id next-garhwali-wave-2026-10-01 --refresh-derived
 ```
 
-For an additive V2.1.0 package, stage it with a new prefix and unique ignored
+For an additive v0.2.2 package, stage it with a new prefix and unique ignored
 output paths:
 
 ```bash
-GARHWALI_RELEASE_VERSION=2.1.0 .venv/bin/python scripts/prepare_hf_additive_upload.py \
-  --prefix releases/v2.1.0 \
-  --output data/huggingface/garhwali-corpus-v2.1.0-additive-upload \
-  --plan data/huggingface/garhwali-corpus-v2.1.0-upload-plan.json
+GARHWALI_RELEASE_VERSION=0.2.2 .venv/bin/python scripts/prepare_hf_additive_upload.py \
+  --prefix releases/v0.2.2 \
+  --output data/huggingface/garhwali-corpus-v0.2.2-additive-upload \
+  --plan data/huggingface/garhwali-corpus-v0.2.2-upload-plan.json
 ```
 
 Review the plan, verify the prefix is unused, and run its generated upload
 command only after checks pass. It writes under the new version path and uses no
-deletion operations. The V2.0 payload is at [HF commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); the corrected cards are at [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504).
+deletion operations. The original source-expansion payload is at [HF commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); the corrected cards are at [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). Its original `releases/v2.0.0/` folder is a preserved Hub storage path, not the project's release version.
 
 The package is limited to the rights-filtered public profile. This procedure
 preserves old versioned files and updates the root card to point at the new

@@ -8,14 +8,15 @@ folklore, folk songs, educational material, historical linguistics, community
 writing, and cultural context without erasing source rights or uncertain language
 labels.
 
-The live public corpus release is `garhwali-language-lab-v2.2.0`, initially
+The current public project release is **v0.2.1**. Its corpus payload was
 published at
 [Hugging Face commit `7cae908`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/7cae908fee51acd2e1e47955acaa9ee035c9bfbc).
 Its linked developer quick-start was corrected in the docs-only follow-up
 [commit `0a76bc6`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/0a76bc6a1f403b2ba460ef0ece464050c178c189).
-The speech companion is live on v2.2.0 at
+The speech companion is live as v0.2.1 at
 [Hugging Face commit `9da266e`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/9da266e23bfc198f70784a6e81edbf32f946102f).
-Both updates were additive; earlier release files remain available. V2.2.0 adds
+The corrected corpus card/manifests are at [commit `a2d8716`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/a2d8716d0dfdc49e5bce440b22312be4b94f9b98); the corrected speech card is at [commit `1a9cf07`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/1a9cf07176bc5a2dc4598dc3e0fa7321b8f982e5). The linked schema, quick-start, license policy, and rights log were aligned to v0.2.1 at corpus commit [`796b5c4`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/796b5c45e6395c1d2559fbbc12cb2f795d0138fc).
+Both updates were additive; earlier release files remain available. V0.2.1 adds
 a common rights-and-quality schema, chronological dataset cards, a developer
 quick start, and a searchable lexicon example.
 Its content tables expose 12,606 of 32,072 exact-unique catalog values under
@@ -31,8 +32,9 @@ dataset is public separately. Native-speaker review and dialect annotation are
 deferred; benchmark and model scores remain automated research results, not
 native- or dialect-validated claims. See [`finalreport.md`](finalreport.md)
 and [`LICENSE_POLICY.md`](LICENSE_POLICY.md) for decisions and conditions.
-The prior v2.1.0 package remains in the corpus repository's history at commit
-[`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b).
+The frozen v0.2.0 corpus snapshot remains available in the earlier release
+history. V0.2.1 keeps the original Hub storage prefix for stable links; that
+folder name records the first upload path, not the project's release number.
 
 ## Developer access
 
@@ -40,7 +42,7 @@ Use the [developer quick start](docs/DEVELOPER_QUICKSTART.md) for exact config
 counts, a copy-paste `datasets.load_dataset` sample, pandas and DuckDB recipes,
 and the searchable vocabulary CLI. The
 [schema guide](docs/DATASET_SCHEMA.md) defines common record-level rights and
-quality fields alongside each config's payload fields. The live v2.2.0 package
+quality fields alongside each config's payload fields. The live v0.2.1 package
 has the common envelope; source-specific evidence fields remain alongside it.
 
 ## Current scale
@@ -50,9 +52,9 @@ has the common envelope; source-specific evidence fields remain alongside it.
 | Exact-unique parent texts | 32,072 |
 | Exact-unique sentence segments | 151,690 |
 | All-data package | 300,915 overlapping-view rows / 0 redacted texts |
-| Rights-filtered corpus profile (public v2.2.0 currently live) | 162,494 overlapping-view rows / 21 config-split subsets |
-| Speech release (public v2.2.0) | 113,363 rows / 267 Parquet shards / 154.645 hours |
-| V2.2.0 speech file-tree size | 18.24 GB new release files; earlier files remain available |
+| Rights-filtered corpus profile (public v0.2.1 currently live) | 162,494 overlapping-view rows / 21 config-split subsets |
+| Speech release (public v0.2.1) | 113,363 rows / 267 Parquet shards / 154.645 hours |
+| V0.2.1 speech file-tree size | 18.24 GB new release files; earlier files remain available |
 | Catalog text included in profile | 12,606 exposed / 19,466 redacted |
 | Structured knowledge | 216 fact/bibliographic projections; expressive payloads omitted |
 | Metadata index in corpus profile | 300,915 records / 4,909 sources / 352,765 links |
@@ -93,7 +95,7 @@ has the common envelope; source-specific evidence fields remain alongside it.
 | mT5 instruction LoRA | 28.201385 → 27.569880 mean validation cross-entropy |
 | mT0-small accuracy LoRA | 5.614353 → 4.961989 mean validation cross-entropy |
 
-The v2.1.0 all-data text view uses connected-document splitting: 144,731
+The v0.2.1 all-data text view uses connected-document splitting: 144,731
 train, 3,520 validation, and 3,439 test records. The public text view contains
 17,289 train, 895 validation, and 765 test records. Strict speech uses 1,621
 train, 269 validation, and 112 test rows. No normalized text component, exact

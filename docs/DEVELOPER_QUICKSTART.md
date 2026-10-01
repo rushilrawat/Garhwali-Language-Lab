@@ -2,12 +2,12 @@
 
 The dataset IDs are `rushilrawat/garhwali-corpus` (text and reference tables)
 and `rushilrawat/garhwali-speech` (audio and speech metadata). Both repositories
-are public. Their latest additive release is v2.2.0: the corpus is at commit
+are public. Their latest additive release is v0.2.1: the corpus payload is at commit
 [`7cae908`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/7cae908fee51acd2e1e47955acaa9ee035c9bfbc),
 and the speech dataset is at commit
 [`9da266e`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/9da266e23bfc198f70784a6e81edbf32f946102f).
 The releases preserve earlier files and add a common rights/quality envelope
-plus clearer schema and loading guidance. Counts below describe the v2.2.0
+plus clearer schema and loading guidance. Counts below describe the v0.2.1
 packages. You can load the current configs remotely or use the local package
 copy shown below. Pass a commit SHA as `revision=` when you need an immutable
 Hub snapshot.
@@ -32,7 +32,7 @@ See Hugging Face's [`load_dataset` guide](https://huggingface.co/docs/datasets/l
 [supported dataset formats](https://huggingface.co/docs/hub/en/datasets-adding)
 for the underlying interfaces.
 
-Load the vocabulary config from the local v2.2.0 package without loading any
+Load the vocabulary config from the local v0.2.1 package without loading any
 other corpus subset:
 
 ```python
@@ -60,7 +60,7 @@ lexicon = load_dataset("rushilrawat/garhwali-corpus", "lexicon", split="train")
 print(lexicon.select(range(3)))
 ```
 
-Try the searchable CLI against the local v2.2.0 package files with:
+Try the searchable CLI against the local v0.2.1 package files with:
 
 ```bash
 python examples/search_garhwali_lexicon.py "water" --data-file \
@@ -77,7 +77,7 @@ status separately. The demo prints these fields with each match.
 
 ## Configurations and exact release counts
 
-Counts below were reconciled against the v2.2.0 schema refresh. A config may contain train,
+Counts below were reconciled against the v0.2.1 schema refresh. A config may contain train,
 validation, and test splits; numbers are summed across those splits. Views can
 overlap, so do not add the table to calculate unique training examples.
 

@@ -20,7 +20,7 @@ Public Infrastructure   20%  ████░░░░░░░░░░░░░
 
 The bars are a weighted implementation snapshot through 2026-09-30, including
 the ASR scorer integration, rights audit, shared generation scoring, tenth
-web-intake pipeline, and V2.0 source-to-Hugging-Face release. Saved generation
+web-intake pipeline, and v0.2.1 source-to-Hugging-Face release. Saved generation
 predictions reconcile to 130/320 current validation rows; this produced no
 fresh model inference. The refresh added 164 exact-new lexical strings, rebuilt
 all downstream views, published a versioned additive Hub package, and added
@@ -45,14 +45,14 @@ Splits, manifests, and release checks       90%  ██████████�
 Source and content coverage closure         60%  ████████████░░░░░░░░
 ```
 
-The V2.0 corpus and v0.2.0 speech dataset releases are live. The latest V2 local
+The v0.2.1 corpus and speech dataset releases are live. The latest v0.2.1 local
 working view has **32,072 exact-unique parent texts** from 34,505 source rows
 across 49 files, 16,089,764 characters, 2,935,379 whitespace-separated tokens,
 and 151,690 exact-unique segments. The tenth-wave web layer retains 1,772
 exact-new candidate pages / 6,758,808 source characters; language identity and
 reuse rights remain unresolved, so those pages remain experimental. The V2
 refresh added 164 exact-new words, phrases, proverbs, and riddles from the
-MIT-labelled Garhwali Language Library, and the V2.0 public content package is
+MIT-labelled Garhwali Language Library, and the v0.2.1 public content package is
 live at Hugging Face commit `5db2673` (its cards were corrected at `53a0aff`).
 The score stays
 below 100% because public corpus content is rights-filtered, OCR and story
@@ -61,7 +61,7 @@ and dialect annotation are deferred and are not treated as an active release
 blocker.
 
 Weighted result: **88%** (525/6 = 87.5%, rounded). The update from 83% reflects
-completion of the rights-aware packaging and additive V2.0 Hub publication
+completion of the rights-aware packaging and additive v0.2.1 Hub publication
 workstream. It does not mean every source has been cleared for unrestricted
 reuse; unresolved content remains out of the public full-text profile and is
 accounted for in the source-coverage and rights-quality work.
@@ -191,7 +191,7 @@ Corpus explorer                                0%  ░░░░░░░░░�
 Interactive demos                              0%  ░░░░░░░░░░░░░░░░░░░░
 ```
 
-Equal-weight result: **20%**. The V2.0 Hugging Face corpus and separate
+Equal-weight result: **20%**. The v0.2.1 Hugging Face corpus and separate
 speech dataset are released and their current manifests/checks were verified.
 The leaderboard, explorer, demos, and public model releases remain future
 products.
