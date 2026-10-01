@@ -32,12 +32,10 @@ PIPELINE_COMMANDS = (
     ("build_quality_tiers.py", ()),
     ("build_recommended_text_view.py", ()),
     ("build_huggingface_dataset.py", (
-        "--profile", "all-data", "--output",
-        "data/huggingface/garhwali-language-lab-all-data-v2.0.0-local",
+        "--profile", "all-data",
     )),
     ("build_huggingface_dataset.py", (
-        "--profile", "public", "--output",
-        "data/huggingface/garhwali-language-lab-v2.0.0-staging",
+        "--profile", "public",
     )),
     ("build_hf_reference_index.py", ()),
     ("generate_project_file_map.py", ()),
@@ -54,18 +52,30 @@ def replace_metrics_block(readme: str, table: str) -> str:
     return readme[:start] + "\n" + table.rstrip() + "\n" + readme[end:]
 
 
-def run_pipeline(root: Path = ROOT, runner=subprocess.run) -> None:
-    environment = os.environ.copy()
-    environment.setdefault("GARHWALI_RELEASE_VERSION", "2.0.0")
+def configure_environment(environment: dict[str, str]) -> dict[str, str]:
+    version = environment.setdefault("GARHWALI_RELEASE_VERSION", "2.2.0").removeprefix("v")
     environment.setdefault(
         "GARHWALI_HF_ALL_DATA_OUTPUT",
-        "data/huggingface/garhwali-language-lab-all-data-v2.0.0-local",
+        f"data/huggingface/garhwali-language-lab-all-data-v{version}-local",
     )
     environment.setdefault(
         "GARHWALI_HF_PUBLIC_OUTPUT",
-        "data/huggingface/garhwali-language-lab-v2.0.0-staging",
+        f"data/huggingface/garhwali-language-lab-v{version}-staging",
     )
+    return environment
+
+
+def run_pipeline(root: Path = ROOT, runner=subprocess.run,
+                 environment: dict[str, str] | None = None) -> None:
+    environment = configure_environment(dict(os.environ) if environment is None else environment)
     for script, arguments in PIPELINE_COMMANDS:
+        arguments = list(arguments)
+        if script == "build_huggingface_dataset.py":
+            output = (
+                environment["GARHWALI_HF_ALL_DATA_OUTPUT"]
+                if "all-data" in arguments else environment["GARHWALI_HF_PUBLIC_OUTPUT"]
+            )
+            arguments.extend(("--output", output))
         command = [sys.executable, str(root / "scripts" / script), *arguments]
         runner(command, cwd=root, check=True, env=environment)
 
@@ -74,15 +84,16 @@ def read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def collect_metrics(root: Path = ROOT) -> dict:
+def collect_metrics(root: Path = ROOT, environment: dict[str, str] | None = None) -> dict:
+    environment = configure_environment(dict(os.environ) if environment is None else environment)
     text_report = read_json(root / "data/processed/text/report.json")
     segment_report = read_json(root / "data/processed/model_ready/segments/report.json")
     quality_report = read_json(root / "data/processed/model_ready/quality_v2/report.json")
     all_manifest = read_json(
-        root / "data/huggingface/garhwali-language-lab-all-data-v2.0.0-local/manifest.json"
+        root / environment["GARHWALI_HF_ALL_DATA_OUTPUT"] / "manifest.json"
     )
     reference_index = read_json(
-        root / "data/huggingface/garhwali-language-lab-v2.0.0-staging/reference_index_manifest.json"
+        root / environment["GARHWALI_HF_PUBLIC_OUTPUT"] / "reference_index_manifest.json"
     )
     wave = read_json(root / "data/extracted/web_goldmines/report.json")
     jambu = read_json(root / "corpus/jambu_garhwali_manifest.json")
@@ -177,9 +188,11 @@ def render_metrics_table(metrics: dict) -> str:
     )
 
 
-def refresh(root: Path = ROOT, runner=subprocess.run) -> dict:
-    run_pipeline(root, runner=runner)
-    metrics = collect_metrics(root)
+def refresh(root: Path = ROOT, runner=subprocess.run,
+            environment: dict[str, str] | None = None) -> dict:
+    environment = configure_environment(dict(os.environ) if environment is None else environment)
+    run_pipeline(root, runner=runner, environment=environment)
+    metrics = collect_metrics(root, environment=environment)
     metrics_path = root / "data/extracted/current_corpus_metrics.json"
     metrics_path.parent.mkdir(parents=True, exist_ok=True)
     metrics_path.write_text(

@@ -34,6 +34,9 @@ def test_index_row_references_source_and_excludes_record_payloads():
 
     assert result["record_family"] == "text"
     assert result["record_rights_status"] == "not_recorded"
+    assert result["rights_status"] == "resolve_via_record_and_source_join"
+    assert result["quality_status"] == "automated_flags_present; not linguistically reviewed"
+    assert isinstance(result["license_labels"], list)
     assert source_id in result["source_ref_ids_json"]
     assert "https://example.org/item" not in serialized
     assert "PRIVATE_" not in serialized
@@ -76,7 +79,14 @@ class ReferenceIndexCardTests(unittest.TestCase):
                 "public_profile_package_rows": 146684,
                 "records_with_content_in_public_profile": 122118,
                 "record_rights_status_counts": {"not_recorded": 228836},
-                "tables": {},
+                "content_config_counts": {"text": 120, "lexicon": 7},
+                "public_content_config_count": 6,
+                "public_content_config_split_views": 12,
+                "tables": {
+                    "record_index": {"records": 257807},
+                    "source_catalog": {"records": 590},
+                    "record_sources": {"records": 277637},
+                },
             }
             with patch.object(indexer, "PUBLIC_DATA", Path(directory)):
                 indexer.update_dataset_card(report)
@@ -88,4 +98,8 @@ class ReferenceIndexCardTests(unittest.TestCase):
             self.assertIn("590 deduplicated source records", result)
             self.assertIn("277,637 record-to-source links", result)
             self.assertIn("not_recorded` for **228,836 rows**", result)
+            self.assertIn("## Developer quick start", result)
+            self.assertEqual(result.count("## Developer quick start"), 1)
+            self.assertIn("`text` | 120", result)
+            self.assertIn("`record_index` | 257,807", result)
             self.assertIn("speaker identifiers, local paths, or content hashes", result)

@@ -11,6 +11,8 @@ import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from record_schema import normalize_record
+
 
 ROOT = Path(__file__).resolve().parents[1]
 REVISION = '8648ba8946377697b427ae952076e49fc0e5e44d'
@@ -62,7 +64,7 @@ def annotate_audio_duplicates(rows: list[dict]) -> dict[str, dict]:
 
 
 def make_release_record(row: dict, annotations: dict) -> dict:
-    return {
+    return normalize_record({
         'record_id': row['record_id'],
         'audio_sha256': row['audio_sha256'],
         'text_sha256': row['text_sha256'],
@@ -86,7 +88,7 @@ def make_release_record(row: dict, annotations: dict) -> dict:
         'source_license': 'CC-BY-4.0',
         'source_license_url': LICENSE_URL,
         **annotations,
-    }
+    }, family='meta_omnilingual')
 
 
 def _load_vaani_hashes(path: Path) -> set[str]:
@@ -241,7 +243,7 @@ def add_cross_corpus_flags(rows: list[dict], annotations: dict[str, dict]) -> No
 
 def build(output: Path = DEFAULT_OUTPUT) -> dict:
     try:
-        from datasets import Audio, Dataset, Features, Value, disable_progress_bars
+        from datasets import Audio, Dataset, Features, Sequence, Value, disable_progress_bars
         import pyarrow.parquet as pq
     except ImportError as exc:
         raise RuntimeError('Install requirements-hf-release.txt to build Parquet audio shards') from exc
@@ -289,6 +291,11 @@ def build(output: Path = DEFAULT_OUTPUT) -> dict:
         'split': Value('string'),
         'source_license': Value('string'),
         'source_license_url': Value('string'),
+        'rights_status': Value('string'),
+        'reuse_scope': Value('string'),
+        'license_labels': Sequence(Value('string')),
+        'quality_status': Value('string'),
+        'record_quality_flags': Sequence(Value('string')),
         'duplicate_audio_count': Value('int32'),
         'duplicate_text_count': Value('int32'),
         'cross_split_audio_overlap': Value('bool'),
@@ -435,6 +442,12 @@ def _update_release_files(output: Path, meta: dict) -> None:
 
     card_path = output / 'README.md'
     card = card_path.read_text(encoding='utf-8')
+    # Rebuild the chronological step on repeated runs instead of accumulating it.
+    card = re.sub(
+        r'(?ms)^4\. \*\*Add Meta Omnilingual.*?## Contents',
+        '<!-- META_OMNILINGUAL_CHRONOLOGY -->\n\n## Contents',
+        card,
+    )
     card = re.sub(
         r'(?s)\n- config_name: meta_omnilingual\n.*?(?=\n- config_name:|\n---\n)',
         '',
@@ -468,6 +481,22 @@ def _update_release_files(output: Path, meta: dict) -> None:
     )
     if 'config_name: meta_omnilingual' not in card:
         raise ValueError('speech card does not have the expected dataset config block')
+    if '## Project history' in card:
+        chronology = (
+            f"4. **Add Meta Omnilingual as a second speech source.** The `meta_omnilingual` config contributes "
+            f"{meta['source_rows']:,} Garhwali recordings ({meta['duration_hours']:.2f} hours) from the pinned "
+            f"`gbm_Deva` source revision. Its original splits and transcript fields remain separate from VAANI; "
+            f"the overlap audit found {meta['duplicate_audio_rows']} duplicate audio rows, "
+            f"{meta['cross_split_transcript_groups']} cross-split transcript groups, and no exact audio or text "
+            f"overlap with VAANI. Split-safety flags make the affected rows explicit."
+        )
+        marker = '<!-- META_OMNILINGUAL_CHRONOLOGY -->'
+        if marker in card:
+            card = card.replace(marker, chronology, 1)
+        else:
+            card = card.replace(
+                '\n\n## Contents\n', f'\n{chronology}\n\n## Contents\n', 1
+            )
     card = card.replace(
         '## Contents\n',
         '## Contents\n\n'

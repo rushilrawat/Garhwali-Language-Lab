@@ -194,6 +194,86 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertTrue(m.is_publishable_provenance({'license_id': 'MIT'}))
         self.assertFalse(m.is_publishable_provenance({'license': 'limited permission'}))
 
+    def test_territorial_public_domain_requires_exact_status_and_complete_evidence(self):
+        cases = (
+            {
+                'license_id': 'Public-Domain-US-UK-India',
+                'license_url': 'https://copyright.gov.in/documents/international%20copyright%20order.htm',
+                'rights_status': 'public_domain_us_uk_india_term_expired',
+                'rights_evidence': ' '.join(
+                    'https://' + url for url in
+                    m.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
+                        'public_domain_us_uk_india_term_expired'
+                    ]['required_evidence']
+                ),
+                'source_url': 'https://www.gutenberg.org/ebooks/43681',
+                'attribution': 'William Crooke, 1896',
+            },
+            {
+                'license_id': 'Public-Domain-India',
+                'license_url': 'https://copyright.gov.in/Copyright_Act_1957/chapter_v.html',
+                'rights_status': 'public_domain_india_government_work_term_expired',
+                'rights_evidence': ' '.join(
+                    'https://' + url for url in
+                    m.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
+                        'public_domain_india_government_work_term_expired'
+                    ]['required_evidence']
+                ),
+                'source_url': 'https://archive.org/details/in.ernet.dli.2015.48008',
+                'attribution': 'H. G. Walton, 1910',
+            },
+            {
+                'license_id': 'Public-Domain-US-UK-India',
+                'license_url': 'https://copyright.gov.in/Copyright_Act_1957/chapter_v.html',
+                'rights_status': 'public_domain_us_uk_india_term_expired_upreti_proverbs',
+                'rights_evidence': ' '.join(
+                    'https://' + url for url in
+                    m.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
+                        'public_domain_us_uk_india_term_expired_upreti_proverbs'
+                    ]['required_evidence']
+                ),
+                'source_url': 'https://archive.org/details/cu31924089930774',
+                'attribution': 'Ganga Datt Upreti, 1894',
+            },
+            {
+                'license_id': 'Public-Domain-US-UK-India',
+                'license_url': 'https://copyright.gov.in/Copyright_Act_1957/chapter_v.html',
+                'rights_status': 'public_domain_us_uk_india_term_expired_upreti_hill_dialects',
+                'rights_evidence': ' '.join(
+                    'https://' + url for url in
+                    m.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
+                        'public_domain_us_uk_india_term_expired_upreti_hill_dialects'
+                    ]['required_evidence']
+                ),
+                'source_url': 'https://books.google.com/books?id=veUTAAAAYAAJ',
+                'attribution': 'Ganga Datt Upreti, 1900',
+            },
+            {
+                'license_id': 'Public-Domain-US-UK-India',
+                'license_url': 'https://copyright.gov.in/Copyright_Act_1957/chapter_v.html',
+                'rights_status': 'public_domain_us_uk_india_term_expired_grierson',
+                'rights_evidence': ' '.join(
+                    'https://' + url for url in
+                    m.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
+                        'public_domain_us_uk_india_term_expired_grierson'
+                    ]['required_evidence']
+                ),
+                'source_url': 'https://commons.wikimedia.org/wiki/File:Linguistic_Survey_of_India_Vol_9_Part_4.djvu',
+                'attribution': 'George Abraham Grierson, 1916',
+            },
+        )
+        for item in cases:
+            with self.subTest(rights_status=item['rights_status']):
+                self.assertTrue(m.is_publishable_provenance(item))
+                incomplete = {**item, 'rights_evidence': 'Archive says public domain'}
+                self.assertFalse(m.is_publishable_provenance(incomplete))
+        self.assertFalse(m.is_publishable_provenance({
+            'license_id': 'Public-Domain',
+            'license_url': 'https://archive.org/details/example',
+            'rights_status': 'public_domain',
+            'rights_evidence': 'Archive says public domain',
+        }))
+
     def test_text_export_derives_script(self):
         base = {'segment_sha256': 'a', 'split': 'train', 'quality_flags': []}
         open_row = {
@@ -295,6 +375,268 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'pending',
         )
         self.assertEqual(exported['text_refinement']['review_priority']['rank'], 2)
+
+    def test_catalog_exposes_explicit_noncommercial_rows_with_restrictions(self):
+        row = {
+            'text_sha256': 'b' * 64,
+            'text': 'गढ़वाली लोकपाठ',
+            'provenance': [{
+                'source_id': 'hindialect_gbm',
+                'record_id': 'hindialect_gbm:train:1',
+                'source_url': 'http://hdl.handle.net/11234/1-4839',
+                'iso_639_3': 'gbm',
+                'license_id': 'CC-BY-NC-SA-4.0',
+                'license_url': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+                'rights_status': 'noncommercial_sharealike; upstream component review required',
+                'attribution': 'HinDialect contributors',
+            }],
+        }
+        exported = m.catalog_row(row)
+        self.assertEqual(exported['text'], 'गढ़वाली लोकपाठ')
+        self.assertTrue(exported['text_publicly_available'])
+        self.assertEqual(
+            exported['redistribution_status'],
+            'rights_cleared_noncommercial_sharealike',
+        )
+        self.assertEqual(exported['commercial_use_status'], 'noncommercial_only')
+        self.assertEqual(
+            exported['noncommercial_rights_basis'][0]['license_id'],
+            'CC-BY-NC-SA-4.0',
+        )
+        self.assertFalse(m.is_public_garhwali_text_row(row))
+
+    def test_uou_sitewide_nc_sa_does_not_clear_conflicting_pdf_excerpt(self):
+        row = {
+            'text_sha256': 'c' * 64,
+            'text': 'OCR excerpt from a UOU course PDF',
+            'provenance': [{
+                'source_id': 'uou_cgl',
+                'source_url': 'https://uou.ac.in/sites/default/files/slm/CGL-101.pdf',
+                'iso_639_3': 'gbm',
+                'license_id': 'CC-BY-NC-SA-4.0',
+                'license_url': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+                'rights_status': 'site_declares_CC_BY_NC_SA_4; quoted_works_require_component_review',
+                'attribution': 'Uttarakhand Open University',
+                'quality_flags': ['component_rights_review_required'],
+            }],
+        }
+        source = row['provenance'][0]
+        self.assertIsNone(m.noncommercial_catalog_provenance(source))
+        self.assertFalse(m.is_publishable_provenance(source))
+        exported = m.catalog_row(row)
+        self.assertIsNone(exported['text'])
+        self.assertEqual(exported['redistribution_status'], 'rights_pending')
+
+        # Even without the component-review flag, the exact conflicted UOU
+        # status is not one of the specifically reviewed NC-SA sources.
+        source_without_flag = {**source, 'quality_flags': []}
+        self.assertIsNone(m.noncommercial_catalog_provenance(source_without_flag))
+
+    def test_obs_project_release_overrides_the_weaker_host_site_footer(self):
+        item = {
+            'source_id': 'obs_garhwali',
+            'record_id': 'obs_garhwali:007',
+            'source_url': 'https://media.ipsapps.org/in/osa/stories/36-Garhwali-007.html',
+            'license_id': 'CC-BY-NC-SA-4.0',
+            'license_url': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+            'rights_status': 'catalog_footer_CC_BY_NC_SA_4; item_page_has_no_license_block',
+            'attribution': 'Free Bibles India / unfoldingWord',
+            'quality_flags': ['item_page_has_no_license_block', 'translation_quality_unreviewed'],
+        }
+        resolved = m.open_bible_stories_provenance(item)
+        self.assertEqual(resolved['license_id'], 'CC-BY-SA-4.0')
+        self.assertEqual(resolved['commercial_use_status'], 'permitted_with_attribution_and_sharealike')
+        self.assertTrue(resolved['sharealike_required'])
+        self.assertTrue(m.is_publishable_provenance(item))
+        self.assertFalse(m.open_bible_stories_provenance({
+            **item, 'record_id': 'obs_garhwali:051',
+        }))
+
+    def test_noncommercial_rights_mapping_does_not_clear_unmatched_or_blocked_rows(self):
+        base = {
+            'source_id': 'panlex_gbm',
+            'source_url': 'https://huggingface.co/datasets/lbourdois/panlex',
+            'license_id': 'CC-BY-NC-SA-4.0',
+            'license_url': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+            'rights_status': 'official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied',
+            'attribution': 'PanLex',
+        }
+        self.assertIsNotNone(m.noncommercial_catalog_provenance(base))
+        self.assertIsNone(m.noncommercial_catalog_provenance({
+            **base, 'source_url': 'https://example.org/other',
+        }))
+        self.assertIsNone(m.noncommercial_catalog_provenance({
+            **base, 'quality_flags': ['component_rights_review_required'],
+        }))
+
+    def test_pib_policy_only_clears_the_five_instrument_records(self):
+        provenance = {
+            'source_id': 'pib_ramman_instruments',
+            'record_id': 'pib_ramman_instruments:4',
+            'license_id': 'LicenseRef-Government-Publication',
+            'license_url': 'https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/sep/doc2025929651301.pdf',
+            'rights_status': 'not_recorded',
+            'attribution': 'Press Information Bureau, Government of India',
+        }
+        cleared = m.pib_policy_catalog_provenance(provenance)
+        self.assertEqual(cleared['license_id'], 'LicenseRef-PIB-Copyright-Policy')
+        self.assertEqual(
+            cleared['commercial_use_status'],
+            'not_explicitly_addressed_by_source_policy',
+        )
+        self.assertIsNone(m.pib_policy_catalog_provenance({
+            **provenance, 'record_id': 'pib_ramman_instruments:6',
+        }))
+
+    def test_panos_policy_exposes_only_cited_glossary_rows_for_research_use(self):
+        source = {
+            'source_id': 'mountainvoices_local_glossary',
+            'record_id': 'mountainvoices_local_glossary:1',
+            'license_id': 'LicenseRef-Panos-Website-Terms-Unverified',
+            'license_url': 'https://mountainvoices.org/i_glossary.html',
+            'attribution': 'Panos London, Mountain Voices oral testimony project',
+            'quality_flags': [
+                'regional_glossary', 'language_identity_requires_native_review',
+                'publisher_license_not_stated',
+            ],
+        }
+        row = {
+            'text_sha256': 'd' * 64,
+            'text': 'Andolan',
+            'provenance': [source],
+        }
+
+        exported = m.catalog_row(row)
+
+        self.assertEqual(exported['text'], 'Andolan')
+        self.assertTrue(exported['text_publicly_available'])
+        self.assertEqual(exported['redistribution_status'], 'reproduced_under_source_policy')
+        self.assertEqual(
+            exported['commercial_use_status'],
+            'not_explicitly_addressed_by_source_policy',
+        )
+        self.assertEqual(
+            exported['public_rights_basis'][0]['model_training_status'],
+            'separate_model_training_permission_not_established',
+        )
+        self.assertEqual(
+            exported['public_rights_basis'][0]['license_id'],
+            'LicenseRef-Panos-Source-Policy-Restricted',
+        )
+        self.assertEqual(
+            exported['public_rights_basis'][0]['permitted_audiences'],
+            ['press', 'educational institutions', 'research institutions', 'nonprofit organisations'],
+        )
+        self.assertIsNone(m.panos_reproduction_policy_provenance({
+            **source, 'record_id': 'mountainvoices_local_glossary:194',
+        }))
+        self.assertIsNone(m.panos_reproduction_policy_provenance({
+            **source, 'source_id': 'other_glossary',
+        }))
+
+    def test_individual_word_fact_projection_does_not_clear_dictionary_expression(self):
+        source = {
+            'source_id': 'languageshome',
+            'record_id': 'languageshome:18',
+            'source_url': 'https://www.languageshome.com/English-Garhwali.htm',
+            'license_id': 'not_stated',
+            'rights_status': 'not_recorded',
+        }
+        word = {
+            'text_sha256': 'e' * 64,
+            'text': 'Jitun',
+            'provenance': [source],
+        }
+
+        exported = m.catalog_row(word)
+
+        self.assertEqual(exported['text'], 'Jitun')
+        self.assertEqual(exported['redistribution_status'], 'individual_word_fact')
+        self.assertFalse(m.is_public_garhwali_text_row(word))
+        self.assertEqual(
+            exported['factual_publication_basis'][0]['basis_type'],
+            'individual_lexical_token_only',
+        )
+        self.assertNotIn('record_id', exported['factual_publication_basis'][0])
+        self.assertTrue(all('record_id' not in item for item in exported['sources']))
+        self.assertIsNone(m.catalog_row({
+            **word, 'text': 'Jitun aa',
+        })['text'])
+        self.assertIsNone(m.catalog_row({
+            **word, 'provenance': [{**source, 'record_id': 'languageshome:19'}],
+        })['text'])
+
+    def test_thematic_lexicon_token_is_fact_only_and_ocr_is_not(self):
+        source = {
+            'source_id': 'emagazine_animals',
+            'record_id': 'emagazine_animals:28:1',
+            'source_url': 'https://e-magazineofuttarakhand.blogspot.com/2012/02/names-of-animals-birds-etc-in-garhwali.html',
+            'license_id': 'LicenseRef-All-Rights-Reserved',
+            'rights_status': 'not_recorded',
+            'genre': 'thematic_lexicon',
+            'quality_flags': ['community_compilation', 'needs_native_review'],
+        }
+        corroborating_source = {
+            **source,
+            'source_id': 'uttarakhandiwords_animals',
+            'record_id': 'uttarakhandiwords_animals:45:1',
+            'source_url': 'https://uttarakhandiwords.blogspot.com/2011/09/blog-post.html',
+        }
+        word = {
+            'text_sha256': 'f' * 64,
+            'text': 'काखड़',
+            'provenance': [source, corroborating_source],
+        }
+
+        exported = m.catalog_row(word)
+
+        self.assertEqual(exported['text'], 'काखड़')
+        self.assertEqual(exported['redistribution_status'], 'individual_word_fact')
+        self.assertFalse(m.is_public_garhwali_text_row(word))
+        self.assertNotIn('record_id', exported['sources'][0])
+        self.assertIsNone(m.catalog_row({
+            **word, 'provenance': [source],
+        })['text'])
+        self.assertIsNone(m.catalog_row({
+            **word, 'text': 'काखड़ पशु',
+        })['text'])
+        self.assertIsNone(m.catalog_row({
+            **word, 'provenance': [source, {
+                **corroborating_source, 'quality_flags': ['uncorrected_ocr'],
+            }],
+        })['text'])
+        self.assertIsNone(m.catalog_row({
+            **word, 'provenance': [{**source, 'source_id': 'other_site'}],
+        })['text'])
+
+    def test_public_knowledge_projection_keeps_facts_and_drops_expressive_fields(self):
+        row = m.knowledge_row({
+            'record_id': 'work:example',
+            'title': 'Example Title',
+            'creators': ['A. Author'],
+            'notes': 'Unlicensed descriptive paragraph',
+            'source_ids': ['catalog-source'],
+        }, 'literary_works', source_catalog={
+            'catalog-source': {
+                'title': 'Example source capture',
+                'local_capture': 'sources/manual/example.md',
+            },
+        })
+        exported = m.public_factual_metadata_row(row, 'literary_works')
+        self.assertEqual(exported['title'], 'Example Title')
+        self.assertEqual(exported['creators'], ['A. Author'])
+        self.assertNotIn('notes', exported)
+        self.assertFalse(exported['expressive_source_content_included'])
+        self.assertEqual(exported['record_scope'], 'factual_bibliographic_metadata_only')
+        self.assertTrue(m.is_public_factual_metadata_row(exported, 'literary_works'))
+        self.assertEqual(
+            exported['provenance'][0]['source_capture_path'],
+            'sources/manual/example.md',
+        )
+        self.assertEqual(exported['quality_metadata']['review_status'], 'not_reviewed')
+        self.assertFalse(m.is_public_factual_metadata_row(
+            {**exported, 'notes': 'expressive text'}, 'literary_works'
+        ))
 
     def test_all_data_catalog_keeps_full_text_and_rights_metadata(self):
         row = {
@@ -409,7 +751,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'draft_unique_audio': 1,
             'catalog_records': 2,
             'catalog_redacted_text_records': 1,
-            'structured_knowledge_excluded_for_rights': {'geography': 50},
+            'structured_knowledge_excluded_for_rights': {'geography': 0},
+            'structured_knowledge_metadata_only': {'geography': 50},
             'drafts_complete': True,
             'draft_third_checkpoint_records': 0,
             'draft_three_checkpoint_review_records': 0,
@@ -418,12 +761,15 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         }
         card = m.dataset_card(report)
         self.assertIn('public-profile package', card)
+        self.assertIn('## Project history', card)
+        self.assertIn('## Developer quick start', card)
+        self.assertIn('## Configurations and current row counts', card)
         self.assertIn('across 1 named configuration (1 config/split entries)', card)
-        self.assertIn('withhold full content from **50 structured-knowledge records**', card)
-        self.assertIn('Geography, historical terms, literary people and works', card)
+        self.assertIn('All **50 structured geography, history, literature, song, and research records**', card)
+        self.assertIn('factual/bibliographic form', card)
         self.assertNotIn('university-research resources built by the Garhwali Language Lab', card)
         self.assertNotIn('config_name: geography', card)
-        self.assertIn('Their full records remain in the access-controlled all-data package', card)
+        self.assertIn('The full source texts remain in the access-controlled all-data package', card)
         self.assertIn('Garhwali Speech', card)
         self.assertIn('rushilrawat/garhwali-speech', card)
 
@@ -464,6 +810,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         card = m.dataset_card(report)
 
         self.assertIn('164 exact-new', card)
+        self.assertLess(card.index('v0.1.x — establish the corpus workflow'),
+                        card.index('v2.2.0 — make the package easier to use'))
         self.assertIn('strings. Types: lexicon 131', card)
         self.assertRegex(card, r'adds \*\*0\*\*\s+new forms')
         self.assertIn('generated inflection forms are excluded', card)
@@ -643,6 +991,12 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'train-00000.jsonl', 'train-00001.jsonl', 'train-00002.jsonl'
             ])
             self.assertEqual(json.loads(paths[-1].read_text())['id'], '4')
+            final_row = json.loads(paths[-1].read_text())
+            for field in (
+                'rights_status', 'reuse_scope', 'license_labels',
+                'quality_status', 'record_quality_flags',
+            ):
+                self.assertIn(field, final_row)
             self.assertEqual(
                 report['file_sha256'],
                 {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in paths},

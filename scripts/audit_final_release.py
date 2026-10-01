@@ -13,6 +13,7 @@ from datetime import date
 from pathlib import Path
 
 from build_huggingface_dataset import (
+    is_public_factual_metadata_row,
     is_publishable_provenance,
     recommended_text_training_row,
 )
@@ -801,12 +802,15 @@ def audit(index, dataset_root, benchmark_root=None):
                 for row in rows
             )
             knowledge_rights_missing = sum(
-                not row.get('public_rights_basis')
-                or not all(
-                    is_publishable_provenance(item)
-                    and item.get('attribution')
-                    and (item.get('source_url') or item.get('source_snapshot_sha256'))
-                    for item in row.get('public_rights_basis') or []
+                not is_public_factual_metadata_row(row, group)
+                and (
+                    not row.get('public_rights_basis')
+                    or not all(
+                        is_publishable_provenance(item)
+                        and item.get('attribution')
+                        and (item.get('source_url') or item.get('source_snapshot_sha256'))
+                        for item in row.get('public_rights_basis') or []
+                    )
                 )
                 for row in rows
             )

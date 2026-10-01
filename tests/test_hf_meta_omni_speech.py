@@ -33,7 +33,9 @@ class MetaOmnilingualSpeechReleaseTests(unittest.TestCase):
                 '  data_files:\n  - split: train\n    path: data/train-*.parquet\n'
                 '  - split: validation\n    path: data/validation-*.parquet\n'
                 '  - split: test\n    path: data/test-*.parquet\n---\n\n'
-                '# Garhwali Speech\n\n## Contents\n\n- VAANI rows.\n\n'
+                '# Garhwali Speech\n\n## Project history\n\n'
+                '1. VAANI intake.\n2. Transcript audit.\n3. Draft separation.\n\n'
+                '## Contents\n\n- VAANI rows.\n\n'
                 'Load with `datasets.load_dataset("rushilrawat/garhwali-speech", "garhwali_speech")`.\n',
                 encoding='utf-8',
             )
@@ -66,6 +68,7 @@ class MetaOmnilingualSpeechReleaseTests(unittest.TestCase):
             self.assertEqual(first, second)
             self.assertEqual(first[0].count('- config_name: meta_omnilingual'), 1)
             self.assertEqual(first[0].count('- Overlap audit:'), 1)
+            self.assertEqual(first[0].count('4. **Add Meta Omnilingual as a second speech source.**'), 1)
             self.assertEqual(first[0].count('## Additional source: Meta Omnilingual ASR Corpus'), 1)
             self.assertEqual(first[1].count('Meta Omnilingual Garhwali audio and transcripts'), 1)
 

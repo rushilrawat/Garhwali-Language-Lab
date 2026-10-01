@@ -11,8 +11,11 @@ import os
 import re
 import shutil
 import tempfile
+import unicodedata
 from collections import Counter
 from pathlib import Path
+
+from record_schema import normalize_record
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,11 +23,15 @@ DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab'
 ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
 V2_PUBLIC_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-v2.0.0-staging'
 V2_ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data-v2.0.0-local'
+RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '2.2.0').removeprefix('v')
+RELEASE_PUBLIC_OUTPUT = ROOT / f'data/huggingface/garhwali-language-lab-v{RELEASE_VERSION}-staging'
+RELEASE_ALL_DATA_OUTPUT = ROOT / f'data/huggingface/garhwali-language-lab-all-data-v{RELEASE_VERSION}-local'
 MANAGED_OUTPUTS = {
     DEFAULT_OUTPUT.resolve(), ALL_DATA_OUTPUT.resolve(),
     V2_PUBLIC_OUTPUT.resolve(), V2_ALL_DATA_OUTPUT.resolve(),
+    RELEASE_PUBLIC_OUTPUT.resolve(), RELEASE_ALL_DATA_OUTPUT.resolve(),
 }
-RELEASE_ID = f"garhwali-language-lab-v{os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')}"
+RELEASE_ID = f"garhwali-language-lab-v{RELEASE_VERSION}"
 KNOWLEDGE_CONFIGS = {
     'geography': ROOT / 'data/extracted/geography/records.jsonl',
     'historical_terms': ROOT / 'data/extracted/historical_terms/records.jsonl',
@@ -53,6 +60,187 @@ BLOCKING_RIGHTS_MARKERS = (
     'license_not_stated', 'author_death_evidence_pending',
     'component_review', 'no_license',
 )
+TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE = {
+    'public_domain_us_uk_india_term_expired': {
+        'license_id': 'Public-Domain-US-UK-India',
+        'required_evidence': (
+            'copyright.gov.in/documents/international%20copyright%20order.htm',
+            'legislation.gov.uk/ukpga/1988/48/section/12',
+            'nature.com/articles/112663b0',
+            'nature.com/articles/055577a0',
+            'gutenberg.org/ebooks/43681',
+            'gutenberg.org/ebooks/43682',
+        ),
+    },
+    'public_domain_india_government_work_term_expired': {
+        'license_id': 'Public-Domain-India',
+        'required_evidence': (
+            'copyright.gov.in/copyright_act_1957/chapter_i.html',
+            'copyright.gov.in/copyright_act_1957/chapter_iv.html',
+            'copyright.gov.in/copyright_act_1957/chapter_v.html',
+            'books.google.com/books/about/british_garhwal.html',
+        ),
+    },
+    'public_domain_us_uk_india_term_expired_upreti_proverbs': {
+        'license_id': 'Public-Domain-US-UK-India',
+        'required_evidence': (
+            'copyright.gov/what-is-copyright',
+            'copyright.gov.in/copyright_act_1957/chapter_v.html',
+            'legislation.gov.uk/ukpga/1988/48/section/12',
+            'garudalife.in/proverbs-and-folklore-of-kumaun-and-garhwal',
+            'ignca.gov.in/proverbs-and-folklore-of-kumaun-and-garhwal',
+            'archive.org/details/cu31924089930774',
+        ),
+    },
+    'public_domain_us_uk_india_term_expired_upreti_hill_dialects': {
+        'license_id': 'Public-Domain-US-UK-India',
+        'required_evidence': (
+            'copyright.gov/what-is-copyright',
+            'copyright.gov.in/copyright_act_1957/chapter_v.html',
+            'legislation.gov.uk/ukpga/1988/48/section/12',
+            'garudalife.in/proverbs-and-folklore-of-kumaun-and-garhwal',
+            'ignca.gov.in/proverbs-and-folklore-of-kumaun-and-garhwal',
+            'books.google.com/books?id=veutaaaayaaj',
+        ),
+    },
+    'public_domain_us_uk_india_term_expired_grierson': {
+        'license_id': 'Public-Domain-US-UK-India',
+        'required_evidence': (
+            'copyright.gov/what-is-copyright',
+            'commons.wikimedia.org/wiki/file:linguistic_survey_of_india_vol_9_part_4.djvu',
+            'nature.com/articles/147408a0',
+            'legislation.gov.uk/ukpga/1988/48/section/12',
+            'copyright.gov.in/copyright_act_1957/chapter_v.html',
+            'glottolog.org/resource/reference/id/50321',
+        ),
+    },
+}
+
+# These records have source-specific terms that are compatible with a public
+# catalog, but not with the package's unrestricted model-training views.
+# Keeping the mappings exact prevents a site-level license from clearing an
+# unrelated source or a different version of the content.
+NONCOMMERCIAL_CATALOG_SOURCES = {
+    'hindialect_gbm': {
+        'license_id': 'CC-BY-NC-SA-4.0',
+        'license_url': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+        'source_url_contains': '11234/1-4839',
+        'accepted_statuses': {
+            'noncommercial_sharealike; upstream component review required',
+            'dataset_deposit_declares_CC_BY_NC_SA_4',
+        },
+        'rights_status': 'upstream_dataset_declares_CC_BY_NC_SA_4',
+        'rights_evidence': 'https://b2find.eudat.eu/dataset/bd804d5e-e53c-5ee3-b48c-cd2ecbad34de; https://huggingface.co/datasets/mteb/HinDialectClassification/blob/main/README.md',
+        'attribution': 'Bafna, Niyati; Žabokrtský, Zdeněk; España-Bonet, Cristina; van Genabith, Josef; Kumar, Lalit Samyak Lalit; Suman, Sharda; Shivay, Rahul. HinDialect 1.1 (2022), LINDAT/CLARIAH-CZ and Kavita Kosh Project. CC BY-NC-SA 4.0.',
+    },
+    'panlex_gbm': {
+        'license_id': 'CC-BY-NC-SA-4.0',
+        'license_url': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+        'source_url_contains': 'huggingface.co/datasets/lbourdois/panlex',
+        'accepted_statuses': {
+            'official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied',
+            'panlex_database_explicitly_CC_BY_NC_SA_4',
+        },
+        'rights_status': 'PanLex_database_declares_CC_BY_NC_SA_4; commercial_use_requires_written_permission',
+        'rights_evidence': 'https://panlex.org/license/; https://dev.panlex.org/source-registration/',
+        'attribution': 'PanLex materials are part of the PanLex project of The Long Now Foundation, and are shared under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. PanLex and The Long Now Foundation disclaim any warranties associated with the provision of these materials. For more information about PanLex, please visit panlex.org. Hugging Face mirror: lbourdois/panlex.',
+    },
+}
+
+OPEN_BIBLE_STORIES_SOURCE = {
+    'license_id': 'CC-BY-SA-4.0',
+    'license_url': 'https://creativecommons.org/licenses/by-sa/4.0/',
+    'source_url_contains': 'media.ipsapps.org/in/osa/stories/36-Garhwali-',
+    'accepted_statuses': {
+        'catalog_footer_CC_BY_NC_SA_4; item_page_has_no_license_block',
+        'upstream_openbiblestories_declares_CC_BY_SA_4; v1_2026_06_26; text_only',
+    },
+    'rights_status': 'upstream_openbiblestories_declares_CC_BY_SA_4; v1_2026_06_26; text_only',
+    'rights_evidence': 'https://openbiblestories.org/l/gbm/; https://git.door43.org/OBS-TLF/gbm_obs/releases/tag/v1',
+    'attribution': 'Open Bible Stories — Garhwali (gbm), OBS-TLF v1 (2026-06-26), aggregated by the unfoldingWord OBS Library project; text-only extraction from the TLF umbrella OBS Android app. CC BY-SA 4.0. Audio and Sweet Publishing illustrations are excluded.',
+}
+
+PIB_INSTRUMENT_POLICY = {
+    'source_url': 'https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/sep/doc2025929651301.pdf',
+    'license_url': 'https://www.pib.gov.in/ContentPage.aspx?lang=2&menuid=3604&reg=48',
+    'rights_status': 'PIB_policy_permits_reproduction_of_PIB_material_with_attribution; third_party_material_excluded',
+    'rights_evidence': 'https://www.pib.gov.in/ContentPage.aspx?lang=2&menuid=3604&reg=48',
+    'attribution': 'Press Information Bureau, Government of India, “Sacred Stages”; reproduced under the PIB Copyright Policy with prominent source acknowledgement.',
+    'record_ids': {f'pib_ramman_instruments:{index}' for index in range(1, 6)},
+}
+
+PANOS_REPRODUCTION_POLICY = {
+    'source_url': 'https://mountainvoices.org/i_glossary.html',
+    'license_url': 'https://mountainvoices.org/transcripts.html',
+    'rights_status': (
+        'Panos_archive_guidelines_permit_reproduction_by_press_education_research_'
+        'institutions_and_nonprofits_with_attribution; model_training_scope_unspecified'
+    ),
+    'rights_evidence': (
+        'https://mountainvoices.org/transcripts.html; '
+        'https://mountainvoices.org/i_glossary.html'
+    ),
+    'license_id': 'LicenseRef-Panos-Source-Policy-Restricted',
+    'license': (
+        'Panos source-specific reproduction guideline; press, educational and '
+        'research institutions, and nonprofit organisations; attribution required'
+    ),
+    'attribution': (
+        'Mountain Voices glossary, Panos Oral Testimony Programme; cite the '
+        'glossary source and acknowledge Panos.'
+    ),
+    'permitted_audiences': [
+        'press', 'educational institutions', 'research institutions',
+        'nonprofit organisations',
+    ],
+    'record_prefix': 'mountainvoices_local_glossary:',
+    'record_count': 193,
+}
+
+# These isolated tokens are factual catalog entries, not definitions or copied
+# prose. The thematic sources are narrowly allowlisted; the builder omits their
+# record positions and list ordering. This basis never clears training views.
+INDIVIDUAL_WORD_FACTS = {
+    ('languageshome', 'languageshome:2'): 'Wu',
+    ('languageshome', 'languageshome:4'): 'Yu',
+    ('languageshome', 'languageshome:5'): 'Yu',
+    ('languageshome', 'languageshome:7'): 'A',
+    ('languageshome', 'languageshome:16'): 'Khanu',
+    ('languageshome', 'languageshome:17'): 'Pinu',
+    ('languageshome', 'languageshome:18'): 'Jitun',
+    ('languageshome', 'languageshome:36'): 'Kya',
+    ('languageshome', 'languageshome:38'): 'Nam',
+    ('uttarakhandiwords_animals', 'uttarakhandiwords_animals:64:1'): 'उपण',
+    ('emagazine_animals', 'emagazine_animals:81:1'): 'उपन',
+    ('garhwalilanguage_dictionary', 'garhwalilanguage_dictionary:10:2'): 'बरफ',
+}
+INDIVIDUAL_WORD_FACT_SOURCE_IDS = {
+    'emagazine_animals',
+    'dhyani_occupations',
+    'uttarakhandiwords_animals',
+    'garhwalilanguage_dictionary',
+}
+INDIVIDUAL_WORD_FACT_EXCLUDED_FLAGS = {
+    'uncorrected_ocr', 'language_mixed',
+    'garhwali_language_candidate_not_confirmed',
+}
+INDIVIDUAL_WORD_FACT_EVIDENCE = {
+    'basis_type': 'individual_lexical_token_only',
+    'authority': (
+        'Indian Copyright Office, Practice and Procedure Manual: Literary '
+        'Works (draft), section 10: a single word cannot be protected as a '
+        'literary work; Indian Copyright Office Handbook: factual information '
+        'and short word combinations are not ordinarily protected'
+    ),
+    'evidence_url': 'https://copyright.gov.in/Documents/Manuals/LITERARY_MANUAL.pdf',
+    'additional_evidence_url': 'https://copyright.gov.in/documents/handbook.html',
+    'scope': (
+        'Only this exact one-token value is exposed; no source definition, '
+        'sentence, source record position, list ordering, or surrounding '
+        'expression is included. This is not a source license and does not '
+        'clear model training.'
+    ),
+}
 
 
 def profile_includes_all_data(profile):
@@ -86,7 +274,40 @@ def read_jsonl(path):
                 yield json.loads(line)
 
 
+def open_bible_stories_provenance(item):
+    """Use the exact Garhwali OBS v1 license rather than its host-site footer."""
+    record_id = str(item.get('record_id') or '')
+    story_match = re.fullmatch(r'obs_garhwali:(\d{3})', record_id)
+    status = str(item.get('rights_status') or '')
+    if (
+        item.get('source_id') != 'obs_garhwali'
+        or not story_match
+        or not 1 <= int(story_match.group(1)) <= 50
+        or OPEN_BIBLE_STORIES_SOURCE['source_url_contains'] not in str(item.get('source_url') or '')
+        or status not in OPEN_BIBLE_STORIES_SOURCE['accepted_statuses']
+        or item.get('license_id') not in {'CC-BY-NC-SA-4.0', 'CC-BY-SA-4.0'}
+        or not item.get('attribution')
+        or set(item.get('quality_flags') or []) & BLOCKING_FLAGS
+    ):
+        return None
+    enriched = dict(item)
+    enriched.update({
+        'license': 'CC BY-SA 4.0',
+        'license_id': OPEN_BIBLE_STORIES_SOURCE['license_id'],
+        'license_url': OPEN_BIBLE_STORIES_SOURCE['license_url'],
+        'rights_status': OPEN_BIBLE_STORIES_SOURCE['rights_status'],
+        'rights_evidence': OPEN_BIBLE_STORIES_SOURCE['rights_evidence'],
+        'source_title': 'Open Bible Stories — Garhwali (gbm), OBS-TLF v1',
+        'attribution': OPEN_BIBLE_STORIES_SOURCE['attribution'],
+        'commercial_use_status': 'permitted_with_attribution_and_sharealike',
+        'sharealike_required': True,
+        'third_party_material_included': False,
+    })
+    return enriched
+
+
 def is_publishable_provenance(item):
+    item = open_bible_stories_provenance(item) or item
     flags = set(item.get('quality_flags') or [])
     if flags & BLOCKING_FLAGS:
         return False
@@ -95,6 +316,16 @@ def is_publishable_provenance(item):
     ).strip('_')
     if any(marker in rights for marker in BLOCKING_RIGHTS_MARKERS):
         return False
+    public_domain = TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE.get(rights)
+    if public_domain:
+        evidence = str(item.get('rights_evidence') or '').casefold()
+        return (
+            item.get('license_id') == public_domain['license_id']
+            and bool(item.get('license_url'))
+            and bool(item.get('source_url'))
+            and bool(item.get('attribution'))
+            and all(url in evidence for url in public_domain['required_evidence'])
+        )
     license_text = ' '.join(str(item.get(key) or '') for key in (
         'license', 'license_id', 'license_url',
     )).casefold()
@@ -120,6 +351,172 @@ def provenance_items(row):
 
 def publishable_provenance_items(row):
     return [item for item in provenance_items(row) if is_publishable_provenance(item)]
+
+
+def noncommercial_catalog_provenance(item):
+    """Return an explicitly licensed NC-SA basis only for known source rows."""
+    source_id = item.get('source_id')
+    spec = NONCOMMERCIAL_CATALOG_SOURCES.get(source_id)
+    if not spec:
+        return None
+    status = str(item.get('rights_status') or '')
+    flags = set(item.get('quality_flags') or [])
+    source_url = str(item.get('source_url') or '')
+    if (
+        item.get('license_id') != spec['license_id']
+        or item.get('license_url') != spec['license_url']
+        or status not in spec['accepted_statuses']
+        or spec['source_url_contains'] not in source_url
+        or not item.get('attribution')
+        or flags & BLOCKING_FLAGS
+    ):
+        return None
+    enriched = dict(item)
+    enriched.update({
+        'rights_status': spec['rights_status'],
+        'rights_evidence': spec['rights_evidence'],
+        'attribution': spec['attribution'],
+        'commercial_use_status': 'noncommercial_only',
+        'model_training_status': 'not_cleared_for_commercial_training',
+    })
+    return enriched
+
+
+def pib_policy_catalog_provenance(item):
+    """Permit the five cited PIB instrument terms under PIB's reproduction policy."""
+    old_record = (
+        item.get('license_id') == 'LicenseRef-Government-Publication'
+        and 'doc2025929651301.pdf' in str(item.get('license_url') or '')
+        and item.get('rights_status') == 'not_recorded'
+    )
+    updated_record = (
+        item.get('license_id') == 'LicenseRef-PIB-Copyright-Policy'
+        and item.get('license_url') == PIB_INSTRUMENT_POLICY['license_url']
+        and item.get('rights_status') == PIB_INSTRUMENT_POLICY['rights_status']
+    )
+    if (
+        item.get('source_id') != 'pib_ramman_instruments'
+        or item.get('record_id') not in PIB_INSTRUMENT_POLICY['record_ids']
+        or not (old_record or updated_record)
+        or 'Press Information Bureau' not in str(item.get('attribution') or '')
+        or set(item.get('quality_flags') or []) & BLOCKING_FLAGS
+    ):
+        return None
+    enriched = dict(item)
+    enriched.update({
+        'license_id': 'LicenseRef-PIB-Copyright-Policy',
+        'license': 'PIB reproduction policy (source-specific permission; not a standard open license)',
+        'license_url': PIB_INSTRUMENT_POLICY['license_url'],
+        'source_url': PIB_INSTRUMENT_POLICY['source_url'],
+        'rights_status': PIB_INSTRUMENT_POLICY['rights_status'],
+        'rights_evidence': PIB_INSTRUMENT_POLICY['rights_evidence'],
+        'attribution': PIB_INSTRUMENT_POLICY['attribution'],
+        'commercial_use_status': 'not_explicitly_addressed_by_source_policy',
+        'third_party_material_included': False,
+    })
+    return enriched
+
+
+def panos_reproduction_policy_provenance(item):
+    """Apply Panos's explicit reproduction guideline to its 193 glossary rows."""
+    record_id = str(item.get('record_id') or '')
+    match = re.fullmatch(r'mountainvoices_local_glossary:(\d+)', record_id)
+    source_url = str(item.get('source_url') or '')
+    license_url = str(item.get('license_url') or '')
+    rights_status = item.get('rights_status')
+    flags = set(item.get('quality_flags') or [])
+    allowed_flags = {
+        'regional_glossary', 'language_identity_requires_native_review',
+        'publisher_license_not_stated',
+    }
+    if (
+        item.get('source_id') != 'mountainvoices_local_glossary'
+        or not match
+        or not 1 <= int(match.group(1)) <= PANOS_REPRODUCTION_POLICY['record_count']
+        or item.get('license_id') not in {
+            'LicenseRef-Panos-Website-Terms-Unverified',
+            PANOS_REPRODUCTION_POLICY['license_id'],
+        }
+        or license_url not in {
+            PANOS_REPRODUCTION_POLICY['source_url'],
+            PANOS_REPRODUCTION_POLICY['license_url'],
+        }
+        or rights_status not in {
+            None, '', 'not_recorded',
+            PANOS_REPRODUCTION_POLICY['rights_status'],
+        }
+        or source_url not in {'', PANOS_REPRODUCTION_POLICY['source_url']}
+        or not str(item.get('attribution') or '').startswith('Panos')
+        or not flags.issubset(allowed_flags)
+    ):
+        return None
+    enriched = dict(item)
+    enriched.update({
+        'source_url': PANOS_REPRODUCTION_POLICY['source_url'],
+        'license_id': PANOS_REPRODUCTION_POLICY['license_id'],
+        'license': PANOS_REPRODUCTION_POLICY['license'],
+        'license_url': PANOS_REPRODUCTION_POLICY['license_url'],
+        'rights_status': PANOS_REPRODUCTION_POLICY['rights_status'],
+        'rights_evidence': PANOS_REPRODUCTION_POLICY['rights_evidence'],
+        'attribution': PANOS_REPRODUCTION_POLICY['attribution'],
+        'permitted_audiences': PANOS_REPRODUCTION_POLICY['permitted_audiences'],
+        'commercial_use_status': 'not_explicitly_addressed_by_source_policy',
+        'model_training_status': 'separate_model_training_permission_not_established',
+    })
+    return enriched
+
+
+def catalog_noncommercial_basis(row):
+    return [
+        item for item in (noncommercial_catalog_provenance(source)
+                          for source in provenance_items(row))
+        if item
+    ]
+
+
+def catalog_policy_basis(row):
+    return [
+        item for item in (
+            pib_policy_catalog_provenance(source)
+            or panos_reproduction_policy_provenance(source)
+            for source in provenance_items(row)
+        )
+        if item
+    ]
+
+
+def individual_word_fact_basis(row, text):
+    if not text or any(unicodedata.category(char)[0] not in {'L', 'M'} for char in text):
+        return []
+    explicit_matches = []
+    thematic_matches = []
+    for item in provenance_items(row):
+        key = (str(item.get('source_id') or ''), str(item.get('record_id') or ''))
+        flags = set(item.get('quality_flags') or [])
+        if INDIVIDUAL_WORD_FACTS.get(key) == text:
+            explicit_matches.append((item, key))
+        source_word_match = (
+            key[0] in INDIVIDUAL_WORD_FACT_SOURCE_IDS
+            and item.get('genre') == 'thematic_lexicon'
+            and bool(key[1])
+            and not flags.intersection(INDIVIDUAL_WORD_FACT_EXCLUDED_FLAGS)
+        )
+        if source_word_match:
+            thematic_matches.append((item, key))
+    thematic_source_ids = {key[0] for _, key in thematic_matches}
+    corroborated_matches = thematic_matches if len(thematic_source_ids) >= 2 else []
+    evidence = []
+    for item, key in explicit_matches + corroborated_matches:
+        evidence.append({
+            **INDIVIDUAL_WORD_FACT_EVIDENCE,
+            'source_id': key[0],
+            'source_url': item.get('source_url'),
+            'attribution': item.get('attribution'),
+            'source_license_id': item.get('license_id'),
+            'source_rights_status': item.get('rights_status'),
+            'model_training_status': 'not_cleared_by_source_license',
+        })
+    return evidence
 
 
 def is_public_text_row(row):
@@ -425,12 +822,22 @@ def refresh_acceptable_responses(rows):
 
 
 def catalog_provenance(item):
+    item = (
+        open_bible_stories_provenance(item)
+        or noncommercial_catalog_provenance(item)
+        or pib_policy_catalog_provenance(item)
+        or panos_reproduction_policy_provenance(item)
+        or item
+    )
     keep = (
         'source_id', 'source_url', 'source_title', 'source_kind',
         'source_snapshot_sha256', 'source_capture_id', 'source_capture_path',
         'source_notes', 'source_capture_bytes', 'record_id', 'iso_639_3', 'genre', 'script',
         'license', 'license_id', 'license_url', 'rights_status', 'quality_flags',
         'rights_evidence', 'attribution',
+        'commercial_use_status', 'model_training_status',
+        'third_party_material_included', 'sharealike_required',
+        'permitted_audiences',
         'source_pdf', 'source_pdf_sha256', 'pdf_page', 'title', 'author',
         'publication_year', 'extraction_method', 'modifications',
     )
@@ -440,20 +847,52 @@ def catalog_provenance(item):
 def catalog_row(row, include_all_text=False, refinement=None):
     items = provenance_items(row)
     rights_basis = publishable_provenance_items(row)
-    text_is_public = bool(rights_basis)
+    noncommercial_basis = catalog_noncommercial_basis(row)
+    policy_basis = catalog_policy_basis(row)
     text = row.get('text_model') or row.get('text_clean') or row.get('text') or ''
+    factual_basis = individual_word_fact_basis(row, text)
+    distributable = bool(
+        rights_basis or noncommercial_basis or policy_basis or factual_basis
+    )
+    text_is_public = distributable
+    if rights_basis:
+        redistribution_status = 'rights_cleared'
+        commercial_use_status = 'permitted_under_row_level_license'
+    elif noncommercial_basis:
+        redistribution_status = 'rights_cleared_noncommercial_sharealike'
+        commercial_use_status = 'noncommercial_only'
+    elif policy_basis:
+        redistribution_status = 'reproduced_under_source_policy'
+        commercial_use_status = (
+            'not_authorized_by_source_policy'
+            if any(item.get('commercial_use_status') == 'not_authorized_by_source_policy'
+                   for item in policy_basis)
+            else 'not_explicitly_addressed_by_source_policy'
+        )
+    elif factual_basis:
+        redistribution_status = 'individual_word_fact'
+        commercial_use_status = 'no_source_license_claimed_for_single_word'
+    else:
+        redistribution_status = 'rights_pending'
+        commercial_use_status = 'not_cleared'
+    sharealike_required = any(
+        item.get('license_id') in {'CC-BY-SA-4.0', 'CC-BY-NC-SA-4.0'}
+        for item in rights_basis + noncommercial_basis
+    )
     exported = {
         'id': row['text_sha256'],
         'split': row.get('split'),
-        'text': text if text_is_public or include_all_text else None,
+        'text': text if distributable or include_all_text else None,
         'text_sha256': row['text_sha256'],
         'source_text_sha256': row['text_sha256'],
         'release_text_sha256': hashlib.sha256(text.encode('utf-8')).hexdigest(),
         'text_character_count': len(text),
-        'content_included': text_is_public or include_all_text,
+        'content_included': distributable or include_all_text,
         'active_for_quality_work': True,
         'text_publicly_available': text_is_public,
-        'redistribution_status': 'rights_cleared' if text_is_public else 'rights_pending',
+        'redistribution_status': redistribution_status,
+        'commercial_use_status': commercial_use_status,
+        'sharealike_required': sharealike_required,
         'redaction_reason': None if text_is_public or include_all_text else 'source_rights_do_not_permit_public_text_redistribution',
         'language_bucket': row.get('language_bucket'),
         'language_quality': row.get('language_quality'),
@@ -461,8 +900,16 @@ def catalog_row(row, include_all_text=False, refinement=None):
         'genre_quality': row.get('genre_quality'),
         'surface_quality': row.get('quality'),
         'quality_v2': row.get('quality_v2'),
-        'sources': [catalog_provenance(item) for item in items],
-        'public_rights_basis': [catalog_provenance(item) for item in rights_basis],
+        'sources': [
+            {key: value for key, value in catalog_provenance(item).items()
+             if not factual_basis or key != 'record_id'}
+            for item in items
+        ],
+        'public_rights_basis': [catalog_provenance(item) for item in rights_basis + policy_basis],
+        'noncommercial_rights_basis': [
+            catalog_provenance(item) for item in noncommercial_basis
+        ],
+        'factual_publication_basis': factual_basis,
     }
     if refinement:
         exported['text_refinement'] = {
@@ -610,6 +1057,99 @@ def knowledge_row(row, family, source_catalog=None):
     return exported
 
 
+PUBLIC_FACT_FIELDS = {
+    'geography': (
+        'name', 'name_local', 'division', 'districts', 'coordinates',
+        'coordinates_status', 'place_type', 'wikipedia_title', 'wikipedia_url',
+        'osm_query', 'osm_search_url', 'evidence',
+    ),
+    'historical_terms': (
+        'term', 'term_local', 'name_variants', 'period', 'term_type', 'source_refs',
+    ),
+    'literary_people': (
+        'canonical_name', 'aliases', 'associated_works', 'roles', 'source_ids',
+        'verification_status',
+    ),
+    'literary_works': (
+        'title', 'title_variants', 'creators', 'date_or_period', 'language_scope',
+        'work_type', 'source_ids', 'ingestion_status',
+    ),
+    'popular_songs': (
+        'title', 'artists', 'genre', 'language', 'caption_status', 'youtube_url',
+        'youtube_video_id', 'lyrics_sources', 'translation_sources',
+    ),
+    'university_research': (
+        'title', 'creators', 'institution', 'year', 'resource_type', 'language_scope',
+        'topics', 'source_authority', 'source_url', 'visibility', 'access_level',
+        'already_covered_by', 'ingestion_status',
+    ),
+}
+
+PUBLIC_FACT_METADATA_FIELDS = {
+    'id', 'knowledge_family', 'record_scope', 'rights_status',
+    'expressive_source_content_included', 'omitted_content_fields',
+    'provenance', 'public_metadata_note', 'quality_metadata',
+    'reuse_scope', 'license_labels', 'quality_status', 'record_quality_flags',
+}
+
+
+def is_public_factual_metadata_row(row, family):
+    """Validate the narrow metadata-only projection without asserting a license."""
+    if family not in PUBLIC_FACT_FIELDS:
+        return False
+    return (
+        row.get('knowledge_family') == family
+        and row.get('record_scope') == 'factual_bibliographic_metadata_only'
+        and row.get('rights_status') == 'metadata_only; no license asserted for underlying work'
+        and row.get('expressive_source_content_included') is False
+        and set(row).issubset(set(PUBLIC_FACT_FIELDS[family]) | PUBLIC_FACT_METADATA_FIELDS)
+    )
+
+
+def public_factual_metadata_row(row, family):
+    """Release citation-level facts while omitting unlicensed source prose/content."""
+    if family not in PUBLIC_FACT_FIELDS:
+        raise ValueError(f'No factual-metadata projection for {family}')
+    exported = {
+        key: row[key] for key in PUBLIC_FACT_FIELDS[family]
+        if key in row and row[key] not in (None, '', [])
+    }
+    exported.update({
+        'id': row['id'],
+        'knowledge_family': family,
+        'record_scope': 'factual_bibliographic_metadata_only',
+        'rights_status': 'metadata_only; no license asserted for underlying work',
+        'expressive_source_content_included': False,
+        'omitted_content_fields': [
+            'extended_notes', 'source_passages', 'abstracts_or_summaries',
+            'song_lyrics', 'translations', 'full_work_text',
+        ],
+        'provenance': [
+            {
+                key: item[key] for key in (
+                    'source_id', 'source_url', 'source_title', 'source_kind',
+                    'source_snapshot_sha256', 'source_capture_path', 'record_id',
+                ) if item.get(key) not in (None, '', [])
+            }
+            for item in row.get('provenance') or []
+            if isinstance(item, dict)
+        ],
+        'public_metadata_note': (
+            'Only names, titles, dates, categories, identifiers, and source citations '
+            'are included. This row does not license the underlying book, article, '
+            'song, recording, or source-page prose.'
+        ),
+        'quality_metadata': {
+            key: value for key, value in (row.get('quality_metadata') or {}).items()
+            if key in {
+                'review_status', 'source_verification_status',
+                'native_reviewed', 'evidence_fields',
+            }
+        },
+    })
+    return exported
+
+
 def write_shards(rows, directory, split, shard_rows=10_000):
     directory.mkdir(parents=True, exist_ok=True)
     for old in directory.glob(f'{split}-*.jsonl'):
@@ -619,6 +1159,7 @@ def write_shards(rows, directory, split, shard_rows=10_000):
     handle = None
     paths = []
     try:
+        family = directory.name
         for row in rows:
             if count % shard_rows == 0:
                 if handle:
@@ -627,6 +1168,7 @@ def write_shards(rows, directory, split, shard_rows=10_000):
                 path = directory / f'{split}-{shard:05d}.jsonl'
                 paths.append(path)
                 handle = path.open('w', encoding='utf-8')
+            row = normalize_record(row, family=family)
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n')
             count += 1
     finally:
@@ -741,6 +1283,35 @@ def dataset_card(report):
             f'- config_name: {name}\n  data_files:\n' + '\n'.join(files)
         )
     configs_yaml = '\n'.join(config_blocks)
+    config_uses = {
+        'asr': 'provider transcripts; not native-adjudicated',
+        'catalog': 'unique text inventory; some values may be redacted',
+        'geography': 'place facts and citations',
+        'historical_terms': 'historical names and terms',
+        'instructions': 'instruction/response examples',
+        'lexicon': 'vocabulary and pronunciation candidates',
+        'literary_people': 'writer and contributor metadata',
+        'literary_works': 'work-level bibliography',
+        'popular_songs': 'song-level metadata; no lyrics',
+        'record_index': 'archive references; not training examples',
+        'record_sources': 'record-to-source links; not training examples',
+        'source_catalog': 'deduplicated source and rights references',
+        'sravaani_drafts': 'machine transcript drafts; not ground truth',
+        'text': 'Garhwali text examples',
+        'university_research': 'research bibliography',
+    }
+    config_rows = []
+    for name in config_names:
+        row_count = sum(
+            details.get('records', 0)
+            for key, details in nonempty_configs.items()
+            if key.split('/', 1)[0] == name
+        )
+        config_rows.append(
+            f'| `{name}` | {row_count:,} | '
+            f'{config_uses.get(name, "source-specific records; inspect the schema")} |'
+        )
+    config_table = '\n'.join(config_rows)
     speech_companion = ''
     if profile_includes_all_data(report['profile']):
         language_header = '- gbm\n- hi\n- en'
@@ -773,23 +1344,20 @@ metadata attached.'''
         )
         resource_summary = '''This rights-filtered profile contains Garhwali
 text, human transcripts, lexicon and instructions, plus experimental SraVaani
-drafts. Geography, historical terms, literary people and works, songs, and
-university-research records are present in the source-reference tables; their
-full contents are not redistributed when source rights are unresolved.'''
+drafts. The geography, history, literature, song, and university-research
+configurations contain factual and bibliographic metadata, with expressive
+notes, lyrics, summaries, and source passages omitted.'''
         catalog_summary = f'''The `catalog` configuration publicly accounts for all
 **{report['catalog_records']:,} exact-unique collected text records**. Rows whose
 source terms do not permit redistribution retain their stable content hash,
 source URL, rights status, quality tier, language evidence, and review reasons;
-only the protected text value is redacted. Nothing is silently omitted.'''
-        excluded = sum(report.get('structured_knowledge_excluded_for_rights', {}).values())
-        access_notice = f'''Public content tables withhold full content from **{excluded:,} structured-knowledge records**
-whose provenance does not include an explicit compatible public-rights basis.
-Their full records remain in the access-controlled all-data package. The
-reference tables expose source pointers and factual metadata, not full content.
-No source license is inferred from a URL. The text catalog records each text identity and
-redacts values without compatible redistribution evidence. Native-speaker
-review and dialect annotation are deferred; benchmark and model scores are
-automated research results, not native-validated claims.'''
+their text remains redacted. The current catalog exposes **{report.get('catalog_noncommercial_records', 0):,}** CC BY-NC-SA 4.0 records,
+**{report.get('catalog_sharealike_records', 0):,}** total share-alike records, and
+**{report.get('catalog_source_policy_records', 0):,}** entries under source-specific reproduction policies (5 PIB instrument facts and 193 Mountain Voices glossary headwords), plus **{report.get('catalog_factual_word_records', 0):,}** exact one-token facts published without definitions, source record positions, or list arrangement. The fact-only projection includes individually selected tokens and lexical tokens that appear in at least two distinct thematic source collections; it is not a copy of any source list. The Panos guideline permits attributed reproduction by press, educational/research institutions, and nonprofits; commercial scope and machine-learning training are not expressly addressed, so these headwords are excluded from model-training views. Per-row terms apply; the package asserts no blanket content license.'''
+        metadata_only = sum(
+            report.get('structured_knowledge_metadata_only', {}).values()
+        )
+        access_notice = f'''All **{metadata_only:,} structured geography, history, literature, song, and research records** appear in factual/bibliographic form; no records are dropped from these metadata configurations. Prose notes, lyrics, translations, abstracts, and source passages are omitted unless separately licensed. The full source texts remain in the access-controlled all-data package. Each text-catalog record carries its specific rights state: CC BY-SA rows require attribution and share-alike; CC BY-NC-SA rows are noncommercial and share-alike; the five PIB instrument terms cite the PIB reproduction policy; and the 193 Mountain Voices glossary headwords carry Panos's attributed-reproduction guideline for press, educational/research institutions, and nonprofits. That guideline does not expressly address commercial scope or model training, so those values are excluded from model-training views. The **{report.get('catalog_factual_word_records', 0):,}** isolated one-token facts are listed without definitions, source record positions, or list ordering. Lexical facts from unlicensed thematic sources are included only when independently present in at least two distinct source collections; all such facts remain catalog-only, outside training views, and retain language-review flags. See the [source-by-source rights-resolution log](research/text-rights-resolution-2026-09-30.md). Native-speaker review and dialect annotation are deferred; benchmark and model scores are automated research results, not native-validated claims.'''
     source_expansion = ''
     if str(report.get('release_id', '')).endswith('v2.0.0'):
         expansion = report.get('source_expansion') or {}
@@ -873,6 +1441,57 @@ Release: **{report['release_id']}**
 {access_notice}
 {source_expansion}
 
+## Project history
+
+This release is the result of a staged corpus build, with older releases kept
+available under their own versioned paths:
+
+1. **v0.1.x — establish the corpus workflow.** The project began by collecting
+   Garhwali text and language references with source attribution, then added a
+   reproducible preparation and release pipeline.
+2. **v0.2.0 — expand Garhwali-only sources.** A deduplicated source wave added
+   671 exact-unique texts, including historical Garhwali specimens and stories.
+   Historical OCR and translated stories remain visibly marked as unreviewed.
+3. **v2.0.0 — grow the text inventory (30 September 2026).** The library intake
+   added 164 exact-new strings after deduplication, bringing the exact-unique
+   parent-text inventory to 32,072.
+4. **v2.1.0 — resolve and describe more records (1 October 2026).** No new
+   unique texts were added; 6,864 additional values entered the rights-filtered
+   profile under their recorded bases, and all 216 structured knowledge records
+   gained factual or bibliographic metadata views.
+5. **v2.2.0 — make the package easier to use (1 October 2026).** The release
+   adds a consistent rights-and-quality record envelope, exact-count quick start,
+   schema guide, and searchable lexicon example. It adds no new source texts.
+
+The figures below describe the current v2.2.0 package, not a cumulative sum of
+overlapping views. Row-level terms and quality labels remain authoritative.
+
+## Developer quick start
+
+Install the small tabular-data stack with `pip install datasets pandas duckdb`,
+then stream three vocabulary entries:
+
+```python
+from datasets import load_dataset
+
+lexicon = load_dataset(
+    "rushilrawat/garhwali-corpus", "lexicon", split="train", streaming=True
+)
+for row in lexicon.take(3):
+    print(row["form"], row.get("glosses"), row["rights_status"], row["quality_status"])
+```
+
+Counts are rows in the current views, not unique examples. Configurations can
+overlap, and reference-index rows are not model-training examples. See the
+[developer quick start](DEVELOPER_QUICKSTART.md), [schema guide](DATASET_SCHEMA.md),
+and [lexicon search script](search_garhwali_lexicon.py) for practical examples.
+
+## Configurations and current row counts
+
+| Configuration | Rows | Use |
+| --- | ---: | --- |
+{config_table}
+
 {resource_summary}
 
 {package_summary}, including transcripts for **{report['draft_unique_audio']:,}
@@ -925,10 +1544,12 @@ def _build_at(output, profile='public', include_audio=False,
     output = prepare_package_output(output)
     report = {
         'release_id': RELEASE_ID,
+        'record_schema_version': '1.0.0',
         'profile': profile,
         'include_audio': include_audio,
         'configs': {},
         'structured_knowledge_excluded_for_rights': {},
+        'structured_knowledge_metadata_only': {},
     }
     if RELEASE_ID.endswith('v2.0.0'):
         report['source_expansion'] = source_expansion_metrics()
@@ -972,6 +1593,29 @@ def _build_at(output, profile='public', include_audio=False,
     report['catalog_redacted_text_records'] = sum(
         row['text'] is None for row in catalog_rows
     )
+    report['catalog_rights_cleared_records'] = sum(
+        row['redistribution_status'] == 'rights_cleared' for row in catalog_rows
+    )
+    report['catalog_noncommercial_records'] = sum(
+        row['redistribution_status'] == 'rights_cleared_noncommercial_sharealike'
+        for row in catalog_rows
+    )
+    report['catalog_source_policy_records'] = sum(
+        row['redistribution_status'] == 'reproduced_under_source_policy'
+        for row in catalog_rows
+    )
+    report['catalog_factual_word_records'] = sum(
+        row['redistribution_status'] == 'individual_word_fact'
+        for row in catalog_rows
+    )
+    report['catalog_sharealike_records'] = sum(
+        any(
+            item.get('license_id') in {'CC-BY-SA-4.0', 'CC-BY-NC-SA-4.0'}
+            for item in row.get('public_rights_basis', [])
+            + row.get('noncommercial_rights_basis', [])
+        )
+        for row in catalog_rows
+    )
     report['all_collected_text_values_included'] = (
         report['catalog_redacted_text_records'] == 0
     )
@@ -993,13 +1637,9 @@ def _build_at(output, profile='public', include_audio=False,
         if len(ids) != len(set(ids)):
             raise ValueError(f'Duplicate stable IDs in {family}')
         if profile == 'public':
-            publishable_rows = [row for row in rows if is_public_knowledge_row(row)]
-            report['structured_knowledge_excluded_for_rights'][family] = (
-                len(rows) - len(publishable_rows)
-            )
-            rows = publishable_rows
-            if not rows:
-                continue
+            report['structured_knowledge_excluded_for_rights'][family] = 0
+            report['structured_knowledge_metadata_only'][family] = len(rows)
+            rows = [public_factual_metadata_row(row, family) for row in rows]
         report['configs'][f'{family}/train'] = write_shards(
             rows, output / f'data/{family}', 'train', shard_rows
         )
@@ -1113,6 +1753,16 @@ def _build_at(output, profile='public', include_audio=False,
     (output / 'README.md').write_text(dataset_card(report), encoding='utf-8')
     for name in ('LICENSE_POLICY.md', 'ATTRIBUTION.md', 'REMOVAL_POLICY.md'):
         shutil.copy2(ROOT / name, output / name)
+    for name in ('DEVELOPER_QUICKSTART.md', 'DATASET_SCHEMA.md'):
+        shutil.copy2(ROOT / 'docs' / name, output / name)
+    shutil.copy2(
+        ROOT / 'examples' / 'search_garhwali_lexicon.py',
+        output / 'search_garhwali_lexicon.py',
+    )
+    rights_report = ROOT / 'research/text-rights-resolution-2026-09-30.md'
+    rights_report_target = output / 'research' / rights_report.name
+    rights_report_target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(rights_report, rights_report_target)
     (output / 'manifest.json').write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
         encoding='utf-8',

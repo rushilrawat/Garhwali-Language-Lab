@@ -1,6 +1,79 @@
 # Corpus preparation status
 
-Updated 2026-09-30. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-10-01. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+
+## Developer access, schema, and Hugging Face v2.2.0 release — 2026-10-01
+
+- Published both v2.2.0 packages additively. The public corpus repository is
+  at [commit `7cae908`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/7cae908fee51acd2e1e47955acaa9ee035c9bfbc);
+  the public speech repository is at
+  [commit `9da266e`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/9da266e23bfc198f70784a6e81edbf32f946102f).
+  Earlier release files were retained in both repositories.
+- Corrected the corpus release's linked quick-start in a docs-only follow-up at
+  [commit `0a76bc6`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/0a76bc6a1f403b2ba460ef0ece464050c178c189);
+  downloaded the remote file and confirmed its SHA-256 matches the local copy.
+- Each row carries the shared v1.0.0 envelope: `rights_status`, `reuse_scope`,
+  `license_labels`, `quality_status`, and `record_quality_flags`. The package
+  preserves source-specific provenance, transcript status, and review evidence.
+- The corpus package has **821,083 rows across 15 configs** after adding
+  reference tables. This sum includes overlapping views, not unique examples.
+  The all-data archive contains **300,915 source-record views**. All package
+  rows pass envelope, identity, provenance, and package validation.
+- Added the exact-count developer guide, stable schema reference, tested
+  pandas/DuckDB examples, and searchable lexicon CLI. The 1,493-row lexicon
+  smoke test loaded through Hugging Face Datasets, pandas, and DuckDB.
+- The speech release contains **113,363 rows**, **113,350 unique audio hashes**,
+  and **154.645 hours** in 267 Parquet shards. Audio was not re-downloaded or
+  re-encoded for the documentation refresh.
+- The Dataset Viewer API returned HTTP 500 with a temporary busy response after
+  upload. Repository visibility, cards, commit revisions, and file trees were
+  verified; Viewer preview availability is not yet confirmed.
+- Full configured-environment test suite: **682 passed**. These tests and
+  audits validate package structure and metadata, not Garhwali linguistic
+  correctness or native-speaker acceptance.
+
+## V2.1.0 public rights-resolution release — 2026-10-01
+
+- Rebuilt the local public profile with 12,606 catalog texts under distinct
+  per-record bases (12,258 compatible open-license/public-domain, 134 CC BY-NC-SA
+  4.0, 198 source-policy, and 16 exact individual-word facts); 19,466
+  exact-unique values remain redacted from public content.
+- Five one-token facts appear in two distinct thematic lexicons, alongside 11
+  individually selected facts. Their definitions, source record positions,
+  and list ordering are omitted; they remain catalog-only and outside
+  model-training views. The larger unlicensed word lists stay local because
+  extracting most of a compilation can reproduce its selection.
+- The complete local all-data catalog retains all 32,072 text values with zero
+  redactions. All 216 structured entries now appear in six public
+  factual/bibliographic metadata configurations, without unlicensed prose,
+  lyrics, translations, abstracts, or source passages.
+- Published additively to Hugging Face at commit
+  [`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b); the latest docs-only amendment is at
+  [`f2def9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/f2def9e717390008ebf7aac05decebf1c264fa98). Earlier versioned files remain intact.
+- Both regenerated packages pass cloud preflight with zero errors. A full
+  catalog scan finds zero pending-text leaks in the public release; all 216
+  factual metadata projections pass the export allowlist. At the v2.1.0 review
+  snapshot, the suite passed 671 pytest / 669 unittest tests. Public and all-data preflights check
+  162,494 and 300,915 package-view rows; the base public profile is 345,083,461
+  bytes and all-data is 689,449,417 bytes. The additive upload contains 42
+  versioned files / 601,509,542 bytes plus the root dataset card (43 paths
+  total). The Viewer/parquet endpoint returned HTTP 500 on its first request
+  and one retry, so preview availability remains unverified.
+  Detailed validation is recorded in the source-by-source resolution log.
+- Source-specific findings, overlapping per-source queue counts, and next
+  permission actions are documented in
+  [`text-rights-resolution-2026-09-30.md`](text-rights-resolution-2026-09-30.md).
+- The UOU site-wide CC BY-NC-SA language is not applied to OCR excerpts whose
+  PDFs carry a conflicting no-reproduction notice and include third-party
+  material; a regression test locks this decision.
+- A new source check verified that Bible.com lists a Garhwali GHMNT edition by
+  The Love Fellowship under CC BY-SA 4.0. PahariLI's 5,000 scripture rows do
+  not identify an edition or verse, so no PahariLI row has been cleared from
+  this finding alone. YouVersion prohibits automated copying, and its API
+  requires developer registration and acceptance of applicable license terms;
+  the linked Free Bibles India page offers apps, not a verified bulk-text file.
+  Obtain an authorized source copy before matching any scripture rows; see the
+  rights-resolution log.
 
 ## V2.0 corpus release and local refresh (2026-09-30)
 

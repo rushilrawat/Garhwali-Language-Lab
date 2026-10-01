@@ -6,8 +6,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shutil
 from collections import Counter
 from pathlib import Path
+
+from record_schema import normalize_record
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,7 +46,7 @@ def make_release_record(
     transcript = transcript if transcript else None
     main_transcript = (main or {}).get('transcript') or None
     machine_draft = (draft or {}).get('transcript') or None
-    return {
+    return normalize_record({
         'record_id': record_id,
         'audio_sha256': audio_sha256,
         'language': source.get('language') or 'Garhwali',
@@ -68,7 +71,7 @@ def make_release_record(
         'source_license': source.get('license') or (main or {}).get('license'),
         'split_assignment_source': 'Vaani-transcription-part' if transcription else 'main-untranscribed-train',
         'split': release_split(main, transcription),
-    }
+    }, family='garhwali_speech')
 
 
 def build_records() -> list[tuple[dict, Path]]:
@@ -160,11 +163,12 @@ configs:
 
 # Garhwali Speech
 
-Companion to [Garhwali Corpus](https://huggingface.co/datasets/{TEXT_REPO}),
-which is currently owner-private and rights-filtered; access to the text package
-requires authorization. This repository has separate configs for Project VAANI
-and Meta Omnilingual speech; choose one source config at a time because their
-splits and transcript histories differ.
+Companion to the public [Garhwali Corpus](https://huggingface.co/datasets/{TEXT_REPO}),
+which publishes rights-filtered text and source-reference views. Speech and
+text remain separate because their formats, source histories, and reuse details
+differ. This repository has separate configs for Project VAANI and Meta
+Omnilingual speech; choose one source config at a time because their splits and
+transcript histories differ.
 
 The companion text package and speech package are separate releases with
 different data scope. Current model results and benchmark limits are documented
@@ -172,11 +176,32 @@ in the [project README](https://github.com/rushilrawat/Garhwali-Language-Lab/blo
 The reproducible pipeline uses Python 3.12 and LangGraph for resumable ingestion;
 model evaluation uses task-specific scripts, and LangChain is not currently used.
 
+## Project history
+
+The speech resource was assembled in stages so source transcripts and machine
+outputs remain distinguishable:
+
+1. **Start with Project VAANI.** The project first inspected the Garhwali
+   configuration with audio decoding disabled, then reconciled the main
+   recordings with the separate transcription-part repository. That yielded
+   {counts['source_rows']:,} VAANI recordings, including {counts['human_transcript']:,}
+   provider-transcribed examples. The provider's train, validation, and test
+   assignments are retained for labeled rows.
+2. **Preserve transcript history.** Where VAANI's two repositories disagree,
+   both source values are kept and {counts['transcript_conflicts']:,} conflicts
+   are flagged; the transcription-part split remains the labeled-row reference.
+3. **Add machine drafts as a separate layer.** SraVaani hypotheses are stored
+   beside the source fields, never substituted for provider transcripts. The
+   {counts['machine_draft_rows']:,} drafts ({counts['machine_draft_nonempty']:,}
+   non-empty) are explicitly unreviewed and are not ground truth.
+<!-- META_OMNILINGUAL_CHRONOLOGY -->
+
 ## Contents
 
 - {counts['source_rows']:,} source audio rows ({total_bytes / (1024**3):.2f} GiB audio).
 - {counts['human_transcript']:,} provider-transcribed rows, including the
-  provider's train/validation/test splits.
+  provider's train/validation/test splits (train {counts.get('train_rows', 0):,},
+  validation {counts.get('validation_rows', 0):,}, test {counts.get('test_rows', 0):,}).
 - {counts['machine_draft_rows']:,} rows with SraVaani draft output, of which
   {counts['machine_draft_nonempty']:,} have non-empty text; all are marked as
   unreviewed hypotheses rather than reference transcripts.
@@ -185,6 +210,26 @@ model evaluation uses task-specific scripts, and LangChain is not currently used
   supplied text values preserved.
 - Audio is embedded in Parquet shards; file paths from the upstream dataset and
   reference images are not republished.
+
+## Quick start
+
+The rows below stream one metadata record without decoding the audio payload:
+
+```python
+from datasets import Audio, load_dataset
+
+rows = load_dataset(
+    "{SPEECH_REPO}", "garhwali_speech", split="train", streaming=True
+)
+rows = rows.cast_column("audio", Audio(decode=False))
+print(next(iter(rows)))
+```
+
+Every released row carries the v1.0.0 common envelope: `rights_status`,
+`reuse_scope`, `license_labels`, `quality_status`, and `record_quality_flags`.
+The schema version is recorded in the manifest; source-specific transcript and
+license details remain alongside it. See the included
+[schema guide](DATASET_SCHEMA.md) for field definitions.
 
 ## Source and license
 
@@ -214,7 +259,7 @@ be treated as validated text.
 
 Load with `datasets.load_dataset("{SPEECH_REPO}", "garhwali_speech")`.
 For the text/resource companion, use
-`datasets.load_dataset("{TEXT_REPO}")`.
+`datasets.load_dataset("{TEXT_REPO}", "text")`.
 '''
     (output / 'README.md').write_text(card, encoding='utf-8')
     attribution = '''# Attribution
@@ -229,7 +274,7 @@ each row. Machine drafts identify the SraVaani model and revision separately.
 
 def build(output: Path, rows: list[tuple[dict, Path]], batch_size: int = 512) -> dict:
     try:
-        from datasets import Audio, Dataset, Features, Value
+        from datasets import Audio, Dataset, Features, Sequence, Value
     except ImportError as exc:
         raise RuntimeError('Install requirements-hf-release.txt to build Parquet audio shards') from exc
 
@@ -262,6 +307,11 @@ def build(output: Path, rows: list[tuple[dict, Path]], batch_size: int = 512) ->
         'source_revision': Value('string'),
         'main_source_revision': Value('string'),
         'source_license': Value('string'),
+        'rights_status': Value('string'),
+        'reuse_scope': Value('string'),
+        'license_labels': Sequence(Value('string')),
+        'quality_status': Value('string'),
+        'record_quality_flags': Sequence(Value('string')),
         'split_assignment_source': Value('string'),
         'split': Value('string'),
     })
@@ -289,6 +339,7 @@ def build(output: Path, rows: list[tuple[dict, Path]], batch_size: int = 512) ->
                     if hashlib.sha256(raw_audio).hexdigest() != record['audio_sha256']:
                         raise ValueError(f'audio hash mismatch: {record["record_id"]}')
                     total_audio_bytes += len(raw_audio)
+                    counts[f'{split}_rows'] += 1
                     counts['human_transcript'] += bool(record['transcript'])
                     counts['untranscribed_rows'] += not bool(record['transcript'])
                     counts['machine_draft_rows'] += bool(record['machine_draft_model'])
@@ -322,6 +373,7 @@ def build(output: Path, rows: list[tuple[dict, Path]], batch_size: int = 512) ->
     shard_counts = {split: len(items) for split, items in grouped.items()}
     summary = {
         'dataset_id': SPEECH_REPO,
+        'record_schema_version': '1.0.0',
         'created_date': '2026-09-23',
         'source_rows': sum(shard_counts.values()),
         'unique_audio_hashes': counts['unique_audio_hashes'],
@@ -342,6 +394,7 @@ def build(output: Path, rows: list[tuple[dict, Path]], batch_size: int = 512) ->
     }
     write_json(output / 'manifest.json', summary)
     write_cards(output, counts, total_audio_bytes)
+    shutil.copy2(ROOT / 'docs/DATASET_SCHEMA.md', output / 'DATASET_SCHEMA.md')
     return summary
 
 

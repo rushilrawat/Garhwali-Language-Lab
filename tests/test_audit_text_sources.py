@@ -26,11 +26,42 @@ class TextSourceAuditTests(unittest.TestCase):
                     'rights_status': 'public_webpage_no_open_license_stated',
                 }],
             },
+            {
+                'text_sha256': 'c',
+                'text': 'glossary word',
+                'quality_v2': {'tier': 'non_strict_context'},
+                'provenance': [{
+                    'source_id': 'mountainvoices_local_glossary',
+                    'record_id': 'mountainvoices_local_glossary:1',
+                    'source_url': 'https://mountainvoices.org/i_glossary.html',
+                    'license_id': 'LicenseRef-Panos-Website-Terms-Unverified',
+                    'license_url': 'https://mountainvoices.org/transcripts.html',
+                    'rights_status': 'not_recorded',
+                    'attribution': 'Panos Mountain Voices',
+                    'quality_flags': ['regional_glossary'],
+                }],
+            },
+            {
+                'text_sha256': 'd',
+                'text': 'Wu',
+                'quality_v2': {'tier': 'non_strict_context'},
+                'provenance': [{
+                    'source_id': 'languageshome',
+                    'record_id': 'languageshome:2',
+                }],
+            },
         ]
         report = m.audit_rows(rows, review_rows=[])
-        self.assertEqual(report['records'], 2)
-        self.assertEqual(report['public_text_records'], 1)
+        self.assertEqual(report['records'], 4)
+        self.assertEqual(report['public_text_records'], 3)
+        self.assertEqual(report['open_license_text_records'], 1)
         self.assertEqual(report['rights_pending_text_records'], 1)
+        self.assertEqual(report['public_text_basis_counts'], {
+            'individual_word_fact': 1,
+            'reproduced_under_source_policy': 1,
+            'rights_cleared': 1,
+            'rights_pending': 1,
+        })
         self.assertEqual(report['mixed_rights_exact_duplicate_records'], 1)
         self.assertEqual(report['strict_records_using_open_overlap'], 1)
         self.assertEqual(report['high_quality_rights_pending_records'], 1)

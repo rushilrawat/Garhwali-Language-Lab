@@ -9,19 +9,27 @@ The collector records every attempted URL in
 error. No credentials, paywalls, robots restrictions or access controls were
 bypassed, and no remote audio or video was bulk downloaded.
 
-## Current project context (V2.0 corpus release, 2026-09-30)
+## Current project context (V2.1 published release, 2026-10-01)
 
-The V2.0 project contains **32,072 exact-unique parent texts** from
+The current project contains **32,072 exact-unique parent texts** from
 34,505 source rows / 49 source files and **151,690 exact-unique prepared text
 segments**; these are project-wide counts, not totals for the initial online
 crawl. The current inventory also includes seven supplied
 PDFs (six unique books, 769 active page records, and one exact duplicate),
 structured literature, songs, geography, historical terms, and university
-research records. The rights-filtered package is public on [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
-under `releases/v2.0.0/`, uploaded at commit [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1). The current release and rights counts are maintained in the
+research records. The earlier V2.0 package remains preserved under `releases/v2.0.0/` at commit [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); V2.1.0 is the current public release. The current release and rights counts are maintained in the
 [root README](../../README.md) and [final report](../../finalreport.md). Source
 discovery and acquisition history remain in this register; each later addition
 retains its own provenance and rights status.
+
+The published V2.1 rights-resolution release exposes 12,606/32,072 catalog
+values, redacts 19,466 full texts pending compatible terms or narrower factual
+projection, and exposes the 216 structured records as fact/bibliographic
+metadata. V2.1 is live at Hub commit
+[`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b). The current rights report also records a newly verified
+CC BY-SA 4.0 Garhwali GHMNT edition by The Love Fellowship; it is not yet tied
+to the unspecified New Testament edition in PahariLI, so those mixed-source
+rows remain pending.
 
 The v0.2.0 historical-language intake added 671 net-new exact texts from the LSI
 dialect table and specimens, five source-marked Garhwali proverbs from Upreti
@@ -125,10 +133,15 @@ publicly available. The current status is:
   visibility was not treated as redistribution permission.
 * BhashaDaan and Common Voice are collection channels, not verified existing
   Garhwali datasets in this snapshot.
-* The Garhwali New Testament's source-specific page verifies CC BY-SA 4.0, but
-  the publisher's advertised desktop ZIP currently returns 404. Its rights and
-  download pages are snapshotted; chapter text has not been reconstructed from
-  search caches or an access challenge.
+* A 2020 Garhwali GHMNT edition by The Love Fellowship is explicitly credited
+  as CC BY-SA 4.0 on Bible.com and is distinct from a Wycliffe-published
+  version. Bible.com terms prohibit automated copying; its developer API also
+  requires registration and acceptance of the applicable license terms. The
+  linked Free Bibles India page offers Bible applications, not a verified bulk
+  text file. No web scraping or bulk download was performed. PahariLI only says
+  “New Testament” and has no verse-level provenance, so the GHMNT license has
+  not been applied to its 5,000 scripture rows. Obtain an authorized publisher
+  copy, then exact/fuzzy-match verses before clearing any imported sentence.
 
 Additional discovery was performed over Hugging Face dataset search, GitHub
 repository search, Internet Archive full-text metadata, PanLex, OPUS, UKC

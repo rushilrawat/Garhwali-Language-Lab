@@ -1,5 +1,53 @@
 # Garhwali Language Lab — deep final audit
 
+## Developer-access, schema, and Hub release audit — 2026-10-01
+
+The v2.2.0 text and speech packages add consistent record-level rights and
+quality fields without replacing source-specific terms or evidence. The
+package validator checks the five common fields and their types on every row
+when the manifest declares schema v1.0.0, and requires the shipped schema and
+quick-start assets. Empty license and quality-flag lists remain valid when no
+label or flag was recorded.
+
+Both public Hub packages were uploaded additively and verified: corpus commit
+[`7cae908`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/7cae908fee51acd2e1e47955acaa9ee035c9bfbc)
+and speech commit
+[`9da266e`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/9da266e23bfc198f70784a6e81edbf32f946102f).
+Earlier release files remain present. Corpus follow-up commit
+[`0a76bc6`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/0a76bc6a1f403b2ba460ef0ece464050c178c189)
+corrects the versioned quick-start that the card links to. Validation passes for **821,083**
+rights-filtered text-package views and **300,915** all-data archive views. All
+267 speech Parquet shards match the 113,363-row manifest and common schema. The
+local lexicon example loaded through Hugging Face Datasets and queried through
+pandas and DuckDB. These checks validate structure and lineage only; they do
+not establish native-speaker accuracy. The complete unit suite passes
+**682/682**. The Dataset Viewer API returned a temporary HTTP 500 busy response
+after upload; the repository cards, commit revisions, and file trees were
+verified separately.
+
+## Rights audit addendum — 2026-10-01
+
+The v2.1.0 public release was rebuilt from the preserved all-data layer. It
+contains 32,072 unique catalog texts; the public catalog exposes 12,606 under
+open, noncommercial/share-alike, source-policy, or narrowly fact-only bases and
+redacts 19,466 with unresolved reuse rights. All 216 structured knowledge
+records are represented as fact/bibliographic metadata only. The public package
+was uploaded additively at Hugging Face commit
+[`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b); previous versioned files remain present.
+
+The rights-resolution log now lists exact source-associated pending counts,
+why each source remains unresolved, and the next evidence needed. Counts overlap
+across source links. The local all-data manifest confirms all 32,072 full
+catalog texts remain included. Do not remove or recast the remaining rights
+redactions as a code defect: repository license labels, a public URL, and the
+absence of an explicit “private” notice do not grant rights in underlying
+blogs, books, translations, quotations, or compilations. Copyright arises
+without a visible notice according to the Indian Copyright Office. See
+[`research/text-rights-resolution-2026-09-30.md`](research/text-rights-resolution-2026-09-30.md).
+The source log records the exact current preflight, file-size, and test results.
+The public package is audited for zero pending-text leaks and the 216
+metadata projections are checked against the field allowlist.
+
 ## V2.0 corpus release — 2026-09-30
 
 The latest ingestion refresh retains **34,505 source rows from 49 files** and
@@ -21,9 +69,10 @@ web candidates remain in the local experimental layer; no new model inference
 or accuracy claim was made. Native review remains deferred. The pre-V2 web-wave
 metrics below are retained as historical, not current, measurements.
 
-The current full working-tree suite passes **656/656 unittest** tests. These
-verify code and data contracts, not linguistic
-correctness, rights clearance, or independent model accuracy.
+At the earlier v2.0 review snapshot, the full working-tree suite passed
+**656/656 unittest** tests. At the v2.1.0 audit snapshot, the working tree passed
+**671/671 pytest** and **669/669 unittest**. These validate code and data contracts, not
+linguistic correctness, unrestricted reuse rights, or independent model accuracy.
 
 ## Frozen v0.2.0 audit snapshot (2026-09-29)
 
@@ -110,7 +159,18 @@ installation with the project virtualenv's dependency path supplied; the
 
 ## Current conclusion
 
-The public Hugging Face corpus now combines the rights-filtered content profile with a content-free index of the complete all-data archive. The index has one reference row for each of 257,807 archive rows, plus 590 deduplicated sources and 277,637 source links. It includes factual and bibliographic metadata, but no restricted source text or media. The license-classifier defect is fixed; the content profile excludes records without compatible reuse evidence while the full payload remains in local all-data. Native-speaker review and dialect annotation are deferred by the project owner, so language and benchmark claims remain automated candidates. Future IndicBERT head/LoRA runs and text-scaling runs default to the strict recommended data view. Historical broad-corpus results remain tied to their original inputs.
+Hugging Face serves the additive V2.1.0 corpus release at commit `53c1ce9`.
+The public package has 32,072 unique catalog texts, exposes 12,606 under
+recorded source-specific or narrow fact-only bases, and redacts 19,466 full
+texts still lacking compatible reuse evidence. It exposes all 216 structured
+records as factual/bibliographic projections while leaving expressive notes,
+lyrics, translations, abstracts, and passages out. No all-data payload is
+public. The local all-data package retains all
+32,072 catalog values. The detailed source queue, restrictions, test results,
+and exact package inventory are in
+[`research/text-rights-resolution-2026-09-30.md`](research/text-rights-resolution-2026-09-30.md).
+Native-speaker review and dialect annotation are deferred; language and
+benchmark claims remain automated candidates.
 
 Phase 8 result labels are now reconciled: test rows with matched saved predictions and the aggregate-scored 398-row internal text set are historical-only; CrossSum and Meta Omnilingual test exposure remains unresolved. No task result is independent-final-eligible. See the [result eligibility report](research/task-result-eligibility-2026-09-28.md) and [fresh lineage audit](research/model-accuracy-lineage-2026-09-28.md).
 
@@ -126,15 +186,22 @@ The package inventory reports 257,807 rows across overlapping all-data views and
 
 **Remediation complete:** restrictive CC variants are rejected before accepting an open-license marker; regression tests cover NC, ND, valid CC-BY, and the exact MIT identifier. The rebuilt public profile has zero general text-rights failures.
 
-### High — 216 structured knowledge records still lack public-rights evidence
+### Historical high — full content for 216 structured records lacked public-rights evidence at v0.1.1
 
 The public and all-data packages contain 216 records in six configurations: geography (50), historical terms (36), literary people (26), literary works (66), popular songs (30), and university research (8). Source hints previously used inconsistent field names such as `evidence`, `source_refs`, `source_ids`, `source_url`, `wikipedia_url`, `lyrics_sources`, and `translation_sources`. The builder now maps source pointers into standardized `provenance`, adds explicit quality/review status, and records rights without inventing a license. A web review has now examined the 186 previously unassessed geography, history, people, works, and university records. Some component sources carry reuse terms, but no whole-record public-rights basis was established for those mixed-source records. Current audit counts are **0 missing provenance**, **0 missing quality metadata**, **0 unreviewed rights statuses**, and **216 rows without compatible public rights**.
 
-The release audit and cloud preflight enforce these fields. The all-data/private preflight passes. The public content builder omits the full payloads for all six structured configurations until compatible rights are established; the public metadata-reference index includes all 216 records without treating them as cleared. The complete records remain in all-data.
+The release audit and cloud preflight enforce these fields. The all-data/private
+preflight passed for that snapshot. The published V2.1 release now exposes a
+factual/bibliographic projection for each record in six metadata
+configurations. Full expressive payloads remain in all-data because compatible
+reuse evidence has not been established. The projection does not claim that
+the referenced works are cleared.
 
 **Additional traceability fix:** a deeper row-level check found that some geography evidence labels and a literary capture reference still exported as internal IDs without a URL or capture fingerprint. Geography evidence IDs now resolve through the geography catalog, and shared source IDs inherit the best available metadata across the project's structured-source catalogs. The regenerated all-data package has **zero untraceable structured rows** and passes cloud preflight. This improves citation traceability; it does not establish redistribution rights.
 
-**Remaining:** establish source-specific rights evidence for every field if these structured records are to be added to a later public version. A source URL alone is not a license. Their exclusion resolves this release's package gate, not the underlying rights status. Findings and exact source links are in [`research/structured-rights-web-review-2026-09-23.md`](research/structured-rights-web-review-2026-09-23.md); all 216 records remain intact in all-data.
+**Remaining:** obtain source-specific rights or permission for the expressive
+full records. A source URL alone is not a license. Findings and exact source
+links are in [`research/structured-rights-web-review-2026-09-23.md`](research/structured-rights-web-review-2026-09-23.md); all 216 full records remain intact in all-data.
 
 ### High — historical broad text-model runs do not establish Garhwali-only quality
 
@@ -199,9 +266,13 @@ Package manifests carry per-shard SHA-256 values; both the final audit and cloud
 
 The package and release index identify themselves as `garhwali-language-lab-v0.1.1`; annotated tag `v0.1.1` resolves to the reviewed release commit. The historical `v0.1.0` tag is unchanged. The exact reviewed commit passed the recorded release checks.
 
-### Medium — “all-data” and “public-profile” are different products
+### Historical medium — “all-data” and “public-profile” are different products (v0.1.1 snapshot)
 
-The all-data package preserves all 28,755 catalog text values, including restricted/right-pending material, for local or access-controlled research. The public content profile redacts 24,566 catalog values and withholds full content for 216 structured records with unresolved rights; the metadata-reference index points to all of them. The previous PanLex license leak has been fixed. Keep the distinction visible in cards, package manifests, and release reports.
+The V0.1.1 all-data package preserved 28,755 catalog text values, and that
+snapshot's public profile redacted 24,566 values and omitted the 216 full
+structured records. The current published V2.1 figures are stated in the
+rights audit addendum at the top of this report. The PanLex license-classifier
+defect is fixed; keep row-level terms visible in cards and manifests.
 
 ### Fixed low-severity reporting defect — public preflight carried an all-data run ID
 
@@ -209,7 +280,7 @@ The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1`
 
 ## Remediation order
 
-1. **Rights correctness:** the NC/ND classifier fix is implemented; the public profile filters all 216 structured records without compatible rights evidence. Preserve them in all-data and add only after source-specific evidence is recorded.
+1. **Rights correctness:** the NC/ND classifier fix is implemented. The V2.1 public release exports factual/bibliographic projections for all 216 structured records, while full expressive text remains in all-data pending compatible rights evidence.
 2. **Release metadata gates:** standardized source pointers/review status and fail-closed public-rights checks are implemented and pass for v0.1.1.
 3. **Model-data quality:** strict training view and strict-default scripts are ready; run a neural comparison against historical broad-data results on fixed evaluations.
 4. **Audit integrity:** benchmark hashes/counts/leakage, package shard hashes, text IDs, and training recommendations are recomputed; an independently signed release manifest remains optional hardening.
@@ -231,7 +302,8 @@ The cloud preflight used a constant `garhwali-hf-all-data-cloud-validation-v0.1`
 - [x] Resolve geography evidence labels and shared literary capture IDs to source URLs or capture fingerprints; the structured-source traceability count is zero.
 - [x] Refresh local release audit artifacts and package preflights; the v0.1.1 public audit and index pass. Latest full pytest run: 584/584 passed; documented unittest run: 582/582 passed. Run pytest with `PYTHONPATH=.venv/lib/python3.12/site-packages:scripts pytest -q`.
 - [x] Review online reuse terms for the 186 previously unassessed structured records and retain per-record findings; all remain in all-data and the public reference index.
-- [ ] Establish a compatible public-rights basis for every field before adding any of the 216 structured records to a public package.
+- [x] Export all 216 structured records as a field-limited factual/bibliographic projection, without treating source references as rights clearance.
+- [ ] Establish compatible reuse rights or obtain permission for the expressive full content of the 216 structured records.
 - [ ] Re-evaluate neural text models using the recommended view and fixed strict validation/test artifacts.
 - [x] Recompute exact benchmark hashes/counts/leakage and flag the XORQA source-split duplicate; the parent-document gap found afterward is fixed in a separate candidate, while the historical release remains unchanged.
 - [x] Set IndicBERT head/LoRA defaults to recommended train/validation views with separate outputs.

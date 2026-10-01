@@ -9,6 +9,8 @@ import os
 from collections import Counter
 from pathlib import Path
 
+from record_schema import normalize_record
+
 ROOT = Path(__file__).resolve().parents[1]
 ALL_DATA = ROOT / os.environ.get(
     "GARHWALI_HF_ALL_DATA_OUTPUT", "data/huggingface/garhwali-language-lab-all-data"
@@ -16,7 +18,7 @@ ALL_DATA = ROOT / os.environ.get(
 PUBLIC_DATA = ROOT / os.environ.get(
     "GARHWALI_HF_PUBLIC_OUTPUT", "data/huggingface/garhwali-language-lab"
 )
-RELEASE_ID = f"garhwali-language-lab-v{os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')}"
+RELEASE_ID = f"garhwali-language-lab-v{os.environ.get('GARHWALI_RELEASE_VERSION', '2.2.0').removeprefix('v')}"
 
 TABLES = {
     "record_index": PUBLIC_DATA / "data/record_index/train-00000.jsonl",
@@ -150,7 +152,7 @@ def make_record_row(config: str, split: str, shard: str, ordinal: int, row: dict
     period = row.get("year") or row.get("release_year") or row.get("date_or_period") or row.get("period") or ""
     topics = row.get("topics") or row.get("subjects") or row.get("semantic_domains") or []
     language_scope = row.get("language_scope") or row.get("source_languages") or []
-    return {
+    return normalize_record({
         "record_ref": f"{RELEASE_ID}:all-data:{config}:{split}:{shard}:{ordinal:06d}",
         "record_family": config,
         "source_split": split,
@@ -168,7 +170,7 @@ def make_record_row(config: str, split: str, shard: str, ordinal: int, row: dict
         "source_ref_ids_json": json_value(source_ids),
         "quality_summary_json": json_value(quality),
         "bibliographic_metadata_json": json_value(metadata),
-    }
+    }, family="record_index")
 
 
 def _sha256(path: Path) -> str:
@@ -183,6 +185,12 @@ def update_dataset_card(report: dict) -> None:
     path = PUBLIC_DATA / "README.md"
     text = path.read_text(encoding="utf-8")
     front, body = text.split("---\n", 2)[1:]
+    quick_heading = "## Developer quick start"
+    quick_start_at = body.find(quick_heading)
+    if quick_start_at >= 0:
+        summary_at = body.find("\n## What this repository provides", quick_start_at)
+        if summary_at >= 0:
+            body = body[:quick_start_at] + body[summary_at + 1:]
     config_blocks = "".join(
         f"- config_name: {name}\n  data_files:\n  - split: train\n    path: data/{name}/train-00000.jsonl\n"
         for name in TABLES
@@ -200,16 +208,79 @@ def update_dataset_card(report: dict) -> None:
         summary_end = body.find("\n## ", summary_start + len(summary_heading))
         if summary_end >= 0:
             body = body[:summary_start] + body[summary_end + 1:]
+    config_rows = []
+    descriptions = {
+        "text": "Garhwali text examples",
+        "lexicon": "vocabulary and pronunciation candidates",
+        "asr": "provider/human transcripts (unadjudicated)",
+        "sravaani_drafts": "machine transcript drafts; not ground truth",
+        "catalog": "unique text inventory; some values are redacted",
+        "instructions": "instruction/response examples",
+        "geography": "place facts and citations",
+        "historical_terms": "historical names and terms",
+        "literary_people": "writer and contributor metadata",
+        "literary_works": "work-level bibliography",
+        "popular_songs": "song-level metadata, no lyrics",
+        "university_research": "research bibliography",
+    }
+    for name, count in report.get("content_config_counts", {}).items():
+        config_rows.append(
+            f"| `{name}` | {count:,} | {descriptions.get(name, 'content view; inspect row metadata')} |"
+        )
+    for name in ("record_index", "source_catalog", "record_sources"):
+        details = report.get("tables", {}).get(name, {})
+        if details:
+            purpose = {
+                "record_index": "one metadata reference per archived row; not training data",
+                "source_catalog": "deduplicated source and rights references",
+                "record_sources": "record-to-source join table",
+            }[name]
+            config_rows.append(f"| `{name}` | {details['records']:,} | {purpose} |")
+    config_table = "\n".join(config_rows)
+    quick_start = f"""## Developer quick start
+
+Install the small tabular-data stack with `pip install datasets pandas duckdb`, then stream a tiny vocabulary sample:
+
+```python
+from datasets import load_dataset
+
+lexicon = load_dataset(
+    "rushilrawat/garhwali-corpus", "lexicon", split="train", streaming=True
+)
+for row in lexicon.take(3):
+    print(row["form"], row.get("glosses"), row["rights_status"], row["quality_status"])
+```
+
+The common record envelope is `rights_status`, `reuse_scope`, `license_labels`,
+`quality_status`, and `record_quality_flags`; source-specific provenance and
+review fields remain alongside it. Dataset cards and schema guide explain how
+to filter these fields and how to read each configuration.
+
+## Configurations and current row counts
+
+Counts are rows in this release's views, not unique examples. Configurations can
+overlap, and reference-index rows are not training examples.
+
+| Configuration | Rows | Use |
+| --- | ---: | --- |
+{config_table}
+
+Pandas and DuckDB recipes, the full schema, searchable lexicon example, and
+speech loading instructions are in the [developer quick start](DEVELOPER_QUICKSTART.md)
+and [schema guide](DATASET_SCHEMA.md). A minimal [lexicon search script](search_garhwali_lexicon.py)
+is shipped at the release root.
+
+"""
     summary = f"""## What this repository provides
 
-This public dataset has two layers. Its rights-filtered content configurations contain **{report['public_profile_package_rows']:,} rows** across six named configurations and twelve config/split views. Separately, the metadata-only reference index covers every one of the **{report['records']:,} rows** in the complete all-data archive, including all 216 structured geography, history, literature, music, and research records.
+This public dataset has rights-filtered content configurations containing **{report['public_profile_package_rows']:,} rows** across {report.get('public_content_config_count', 0)} named configurations and {report.get('public_content_config_split_views', 0)} config/split views. Separately, the metadata-only reference index covers every one of the **{report['records']:,} rows** in the complete all-data archive, including all 216 structured geography, history, literature, music, and research records.
 
 The reference index includes **{report['source_catalog_records']:,} deduplicated source records** and **{report['record_source_links']:,} record-to-source links**. It exposes available names and titles, source URLs, attribution, rights status, and quality metadata. Record-level rights are marked `not_recorded` for **{report.get('record_rights_status_counts', {}).get('not_recorded', 0):,} rows**; other rows include rights-pending, reviewed-unresolved, metadata-only, or cleared statuses. `not_recorded` is not permission to reuse a record: inspect its linked source entry and terms. The index does not contain the referenced works' text, lyrics, transcripts, audio, speaker identifiers, local paths, or content hashes. These are archive-row counts with overlapping views, not unique-example counts; the reference rows themselves are not training examples. Links and bibliographic facts do not grant rights to copy or reuse source material.
 """
     release_marker = "Release: **" + str(report["release_id"]) + "**"
     if release_marker not in body:
         raise ValueError("Cannot add repository summary to the dataset card")
-    body = body.replace(release_marker, release_marker + "\n\n" + summary, 1)
+    body = body.replace(release_marker, release_marker + "\n\n" + quick_start + summary, 1)
 
     legacy_start = body.find("Three normalized reference tables")
     if legacy_start >= 0:
@@ -270,10 +341,14 @@ def build_index(all_data: Path = ALL_DATA, public_data: Path = PUBLIC_DATA) -> d
 
     with TABLES["source_catalog"].open("w", encoding="utf-8") as sources_file:
         for source_id in sorted(sources):
-            sources_file.write(json_value(sources[source_id]) + "\n")
+            sources_file.write(json_value(
+                normalize_record(sources[source_id], family="source_catalog")
+            ) + "\n")
     with TABLES["record_sources"].open("w", encoding="utf-8") as links_file:
         for link in links:
-            links_file.write(json_value(link) + "\n")
+            links_file.write(json_value(
+                normalize_record(link, family="record_sources")
+            ) + "\n")
 
     expected = Counter()
     for config_split, value in manifest["configs"].items():
@@ -290,6 +365,13 @@ def build_index(all_data: Path = ALL_DATA, public_data: Path = PUBLIC_DATA) -> d
         for key, details in package_manifest.get("configs", {}).items()
         if key.split("/", 1)[0] not in reference_config_names | {"source_index"}
     )
+    content_config_counts = {}
+    for config_split, details in package_manifest.get("configs", {}).items():
+        config = config_split.split("/", 1)[0]
+        if config not in reference_config_names | {"source_index"}:
+            content_config_counts[config] = (
+                content_config_counts.get(config, 0) + details["records"]
+            )
 
     file_details = {}
     for name, path in TABLES.items():
@@ -301,11 +383,18 @@ def build_index(all_data: Path = ALL_DATA, public_data: Path = PUBLIC_DATA) -> d
         }
     report = {
         "release_id": RELEASE_ID,
+        "record_schema_version": "1.0.0",
         "profile": "metadata_only_complete_reference_index",
         "records": sum(counts.values()),
         "records_by_family": dict(sorted(counts.items())),
         "records_with_content_in_public_profile": sum(public_counts.values()),
         "public_profile_package_rows": public_profile_rows,
+        "content_config_counts": dict(sorted(content_config_counts.items())),
+        "public_content_config_count": len(content_config_counts),
+        "public_content_config_split_views": sum(
+            1 for key in package_manifest.get("configs", {})
+            if key.split("/", 1)[0] not in reference_config_names | {"source_index"}
+        ),
         "public_content_records_by_family": dict(sorted(public_counts.items())),
         "record_rights_status_counts": dict(sorted(rights_counts.items())),
         "source_catalog_records": len(sources),

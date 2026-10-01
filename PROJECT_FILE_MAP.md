@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **917**.
+Files indexed: **925**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -43,6 +43,8 @@ python scripts/generate_project_file_map.py
 
 ## `docs/`
 
+- `docs/DATASET_SCHEMA.md`
+- `docs/DEVELOPER_QUICKSTART.md`
 - `docs/README.md`
 - `docs/superpowers/plans/2026-09-10-corpus-preparation.md`
 - `docs/superpowers/plans/2026-09-18-final-release-review.md`
@@ -55,6 +57,10 @@ python scripts/generate_project_file_map.py
 - `docs/superpowers/plans/2026-09-24-model-text-understanding.md`
 - `docs/superpowers/plans/2026-09-24-model-tts-readiness.md`
 - `docs/superpowers/specs/2026-09-24-model-accuracy-improvement-design.md`
+
+## `examples/`
+
+- `examples/search_garhwali_lexicon.py`
 
 ## `incoming/`
 
@@ -626,6 +632,7 @@ python scripts/generate_project_file_map.py
 - `research/text-noise-audit-2026-09-16.md`
 - `research/text-release-quality-2026-09-16.json`
 - `research/text-release-quality-2026-09-16.md`
+- `research/text-rights-resolution-2026-09-30.md`
 - `research/text-source-rights-audit-2026-09-15.md`
 - `research/thematic-vocabulary-report.md`
 - `research/translation-baseline-2026-09-11.md`
@@ -751,6 +758,7 @@ python scripts/generate_project_file_map.py
 - `scripts/promote_paharili_garhwali.py`
 - `scripts/propose_text_cleanup.py`
 - `scripts/reconcile_vaani_audio_paths.py`
+- `scripts/record_schema.py`
 - `scripts/redecode_sravaani_recovery.py`
 - `scripts/redecode_supervised_review.py`
 - `scripts/refine_priority_text.py`
@@ -890,6 +898,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_evaluate_sravaani_finetune.py`
 - `tests/test_evaluation_run_manifest.py`
 - `tests/test_generate_project_file_map.py`
+- `tests/test_hf_meta_omni_schema.py`
 - `tests/test_hf_meta_omni_speech.py`
 - `tests/test_hf_speech_release.py`
 - `tests/test_ingest_garhwali_language_library.py`
@@ -923,6 +932,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_prepare_transcripts.py`
 - `tests/test_prepare_vaani_supervised.py`
 - `tests/test_propose_text_cleanup.py`
+- `tests/test_record_schema.py`
 - `tests/test_redecode_sravaani_recovery.py`
 - `tests/test_redecode_supervised_review.py`
 - `tests/test_refine_priority_text.py`
@@ -946,6 +956,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_run_translation_baseline.py`
 - `tests/test_run_whisper_comparison.py`
 - `tests/test_score_benchmark_predictions.py`
+- `tests/test_search_garhwali_lexicon.py`
 - `tests/test_segment_long_audio.py`
 - `tests/test_segment_text_corpus.py`
 - `tests/test_sweep_sravaani_decoding.py`
@@ -967,11 +978,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **226,870**.
+- Workspace files counted: **234,004**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **917**.
-- Ignored or otherwise unlisted payload files: **225,953** (98,063,890,622 bytes).
-- Total workspace bytes counted: **98,079,800,009**.
+- Detailed file paths listed above: **925**.
+- Ignored or otherwise unlisted payload files: **233,079** (101,792,328,991 bytes).
+- Total workspace bytes counted: **101,808,285,944**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -994,9 +1005,9 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `corpus/wiktionary_en.jsonl/` | 1 | 164,557 |
 | `data/cache/…/` | 2 | 104,176 |
 | `data/downloads/…/` | 913 | 3,429,309,616 |
-| `data/extracted/…/` | 692 | 14,613,415 |
-| `data/huggingface/…/` | 554 | 22,297,504,723 |
-| `data/processed/…/` | 107,681 | 38,551,835,428 |
+| `data/extracted/…/` | 692 | 14,613,414 |
+| `data/huggingface/…/` | 798 | 25,960,546,303 |
+| `data/processed/…/` | 107,682 | 38,602,120,710 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |
 | `data/vaani/…/` | 115,189 | 32,112,461,505 |
@@ -1004,11 +1015,11 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `experimental/garhwali_web_goldmines.jsonl/` | 1 | 23,532,696 |
 | `experimental/hikinegi_garhwali.jsonl/` | 1 | 83,393 |
 | `experimental/incoming_pdfs.jsonl/` | 1 | 5,787,773 |
-| `experimental/indic_dialect_asr_gbm.jsonl/` | 1 | 58,728,146 |
+| `experimental/indic_dialect_asr_gbm.jsonl/` | 1 | 58,611,938 |
 | `experimental/madlad400_gbm_clean.jsonl/` | 1 | 360,489 |
 | `experimental/paharili_gbm.jsonl/` | 1 | 26,926,978 |
 | `experimental/web_learning_garhwali.jsonl/` | 1 | 159,991 |
-| `extracted/historical/…/` | 8 | 7,050,602 |
+| `extracted/historical/…/` | 8 | 7,732,983 |
 | `incoming/pdfs/…/` | 7 | 165,313,272 |
 | `models/controlled_modeling/…/` | 39 | 17,979,528 |
 | `models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048-weighted-batches/…/` | 9 | 155,181,608 |
@@ -1032,4 +1043,4 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `sources/web/…/` | 8 | 130,802 |
 | `tmp/incoming-pdf-reocr-full.log/` | 1 | 461 |
 | `tmp/incoming-pdf-reocr-full.pid/` | 1 | 6 |
-| `tmp/pdfs/…/` | 20 | 3,329,657 |
+| `tmp/pdfs/…/` | 6,901 | 17,874,992 |

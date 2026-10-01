@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from build_huggingface_dataset import (
+    is_public_factual_metadata_row,
     is_publishable_provenance,
     recommended_text_training_row,
 )
@@ -18,6 +19,13 @@ KNOWLEDGE_CONFIGS = {
     'geography', 'historical_terms', 'literary_people',
     'literary_works', 'popular_songs', 'university_research',
 }
+RECORD_SCHEMA_VERSION = '1.0.0'
+RECORD_ENVELOPE_STRING_FIELDS = (
+    'rights_status', 'reuse_scope', 'quality_status',
+)
+RECORD_ENVELOPE_LIST_FIELDS = (
+    'license_labels', 'record_quality_flags',
+)
 
 
 def sha256(path):
@@ -66,6 +74,9 @@ def main():
     args = parser.parse_args()
     manifest = json.loads((args.package / "manifest.json").read_text())
     errors = []
+    schema_version = manifest.get('record_schema_version')
+    if schema_version is not None and schema_version != RECORD_SCHEMA_VERSION:
+        errors.append(f'unsupported_record_schema_version:{schema_version}')
     configs = {}
     split_ids = defaultdict(lambda: defaultdict(set))
     global_stats = Counter()
@@ -97,6 +108,16 @@ def main():
                         errors.append(f"invalid_json:{config}/{filename}:{line_number}:{exc}")
                         continue
                     stats["records"] += 1
+                    if schema_version == RECORD_SCHEMA_VERSION:
+                        for field in RECORD_ENVELOPE_STRING_FIELDS:
+                            if not isinstance(row.get(field), str) or not row[field].strip():
+                                stats[f'record_envelope_missing_{field}'] += 1
+                        for field in RECORD_ENVELOPE_LIST_FIELDS:
+                            value = row.get(field)
+                            if not isinstance(value, list) or any(
+                                not isinstance(item, str) for item in value
+                            ):
+                                stats[f'record_envelope_invalid_{field}'] += 1
                     rid = identity(config, row)
                     if not rid:
                         stats["missing_identity"] += 1
@@ -143,7 +164,7 @@ def main():
                             stats['knowledge_missing_quality_metadata'] += 1
                         if not row.get('rights_status'):
                             stats['knowledge_missing_rights_status'] += 1
-                        if manifest.get('profile') == 'public':
+                        if manifest.get('profile') == 'public' and not is_public_factual_metadata_row(row, config):
                             rights_basis = row.get('public_rights_basis') or []
                             if not rights_basis or not all(
                                 is_publishable_provenance(item)
@@ -192,6 +213,8 @@ def main():
             'knowledge_untraceable_source_provenance',
             'knowledge_missing_quality_metadata', 'knowledge_missing_rights_status',
             'knowledge_missing_public_rights',
+            *(f'record_envelope_missing_{field}' for field in RECORD_ENVELOPE_STRING_FIELDS),
+            *(f'record_envelope_invalid_{field}' for field in RECORD_ENVELOPE_LIST_FIELDS),
         ):
             if stats[field]:
                 errors.append(f'{field}:{key}:{stats[field]}')
@@ -221,7 +244,17 @@ def main():
     expected_files = {
         'README.md', 'manifest.json', 'LICENSE_POLICY.md',
         'ATTRIBUTION.md', 'REMOVAL_POLICY.md',
+        'research/text-rights-resolution-2026-09-30.md',
     }
+    if schema_version == RECORD_SCHEMA_VERSION:
+        schema_docs = (
+            'DEVELOPER_QUICKSTART.md', 'DATASET_SCHEMA.md',
+            'search_garhwali_lexicon.py',
+        )
+        expected_files.update(schema_docs)
+        for filename in schema_docs:
+            if not (args.package / filename).is_file():
+                errors.append(f'missing_file:{filename}')
     if manifest.get('reference_index'):
         expected_files.add('reference_index_manifest.json')
     for key, config in manifest['configs'].items():
@@ -246,6 +279,7 @@ def main():
         "release_id": manifest["release_id"],
         "status": "passed" if not errors else "failed",
         "manifest_profile": manifest["profile"],
+        "record_schema_version": schema_version,
         "configs": configs,
         "totals": dict(global_stats),
         "cross_split_identity_overlap": leakage,

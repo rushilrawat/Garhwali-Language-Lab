@@ -11,6 +11,75 @@ import validate_hf_package_cloud as m
 
 
 class HuggingFaceCloudValidationTests(unittest.TestCase):
+    def _write_schema_v1_package(self, root, row):
+        package = root / 'package'
+        for relative in (
+            'README.md', 'LICENSE_POLICY.md', 'ATTRIBUTION.md',
+            'REMOVAL_POLICY.md', 'DEVELOPER_QUICKSTART.md',
+            'DATASET_SCHEMA.md', 'search_garhwali_lexicon.py',
+            'research/text-rights-resolution-2026-09-30.md',
+        ):
+            path = package / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('fixture\n')
+        shard = package / 'data/lexicon/train-00000.jsonl'
+        shard.parent.mkdir(parents=True, exist_ok=True)
+        shard.write_text(json.dumps(row) + '\n')
+        (package / 'manifest.json').write_text(json.dumps({
+            'release_id': 'garhwali-language-lab-v2.2.0',
+            'profile': 'public',
+            'record_schema_version': '1.0.0',
+            'configs': {'lexicon/train': {
+                'files': [shard.name], 'records': 1,
+                'file_sha256': {shard.name: m.sha256(shard)},
+            }},
+        }))
+        return package
+
+    def test_record_schema_envelope_accepts_empty_optional_lists(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = self._write_schema_v1_package(root, {
+                'id': 'word-a', 'rights_status': 'not_assessed',
+                'reuse_scope': 'not assessed', 'license_labels': [],
+                'quality_status': 'not_reviewed', 'record_quality_flags': [],
+            })
+            output = root / 'preflight.json'
+            with patch.object(sys, 'argv', [
+                'validate_hf_package_cloud.py', '--package', str(package),
+                '--output', str(output),
+            ]), contextlib.redirect_stdout(io.StringIO()):
+                m.main()
+            report = json.loads(output.read_text())
+        self.assertEqual(report['status'], 'passed')
+        self.assertEqual(report['record_schema_version'], '1.0.0')
+
+    def test_record_schema_envelope_rejects_missing_and_wrongly_typed_fields(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = self._write_schema_v1_package(root, {
+                'id': 'word-a', 'rights_status': 7,
+                'reuse_scope': 'not assessed', 'license_labels': 'MIT',
+                'quality_status': 'not_reviewed', 'record_quality_flags': [],
+            })
+            output = root / 'preflight.json'
+            with patch.object(sys, 'argv', [
+                'validate_hf_package_cloud.py', '--package', str(package),
+                '--output', str(output),
+            ]), contextlib.redirect_stdout(io.StringIO()):
+                with self.assertRaises(SystemExit):
+                    m.main()
+            report = json.loads(output.read_text())
+        self.assertEqual(report['status'], 'failed')
+        self.assertIn(
+            'record_envelope_missing_rights_status:lexicon/train:1',
+            report['errors'],
+        )
+        self.assertIn(
+            'record_envelope_invalid_license_labels:lexicon/train:1',
+            report['errors'],
+        )
+
     def test_public_reference_index_tables_are_validated_as_rows(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -226,3 +295,51 @@ class HuggingFaceCloudValidationTests(unittest.TestCase):
             report['run_id'], 'garhwali-hf-public-cloud-validation-v0.1'
         )
         self.assertIn('knowledge_missing_public_rights:geography/train:1', report['errors'])
+
+    def test_public_factual_metadata_projection_needs_no_underlying_work_license(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = root / 'package'
+            shard = package / 'data/geography/train-00000.jsonl'
+            shard.parent.mkdir(parents=True)
+            row = {
+                'id': 'place-a',
+                'name': 'Example place',
+                'knowledge_family': 'geography',
+                'record_scope': 'factual_bibliographic_metadata_only',
+                'rights_status': 'metadata_only; no license asserted for underlying work',
+                'expressive_source_content_included': False,
+                'omitted_content_fields': ['source_passages', 'full_work_text'],
+                'provenance': [{
+                    'source_id': 'user-capture',
+                    'source_capture_path': 'sources/manual/example.md',
+                }],
+                'public_metadata_note': 'Names and source citations only.',
+                'quality_metadata': {'review_status': 'not_reviewed'},
+                'reuse_scope': 'metadata facts only; underlying-work rights are not asserted',
+                'license_labels': [],
+                'quality_status': 'not_reviewed',
+                'record_quality_flags': [],
+            }
+            self.assertTrue(m.is_public_factual_metadata_row(row, 'geography'))
+            shard.write_text(json.dumps(row) + '\n')
+            (package / 'manifest.json').write_text(json.dumps({
+                'release_id': 'candidate',
+                'profile': 'public',
+                'configs': {'geography/train': {
+                    'files': [shard.name], 'records': 1,
+                    'file_sha256': {shard.name: m.sha256(shard)},
+                }},
+            }))
+            output = root / 'preflight.json'
+            with patch.object(sys, 'argv', [
+                'validate_hf_package_cloud.py', '--package', str(package),
+                '--output', str(output),
+            ]), contextlib.redirect_stdout(io.StringIO()):
+                m.main()
+            report = json.loads(output.read_text())
+        self.assertEqual(report['status'], 'passed')
+        self.assertEqual(report['errors'], [])
+        self.assertFalse(m.is_public_factual_metadata_row(
+            {**row, 'notes': 'unlicensed expressive passage'}, 'geography'
+        ))

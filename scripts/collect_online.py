@@ -418,15 +418,14 @@ def obs_garhwali_record(story_number, data, info):
         raise ValueError(f'Open Bible Story {story_number} is not predominantly Devanagari')
     return make_record(
         'obs_garhwali', f'{story_number:03d}', text_value, info,
-        'CC-BY-NC-SA-4.0', 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
-        'Garhwali Open Bible Stories contributors; Free Bibles India / unfoldingWord source family',
-        corpus_layer='restricted_nc_sa', genre='religious_narrative', modality='text',
+        'CC-BY-SA-4.0', 'https://creativecommons.org/licenses/by-sa/4.0/',
+        'Open Bible Stories — Garhwali (gbm), OBS-TLF v1 (2026-06-26), aggregated by the unfoldingWord OBS Library project; text-only extraction from the TLF umbrella OBS Android app. CC BY-SA 4.0. Audio and Sweet Publishing illustrations are excluded.',
+        corpus_layer='licensed_sharealike', genre='religious_narrative', modality='text',
         story_number=story_number,
         source_url=f'https://media.ipsapps.org/in/osa/stories/36-Garhwali-{story_number:03d}.html',
-        rights_evidence='sources/online/obs_garhwali/catalog.html.metadata.json',
-        rights_status='catalog_footer_CC_BY_NC_SA_4; item_page_has_no_license_block',
-        quality_flags=['item_page_has_no_license_block', 'translation_quality_unreviewed',
-                       'illustrations_excluded'])
+        rights_evidence='https://openbiblestories.org/l/gbm/; https://git.door43.org/OBS-TLF/gbm_obs/releases/tag/v1',
+        rights_status='upstream_openbiblestories_declares_CC_BY_SA_4; v1_2026_06_26; text_only',
+        quality_flags=['translation_quality_unreviewed', 'illustrations_excluded'])
 
 
 def garhwali_section(text):
@@ -766,16 +765,28 @@ def extract():
             text = '\n'.join(lines).strip()
             if not text:
                 continue
-            r = make_record(source, f'xml-page-{i}', text, info, 'Public-domain-US',
-                'https://commons.wikimedia.org/wiki/File:Linguistic_Survey_of_India_Vol_9_Part_4.djvu' if source == 'lsi' else 'https://archive.org/details/cu31924089930774',
-                'George Abraham Grierson, Linguistic Survey of India IX.4 (1916)' if source == 'lsi' else 'Ganga Datt Upreti, Proverbs & Folklore of Kumaun and Garhwal (1894)',
+            is_lsi = source == 'lsi'
+            r = make_record(source, f'xml-page-{i}', text, info,
+                'Public-Domain-US-UK-India',
+                'https://copyright.gov.in/Copyright_Act_1957/chapter_v.html',
+                'George Abraham Grierson, Linguistic Survey of India IX.4 (1916)' if is_lsi else 'Ganga Datt Upreti, Proverbs & Folklore of Kumaun and Garhwal (1894)',
                 corpus_layer='historical_review', genre='historical_linguistics', modality='text',
+                source_url='https://commons.wikimedia.org/wiki/File:Linguistic_Survey_of_India_Vol_9_Part_4.djvu' if is_lsi else 'https://archive.org/details/cu31924089930774',
                 xml_page_index=i, xml_page_identifier=p.get('usemap'),
+                rights_status=(
+                    'public_domain_us_uk_india_term_expired_grierson' if is_lsi
+                    else 'public_domain_us_uk_india_term_expired_upreti_proverbs'
+                ),
+                rights_scope='United States, United Kingdom, and India; historical publication and author-life terms documented for this edition',
+                rights_evidence=(
+                    'Official-edition scan and public-domain status (1916, G. A. Grierson): https://commons.wikimedia.org/wiki/File:Linguistic_Survey_of_India_Vol_9_Part_4.djvu; bibliographic publication record: https://glottolog.org/resource/reference/id/50321; Grierson obituary, died 7 March 1941: https://www.nature.com/articles/147408a0; UK Copyright, Designs and Patents Act 1988 §12 (life plus 70): https://www.legislation.gov.uk/ukpga/1988/48/section/12; India Copyright Act 1957 §22 (life plus 60): https://copyright.gov.in/Copyright_Act_1957/chapter_v.html; U.S. Copyright Office statement on works published before 1931: https://www.copyright.gov/what-is-copyright/. The documented term expired in India in 2001 and the UK in 2011; Wikimedia identifies the pre-1931 edition as public domain in the United States. This assessment covers the cited 1916 volume, not other LSI editions or later editorial material.'
+                    if is_lsi else
+                    'Original edition scan and publication record (1894): https://archive.org/details/cu31924089930774; publisher-supplied author biography gives Ganga Datt Upreti dates 1 December 1834–1 August 1910: https://garudalife.in/proverbs-and-folklore-of-kumaun-and-garhwal; IGNCA identifies him as deceased: https://ignca.gov.in/proverbs-and-folklore-of-kumaun-and-garhwal/; Google Books title record for the 1900 Hill Dialects edition: https://books.google.com/books?id=veUTAAAAYAAJ; UK Copyright, Designs and Patents Act 1988 §12 (life plus 70): https://www.legislation.gov.uk/ukpga/1988/48/section/12; India Copyright Act 1957 §22 (life plus 60): https://copyright.gov.in/Copyright_Act_1957/chapter_v.html; U.S. Copyright Office statement on works published before 1931: https://www.copyright.gov/what-is-copyright/. The documented author-life term expired in India in 1970 and the UK in 1980; this is a source- and territory-specific assessment, not a blanket license.'
+                ),
                 quality_flags=['uncorrected_ocr', 'mixed_languages', 'requires_page_alignment_review'])
             r.update(iso_639_3='mul', script='mixed', historical=True,
-                language_candidates=['gbm', 'eng'] if source == 'lsi' else ['gbm', 'kfy', 'eng', 'hin'],
-                rights_status='public_domain_evidence_saved' if source == 'lsi' else 'US_PD_1894; India_author_death_evidence_pending',
-                printed_page_candidate=i-14 if source == 'lsi' else None,
+                language_candidates=['gbm', 'eng'] if is_lsi else ['gbm', 'kfy', 'eng', 'hin'],
+                printed_page_candidate=i-14 if is_lsi else None,
                 modifications='OCR word tokens joined by spaces; line boundaries preserved; no corrections')
             rows.append(r)
         save_records(ROOT / 'extracted' / 'historical' / f'{source}.jsonl', rows)
@@ -810,10 +821,11 @@ def restricted():
                 continue
             rows.append(make_record('hindialect_gbm', f'{split}:{i}', row['text'], info,
                 'CC-BY-NC-SA-4.0', 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
-                'HinDialectClassification / LINDAT dataset contributors; evaluation-only extract',
+                'Bafna, Niyati; Žabokrtský, Zdeněk; España-Bonet, Cristina; van Genabith, Josef; Kumar, Lalit Samyak Lalit; Suman, Sharda; Shivay, Rahul. HinDialect 1.1 (2022), LINDAT/CLARIAH-CZ and Kavita Kosh Project. CC BY-NC-SA 4.0.',
                 split=split, label=row['label'], usage='evaluation_only',
                 corpus_layer='evaluation_only_restricted', genre='folk_text', modality='text',
-                rights_status='noncommercial_sharealike; upstream component review required',
+                rights_status='dataset_deposit_declares_CC_BY_NC_SA_4',
+                rights_evidence='https://b2find.eudat.eu/dataset/bd804d5e-e53c-5ee3-b48c-cd2ecbad34de; https://huggingface.co/datasets/mteb/HinDialectClassification/blob/main/README.md',
                 source_url='https://lindat.mff.cuni.cz/repository/xmlui/handle/11234/1-4839'))
     save_records(ROOT / 'restricted' / 'hindialect_gbm.jsonl', rows)
     print(json.dumps({'hindialect_gbm': len(rows)}, indent=2))
@@ -960,54 +972,68 @@ def historical_more_acquire():
 
 def historical_more_extract():
     """Extract only the four Garhwali dialect sections of the 1900 volume."""
-    import pdfplumber
     pdf_raw, pdf_info = snapshot('hill_dialects_1900', 'scan.pdf')
-    pdf_path = ROOT / pdf_info['raw_path']
-    extracted = []
-    with pdfplumber.open(pdf_path) as pdf:
-        if len(pdf.pages) != 135:
-            raise ValueError(f'Expected 135 scan pages, found {len(pdf.pages)}')
-        for pdf_page in range(79, 104):
-            text_value = (pdf.pages[pdf_page - 1].extract_text() or '').strip()
-            if pdf_page == 79:
-                marker = 'Srinagar (Garhwal) dialect.'
-                if marker not in text_value:
-                    raise ValueError('Srinagar section boundary missing on scan page 79')
-                text_value = marker + text_value.split(marker, 1)[1]
-            if 'Garhwal' not in text_value:
-                raise ValueError(f'Garhwal section heading absent from scan page {pdf_page}')
-            if pdf_page <= 84:
-                dialect = 'Srinagar'
-            elif pdf_page == 85:
-                dialect = 'Srinagar; Tihri'
-            elif pdf_page <= 90:
-                dialect = 'Tihri'
-            elif pdf_page == 91:
-                dialect = 'Tihri; Lohba'
-            elif pdf_page <= 96:
-                dialect = 'Lohba'
-            elif pdf_page == 97:
-                dialect = 'Lohba; Malla Dasoli'
-            else:
-                dialect = 'Malla Dasoli'
-            extracted.append(dict(pdf_page=pdf_page, dialect=dialect, text=text_value))
-    payload = json.dumps(extracted, ensure_ascii=False, separators=(',', ':')).encode()
-    _, info = save_derived_snapshot(
-        'hill_dialects_1900', 'pages.json', payload,
-        [pdf_info['sha256'], f'pdfplumber:{pdfplumber.__version__}'],
-        extraction='pdfplumber text layer; scan pages 79-103; pre-Garhwali text removed from page 79',
-        pdf_page_start=79, pdf_page_end=103, page_count=len(extracted))
+    derived_pointer = RAW / 'hill_dialects_1900' / 'pages.json.metadata.json'
+    if derived_pointer.exists():
+        payload, info = snapshot('hill_dialects_1900', 'pages.json')
+        if info.get('input_sha256s', [None])[0] != pdf_info['sha256']:
+            raise ValueError('Cached Hill Dialects extraction was made from a different scan')
+        extracted = json.loads(payload)
+    else:
+        import pdfplumber
+        pdf_path = ROOT / pdf_info['raw_path']
+        extracted = []
+        with pdfplumber.open(pdf_path) as pdf:
+            if len(pdf.pages) != 135:
+                raise ValueError(f'Expected 135 scan pages, found {len(pdf.pages)}')
+            for pdf_page in range(79, 104):
+                text_value = (pdf.pages[pdf_page - 1].extract_text() or '').strip()
+                if pdf_page == 79:
+                    marker = 'Srinagar (Garhwal) dialect.'
+                    if marker not in text_value:
+                        raise ValueError('Srinagar section boundary missing on scan page 79')
+                    text_value = marker + text_value.split(marker, 1)[1]
+                if 'Garhwal' not in text_value:
+                    raise ValueError(f'Garhwal section heading absent from scan page {pdf_page}')
+                if pdf_page <= 84:
+                    dialect = 'Srinagar'
+                elif pdf_page == 85:
+                    dialect = 'Srinagar; Tihri'
+                elif pdf_page <= 90:
+                    dialect = 'Tihri'
+                elif pdf_page == 91:
+                    dialect = 'Tihri; Lohba'
+                elif pdf_page <= 96:
+                    dialect = 'Lohba'
+                elif pdf_page == 97:
+                    dialect = 'Lohba; Malla Dasoli'
+                else:
+                    dialect = 'Malla Dasoli'
+                extracted.append(dict(pdf_page=pdf_page, dialect=dialect, text=text_value))
+        payload = json.dumps(extracted, ensure_ascii=False, separators=(',', ':')).encode()
+        _, info = save_derived_snapshot(
+            'hill_dialects_1900', 'pages.json', payload,
+            [pdf_info['sha256'], f'pdfplumber:{pdfplumber.__version__}'],
+            extraction='pdfplumber text layer; scan pages 79-103; pre-Garhwali text removed from page 79',
+            pdf_page_start=79, pdf_page_end=103, page_count=len(extracted))
+    if len(extracted) != 25 or [item.get('pdf_page') for item in extracted] != list(range(79, 104)):
+        raise ValueError('Cached Hill Dialects extraction is not the expected pages 79-103')
+    if any('Garhwal' not in item.get('text', '') for item in extracted):
+        raise ValueError('Cached Hill Dialects extraction contains a page outside the Garhwal section')
     rows = []
     for item in extracted:
         rec = make_record(
             'hill_dialects_1900', f'pdf-page-{item["pdf_page"]}', item['text'], info,
-            'Public-domain-US', 'https://books.google.com/books?id=veUTAAAAYAAJ',
+            'Public-Domain-US-UK-India',
+            'https://copyright.gov.in/Copyright_Act_1957/chapter_v.html',
             'Ganga Datt Upreti, Hill Dialects of the Kumaun Division (1900)',
             corpus_layer='historical_review', genre='historical_linguistics', modality='text',
             pdf_page=item['pdf_page'], dialect=item['dialect'],
             language_candidates=['gbm', 'eng'],
             source_url='https://books.google.com/books?id=veUTAAAAYAAJ',
-            rights_status='Google_Books_full_view_and_public_domain_flag; US_PD_1900; India_author_death_evidence_pending',
+            rights_status='public_domain_us_uk_india_term_expired_upreti_hill_dialects',
+            rights_scope='United States, United Kingdom, and India; author-life term documented for Ganga Datt Upreti',
+            rights_evidence='Google Books full-view scan and publication record (1900): https://books.google.com/books?id=veUTAAAAYAAJ; publisher-supplied author biography gives Ganga Datt Upreti dates 1 December 1834–1 August 1910: https://garudalife.in/proverbs-and-folklore-of-kumaun-and-garhwal; IGNCA identifies him as deceased: https://ignca.gov.in/proverbs-and-folklore-of-kumaun-and-garhwal; UK Copyright, Designs and Patents Act 1988 §12 (life plus 70): https://www.legislation.gov.uk/ukpga/1988/48/section/12; India Copyright Act 1957 §22 (life plus 60): https://copyright.gov.in/Copyright_Act_1957/chapter_v.html; U.S. Copyright Office statement on works published before 1931: https://www.copyright.gov/what-is-copyright/. The documented author-life term expired in India in 1970 and the UK in 1980; this is a source- and territory-specific assessment, not a blanket license.',
             quality_flags=['uncorrected_embedded_ocr', 'mixed_Garhwali_English',
                            'Devanagari_and_Latin_transliteration'])
         rec.update(iso_639_3='mul', script='mixed', historical=True,
@@ -1180,6 +1206,50 @@ def indic_asr_range_acquire():
                       'range_requests': derived_info['range_requests']}, indent=2))
 
 
+def indic_asr_record(row, row_index, info):
+    if row.get('language') != 'garhwali' or not row.get('sentence', '').strip():
+        raise ValueError(f'Unexpected Garhwali ASR row {row_index}')
+
+    upstream_source = row.get('source') or 'not_reported'
+    source_url = 'https://huggingface.co/datasets/grushaaaaa/indic-dialect-asr'
+    rights_status = 'dataset_declares_CC_BY_4; source_component_and_consent_review_pending'
+    rights_evidence = None
+    quality_flags = [
+        'community_aggregation', 'possible_upstream_duplicate',
+        'source_lineage_review_required',
+    ]
+    attribution = f'Indic Dialect ASR by grushaaaaa; declared source: {upstream_source}'
+
+    if upstream_source.startswith('Vaani/'):
+        rights_status = 'upstream_vaani_cc_by_4_0'
+        rights_evidence = 'https://vaani.iisc.ac.in/dataset/Version1'
+        attribution = (
+            'Project VAANI, IISc/ARTPARK; transcript accessed via '
+            'grushaaaaa/indic-dialect-asr'
+        )
+        quality_flags.remove('source_lineage_review_required')
+    elif upstream_source == 'facebook/omnilingual-asr-corpus':
+        rights_status = 'upstream_meta_cc_by_4_0'
+        rights_evidence = 'https://huggingface.co/datasets/facebook/omnilingual-asr-corpus'
+        attribution = (
+            'AI at Meta, Omnilingual ASR Corpus; transcript accessed via '
+            'grushaaaaa/indic-dialect-asr'
+        )
+        quality_flags.remove('source_lineage_review_required')
+
+    return make_record(
+        'indic_dialect_asr_gbm', row_index, row['sentence'], info,
+        'CC-BY-4.0', BY, attribution,
+        split='train', upstream_row_index=row_index,
+        upstream_source=upstream_source,
+        usage='all_data_experimental_user_approved', corpus_layer='experimental',
+        experimental_training_eligible=True, genre='speech_transcript',
+        modality='speech_transcript', audio_referenced=True,
+        source_url=source_url, rights_status=rights_status,
+        rights_evidence=rights_evidence, quality_flags=quality_flags,
+    )
+
+
 def indic_asr_extract():
     rows = []
     transcript_pointer = RAW / 'indic_dialect_asr' / 'transcripts.json.metadata.json'
@@ -1196,21 +1266,7 @@ def indic_asr_extract():
                 source_rows.append(dict(upstream_row_index=item['row_idx'], **item['row']))
     for row in source_rows:
             row_index = row['upstream_row_index']
-            if row.get('language') != 'garhwali' or not row.get('sentence', '').strip():
-                raise ValueError(f'Unexpected Garhwali ASR row {row_index}')
-            source_name = row.get('source') or 'not_reported'
-            rec = make_record('indic_dialect_asr_gbm', row_index, row['sentence'], info,
-                'CC-BY-4.0', BY,
-                f'Indic Dialect ASR dataset by grushaaaaa; declared source: {source_name}',
-                split='train', upstream_row_index=row_index, upstream_source=source_name,
-                usage='all_data_experimental_user_approved', corpus_layer='experimental',
-                experimental_training_eligible=True, genre='speech_transcript',
-                modality='speech_transcript', audio_referenced=True,
-                source_url='https://huggingface.co/datasets/grushaaaaa/indic-dialect-asr',
-                rights_status='dataset_declares_CC_BY_4; source_component_and_consent_review_pending',
-                quality_flags=['community_aggregation', 'possible_upstream_duplicate',
-                               'source_lineage_review_required'])
-            rows.append(rec)
+            rows.append(indic_asr_record(row, row_index, info))
     if not rows:
         raise ValueError('No Garhwali ASR row snapshots found')
     save_records(ROOT / 'experimental' / 'indic_dialect_asr_gbm.jsonl', rows)
@@ -1258,12 +1314,13 @@ def panlex_extract():
             rec = make_record('panlex_gbm', f'{item.get("var_code") or "gbm"}:{len(rows)}',
                 text_value, info, 'CC-BY-NC-SA-4.0',
                 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
-                'PanLex project of The Long Now Foundation; Hugging Face mirror by lbourdois',
+                'PanLex materials are part of the PanLex project of The Long Now Foundation, and are shared under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. PanLex and The Long Now Foundation disclaim any warranties associated with the provision of these materials. For more information about PanLex, please visit panlex.org. Hugging Face mirror: lbourdois/panlex.',
                 corpus_layer='restricted_nc_sa', genre='lexicon', modality='text',
                 variety_code=item.get('var_code'), language_name=item.get('639-3_english_name'),
                 variety_name=item.get('english_name_var'),
                 source_url='https://huggingface.co/datasets/lbourdois/panlex',
-                rights_status='official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied',
+                rights_status='panlex_database_explicitly_CC_BY_NC_SA_4',
+                rights_evidence='https://panlex.org/license/; https://dev.panlex.org/source-registration/',
                 quality_flags=['machine_aggregated_lexicon', 'meaning_links_absent_in_mirror'])
             rows.append(rec)
     save_records(ROOT / 'restricted' / 'panlex_gbm.jsonl', rows)
@@ -1639,12 +1696,14 @@ def fifth_wave_extract():
             raise ValueError(f'Walton language passage absent from scan page {scan_page}')
         record = make_record(
             'walton_gazetteer_1910', f'scan-page-{scan_page}', text_value, walton_info,
-            'Public-Domain', 'https://archive.org/details/in.ernet.dli.2015.48008',
+            'Public-Domain-India', 'https://copyright.gov.in/Copyright_Act_1957/chapter_v.html',
             'H. G. Walton, British Garhwal: A Gazetteer (1910)',
             scan_page=scan_page, corpus_layer='historical_review',
             genre='historical_gazetteer_language_note', modality='text',
             source_url='https://archive.org/details/in.ernet.dli.2015.48008',
-            rights_evidence='sources/online/walton_gazetteer_1910/metadata.json.metadata.json',
+            rights_status='public_domain_india_government_work_term_expired',
+            rights_scope='India; classification as a Government work is based on the official government gazetteer series and Government Press imprint',
+            rights_evidence='India Copyright Act §§2(k), 17(d), 28: https://copyright.gov.in/Copyright_Act_1957/chapter_i.html; https://copyright.gov.in/Copyright_Act_1957/chapter_iv.html; https://copyright.gov.in/Copyright_Act_1957/chapter_v.html; title-page and series bibliographic evidence: https://books.google.com/books/about/British_Garhwal.html?id=Pw71xwEACAAJ; https://ci.nii.ac.jp/ncid/BA22763972?l=ja&linkamp=button-menu. The scanned title page identifies Volume XXXVI of the District Gazetteers of the United Provinces, H. G. Walton, I.C.S., printed at the Government Press, Allahabad, 1910. Under §28 the term would have ended in 1970 if Government was first owner; §17(d) supplies that default for Government works. This is a documented territorial assessment, not a blanket worldwide license.',
             quality_flags=['uncorrected_ocr', 'predominantly_English',
                            'historical_language_description'])
         record.update(iso_639_3='mul', script='mixed', historical=True,
@@ -2108,9 +2167,14 @@ def ninth_wave_extract():
                    ('भंकोरा', 'Bhankora', 'trumpet')]
     for index, (term, roman, gloss) in enumerate(instruments, 1):
         rows.append(themed_lexicon_record(
-            'pib_ramman_instruments', index, term, info, 'LicenseRef-Government-Publication', info['url'],
+            'pib_ramman_instruments', index, term, info,
+            'LicenseRef-PIB-Copyright-Policy',
+            'https://www.pib.gov.in/ContentPage.aspx?lang=2&menuid=3604&reg=48',
             'Press Information Bureau, Government of India', gloss_en=gloss,
             semantic_domain='instrument', romanization=roman, confidence='high',
+            source_url=info['url'],
+            rights_evidence='https://www.pib.gov.in/ContentPage.aspx?lang=2&menuid=3604&reg=48',
+            rights_status='PIB_policy_permits_reproduction_of_PIB_material_with_attribution; third_party_material_excluded',
             quality_flags=['manual_transcription_from_source_list', 'needs_native_review']))
 
     raw, info = snapshot('themed_vocabulary', 'mountainvoices-glossary.html')
@@ -2232,10 +2296,14 @@ def eighth_wave_extract():
             rows.append(cultural_record(
                 'crooke_northern_india_folklore', f'volume-{volume}:passage-{chunk["source_unit"]:04d}',
                 chunk['text'], dict(info, rights_snapshot=landing_info, gutenberg_ebook=43680 + volume),
-                'Project-Gutenberg-Public-Domain-US',
-                'https://www.gutenberg.org/policy/permission.html',
+                'Public-Domain-US-UK-India',
+                'https://copyright.gov.in/documents/international%20copyright%20order.htm',
                 f'William Crooke, The Popular Religion and Folk-Lore of Northern India, volume {volume} (1896); Project Gutenberg',
                 source_volume=volume, source_unit=chunk['source_unit'],
+                source_url=f'https://www.gutenberg.org/ebooks/{43680 + volume}',
+                rights_status='public_domain_us_uk_india_term_expired',
+                rights_scope='United States, United Kingdom, and India; based on publication, author-death, and country-of-origin term evidence',
+                rights_evidence='Bibliographic record: first edition published at Westminster in 1896, https://www.nature.com/articles/055577a0; William Crooke death recorded 25 October 1923, https://www.nature.com/articles/112663b0. Project Gutenberg identifies both editions as public domain in the USA: https://www.gutenberg.org/ebooks/43681; https://www.gutenberg.org/ebooks/43682. UK Copyright, Designs and Patents Act 1988 §12 uses life plus 70 years, so the term ended 31 December 1993: https://www.legislation.gov.uk/ukpga/1988/48/section/12. India International Copyright Order 1999 ¶7 caps the term at the country-of-origin term and identifies the UK as a Berne country: https://copyright.gov.in/documents/international%20copyright%20order.htm. No blanket corpus license is asserted.',
                 cultural_genres=cultural_genres(chunk['text']),
                 quality_flags=['historical_colonial_source', 'garhwali_relevance_keyword_selected']))
 

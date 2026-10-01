@@ -141,6 +141,45 @@ class CollectionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             mod.meta_record(dict(row, iso_639_3='hin'), 'test', 0, {})
 
+    def test_indic_asr_trusts_only_verified_upstream_license_sources(self):
+        mod = self.load()
+        info = {'raw_path': 'snapshot.json', 'sha256': 'abc'}
+
+        vaani = mod.indic_asr_record({
+            'language': 'garhwali', 'sentence': 'गढ़वाली वाक्य।',
+            'source': 'Vaani/Uttarakhand_TehriGarhwal',
+        }, 3, info)
+        self.assertEqual(vaani['license_id'], 'CC-BY-4.0')
+        self.assertEqual(vaani['rights_status'], 'upstream_vaani_cc_by_4_0')
+        self.assertEqual(vaani['rights_evidence'], 'https://vaani.iisc.ac.in/dataset/Version1')
+        self.assertEqual(vaani['upstream_source'], 'Vaani/Uttarakhand_TehriGarhwal')
+        self.assertEqual(
+            vaani['source_url'],
+            'https://huggingface.co/datasets/grushaaaaa/indic-dialect-asr',
+        )
+        self.assertNotIn('source_lineage_review_required', vaani['quality_flags'])
+        self.assertFalse(vaani['training_eligible'])
+
+        meta = mod.indic_asr_record({
+            'language': 'garhwali', 'sentence': 'गढ़वाली वाक्य।',
+            'source': 'facebook/omnilingual-asr-corpus',
+        }, 4, info)
+        self.assertEqual(meta['rights_status'], 'upstream_meta_cc_by_4_0')
+        self.assertEqual(
+            meta['rights_evidence'],
+            'https://huggingface.co/datasets/facebook/omnilingual-asr-corpus',
+        )
+        self.assertEqual(
+            meta['source_url'],
+            'https://huggingface.co/datasets/grushaaaaa/indic-dialect-asr',
+        )
+
+        unknown = mod.indic_asr_record({
+            'language': 'garhwali', 'sentence': 'गढ़वाली वाक्य।',
+            'source': 'unverified-upstream',
+        }, 5, info)
+        self.assertIn('review_pending', unknown['rights_status'])
+
     def test_benchmark_train_named_split_still_cannot_train(self):
         mod = self.load()
         self.assertTrue(hasattr(mod, 'benchmark_record'), 'Benchmark isolation not implemented')
@@ -235,14 +274,16 @@ class CollectionTests(unittest.TestCase):
         blocks = mod.obs_text_blocks(page)
         self.assertEqual(blocks, ['\u0915\u0925\u093e', '\u0936\u0940\u0930\u094d\u0937\u0915', '\u092a\u0939\u0932\u094b \u0935\u093e\u0915\u094d\u092f\u0964', '\u0938\u094d\u0930\u094b\u0924'])
 
-    def test_obs_record_stays_in_noncommercial_sharealike_layer(self):
+    def test_obs_record_uses_the_exact_open_bible_stories_sharealike_license(self):
         mod = self.load()
         page = '<div id="content"><div class="mt">कथा</div><div class="p">गढ़वाली पाठ।</div></div>'.encode()
         record = mod.obs_garhwali_record(7, page, {'raw_path': 'story.html', 'sha256': 'x'})
         self.assertEqual(record['record_id'], 'obs_garhwali:007')
-        self.assertEqual(record['license_id'], 'CC-BY-NC-SA-4.0')
-        self.assertEqual(record['corpus_layer'], 'restricted_nc_sa')
-        self.assertIn('item_page_has_no_license_block', record['quality_flags'])
+        self.assertEqual(record['license_id'], 'CC-BY-SA-4.0')
+        self.assertEqual(record['corpus_layer'], 'licensed_sharealike')
+        self.assertIn('openbiblestories.org/l/gbm/', record['rights_evidence'])
+        self.assertIn('translation_quality_unreviewed', record['quality_flags'])
+        self.assertNotIn('item_page_has_no_license_block', record['quality_flags'])
         self.assertEqual(record['story_number'], 7)
 
     def test_djvu_word_pages_preserve_page_boundaries(self):

@@ -16,11 +16,19 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
         payload.write_text(content, encoding="utf-8")
         digest = hashlib.sha256(payload.read_bytes()).hexdigest()
         (package / "README.md").write_text(
-            "---\nconfigs:\n- config_name: catalog\n  data_files:\n  - split: train\n    path: data/catalog/train-*.jsonl\n---\n",
+            "---\nconfigs:\n- config_name: catalog\n  data_files:\n  - split: train\n    path: data/catalog/train-*.jsonl\n---\n"
+            "[Reference index](reference_index_manifest.json)\n",
             encoding="utf-8",
         )
         for name in ("ATTRIBUTION.md", "LICENSE_POLICY.md", "REMOVAL_POLICY.md"):
             (package / name).write_text("policy\n", encoding="utf-8")
+        (package / "DEVELOPER_QUICKSTART.md").write_text("quick start\n", encoding="utf-8")
+        (package / "DATASET_SCHEMA.md").write_text("schema\n", encoding="utf-8")
+        (package / "search_garhwali_lexicon.py").write_text("print('search')\n", encoding="utf-8")
+        (package / "research").mkdir()
+        (package / "research/text-rights-resolution-2026-09-30.md").write_text(
+            "rights decisions\n", encoding="utf-8"
+        )
         reference = package / "reference_index_manifest.json"
         reference.write_text(json.dumps({
             "profile": "metadata_only_complete_reference_index", "tables": {},
@@ -37,22 +45,38 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
         return package
 
     def test_card_paths_move_under_version_prefix(self):
-        card = "path: data/text/train-*.jsonl\n"
+        card = (
+            "path: data/text/train-*.jsonl\n"
+            "[rights report](research/text-rights-resolution-2026-09-30.md)\n"
+            "[reference index](reference_index_manifest.json)\n"
+            "[developer guide](DEVELOPER_QUICKSTART.md)\n"
+            "[schema](DATASET_SCHEMA.md)\n"
+        )
         self.assertEqual(
             version_card(card, "releases/v2.0.0"),
-            "path: releases/v2.0.0/data/text/train-*.jsonl\n",
+            "path: releases/v2.0.0/data/text/train-*.jsonl\n"
+            "[rights report](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v2.0.0/research/text-rights-resolution-2026-09-30.md)\n"
+            "[reference index](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v2.0.0/reference_index_manifest.json)\n"
+            "[developer guide](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v2.0.0/DEVELOPER_QUICKSTART.md)\n"
+            "[schema](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v2.0.0/DATASET_SCHEMA.md)\n",
         )
 
     def test_validates_package_hashes_and_prepares_without_overwrite(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             package = self.make_package(root)
-            self.assertEqual(len(validate_package(package)), 7)
+            self.assertEqual(len(validate_package(package)), 11)
             output = root / "upload"
             plan = prepare(package, output, root / "plan.json")
-            self.assertEqual(plan["file_count"], 8)
+            self.assertEqual(plan["file_count"], 12)
             self.assertIn("releases/v2.0.0/data/catalog/train-*.jsonl", (output / "README.md").read_text())
+            self.assertIn(
+                "resolve/main/releases/v2.0.0/reference_index_manifest.json",
+                (output / "README.md").read_text(),
+            )
             self.assertTrue((output / "releases/v2.0.0/data/catalog/train-00000.jsonl").exists())
+            self.assertTrue((output / "releases/v2.0.0/DEVELOPER_QUICKSTART.md").exists())
+            self.assertTrue((output / "releases/v2.0.0/search_garhwali_lexicon.py").exists())
             self.assertEqual((root / "plan.json").stat().st_size > 0, True)
             with self.assertRaises(FileExistsError):
                 prepare(package, output, root / "plan.json")
