@@ -7,16 +7,20 @@ The current public corpus release is **v0.2.3** at Hub commit
 Its 246-row `text_resources/train` config surfaces existing catalog records;
 the package contains 827,450 overlapping-view rows. The speech repository
 remains at v0.2.1. The local Internet Archive intake contains 119
-checksum-verified payload files (6,005,077,831 bytes), with 3,369 page OCR
-records / 3,368 exact-unique texts. Source extractors found zero exact matches
-in the source/extraction folders they scanned. A broader check against all
-32,072 canonical cleaned parent texts found 0 exact matches and 0 near-match
-candidates at 5-gram Jaccard ≥0.85, after scoring 1,647,488 length-compatible
-pairs. This does not test semantic similarity or every corpus layer. The 39
-media files total 14:09:25.531 of playback, not verified Garhwali speech time.
-All pages remain training- and redistribution-ineligible, and their language
-and OCR accuracy are unreviewed. No intake material was published; raw files
-remain ignored. See the [source ledger](research/internet-archive-intake-2026-10-03.md)
+checksum-verified payload files (6,005,077,831 bytes) and 4,011 OCR page
+objects after two local DjVu sidecars were reconciled. There are 3,983
+non-empty OCR rows and 3,981 unique normalized non-empty values; one duplicate
+group covers two page rows. A broader check against all 32,072 canonical
+cleaned parent texts found 2 exact page matches (already represented Walton
+gazetteer pages) and 0 near-match candidates at 5-gram Jaccard ≥0.85, after
+scoring 1,910,194 length-compatible pairs. This does not test semantic
+similarity or every corpus layer. The 39 media files total 14:09:25.531 of
+playback, not verified Garhwali speech time. All pages remain unverified for
+language and OCR accuracy and none was newly cleared for training or
+redistribution. No Archive intake files or new extracted rows were published;
+the two exact page matches already exist as Walton gazetteer records. Raw files remain ignored.
+See the [source ledger](research/internet-archive-intake-2026-10-03.md),
+[source-by-source disposition](research/internet-archive-source-disposition-2026-10-04.md),
 and [quality/overlap audit](research/internet-archive-intake-quality-2026-10-04.md).
 
 ## Hugging Face quality release v0.2.2 — 2026-10-01 (historical audit)

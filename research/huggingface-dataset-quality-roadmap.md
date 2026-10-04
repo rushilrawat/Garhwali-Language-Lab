@@ -11,7 +11,7 @@ filter, and reuse for clearly described purposes. Progress is measured by
 quality-qualified content and reliable access—not by adding reference-table
 rows to a headline total.
 
-## Current work focus — Phase 6 source intake, then Phase 7 publication
+## Current work focus — Phase 6 source disposition and candidate triage
 
 Phase 7's latest release is published as v0.2.3. The v0.2.2 and v0.2.3
 releases added access views over catalog values; neither collected new source
@@ -21,22 +21,26 @@ normalized-unique Garhwali records (40,759 whitespace-delimited words;
 recommendation rule, so this is a lookup/research view, not a training-ready or
 evaluation set.
 
-Phase 6 has completed automated intake profiling and cross-deduplication
-against the canonical cleaned parent-text view. The 3–4 October Internet
-Archive intake has 3,369 non-empty OCR pages (3,368 exact-unique normalized
-texts); comparison against all 32,072 cleaned parent texts found zero exact
-matches and zero 5-gram Jaccard candidates at ≥0.85 after 1,647,488
-length-compatible pairs were scored. This is a defined text-layer check, not a
-semantic or all-layer guarantee. The profile verified 39/39 media files are
-technically readable. OCR includes 1,194 mostly-Devanagari pages, 871
-mostly-Latin pages, 1,302 mixed-script pages, and two with no letters. These
-are script signals, not language identification: the audit cannot distinguish
-Garhwali from Hindi. Media totals 14:09:25.531, not verified Garhwali speech
-time. None of the pages is currently eligible for training or redistribution.
-See the
+Phase 6 has completed automated intake profiling, source-by-source metadata
+disposition, non-destructive candidate views, and cross-deduplication against
+the canonical cleaned parent-text view. The original 3,369-page index is now
+reconciled with 642 pages from two already-downloaded DjVu sidecars, for 4,011
+page objects total: 3,983 have OCR text, 3,982 remain non-empty after
+normalization, and 3,981 are distinct normalized values. Two page rows exactly
+match records already represented in the 32,072-row cleaned corpus; there are
+zero 5-gram Jaccard candidates at ≥0.85 among 1,910,194 scored pairs. This is a
+defined text-layer check, not a semantic or all-layer guarantee. The profile
+verified 39/39 media files are technically readable. It reports 1,194
+mostly-Devanagari pages, 1,485 mostly-Latin pages, 1,302 mixed-script pages,
+and 30 with no letters. These are script signals, not language
+identification: the audit cannot distinguish Garhwali from Hindi. Media totals
+14:09:25.531, not verified Garhwali speech time. No page or media content was
+newly cleared for training or public redistribution. See the
 [`Internet Archive intake report`](internet-archive-intake-2026-10-03.md).
 The quality results and limits are in the
 [`intake quality audit`](internet-archive-intake-quality-2026-10-04.md).
+All 55 item decisions and source-linked page/media candidate-view details are
+in the [`source disposition report`](internet-archive-source-disposition-2026-10-04.md).
 
 ## Metric contract
 
@@ -98,7 +102,7 @@ by held-out evaluation. The complete v0.2.3 per-config preflight is in
 
 **Published 2 October 2026** at [Hub commit `76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d). The new config streams through `datasets.load_dataset` with 246 records. The Dataset Viewer Parquet endpoint returned HTTP 500 twice; preview remains unverified. Full selection details are in the [existing-corpus expansion audit](huggingface-existing-corpus-expansion-audit-2026-10-02.md).
 
-**Next action:** record a source-level disposition and rights-evidence decision for every Archive work, then build non-destructive, source-linked candidate views for page text and media. Page language is not established by the source title or script profile; no ASR or language-ID runtime was available in this pass. Do not count a page as Garhwali content until its text gives that evidence. Keep all originals and metadata; publish no new Archive expressive content until a compatible reuse basis is established and rerun the additive release pipeline checks.
+**Next action:** the initial page-level triage now records script composition and OCR-warning signals for every candidate. Add stronger language/genre candidate evidence for the 920 priority language-study pages and 432 translated-folklore pages, then investigate item-level reuse evidence for works that contain Garhwali-language material. Keep all automated output as a review signal, not a verified language label; preserve every original page and exclude no candidate from the local inventory. Media language and transcript review is a separate later workstream. Re-run the additive release pipeline only for content with an evidenced compatible use basis.
 
 ## Ordered phases
 
@@ -230,13 +234,14 @@ as machine-generated and review state explicit.
 
 **Updated 2026-10-04:** title-focused Archive queries screened text, audio and
 video candidates; the complete local acquisition has 119 unique payload hashes
-and a 3,369-page OCR index (3,368 exact-unique texts; one internal repeated
-page). The canonical text overlap audit found zero exact matches and zero
-≥0.85 5-gram candidates against 32,072 cleaned parent texts. Automated
-screening found no empty page text, missing record IDs, or missing source IDs.
-It profiles script and OCR-warning signals but does not identify Garhwali
-versus Hindi. All 39 media files pass `ffprobe`, but media language and speech
-content are unmeasured. Full results are in the
+and a 4,011-page view, including 642 rows from two supplemental local DjVu
+sidecars. There are 3,983 non-empty OCR rows, 3,981 distinct non-empty
+normalized values, 2 canonical exact matches, and zero ≥0.85 5-gram candidates
+against 32,072 cleaned parent texts. All 4,011 rows have stable record/source
+identifiers and text fingerprints. Automated screening reports OCR warnings
+but does not identify Garhwali versus Hindi. All 39 media files pass
+`ffprobe`, but media language and speech content are unmeasured. Full results
+and each item’s disposition are in the
 [intake quality audit](internet-archive-intake-quality-2026-10-04.md). New
 files remain outside the published package.
 
@@ -299,6 +304,6 @@ versioned manifest and comparable metrics.
 | 3. Dedup/splits | Partial | `text_expansion` exact-string dedupe is cross-config; complete document-family leakage report remains |
 | 4. Text/lexicon | Active | 246-row supplementary view is public; quality remains mixed, with no training/evaluation promotion |
 | 5. Speech/transcripts | Existing partial audits | Explicit labeled/empty/draft counts and split-safe manifests |
-| 6. Coverage expansion | Active — automated profile and canonical-text dedup complete | 119 local payloads; 3,369 OCR pages; 0 exact / 0 ≥0.85 near candidates against 32,072 cleaned parent texts; source-level language and rights disposition, media-content review, and use decisions remain |
+| 6. Coverage expansion | Active — intake, source disposition, and initial script/OCR triage complete | 119 local payloads; 4,011 OCR pages; 3,981 normalized unique non-empty texts; 2 exact / 0 ≥0.85 near candidates against 32,072 cleaned parent texts; 55 item dispositions; stronger page-language evidence, rights review, and media-content review remain |
 | 7. HF release views | v0.2.3 live | Upload at `76dac8d`; direct stream verified at 246 rows; retry Viewer/Parquet when the Hub endpoint recovers |
 | 8. Automation | Existing refresh command | Quality-gated, repeatable end-to-end release run |

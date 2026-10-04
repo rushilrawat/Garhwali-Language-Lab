@@ -21,6 +21,7 @@ from audit_archive_intake_quality import OCR_DIRS
 ROOT = Path(__file__).resolve().parents[1]
 CORPUS_PATH = Path("data/processed/model_ready/cleaned/text.jsonl")
 OUTPUT_PATH = Path("data/extracted/research/internet_archive_corpus_overlap_2026-10-04.json")
+CANDIDATE_VIEW_PATH = Path("data/extracted/research/internet_archive_candidate_views_2026-10-04/text_review_candidates.jsonl")
 
 
 def normalize_text(value: object) -> str:
@@ -48,6 +49,16 @@ def read_jsonl(path: Path) -> list[dict]:
 
 
 def read_archive_rows(root: Path) -> list[dict]:
+    candidate_path = root / CANDIDATE_VIEW_PATH
+    if candidate_path.is_file():
+        return [
+            {
+                "record_id": str(row.get("record_id") or ""),
+                "source_id": str(row.get("source_id") or row.get("archive_identifier") or ""),
+                "text": row.get("text_normalized") or row.get("text") or "",
+            }
+            for row in read_jsonl(candidate_path)
+        ]
     rows = []
     for relative_dir in OCR_DIRS:
         for path in sorted((root / relative_dir).glob("*.jsonl")):
@@ -66,6 +77,22 @@ def corpus_text(row: dict) -> str:
         if isinstance(value, str) and value.strip():
             return value
     return ""
+
+
+def corpus_provenance_summary(row: dict) -> dict:
+    provenance = row.get("provenance")
+    if isinstance(provenance, dict):
+        provenance = [provenance]
+    if not isinstance(provenance, list):
+        provenance = []
+    record_ids = sorted({str(item.get("record_id")) for item in provenance if item.get("record_id")})
+    source_ids = sorted({str(item.get("source_id")) for item in provenance if item.get("source_id")})
+    rights_statuses = sorted({str(item.get("rights_status")) for item in provenance if item.get("rights_status")})
+    return {
+        "source_record_ids": record_ids,
+        "source_ids": source_ids,
+        "rights_statuses": rights_statuses,
+    }
 
 
 def audit_overlap(
@@ -124,6 +151,7 @@ def audit_overlap(
             "view": "model_ready/cleaned/text",
             "line_number": line_number,
             "record_id": str(row.get("record_id") or row.get("id") or ""),
+            **corpus_provenance_summary(row),
             "text_sha256": digest,
             "characters": len(normalized),
         }
@@ -166,6 +194,7 @@ def audit_overlap(
                     "view": "model_ready/cleaned/text",
                     "line_number": line_number,
                     "record_id": str(row.get("record_id") or row.get("id") or ""),
+                    **corpus_provenance_summary(row),
                     "text_sha256": corpus_digest,
                     "characters": len(normalized),
                 },

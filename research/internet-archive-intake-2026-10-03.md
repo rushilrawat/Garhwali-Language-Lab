@@ -1,5 +1,14 @@
 # Internet Archive deep search and intake — 2026-10-03 to 2026-10-04
 
+> **Count update (4 October):** this acquisition log preserves its original
+> search snapshot. Its initial 3,369-page index was expanded by reconciling two
+> already-downloaded DjVu sidecars, and the canonical overlap check found two
+> pages already represented under Walton gazetteer records. The current
+> 4,011-page inventory, page-level triage signals, exact overlap references,
+> and item-by-item evidence decisions are in the
+> [source disposition report](internet-archive-source-disposition-2026-10-04.md)
+> and [updated quality audit](internet-archive-intake-quality-2026-10-04.md).
+
 ## Outcome
 
 The first Internet Archive search returned **70 text-item records, 27 audio

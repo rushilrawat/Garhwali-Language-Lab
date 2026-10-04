@@ -9,17 +9,22 @@ catalog; the release has 827,450 overlapping-view rows. The separate speech
 repository remains at v0.2.1. These figures are unchanged by the Archive intake.
 
 The 3–4 October Internet Archive search and acquisition added **119 local
-payload files (6,005,077,831 bytes)** and a page-level index of **3,369 OCR
-records / 3,368 exact-unique normalized texts**. Source extractors found no
-exact overlap in their scanned source/extraction folders. A broader comparison
-against all **32,072 canonical cleaned parent texts** found zero exact matches
-and zero 5-gram Jaccard candidates at ≥0.85 (1,647,488 length-compatible
-pairs scored). This is not a guarantee against semantic or untested-layer
-overlap. All 3,369 rows remain ineligible for training and redistribution;
-page language and OCR accuracy are unverified. The 39 local audio/video files
-total 14:09:25.531 of playback, not verified Garhwali speech time. All payloads
-remain Git-ignored and no Archive material is in GitHub or Hugging Face
-dataset releases. See the [source intake report](research/internet-archive-intake-2026-10-03.md)
+payload files (6,005,077,831 bytes)**. The initial 3,369-page index was
+expanded with two already-downloaded DjVu sidecars to **4,011 OCR page
+objects**: 3,983 contain OCR, 3,982 remain non-empty after normalization, and
+3,981 are distinct normalized values. One normalized duplicate group covers
+two page rows; one non-empty OCR row normalizes to no letters or numbers. A
+comparison against all **32,072 canonical cleaned parent texts** found 2
+exact page matches (both already represented as Walton gazetteer pages) and 0
+5-gram Jaccard candidates at ≥0.85 among 1,910,194 scored pairs. This is not a
+guarantee against semantic or untested-layer overlap. Page language and OCR
+accuracy are unverified, and none of the 4,011 pages has been newly cleared
+for training or redistribution. The 39 local audio/video files total
+14:09:25.531 of playback, not verified Garhwali speech time. All payloads
+remain Git-ignored; no Archive acquisition files or new extracted rows are in
+GitHub or Hugging Face dataset releases. The two exact page matches were
+already represented by Walton gazetteer records. See the [source intake report](research/internet-archive-intake-2026-10-03.md),
+[source-by-source disposition](research/internet-archive-source-disposition-2026-10-04.md),
 and [quality and overlap audit](research/internet-archive-intake-quality-2026-10-04.md).
 
 ## Hugging Face quality release v0.2.2 — 2026-10-01 (historical review)

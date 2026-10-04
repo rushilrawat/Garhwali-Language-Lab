@@ -1,6 +1,6 @@
 # Corpus preparation status
 
-Updated 2026-10-04. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest suite passed 707/707 on 4 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-10-04. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest suite passed **716/716** on 4 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
 
 ## Internet Archive deep intake — local snapshot, 2026-10-04
 
@@ -8,16 +8,18 @@ Updated 2026-10-04. This is a chronological preparation log: model-result paragr
   Internet Archive collection of **119 unique payload files / 6,005,077,831
   bytes**. The files remain ignored locally; no Hugging Face or GitHub release
   changed.
-- The local page indexes contain **3,369 non-empty OCR page records**, **3,368
-  exact-unique texts**, and one repeated OCR page. Source extractors found no
-  exact overlap in the source/extraction folders they scanned. A canonical
-  cross-check against all **32,072** rows in
-  `data/processed/model_ready/cleaned/text.jsonl` found **0 exact matches** and
-  **0 candidates** at 5-gram Jaccard ≥0.85 (1,647,488 length-compatible pairs
-  scored). A 61-page alternate scan is explicitly linked to the supplied 1959
-  grammar and is not a new work.
-- These are not 3,368 Garhwali training examples. The index combines Garhwali
-  language/folk-literature sources with mostly Hindi/English regional history,
+- The initial 20 page indexes contained 3,369 OCR rows. Reconciliation added
+  two already-downloaded DjVu sidecars and the consolidated view now contains
+  **4,011 page objects** (3,983 with non-empty OCR; 28 empty). Normalization
+  yields 3,982 non-empty rows and 3,981 distinct normalized strings; a single
+  within-intake exact duplicate group spans two rows. The canonical cross-check
+  against all **32,072** rows in
+  `data/processed/model_ready/cleaned/text.jsonl` found **2 exact page matches**
+  (both already represented as Walton gazetteer pages) and **0 candidates** at
+  5-gram Jaccard ≥0.85 (1,910,194 length-compatible pairs scored). A 61-page
+  alternate scan is linked to the supplied 1959 grammar and is not a new work.
+- These are not 3,983 verified Garhwali training examples. The index combines
+  Garhwali language/folk-literature sources with mostly Hindi/English regional history,
   geography, and flora references. The 39 local audio/video files total
   **14:09:25.531 playback**, not verified Garhwali speech time; the 10 new
   lesson tracks lack transcripts and item-level reuse terms.
@@ -26,6 +28,9 @@ Updated 2026-10-04. This is a chronological preparation log: model-result paragr
   [Internet Archive intake report](internet-archive-intake-2026-10-03.md).
 - Automated OCR/media quality checks and the precise comparison scope are in
   the [intake quality and overlap audit](internet-archive-intake-quality-2026-10-04.md).
+- The source-by-source Archive item register and non-destructive page/media
+  candidate-view design are in the
+  [source disposition report](internet-archive-source-disposition-2026-10-04.md).
 
 ## Hugging Face quality roadmap — published v0.2.2 — 2026-10-01
 

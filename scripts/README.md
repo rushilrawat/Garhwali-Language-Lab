@@ -47,8 +47,10 @@ research material; the extraction scripts do not mark them training-eligible
 or publish them.
 
 `audit_archive_intake_quality.py` profiles Archive OCR-page identifiers,
-exact text duplicates, character scripts, and transparent OCR-warning signals;
-it also probes local MP3/MP4 container metadata with `ffprobe`. Run it with:
+non-empty exact-text duplicates, character scripts, and transparent
+OCR-warning signals; it also probes local MP3/MP4 container metadata with
+`ffprobe`. When present, it reads the consolidated source-linked review view;
+otherwise it falls back to the original page indexes. Run it with:
 
 ```bash
 PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_intake_quality.py
@@ -57,7 +59,7 @@ PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_intake_quality.py
 `audit_archive_corpus_overlap.py` compares those page texts against every
 record in the canonical `data/processed/model_ready/cleaned/text.jsonl` view.
 It reports exact matches and high-similarity character 5-gram candidates,
-without writing source text or changing any row:
+without copying source text into its report or changing corpus rows:
 
 ```bash
 PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_corpus_overlap.py
@@ -69,6 +71,32 @@ normalization, threshold, and compared text view; it does not prove there are
 no semantic, source-family, segment, or audio/transcript overlaps. The current
 interpretation and measured results are in the
 [`Internet Archive quality audit`](../research/internet-archive-intake-quality-2026-10-04.md).
+
+`build_archive_source_disposition.py` records every locally captured Archive
+item's metadata claims and creates non-destructive local page/media review
+indexes. It scans already-downloaded DjVu XML sidecars for text items missing
+from the original page indexes, assigns source/page IDs and text hashes, links
+exact corpus matches to existing provenance, and labels follow-up groups
+without asserting page language or rights clearance. Every page candidate also
+carries script composition, text length, and transparent OCR-warning signals;
+language identification is explicitly marked as not performed. Its tracked
+outputs are a metadata-only JSON register and Markdown report; page text and
+media indexes remain Git-ignored. To rebuild all derived outputs after source indexes change,
+run the two audits first, the disposition builder, then rerun the audits and
+builder once so the consolidated candidate view and its cross-corpus references
+are synchronized:
+
+```bash
+PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_intake_quality.py
+PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_corpus_overlap.py
+PYTHONPATH=scripts .venv/bin/python scripts/build_archive_source_disposition.py
+PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_intake_quality.py
+PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_corpus_overlap.py
+PYTHONPATH=scripts .venv/bin/python scripts/build_archive_source_disposition.py
+```
+
+The per-item decisions and limits are in the
+[`Internet Archive source disposition`](../research/internet-archive-source-disposition-2026-10-04.md).
 
 `prepare_hf_additive_upload.py` validates the rights-filtered public package,
 its declared hashes, file inventory, and absence of source/audio payloads. It
@@ -83,7 +111,7 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current working-tree suite passes **707 tests**. The
+The current working-tree suite passes **716 tests**. The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
 installs dependencies from `requirements-pipeline.txt`. Current benchmark refreshes use saved ASR outputs

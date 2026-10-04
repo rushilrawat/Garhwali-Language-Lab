@@ -18,6 +18,7 @@ OCR_DIRS = (
     Path("data/extracted/research/internet_archive_reference_books_2026-10-03"),
 )
 REPORT_PATH = Path("data/extracted/research/internet_archive_quality_audit_2026-10-04.json")
+CANDIDATE_VIEW_PATH = Path("data/extracted/research/internet_archive_candidate_views_2026-10-04/text_review_candidates.jsonl")
 MEDIA_EXTENSIONS = {".mp3", ".mp4"}
 REPEATED_CHARACTER = re.compile(r"(.)\1{3,}", re.DOTALL)
 
@@ -96,19 +97,23 @@ def profile_text(text: str) -> dict:
 def read_ocr_records(root: Path) -> tuple[list[dict], list[str]]:
     records = []
     errors = []
-    for relative_dir in OCR_DIRS:
-        directory = root / relative_dir
-        for path in sorted(directory.glob("*.jsonl")):
-            for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-                if not line.strip():
-                    continue
-                try:
-                    row = json.loads(line)
-                    if not isinstance(row, dict) or not isinstance(row.get("text"), str):
-                        raise ValueError("expected a record object with string text")
-                    records.append({"path": path, "line": line_number, "row": row})
-                except (json.JSONDecodeError, ValueError) as exc:
-                    errors.append(f"{path.relative_to(root)}:{line_number}: {exc}")
+    candidate_view = root / CANDIDATE_VIEW_PATH
+    input_paths = [candidate_view] if candidate_view.is_file() else [
+        path
+        for relative_dir in OCR_DIRS
+        for path in sorted((root / relative_dir).glob("*.jsonl"))
+    ]
+    for path in input_paths:
+        for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+                if not isinstance(row, dict) or not isinstance(row.get("text"), str):
+                    raise ValueError("expected a record object with string text")
+                records.append({"path": path, "line": line_number, "row": row})
+            except (json.JSONDecodeError, ValueError) as exc:
+                errors.append(f"{path.relative_to(root)}:{line_number}: {exc}")
     return records, errors
 
 
@@ -126,7 +131,7 @@ def profile_ocr(records: list[dict]) -> dict:
         "training_eligible_true": 0,
         "public_redistribution_eligible_true": 0,
     })
-    all_hashes = Counter()
+    nonempty_hashes = Counter()
     record_ids = Counter()
     global_scripts = Counter()
     warning_rows = Counter()
@@ -155,7 +160,8 @@ def profile_ocr(records: list[dict]) -> dict:
         global_scripts[profile["script_profile"]] += 1
         char_total += profile["characters"]
         empty += not text.strip()
-        all_hashes[str(row.get("text_sha256") or text)] += 1
+        if text.strip():
+            nonempty_hashes[str(row.get("text_sha256") or text)] += 1
         missing_record_ids += not bool(row.get("record_id"))
         missing_source_ids += not bool(row.get("source_id"))
         missing_text_hashes += not bool(row.get("text_sha256"))
@@ -177,10 +183,11 @@ def profile_ocr(records: list[dict]) -> dict:
         del sources[source_id]["scripts"]
         del sources[source_id]["warning_rows"]
 
-    duplicate_text_rows = sum(count - 1 for count in all_hashes.values() if count > 1)
+    duplicate_text_rows = sum(count - 1 for count in nonempty_hashes.values() if count > 1)
     return {
         "records": len(records),
-        "exact_unique_texts": len(all_hashes),
+        "exact_unique_texts": len(nonempty_hashes),
+        "exact_unique_nonempty_texts": len(nonempty_hashes),
         "exact_duplicate_text_rows_within_intake": duplicate_text_rows,
         "duplicate_record_id_rows": sum(count - 1 for count in record_ids.values() if count > 1),
         "empty_text_rows": empty,
@@ -193,7 +200,7 @@ def profile_ocr(records: list[dict]) -> dict:
         "orthographic_joiner_characters": joiner_char_total,
         "sources": sources,
         "language_classification_note": "Script profile and source-level language metadata only; this audit does not identify Garhwali versus Hindi and is not native review.",
-        "ocr_confidence_note": "Archive OCR sidecars do not provide comparable page-level recognition confidence; warning flags are transparent heuristics, not OCR accuracy scores.",
+        "ocr_confidence_note": "Word-confidence attributes are available only for the Himalayan Folklore: Kumaon and West Nepal DjVu XML sidecar (368 pages, 82,452 words). They are OCR-engine signals, not measured word accuracy; warning flags remain transparent review heuristics.",
     }
 
 
