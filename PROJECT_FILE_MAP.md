@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **925**.
+Files indexed: **945**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -578,7 +578,14 @@ python scripts/generate_project_file_map.py
 - `research/generation-output-diagnostics-2026-09-28.md`
 - `research/generation-quality-2026-09-25.md`
 - `research/generation-scoring-integration-2026-09-30.md`
+- `research/huggingface-dataset-quality-roadmap.md`
+- `research/huggingface-existing-corpus-expansion-audit-2026-10-02.md`
+- `research/huggingface-quality-baseline-2026-10-01.md`
+- `research/huggingface-quality-candidate-preflight-2026-10-01.json`
+- `research/huggingface-quality-candidate-preflight-2026-10-02.json`
 - `research/huggingface-release-overlap-audit-2026-09-24.md`
+- `research/huggingface-text-expansion-audit-2026-10-01.md`
+- `research/huggingface-v0.2.3-upload-plan.json`
 - `research/incoming-pdf-ingestion-2026-09-16.json`
 - `research/incoming-pdf-ingestion-2026-09-16.md`
 - `research/incoming-pdf-reocr-pilot-2026-09-17.md`
@@ -589,6 +596,9 @@ python scripts/generate_project_file_map.py
 - `research/indicbert-pdf-domain-extended-2026-09-16.md`
 - `research/intensive-quality-audit-2026-09-14.md`
 - `research/internet-archive-garhwali-folklore-search.json`
+- `research/internet-archive-garhwali-search-2026-10-03.json`
+- `research/internet-archive-intake-2026-10-03.md`
+- `research/internet-archive-intake-quality-2026-10-04.md`
 - `research/issues&improvement plan.md`
 - `research/language-quality-status-2026-09-10.md`
 - `research/model-accuracy-lineage-2026-09-24.md`
@@ -659,6 +669,8 @@ python scripts/generate_project_file_map.py
 - `scripts/analyze_sravaani_drafts.py`
 - `scripts/analyze_translation_uncertainty.py`
 - `scripts/asr_metrics.py`
+- `scripts/audit_archive_corpus_overlap.py`
+- `scripts/audit_archive_intake_quality.py`
 - `scripts/audit_audio_quality.py`
 - `scripts/audit_benchmark_nested_overlap.py`
 - `scripts/audit_benchmark_overlap_candidates.py`
@@ -720,6 +732,12 @@ python scripts/generate_project_file_map.py
 - `scripts/finalize_local_release.sh`
 - `scripts/finalize_local_release_v0_2.sh`
 - `scripts/generate_project_file_map.py`
+- `scripts/hf_source_registry.py`
+- `scripts/ingest_archive_dabral_references.py`
+- `scripts/ingest_archive_holy_himalaya.py`
+- `scripts/ingest_archive_language_studies.py`
+- `scripts/ingest_archive_regional_historical_references.py`
+- `scripts/ingest_archive_snow_balls.py`
 - `scripts/ingest_garhwali_language_library.py`
 - `scripts/ingest_geography.py`
 - `scripts/ingest_historical_terms.py`
@@ -855,6 +873,8 @@ python scripts/generate_project_file_map.py
 - `tests/test_analyze_translation_uncertainty.py`
 - `tests/test_asr_metrics.py`
 - `tests/test_asr_requirements.py`
+- `tests/test_audit_archive_corpus_overlap.py`
+- `tests/test_audit_archive_intake_quality.py`
 - `tests/test_audit_audio_quality.py`
 - `tests/test_audit_benchmark_nested_overlap.py`
 - `tests/test_audit_benchmark_overlap_candidates.py`
@@ -978,11 +998,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **234,004**.
+- Workspace files counted: **235,465**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **925**.
-- Ignored or otherwise unlisted payload files: **233,079** (101,792,328,991 bytes).
-- Total workspace bytes counted: **101,808,285,944**.
+- Detailed file paths listed above: **945**.
+- Ignored or otherwise unlisted payload files: **234,520** (154,569,807,090 bytes).
+- Total workspace bytes counted: **154,586,173,250**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1004,9 +1024,9 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `corpus/wikimedia.jsonl/` | 1 | 124,714 |
 | `corpus/wiktionary_en.jsonl/` | 1 | 164,557 |
 | `data/cache/…/` | 2 | 104,176 |
-| `data/downloads/…/` | 913 | 3,429,309,616 |
-| `data/extracted/…/` | 692 | 14,613,414 |
-| `data/huggingface/…/` | 798 | 25,960,546,303 |
+| `data/downloads/…/` | 1,136 | 9,350,565,536 |
+| `data/extracted/…/` | 719 | 41,496,423 |
+| `data/huggingface/…/` | 1,980 | 72,788,494,485 |
 | `data/processed/…/` | 107,682 | 38,602,120,710 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |
@@ -1039,7 +1059,7 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `restricted/uou_cgl_report.json/` | 1 | 148 |
 | `restricted/uou_more_pages.jsonl/` | 1 | 1,754,652 |
 | `restricted/uou_more_report.json/` | 1 | 284 |
-| `sources/online/…/` | 738 | 519,557,507 |
+| `sources/online/…/` | 747 | 520,948,495 |
 | `sources/web/…/` | 8 | 130,802 |
 | `tmp/incoming-pdf-reocr-full.log/` | 1 | 461 |
 | `tmp/incoming-pdf-reocr-full.pid/` | 1 | 6 |

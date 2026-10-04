@@ -7,9 +7,10 @@ The collector records every attempted URL in
 `requests.jsonl`; successful bodies are content addressed and pointed to by a
 `*.metadata.json` file. A failed request remains in the log with its URL and
 error. No credentials, paywalls, robots restrictions or access controls were
-bypassed, and no remote audio or video was bulk downloaded.
+bypassed. No remote audio or video was bulk downloaded during that initial
+crawl; later Archive media intake is documented below.
 
-## Current project context (v0.2.1 published release, 2026-10-01)
+## Current project context (v0.2.3 published release, 2026-10-02)
 
 The current project contains **32,072 exact-unique parent texts** from
 34,505 source rows / 49 source files and **151,690 exact-unique prepared text
@@ -17,15 +18,29 @@ segments**; these are project-wide counts, not totals for the initial online
 crawl. The current inventory also includes seven supplied
 PDFs (six unique books, 769 active page records, and one exact duplicate),
 structured literature, songs, geography, historical terms, and university
-research records. The v0.2.1 release includes this expansion and the rights-filtered current profile. Earlier Hub storage paths remain for compatibility; the current release and rights counts are maintained in the
+research records. Earlier Hub storage paths remain for compatibility; the current release and rights counts are maintained in the
 [root README](../../README.md) and [final report](../../finalreport.md). Source
 discovery and acquisition history remain in this register; each later addition
 retains its own provenance and rights status.
 
-The published v0.2.1 rights-resolution release exposes 12,606/32,072 catalog
-values, redacts 19,466 full texts pending compatible terms or narrower factual
-projection, and exposes the 216 structured records as fact/bibliographic
-metadata. The rights-resolution snapshot is live at Hub commit
+The published v0.2.3 package has 827,450 overlapping-view rows: 164,387
+content/config rows and 663,063 reference/join rows. Its `text_resources/train`
+view exposes 246 existing catalog records; `text_expansion/train` exposes
+1,647 existing values. These are access-view additions, not new source
+acquisitions. Neither the v0.2.3 package counts nor the public Hub files include
+the local Internet Archive intake below. The local Archive snapshot currently
+contains 119 payload files (6,005,077,831 bytes), a 3,369-row page OCR index
+(3,368 exact-unique texts; zero exact and zero ≥0.85 5-gram near-match
+candidates against all 32,072 canonical cleaned parent texts),
+and 39 audio/video files totaling 14:09:25.531 of playback. It adds no verified
+Garhwali training rows and has not been published. See the
+[`Hugging Face quality roadmap`](../../research/huggingface-dataset-quality-roadmap.md)
+for current metric definitions.
+
+The published v0.2.1 rights-resolution snapshot exposed 12,606/32,072 catalog
+values and redacted 19,466 full texts pending compatible terms or narrower
+factual projection; it exposed 216 structured records as fact/bibliographic
+metadata. This historical snapshot is live at Hub commit
 [`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b). The current rights report also records a newly verified
 CC BY-SA 4.0 Garhwali GHMNT edition by The Love Fellowship; it is not yet tied
 to the unspecified New Testament edition in PahariLI, so those mixed-source
@@ -199,6 +214,35 @@ deduplication, and verification.
 The second historical wave added the full-view 1900 Upreti scan. Only scan
 pages 79-103, whose headings identify Srinagar, Tihri, Lohba and Malla Dasoli
 Garhwali, were extracted; the following Marchha section was left out.
+
+## Internet Archive intake — 2026-10-03 to 2026-10-04
+
+The Archive search found 70 text-item, 27 audio, and 17 video candidates in
+the first query set; the later title-focused pass returned 21 text, 22 audio,
+and six video candidates. These are noisy search-result counts, not unique
+Garhwali resources. After deduplication and metadata screening, the local
+intake holds 119 payload files (6,005,077,831 bytes): 26 PDFs, OCR sidecars,
+24 MP4s and 15 MP3s. The page-level index has 3,369 records / 3,368 exact-
+unique normalized texts. A canonical text comparison found zero exact matches
+and zero ≥0.85 5-gram near-match candidates against all 32,072 cleaned parent
+texts (1,647,488 length-compatible pairs scored).
+The selected regional reference OCR is mostly English/Hindi; neither these
+counts nor the 14:09:25.531 of media playback represent verified Garhwali
+training data or Garhwali speech hours.
+
+The latest additions are five regional history, gazetteer, geography and
+botany books with Archive OCR, plus ten Garhwali-labeled lesson/song MP3s.
+Those tracks have no transcripts or reuse license recorded and have not been
+language-reviewed. Earlier acquisitions include Garhwali/Kumaoni folklore and
+language studies, regional films, and documentary recordings with varying
+rights statements. All payloads remain in ignored local storage; no new source
+material was added to the v0.2.3 public package. Per-item provenance, hashes,
+deduplication, quality and reuse notes are in the
+[`dated intake report`](../../research/internet-archive-intake-2026-10-03.md).
+Automated content and media checks are documented in the
+[`quality and overlap audit`](../../research/internet-archive-intake-quality-2026-10-04.md).
+The new local material is not part of the published v0.2.3 Hugging Face
+package.
 
 ## Known incomplete or blocked endpoints
 

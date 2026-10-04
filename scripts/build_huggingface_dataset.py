@@ -16,6 +16,7 @@ from collections import Counter
 from pathlib import Path
 
 from record_schema import normalize_record
+from hf_source_registry import SOURCE_URLS, source_record_locator
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -602,7 +603,9 @@ def audio_row(row, transcript_field, include_audio_reference=True,
         exported['language_scope_status'] = row.get('language_scope_status') or ''
     if include_audio_reference:
         exported['audio'] = content_audio_path(row['audio_sha256'])
-    exported['speaker_id'] = public_speaker_id(row)
+    # Stable string typing prevents Dataset Viewer/Parquet inference from
+    # treating early null-only rows as a Null feature before later IDs appear.
+    exported['speaker_id'] = public_speaker_id(row) or ''
     exported['transcript'] = row.get(transcript_field, '')
     exported['source_audio_records'] = max(
         1, len(row.get('duplicate_source_audio_paths') or [])
@@ -713,6 +716,236 @@ def source_languages(row):
         for item in provenance_items(row)
         if item.get('iso_639_3')
     })
+
+
+def normalized_text_key(text):
+    """Match the release audit's conservative Unicode/alphanumeric text key."""
+    normalized = unicodedata.normalize('NFKC', str(text or '')).casefold()
+    return ''.join(character for character in normalized if character.isalnum())
+
+
+def source_record_ids(row):
+    """Return record-level source IDs from corpus or benchmark provenance."""
+    values = []
+    for field in ('provenance', 'sources'):
+        source_rows = row.get(field) or []
+        if isinstance(source_rows, dict):
+            source_rows = source_rows.get('provenance') or []
+        if isinstance(source_rows, list):
+            values.extend(source_rows)
+    return {
+        item.get('record_id') for item in values
+        if isinstance(item, dict) and item.get('record_id')
+    }
+
+
+def comparable_text_rows(rows, field):
+    """Expose selected text-bearing fields to the shared exact-text deduper."""
+    for row in rows:
+        value = row.get(field)
+        if isinstance(value, str) and value.strip():
+            yield {**row, 'text': value}
+
+
+def build_catalog_text_expansion(catalog_rows, existing_text_rows, benchmark_eval_rows=()):
+    """Promote strict, rights-cleared catalog text that is net-new to text views.
+
+    This is a separate train-only expansion view. It excludes exact normalized
+    text already in existing text-bearing views, source record IDs used by
+    validation/test or frozen benchmark validation/test, and internal duplicates.
+    Source-page-family isolation is not claimed.
+    """
+    existing_text_rows = list(existing_text_rows)
+    existing_ids = {row.get('id') for row in existing_text_rows}
+    existing_text_keys = {
+        normalized_text_key(row.get('text')) for row in existing_text_rows
+        if normalized_text_key(row.get('text'))
+    }
+    evaluation_rows = [
+        row for row in existing_text_rows
+        if row.get('split') in {'validation', 'test'}
+    ] + list(benchmark_eval_rows)
+    evaluation_record_ids = set().union(
+        *(source_record_ids(row) for row in evaluation_rows)
+    ) if evaluation_rows else set()
+
+    candidates = []
+    counters = Counter()
+    for row in catalog_rows:
+        if not row.get('text'):
+            continue
+        if row.get('redistribution_status') != 'rights_cleared':
+            continue
+        if row.get('language_bucket') != 'garhwali_candidate':
+            continue
+        if (row.get('quality_v2') or {}).get('tier') != 'strict_gold_candidate':
+            continue
+        rights_basis = row.get('public_rights_basis') or []
+        if not rights_basis or not all(
+            is_publishable_provenance(item) for item in rights_basis
+        ):
+            continue
+        sources = row.get('sources') or []
+        languages = {
+            item.get('iso_639_3') for item in sources
+            if isinstance(item, dict) and item.get('iso_639_3')
+        }
+        if languages != {'gbm'}:
+            continue
+        counters['strict_rights_language_candidates'] += 1
+        if row.get('id') in existing_ids:
+            counters['excluded_exact_existing_identity'] += 1
+            continue
+        if source_record_ids({'sources': sources}) & evaluation_record_ids:
+            counters['excluded_evaluation_source_record'] += 1
+            continue
+        text_key = normalized_text_key(row.get('text'))
+        if not text_key or text_key in existing_text_keys:
+            counters['excluded_normalized_existing_text'] += 1
+            continue
+        candidates.append((text_key, row))
+
+    selected = {}
+    for text_key, row in sorted(candidates, key=lambda item: item[1].get('id') or ''):
+        if text_key in selected:
+            counters['excluded_normalized_internal_duplicate'] += 1
+            continue
+        selected[text_key] = row
+
+    output = []
+    for row in selected.values():
+        enriched = dict(row)
+        sources = row.get('sources') or []
+        quality_flags = list(row.get('record_quality_flags') or [])
+        enriched.update({
+            'language': 'gbm',
+            'source_languages': ['gbm'],
+            'language_buckets': ['garhwali_candidate'],
+            'quality_tiers': ['strict_gold_candidate'],
+            'recommended_for_training': False,
+            'script': (row.get('language_quality') or {}).get('script_profile', {}).get('script', 'Other'),
+            'split': 'train',
+            'duplicate_component_id': None,
+            'original_split': 'catalog/train',
+            'split_assignment': 'strict rights-cleared catalog addition; normalized-text and evaluation source-record overlaps excluded; source-page-family isolation not assessed',
+            'quality_flags': quality_flags,
+            'provenance': list(row.get('public_rights_basis') or []),
+        })
+        enriched['recommended_for_training'] = recommended_text_training_row(enriched)
+        output.append(enriched)
+    counters['records'] = len(output)
+    counters['recommended_for_training'] = sum(
+        row['recommended_for_training'] for row in output
+    )
+    return output, dict(counters)
+
+
+def build_catalog_text_resources(catalog_rows, existing_text_rows, benchmark_eval_rows=()):
+    """Expose additional rights-cleared catalog text as a non-evaluation resource.
+
+    This intentionally has higher recall than text_expansion: records do not
+    need to meet the strict training tier, but must be Garhwali-only, have a
+    recorded redistribution basis, be new after normalized cross-config
+    deduplication, and have no source-record match to held-out evaluation data.
+    Every row remains explicitly ineligible for benchmark/evaluation use.
+    """
+    existing_text_rows = list(existing_text_rows)
+    existing_ids = {row.get('id') for row in existing_text_rows}
+    existing_text_keys = {
+        normalized_text_key(row.get('text')) for row in existing_text_rows
+        if normalized_text_key(row.get('text'))
+    }
+    evaluation_rows = [
+        row for row in existing_text_rows
+        if row.get('split') in {'validation', 'test'}
+    ] + list(benchmark_eval_rows)
+    evaluation_record_ids = set().union(
+        *(source_record_ids(row) for row in evaluation_rows)
+    ) if evaluation_rows else set()
+
+    candidates = []
+    counters = Counter()
+    for row in catalog_rows:
+        if not row.get('text'):
+            continue
+        rights_status = row.get('redistribution_status')
+        if rights_status == 'rights_cleared':
+            rights_basis = row.get('public_rights_basis') or []
+        elif rights_status == 'rights_cleared_noncommercial_sharealike':
+            rights_basis = row.get('noncommercial_rights_basis') or []
+        else:
+            continue
+        if not rights_basis or not all(
+            is_publishable_provenance(item)
+            or (
+                item.get('license_id') == 'CC-BY-NC-SA-4.0'
+                and item.get('commercial_use_status') == 'noncommercial_only'
+                and bool(item.get('attribution'))
+                and bool(item.get('source_url'))
+            )
+            for item in rights_basis
+        ):
+            continue
+        if row.get('language_bucket') != 'garhwali_candidate':
+            continue
+        sources = row.get('sources') or []
+        languages = {
+            item.get('iso_639_3') for item in sources
+            if isinstance(item, dict) and item.get('iso_639_3')
+        }
+        if languages != {'gbm'}:
+            continue
+        counters['rights_and_language_candidates'] += 1
+        if row.get('id') in existing_ids:
+            counters['excluded_existing_identity'] += 1
+            continue
+        if source_record_ids({'sources': sources}) & evaluation_record_ids:
+            counters['excluded_evaluation_source_record'] += 1
+            continue
+        text_key = normalized_text_key(row.get('text'))
+        if not text_key or text_key in existing_text_keys:
+            counters['excluded_normalized_existing_text'] += 1
+            continue
+        candidates.append((text_key, row))
+
+    selected = {}
+    for text_key, row in sorted(candidates, key=lambda item: item[1].get('id') or ''):
+        if text_key in selected:
+            counters['excluded_normalized_internal_duplicate'] += 1
+            continue
+        selected[text_key] = row
+
+    output = []
+    for row in selected.values():
+        rights_basis = (
+            row.get('noncommercial_rights_basis') or []
+            if row.get('redistribution_status') == 'rights_cleared_noncommercial_sharealike'
+            else row.get('public_rights_basis') or []
+        )
+        enriched = dict(row)
+        enriched.update({
+            'language': 'gbm',
+            'source_languages': ['gbm'],
+            'split': 'train',
+            'split_assignment': (
+                'supplementary redistributable resource; normalized duplicates and '
+                'held-out evaluation source-record overlaps excluded; not an '
+                'evaluation split'
+            ),
+            'intended_use': ['language_resource_lookup', 'research'],
+            'recommended_for_training': False,
+            'recommended_for_evaluation': False,
+            'provenance': list(rights_basis),
+            'quality_flags': list(row.get('record_quality_flags') or []),
+        })
+        output.append(enriched)
+    counters['records'] = len(output)
+    counters['characters'] = sum(len(row['text']) for row in output)
+    counters['whitespace_words'] = sum(len(row['text'].split()) for row in output)
+    counters['recommended_for_training'] = sum(
+        bool(row.get('recommended_for_training')) for row in output
+    )
+    return output, dict(counters)
 
 
 def recommended_text_training_row(row):
@@ -843,7 +1076,12 @@ def catalog_provenance(item):
         'source_pdf', 'source_pdf_sha256', 'pdf_page', 'title', 'author',
         'publication_year', 'extraction_method', 'modifications',
     )
-    return {key: item.get(key) for key in keep if item.get(key) not in (None, '', [])}
+    result = {key: item.get(key) for key in keep if item.get(key) not in (None, '', [])}
+    for key, value in source_record_locator(item).items():
+        result.setdefault(key, value)
+    if not result.get('source_url') and result.get('source_id') in SOURCE_URLS:
+        result['source_url'] = SOURCE_URLS[result['source_id']]
+    return result
 
 
 def catalog_row(row, include_all_text=False, refinement=None):
@@ -1253,8 +1491,36 @@ def source_expansion_metrics():
 
 
 def dataset_card(report):
+    release_version = str(report.get('release_id', '')).rsplit('-v', 1)[-1]
+    candidate_history = ''
+    if release_version == '0.2.3':
+        candidate_history = '''
+5. **v0.2.3 — surface additional existing Garhwali resources.** Adds a
+   deduplicated, rights-filtered `text_resources` view for catalog text not
+   already present in other text-bearing configurations. The view preserves
+   row-level rights and quality signals, excludes held-out evaluation source
+   records, and is explicitly not an evaluation set or uniformly training-ready.'''
+    elif release_version == '0.2.2':
+        candidate_history = '''
+4. **v0.2.2 — improve traceability and report usable counts.** The package
+   resolves existing social-record IDs to their item URLs, separates source
+   references from content rows, reports rights and reuse labels by config, and
+   adds a deduplicated `text_expansion` view from already-collected catalog
+   values. Earlier files remain available.'''
     draft_status = 'complete' if report['drafts_complete'] else 'partial'
     exported_rows = sum(item['records'] for item in report['configs'].values())
+    draft_unique_audio = report.get('draft_unique_audio', 0)
+    draft_nonempty_audio = report.get(
+        'draft_unique_nonempty_audio', draft_unique_audio
+    )
+    draft_empty_audio = report.get(
+        'draft_empty_audio', max(0, draft_unique_audio - draft_nonempty_audio)
+    )
+    draft_source_rows = report.get('draft_records')
+    draft_source_summary = (
+        f' from {draft_source_rows:,} source rows'
+        if draft_source_rows is not None else ''
+    )
     audio_summary = (
         f"The package includes **{report['linked_audio_files']:,} content-addressed audio files**."
         if report['include_audio'] else
@@ -1300,6 +1566,8 @@ def dataset_card(report):
         'source_catalog': 'deduplicated source and rights references',
         'sravaani_drafts': 'machine transcript drafts; not ground truth',
         'text': 'Garhwali text examples',
+        'text_expansion': 'additional strict-tier text; source/evaluation-linked and normalized duplicates excluded',
+        'text_resources': 'additional rights-cleared Garhwali resources; quality varies; not an evaluation set',
         'university_research': 'research bibliography',
     }
     config_rows = []
@@ -1360,6 +1628,20 @@ their text remains redacted. The current catalog exposes **{report.get('catalog_
             report.get('structured_knowledge_metadata_only', {}).values()
         )
         access_notice = f'''All **{metadata_only:,} structured geography, history, literature, song, and research records** appear in factual/bibliographic form; no records are dropped from these metadata configurations. Prose notes, lyrics, translations, abstracts, and source passages are omitted unless separately licensed. The full source texts remain in the access-controlled all-data package. Each text-catalog record carries its specific rights state: CC BY-SA rows require attribution and share-alike; CC BY-NC-SA rows are noncommercial and share-alike; the five PIB instrument terms cite the PIB reproduction policy; and the 193 Mountain Voices glossary headwords carry Panos's attributed-reproduction guideline for press, educational/research institutions, and nonprofits. That guideline does not expressly address commercial scope or model training, so those values are excluded from model-training views. The **{report.get('catalog_factual_word_records', 0):,}** isolated one-token facts are listed without definitions, source record positions, or list ordering. Lexical facts from unlicensed thematic sources are included only when independently present in at least two distinct source collections; all such facts remain catalog-only, outside training views, and retain language-review flags. See the [source-by-source rights-resolution log](research/text-rights-resolution-2026-09-30.md). Native-speaker review and dialect annotation are deferred; benchmark and model scores are automated research results, not native-validated claims.'''
+    expansion_metrics = report.get('text_expansion_metrics') or {}
+    resource_metrics = report.get('text_resource_metrics') or {}
+    text_expansion_summary = f'''## Fast-tracked text expansion
+
+The `text_expansion` config adds **{expansion_metrics.get('records', 0):,}** Garhwali candidate texts from the existing catalog. Each passed automated strict-tier and recorded rights-basis checks, is absent from the existing text splits after NFKC/alphanumeric normalization, and has no source-record ID matching existing text validation/test or frozen benchmark validation/test rows. The values remain machine-screened, not native-reviewed. **{expansion_metrics.get('recommended_for_training', 0):,}** have no remaining record-quality flags and pass the project's current training-recommendation rule. This config is train-only; source-page-family isolation is not assessed, so it is not an independent evaluation set. Values also appear in the `catalog` inventory by design; do not add config row counts when reporting unique texts.'''
+    text_resources_summary = f'''## Supplementary text resources
+
+The `text_resources` config adds **{resource_metrics.get('records', 0):,}** additional normalized-unique Garhwali records ({resource_metrics.get('whitespace_words', 0):,} whitespace-delimited words; {resource_metrics.get('characters', 0):,} characters) already present in the source catalog. These pass the recorded redistribution-basis and Garhwali-language filters and are absent from the existing text-bearing views after normalized deduplication. Their quality tiers vary; **none are recommended for evaluation**, and the config is intended for lookup and research. Check each row's `redistribution_status`, license, quality flags, and source terms before reuse. CC BY-NC-SA rows are limited to noncommercial use and require share-alike; this subset is not uniformly training-ready or a native-reviewed text set.'''
+    draft_summary = (
+        f'{package_summary}. The SraVaani draft config covers '
+        f'**{draft_unique_audio:,} unique audio hashes**{draft_source_summary}: '
+        f'**{draft_nonempty_audio:,}** have non-empty draft text and '
+        f'**{draft_empty_audio:,}** are empty.'
+    )
     source_expansion = ''
     if str(report.get('release_id', '')).endswith('v0.2.1'):
         expansion = report.get('source_expansion') or {}
@@ -1461,8 +1743,9 @@ available under their own versioned paths:
    release also adds a consistent rights-and-quality envelope, exact-count
    quick start, schema guide, searchable lexicon example, and linked speech
    dataset. Earlier release files remain available.
+{candidate_history}
 
-The figures below describe the current v0.2.1 package, not a cumulative sum of
+The figures below describe the current v{release_version} package, not a cumulative sum of
 overlapping views. Row-level terms and quality labels remain authoritative.
 
 ## Developer quick start
@@ -1493,8 +1776,7 @@ and [lexicon search script](search_garhwali_lexicon.py) for practical examples.
 
 {resource_summary}
 
-{package_summary}, including transcripts for **{report['draft_unique_audio']:,}
-unique SraVaani recordings**. {audio_summary}
+{draft_summary} {audio_summary}
 
 This dataset card describes data scope, not model accuracy. Native-speaker
 review and dialect annotation are deferred; transcripts and machine drafts retain
@@ -1505,6 +1787,10 @@ and [benchmark research status](https://github.com/rushilrawat/Garhwali-Language
 for the latest measured results and limitations.
 
 {catalog_summary}
+
+{text_expansion_summary}
+
+{text_resources_summary}
 
 The `asr` configuration contains human transcripts from VAANI. The
 `sravaani_drafts` configuration contains machine-generated hypotheses from
@@ -1573,6 +1859,39 @@ def _build_at(output, profile='public', include_audio=False,
             output / 'data/text', split, shard_rows
         )
 
+    existing_text_rows = []
+    for path in sorted((output / 'data/text').glob('*.jsonl')):
+        existing_text_rows.extend(read_jsonl(path))
+
+    # Deduplicate across text-bearing configs, not only the main text split.
+    asr_source_dir = (
+        ROOT / 'data/processed/model_ready/splits' / asr_split_directory(profile)
+    )
+    for split in ('train', 'validation', 'test'):
+        asr_rows = list(read_jsonl(asr_source_dir / f'{split}.jsonl'))
+        existing_text_rows.extend(comparable_text_rows(asr_rows, 'asr_target_clean'))
+    draft_paths = (
+        ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_verified.jsonl',
+        ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl',
+        ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl',
+        ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl',
+    )
+    draft_source = next(path for path in draft_paths if path.exists())
+    existing_text_rows.extend(comparable_text_rows(
+        read_jsonl(draft_source), 'machine_transcript'
+    ))
+    lexicon_path = (
+        ROOT / 'data/processed/model_ready/language_resources/pronunciation/lexicon.jsonl'
+    )
+    existing_text_rows.extend(comparable_text_rows(
+        read_jsonl(lexicon_path), 'form'
+    ))
+    instructions_dir = ROOT / 'data/processed/model_ready/instructions_v0.2'
+    for split in ('train', 'validation', 'test'):
+        instruction_rows = list(read_jsonl(instructions_dir / f'{split}.jsonl'))
+        existing_text_rows.extend(comparable_text_rows(instruction_rows, 'instruction'))
+        existing_text_rows.extend(comparable_text_rows(instruction_rows, 'response'))
+
     refinement_path = ROOT / 'data/processed/model_ready/text_quality_v2/priority_text.jsonl'
     refinements = {
         row['text_sha256']: row for row in read_jsonl(refinement_path)
@@ -1622,6 +1941,30 @@ def _build_at(output, profile='public', include_audio=False,
         raise RuntimeError('All-data profile omitted one or more collected text values')
     report['configs']['catalog/train'] = write_shards(
         catalog_rows, output / 'data/catalog', 'train', shard_rows
+    )
+
+    benchmark_eval_dir = (
+        ROOT / 'data/processed/evaluation/garhwali_bench_parent_safe_v0.2_2026-09-28'
+        / 'v0.2-frozen-candidate'
+    )
+    benchmark_eval_rows = []
+    for split in ('validation', 'test'):
+        path = benchmark_eval_dir / f'text_recommended__{split}.jsonl'
+        if path.exists():
+            benchmark_eval_rows.extend(read_jsonl(path))
+    text_expansion_rows, text_expansion_metrics = build_catalog_text_expansion(
+        catalog_rows, existing_text_rows, benchmark_eval_rows
+    )
+    report['text_expansion_metrics'] = text_expansion_metrics
+    report['configs']['text_expansion/train'] = write_shards(
+        text_expansion_rows, output / 'data/text_expansion', 'train', shard_rows
+    )
+    text_resource_rows, text_resource_metrics = build_catalog_text_resources(
+        catalog_rows, [*existing_text_rows, *text_expansion_rows], benchmark_eval_rows
+    )
+    report['text_resource_metrics'] = text_resource_metrics
+    report['configs']['text_resources/train'] = write_shards(
+        text_resource_rows, output / 'data/text_resources', 'train', shard_rows
     )
 
     for family, path in KNOWLEDGE_CONFIGS.items():
@@ -1695,6 +2038,13 @@ def _build_at(output, profile='public', include_audio=False,
     report['draft_source'] = str(drafts_path.relative_to(ROOT))
     report['draft_records'] = len(drafts)
     report['draft_unique_audio'] = len(unique_drafts)
+    report['draft_unique_nonempty_audio'] = sum(
+        bool(str(row.get('machine_transcript') or '').strip())
+        for row in unique_drafts
+    )
+    report['draft_empty_audio'] = (
+        report['draft_unique_audio'] - report['draft_unique_nonempty_audio']
+    )
     report['draft_source_label_conflicts'] = sum(
         row.get('language_scope_status') == 'source_label_conflict'
         for row in unique_drafts

@@ -1,6 +1,68 @@
 # Corpus preparation status
 
-Updated 2026-10-01. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-10-04. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest suite passed 707/707 on 4 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+
+## Internet Archive deep intake — local snapshot, 2026-10-04
+
+- The title/author/media search and source-by-source dedup pass produced a local
+  Internet Archive collection of **119 unique payload files / 6,005,077,831
+  bytes**. The files remain ignored locally; no Hugging Face or GitHub release
+  changed.
+- The local page indexes contain **3,369 non-empty OCR page records**, **3,368
+  exact-unique texts**, and one repeated OCR page. Source extractors found no
+  exact overlap in the source/extraction folders they scanned. A canonical
+  cross-check against all **32,072** rows in
+  `data/processed/model_ready/cleaned/text.jsonl` found **0 exact matches** and
+  **0 candidates** at 5-gram Jaccard ≥0.85 (1,647,488 length-compatible pairs
+  scored). A 61-page alternate scan is explicitly linked to the supplied 1959
+  grammar and is not a new work.
+- These are not 3,368 Garhwali training examples. The index combines Garhwali
+  language/folk-literature sources with mostly Hindi/English regional history,
+  geography, and flora references. The 39 local audio/video files total
+  **14:09:25.531 playback**, not verified Garhwali speech time; the 10 new
+  lesson tracks lack transcripts and item-level reuse terms.
+- Full queries, source titles, checksums, page counts, rights notes, excluded
+  duplicates, and source-level decisions are in the
+  [Internet Archive intake report](internet-archive-intake-2026-10-03.md).
+- Automated OCR/media quality checks and the precise comparison scope are in
+  the [intake quality and overlap audit](internet-archive-intake-quality-2026-10-04.md).
+
+## Hugging Face quality roadmap — published v0.2.2 — 2026-10-01
+
+- The end-to-end plan is in
+  [`huggingface-dataset-quality-roadmap.md`](huggingface-dataset-quality-roadmap.md);
+  frozen v0.2.1 and v0.2.2 measurements are in
+  [`huggingface-quality-baseline-2026-10-01.md`](huggingface-quality-baseline-2026-10-01.md).
+- Phase 1 scorecard work is complete. Release preflight passes with
+  **zero errors**, zero missing or duplicate within-config identities, and zero
+  deleted or mutated rows. It reports 826,986 total package rows: 164,141
+  content/config rows plus 662,845 reference/join rows across 22 config/split
+  views.
+- The release adds `text_expansion/train` with **1,647** values already
+  present in the catalog. They are new to the text-training views after
+  normalized deduplication against `text`, provider ASR, machine drafts,
+  instructions, and lexicon forms; catalog overlap is deliberate. Every added
+  row passes the recorded rights-basis and strict-tier filters. These remain
+  automated labels, not native validation, and source-page-family isolation
+  has not been assessed.
+- Config-specific source traceability is **826,986/826,986 (100%)** under the
+  documented minimum-locator rules. This is source-pointer presence, not rights
+  clearance or linguistic accuracy. Source URLs were recovered for previously
+  generic social-record references by matching existing stable IDs to source
+  file lines; no source text or rights decision changed.
+- The scorecard now reports recorded rights-status, reuse-scope, license-label,
+  and rights-basis-field counts per config/split. In the public catalog,
+  19,466 values remain redacted, while 12,606 are exposed under distinct
+  recorded bases. Rights-scope reconciliation is now Phase 2.
+- The SraVaani draft count is explicit: 104,542 source rows, 104,534 unique
+  audio hashes, 104,500 non-empty draft texts, and 34 empty rows. The empty
+  rows stay in the audit inventory but are not usable transcript text.
+- Published the additive v0.2.2 corpus at
+  [Hub commit `b9d0538`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/b9d0538b5b4dda3be73e5ae33b279b371ef75c3f).
+  It adds an accessible text view without adding newly collected source texts;
+  the exact inclusion and overlap checks are in
+  [`huggingface-text-expansion-audit-2026-10-01.md`](huggingface-text-expansion-audit-2026-10-01.md).
+  The configured test suite passes **698/698**, and `git diff --check` passes.
 
 ## Developer access, schema, and Hugging Face v0.2.1 release — 2026-10-01
 
@@ -38,7 +100,7 @@ Updated 2026-10-01. This is a chronological preparation log: model-result paragr
 - The Dataset Viewer API returned HTTP 500 with a temporary busy response after
   upload. Repository visibility, cards, commit revisions, and file trees were
   verified; Viewer preview availability is not yet confirmed.
-- Full configured-environment test suite: **683 passed**. These tests and
+- Full configured-environment test suite: **684 passed**. These tests and
   audits validate package structure and metadata, not Garhwali linguistic
   correctness or native-speaker acceptance.
 

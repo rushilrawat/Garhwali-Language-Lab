@@ -4,6 +4,7 @@
 import argparse
 import hashlib
 import json
+import re
 import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -25,6 +26,10 @@ RECORD_ENVELOPE_STRING_FIELDS = (
 )
 RECORD_ENVELOPE_LIST_FIELDS = (
     'license_labels', 'record_quality_flags',
+)
+QUALITY_DETAIL_FIELDS = (
+    'quality_flags', 'machine_transcript_quality', 'quality_v2',
+    'language_quality', 'surface_quality', 'quality_metadata',
 )
 
 
@@ -67,6 +72,90 @@ def identity(config, row):
     return row.get("id") or row.get("text_sha256") or row.get("record_id")
 
 
+def has_nonempty_value(value):
+    if value is None:
+        return False
+    if isinstance(value, str):
+        return bool(value.strip())
+    if isinstance(value, dict):
+        return any(has_nonempty_value(item) for item in value.values())
+    if isinstance(value, (list, tuple, set)):
+        return any(has_nonempty_value(item) for item in value)
+    return True
+
+
+def has_source_traceability(config, row):
+    """Return whether a row has the minimum source locator for its config.
+
+    This is an evidence-presence check only. It does not establish rights,
+    source accuracy, or linguistic correctness.
+    """
+    if config in {'asr', 'sravaani_drafts'}:
+        audio_hash = str(row.get('audio_sha256') or '')
+        return (
+            bool(str(row.get('source') or '').strip())
+            and len(audio_hash) == 64
+            and all(char in '0123456789abcdefABCDEF' for char in audio_hash)
+            and int(row.get('source_audio_records') or 0) > 0
+        )
+    if config == 'record_index':
+        try:
+            references = json.loads(row.get('source_ref_ids_json') or '[]')
+        except (TypeError, json.JSONDecodeError):
+            return False
+        return isinstance(references, list) and bool(references) and all(
+            isinstance(reference, str) and reference.strip()
+            for reference in references
+        )
+    if config == 'record_sources':
+        return bool(
+            str(row.get('record_ref') or '').strip()
+            and str(row.get('source_ref_id') or '').strip()
+        )
+    if config == 'source_catalog':
+        locator_fields = (
+            'source_url', 'source_snapshot_sha256', 'source_capture_path',
+        )
+        attribution = str(row.get('attribution') or '')
+        attribution_has_url = bool(re.search(r'https?://\S+', attribution))
+        tatoeba_sentence_ref = (
+            str(row.get('source_id') or '').casefold() == 'tatoeba'
+            and bool(re.search(r'tatoeba sentence\s+\d+', attribution, re.IGNORECASE))
+        )
+        return bool(
+            str(row.get('source_ref_id') or '').strip()
+            and (
+                any(str(row.get(field) or '').strip() for field in locator_fields)
+                or attribution_has_url
+                or tatoeba_sentence_ref
+            )
+        )
+
+    sources = row.get('provenance') or row.get('sources') or []
+    if not isinstance(sources, list):
+        return False
+    for source in sources:
+        if not isinstance(source, dict):
+            continue
+        has_identifier = any(
+            str(source.get(field) or '').strip()
+            for field in ('source_id', 'source_ref_id', 'record_id', 'source_url')
+        )
+        has_locator = any(
+            str(source.get(field) or '').strip()
+            for field in (
+                'source_url', 'source_snapshot_sha256', 'source_capture_path',
+                'record_id',
+            )
+        ) or bool(
+            str(source.get('file') or '').strip()
+            and source.get('line') is not None
+        )
+        if has_identifier and has_locator:
+            return True
+    return False
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--package", type=Path, required=True)
@@ -88,6 +177,9 @@ def main():
         seen = set()
         stats = Counter()
         scripts = Counter()
+        rights_statuses = Counter()
+        reuse_scopes = Counter()
+        license_labels = Counter()
         declared_hashes = expected.get('file_sha256') or {}
         if set(declared_hashes) != set(expected.get('files') or []):
             errors.append(f'file_hash_manifest_mismatch:{key}')
@@ -136,14 +228,57 @@ def main():
                     if text is not None:
                         stats["empty_content"] += int(not str(text).strip())
                         scripts[script_profile(text)] += 1
-                    provenance = row.get("provenance") or row.get("sources") or []
-                    stats["rows_with_provenance"] += int(bool(provenance))
-                    stats["rows_with_quality_metadata"] += int(any(
-                        key_name in row for key_name in (
-                            "quality_flags", "machine_transcript_quality", "quality_v2",
-                            "language_quality", "surface_quality", "quality_metadata",
+                    rights_status = (
+                        row.get('redistribution_status')
+                        or row.get('rights_status')
+                        or row.get('record_rights_status')
+                    )
+                    rights_statuses[str(rights_status or 'missing')] += 1
+                    stats['rows_with_rights_status'] += int(bool(rights_status))
+                    reuse_scope = row.get('reuse_scope')
+                    if isinstance(reuse_scope, str) and reuse_scope.strip():
+                        reuse_scopes[reuse_scope] += 1
+                        stats['rows_with_reuse_scope'] += 1
+                    for label in row.get('license_labels') or []:
+                        if isinstance(label, str) and label.strip():
+                            license_labels[label] += 1
+                    stats['rows_with_license_label'] += int(
+                        bool(row.get('license_labels'))
+                    )
+                    for basis_field in (
+                        'public_rights_basis', 'noncommercial_rights_basis',
+                        'factual_publication_basis',
+                    ):
+                        stats[f'rows_with_{basis_field}'] += int(
+                            bool(row.get(basis_field))
                         )
-                    ))
+                    provenance = row.get("provenance") or row.get("sources") or []
+                    has_provenance_array = bool(provenance)
+                    stats["rows_with_provenance"] += int(has_provenance_array)
+                    stats["rows_with_provenance_array"] += int(has_provenance_array)
+                    traceable = has_source_traceability(config, row)
+                    stats['rows_with_source_traceability'] += int(traceable)
+                    stats['rows_without_source_traceability'] += int(not traceable)
+                    has_quality_detail_field = any(
+                        field in row for field in QUALITY_DETAIL_FIELDS
+                    )
+                    has_quality_evidence = any(
+                        has_nonempty_value(row.get(field))
+                        for field in QUALITY_DETAIL_FIELDS
+                    )
+                    stats["rows_with_quality_status"] += int(
+                        bool(str(row.get('quality_status') or '').strip())
+                    )
+                    stats["rows_with_quality_evidence_fields_present"] += int(
+                        has_quality_detail_field
+                    )
+                    stats["rows_with_nonempty_quality_evidence"] += int(
+                        has_quality_evidence
+                    )
+                    # Keep the historical key stable for existing report readers.
+                    stats["rows_with_quality_metadata"] += int(
+                        has_quality_detail_field
+                    )
                     if config in KNOWLEDGE_CONFIGS:
                         if not provenance or any(
                             not (item.get('source_id') or item.get('source_url'))
@@ -218,7 +353,13 @@ def main():
         ):
             if stats[field]:
                 errors.append(f'{field}:{key}:{stats[field]}')
-        configs[key] = {**dict(stats), "scripts": dict(sorted(scripts.items()))}
+        configs[key] = {
+            **dict(stats),
+            "scripts": dict(sorted(scripts.items())),
+            "rights_status_counts": dict(sorted(rights_statuses.items())),
+            "reuse_scope_counts": dict(sorted(reuse_scopes.items())),
+            "license_label_counts": dict(sorted(license_labels.items())),
+        }
         global_stats.update(stats)
 
     leakage = {}
@@ -280,6 +421,50 @@ def main():
         "status": "passed" if not errors else "failed",
         "manifest_profile": manifest["profile"],
         "record_schema_version": schema_version,
+        "metric_definitions": {
+            "rows_with_quality_status": (
+                "Rows with a non-empty quality_status label; this does not certify quality."
+            ),
+            "rows_with_quality_evidence_fields_present": (
+                "Rows containing at least one key from the validator's configured quality-detail fields; key presence only."
+            ),
+            "rows_with_nonempty_quality_evidence": (
+                "Rows with a non-empty value in at least one configured quality-detail field; not a human-review or correctness measure."
+            ),
+            "rows_with_quality_metadata": (
+                "Deprecated compatibility alias for rows_with_quality_evidence_fields_present."
+            ),
+            "rows_with_provenance_array": (
+                "Rows with a non-empty provenance or sources array; config-specific source pointers are not included."
+            ),
+            "rows_with_provenance": (
+                "Deprecated compatibility alias for rows_with_provenance_array."
+            ),
+            "rows_with_source_traceability": (
+                "Rows with the minimum config-specific source identifier and locator: text-like/knowledge configs need one provenance item with an identifier and URL, snapshot hash, capture path, record_id, or file+line; ASR/draft configs need an upstream source, valid audio SHA-256, and a positive source-row count; source_catalog needs a source_ref_id and a locator (including an explicit URL or item reference in attribution); record_index needs source_ref_ids_json; record_sources needs both join identifiers. This does not establish reuse rights or correctness."
+            ),
+            "rows_without_source_traceability": (
+                "Rows that do not meet the config-specific minimum source-locator rule. Reference-table rows are counted separately from content rows."
+            ),
+            "rights_status_counts": (
+                "Per-config counts of the first recorded value among redistribution_status, rights_status, or record_rights_status; values are counted as-is, not interpreted as legal clearance."
+            ),
+            "reuse_scope_counts": (
+                "Per-config counts of non-empty recorded reuse_scope strings; the validator does not infer scope from a source URL or license label."
+            ),
+            "license_label_counts": (
+                "Per-config counts of non-empty license_labels entries; recorded labels are not independently verified by this metric."
+            ),
+            "rows_with_public_rights_basis": (
+                "Rows with a non-empty public_rights_basis field; presence alone does not validate scope or evidence."
+            ),
+            "rows_with_noncommercial_rights_basis": (
+                "Rows with a non-empty noncommercial_rights_basis field; presence alone does not validate scope or evidence."
+            ),
+            "rows_with_factual_publication_basis": (
+                "Rows with a non-empty factual_publication_basis field; this is not a training or commercial-use license."
+            ),
+        },
         "configs": configs,
         "totals": dict(global_stats),
         "cross_split_identity_overlap": leakage,

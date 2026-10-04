@@ -6,10 +6,12 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from collections import Counter
 from pathlib import Path
 
 from record_schema import normalize_record
+from hf_source_registry import SOURCE_URLS, source_record_locator
 
 ROOT = Path(__file__).resolve().parents[1]
 ALL_DATA = ROOT / os.environ.get(
@@ -28,7 +30,7 @@ TABLES = {
 SOURCE_FIELDS = (
     "source_id", "source_title", "source_url", "source_authority", "attribution",
     "source_kind", "license_id", "license_url", "rights_status", "genre",
-    "modality", "iso_639_3",
+    "modality", "iso_639_3", "source_snapshot_sha256",
 )
 METADATA_FIELDS = {
     "geography": ("name", "name_local", "place_type", "division", "districts", "wikipedia_title"),
@@ -46,11 +48,44 @@ PUBLIC_KEY_FIELDS = {
     "lexicon": "form_sha256",
     "sravaani_drafts": "audio_sha256",
     "text": "id",
+    "text_expansion": "id",
+    "text_resources": "id",
 }
 FORBIDDEN_OUTPUT_KEYS = {
     "text", "transcript", "lyrics", "audio", "audio_sha256", "speaker_id",
     "text_sha256", "source_text_sha256", "local_path", "source_pdf",
 }
+
+
+def incoming_pdf_source_metadata(directory: Path | None = None) -> dict[str, dict]:
+    """Load source-level bibliographic pointers from the tracked PDF sidecars."""
+    directory = directory or ROOT / "incoming/pdfs"
+    result = {}
+    for path in sorted(Path(directory).glob("*.json")):
+        try:
+            metadata = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        source_id = metadata.get("source_id")
+        if not source_id:
+            continue
+        source = {}
+        if metadata.get("title"):
+            source["source_title"] = str(metadata["title"])
+        landing_page = metadata.get("landing_page")
+        if isinstance(landing_page, str) and landing_page.startswith(("https://", "http://")):
+            source["source_url"] = landing_page
+        attribution = metadata.get("author") or metadata.get("editor")
+        if isinstance(attribution, list):
+            attribution = "; ".join(str(item) for item in attribution if item)
+        if attribution:
+            source["attribution"] = str(attribution)
+        if source:
+            result[str(source_id)] = source
+    return result
+
+
+INCOMING_PDF_SOURCE_METADATA = incoming_pdf_source_metadata()
 
 
 def json_value(value) -> str:
@@ -79,7 +114,10 @@ def public_content_keys(public_root: Path) -> dict[str, dict[str, bool]]:
     return result
 
 
-def source_objects(row: dict) -> list[dict]:
+def source_objects(row: dict, incoming_metadata: dict[str, dict] | None = None) -> list[dict]:
+    incoming_metadata = (
+        INCOMING_PDF_SOURCE_METADATA if incoming_metadata is None else incoming_metadata
+    )
     candidates = []
     for field in ("provenance", "sources", "public_rights_basis"):
         values = row.get(field) or []
@@ -91,6 +129,13 @@ def source_objects(row: dict) -> list[dict]:
     refs = []
     for item in candidates:
         ref = {key: item[key] for key in SOURCE_FIELDS if item.get(key) not in (None, "")}
+        for key, value in source_record_locator(item).items():
+            ref.setdefault(key, value)
+        source_id = str(item.get("source_id") or "")
+        for key, value in incoming_metadata.get(source_id, {}).items():
+            ref.setdefault(key, value)
+        if source_id in SOURCE_URLS:
+            ref.setdefault("source_url", SOURCE_URLS[source_id])
         if ref:
             refs.append(ref)
 
@@ -102,10 +147,14 @@ def source_objects(row: dict) -> list[dict]:
         for value in row.get(field) or []:
             if isinstance(value, str) and value.startswith(("https://", "http://")):
                 refs.append({"source_url": value})
-    if row.get("source") == "ARTPARK-IISc/Vaani":
+    vaani_source = row.get("source")
+    if vaani_source in {
+        "ARTPARK-IISc/Vaani",
+        "ARTPARK-IISc/Vaani-transcription-part",
+    }:
         refs.append({
-            "source_id": "ARTPARK-IISc/Vaani",
-            "source_url": "https://huggingface.co/datasets/ARTPARK-IISc/Vaani",
+            "source_id": vaani_source,
+            "source_url": f"https://huggingface.co/datasets/{vaani_source}",
             "license_id": "CC-BY-4.0",
         })
 
@@ -181,6 +230,142 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def sync_quickstart_text(text: str, report: dict) -> str:
+    """Keep the packaged quick-start's release counts aligned to its manifests."""
+    release_id = str(report.get("release_id") or "")
+    start = text.find("The dataset IDs are `rushilrawat/garhwali-corpus`")
+    end = text.find("\n\n## Try three vocabulary rows", start)
+    if start < 0 or end < 0:
+        raise ValueError("Cannot find the developer quick-start release summary")
+    intro = "\n".join((
+        "The dataset IDs are `rushilrawat/garhwali-corpus` (text and reference tables)",
+        "and `rushilrawat/garhwali-speech` (audio and speech metadata). Both repositories",
+        "are public. The Hub cards link to the latest published revisions and preserve release history.",
+        "This guide is bundled with `" + release_id + "`; its",
+        "configuration counts match that package manifest. Use the Hub cards for current publication",
+        "status and immutable revisions. The packages preserve a common rights/quality",
+        "envelope, schema, and loading guidance. You can load current configs remotely",
+        "or use the local package copy shown below. Pass a commit SHA as `revision=` when",
+        "you need an immutable Hub snapshot.",
+    ))
+    text = text[:start] + intro + text[end:]
+
+    counts = dict(report.get("content_config_counts") or {})
+    reference_counts = {
+        name: int(details.get("records", 0))
+        for name, details in (report.get("tables") or {}).items()
+    }
+    counts.update(reference_counts)
+    lines = text.splitlines()
+    for index, line in enumerate(lines):
+        for name, count in counts.items():
+            if line.startswith(f"| `{name}` |"):
+                cells = line.split("|")
+                if len(cells) >= 4:
+                    cells[2] = f" {count:,} "
+                    lines[index] = "|".join(cells)
+                break
+    expansion_count = int(counts.get("text_expansion", 0))
+    if expansion_count:
+        expansion_row = (
+            f"| `text_expansion` | {expansion_count:,} | Strict-tier Garhwali additions; "
+            "train-only; machine-screened, not native-reviewed |"
+        )
+        if not any(line.startswith("| `text_expansion` |") for line in lines):
+            insertion = next(
+                (i + 1 for i, line in enumerate(lines) if line.startswith("| `text` |")),
+                None,
+            )
+            if insertion is not None:
+                lines.insert(insertion, expansion_row)
+    resource_count = int(counts.get("text_resources", 0))
+    if resource_count:
+        resource_row = (
+            f"| `text_resources` | {resource_count:,} | Supplementary rights-cleared resources; "
+            "quality varies; not an evaluation set |"
+        )
+        if not any(line.startswith("| `text_resources` |") for line in lines):
+            insertion = next(
+                (i + 1 for i, line in enumerate(lines) if line.startswith("| `text_expansion` |")),
+                next((i + 1 for i, line in enumerate(lines) if line.startswith("| `text` |")), None),
+            )
+            if insertion is not None:
+                lines.insert(insertion, resource_row)
+    text = "\n".join(lines) + ("\n" if text.endswith("\n") else "")
+
+    content_rows = int(report.get("public_profile_package_rows", 0))
+    reference_rows = sum(reference_counts.values())
+    total_rows = content_rows + reference_rows
+    summary = (
+        f"The `{release_id}` package manifest reports **{total_rows:,} total view rows**: "
+        f"{content_rows:,} content/config rows plus {reference_rows:,} reference rows. "
+        "This is not a unique-example count."
+    )
+    text, replacements = re.subn(
+        r"The (?:release|`[^`]+` package manifest) reports \*\*[\d,]+ total view rows\*\*:.*?(?:This is not [^.]+ unique examples\.|This is not a unique-example count\.)",
+        summary,
+        text,
+        count=1,
+        flags=re.DOTALL,
+    )
+    if replacements != 1:
+        raise ValueError("Cannot synchronize the developer quick-start package total")
+    expansion_heading = "## Load the fast-tracked text view"
+    start = text.find(expansion_heading)
+    if start >= 0:
+        next_heading = text.find("\n## ", start + 1)
+        text = text[:start] + (text[next_heading + 1:] if next_heading >= 0 else "")
+    expansion_count = int(counts.get("text_expansion", 0))
+    if expansion_count:
+        section = f'''## Load the fast-tracked text view
+
+The `text_expansion` config contains **{expansion_count:,}** train-only Garhwali
+values already present in the catalog. It is a filtered training view, not new
+source ingestion or an independent evaluation set. Rows retain their rights
+and quality fields; review each row before downstream reuse.
+
+```python
+from datasets import load_dataset
+
+extra_text = load_dataset(
+    "rushilrawat/garhwali-corpus", "text_expansion", split="train", streaming=True
+)
+for row in extra_text.take(3):
+    print(row["text"], row["rights_status"], row["quality_status"])
+```
+
+'''
+        marker = "## Configurations and exact release counts"
+        position = text.find(marker)
+        if position >= 0:
+            text = text[:position] + section + text[position:]
+    resource_count = int(counts.get("text_resources", 0))
+    if resource_count:
+        section = f'''## Load supplementary text resources
+
+The `text_resources` config exposes **{resource_count:,}** additional unique
+Garhwali records already present in the source catalog. This is a lookup and
+research view with varied quality; it is not an evaluation set or uniformly
+training-ready. Check record-level rights and quality fields before reuse.
+
+```python
+from datasets import load_dataset
+
+resources = load_dataset(
+    "rushilrawat/garhwali-corpus", "text_resources", split="train", streaming=True
+)
+for row in resources.take(3):
+    print(row["text"], row["redistribution_status"], row["quality_status"])
+```
+
+'''
+        marker = "## Configurations and exact release counts"
+        position = text.find(marker)
+        if position >= 0:
+            text = text[:position] + section + text[position:]
+    return text
+
+
 def update_dataset_card(report: dict) -> None:
     path = PUBLIC_DATA / "README.md"
     text = path.read_text(encoding="utf-8")
@@ -211,6 +396,8 @@ def update_dataset_card(report: dict) -> None:
     config_rows = []
     descriptions = {
         "text": "Garhwali text examples",
+        "text_expansion": "strict-tier supplementary text; train-only",
+        "text_resources": "rights-cleared supplementary text; varied quality, not for evaluation",
         "lexicon": "vocabulary and pronunciation candidates",
         "asr": "provider/human transcripts (unadjudicated)",
         "sravaani_drafts": "machine transcript drafts; not ground truth",
@@ -277,7 +464,11 @@ This public dataset has rights-filtered content configurations containing **{rep
 
 The reference index includes **{report['source_catalog_records']:,} deduplicated source records** and **{report['record_source_links']:,} record-to-source links**. It exposes available names and titles, source URLs, attribution, rights status, and quality metadata. Record-level rights are marked `not_recorded` for **{report.get('record_rights_status_counts', {}).get('not_recorded', 0):,} rows**; other rows include rights-pending, reviewed-unresolved, metadata-only, or cleared statuses. `not_recorded` is not permission to reuse a record: inspect its linked source entry and terms. The index does not contain the referenced works' text, lyrics, transcripts, audio, speaker identifiers, local paths, or content hashes. These are archive-row counts with overlapping views, not unique-example counts; the reference rows themselves are not training examples. Links and bibliographic facts do not grant rights to copy or reuse source material.
 """
-    release_marker = "Release: **" + str(report["release_id"]) + "**"
+    package_manifest = json.loads(
+        (PUBLIC_DATA / "manifest.json").read_text(encoding="utf-8")
+    )
+    package_release_id = package_manifest.get('release_id') or report['release_id']
+    release_marker = "Release: **" + str(package_release_id) + "**"
     if release_marker not in body:
         raise ValueError("Cannot add repository summary to the dataset card")
     body = body.replace(release_marker, release_marker + "\n\n" + quick_start + summary, 1)
@@ -311,6 +502,14 @@ See [`reference_index_manifest.json`](reference_index_manifest.json) for counts 
         else:
             body = body.rstrip() + "\n\n" + section
     path.write_text(f"---\n{front}---\n{body.lstrip()}", encoding="utf-8")
+    quickstart_path = PUBLIC_DATA / "DEVELOPER_QUICKSTART.md"
+    quickstart_path.write_text(
+        sync_quickstart_text(
+            quickstart_path.read_text(encoding="utf-8"),
+            {**report, "release_id": package_release_id},
+        ),
+        encoding="utf-8",
+    )
 
 
 def build_index(all_data: Path = ALL_DATA, public_data: Path = PUBLIC_DATA) -> dict:

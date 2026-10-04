@@ -95,6 +95,24 @@
         "paper.pdf"
       ],
       "disposition": "unaltered_noncommercial_research_reference"
+    },
+    {
+      "source_id": "scholarly_gairola_yadav_2025_songs_silenced",
+      "title": "Songs of the Silenced: Folk expression of women’s protest in the Garhwal Himalayas",
+      "authors": [
+        "Shivangi Gairola",
+        "Geetha Yadav"
+      ],
+      "year": 2025,
+      "topic": "Garhwali women’s folk-song traditions, protest, gender and migration; scholarly context, not a primary song-transcript corpus.",
+      "landing_page": "https://aipublications.com/ijllc/detail/songs-of-the-silenced-folk-expression-of-women-s-protest-in-the-garhwal-himalayas/",
+      "pdf_url": "https://aipublications.com/uploads/issue_files/7IJLLC-JAN20258-Songs.pdf",
+      "license_id": "CC-BY-4.0 (publisher-stated)",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_evidence": "Publisher landing page and article PDF state CC BY 4.0; publisher/rightsholder authority not independently audited.",
+      "local_pdf": "data/downloads/research/garhwali_songs_silenced_2025/source.pdf",
+      "sha1": "28e0429ae2eeab72604f445b79fd463a517c1108",
+      "disposition": "open_scholarly_reference; no corpus text rows added"
     }
   ]
 }

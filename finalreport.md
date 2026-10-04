@@ -1,5 +1,59 @@
 # Garhwali Language Lab — final review report
 
+## Current release and local source intake — 2026-10-04
+
+The current public corpus release is **v0.2.3**, published at Hub commit
+[`76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d).
+It exposes a 246-row `text_resources/train` view over records already in the
+catalog; the release has 827,450 overlapping-view rows. The separate speech
+repository remains at v0.2.1. These figures are unchanged by the Archive intake.
+
+The 3–4 October Internet Archive search and acquisition added **119 local
+payload files (6,005,077,831 bytes)** and a page-level index of **3,369 OCR
+records / 3,368 exact-unique normalized texts**. Source extractors found no
+exact overlap in their scanned source/extraction folders. A broader comparison
+against all **32,072 canonical cleaned parent texts** found zero exact matches
+and zero 5-gram Jaccard candidates at ≥0.85 (1,647,488 length-compatible
+pairs scored). This is not a guarantee against semantic or untested-layer
+overlap. All 3,369 rows remain ineligible for training and redistribution;
+page language and OCR accuracy are unverified. The 39 local audio/video files
+total 14:09:25.531 of playback, not verified Garhwali speech time. All payloads
+remain Git-ignored and no Archive material is in GitHub or Hugging Face
+dataset releases. See the [source intake report](research/internet-archive-intake-2026-10-03.md)
+and [quality and overlap audit](research/internet-archive-intake-quality-2026-10-04.md).
+
+## Hugging Face quality release v0.2.2 — 2026-10-01 (historical review)
+
+At the time of this 1 October snapshot, the public corpus was v0.2.2, with its corrective [Hub commit `b18933b`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/b18933bb2e98f091add0b1889e70587448d9891f); the speech repository was at v0.2.1. The additive v0.2.2
+release adds a dedicated train-only `text_expansion` config with **1,647**
+strict-tier Garhwali values already present in the catalog. These are net-new
+relative to the existing text, ASR, machine-draft, instruction, and lexicon
+text values, but are not newly ingested source texts; catalog overlap is
+intentional. The candidate has **826,986** total package rows (164,141
+content/config plus 662,845 reference/join rows) and passes preflight with zero
+errors, zero missing source locators, zero deleted/mutated rows, and no reported
+within-config identity duplicates. All 1,647 additions have recorded public
+rights-basis fields and automated strict-tier labels; this does not establish
+native-verified linguistic quality or source-page-family isolation. The
+release preserves earlier versioned files; the remote head and package
+manifest hash were verified after the corrective upload. A local schema fix
+replaces null `speaker_id` values with empty strings so Viewer Parquet inference
+does not hit the string-to-null cast error. The Dataset Viewer is now returning
+HTTP 500 “server is busier than usual”; post-fix global validity and Parquet
+checks remain pending.
+The full configured unittest suite passes **698/698**; `git diff --check` passes.
+The exact config-level result is in
+[`research/huggingface-quality-candidate-preflight-2026-10-01.json`](research/huggingface-quality-candidate-preflight-2026-10-01.json).
+
+Phase 1 (scorecard) is complete. The fast-tracked text view now has cross-config
+normalized-string and held-out source-record checks; source-page-family
+isolation and broader source-by-source rights reconciliation remain active.
+The roadmap, frozen baseline, machine-readable candidate preflight, and text
+expansion audit are linked from
+[`research/huggingface-dataset-quality-roadmap.md`](research/huggingface-dataset-quality-roadmap.md).
+The exact selection and overlap audit is in
+[`research/huggingface-text-expansion-audit-2026-10-01.md`](research/huggingface-text-expansion-audit-2026-10-01.md).
+
 ## Developer access and Hugging Face v0.2.1 release — 2026-10-01
 
 Both public Hugging Face repositories now have additive v0.2.1 releases. The
@@ -185,7 +239,7 @@ reference index were regenerated, but were not uploaded.
 The pre-refresh working-tree test runs passed **635/635 pytest** and
 **633/633 unittest** tests. The later rights-review snapshot passed **671/671
 pytest** and **669/669 unittest** tests. The current v0.2.1 working tree passes
-**683/683 configured-environment tests**. These checks validate package/code contracts; they
+**684/684 configured-environment tests**. These checks validate package/code contracts; they
 do not validate linguistic correctness or grant reuse rights to pending sources.
 See the [wave report](research/garhwali-web-goldmines-2026-09-30.md) and the
 auto-updated README metrics table for the working-tree counts.

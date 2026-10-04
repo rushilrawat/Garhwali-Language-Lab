@@ -1,6 +1,6 @@
 # Garhwali public-source search catalog
 
-Verified through 2026-09-30. This is the durable record of the public-source search
+Verified through 2026-10-04. This is the durable record of the public-source search
 performed for the language-lab corpus. A source is listed even when it was
 catalogued but not copied into a training layer. Public visibility alone was
 not treated as permission to redistribute text, audio, images, or user posts.
@@ -147,3 +147,27 @@ license statement, so it contributes zero new public rows.
 
 The claim-level evidence, confidence and remaining gaps are in
 [`source-audit-2026-09-08.md`](source-audit-2026-09-08.md).
+
+## Internet Archive deep search and intake — 2026-10-03 to 2026-10-04
+
+Two title-focused sweeps screened Archive text, audio and movie records; broad
+regional queries also produced many government, scientific, duplicate and
+metadata-only false positives. The saved query results and exclusions are in
+[`internet-archive-garhwali-search-2026-10-03.json`](../../research/internet-archive-garhwali-search-2026-10-03.json).
+
+The local intake now contains 119 verified payload files (6,005,077,831 bytes)
+and a 3,369-page OCR index (3,368 exact-unique texts; zero exact and zero
+≥0.85 5-gram near-match candidates against all 32,072 cleaned parent texts).
+Its 39 audio/video files total 14:09:25.531 of
+playback, which is not a measure of Garhwali speech. The files include
+Garhwali-language scholarship and folklore, regional English/Hindi history
+and geography references, mixed-language cultural recordings, and
+Garhwali-labeled lesson audio without transcripts. Most new OCR pages have not
+been language-reviewed; every item keeps its source and rights notes.
+
+These are ignored local acquisitions, not rows in the public v0.2.3 package.
+No Garhwali-only training yield or new cleared public records are claimed.
+Item-level source, extraction, checksum, duplication and rights details are in
+[`the full intake report`](../../research/internet-archive-intake-2026-10-03.md).
+Automated quality and overlap details are in the
+[`quality audit`](../../research/internet-archive-intake-quality-2026-10-04.md).

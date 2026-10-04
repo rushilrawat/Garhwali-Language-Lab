@@ -1,16 +1,20 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Status snapshot:** 2026-09-30 (generation scorer and current prediction lineage refreshed)
+**Status snapshot:** Benchmark evidence measured 2026-09-30; public corpus release checked 2026-10-04 (corpus v0.2.3, speech v0.2.1)
 **Scope:** GarhwaliBench and the model-research suite in this repository
 **Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 
 This is the working plan for moving from useful but mixed-history experiments to a reproducible, accurately described benchmark and model-research program. It records what exists, what evidence permits us to say, what happens next, the tools to use, and the gate for each phase.
 
-## Current position and remaining work — 2026-09-30
+## Current position and remaining work — benchmark evidence 2026-09-30
 
-The public **GarhwaliCorpus v0.2.0** release is complete for its rights-filtered
-profile. That release does not freeze the benchmark or make model results
-independent. On 2026-09-30, the owner approved active work toward independent
+The public Garhwali corpus has since advanced to **v0.2.3**; this roadmap's
+benchmark counts and model evidence remain the 30 September snapshot and were
+not changed by the 4 October Archive intake. The 246-row v0.2.3
+`text_resources` view re-exposes catalogued values and is not a new benchmark
+or model-training run. The benchmark remains local-only, and the corpus
+release does not make model results independent. On 2026-09-30, the owner
+approved active work toward independent
 final-accuracy results across language modeling, translation, retrieval,
 generation, and ASR. That approval sets the work priority; current evidence
 eligibility remains 0/5.

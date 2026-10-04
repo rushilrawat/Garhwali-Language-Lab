@@ -1,6 +1,6 @@
 # Documentation index
 
-This page indexes the project Markdown intended for the shared repository. It includes current release and status documents, plus the three announcement/support reports prepared in the working tree for publication. Local-only draft artifacts, ignored caches, downloaded dependency documentation, and model outputs are not part of this public-facing index.
+This page indexes the project Markdown intended for the shared repository, including current release, status, source-intake, roadmap, and review documents. Local-only draft artifacts, ignored caches, downloaded dependency documentation, and model outputs are not part of this public-facing index.
 
 ## Read these first
 
@@ -34,6 +34,8 @@ This page indexes the project Markdown intended for the shared repository. It in
 - [retrieval-quality-2026-09-25.md](../research/retrieval-quality-2026-09-25.md) — Development retrieval scores and dense-model blockers.
 - [generation-quality-2026-09-25.md](../research/generation-quality-2026-09-25.md) — mT0 generation diagnostics and historical test limits.
 - [corpus-preparation-status.md](../research/corpus-preparation-status.md) — Chronological corpus-preparation log.
+- [internet-archive-intake-2026-10-03.md](../research/internet-archive-intake-2026-10-03.md) — Internet Archive intake ledger, source checksums, rights notes, and media inventory.
+- [internet-archive-intake-quality-2026-10-04.md](../research/internet-archive-intake-quality-2026-10-04.md) — Automated OCR/media profile and cross-dedup against the canonical cleaned text view; identifies what remains local and unverified.
 - [garhwali-data-expansion-2026-09-29.md](../research/garhwali-data-expansion-2026-09-29.md) — Deduplicated, rights-documented v0.2.0 Garhwali-only source intake.
 - [garhwali-web-goldmines-2026-09-30.md](../research/garhwali-web-goldmines-2026-09-30.md) — Tenth-wave web acquisition, exact deduplication, candidate language/rights status, and repeatable local refresh workflow.
 
@@ -43,9 +45,9 @@ This page indexes the project Markdown intended for the shared repository. It in
 - Treat `research/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard with later dated addenda; older experiment reports are historical snapshots.
 - The latest scorecard refresh is dated 2026-09-30. It reports development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
 - Keep dated research reports as records of the data and model version used at that time. Update the current status docs when new evidence supersedes them; do not rewrite history.
-- Treat `release/v0.1.0/`, `release/v0.1.1/`, and `release/v0.2.0/` as frozen snapshots. Their cards and reports preserve each package's own counts and terms. The current public Hugging Face release is v0.2.1 for both corpus and speech; both cards link to verified commits and preserve earlier files.
+- Treat `release/v0.1.0/`, `release/v0.1.1/`, and `release/v0.2.0/` as frozen snapshots. Their cards and reports preserve each package's own counts and terms. The current public Hugging Face releases are corpus v0.2.3 and speech v0.2.1; both cards link to verified commits and preserve earlier files. The Internet Archive acquisition dated 3–4 October remains local-only and is not in either package.
 - Keep dataset-card and policy copies inside each Hugging Face package aligned with the root policies when preparing a new package.
-- The current v0.2.1 corpus contains 32,072 exact-unique parent texts; 164 were added in the 30 September refresh. See the source-expansion report for overlap and publication state; the frozen v0.2.0 snapshot remains documented below.
+- The current v0.2.3 corpus contains 32,072 exact-unique parent texts; its 246-row `text_resources` and 1,647-row `text_expansion` views surface existing catalog values, not new source acquisition. See the source-expansion report for prior intake and publication state; the frozen v0.2.0 snapshot remains documented below.
 - The v0.2.1 rights-filtered corpus builds on the earlier rights-resolution snapshot at commit [`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b) and docs amendment [`f2def9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/f2def9e717390008ebf7aac05decebf1c264fa98). Its 19,466 unresolved full texts remain outside public content and are accounted for in the rights-filtered metadata index; see the rights log for counts and source-specific next actions.
 - The rights review found a CC BY-SA 4.0 Garhwali GHMNT edition by The Love Fellowship; it is distinct from the Wycliffe version and is not yet mapped to the scripture lines in PahariLI. See the source-by-source rights log before changing any PahariLI release decision.
 - For the next source wave, `PIPELINE.md` documents one checkpointed command that ingests a pinned wave, refreshes all derived views and figures, and stages a separately versioned additive Hub upload.

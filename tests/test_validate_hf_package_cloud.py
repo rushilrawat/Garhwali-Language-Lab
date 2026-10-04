@@ -54,6 +54,121 @@ class HuggingFaceCloudValidationTests(unittest.TestCase):
         self.assertEqual(report['status'], 'passed')
         self.assertEqual(report['record_schema_version'], '1.0.0')
 
+    def test_quality_status_and_detailed_evidence_are_distinct_metrics(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = self._write_schema_v1_package(root, {
+                'id': 'word-a', 'rights_status': 'not_assessed',
+                'reuse_scope': 'not assessed', 'license_labels': [],
+                'quality_status': 'not_reviewed', 'record_quality_flags': [],
+                'quality_flags': [],
+            })
+            shard = package / 'data/lexicon/train-00000.jsonl'
+            rows = [
+                json.loads(shard.read_text(encoding='utf-8')),
+                {
+                    'id': 'word-b', 'rights_status': 'licensed',
+                    'reuse_scope': 'attribution', 'license_labels': ['CC-BY-4.0'],
+                    'quality_status': 'automated_quality_assessed_unreviewed',
+                    'record_quality_flags': [], 'quality_flags': ['script_check'],
+                },
+            ]
+            shard.write_text(
+                ''.join(json.dumps(row) + '\n' for row in rows), encoding='utf-8'
+            )
+            manifest_path = package / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+            config = manifest['configs']['lexicon/train']
+            config['records'] = len(rows)
+            config['file_sha256'][shard.name] = m.sha256(shard)
+            manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+            output = root / 'preflight.json'
+            with patch.object(sys, 'argv', [
+                'validate_hf_package_cloud.py', '--package', str(package),
+                '--output', str(output),
+            ]), contextlib.redirect_stdout(io.StringIO()):
+                m.main()
+            report = json.loads(output.read_text())
+
+        stats = report['configs']['lexicon/train']
+        self.assertEqual(stats['rows_with_quality_status'], 2)
+        self.assertEqual(stats['rows_with_quality_evidence_fields_present'], 2)
+        self.assertEqual(stats['rows_with_nonempty_quality_evidence'], 1)
+        self.assertEqual(stats['rows_with_quality_metadata'], 2)
+        self.assertEqual(stats['rows_with_provenance_array'], 0)
+        self.assertEqual(stats['rights_status_counts'], {
+            'licensed': 1, 'not_assessed': 1,
+        })
+        self.assertEqual(stats['reuse_scope_counts'], {
+            'attribution': 1, 'not assessed': 1,
+        })
+        self.assertEqual(stats['license_label_counts'], {'CC-BY-4.0': 1})
+        self.assertEqual(stats['rows_with_public_rights_basis'], 0)
+        self.assertIn('not a human-review or correctness measure', report['metric_definitions']['rows_with_nonempty_quality_evidence'])
+        self.assertIn(
+            'values are counted as-is',
+            report['metric_definitions']['rights_status_counts'],
+        )
+
+    def test_traceability_accepts_stable_item_references_and_attributed_urls(self):
+        self.assertTrue(m.has_source_traceability('lexicon', {
+            'provenance': [{
+                'source_id': 'dictionary-a', 'record_id': 'dictionary-a:line-8',
+            }],
+        }))
+        self.assertTrue(m.has_source_traceability('source_catalog', {
+            'source_ref_id': 'stable-source-reference',
+            'source_id': 'tatoeba',
+            'attribution': 'Tatoeba sentence 4648070; see sentence history for attribution',
+        }))
+
+    def test_scorecard_measures_traceability_with_a_config_appropriate_locator(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = self._write_schema_v1_package(root, {
+                'id': 'word-a', 'rights_status': 'not_assessed',
+                'reuse_scope': 'not assessed', 'license_labels': [],
+                'quality_status': 'not_reviewed', 'record_quality_flags': [],
+                'provenance': [{
+                    'source_id': 'dictionary-a',
+                    'source_url': 'https://example.org/entry/word-a',
+                }],
+            })
+            shard = package / 'data/lexicon/train-00000.jsonl'
+            rows = [
+                json.loads(shard.read_text(encoding='utf-8')),
+                {
+                    'id': 'word-b', 'rights_status': 'not_assessed',
+                    'reuse_scope': 'not assessed', 'license_labels': [],
+                    'quality_status': 'not_reviewed', 'record_quality_flags': [],
+                    'provenance': [{'source_id': 'dictionary-b'}],
+                },
+            ]
+            shard.write_text(
+                ''.join(json.dumps(row) + '\n' for row in rows), encoding='utf-8'
+            )
+            manifest_path = package / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+            config = manifest['configs']['lexicon/train']
+            config['records'] = len(rows)
+            config['file_sha256'][shard.name] = m.sha256(shard)
+            manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+            output = root / 'preflight.json'
+            with patch.object(sys, 'argv', [
+                'validate_hf_package_cloud.py', '--package', str(package),
+                '--output', str(output),
+            ]), contextlib.redirect_stdout(io.StringIO()):
+                m.main()
+            report = json.loads(output.read_text())
+
+        stats = report['configs']['lexicon/train']
+        self.assertEqual(stats['rows_with_source_traceability'], 1)
+        self.assertEqual(stats['rows_without_source_traceability'], 1)
+        self.assertIn(
+            'does not establish reuse rights',
+            report['metric_definitions']['rows_with_source_traceability'],
+        )
+
     def test_record_schema_envelope_rejects_missing_and_wrongly_typed_fields(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

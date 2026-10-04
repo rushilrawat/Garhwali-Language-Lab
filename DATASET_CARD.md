@@ -8,10 +8,15 @@ folklore, folk songs, educational material, historical linguistics, community
 writing, and cultural context without erasing source rights or uncertain language
 labels.
 
-The current public project release is **v0.2.1**. Its corpus payload was
-published at
-[Hugging Face commit `7cae908`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/7cae908fee51acd2e1e47955acaa9ee035c9bfbc).
-Its linked developer quick-start was corrected in the docs-only follow-up
+The current public corpus release is **v0.2.3**, published additively at
+[Hugging Face commit `76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d).
+It adds a `text_resources/train` view of 246 already-catalogued records; this
+surfaces existing values and is not new source acquisition. The preceding
+v0.2.2 release is at [commit `b9d0538`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/b9d0538b5b4dda3be73e5ae33b279b371ef75c3f),
+with its card correction at
+[commit `b18933b`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/b18933bb2e98f091add0b1889e70587448d9891f).
+The v0.2.1 corpus payload was published at
+[commit `7cae908`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/7cae908fee51acd2e1e47955acaa9ee035c9bfbc), with its developer quick-start corrected at
 [commit `0a76bc6`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/0a76bc6a1f403b2ba460ef0ece464050c178c189).
 The speech companion is live as v0.2.1 at
 [Hugging Face commit `9da266e`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/9da266e23bfc198f70784a6e81edbf32f946102f).
@@ -19,13 +24,22 @@ The corrected corpus card/manifests are at [commit `a2d8716`](https://huggingfac
 Both updates were additive; earlier release files remain available. V0.2.1 adds
 a common rights-and-quality schema, chronological dataset cards, a developer
 quick start, and a searchable lexicon example.
+V0.2.2 added the separate `text_expansion/train` configuration with 1,647
+existing catalog texts exposed as a strict-tier, train-only view. This is a
+new access path, not newly ingested source material; its values remain in the
+catalog by design, and the row-level rights and quality labels still apply.
 Its content tables expose 12,606 of 32,072 exact-unique catalog values under
 source-specific terms or narrow fact-only treatment and redact 19,466 full
 texts whose compatible reuse basis is unresolved. All 216 structured records
 are discoverable through factual/bibliographic projections; their expressive
 payloads are not included. The complete all-data package retains every value
-locally, but is not uploaded. The public reference index covers 300,915
-archive rows, 4,909 source records, and 352,765 source links without copying
+locally, but is not uploaded. The v0.2.3 package has **827,450 overlapping-view
+rows**: 164,387 content/config rows and 663,063 reference/join rows across 14
+content configs and 20 config-split views. The 246-row `text_resources` and
+1,647-row `text_expansion` views expose existing catalog material; they are
+not new source acquisition. Dataset Viewer Parquet returned HTTP 500 and is
+still unverified. The public reference index covers 302,532
+archive rows, 5,019 source records, and 355,294 source links without copying
 redacted text or media. The linked
 [`Garhwali Speech`](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 dataset is public separately. Native-speaker review and dialect annotation are
@@ -42,8 +56,11 @@ Use the [developer quick start](docs/DEVELOPER_QUICKSTART.md) for exact config
 counts, a copy-paste `datasets.load_dataset` sample, pandas and DuckDB recipes,
 and the searchable vocabulary CLI. The
 [schema guide](docs/DATASET_SCHEMA.md) defines common record-level rights and
-quality fields alongside each config's payload fields. The live v0.2.1 package
-has the common envelope; source-specific evidence fields remain alongside it.
+quality fields alongside each config's payload fields. The v0.2.3 corpus keeps
+the common envelope and source-specific evidence fields. The local Internet
+Archive intake is separate research material and is not in this Hub release;
+see its [intake report](research/internet-archive-intake-2026-10-03.md) and
+[quality audit](research/internet-archive-intake-quality-2026-10-04.md).
 
 ## Current scale
 
@@ -52,12 +69,15 @@ has the common envelope; source-specific evidence fields remain alongside it.
 | Exact-unique parent texts | 32,072 |
 | Exact-unique sentence segments | 151,690 |
 | All-data package | 300,915 overlapping-view rows / 0 redacted texts |
-| Rights-filtered corpus profile (public v0.2.1 currently live) | 162,494 overlapping-view rows / 21 config-split subsets |
+| Rights-filtered corpus profile | public v0.2.3: 164,387 content/config rows across 14 configs / 20 config-split views, plus 663,063 reference/join rows |
+| Total corpus package views | 827,450 overlapping-view rows; not unique examples |
+| `text_resources/train` | 246 existing catalog records for lookup/research |
+| Local Archive intake (not in Hub package) | 119 payloads / 6.01 GB; 3,369 OCR pages / 3,368 exact-unique texts; 39 media files. Zero exact or ≥0.85 5-gram near-match candidates against 32,072 cleaned parent texts |
 | Speech release (public v0.2.1) | 113,363 rows / 267 Parquet shards / 154.645 hours |
 | V0.2.1 speech file-tree size | 18.24 GB new release files; earlier files remain available |
 | Catalog text included in profile | 12,606 exposed / 19,466 redacted |
 | Structured knowledge | 216 fact/bibliographic projections; expressive payloads omitted |
-| Metadata index in corpus profile | 300,915 records / 4,909 sources / 352,765 links |
+| Metadata index in v0.2.3 | 302,532 records / 5,019 sources / 355,294 links |
 | All supervised speech rows | 5,894 / 8.803724 hours |
 | Strict identified-speaker comparison rows | 2,002 / 3.562395 hours |
 | Normalized training-candidate WAVs | 1,736 |
@@ -71,7 +91,7 @@ has the common envelope; source-specific evidence fields remain alongside it.
 | Current SraVaani baseline | 0.428 WER / 0.176 CER |
 | Zero-shot Whisper-tiny, same 112 rows | 1.479 WER / 1.368 CER |
 | Zero-shot Whisper-small, same 112 rows | 0.972 WER / 0.578 CER |
-| SraVaani experimental drafts | 104,542 source rows / 104,534 unique audio |
+| SraVaani experimental drafts | 104,542 source rows / 104,534 unique audio hashes: 104,500 non-empty, 34 empty |
 | SraVaani draft quality | 103,354 standard / 1,188 flagged |
 | Independent Whisper agreement evidence | 65,000 rows / 157 exact agreements |
 | Incoming PDF OCR consensus | 659 pages checked / 69 same-engine layout variants |
@@ -180,9 +200,9 @@ publish raw caches, reference images, or private reviewer identities.
   only each row's associated deduplicated passage.
 - SraVaani 1.0 is the strongest tested ASR baseline at 42.761% WER / 17.606%
   CER on the 112-row speaker-safe comparison. It remains too inaccurate to turn
-  machine drafts into trusted labels without review. All 104,542 untranscribed
-  source rows have revision-pinned SraVaani drafts, covering 104,534 unique audio
-  hashes; all remain active as noisy experimental records.
+  machine drafts into trusted labels without review. The 104,542 source rows
+  deduplicate to 104,534 unique audio hashes; 104,500 have non-empty drafts and
+  34 are empty. All remain clearly marked as noisy experimental records.
 - SraVaani 1.0 lists Garhwali support and a 53.5 WER on its own Vaani evaluation,
   while this project uses a provider-approved pinned snapshot. The published
   result uses a different split and scoring setup and is not directly comparable.

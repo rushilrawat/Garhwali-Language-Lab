@@ -1,5 +1,52 @@
 # Garhwali Language Lab — deep final audit
 
+## Current release and local Archive intake — 2026-10-04
+
+The current public corpus release is **v0.2.3** at Hub commit
+[`76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d).
+Its 246-row `text_resources/train` config surfaces existing catalog records;
+the package contains 827,450 overlapping-view rows. The speech repository
+remains at v0.2.1. The local Internet Archive intake contains 119
+checksum-verified payload files (6,005,077,831 bytes), with 3,369 page OCR
+records / 3,368 exact-unique texts. Source extractors found zero exact matches
+in the source/extraction folders they scanned. A broader check against all
+32,072 canonical cleaned parent texts found 0 exact matches and 0 near-match
+candidates at 5-gram Jaccard ≥0.85, after scoring 1,647,488 length-compatible
+pairs. This does not test semantic similarity or every corpus layer. The 39
+media files total 14:09:25.531 of playback, not verified Garhwali speech time.
+All pages remain training- and redistribution-ineligible, and their language
+and OCR accuracy are unreviewed. No intake material was published; raw files
+remain ignored. See the [source ledger](research/internet-archive-intake-2026-10-03.md)
+and [quality/overlap audit](research/internet-archive-intake-quality-2026-10-04.md).
+
+## Hugging Face quality release v0.2.2 — 2026-10-01 (historical audit)
+
+At the time of this 1 October snapshot, the public corpus was v0.2.2; its corrective commit was
+[`b18933b`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/b18933bb2e98f091add0b1889e70587448d9891f). It adds a separate `text_expansion` train config with
+1,647 existing catalog values promoted into a ready-to-load training view.
+They are net-new against existing text, provider ASR, machine drafts,
+instructions, and lexicon fields; their appearance in `catalog` is
+intentional. The package has 826,986 overlapping-view rows (164,141
+content/config and 662,845 reference/join rows), all with config-specific
+source locators; preflight reports zero errors and zero deleted/mutated rows.
+Every expansion row has a recorded public-rights basis and an automated
+strict-tier label. This is not new source ingestion, native language review,
+or proof of source-page-family independence. The release preserves prior
+versioned files. A Hub Viewer diagnostic found null-to-string schema inference
+failure in `sravaani_drafts`; the package now writes empty strings for missing
+speaker IDs and its remote manifest matches the corrected local shard hash.
+The Hub Viewer is temporarily busy, so post-fix endpoint verification remains
+pending. All **699/699** configured tests
+pass, and `git diff --check` passes.
+
+Phase 1 is complete. Cross-config exact normalized-text overlap and frozen
+benchmark source-record overlap checks now pass for the added config. Broader
+source-page-family and rights-scope audits remain release gates.
+See [`research/huggingface-dataset-quality-roadmap.md`](research/huggingface-dataset-quality-roadmap.md)
+and [`research/huggingface-quality-baseline-2026-10-01.md`](research/huggingface-quality-baseline-2026-10-01.md)
+for current definitions and counts, and [`research/huggingface-text-expansion-audit-2026-10-01.md`](research/huggingface-text-expansion-audit-2026-10-01.md)
+for the exact inclusion, dedupe, and release limitations of the added config.
+
 ## Developer access, schema, and v0.2.1 Hub release audit — 2026-10-01
 
 The v0.2.1 text and speech packages add consistent record-level rights and
@@ -21,7 +68,7 @@ rights-filtered text-package views and **300,915** all-data archive views. All
 local lexicon example loaded through Hugging Face Datasets and queried through
 pandas and DuckDB. These checks validate structure and lineage only; they do
 not establish native-speaker accuracy. The complete unit suite passes
-**683/683**. A speech-card follow-up at [commit `2808ad7`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/2808ad7d4c59becbd842f76ed38af1ee06274ba8) clarifies that VAANI split counts refer to all 110,436 audio rows; the provider-transcribed pool is 5,894 rows and the strict linked ASR view is 2,002 rows. It marks SraVaani outputs as unreviewed drafts. No audio or Parquet payload changed. The Dataset Viewer API returned a temporary HTTP 500 busy response
+**684/684**. A speech-card follow-up at [commit `2808ad7`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/2808ad7d4c59becbd842f76ed38af1ee06274ba8) clarifies that VAANI split counts refer to all 110,436 audio rows; the provider-transcribed pool is 5,894 rows and the strict linked ASR view is 2,002 rows. It marks SraVaani outputs as unreviewed drafts. No audio or Parquet payload changed. The Dataset Viewer API returned a temporary HTTP 500 busy response
 after upload; the repository cards, commit revisions, and file trees were
 verified separately.
 
@@ -145,7 +192,7 @@ metrics block in `README.md`. Its scope and limitations are in
 [web-goldmine intake report](research/garhwali-web-goldmines-2026-09-30.md).
 The pre-refresh post-ingestion test suite passed **635 pytest** and **633
 unittest** tests. The next source-refresh suite passed **656 pytest** and **654
-unittest** tests. The current v0.2.1 configured-environment suite passes **683** tests. The pytest runner available in this workspace is the system
+unittest** tests. The current v0.2.1 configured-environment suite passes **684** tests. The pytest runner available in this workspace is the system
 installation with the project virtualenv's dependency path supplied; the
 `.venv` itself does not contain pytest.
 

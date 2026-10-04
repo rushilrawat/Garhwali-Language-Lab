@@ -167,6 +167,145 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertTrue(m.is_public_knowledge_row(cleared))
         self.assertFalse(m.is_public_knowledge_row(pending))
 
+    def test_catalog_text_expansion_filters_rights_duplicates_and_eval_records(self):
+        license_basis = {
+            'source_id': 'open-source',
+            'record_id': 'open-source:1',
+            'source_url': 'https://example.org/source/1',
+            'license_id': 'CC-BY-4.0',
+            'attribution': 'Example source',
+        }
+
+        def candidate(record_id, text, **overrides):
+            row = {
+                'id': record_id,
+                'text': text,
+                'redistribution_status': 'rights_cleared',
+                'language_bucket': 'garhwali_candidate',
+                'quality_v2': {'tier': 'strict_gold_candidate'},
+                'public_rights_basis': [dict(license_basis, record_id=record_id)],
+                'sources': [{
+                    'source_id': 'open-source',
+                    'record_id': record_id,
+                    'source_url': 'https://example.org/source/1',
+                    'iso_639_3': 'gbm',
+                }],
+                'record_quality_flags': [],
+            }
+            row.update(overrides)
+            return row
+
+        rows, metrics = m.build_catalog_text_expansion(
+            [
+                candidate('new-1', 'नयाँ वाक्य'),
+                candidate('new-2', 'नयाँ वाक्य!'),
+                candidate('new-3', 'समुदायबाट संकलित अर्को वाक्य', record_quality_flags=['community_aggregation']),
+                candidate('new-4', 'गुणस्तर चिन्ह भएको वाक्य', record_quality_flags=['community_aggregation']),
+                candidate('eval-duplicate', 'मूल्याङ्कनसँग जोडिएको', sources=[{
+                    'source_id': 'open-source', 'record_id': 'heldout:1',
+                    'source_url': 'https://example.org/source/1', 'iso_639_3': 'gbm',
+                }]),
+                candidate('rights-pending', 'अधिकार जाँच बाँकी', redistribution_status='rights_pending'),
+                candidate('quality-pending', 'गुणस्तर जाँच बाँकी', quality_v2={'tier': 'experimental_review'}),
+            ],
+            [
+                {'id': 'existing', 'text': 'पहिलेको वाक्य', 'split': 'train'},
+                {'id': 'heldout', 'text': 'held out', 'split': 'test', 'provenance': [
+                    {'record_id': 'heldout:1'},
+                ]},
+                {'id': 'other-config', 'text': 'समुदायबाट संकलित अर्को वाक्य', 'split': 'train'},
+            ],
+        )
+
+        self.assertEqual([row['id'] for row in rows], ['new-1', 'new-4'])
+        self.assertEqual(metrics['strict_rights_language_candidates'], 5)
+        self.assertEqual(metrics['excluded_evaluation_source_record'], 1)
+        self.assertEqual(metrics['excluded_normalized_internal_duplicate'], 1)
+        self.assertEqual(metrics['excluded_normalized_existing_text'], 1)
+        self.assertEqual(metrics['records'], 2)
+        self.assertEqual(metrics['recommended_for_training'], 1)
+        self.assertFalse(rows[1]['recommended_for_training'])
+        self.assertEqual(rows[0]['public_rights_basis'][0]['license_id'], 'CC-BY-4.0')
+        self.assertEqual(rows[0]['split'], 'train')
+
+    def test_catalog_text_resources_keep_broad_rights_cleared_text_separate(self):
+        open_basis = {
+            'source_id': 'open-source',
+            'record_id': 'open-source:1',
+            'source_url': 'https://example.org/source/1',
+            'license_id': 'CC-BY-4.0',
+            'attribution': 'Example source',
+        }
+        nc_basis = {
+            'source_id': 'nc-source',
+            'record_id': 'nc-source:1',
+            'source_url': 'https://example.org/nc/1',
+            'license_id': 'CC-BY-NC-SA-4.0',
+            'attribution': 'NC source attribution',
+            'commercial_use_status': 'noncommercial_only',
+        }
+
+        def candidate(record_id, text, basis, **overrides):
+            row = {
+                'id': record_id,
+                'text': text,
+                'redistribution_status': 'rights_cleared',
+                'language_bucket': 'garhwali_candidate',
+                'quality_v2': {'tier': 'experimental_review'},
+                'public_rights_basis': [dict(basis, record_id=record_id)],
+                'noncommercial_rights_basis': [],
+                'sources': [{
+                    'source_id': basis['source_id'],
+                    'record_id': record_id,
+                    'source_url': basis['source_url'],
+                    'iso_639_3': 'gbm',
+                }],
+                'record_quality_flags': ['needs_language_review'],
+            }
+            row.update(overrides)
+            return row
+
+        nc_row = candidate(
+            'nc-resource', 'गढवाळी पूरक पाठ', nc_basis,
+            redistribution_status='rights_cleared_noncommercial_sharealike',
+            public_rights_basis=[],
+            noncommercial_rights_basis=[dict(nc_basis, record_id='nc-resource')],
+        )
+        eval_row = candidate(
+            'eval-resource', 'मूल्यांकन स्रोत वाला पाठ', open_basis,
+            sources=[{
+                'source_id': 'open-source', 'record_id': 'heldout:1',
+                'source_url': 'https://example.org/source/1', 'iso_639_3': 'gbm',
+            }],
+        )
+        rows, metrics = m.build_catalog_text_resources(
+            [
+                candidate('open-resource', 'गढवाळी पूरक वाक्य', open_basis),
+                nc_row,
+                eval_row,
+                candidate('existing-copy', 'पहिले से मौजूद पाठ', open_basis),
+                candidate('pending-resource', 'अधिकार लंबित पाठ', open_basis,
+                          redistribution_status='rights_pending'),
+            ],
+            [
+                {'id': 'existing-id', 'text': 'पहिले से मौजूद पाठ', 'split': 'train'},
+                {'id': 'heldout', 'text': 'held out', 'split': 'test', 'provenance': [
+                    {'record_id': 'heldout:1'},
+                ]},
+            ],
+        )
+
+        self.assertEqual([row['id'] for row in rows], ['nc-resource', 'open-resource'])
+        self.assertEqual(metrics['rights_and_language_candidates'], 4)
+        self.assertEqual(metrics['excluded_evaluation_source_record'], 1)
+        self.assertEqual(metrics['excluded_normalized_existing_text'], 1)
+        self.assertEqual(metrics['records'], 2)
+        self.assertEqual(metrics['recommended_for_training'], 0)
+        self.assertTrue(all(not row['recommended_for_evaluation'] for row in rows))
+        self.assertEqual(rows[0]['provenance'][0]['license_id'], 'CC-BY-NC-SA-4.0')
+        self.assertEqual(rows[0]['redistribution_status'], 'rights_cleared_noncommercial_sharealike')
+        self.assertEqual(rows[1]['quality_flags'], ['needs_language_review'])
+
     def test_rights_warnings_are_blocked_across_separator_styles(self):
         for rights_status in (
             'upstream component review required',
@@ -609,6 +748,74 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             **word, 'provenance': [{**source, 'source_id': 'other_site'}],
         })['text'])
 
+    def test_catalog_adds_known_source_locator_without_changing_rights(self):
+        row = {
+            'text_sha256': 'a' * 64,
+            'text': 'काखड़',
+            'provenance': [{
+                'source_id': 'emagazine_animals',
+                'license_id': 'LicenseRef-All-Rights-Reserved',
+                'license_url': 'https://e-magazineofuttarakhand.blogspot.com/2012/02/names-of-animals-birds-etc-in-garhwali.html',
+                'rights_status': 'not_recorded',
+                'genre': 'thematic_lexicon',
+                'quality_flags': ['needs_native_review'],
+            }, {
+                'source_id': 'uttarakhandiwords_animals',
+                'license_id': 'LicenseRef-All-Rights-Reserved',
+                'license_url': 'https://uttarakhandiwords.blogspot.com/2011/09/blog-post.html',
+                'rights_status': 'not_recorded',
+                'genre': 'thematic_lexicon',
+            }],
+        }
+
+        exported = m.catalog_row(row)
+
+        sources = {item['source_id']: item for item in exported['sources']}
+        self.assertEqual(
+            sources['emagazine_animals']['source_url'],
+            'https://e-magazineofuttarakhand.blogspot.com/2012/02/names-of-animals-birds-etc-in-garhwali.html',
+        )
+        self.assertEqual(
+            sources['uttarakhandiwords_animals']['source_url'],
+            'https://uttarakhandiwords.blogspot.com/2011/09/blog-post.html',
+        )
+        self.assertEqual(
+            sources['emagazine_animals']['license_id'],
+            'LicenseRef-All-Rights-Reserved',
+        )
+        self.assertEqual(
+            sources['emagazine_animals']['rights_status'], 'not_recorded'
+        )
+
+    def test_catalog_resolves_item_url_from_stable_social_capture_reference(self):
+        row = {
+            'text_sha256': 'b' * 64,
+            'text': 'Garhwali social example',
+            'provenance': [{
+                'source_id': 'records',
+                'file': 'data/extracted/social_garhwali/records.jsonl',
+                'line': 1,
+                'record_id': 'social-garhwali:0001',
+                'rights_status': 'public_social_post_no_open_license_recorded',
+                'training_eligible': False,
+            }],
+        }
+        with patch.object(m, 'source_record_locator', return_value={
+            'source_url': 'https://www.reddit.com/r/example/comments/post',
+            'source_title': 'Example post',
+            'source_kind': 'social_media_reddit',
+        }):
+            exported = m.catalog_row(row)
+
+        self.assertEqual(
+            exported['sources'][0]['source_url'],
+            'https://www.reddit.com/r/example/comments/post',
+        )
+        self.assertEqual(
+            exported['sources'][0]['rights_status'],
+            'public_social_post_no_open_license_recorded',
+        )
+
     def test_public_knowledge_projection_keeps_facts_and_drops_expressive_fields(self):
         row = m.knowledge_row({
             'record_id': 'work:example',
@@ -822,6 +1029,58 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             ' '.join(card.split()),
         )
 
+    def test_public_card_distinguishes_empty_speech_drafts_from_audio_hash_rows(self):
+        report = {
+            'release_id': 'garhwali-language-lab-v0.2.1',
+            'profile': 'public',
+            'configs': {'text/train': {'records': 2}},
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'draft_unique_audio': 5,
+            'draft_unique_nonempty_audio': 3,
+            'draft_empty_audio': 2,
+            'catalog_records': 2,
+            'catalog_redacted_text_records': 1,
+            'structured_knowledge_excluded_for_rights': {},
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+        }
+
+        card = m.dataset_card(report)
+
+        self.assertIn('The SraVaani draft config covers **5 unique audio hashes**', card)
+        self.assertIn('**3** have non-empty draft text and **2** are empty', card)
+        self.assertNotIn('including transcripts for **5', card)
+
+    def test_v0_2_2_card_describes_traceability_and_text_expansion(self):
+        report = {
+            'release_id': 'garhwali-language-lab-v0.2.2',
+            'profile': 'public',
+            'configs': {'text/train': {'records': 2}},
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'draft_unique_audio': 1,
+            'catalog_records': 2,
+            'catalog_redacted_text_records': 1,
+            'structured_knowledge_excluded_for_rights': {},
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+            'text_expansion_metrics': {'records': 1658, 'recommended_for_training': 607},
+        }
+        card = m.dataset_card(report)
+        self.assertIn('Release: **garhwali-language-lab-v0.2.2**', card)
+        self.assertIn('v0.2.2 — improve traceability and report usable counts', card)
+        self.assertIn('deduplicated `text_expansion` view', card)
+        self.assertIn('`text_expansion` config adds **1,658** Garhwali candidate texts', card)
+        self.assertIn('**607** have no remaining record-quality flags', card)
+        self.assertIn('figures below describe the current v0.2.2 package', card)
+
     def test_catalog_includes_open_text(self):
         row = {
             'text_sha256': 'b' * 64,
@@ -902,6 +1161,13 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertFalse(exported['recovery_adjudication']['automatic_correction'])
         self.assertFalse(exported['recovery_third_checkpoint']['confidence_is_calibrated'])
         self.assertTrue(exported['audio_grounded_review']['human_listening_review_required'])
+
+    def test_audio_export_uses_string_for_missing_speaker(self):
+        exported = m.audio_row(
+            {'audio_sha256': 'ab' * 32, 'asr_target_clean': 'गढ़वाली'},
+            transcript_field='asr_target_clean', include_audio_reference=False,
+        )
+        self.assertEqual(exported['speaker_id'], '')
 
     def test_draft_evidence_json_is_stable_and_preserves_sparse_values(self):
         row = {

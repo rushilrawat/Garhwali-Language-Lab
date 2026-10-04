@@ -7,7 +7,7 @@
 Text, speech, folklore, scholarship, and local knowledge are organized into reusable datasets with source and quality information attached.
 
 [![Python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-683%20passing-brightgreen.svg)](research/corpus-preparation-status.md)
+[![Tests](https://img.shields.io/badge/tests-707%20passing-brightgreen.svg)](research/corpus-preparation-status.md)
 [![Speech dataset](https://img.shields.io/badge/Hugging%20Face-speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 [![Corpus dataset](https://img.shields.io/badge/Hugging%20Face-corpus-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 
@@ -21,16 +21,18 @@ The aim is to make Garhwali easier to study and support future language tools. T
 
 ## Current status
 
-Last checked: **1 October 2026**.
+Release figures last checked: **2 October 2026**. Internet Archive local intake updated **4 October 2026**.
 
-- **Text:** 32,072 exact-unique values are in the local corpus. The public Hugging Face profile exposes 12,606 values under their recorded terms or narrow fact-only treatment; 19,466 full texts remain in the local all-data package pending a compatible public basis. The public corpus repository is live on **v0.2.1**.
-- **Speech:** the separate public dataset has 113,363 audio rows (about 154.65 hours), including 5,894 VAANI provider transcripts. The VAANI train/validation/test counts split all 110,436 audio rows; the linked corpus offers a narrower 2,002-row strict ASR view. Its 104,508 non-empty SraVaani outputs are unreviewed machine drafts, not ground truth. Its **v0.2.1** release is live.
+- **Text:** 32,072 exact-unique values are in the local corpus. The public Hugging Face profile exposes 12,606 values under their recorded terms or narrow fact-only treatment; 19,466 full texts remain outside public text content pending a compatible basis. The public corpus repository is live on **v0.2.3**.
+- **Speech:** the separate public dataset has 113,363 audio rows (about 154.65 hours), including 5,894 VAANI provider transcripts. The VAANI train/validation/test counts split all 110,436 audio rows; the linked corpus offers a narrower 2,002-row strict ASR view. SraVaani produced 104,542 source rows, deduplicated to 104,534 unique audio hashes: 104,500 have non-empty unreviewed drafts and 34 are empty. Drafts are not ground truth. Its **v0.2.1** release is live.
 - **Knowledge records:** 216 geography, history, literature, songs, and research records are publicly listed as factual and bibliographic metadata.
+- **Internet Archive (local only):** 119 verified payload files (6.01 GB), 3,369 non-empty OCR pages (3,368 exact-unique texts; 4.96M normalized characters), and 39 media files. Cross-checking all 32,072 cleaned parent texts found 0 exact matches and 0 candidates at 5-gram Jaccard ≥0.85. This does not identify page language: the material is mainly English/Hindi regional reference plus unreviewed Garhwali-focused books. No rows are cleared for training or redistribution, and nothing from this intake is in the corpus or Hugging Face releases. See the [quality and overlap audit](research/internet-archive-intake-quality-2026-10-04.md).
+- **Hugging Face fast-track:** corpus v0.2.3 is public at [commit `76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d). It adds a `text_resources` config with **246** additional normalized-unique Garhwali records (40,759 words; 183,484 characters) already present in the catalog. These are newly surfaced resources, not new source acquisition; none is recommended for training or evaluation. The package has **827,450** overlapping-view rows (164,387 content/config rows plus 663,063 reference/join rows). Preflight passes with zero errors, and a direct streaming read returns all 246 rows. Dataset Viewer Parquet is returning HTTP 500, so Viewer confirmation remains pending.
 - **Benchmark and models:** the benchmark is still a local draft. Independent accuracy claims and native-language validation are not complete.
 
 Implementation scorecard (last measured 30 September 2026): **Corpus 88% · Benchmark 56% · Research Suite 66% · Models 39%**. These weighted work-completion estimates are not language-accuracy or data-quality scores.
 
-See the [license policy](LICENSE_POLICY.md), [corpus status](research/corpus-preparation-status.md), and [final review](finalreport.md) for the detailed rights approach, evidence, and limits.
+See the [license policy](LICENSE_POLICY.md), [corpus status](research/corpus-preparation-status.md), [Hugging Face quality roadmap](research/huggingface-dataset-quality-roadmap.md), and [final review](finalreport.md) for the detailed rights approach, measures, evidence, and limits.
 
 ## Corpus scale
 
@@ -40,15 +42,15 @@ See the [license policy](LICENSE_POLICY.md), [corpus status](research/corpus-pre
 | Exact-unique parent texts | 32,072 |
 | Text size | 16,089,764 characters; 2,935,379 whitespace-separated tokens* |
 | Prepared segments | 163,045 occurrences; 151,690 exact-unique segments |
-| Rights-filtered corpus profile | 162,494 rows across 15 configs / 21 config-split views (overlapping, not unique; public v0.2.1 currently live) |
+| Rights-filtered corpus profile | 164,387 rows across 14 content configs / 20 config-split views, plus 663,063 reference/join rows (overlapping; public v0.2.3) |
 | Public text values | 12,606 included; 19,466 full texts not included in public content |
-| Hub corpus v0.2.1 release payload | 46 files; 788,191,243 bytes (~751.5 MiB), including the updated card and quick-start |
-| Whole corpus Hub repository | 2,462,217,699 logical file bytes (~2.46 GB); earlier releases remain available |
+| Hub corpus v0.2.3 release payload | 48 files including the root card; 806,624,937 bytes (~769.0 MiB) |
+| Whole corpus Hub repository | 4,073,629,254 logical file bytes (~4.07 GB) across retained versioned releases |
 | Local all-data text package | 51 files; 689,449,417 bytes (~657.5 MiB) |
 | Local `data/` working directory | 77 GB on disk as of 1 Oct 2026 (30 GB VAANI, 22 GB processed, 21 GB HF cache, 3.2 GB downloads; variable) |
 | Public speech dataset | v0.2.1: 113,363 rows; 113,350 unique audio hashes; 154.65 hours; 16.915 GiB source audio; 18.24 GB release files |
 | Whole speech Hub repository | 36,468,214,621 logical file bytes (~36.47 GB), including earlier files and the additive v0.2.1 release; Xet may deduplicate shared chunks |
-| Metadata reference index | 300,915 archive references; 4,909 sources; 352,765 source links |
+| Metadata reference index | 302,532 archive references; 5,019 sources; 355,294 source links |
 
 \* A whitespace count is a storage statistic, not linguistic tokenization. Segment, archive-reference, and package-view counts include different derived views and should not be added together as unique data. Package sizes describe the current text release; the separate speech package is larger and includes audio.
 
@@ -59,12 +61,13 @@ See the [license policy](LICENSE_POLICY.md), [corpus status](research/corpus-pre
 | **v0.1.x** | Established the first reproducible corpus and release pipeline. |
 | **v0.2.0** | Added deduplicated Garhwali-only sources, established the first public corpus and reproducible preparation workflow, and expanded benchmark/model research; the frozen snapshot remains available. |
 | **v0.2.1 — 1 Oct 2026** | Follow-up release: added 164 exact-new texts, resolved more public-profile rights bases, listed factual metadata for all 216 structured records, published the speech companion, and added common quality/rights fields, a stable schema, exact-count quick-start, and searchable lexicon example. Earlier files remain available. |
+| **v0.2.3 — 2 Oct 2026** | Added a deduplicated `text_resources` view with 246 existing records under recorded row-level redistribution terms; no source records or earlier release files were removed. Viewer Parquet check remains pending because of a Hugging Face 500. |
 
 Release notes are concise; source-specific reuse terms are summarized in [Data and reuse](#data-and-reuse) and the [license policy](LICENSE_POLICY.md).
 
 ## Hugging Face datasets
 
-- [**Garhwali Corpus**](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) — public on v0.2.1, with text, vocabulary, source references, and factual knowledge records. Content carries source-specific terms, not one blanket license; earlier release files remain available.
+- [**Garhwali Corpus**](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) — public on v0.2.3, with text, vocabulary, source references, and factual knowledge records. Content carries source-specific terms, not one blanket license; earlier release files remain available.
 - [**Garhwali Speech**](https://huggingface.co/datasets/rushilrawat/garhwali-speech) — public on v0.2.1, with separate VAANI and Meta Omnilingual configs, audio, transcript provenance, and split-safety fields. Earlier files remain available.
 
 The datasets are separate because speech and text have different formats, sources, and reuse terms. The Hub release cards and manifests describe their exact contents.

@@ -1,0 +1,252 @@
+{
+  "repo_id": "rushilrawat/garhwali-corpus",
+  "repo_type": "dataset",
+  "release_id": "garhwali-language-lab-v0.2.3",
+  "strategy": "add files under a versioned prefix and update the root dataset card; no deletion operations",
+  "release_prefix": "releases/v0.2.3",
+  "file_count": 48,
+  "payload_bytes": 806624937,
+  "uploads": [
+    {
+      "path_in_repo": "releases/v0.2.3/ATTRIBUTION.md",
+      "bytes": 2379,
+      "sha256": "bc6cb442490117d3db83df6dbae399a7adee71fad74eac5bfc2fbbe332532c02"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/DATASET_SCHEMA.md",
+      "bytes": 4299,
+      "sha256": "fb743a02e6d4c9b7d54c30792c048b73abdec456fbe42224cf573f59f22e2d0e"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/DEVELOPER_QUICKSTART.md",
+      "bytes": 8661,
+      "sha256": "fc3e2d170cdf84ea4749cd5b72eced075db014d8554a9a4cb12c5fe370af27bd"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/LICENSE_POLICY.md",
+      "bytes": 5553,
+      "sha256": "09cbf25bffe373d3efae99762f6aeeb559801dad2027e771aefa4a506beba78b"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/README.md",
+      "bytes": 18699,
+      "sha256": "bc5bf684b078e575864e71415fcccf85d307cf4c7bdbaefd3fdea6caf0c182d2"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/REMOVAL_POLICY.md",
+      "bytes": 632,
+      "sha256": "7a890891eb04e0d53b05b1c9132b105ecd88bde3dcdcfec0d251268db2552a89"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/asr/test-00000.jsonl",
+      "bytes": 107478,
+      "sha256": "2954c16ece3469ab122c502b951950d0a10375e4a40454306b30c5cf0d0e30e6"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/asr/train-00000.jsonl",
+      "bytes": 1552979,
+      "sha256": "88c4f21eeeebee13e0ddc866d4fca9c0e8a829d86fe93258660b11b4b53b2aad"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/asr/validation-00000.jsonl",
+      "bytes": 260368,
+      "sha256": "b2b68cedc1be2929e2432597d6459734e22a9e0b1b9da524bb7472979d12625f"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/catalog/train-00000.jsonl",
+      "bytes": 36791186,
+      "sha256": "3f42fba7b07ef50dd903c36078cadf36a93311c74099b79f82d8aa5b59ddd8d3"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/catalog/train-00001.jsonl",
+      "bytes": 36784732,
+      "sha256": "ac2979a903020ad88e7dc8e22b1f1f75cae581b1a085ee49f38ddf3b69ed36ce"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/catalog/train-00002.jsonl",
+      "bytes": 36373940,
+      "sha256": "a057e35e88380ce47aea64f800843c8fb2ca712455e49eb7b545031e2dddc395"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/catalog/train-00003.jsonl",
+      "bytes": 7531426,
+      "sha256": "45482c03c4257aa7f88edfe2c19a5def7b01fe1a4719ef4b79c0a2f44ef3aa53"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/geography/train-00000.jsonl",
+      "bytes": 96581,
+      "sha256": "43abbf4e089f6f6f73a6336e7621694379e6813258f15dc04d44e302bbaaf683"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/historical_terms/train-00000.jsonl",
+      "bytes": 49677,
+      "sha256": "5050d31bf2807a87fc97b19d1663b8d355a2d3ab9f2605c742ea1fb8364b8668"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/instructions/test-00000.jsonl",
+      "bytes": 524721,
+      "sha256": "dde79c98179ad6f3ec152473368abde7b5f550bb032cd9a90276e712026fdc27"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/instructions/train-00000.jsonl",
+      "bytes": 7782953,
+      "sha256": "0b5f9e1e32a777a4cbb2b795055d5969bf2785b23e83416737ee50ae82f835e1"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/instructions/validation-00000.jsonl",
+      "bytes": 1139315,
+      "sha256": "43de10d2933c40c912b83d0fb095cd7baa3b462c1df9c85600915b07bbda5cd0"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/lexicon/train-00000.jsonl",
+      "bytes": 4236521,
+      "sha256": "1bafe13ca31e7c8fb62fcc451e5771beecc4ffc37a7db3500492e7806de16cba"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/literary_people/train-00000.jsonl",
+      "bytes": 38232,
+      "sha256": "6ec470303ec613483b9e6af05d657adaaad9890118757415d0f80308e3b4623b"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/literary_works/train-00000.jsonl",
+      "bytes": 97039,
+      "sha256": "13c770f0bbc96c67197359e4855f26f3b20fcd6c579de0742f6451d11b7fdbc0"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/popular_songs/train-00000.jsonl",
+      "bytes": 40282,
+      "sha256": "9af59f2301f41063e3928c86229a4c3dbf49ee3714d8fba17a9159146e20bea6"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/record_index/train-00000.jsonl",
+      "bytes": 270443798,
+      "sha256": "a2d91172c96367cc87289954870f2239ca959e2663b128ce1bb224702dd16082"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/record_sources/train-00000.jsonl",
+      "bytes": 130042876,
+      "sha256": "8c76abbfb9ad7f2e4850977d2dba295cf78d5d820901b1546de51d3a80877a16"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/source_catalog/train-00000.jsonl",
+      "bytes": 2921871,
+      "sha256": "42b0738f96aaa7a3e89cb957ccc2f9ee7c0d5683422b1bdd69ad418bf4ce7781"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00000.jsonl",
+      "bytes": 18076399,
+      "sha256": "0fe649851352d2df9218d111051c0c3e1cb733771cf433087812e9d1e905a9c2"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00001.jsonl",
+      "bytes": 18450282,
+      "sha256": "db5914d0d4760af6e44a211ad9647a7de0b376b46fae05cd2f39489a39a734f6"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00002.jsonl",
+      "bytes": 18806065,
+      "sha256": "3a94447a44396d3e6f7b8ae5487b86130931925286ebc5b11d52779b6cfa935c"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00003.jsonl",
+      "bytes": 18415623,
+      "sha256": "b0683c098b139ab35913f2acdf1bc184a568cafa2e500e1d2ea8cd9a2351bf52"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00004.jsonl",
+      "bytes": 17798719,
+      "sha256": "3f58db6b3304b4a1c91461fb8509b041acd95acff463d971aea96277a8de5d38"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00005.jsonl",
+      "bytes": 18632448,
+      "sha256": "90a1011fb520f19e93b5bd9116fdd629f706f7191e59f4f7fe11d3b11ebf6b2d"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00006.jsonl",
+      "bytes": 17954936,
+      "sha256": "80004eb4c9063fcdb968966ca80c0d3e8792d593737db5468a2dc67cf43b7d0b"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00007.jsonl",
+      "bytes": 17797437,
+      "sha256": "85a315122b78a1ca1d70c8b31258b4678d3eae3a90f2d0e715bc23490ef5eeac"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00008.jsonl",
+      "bytes": 18057669,
+      "sha256": "81ef2ef556144abf49d19256d721a96e32a11a903bb01fa3b1e936d7de3c4dbf"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00009.jsonl",
+      "bytes": 18778829,
+      "sha256": "7b2a1b3dffa350faafc9460f0053d788681cf0b0ef891d1e50df62d5e5ad407f"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/sravaani_drafts/train-00010.jsonl",
+      "bytes": 9228796,
+      "sha256": "a8027bf71719d2e43aa6bb8d7dadab5dd3ffb513b16ddd557f057f7d8b9fa3bc"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/text/test-00000.jsonl",
+      "bytes": 2368981,
+      "sha256": "894ef9345a7279899b53dff4d45f7fd9cdd062fcbb46f2774fe331ec417d5db2"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/text/train-00000.jsonl",
+      "bytes": 32795314,
+      "sha256": "bb2cbe66641c4fb463abd85685ffe14a441b348b4fd93fdaf626667bf25b7d99"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/text/train-00001.jsonl",
+      "bytes": 23959180,
+      "sha256": "e395a6ea6b4afc0f168f3e7b79f2b675da1a8eac6645d74d383759ad603d9322"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/text/validation-00000.jsonl",
+      "bytes": 2955152,
+      "sha256": "ace68b2b7c8a5e9099fcafd466350ffc78c4ce824e04129824bca1dd7e8865ba"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/text_expansion/train-00000.jsonl",
+      "bytes": 13943223,
+      "sha256": "927532ca24cd88690fcf1c6ee331561605f28ab9701ac143b2fb2a7b2b980c2f"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/text_resources/train-00000.jsonl",
+      "bytes": 1668043,
+      "sha256": "ffb0d55cab2ff1838a14d865c1153169936c6a524d0162b7762b1dcd4f30ce31"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/data/university_research/train-00000.jsonl",
+      "bytes": 13851,
+      "sha256": "cabf9366fad47f54c79719c8ae74b8c227bceb7da6bf82e9002b4f5f7836492c"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/manifest.json",
+      "bytes": 15195,
+      "sha256": "ecc931d23aa5909579a462c756e0236ea374b6417aec0a460c1fc3e416f51751"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/reference_index_manifest.json",
+      "bytes": 5091,
+      "sha256": "b4fbfa5a633cc9407d2e418660de2db131549a319120c78a024467a70f92a886"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/research/text-rights-resolution-2026-09-30.md",
+      "bytes": 25938,
+      "sha256": "7f958352809bec84494e2ab90e513dd6a9c0a678968032888de0987f285f7fb6"
+    },
+    {
+      "path_in_repo": "releases/v0.2.3/search_garhwali_lexicon.py",
+      "bytes": 2869,
+      "sha256": "b4462e401d6fdf6e0371a2f3426333864c961e9f7379c030cfc4a60056f5548c"
+    },
+    {
+      "path_in_repo": "README.md",
+      "bytes": 18699,
+      "sha256": "bc5bf684b078e575864e71415fcccf85d307cf4c7bdbaefd3fdea6caf0c182d2"
+    }
+  ],
+  "command": "hf upload rushilrawat/garhwali-corpus /Users/rushilrawat/Garhwali Language Lab/data/huggingface/garhwali-corpus-v0.2.3-additive-upload . --repo-type dataset --commit-message 'Add Garhwali corpus v0.2.3'"
+}

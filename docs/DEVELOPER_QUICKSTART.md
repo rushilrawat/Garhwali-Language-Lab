@@ -2,15 +2,13 @@
 
 The dataset IDs are `rushilrawat/garhwali-corpus` (text and reference tables)
 and `rushilrawat/garhwali-speech` (audio and speech metadata). Both repositories
-are public. Their latest additive release is v0.2.1: the corpus payload is at commit
-[`7cae908`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/7cae908fee51acd2e1e47955acaa9ee035c9bfbc),
-and the speech dataset is at commit
+are public. The latest corpus release is v0.2.3 at commit
+[`76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d); the speech dataset is at commit
 [`9da266e`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/9da266e23bfc198f70784a6e81edbf32f946102f).
-The releases preserve earlier files and add a common rights/quality envelope
-plus clearer schema and loading guidance. Counts below describe the v0.2.1
-packages. You can load the current configs remotely or use the local package
-copy shown below. Pass a commit SHA as `revision=` when you need an immutable
-Hub snapshot.
+The corpus release adds a deduplicated `text_resources` view of 246 existing
+rights-cleared Garhwali records; it does not add newly collected sources.
+Counts below describe the v0.2.3 corpus and current speech package. Pass a
+commit SHA as `revision=` when you need an immutable Hub snapshot.
 
 ## Try three vocabulary rows
 
@@ -32,7 +30,7 @@ See Hugging Face's [`load_dataset` guide](https://huggingface.co/docs/datasets/l
 [supported dataset formats](https://huggingface.co/docs/hub/en/datasets-adding)
 for the underlying interfaces.
 
-Load the vocabulary config from the local v0.2.1 package without loading any
+Load the vocabulary config from the local v0.2.3 package without loading any
 other corpus subset:
 
 ```python
@@ -40,7 +38,7 @@ from datasets import load_dataset
 
 lexicon = load_dataset(
     "json",
-    data_files="data/huggingface/garhwali-language-lab/data/lexicon/train-*.jsonl",
+    data_files="data/huggingface/garhwali-language-lab-v0.2.3-staging/data/lexicon/train-*.jsonl",
     split="train",
 )
 for row in lexicon.select(range(3)):
@@ -60,11 +58,11 @@ lexicon = load_dataset("rushilrawat/garhwali-corpus", "lexicon", split="train")
 print(lexicon.select(range(3)))
 ```
 
-Try the searchable CLI against the local v0.2.1 package files with:
+Try the searchable CLI against the local v0.2.3 package files with:
 
 ```bash
 python examples/search_garhwali_lexicon.py "water" --data-file \
-  'data/huggingface/garhwali-language-lab/data/lexicon/train-*.jsonl'
+  'data/huggingface/garhwali-language-lab-v0.2.3-staging/data/lexicon/train-*.jsonl'
 ```
 
 To stream the current corpus config directly, omit `--data-file`. If you
@@ -77,16 +75,18 @@ status separately. The demo prints these fields with each match.
 
 ## Configurations and exact release counts
 
-Counts below were reconciled against the v0.2.1 schema refresh. A config may contain train,
+Counts below were reconciled against the v0.2.3 release. A config may contain train,
 validation, and test splits; numbers are summed across those splits. Views can
 overlap, so do not add the table to calculate unique training examples.
 
 | Config | Rows | Intended use |
 | --- | ---: | --- |
 | `text` | 18,949 | Rights-filtered text examples; train 17,289, validation 895, test 765 |
+| `text_expansion` | 1,647 | Strict-tier additions already in the catalog; train-only, machine-screened |
+| `text_resources` | 246 | Additional catalog text for lookup/research; mixed quality, not for training or evaluation |
 | `lexicon` | 1,493 | Word forms, gloss candidates, and pronunciation metadata |
 | `asr` | 2,002 | Strict speaker-disjoint subset of 5,894 VAANI provider transcripts; 1,621 train, 269 validation, 112 test; not native-adjudicated |
-| `sravaani_drafts` | 104,534 | Machine-generated transcript drafts; experimental, not ground truth |
+| `sravaani_drafts` | 104,534 | Unique audio hashes: 104,500 non-empty machine drafts and 34 empty outputs; experimental, not ground truth |
 | `instructions` | 3,228 | Instruction/response examples; train 2,686, validation 356, test 186 |
 | `catalog` | 32,072 | Exact-unique text inventory; 12,606 values exposed, 19,466 text values redacted |
 | `geography` | 50 | Place facts and citations, without source prose |
@@ -95,12 +95,12 @@ overlap, so do not add the table to calculate unique training examples.
 | `literary_works` | 66 | Work-level bibliography; not the works themselves |
 | `popular_songs` | 30 | Song metadata; no lyrics |
 | `university_research` | 8 | Research bibliography |
-| `record_index` | 300,915 | Content-free archive references; not training examples |
-| `source_catalog` | 4,909 | Deduplicated sources and their known terms |
-| `record_sources` | 352,765 | Join rows connecting records to sources |
+| `record_index` | 302,641 | Content-free archive references; not training examples |
+| `source_catalog` | 5,019 | Deduplicated sources and their known terms |
+| `record_sources` | 355,403 | Join rows connecting records to sources |
 
-The release reports **821,083 total view rows**: 162,494 content/config rows
-plus 658,589 reference rows. This is not 821,083 unique examples. The corpus
+The release reports **827,450 total view rows**: 164,387 content/config rows
+plus 663,063 reference rows. This is not 827,450 unique examples. The corpus
 also has different reuse terms by source; it does not have one blanket license.
 The 19,466 text values without compatible public redistribution terms are
 redacted in the public content table. Speech is a linked dataset, with separate

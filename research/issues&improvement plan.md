@@ -1,6 +1,6 @@
 # Benchmark and model roadmap issues & improvement plan
 
-**Updated:** 2026-10-01 (v0.2.1 corpus release and generation-scoring follow-up)
+**Updated:** 2026-10-04 (public corpus v0.2.3; benchmark evidence remains the 1 October snapshot)
 
 **Scope:** issues found while executing the benchmark/model roadmap and its
 immediately preceding retrieval, generation, and ASR work. This is a living
@@ -22,9 +22,17 @@ occurred. The pipeline now has a tested one-command resumable ingest-and-refresh
 mode. Use this current summary for present benchmark counts; dated entries
 below preserve earlier evidence.
 
-## Current roadmap position — 2026-09-30
+**4 October status:** the public corpus is now v0.2.3; speech remains v0.2.1.
+The Archive intake quality and overlap audit produced no benchmark or model
+results. The full working-tree unittest suite passes **707/707**; those tests
+check code and data contracts, not linguistic correctness.
 
-The v0.2.1 corpus release is public, but GarhwaliBench remains a local draft:
+## Current roadmap position — benchmark snapshot 2026-09-30
+
+The public corpus is at v0.2.3 and speech is at v0.2.1. GarhwaliBench remains
+a local draft; the benchmark counts below are the preserved 30 September
+snapshot and were not changed by the later corpus access view or Archive
+intake:
 five candidate task artifacts exist, three external schemas pass across 3,847
 records, and the current v0.2 adapter validates eight views / 14,703 rows
 (manifest SHA-256 `43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8`).

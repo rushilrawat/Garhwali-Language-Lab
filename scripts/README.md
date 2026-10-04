@@ -26,6 +26,50 @@ stops, resume it with the same run ID and `--refresh-derived` flag. The command
 does not publish to GitHub or upload packages to Hugging Face; those remain
 explicit release actions after the generated checks pass.
 
+`ingest_archive_language_studies.py` extracts the downloaded Internet Archive
+DjVu OCR for the 1967 Juyal and 1976 Bhatta Garhwali-language studies into
+page-level local research records. It verifies each source PDF against its
+download manifest, flags within-intake and existing-project exact overlaps,
+and preserves the uploader's unverified CC0 claim without marking the pages
+training-eligible. Re-run it with:
+
+```bash
+python3 scripts/ingest_archive_language_studies.py
+```
+
+`ingest_archive_dabral_references.py` and
+`ingest_archive_regional_historical_references.py` create page-aligned local
+reference indexes from Archive scans, preserving source pages and rights
+uncertainty while checking exact overlap. `ingest_archive_snow_balls.py` and
+`ingest_archive_holy_himalaya.py` index their named Archive books with the
+same local-only, source-linked treatment. These outputs are contextual
+research material; the extraction scripts do not mark them training-eligible
+or publish them.
+
+`audit_archive_intake_quality.py` profiles Archive OCR-page identifiers,
+exact text duplicates, character scripts, and transparent OCR-warning signals;
+it also probes local MP3/MP4 container metadata with `ffprobe`. Run it with:
+
+```bash
+PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_intake_quality.py
+```
+
+`audit_archive_corpus_overlap.py` compares those page texts against every
+record in the canonical `data/processed/model_ready/cleaned/text.jsonl` view.
+It reports exact matches and high-similarity character 5-gram candidates,
+without writing source text or changing any row:
+
+```bash
+PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_corpus_overlap.py
+```
+
+Both scripts write machine-readable reports under Git-ignored
+`data/extracted/research/`. A zero candidate count applies only to the stated
+normalization, threshold, and compared text view; it does not prove there are
+no semantic, source-family, segment, or audio/transcript overlaps. The current
+interpretation and measured results are in the
+[`Internet Archive quality audit`](../research/internet-archive-intake-quality-2026-10-04.md).
+
 `prepare_hf_additive_upload.py` validates the rights-filtered public package,
 its declared hashes, file inventory, and absence of source/audio payloads. It
 stages a release under a versioned Hub path without deletion operations. The
@@ -39,7 +83,7 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current v0.2.1 configured-environment suite passes **683 tests**. The
+The current working-tree suite passes **707 tests**. The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
 installs dependencies from `requirements-pipeline.txt`. Current benchmark refreshes use saved ASR outputs

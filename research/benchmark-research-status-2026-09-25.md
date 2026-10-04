@@ -1,8 +1,10 @@
 # Benchmark and research suite: measured status
 
 **Original scorecard:** 2026-09-25; dated evidence below includes historical refreshes through 2026-09-28.
-**Current refresh:** 2026-10-01. The v0.2.1 corpus release is complete,
-but benchmark v0.2 remains local-only. The adapter validates eight views /
+**Benchmark evidence refresh:** 2026-10-01. The public corpus has since
+advanced to v0.2.3 (2 October); speech remains at v0.2.1. The benchmark
+measurements below remain the 1 October snapshot and were not changed by the
+4 October Archive intake. Benchmark v0.2 remains local-only. The adapter validates eight views /
 **14,703 view rows** (3,847 external, 402 internal text, 112 ASR, and
 recommended text split 9,486/454/402), with zero structural errors. The 402
 internal-text rows intentionally mirror recommended test rows. The

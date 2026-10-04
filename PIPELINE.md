@@ -86,24 +86,31 @@ never uploads to Hugging Face or changes repository visibility. Rights-pending
 source text remains in the local all-data package and is omitted from public
 content output; candidate counts are not a measure of verified Garhwali.
 
-The v0.2.1 release contains 32,072 exact-unique parent texts from 49 source
-files. Its existing Hub payload paths remain unchanged. For a later release,
-bump the project version and output paths to v0.2.2. For example, after a new
-source intake:
+The current public corpus release is v0.2.3 and contains 32,072 exact-unique
+parent texts from 49 source files. Its existing Hub payload paths remain
+unchanged. For a later release, bump the project version and output paths to
+v0.2.4. The v0.2.3 `text_resources` config is an access view over values
+already in the catalog, not additional source acquisition. The Internet
+Archive material acquired on 3–4 October is still local-only; its intake,
+quality profile, and canonical-text overlap audit are in
+[`research/internet-archive-intake-2026-10-03.md`](research/internet-archive-intake-2026-10-03.md)
+and
+[`research/internet-archive-intake-quality-2026-10-04.md`](research/internet-archive-intake-quality-2026-10-04.md).
+For example, after a new source intake:
 
 ```bash
-GARHWALI_RELEASE_VERSION=0.2.2 .venv/bin/python scripts/ingestion_graph.py run \
+GARHWALI_RELEASE_VERSION=0.2.4 .venv/bin/python scripts/ingestion_graph.py run \
   --wave tenth --run-id next-garhwali-wave-2026-10-01 --refresh-derived
 ```
 
-For an additive v0.2.2 package, stage it with a new prefix and unique ignored
+For an additive v0.2.4 package, stage it with a new prefix and unique ignored
 output paths:
 
 ```bash
-GARHWALI_RELEASE_VERSION=0.2.2 .venv/bin/python scripts/prepare_hf_additive_upload.py \
-  --prefix releases/v0.2.2 \
-  --output data/huggingface/garhwali-corpus-v0.2.2-additive-upload \
-  --plan data/huggingface/garhwali-corpus-v0.2.2-upload-plan.json
+GARHWALI_RELEASE_VERSION=0.2.4 .venv/bin/python scripts/prepare_hf_additive_upload.py \
+  --prefix releases/v0.2.4 \
+  --output data/huggingface/garhwali-corpus-v0.2.4-additive-upload \
+  --plan data/huggingface/garhwali-corpus-v0.2.4-upload-plan.json
 ```
 
 Review the plan, verify the prefix is unused, and run its generated upload
@@ -118,6 +125,8 @@ release. The local refresh helper never launches an upload by itself.
 
 ```bash
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
+PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_intake_quality.py
+PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_corpus_overlap.py
 .venv/bin/python scripts/dedup_report.py
 .venv/bin/python scripts/verify_ingestion.py
 .venv/bin/python scripts/tag_language_quality.py

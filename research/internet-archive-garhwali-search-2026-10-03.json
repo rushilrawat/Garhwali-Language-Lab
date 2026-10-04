@@ -1,0 +1,932 @@
+{
+  "texts": {
+    "query": "garhwali AND mediatype:texts",
+    "num_found": 70,
+    "documents": [
+      {
+        "identifier": "in.ernet.dli.2015.481134",
+        "mediatype": "texts",
+        "title": "Garhwali Lokkala Aur Loksahitya Ka Tulnatmak Anusilan",
+        "year": 1994
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292300000493",
+        "mediatype": "texts",
+        "title": "CHAKRAVYUH"
+      },
+      {
+        "identifier": "in.gov.uttarakhand.go.2004-06-16.160604003",
+        "mediatype": "texts",
+        "title": "Uttarakhand Government Order, 2004-06-16, Tourism Department, New, Number 406/VI/2004-49Parya/2003",
+        "year": 2004
+      },
+      {
+        "identifier": "in.ernet.dli.2015.426866",
+        "mediatype": "texts",
+        "title": "Gadwali Sahitya Ki Bhumika (1954)",
+        "year": 1954
+      },
+      {
+        "identifier": "indianunrest191900nund",
+        "mediatype": "texts",
+        "title": "Indian unrest, 1919-20",
+        "year": 1921
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100010292500000868",
+        "mediatype": "texts",
+        "title": "MERI PYARI BOI"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292200000388",
+        "mediatype": "texts",
+        "title": "BIDEY"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292200000297",
+        "mediatype": "texts",
+        "title": "THOKDAAR"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292000000505",
+        "mediatype": "texts",
+        "title": "FYOLI"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292300000471",
+        "mediatype": "texts",
+        "title": "CHAKRAVYUH"
+      },
+      {
+        "identifier": "ycbf_madhya-pahadi-bhasha-garhwali-kumauni-ka-anushilan-aur-uska-hindi-se-samban",
+        "mediatype": "texts",
+        "title": "Madhya Pahadi Bhasha Garhwali Kumauni Ka Anushilan Aur Uska Hindi Se Sambandh By Gunanand Juyal Hindi Linguistics Lucknow 1967 Navyug Granthagar"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292300000504",
+        "mediatype": "texts",
+        "title": "POTHLI"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292300000387",
+        "mediatype": "texts",
+        "title": "SUNPAT"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400001140",
+        "mediatype": "texts",
+        "title": "JONA"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292200000815",
+        "mediatype": "texts",
+        "title": "YU KANNU RISTA WITH ENGLISH SUBTITLE"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050291900001067",
+        "mediatype": "texts",
+        "title": "MERU GHAR PARIWAR PIYARO"
+      },
+      {
+        "identifier": "dsource_woolen-pile-carpets-uttarakhand",
+        "mediatype": "texts",
+        "title": "Woolen Pile Carpets - Uttarakhand",
+        "year": 2014
+      },
+      {
+        "identifier": "fivg_garhwali-khanyatitji-administrative-record-garhwali-history-paper-manuscrip",
+        "mediatype": "texts",
+        "title": "Garhwali Khanyatitji Administrative Record Garhwali History Paper Manuscript 1865 Unknown Jagannath Bhattarai Collection"
+      },
+      {
+        "identifier": "recastingfolkinh0000fiol",
+        "mediatype": "texts",
+        "title": "Recasting Folk in the Himalayas Indian Music, Media, and Social Mobility",
+        "year": 2017
+      },
+      {
+        "identifier": "in.gov.uttarakhand.go.2005-06-18.180605001",
+        "mediatype": "texts",
+        "title": "Uttarakhand Government Order, 2005-06-18, Tourism Department, New, Number 274/vi/2005-257perya/2003",
+        "year": 2005
+      },
+      {
+        "identifier": "in.gov.uttarakhand.go.2006-03-24.240306046",
+        "mediatype": "texts",
+        "title": "Uttarakhand Government Order, 2006-03-24, Culture And Religion Department, New, Number /vi-i/2005",
+        "year": 2006
+      },
+      {
+        "identifier": "eparlib.nic.in.52455",
+        "mediatype": "texts",
+        "title": "Casual Announcer in Garhwali and Kumaoni in Nazibabad (20-Mar-1997)",
+        "year": 1997
+      },
+      {
+        "identifier": "revealing-facts-about-indias-freedom-stru-rajnikant-puranik",
+        "mediatype": "texts",
+        "title": "Revealing Facts about India’s Freedom Struggle by Rajnikant Puranik",
+        "year": 2017
+      },
+      {
+        "identifier": "in.gov.uttarakhand.go.2004-07-09.090704003",
+        "mediatype": "texts",
+        "title": "Uttarakhand Government Order, 2004-07-09, Tourism Department, New, Number 416/VI/2004-117(Parya.)/2001",
+        "year": 2004
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292300000311",
+        "mediatype": "texts",
+        "title": "PADHANI JI ."
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292300001160",
+        "mediatype": "texts",
+        "title": "AJAAN"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292300000629",
+        "mediatype": "texts",
+        "title": "PAHADI RATAN SRIDEV SUMAN"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050291800000616",
+        "mediatype": "texts",
+        "title": "MAJOR NIRALA"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292500000227",
+        "mediatype": "texts",
+        "title": "KHOLI KA GANESH"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100010292400009530",
+        "mediatype": "texts",
+        "title": "DHOLI"
+      },
+      {
+        "identifier": "knowingdildassto0000alte",
+        "mediatype": "texts",
+        "title": "Knowing Dil Das : stories of a Himalayan hunter",
+        "year": 2000
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400001173",
+        "mediatype": "texts",
+        "title": "GHAPROL"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100010292400001096",
+        "mediatype": "texts",
+        "title": "RIKHULI"
+      },
+      {
+        "identifier": "rsdebate.nic.in.294090",
+        "mediatype": "texts",
+        "title": "Issurance of commemorative Postal stamps in honour of Chandra Singh Garhwali (9-May-1988)",
+        "year": 1988
+      },
+      {
+        "identifier": "in.gov.uttarakhand.go.2009-01-09.090109008",
+        "mediatype": "texts",
+        "title": "Uttarakhand Government Order, 2009-01-09, Culture And Religion Department, New, Number 01/VI-I/2008-2(12)/2007",
+        "year": 2009
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100010292300008958",
+        "mediatype": "texts",
+        "title": "BACHPAN MANAO"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292100000015",
+        "mediatype": "texts",
+        "title": "THE LAST RHODODENDRON (AKHRI BURANS)"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050291700000242",
+        "mediatype": "texts",
+        "title": "BAUDIGI GANGA(GARHWALI FILM)"
+      },
+      {
+        "identifier": "rsdebate.nic.in.133111",
+        "mediatype": "texts",
+        "title": "Telecast of programmes in Garhwali/Kumauni languages (21-Jul-1998)",
+        "year": 1998
+      },
+      {
+        "identifier": "in.gov.uttarakhand.go.2009-01-01.010109002",
+        "mediatype": "texts",
+        "title": "Uttarakhand Government Order, 2009-01-01, Medical Health And Medical Education Department, New, Number 1343/XXVIII(1)/2008-19/2006",
+        "year": 2009
+      },
+      {
+        "identifier": "in.gov.uttarakhand.go.2002-11-02.021102003",
+        "mediatype": "texts",
+        "title": "Uttarakhand Government Order, 2002-11-02, Horticulture And Sericulture Department, New, Number 865/Va.Gra.Vi./248/Udyan/2002",
+        "year": 2002
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400000600",
+        "mediatype": "texts",
+        "title": "DADDI KU BAKSA"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292100000359",
+        "mediatype": "texts",
+        "title": "KHAIRI KA DIN"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400000785",
+        "mediatype": "texts",
+        "title": "MEETHI MAA KU AASHIRWAD"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292200000559",
+        "mediatype": "texts",
+        "title": "MERU GAUN"
+      },
+      {
+        "identifier": "rsdebate.nic.in.255150",
+        "mediatype": "texts",
+        "title": "Issuance of Commomerative postage stamps in the honour of Shri Chandra Singh Garhwali and Shri Dev Suman of Tehri (29-Aug-1990)",
+        "year": 1990
+      },
+      {
+        "identifier": "in.gov.uttarakhand.go.2006-12-26.261206005",
+        "mediatype": "texts",
+        "title": "Uttarakhand Government Order, 2006-12-26, Tourism Department, New, Number 1187/VI/2006-257(Parya)/2003",
+        "year": 2006
+      },
+      {
+        "identifier": "aoml_garhwali-khanyatitji-administrative-record-garhwali-history-paper-manuscrip",
+        "mediatype": "texts",
+        "title": "Garhwali Khanyatitji Administrative Record Garhwali History Paper Manuscript 1865 Unknown Jagannath Bhattarai Collection"
+      },
+      {
+        "identifier": "what-really-led-to-indian-freedom-rajnikant-puranik",
+        "mediatype": "texts",
+        "title": "What Really Led To Indian Freedom by Rajnikant Puranik",
+        "year": 2018
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100010292100007280",
+        "mediatype": "texts",
+        "title": "EK THA GAON/ONCE UPON A VILLAGE"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050291700000701",
+        "mediatype": "texts",
+        "title": "BUZZ BUZZ BEES"
+      },
+      {
+        "identifier": "Uttarakhand1MatrimonialServiceGarhwaliAndKumaoniMarriageForShaadiJeevansathiAndShadi",
+        "mediatype": "texts",
+        "title": "Uttarakhand # 1 Matrimonial Service Garhwali And Kumaoni Marriage For Shaadi Jeevansathi And Shadi"
+      },
+      {
+        "identifier": "GangaLahariGarhwaliPressDehradun",
+        "mediatype": "texts",
+        "title": "Ganga Lahari Garhwali Press Dehradun"
+      },
+      {
+        "identifier": "sgng.1764-a-themetic-study-of-garhwali-folk-songs-lokgeet",
+        "mediatype": "texts",
+        "title": "A THEMETIC STUDY OF GARHWALI FOLK SONGS LOKGEET",
+        "year": 2013
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400001048",
+        "mediatype": "texts",
+        "title": "DAANU BHULA"
+      },
+      {
+        "identifier": "eparlib.nic.in.735750",
+        "mediatype": "texts",
+        "title": "Need to declare Garhwali and Kumaoni as national languages. (2-Aug-2010)",
+        "year": 2010
+      },
+      {
+        "identifier": "in.ernet.dli.2015.263968",
+        "mediatype": "texts",
+        "title": "Garhwali Bhasha",
+        "year": 1959
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292300000443",
+        "mediatype": "texts",
+        "title": "JAI MAA DHARI DEVI."
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292500000133",
+        "mediatype": "texts",
+        "title": "DVI HOLA JAB SAATH"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292500000222",
+        "mediatype": "texts",
+        "title": "NIKHANYA JOG"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400001106",
+        "mediatype": "texts",
+        "title": "KAARA EK PRATHA"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400000058",
+        "mediatype": "texts",
+        "title": "PITRA KUDA"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400000875",
+        "mediatype": "texts",
+        "title": "SHAHEED"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400001133",
+        "mediatype": "texts",
+        "title": "RATBYAN BHOL FIR RAAT KHULALI"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400000909",
+        "mediatype": "texts",
+        "title": "SANSKAAR"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050292400000716",
+        "mediatype": "texts",
+        "title": "ASGAAR"
+      },
+      {
+        "identifier": "cbfc-ecinepramaan-100050291900001255",
+        "mediatype": "texts",
+        "title": "KANYADAAN"
+      },
+      {
+        "identifier": "ezqp-garhwali-bhasha-aur-uska-sahitya-by-haridatta-bhat",
+        "mediatype": "texts",
+        "title": "Garhwali Bhasha Aur Uska Sahitya By Haridatta Bhatta Shailesh Hindi Linguistics Lucknow 1976 Hindi Samiti"
+      },
+      {
+        "identifier": "dli.csl.8259",
+        "mediatype": "texts",
+        "title": "Hindu-Aryan astronomy and antiquity of Aryan race",
+        "year": 1920
+      },
+      {
+        "identifier": "explore-nainital-with-naini-chalet-hotel-in-nainital",
+        "mediatype": "texts",
+        "title": "Explore Nainital With Naini Chalet Hotel In Nainital",
+        "year": 2023
+      }
+    ],
+    "note": "Corrected the earlier invalid mediatype:text query; results include books, government records, film-certificate metadata, and false positives. Search results are leads, not all inspected or ingested."
+  },
+  "audio": {
+    "num_found": 27,
+    "documents": [
+      {
+        "description": "Raati Supniyo Ma",
+        "identifier": "rati-suoniyo-maa",
+        "mediatype": "audio",
+        "title": "Rati Supniyo Maa"
+      },
+      {
+        "creator": "old song",
+        "date": "2023-01-12T00:00:00Z",
+        "description": "old song",
+        "identifier": "garhwali-songs_202301",
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/licenses/by-nd/4.0/",
+        "mediatype": "audio",
+        "title": "Garhwali Songs"
+      },
+      {
+        "creator": "Narendra Singh Negi",
+        "description": "A beautiful song",
+        "identifier": "GarhwaliGeet",
+        "licenseurl": "http://creativecommons.org/licenses/by-nc-nd/3.0/",
+        "mediatype": "audio",
+        "title": "Garhwali geet"
+      },
+      {
+        "description": "Administrative Source Indian Council for Cultural Relations, Delhi ( ICCR ) Identifier 1282 Title Garhwali Folk Songs Alternative ICCR-1282-AC Medium Audio Cassette ExtentOriginal 00:33:23 Temporal Cultural Programme Rights Indian Council for Cultural Relations Descriptive Subject Folk Music Keywords Folk Music, Folk Songs, Garhwali, Kumaoni Description The audio recording contains a series of folk songs of Garhwal and Kumaon. They are performed by Shri Yogender Bhandari and group. Artist Shri Yogender Bhandari & Group Type Audio Cassette ( AC ) Language Garhwali & Kumaoni Technical Codec Name MP3 (MPEG audio layer 3) Bits Per Sample s16p Sampling Frequency 48 KHz Data Rate 128.001000 Kbit/s Duration 0:27:20.496000 Number Of Channels 2 Size 25.032349 Mibyte",
+        "identifier": "dni.ncaa.ICCR-1282-AC",
+        "language": [
+          "Garhwali",
+          "Kumaoni"
+        ],
+        "mediatype": "audio",
+        "title": "Garhwali Folk Songs"
+      },
+      {
+        "description": "Salutations - Anglais Garhwali",
+        "identifier": "1-salut-anglais-garhwali",
+        "mediatype": "audio",
+        "title": "1 Salut Anglais Garhwali"
+      },
+      {
+        "creator": "Narender Singh Negi, Anuradha Nirala, Pandavaas, Coke Studio",
+        "description": "Garhwali latest songs - Narender Singh negi jukebox",
+        "identifier": "tilai-dharu-bola-full-album-uttrakhandi-garhwali-narendra-singh-negi-anuradha",
+        "mediatype": "audio",
+        "title": "तल धर बल # Tilai Dharu Bola # Full Album # Uttrakhandi Garhwali # Narendra Singh Negi, Anuradha"
+      },
+      {
+        "description": "Salutations Garhwali",
+        "identifier": "1-salutations-garhwali",
+        "mediatype": "audio",
+        "title": "1 Salutations Garhwali"
+      },
+      {
+        "description": "Chanson - Garhwali",
+        "identifier": "3-chanson-garhwali_202012",
+        "mediatype": "audio",
+        "title": "3 Chanson Garhwali"
+      },
+      {
+        "description": "Automatismes - Anglais Garhwali",
+        "identifier": "2-autom-anglais-garwhali",
+        "mediatype": "audio",
+        "title": "2 Autom Anglais Garwhali"
+      },
+      {
+        "description": "Dénomination - Garhwali",
+        "identifier": "4-denomination-garhwali",
+        "mediatype": "audio",
+        "title": "4 Dénomination Garhwali"
+      },
+      {
+        "description": "new garhwali song 2018",
+        "identifier": "NarendraSinghNegiNayaJamanoKaChhoronSunnyRemix",
+        "mediatype": "audio",
+        "title": "Narendra Singh Negi Naya Jamano Ka Chhoron ( Sunny Remix )"
+      },
+      {
+        "description": "Automatismes - Garhwali",
+        "identifier": "2-automatismes-garhwali_202012",
+        "mediatype": "audio",
+        "title": "2 Automatismes Garhwali"
+      },
+      {
+        "description": "Chanson -Garhwali",
+        "identifier": "3-chanson-garhwali",
+        "mediatype": "audio",
+        "title": "3 Chanson Garhwali"
+      },
+      {
+        "description": "Déno Anglais Garhwali",
+        "identifier": "4-deno-anglais-garhwali",
+        "mediatype": "audio",
+        "title": "4 Déno Anglais Garhwali"
+      },
+      {
+        "description": "Manip Anglais Garhwali",
+        "identifier": "6-manip-objets-anglais-garhwali",
+        "mediatype": "audio",
+        "title": "6 Manip Objets Anglais Garhwali"
+      },
+      {
+        "description": "Manip objets - Garhwali",
+        "identifier": "6-manip-objets-garhwali",
+        "mediatype": "audio",
+        "title": "6 Manip Objets Garhwali"
+      },
+      {
+        "description": "Désignation - Garhwali",
+        "identifier": "5-designation-garhwali",
+        "mediatype": "audio",
+        "title": "5 Désignation Garhwali"
+      },
+      {
+        "date": "1996-08-28T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi Rashtriya Manav Sangrahalaya, Bhopal ( IGRMS ) Identifier A-599 Title Pahadi Cultural of Uttarakhand (Vol. III) Alternative IGRMS-A_599-AC Medium Audio Cassette ExtentOriginal 01:33:08 Spatial Devidhura, Uttarakhand Temporal Cultural Programme Created 28.08.1996 Condition Very Good Relation 3 of 4 Rights IGRMS Descriptive Subject Folk Culture Keywords Pahadi Culture, Folk songs, Holi, Gadwali Songs, Nagada, Dhol Description This recording consists of cultural programme and performances of various folk songs, Holi songs, Gadwali songs and sounds of Nagada and Dhol, held at Devidhura, Uttarakhand. Type Audio Cassette ( AC ) Technical Codec Name MP3 (MPEG audio layer 3) Bits Per Sample s16p Sampling Frequency 48 KHz Data Rate 128.001000 Kbit/s Duration 0:46:51.960000 Number Of Channels 2 Size 42.907471 Mibyte",
+        "identifier": "dni.ncaa.IGRMS-A_599-AC",
+        "licenseurl": "http://creativecommons.org/licenses/by-nc/4.0/",
+        "mediatype": "audio",
+        "title": "Pahadi Cultural of Uttarakhand (Vol. III)"
+      },
+      {
+        "date": "2008-10-20T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi National Centre for the Arts, Delhi ( IGNCA ) Collection Media Centre Identifier AC- 1091 Title Garhwal Festival (Vol. I) Alternative IGNCA-AC_1091-AC Medium Audio Cassette ExtentOriginal 01:35:19 Temporal Cultural Festival Created 20.10.2008 Relation 1 of 4 Rights IGNCA Descriptive Subject Musical Performace Keywords Garhwal Festival, Musical Performace, Indian Culture, K. K. Chakravarty Description The audio contains a documentation of Garhwal Festival in which we can see a musical performance, discussion on Indian culture and concluded remark by Dr. K. K. Chakravarty. AnyOther Lecture: Dr. K. K. Chakravarty Type Audio Cassette ( AC ) Language English Technical Codec Name MP3 (MPEG audio layer 3) Bits Per Sample s16p Sampling Frequency 48 KHz Data Rate 128.001000 Kbit/s Duration 0:48:00.792000 Number Of Channels 2 Size 43.957764 Mibyte",
+        "identifier": "dni.ncaa.IGNCA-AC_1091-AC",
+        "licenseurl": "http://creativecommons.org/licenses/by-nc/4.0/",
+        "mediatype": "audio",
+        "title": "Garhwal Festival (Vol. I)"
+      },
+      {
+        "date": "2008-10-20T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi National Centre for the Arts, Delhi ( IGNCA ) Collection Media Centre Identifier AC- 1092 Title Garhwal Festival (Vol. II) Alternative IGNCA-AC_1092-AC Medium Audio Cassette ExtentOriginal 01:34:59 Temporal Cultural Festival Created 20.10.2008 Relation 2 of 4 Rights IGNCA Descriptive Subject Museum Keywords Garhwal Festival, Museum Performaces, Indian Culture, K. K. Chakravarty Description The audio contains a documentation of Garhwal Festival in which we can see a lecture-cum-discussion on museum performances by Dr. K. K. Chakravarty. AnyOther Lecture: Dr. K. K. Chakravarty Type Audio Cassette ( AC ) Language English Technical Codec Name MP3 (MPEG audio layer 3) Bits Per Sample s16p Sampling Frequency 48 KHz Data Rate 128.001000 Kbit/s Duration 0:47:20.304000 Number Of Channels 2 Size 43.339966 Mibyte",
+        "identifier": "dni.ncaa.IGNCA-AC_1092-AC",
+        "licenseurl": "http://creativecommons.org/licenses/by-nc/4.0/",
+        "mediatype": "audio",
+        "title": "Garhwal Festival (Vol. II)"
+      },
+      {
+        "description": "Automatismes - Garhwali",
+        "identifier": "2-automatismes-garhwali",
+        "mediatype": "audio",
+        "title": "2 Automatismes Garhwali"
+      },
+      {
+        "description": "Silgari ko pala chala",
+        "identifier": "20200311_20200311_1701",
+        "mediatype": "audio",
+        "title": "Silgari Ko Pala Chala Kumaoni Jhoda Pappu Karki K Xtj QQQ 4n Ns"
+      },
+      {
+        "description": "Dési - Anglais Garhwali",
+        "identifier": "5-desi-anglais-garhwali",
+        "mediatype": "audio",
+        "title": "5 Dési Anglais Garhwali"
+      },
+      {
+        "creator": "old song",
+        "date": "2023-01-12T00:00:00Z",
+        "description": "old song collection",
+        "identifier": "garhwali-songs",
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/licenses/by-nd/4.0/",
+        "mediatype": "audio",
+        "title": "Garhwali Songs"
+      },
+      {
+        "date": "2008-10-20T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi National Centre for the Arts, Delhi ( IGNCA ) Collection Media Centre Identifier AC- 1093 Title Garhwal Festival (Vol. III) Alternative IGNCA-AC_1093-AC Medium Audio Cassette ExtentOriginal 01:34:03 Temporal Cultural Festival Created 20.10.2008 Relation 3 of 4 Rights IGNCA Descriptive Subject Indigenous Knowledge Keywords Garhwal Festival, Musical Performace, Indian Culture, K. K. Chakravarty, Indigenous Knowledge and Healing System Description The audio contains a documentation of Garhwal Festival in which we can see a lecture-cum-discussion on IGNCA contribution in Art and Culture by Dr. K. K. Chakravarty and speech on ‘Indigenous Knowledge and Healing Systemʼ. AnyOther Lecture: Dr. K. K. Chakravarty Type Audio Cassette ( AC ) Language English Technical Codec Name MP3 (MPEG audio layer 3) Bits Per Sample s16p Sampling Frequency 48 KHz Data Rate 128.001000 Kbit/s Duration 0:47:52.632000 Number Of Channels 2 Size 43.833252 Mibyte",
+        "identifier": "dni.ncaa.IGNCA-AC_1093-AC",
+        "licenseurl": "http://creativecommons.org/licenses/by-nc/4.0/",
+        "mediatype": "audio",
+        "title": "Garhwal Festival (Vol. III)"
+      },
+      {
+        "identifier": "dhunming-music-garhwali",
+        "language": "garhwali",
+        "mediatype": "audio",
+        "title": "dhunming-music-garhwali"
+      },
+      {
+        "date": "2008-10-20T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi National Centre for the Arts, Delhi ( IGNCA ) Collection Media Centre Identifier AC- 1094 Title Garhwal Festival (Vol. IV) Alternative IGNCA-AC_1094-AC Medium Audio Cassette ExtentOriginal 00:52:47 Temporal Cultural Festival Created 20.10.2008 Relation 4 of 4 Rights IGNCA Descriptive Subject Manuscript Keywords Garhwal Festival, Exhibition on Manuscript, Garhwal School of Art Description The audio contains a documentation of Garhwal Festival in which we can see an ‘Exhibition on Manuscriptʼ presented by Garhwal School of Art. Type Audio Cassette ( AC ) Language English Technical Codec Name MP3 (MPEG audio layer 3) Bits Per Sample s16p Sampling Frequency 48 KHz Data Rate 128.001000 Kbit/s Duration 0:46:17.208000 Number Of Channels 2 Size 42.377197 Mibyte",
+        "identifier": "dni.ncaa.IGNCA-AC_1094-AC",
+        "licenseurl": "http://creativecommons.org/licenses/by-nc/4.0/",
+        "mediatype": "audio",
+        "title": "Garhwal Festival (Vol. IV)"
+      }
+    ],
+    "query": "garhwali",
+    "media_type_filter": "audio",
+    "note": "Archive search-result count; candidates were individually checked and not all represent Garhwali language/audio."
+  },
+  "video": {
+    "num_found": 17,
+    "documents": [
+      {
+        "date": "1999-04-13T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi Rashtriya Manav Sangrahalaya, Bhopal ( IGRMS ) Identifier 3B-184 Title Virasat (Dehradun Tour) (Vol. VII) Alternative IGRMS-3B_184-BC Medium Betacam ExtentOriginal 00:36:26 Spatial Chandigarh, Himachal Pradesh Temporal Field Coverage Created 13.04.1999 Condition Very Good Relation 7 of 10 Rights IGRMS Descriptive Subject Cultural Mapping Keywords Virasat, Dehradun, Reech Regional Roma Festival Chandigarh, Interview, R.K.Singh, Ajit Raizada, Nevli Geet, Uttranchal, Narendra Singh Negi, Gadwali Geet, Ramcharan Juyal, Bajuband Geet, Muchade, Dhariya Geet, Krishi Dance, Uttaranchal Kalakar Description In this recording, we can view Virasat-99 (Dehradun) Tour : Coverage of cultural performances, festivals, exhibitions and speeches. Creator IGRMS Type Betacam ( BC ) Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 644.634000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:36:26.982000 Dimension 640*480",
+        "identifier": "dni.ncaa.IGRMS-3B_184-BC",
+        "mediatype": "movies",
+        "title": "Virasat (Dehradun Tour) (Vol. VII)"
+      },
+      {
+        "date": "1996-08-29T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi Rashtriya Manav Sangrahalaya, Bhopal ( IGRMS ) Identifier S-VHSC-36 Title Bagwal Festival, Devidhura, Uttrakhand (Vol. III) Alternative IGRMS-S_VHSC_36-SVHS Medium Super Video Home System ExtentOriginal 00:08:59 Spatial Devidhura, Uttrakhand Temporal Documentation Created 29.08.1996 Condition Very Good Relation 3 of 3 Rights IGRMS Descriptive Subject Cultural Festival Keywords Bagwal Festival, Devidhura, Uttrakhand Description In this recording, we can view Bagwal festival of Devidhura, Uttrakhand. Type Super Video Home System ( SVHS ) Language Kumaoni and Garhwali Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 645.686000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:08:59.160000 Dimension 640*480",
+        "identifier": "dni.ncaa.IGRMS-S_VHSC_36-SVHS",
+        "licenseurl": "http://creativecommons.org/licenses/by-nc/4.0/",
+        "mediatype": "movies",
+        "title": "Bagwal Festival, Devidhura, Uttrakhand (Vol. III)"
+      },
+      {
+        "date": "1997-08-14T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi Rashtriya Manav Sangrahalaya, Bhopal ( IGRMS ) Identifier 3B-6 Title Joshi Math (Uttarakhand) (Vol. V) Alternative IGRMS-3B_6-BC Medium Betacam ExtentOriginal 00:36:06 Spatial Uttarakhand Temporal Field Coverage Created 14.08.1997 Condition Very Good Relation 5 of 5 Rights IGRMS Descriptive Subject Cultural Mapping Keywords Joshi Math, Neeti Valley, Gamshali, Chamoli, Uttarakhand, Sattu, Temples, House of Tribes, Bampa Village Description In this recording, we can view the Coverage of places in Uttarakhand : Joshi Math, Gopeshwar & Neeti Valley in Chamoli. Creator IGRMS Type Betacam ( BC ) Language Garhwali & Hindi Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 643.148000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:36:06.920000 Dimension 640*480",
+        "identifier": "dni.ncaa.IGRMS-3B_6-BC",
+        "language": [
+          "Garhwali",
+          "Hindi"
+        ],
+        "mediatype": "movies",
+        "title": "Joshi Math (Uttarakhand) (Vol. V)"
+      },
+      {
+        "creator": "Jesus Film",
+        "description": "Jesus Film",
+        "identifier": "jesus-film-garhwali-language",
+        "mediatype": "movies",
+        "title": "JESUS Film Garhwali Language"
+      },
+      {
+        "description": "Administrative Source Cinema Vision India, Mumbai ( CVI ) Collection Surabhi TV Series Identifier BETA/376 Title Coverage of Tourist Village in Garhwal and Ghats of Haridwar Alternative CVI-BETA_376-BC Medium Betacam ExtentOriginal 00:36:05 Spatial Uttar Pradesh Temporal Feature Story For Television Broadcast Created 10.o2.1998 Condition Good Rights Cinema Vision India Descriptive Subject Monuments Keywords Tourist Village, Ghats of Haridwar Description This video contains tourist village - Saur in Garhwal of Uttarakhand, village life, Haridwar ghats and sadhus processions as well. Type Betacam ( BC ) Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 643.546000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:36:05.120000 Dimension 640*480",
+        "identifier": "dni.ncaa.CVI-BETA_376-BC",
+        "licenseurl": "http://creativecommons.org/licenses/by-nc/4.0/",
+        "mediatype": "movies",
+        "title": "Coverage of Tourist Village in Garhwal and Ghats of Haridwar"
+      },
+      {
+        "date": "2026-09-22T00:00:00Z",
+        "description": "Distinguished guests from various professions and backgrounds convene to explore and debate pressing public issues.",
+        "identifier": "DDNEWS_20260922_123000_Charcha_Mein",
+        "language": "hin",
+        "mediatype": "movies",
+        "title": "Charcha Mein : DDNEWS : September 22, 2026 6:00pm-6:31pm IST"
+      },
+      {
+        "date": "1998-02-08T00:00:00Z",
+        "description": "Administrative Source Cinema Vision India, Mumbai ( CVI ) Collection Surabhi TV Series Identifier BETA/375 Title Community Lifestyle of Garhwal (Vol. II) Alternative CVI-BETA_375-BC Medium Betacam ExtentOriginal 01:14:46 Spatial Garhwal Temporal Feature Story For Television Broadcast Created 08.02.1998 Condition Good Relation 2 of 2 Rights Cinema Vision India Descriptive Subject Community Lifestyle Keywords Garhwal Lifestyle in Chamoli Description The video contains a documentation of life in the small village of Chamoli is leisurely and slow-paced yet there is a lot of room for small joys. Type Betacam ( BC ) Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 642.435000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 1:14:46.848000 Dimension 640*480",
+        "identifier": "dni.ncaa.CVI-BETA_375-BC",
+        "mediatype": "movies",
+        "title": "Community Lifestyle of Garhwal (Vol. II)"
+      },
+      {
+        "date": "1996-08-28T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi Rashtriya Manav Sangrahalaya, Bhopal ( IGRMS ) Identifier S-VHSC-34 Title Bagwal Festival, Devidhura, Uttrakhand (Vol. II) Alternative IGRMS-S_VHSC_34-SVHS Medium Super Video Home System ExtentOriginal 00:42:51 Spatial Devidhura, Uttrakhand Temporal Documentation Created 28.08.1996 Condition Very Good Relation 2 of 3 Rights IGRMS Descriptive Subject Cultural Festival Keywords Bagwal Festival, Devidhura, Uttrakhand Description In this recording, we can view Bagwal festival of Devidhura, Uttrakhand. Type Super Video Home System ( SVHS ) Language Kumaoni and Garhwali Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 641.216000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:42:51.000000 Dimension 640*480",
+        "identifier": "dni.ncaa.IGRMS-S_VHSC_34-SVHS",
+        "licenseurl": "http://creativecommons.org/licenses/by-nc/4.0/",
+        "mediatype": "movies",
+        "title": "Bagwal Festival, Devidhura, Uttrakhand (Vol. II)"
+      },
+      {
+        "date": "1997-08-12T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi Rashtriya Manav Sangrahalaya, Bhopal ( IGRMS ) Identifier 3B-2 Title Joshi Math (Uttarakhand) (Vol. I) Alternative IGRMS-3B_2-BC Medium Betacam ExtentOriginal 00:39:05 Spatial Uttarakhand Temporal Field Coverage Created 12.08.1997 Condition Very Good Relation 1 of 5 Rights IGRMS Descriptive Subject Cultural Mapping Keywords Joshi Math, Gopeshwar, Interview, Field Trips, Uttarakhand, Neeti Valley Description In this recording, we can view the Coverage of places in Uttarakhand : Joshi Math, Gopeshwar & Neeti Valley in Chamoli. Creator IGRMS Type Betacam ( BC ) Language Garhwali & Hindi Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 641.865000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:39:05.156000 Dimension 640*480",
+        "identifier": "dni.ncaa.IGRMS-3B_2-BC",
+        "language": [
+          "Garhwali",
+          "Hindi"
+        ],
+        "mediatype": "movies",
+        "title": "Joshi Math (Uttarakhand) (Vol. I)"
+      },
+      {
+        "creator": "Subhashish Panigrahi",
+        "date": "2019-11-07T00:00:00Z",
+        "description": "This video interview of Sampati, a farmer from Bangseel, Uttarakhand, India and a speaker of the Saunpuri dialect of the Garhwali language, was conducted by Subhashish Panigrahi in November 2019, and was used in the production of 2021 documentary \" MarginalizedAadhaar \". In this interview, Sampati speaks about her experience in enrolling and obtaining Aadhaar, the Indian biometric ID. Sampati also shares about her disability, poverty and other practical challenges in the interview. Garhwali is designated as a vulnerable language and most speakers are generally counted as Hindi speakers in most surveys.",
+        "identifier": "marginalized-aadhaar-sampati",
+        "language": "mul",
+        "licenseurl": "https://creativecommons.org/licenses/by/4.0/",
+        "mediatype": "movies",
+        "rights": "© 2021. Subhashish Panigrahi. CC-BY-SA 4.0.",
+        "title": "MarginalizedAadhaar: Sampati"
+      },
+      {
+        "date": "1998-02-07T00:00:00Z",
+        "description": "Administrative Source Cinema Vision India, Mumbai ( CVI ) Collection Surabhi TV Series Identifier BETA/374 Title Community Lifestyle of Garhwal (Vol. I) Alternative CVI-BETA_374-BC Medium Betacam ExtentOriginal 01:14:59 Spatial Garhwal Temporal Feature Story For Television Broadcast Created 07.02.1998 Condition Good Relation 1 of 2 Rights Cinema Vision India Descriptive Subject Community Lifestyle Keywords Garhwal Lifestyle in Chamoli Description The video shows a coverage of Garhwal region in which we can see ice sking by tourists, snow mountains, life in the small village of Chamoli is leisurely and slow-paced yet there is a lot of room for small joys. Type Betacam ( BC ) Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 641.602000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 1:14:59.520000 Dimension 640*480",
+        "identifier": "dni.ncaa.CVI-BETA_374-BC",
+        "mediatype": "movies",
+        "title": "Community Lifestyle of Garhwal (Vol. I)"
+      },
+      {
+        "description": "Administrative Source Centre for Cultural Resources & Training, Delhi ( CCRT ) Identifier 448 Title Folk Music of Garhwal (Vol. II) Alternative CCRT-448-UMHB Medium U-Matic (Hi-Band) ExtentOriginal 00:33:29 Temporal Documentation Relation 2 of 2 Rights CCRT Descriptive Subject Folk Music Keywords Folk Music, Garhwal Artist Shri Chandra Singh Ray and group Type U-Matic (Hi-Band) ( UMHB ) Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 641 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:33:29.600000 Dimension 640*480",
+        "identifier": "dni.ncaa.CCRT-448-UMHB",
+        "mediatype": "movies",
+        "title": "Folk Music of Garhwal (Vol. II)"
+      },
+      {
+        "description": "Administrative Source Centre for Cultural Resources & Training, Delhi ( CCRT ) Identifier 447 Title Folk Music of Garhwal (Vol. I) Alternative CCRT-447-UMHB Medium U-Matic (Hi-Band) ExtentOriginal 00:43:12 Temporal Documentation Relation 1 of 2 Rights CCRT Descriptive Subject Folk Music Keywords Folk Music, Garhwal Artist Shri Chandra Singh Ray and group Type U-Matic (Hi-Band) ( UMHB ) Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 639.509000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:43:12.720000 Dimension 640*480",
+        "identifier": "dni.ncaa.CCRT-447-UMHB",
+        "mediatype": "movies",
+        "title": "Folk Music of Garhwal (Vol. I)"
+      },
+      {
+        "date": "1997-08-13T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi Rashtriya Manav Sangrahalaya, Bhopal ( IGRMS ) Identifier 3B-5 Title Joshi Math (Uttarakhand) (Vol. IV) Alternative IGRMS-3B_5-BC Medium Betacam ExtentOriginal 00:36:08 Spatial Uttarakhand Temporal Field Coverage Created 13.08.1997 Condition Very Good Relation 4 of 5 Rights IGRMS Descriptive Subject Cultural Mapping Keywords Neeti Valley, Gamshali, Chamoli, Uttarakhand Description In this recording, we can view the Coverage of places in Uttarakhand : Joshi Math, Gopeshwar & Neeti Valley in Chamoli. Creator IGRMS Type Betacam ( BC ) Language Garhwali & Hindi Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 642.689000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:36:08.683000 Dimension 640*480",
+        "identifier": "dni.ncaa.IGRMS-3B_5-BC",
+        "language": [
+          "Garhwali",
+          "Hindi"
+        ],
+        "mediatype": "movies",
+        "title": "Joshi Math (Uttarakhand) (Vol. IV)"
+      },
+      {
+        "date": "1996-08-25T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi Rashtriya Manav Sangrahalaya, Bhopal ( IGRMS ) Identifier S-VHSC-29 Title Bagwal Festival, Devidhura, Uttrakhand (Vol. I) Alternative IGRMS-S_VHSC_29-SVHS Medium Super Video Home System ExtentOriginal 00:44:13 Spatial Devidhura, Uttrakhand Temporal Documentation Created 25.08.1996 Condition Very Good Relation 1 of 3 Rights IGRMS Descriptive Subject Cultural Festival Keywords Bagwal Festival, Devidhura, Uttrakhand, Nagnath Samadhi, Champawat Description In this recording, we can view Bagwal festival of Devidhura, Uttrakhand. The video further contains the coverage of Old Fort and Nagnath Samadhi at Champawat. Type Super Video Home System ( SVHS ) Language Kumaoni and Garhwali Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 631.540000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:44:33.765000 Dimension 640*480",
+        "identifier": "dni.ncaa.IGRMS-S_VHSC_29-SVHS",
+        "licenseurl": "http://creativecommons.org/licenses/by-nc/4.0/",
+        "mediatype": "movies",
+        "title": "Bagwal Festival, Devidhura, Uttrakhand (Vol. I)"
+      },
+      {
+        "date": "1997-08-13T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi Rashtriya Manav Sangrahalaya, Bhopal ( IGRMS ) Identifier 3B-3 Title Joshi Math (Uttarakhand) (Vol. II) Alternative IGRMS-3B_3-BC Medium Betacam ExtentOriginal 00:34:56 Spatial Uttarakhand Temporal Field Coverage Created 13.08.1997 Condition Very Good Relation 2 of 5 Rights IGRMS Descriptive Subject Cultural Mapping Keywords Neeti Valley, Gamshali, Chamoli, Uttarakhand Description In this recording, we can view the Coverage of places in Uttarakhand : Joshi Math, Gopeshwar & Neeti Valley in Chamoli. Creator IGRMS Type Betacam ( BC ) Language Garhwali & Hindi Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 641.705000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:34:56.600000 Dimension 640*480",
+        "identifier": "dni.ncaa.IGRMS-3B_3-BC",
+        "language": [
+          "Garhwali",
+          "Hindi"
+        ],
+        "mediatype": "movies",
+        "title": "Joshi Math (Uttarakhand) (Vol. II)"
+      },
+      {
+        "date": "1997-08-13T00:00:00Z",
+        "description": "Administrative Source Indira Gandhi Rashtriya Manav Sangrahalaya, Bhopal ( IGRMS ) Identifier 3B-4 Title Joshi Math (Uttarakhand) (Vol. III) Alternative IGRMS-3B_4-BC Medium Betacam ExtentOriginal 00:36:20 Spatial Uttarakhand Temporal Field Coverage Created 13.08.1997 Condition Very Good Relation 3 of 5 Rights IGRMS Descriptive Subject Cultural Mapping Keywords Neeti Valley, Gamshali, Chamoli, Uttarakhand Description In this recording, we can view the Coverage of places in Uttarakhand : Joshi Math, Gopeshwar & Neeti Valley in Chamoli. Creator IGRMS Type Betacam ( BC ) Language Garhwali & Hindi Technical Codec Name H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10 Data Rate 644.625000 Kbit/s Frame Rate 25.0 Sampling 4:2:0 Aspect Ratio 4:3 Duration 0:36:20.758000 Dimension 640*480",
+        "identifier": "dni.ncaa.IGRMS-3B_4-BC",
+        "language": [
+          "Garhwali",
+          "Hindi"
+        ],
+        "mediatype": "movies",
+        "title": "Joshi Math (Uttarakhand) (Vol. III)"
+      }
+    ],
+    "query": "garhwali",
+    "media_type_filter": "movies",
+    "note": "Archive search-result count; candidates were individually checked and not all represent Garhwali language/audio."
+  },
+  "retrieved_date": "2026-10-03",
+  "provider": "Internet Archive Advanced Search API",
+  "text_search_response": "sources/online/ia-garhwali-text-search-2026-10-03.json",
+  "supplemental_search": {
+    "file": "../sources/online/ia-garhwali-niche-supplemental-search-2026-10-03.json",
+    "query_count": 15,
+    "distinct_result_identifiers": 306,
+    "counts": {
+      "garhwal_folklore_context": 147,
+      "language_terms": 73,
+      "media_audio": 33,
+      "media_movies": 46,
+      "title_subject_variants": 21,
+      "chatak_folk_epics": 5,
+      "dabral_author_titles": 2,
+      "dabral_history_series": 3,
+      "dabral_itihas_title": 3,
+      "dabral_political_cultural": 2,
+      "dabral_works": 1,
+      "garhwal_folk_dance_songs": 0,
+      "garhwali_poetry_sadei": 1,
+      "veer_gatha_uttarakhand_history": 5,
+      "yatra_darshan": 2
+    },
+    "retrieved_date": "2026-10-03"
+  },
+  "deep_search_2026_10_04": {
+    "retrieved_date": "2026-10-04",
+    "provider": "Internet Archive Advanced Search API",
+    "purpose": "Second-pass title, author, and media search for distinct Garhwali language, folklore, historical, geographic, botanical, and audiovisual sources.",
+    "queries": [
+      {
+        "query": "title:(Garhwali OR Garhwal OR Gadwali) AND mediatype:texts",
+        "found": 380,
+        "returned": 100,
+        "note": "Broad query is noisy: Archive full-text/description matches include parliamentary records, scientific papers, duplicate scans, and regional-only material."
+      },
+      {
+        "query": "(title:(Garhwali OR Gadwali OR Gadhwali)) AND mediatype:texts",
+        "found": 21,
+        "returned": 21,
+        "note": "Title-focused results screened individually; mostly known works, duplicate scans, metadata-only leads, and false positives."
+      },
+      {
+        "query": "title:(Garhwal folk OR Garhwali folk OR Garhwali loksahitya OR Garhwali lokgeet) AND mediatype:texts",
+        "found": 0,
+        "returned": 0,
+        "note": "No exact title-field matches under this query."
+      },
+      {
+        "query": "title:(Garhwal folk OR Garhwali literature OR Uttarakhand folk OR Kumaon Garhwal) AND mediatype:texts",
+        "found": 361,
+        "returned": 200,
+        "note": "Broad regional/title query; many false positives. Candidate records screened for distinct reference value."
+      },
+      {
+        "query": "creator:(Shiv Prasad Dabral) AND mediatype:texts",
+        "found": 1,
+        "returned": 1,
+        "note": "Existing Dabral works were already acquired in the preceding pass."
+      },
+      {
+        "query": "(subject:(Garhwali language OR Garhwali literature) OR title:(Garhwali language)) AND mediatype:texts",
+        "found": 0,
+        "returned": 0,
+        "note": "No exact results."
+      },
+      {
+        "query": "title:(Garhwali OR Garhwal) AND mediatype:audio",
+        "found": 22,
+        "returned": 22,
+        "note": "Includes Garhwali-labeled instruction recordings, music, duplicate mirrors, and institutional lectures."
+      },
+      {
+        "query": "title:(Garhwali OR Garhwal) AND mediatype:movies",
+        "found": 6,
+        "returned": 6,
+        "note": "Mostly already-known or screened regional audiovisual items."
+      }
+    ],
+    "new_downloads": [
+      {
+        "identifier": "in.ernet.dli.2015.43255",
+        "title": "Garhwal Ancient and Modern",
+        "type": "PDF plus Archive OCR",
+        "selection": "distinct 1916 regional history reference; the two alternate Archive scans 2015.530003 and 2015.530004 were not downloaded"
+      },
+      {
+        "identifier": "dli.pahar.3635",
+        "title": "Peaks and Passes of Garhwal Himalaya",
+        "type": "PDF plus Archive OCR",
+        "selection": "distinct regional geography reference; Archive records a CC BY-NC 4.0 claim from the PAHAR upload, not independently verified"
+      },
+      {
+        "identifier": "dli.ministry.08781",
+        "title": "Uttar Pradesh District Gazetteers: Tehri Garhwal",
+        "type": "PDF plus Archive OCR",
+        "selection": "official district gazetteer reference; no item-level reuse license recorded"
+      },
+      {
+        "identifier": "catalogueplants00duthgoog",
+        "title": "Catalogue of the Plants of Kumaon and of the Adjacent Portions of Garhwal and Tibet",
+        "type": "PDF plus Archive OCR",
+        "selection": "niche regional flora reference; vernacular Garhwali labels not confirmed"
+      },
+      {
+        "identifier": "dli.ministry.29693",
+        "title": "Notes on the Garhwal District",
+        "type": "PDF plus Archive OCR",
+        "selection": "distinct 1910 regional administration reference; no item-level reuse license recorded"
+      },
+      {
+        "identifier": "1-salut-anglais-garhwali",
+        "title": "1 Salut Anglais Garhwali",
+        "type": "one MP3",
+        "selection": "Garhwali-labeled lesson audio; no transcript or reuse license recorded"
+      },
+      {
+        "identifier": "1-salutations-garhwali",
+        "title": "1 Salutations Garhwali",
+        "type": "one MP3",
+        "selection": "Garhwali-labeled lesson audio; no transcript or reuse license recorded"
+      },
+      {
+        "identifier": "2-automatismes-garhwali",
+        "title": "2 Automatismes Garhwali",
+        "type": "one MP3",
+        "selection": "Garhwali-labeled lesson audio; duplicate mirror item excluded by exact SHA-1"
+      },
+      {
+        "identifier": "3-chanson-garhwali",
+        "title": "3 Chanson Garhwali",
+        "type": "one MP3",
+        "selection": "Garhwali-labeled lesson/song audio; duplicate mirror item excluded by exact SHA-1"
+      },
+      {
+        "identifier": "4-denomination-garhwali",
+        "title": "4 Dénomination Garhwali",
+        "type": "one MP3",
+        "selection": "Garhwali-labeled lesson audio; no transcript or reuse license recorded"
+      },
+      {
+        "identifier": "4-deno-anglais-garhwali",
+        "title": "4 Déno Anglais Garhwali",
+        "type": "one MP3",
+        "selection": "Garhwali-labeled bilingual lesson audio; no transcript or reuse license recorded"
+      },
+      {
+        "identifier": "5-designation-garhwali",
+        "title": "5 Désignation Garhwali",
+        "type": "one MP3",
+        "selection": "Garhwali-labeled lesson audio; no transcript or reuse license recorded"
+      },
+      {
+        "identifier": "5-desi-anglais-garhwali",
+        "title": "5 Dési Anglais Garhwali",
+        "type": "one MP3",
+        "selection": "Garhwali-labeled bilingual lesson audio; no transcript or reuse license recorded"
+      },
+      {
+        "identifier": "6-manip-objets-garhwali",
+        "title": "6 Manip Objets Garhwali",
+        "type": "one MP3",
+        "selection": "Garhwali-labeled lesson audio; no transcript or reuse license recorded"
+      },
+      {
+        "identifier": "6-manip-objets-anglais-garhwali",
+        "title": "6 Manip Objets Anglais Garhwali",
+        "type": "one MP3",
+        "selection": "Garhwali-labeled bilingual lesson audio; no transcript or reuse license recorded"
+      }
+    ],
+    "not_downloaded_or_not_counted": [
+      {
+        "identifier": "in.ernet.dli.2015.530003; in.ernet.dli.2015.530004",
+        "reason": "alternate Archive scans of Garhwal Ancient and Modern; one better-described scan was selected"
+      },
+      {
+        "identifier": "fivg_garhwali-khanyatitji-administrative-record-garhwali-history-paper-manuscrip",
+        "reason": "exact PDF SHA-1 duplicate of the acquired aoml manuscript item"
+      },
+      {
+        "identifier": "2-automatismes-garhwali_202012; 3-chanson-garhwali_202012",
+        "reason": "audio SHA-1 exactly duplicates the acquired lesson tracks"
+      },
+      {
+        "identifier": "Garhwali songs and Narendra Singh Negi album items",
+        "reason": "ND or no explicit reuse terms; not added as additional song payloads in this pass"
+      },
+      {
+        "identifier": "IGNCA Garhwal Festival Vols. I–IV",
+        "reason": "screened metadata describes English lectures, exhibition, or institutional presentation rather than Garhwali speech/song; not acquired"
+      },
+      {
+        "identifier": "Shodhganga folk-song thesis records",
+        "reason": "Archive search exposed catalog/metadata but not an accessible full thesis payload; not counted as ingested text"
+      }
+    ],
+    "scope_note": "Search is deep but not exhaustive of all Internet Archive collections or all spellings. Search-result counts are candidate counts, not source counts; physical rights, Garhwali language share, and training eligibility are not inferred from public availability."
+  }
+}
