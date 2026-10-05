@@ -1,6 +1,6 @@
 # Corpus preparation status
 
-Updated 2026-10-05. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree CI unittest discovery suite passed **743/743** on 5 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-10-05. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest discovery suite passed **759/759** on 5 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
 
 ## VAANI official-split lineage and ASR diagnostic — 2026-10-04
 
@@ -27,6 +27,26 @@ Updated 2026-10-05. This is a chronological preparation log: model-result paragr
   locally. Meta test rows were not scored; their checkpoint exposure remains
   unresolved. No checkpoint was downloaded and no paid Hugging Face job ran.
   See the [full Meta validation report](meta-omnilingual-asr-validation-2026-10-04.md).
+
+## Meta Whisper adaptation follow-up — 2026-10-05
+
+- Created a reproducible Whisper-tiny-compatible view from the safe Meta
+  manifests. Of 2,294 train and 271 validation rows, 1,793 train and 241
+  validation rows fit Whisper's 30-second/448-token limits. The other 531
+  remain in their source manifests and are itemized in a local exclusion
+  ledger; they are only omitted from this particular model run.
+- Continued the existing Whisper-tiny Garhwali v0.2 checkpoint for one epoch
+  on the compatible Meta train view. On the paired 241-row validation view,
+  WER moved from 93.444% to 89.318% and CER from 70.522% to 68.502%. Both
+  aggregate metrics improved for each of the two validation speakers.
+- Seeds 17 and 29 reproduced an identical checkpoint and predictions because
+  this pinned model/configuration and data order are deterministic; this is a
+  repeatability check, not evidence of seed uncertainty. Seed 43 was omitted.
+- This remains in-domain development evidence with upstream, unreviewed
+  references and incompletely known base-model exposure. The 292 safe Meta
+  test rows remain unscored. No source transcripts changed, no test was used,
+  and no paid job or model download was used. Details and hashes are in the
+  [adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md).
 
 ## Internet Archive deep intake — local snapshot, 2026-10-04
 

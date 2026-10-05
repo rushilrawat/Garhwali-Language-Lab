@@ -106,19 +106,34 @@ selected under the stated guardrail. It is a poor, development-only result;
 Meta test was not scored. Original Whisper-tiny and runnable SraVaani assets
 are unavailable locally. See the [complete report](research/meta-omnilingual-asr-validation-2026-10-04.md).
 
+## Meta Whisper adaptation — 2026-10-05
+
+A model-compatible view retained 1,793 train and 241 validation rows. The 531
+long clips/targets excluded by Whisper's 30-second/448-token limits remain in
+the original manifests and are itemized in the local exclusion ledger. One
+training epoch reduced paired validation WER from 93.444% to 89.318% and CER
+from 70.522% to 68.502%; both speaker-level aggregates improved for the two
+speakers represented. Deterministic seeds 17 and 29 produced identical weights
+and predictions, so this is a rerun check rather than a seed-variance estimate.
+The gain is development-only: references are unreviewed, checkpoint exposure
+is incomplete, and Meta test was not scored. See the
+[adaptation report](research/meta-omnilingual-asr-adaptation-2026-10-05.md).
+
 ## Repository verification — 2026-10-05
 
-CI's unittest discovery command passes **743/743**, and the release-index
-validator passes for the tracked v0.1.1 snapshot. The bundle itself has no
+The documented repository unittest discovery command passes locally
+**759/759**, and the release-index validator passes for the tracked v0.1.1
+snapshot. The bundle itself has no
 path/hash failures when source comparison is disabled. The full local
-`build_release_bundle.py --check` finds **59 stale-source entries**: 35
+`build_release_bundle.py --check` finds **60 stale-source entries**: 36
 current selected files are absent from the frozen v0.1.1 bundle, and 24
-indexed files differ from the current workspace. Three missing paths are
-reports generated during the Meta ASR step. The old snapshot was not
-overwritten; this workspace therefore still needs a separately versioned
-current-release bundle before any new release claim. The CI runner does not
-have the ignored local data tree, so its behavior on GitHub is not established
-by this local source-tree check.
+indexed files differ from the current workspace. Missing paths include
+generated Meta ASR evidence and newer local reports; changed paths include
+current corpus and derived-data indexes. The old snapshot was not overwritten;
+this workspace still needs a separately versioned current-release bundle
+before any new release claim. The CI runner does not have the ignored local
+data tree, so its behavior on GitHub is not established by this local
+source-tree check.
 
 ## Hugging Face quality release v0.2.2 — 2026-10-01 (historical audit)
 

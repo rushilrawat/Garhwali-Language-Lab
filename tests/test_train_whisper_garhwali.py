@@ -136,6 +136,135 @@ class WhisperTrainingTests(unittest.TestCase):
             self.assertEqual(plan['empty_targets'], 0)
             self.assertEqual(plan['empty_evaluation_targets'], 0)
 
+    def test_dry_run_does_not_label_unadjudicated_provider_transcripts_as_human_reviewed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'clip.wav').write_bytes(b'RIFF')
+            row = {
+                'audio_sha256': 'a',
+                'local_audio_path': 'clip.wav',
+                'asr_target_clean': 'गढ़वाली वाक्य',
+                'duration_seconds': 2,
+                'transcript_review_status': 'upstream_reference_unadjudicated',
+            }
+
+            plan = m.build_dry_run_plan([row], [row], epochs=1, root=root)
+
+            self.assertEqual(plan['records_by_tier'], {
+                'upstream_reference_unadjudicated': 1,
+            })
+
+    def test_training_and_evaluation_manifests_must_be_disjoint(self):
+        train = [{
+            'audio_sha256': 'train-audio',
+            'asr_target_clean': 'गढ़वाळी वाक्य।',
+            'speaker_id': 'speaker-1',
+            'split_safe_for_training': True,
+        }]
+        evaluation = [{
+            'audio_sha256': 'eval-audio',
+            'asr_target_clean': 'अर्को वाक्य।',
+            'speaker_id': 'speaker-2',
+            'split_safe_for_evaluation': True,
+        }]
+
+        isolation = m.validate_split_isolation(train, evaluation)
+
+        self.assertEqual(isolation['audio_hash_overlap_groups'], 0)
+        self.assertEqual(isolation['normalized_text_overlap_groups'], 0)
+        self.assertEqual(isolation['speaker_overlap_ids'], 0)
+        self.assertEqual(isolation['unsafe_training_rows'], 0)
+        self.assertEqual(isolation['unsafe_evaluation_rows'], 0)
+
+    def test_training_and_evaluation_manifests_reject_shared_audio(self):
+        shared = 'same-audio'
+        with self.assertRaisesRegex(ValueError, 'audio hash overlap'):
+            m.validate_split_isolation(
+                [{'audio_sha256': shared, 'asr_target_clean': 'एक'}],
+                [{'audio_sha256': shared, 'asr_target_clean': 'दुई'}],
+            )
+
+    def test_training_and_evaluation_manifests_reject_normalized_text_overlap(self):
+        with self.assertRaisesRegex(ValueError, 'normalized transcript overlap'):
+            m.validate_split_isolation(
+                [{'audio_sha256': 'a', 'asr_target_clean': 'गढ़वाली शब्द।'}],
+                [{'audio_sha256': 'b', 'asr_target_clean': 'गढ़वाली शब्द'}],
+            )
+
+    def test_training_and_evaluation_manifests_reject_known_speaker_overlap(self):
+        with self.assertRaisesRegex(ValueError, 'speaker overlap'):
+            m.validate_split_isolation(
+                [{'audio_sha256': 'a', 'asr_target_clean': 'एक', 'speaker_id': 'speaker-1'}],
+                [{'audio_sha256': 'b', 'asr_target_clean': 'दुई', 'speaker_id': 'speaker-1'}],
+            )
+
+    def test_training_and_evaluation_manifests_reject_explicitly_unsafe_rows(self):
+        with self.assertRaisesRegex(ValueError, 'not marked safe for training'):
+            m.validate_split_isolation(
+                [{
+                    'audio_sha256': 'a', 'asr_target_clean': 'एक',
+                    'split_safe_for_training': False,
+                }],
+                [{'audio_sha256': 'b', 'asr_target_clean': 'दुई'}],
+            )
+
+    def test_seed_helper_sets_the_python_and_torch_rngs(self):
+        import random
+
+        class TorchSeedStub:
+            seed = None
+
+            @classmethod
+            def manual_seed(cls, seed):
+                cls.seed = seed
+
+        m.seed_training(43, TorchSeedStub)
+        first = random.random()
+        m.seed_training(43, TorchSeedStub)
+
+        self.assertEqual(TorchSeedStub.seed, 43)
+        self.assertEqual(random.random(), first)
+
+    def test_custom_manifest_paths_override_split_defaults(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            train = root / 'meta-train.jsonl'
+            evaluation = root / 'meta-validation.jsonl'
+            train.touch()
+            evaluation.touch()
+
+            resolved = m.resolve_manifest_paths(
+                root / 'default-splits', 'test', train, evaluation
+            )
+
+            self.assertEqual(resolved, (train, evaluation))
+
+    def test_evaluation_predictions_keep_record_provenance(self):
+        row = {
+            'audio_sha256': 'audio-hash',
+            'asr_target_clean': 'गढ़वाली पाठ',
+            'record_id': 'meta:dev:12',
+            'source_file_sha256': 'parquet-hash',
+            'source_license': 'CC-BY-4.0',
+            'split_safe_for_evaluation': True,
+        }
+        metrics = {
+            'word_errors': 1,
+            'reference_words': 2,
+            'character_errors': 1,
+            'reference_characters': 8,
+            'wer': 0.5,
+            'cer': 0.125,
+        }
+
+        result = m.evaluation_prediction_row(row, 'गढ़वाली', metrics)
+
+        self.assertEqual(result['record_id'], 'meta:dev:12')
+        self.assertEqual(result['source_file_sha256'], 'parquet-hash')
+        self.assertEqual(result['source_license'], 'CC-BY-4.0')
+        self.assertEqual(result['prediction'], 'गढ़वाली')
+        self.assertNotIn('hypothesis', result)
+
     def test_pilot_selection_keeps_requested_human_and_machine_rows(self):
         rows = [
             {'audio_sha256': 'd', 'target_type': 'machine_pseudo_label'},

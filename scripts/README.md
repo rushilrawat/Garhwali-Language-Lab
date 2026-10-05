@@ -128,7 +128,7 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current working-tree suite passes **743 tests**. The
+The current working-tree suite passes **759 tests**. The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
 installs dependencies from `requirements-pipeline.txt`. Current benchmark
@@ -347,3 +347,25 @@ validation, use a unique output path and keep `--input` on the safe validation
 manifest. Predictions carry record/audio identity and grouped error slices.
 SraVaani comparison requires its model weights and compatible NeMo runtime to
 be present locally; this pipeline does not download them or invoke paid jobs.
+
+For the bounded local Meta adaptation experiment, first create a Whisper-sized
+view. This keeps all long clips and long references in the original source
+manifests while excluding them from this model-specific run with a hashed
+row-level ledger:
+
+```bash
+.venv/bin/python scripts/prepare_whisper_compatible_manifests.py \
+  --train-manifest data/processed/model_ready/splits/meta_omnilingual_asr/train.jsonl \
+  --validation-manifest data/processed/model_ready/splits/meta_omnilingual_asr/validation.jsonl \
+  --model models/whisper-tiny-garhwali-v0.2 \
+  --output-dir data/processed/model_ready/splits/meta_omnilingual_asr/whisper_tiny_compatible
+```
+
+Train from the filtered train view and evaluate only on its paired validation
+view with `scripts/train_whisper_garhwali.py --train-manifest ...
+--eval-manifest ... --eval-split validation --seed 17`. Compare candidate and
+baseline predictions on the exact same IDs, audio hashes, and references with
+`scripts/compare_asr_predictions.py`. See the dated adaptation report for the
+full command, pinned input/model hashes, results, and limits. This result is a
+development diagnostic; it does not authorize scoring Meta test or promoting
+the checkpoint as independently accurate.

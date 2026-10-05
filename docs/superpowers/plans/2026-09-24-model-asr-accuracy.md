@@ -14,6 +14,8 @@
 
 **Execution update (started 2026-10-04; completed through validation on 2026-10-05):** Task 1 completed locally. The source audit reconciles all 2,927 Parquet rows and both pinned manifests; it contains 2,294 safe train rows, 271 safe development rows, and 292 safe test rows. All 70 excluded rows remain in the audit. No Meta test inference was run. Task 2 preflight found the Garhwali-adapted Whisper-tiny v0.2 checkpoint, but not the original Whisper-tiny weights; the cached SraVaani repository lacks model weights, preprocessor, and tokenizer, and NeMo is not installed. Greedy and beam-5 Whisper-tiny v0.2 predictions were paired on all 271 validation rows and independently rescored. Greedy remains selected because beam-5 reduces WER but slightly regresses CER. Both results are poor development evidence, not independent accuracy; full details are in the [Meta validation report](../../../research/meta-omnilingual-asr-validation-2026-10-04.md). No checkpoint was fetched and no paid compute was launched.
 
+**Adaptation follow-up (2026-10-05):** The model-specific compatibility builder keeps all 2,294/271 safe rows in their original manifests and creates derived views with 1,793 train / 241 validation rows plus a row-level exclusion ledger for 531 rows that exceed Whisper's 30-second or 448-token input limits. One local epoch on train improved paired development WER/CER from 93.444%/70.522% to 89.318%/68.502%; both metrics improved for each of two speakers. Seeds 17 and 29 generated identical weights/predictions because this recipe is deterministic, so this is a repeatability check rather than independent seed variance. The selected model remains experimental; references are unreviewed, broader pretraining exposure is unknown, and Meta test stays unscored. See the [adaptation report](../../../research/meta-omnilingual-asr-adaptation-2026-10-05.md). The next safe action is development-only error diagnosis or obtaining a compatible comparison checkpoint locally; no held-out claim or test scoring is authorized.
+
 ## Global Constraints
 
 - Use only model weights and audio already present locally; do not download checkpoints, launch Hugging Face Jobs, or spend credits.
@@ -74,6 +76,17 @@
 - [x] **Step 4: Local preflight.** The adapted Whisper checkpoint, input hashes, and all selected audio paths were verified. The missing SraVaani/base-Whisper models were documented; no fetch was attempted.
 - [x] **Step 5: Run the bounded candidate.** Beam-5 completed on 271 validation rows; model-weight hash, input hash, predictions, metrics, and CPU runtime were saved. No checkpoint was trained.
 - [x] **Step 6: Apply the validation WER/CER selection guardrail.** Beam-5 lowers WER by 0.4543 pp but raises CER by 0.0325 pp; greedy is retained. No held-out split was used for this selection.
+
+### Task 3B: Run a bounded Meta in-domain adaptation
+
+- [x] Build a Whisper-compatible derived view with explicit exclusions; preserve the complete safe manifests.
+- [x] Enforce train/validation separation by audio hash, normalized transcript, known speaker, and manifest safety flags.
+- [x] Continue the existing Whisper-tiny Garhwali checkpoint for one local epoch and record checkpoint, tokenizer, manifest, and prediction hashes.
+- [x] Compare against the same checkpoint on exactly the same 241 validation IDs and references; do not read Meta test.
+- [x] Repeat with seed 29, verify the deterministic identical result, and report it as a reproducibility check rather than seed uncertainty.
+- [x] Document that 531 Whisper-incompatible rows remain preserved outside this experiment view and that the result is development-only.
+
+**Outcome:** WER improved from 93.444% to 89.318%; CER improved from 70.522% to 68.502%. The next ASR task is residual-error diagnosis on development predictions or an available compatible model comparison. The unresolved Meta test remains closed. See the [adaptation report](../../../research/meta-omnilingual-asr-adaptation-2026-10-05.md).
 
 ### Task 4: One held-out confirmation and report
 

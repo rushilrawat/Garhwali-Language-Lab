@@ -95,7 +95,7 @@ The 2026 study [*Seeds Before Objectives*](https://arxiv.org/abs/2608.10670)
 reports a five-seed, official-split w2v-BERT 2.0 standard-CTC mean of 47.0%
 WER. Its method supports reporting seed variation; it is not a like-for-like
 comparison to this single Whisper-tiny remainder score or an independent test
-for this project. The current local suite passes **743/743** tests (5 October
+for this project. The current local suite passes **759/759** tests (5 October
 2026, repository CI unittest discovery command).
 
 ## Meta Omnilingual ASR validation — 2026-10-04 to 2026-10-05
@@ -112,15 +112,31 @@ accuracy. The base Whisper-tiny/SraVaani comparison is unavailable because
 the necessary local artifacts/runtime are missing; Meta test was not scored.
 Full hashes, slices, paired counts, and limits are in the [Meta ASR report](research/meta-omnilingual-asr-validation-2026-10-04.md).
 
-The 5 October repository test command passes **743/743** unittest cases and
+## Meta Whisper adaptation — 2026-10-05
+
+The Whisper-compatible view contains 1,793 train and 241 validation rows from
+the safe Meta manifests. The 531 rows outside this checkpoint's 30-second or
+448-token limits remain preserved in their source manifests and are logged in
+a row-level exclusion ledger. One local training epoch lowered WER on the
+paired validation view from **93.444% to 89.318%** and CER from **70.522% to
+68.502%**. Both metrics improved for each of the two available validation
+speakers. Seeds 17 and 29 produced byte-identical checkpoints and predictions
+because the recipe was deterministic; this is a reproducibility check, not a
+multi-seed uncertainty estimate. This is promising in-domain development
+evidence, not independent or native-validated accuracy. References remain
+unadjudicated, broad model exposure is incompletely known, and Meta test remains
+unscored. See the [full adaptation report](research/meta-omnilingual-asr-adaptation-2026-10-05.md).
+
+The 5 October repository test command passes **759/759** unittest cases and
 `validate_release_index.py` passes for release snapshot v0.1.1. Its compact
 artifact hashes and paths also pass when checked without comparing against
 the current source tree. The stricter local `build_release_bundle.py --check`
-reports 59 stale-source entries (35 selected current files absent from that
-frozen bundle and 24 changed); three missing entries are the new local Meta
-ASR reports. The v0.1.1 bundle was not rewritten because it is a historical
-snapshot. A future current-version release must regenerate a versioned bundle
-from its frozen inputs before publication.
+reports **60 stale-source entries** (36 selected current files absent from
+that frozen bundle and 24 changed). The missing paths include generated Meta
+ASR evidence and newer local reports; changed paths are current corpus and
+derived-data indexes. The v0.1.1 bundle was not rewritten because it is a
+historical snapshot. A future current-version release must regenerate a
+versioned bundle from its frozen inputs before publication.
 
 ## Hugging Face quality release v0.2.2 — 2026-10-01 (historical review)
 

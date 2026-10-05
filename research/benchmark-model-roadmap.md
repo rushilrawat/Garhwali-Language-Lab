@@ -1,6 +1,6 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Status snapshot:** Main benchmark evidence measured 2026-09-30; VAANI ASR lineage refreshed 2026-10-04; public corpus release checked 2026-10-04 (corpus v0.2.3, speech v0.2.1)
+**Status snapshot:** Main benchmark evidence measured 2026-09-30; ASR development updated 2026-10-05; public corpus release checked 2026-10-04 (corpus v0.2.3, speech v0.2.1)
 **Scope:** GarhwaliBench and the model-research suite in this repository
 **Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 
@@ -27,6 +27,13 @@ validation and 338 official test utterances outside the project's fixed
 rows: 83.249% WER / 48.468% CER. This is an open diagnostic, not independent or
 speaker-generalization evidence; the 2026 paper has also published results on
 the official split.
+
+**ASR development update (2026-10-05):** a one-epoch continuation of the
+Garhwali Whisper-tiny v0.2 checkpoint on the Whisper-compatible Meta training
+view improved paired 241-row validation WER from 93.444% to 89.318% and CER
+from 70.522% to 68.502%. This is development-only evidence from two speakers;
+the 292 safe Meta test rows remain unscored. Seeds 17 and 29 were byte-identical
+because the recipe is deterministic. See the [adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md).
 
 | Workstream | Current verified position | Remaining gate |
 | --- | --- | --- |
@@ -121,12 +128,13 @@ The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md]
 | ASR decoding | The six-configuration sweep completed. RNNT beam size 8 was selected on validation: WER 43.253%, CER 18.919%, versus greedy WER 43.454%, CER 18.948%. A post-hoc audit matches its saved 112 test predictions to the fixed audio/reference manifest; test WER/CER are 42.761%/17.410%. | Historical paired comparison to base: WER delta +0.000 pp (95% speaker-cluster interval −0.583 to +0.656); CER −0.196 pp (−0.391 to +0.000). No reliable difference. Upstream VAANI example overlap is unknown. |
 | VAANI official-split remainder | Reconciled all 5,894 transcript rows to official train/validation/test: 4,778/666/450, 5,894 unique audio hashes, no cross-split duplicates. The 338 rows outside our earlier fixed test view were scored once with local Whisper-tiny v0.2: 83.249% WER / 48.468% CER. | Open-test diagnostic only. It is not blind or independent; only 5/338 rows have identifiable speaker metadata, and the official VAANI test has also been used in published research. Do not tune or select on it. |
 | Meta Omnilingual ASR validation | All 2,927 source rows reconcile; safe views are 2,294 train / 271 validation / 292 test, with all 70 unsafe rows retained in the audit. Whisper-tiny Garhwali v0.2 greedy: 93.900% WER / 72.918% CER. Beam-5: 93.446% / 72.950%; WER −0.4543 pp, CER +0.0325 pp, so greedy remains selected. | Development-only; poor model performance and upstream references are unreviewed. SraVaani/base-Whisper comparison lacks local weights/runtime. Meta test exposure is unresolved and was not scored. See [the validation report](meta-omnilingual-asr-validation-2026-10-04.md). |
+| Meta Whisper adaptation | On 241 Whisper-compatible validation rows, a one-epoch continuation reduced WER 93.444%→89.318% and CER 70.522%→68.502%; both metrics improved on each of two speakers. 1,793/2,294 train rows were compatible; all 531 model-specific exclusions remain in source manifests and the local ledger. | Development-only; upstream references are unreviewed, model exposure is incomplete, and only two speakers are represented. Seed 17/29 were byte-identical deterministic reruns, not independent seed variation. Meta test remains unscored. See [the adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md). |
 | ASR fine-tuning: 61 trials | All 61 trials completed. Validation WER/CER improved from 43.454%/18.948% to 42.711%/18.660%. Post-hoc audit matches all 112 test audio hashes and cleaned references; test WER/CER are 43.528%/17.494%. | Historical paired deltas vs base: WER +0.767 pp (95% interval −0.107 to +1.591); CER −0.112 pp (−0.683 to +0.384). Both include zero; no promotion. This work was not stopped by a rate limit. |
 | ASR fine-tuning: expanded human transcripts | Training used 5,513 hash-filtered human-transcript clips (8.112 hours); 3,886 rows lacked complete speaker identity. Validation WER/CER are 42.209%/18.302%. Post-hoc audit matches all 112 fixed-test audio hashes and cleaned references; historical test WER/CER are 43.289%/17.396%. | Training also contains 397 other official validation rows and 338 other official test rows. Its fixed-112 score remains a separate historical result, but this checkpoint must not be evaluated on VAANI's complete official validation/test sets. |
 | ASR references and independence | VAANI validation/test predictions already exist. SraVaani's model card identifies VAANI as an upstream source and reports 31,255 hours of VAANI pretraining plus about 31,270 hours of labeled fine-tuning from VAANI and other open speech data; it does not expose example-level overlap. | VAANI results are open/development/historical evidence, not independent estimates of generalization. The 2026 multi-seed ASR paper also uses VAANI's official test. Do not tune, select, or claim blind final accuracy from these rows. |
 | TTS | Speech manifests and readiness checks exist; no TTS system has a valid Garhwali quality result. | Readiness and pair-integrity only. MOS or naturalness needs listeners and cannot be inferred from automated checks. |
 | Independent final accuracy | Evidence eligibility is 0/5 across language modeling, translation, retrieval, generation, and ASR; the owner approved active work toward each area on 2026-09-30. | There is no defensible single project-wide model-accuracy score today; existing sets are reused or model exposure is unresolved. |
-| Review and tests | Native adjudications remain deferred. The full configured unittest suite passes 743/743 as of 2026-10-05; historical release counts remain labeled by snapshot. | Test passes establish code/integrity properties only, not linguistic correctness. |
+| Review and tests | Native adjudications remain deferred. The full configured unittest suite passes 759/759 as of 2026-10-05; historical release counts remain labeled by snapshot. | Test passes establish code/integrity properties only, not linguistic correctness. |
 
 ### Key test-history rule
 
@@ -765,8 +773,19 @@ overlap. The 338-row remainder was scored once with the existing local
 Whisper-tiny v0.2 model, and an independent post-run check matched every audio
 hash/reference and reproduced all aggregate metrics. The result is open and
 speaker-generalization-unverified; independent-evaluation eligibility remains
-0/5. The next useful ASR experiment is a train/dev-only multi-seed comparison;
+0/5. At that point, the next proposed ASR experiment was train/dev-only work;
 reserve no open VAANI test slice for model selection.
+
+**2026-10-05 Meta adaptation follow-up:** The local Whisper-tiny continuation
+improved the matched 241-row compatible Meta validation view from 93.444% to
+89.318% WER and from 70.522% to 68.502% CER. The exact same checkpoint and
+predictions resulted from two deterministic reruns. The source manifests still
+retain the 531 rows omitted from this Whisper-specific compatibility view, and
+the 292 safe Meta test rows were not opened. The next useful ASR work is
+diagnosing residual errors and checking whether a locally available compatible
+model/configuration comparison adds evidence; no test scoring or checkpoint
+promotion is authorized. Full hashes and limits are in the
+[adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md).
 
 Next actionable work is a rights/provenance pass for each benchmark component;
 the current per-view and item-status counts are in the

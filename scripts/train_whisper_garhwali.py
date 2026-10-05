@@ -4,8 +4,12 @@
 import argparse
 import json
 import os
+import random
 from collections import Counter
 from pathlib import Path
+
+from asr_metrics import normalize
+from run_whisper_comparison import make_prediction_row, model_weight_sha256, sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +30,77 @@ def load_rows(path, limit=0, max_stage=None):
 
 def training_target(row):
     return row.get('target_text', row.get('asr_target_clean', ''))
+
+
+def training_tier(row):
+    return (
+        row.get('curriculum_tier')
+        or row.get('target_type')
+        or row.get('transcript_review_status')
+        or 'strict_human_reference'
+    )
+
+
+def validate_split_isolation(train_rows, evaluation_rows):
+    """Reject unsafe or overlapping training/evaluation manifests."""
+    unsafe_training = sum(row.get('split_safe_for_training') is False for row in train_rows)
+    unsafe_evaluation = sum(row.get('split_safe_for_evaluation') is False for row in evaluation_rows)
+    if unsafe_training:
+        raise ValueError(f'{unsafe_training} training rows are not marked safe for training')
+    if unsafe_evaluation:
+        raise ValueError(f'{unsafe_evaluation} evaluation rows are not marked safe for evaluation')
+
+    train_audio = {row.get('audio_sha256') for row in train_rows if row.get('audio_sha256')}
+    evaluation_audio = {row.get('audio_sha256') for row in evaluation_rows if row.get('audio_sha256')}
+    audio_overlap = train_audio & evaluation_audio
+    if audio_overlap:
+        raise ValueError(f'train/evaluation audio hash overlap: {len(audio_overlap)}')
+
+    train_text = {normalize(training_target(row)) for row in train_rows if normalize(training_target(row))}
+    evaluation_text = {
+        normalize(training_target(row)) for row in evaluation_rows
+        if normalize(training_target(row))
+    }
+    text_overlap = train_text & evaluation_text
+    if text_overlap:
+        raise ValueError(f'train/evaluation normalized transcript overlap: {len(text_overlap)}')
+
+    def known_speakers(rows):
+        return {
+            str(row['speaker_id']).strip()
+            for row in rows
+            if row.get('speaker_id') is not None
+            and str(row['speaker_id']).strip().casefold() not in {'', 'na', 'unknown', 'null', 'none'}
+        }
+
+    speaker_overlap = known_speakers(train_rows) & known_speakers(evaluation_rows)
+    if speaker_overlap:
+        raise ValueError(f'train/evaluation known speaker overlap: {len(speaker_overlap)}')
+    return {
+        'audio_hash_overlap_groups': 0,
+        'normalized_text_overlap_groups': 0,
+        'speaker_overlap_ids': 0,
+        'unsafe_training_rows': 0,
+        'unsafe_evaluation_rows': 0,
+    }
+
+
+def seed_training(seed, torch_module):
+    random.seed(seed)
+    torch_module.manual_seed(seed)
+
+
+def resolve_manifest_paths(split_dir, eval_split, train_manifest=None, eval_manifest=None):
+    train_path = Path(train_manifest) if train_manifest else Path(split_dir) / 'train.jsonl'
+    eval_path = Path(eval_manifest) if eval_manifest else Path(split_dir) / f'{eval_split}.jsonl'
+    return train_path, eval_path
+
+
+def evaluation_prediction_row(row, hypothesis, metrics):
+    """Retain stable input identity and source metadata beside each score."""
+    result = make_prediction_row(row, hypothesis, metrics)
+    result['prediction'] = result.pop('hypothesis')
+    return result
 
 
 def training_weight(row):
@@ -160,9 +235,7 @@ def build_dry_run_plan(train_rows, eval_rows, epochs, root=ROOT):
     eval_targets = [training_target(row) for row in eval_rows]
     weights = [training_weight(row) for row in train_rows]
     hashes = [row['audio_sha256'] for row in train_rows]
-    records_by_tier = Counter(
-        row.get('curriculum_tier', 'strict_human_reference') for row in train_rows
-    )
+    records_by_tier = Counter(training_tier(row) for row in train_rows)
     missing_audio = sum(
         not (Path(root) / row['local_audio_path']).is_file() for row in train_rows + eval_rows
     )
@@ -199,7 +272,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', default='openai/whisper-tiny')
     parser.add_argument('--output', type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument('--train-manifest', type=Path)
+    parser.add_argument('--eval-manifest', type=Path)
     parser.add_argument('--epochs', type=int, default=1)
+    parser.add_argument('--seed', type=int, default=17)
     parser.add_argument('--learning-rate', type=float, default=1e-5)
     parser.add_argument('--max-train', type=int, default=0)
     parser.add_argument('--max-eval', type=int, default=0)
@@ -218,11 +294,17 @@ def main():
 
     os.environ.setdefault('HF_HOME', str(ROOT / '.cache/huggingface'))
     os.environ.setdefault('PYTORCH_ENABLE_MPS_FALLBACK', '1')
+    if (args.train_manifest or args.eval_manifest) and args.curriculum_stage is not None:
+        parser.error('custom manifests cannot be combined with --curriculum-stage')
     split_dir = CURRICULUM_SPLITS if args.curriculum_stage is not None else SPLITS
-    eval_split = resolve_evaluation_split(args.eval_split, args.curriculum_stage)
-    all_train_rows = load_rows(
-        split_dir / 'train.jsonl', max_stage=args.curriculum_stage
+    eval_split = (
+        'custom' if args.eval_manifest and args.eval_split is None
+        else resolve_evaluation_split(args.eval_split, args.curriculum_stage)
     )
+    train_manifest_path, eval_manifest_path = resolve_manifest_paths(
+        split_dir, eval_split, args.train_manifest, args.eval_manifest
+    )
+    all_train_rows = load_rows(train_manifest_path, max_stage=args.curriculum_stage)
     pilot_requested = bool(args.pilot_human or args.pilot_machine)
     if pilot_requested:
         if args.curriculum_stage != 1:
@@ -245,7 +327,8 @@ def main():
             parser.error(str(error))
     else:
         training_batches = [[row] for row in train_rows]
-    eval_rows = load_rows(split_dir / f'{eval_split}.jsonl', args.max_eval)
+    eval_rows = load_rows(eval_manifest_path, args.max_eval)
+    split_isolation = validate_split_isolation(train_rows, eval_rows)
     output = args.output
     if output == DEFAULT_OUTPUT and args.curriculum_stage is not None:
         suffix = f'curriculum-stage-{args.curriculum_stage}'
@@ -289,9 +372,16 @@ def main():
         if not plan['evaluation_records']:
             failures.append('no_evaluation_records')
         plan.update({
-            'run_id': 'garhwali-whisper-curriculum-dry-run-v0.1',
+            'run_id': f'garhwali-whisper-training-dry-run-seed-{args.seed}',
             'curriculum_stage': args.curriculum_stage,
+            'seed': args.seed,
             'evaluation_split': eval_split,
+            'training_manifest': str(train_manifest_path),
+            'training_manifest_sha256': sha256_file(train_manifest_path),
+            'evaluation_manifest': str(eval_manifest_path),
+            'evaluation_manifest_sha256': sha256_file(eval_manifest_path),
+            'initial_model_weight_sha256': model_weight_sha256(model_source),
+            'split_isolation': split_isolation,
             'full_stage_train_records': len(all_train_rows),
             'pilot_human_records': args.pilot_human,
             'pilot_machine_records': args.pilot_machine,
@@ -325,6 +415,7 @@ def main():
         device = 'mps' if torch.backends.mps.is_available() else 'cpu'
     else:
         device = args.device
+    seed_training(args.seed, torch)
     output.mkdir(parents=True, exist_ok=True)
 
     processor = WhisperProcessor.from_pretrained(
@@ -337,6 +428,7 @@ def main():
         cache_dir=ROOT / '.cache/huggingface/hub',
         local_files_only=args.local_files_only or args.resume_from is not None,
     ).to(device)
+    initial_model_weight_sha256 = model_weight_sha256(model_source)
     model.config.use_cache = False
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate)
 
@@ -417,12 +509,7 @@ def main():
             reference = training_target(row)
             metrics = score(reference, prediction)
             scores.append(metrics)
-            predictions.append({
-                'audio_sha256': row['audio_sha256'],
-                'reference': reference,
-                'prediction': prediction,
-                **metrics,
-            })
+            predictions.append(evaluation_prediction_row(row, prediction, metrics))
     evaluation = summarize_scores(scores)
     (output / 'evaluation_predictions.jsonl').write_text(
         ''.join(json.dumps(row, ensure_ascii=False) + '\n' for row in predictions), encoding='utf-8'
@@ -430,7 +517,10 @@ def main():
     report = {
         'base_model': args.model,
         'model_source': model_source,
+        'initial_model_weight_sha256': initial_model_weight_sha256,
+        'trained_model_weight_sha256': model_weight_sha256(output),
         'device': device,
+        'seed': args.seed,
         'epochs': args.epochs,
         'curriculum_stage': args.curriculum_stage,
         'full_stage_train_records': len(all_train_rows),
@@ -440,6 +530,8 @@ def main():
             previous_stage_report['curriculum_stage'] if previous_stage_report else None
         ),
         'train_records': len(train_rows),
+        'training_manifest': str(train_manifest_path),
+        'training_manifest_sha256': sha256_file(train_manifest_path),
         'training_steps': step,
         'training_examples': examples_seen,
         'batching_strategy': (
@@ -457,6 +549,9 @@ def main():
         'mean_raw_training_loss': sum(raw_losses) / max(1, len(raw_losses)),
         'evaluation_records': len(eval_rows),
         'evaluation_split': eval_split,
+        'evaluation_manifest': str(eval_manifest_path),
+        'evaluation_manifest_sha256': sha256_file(eval_manifest_path),
+        'split_isolation': split_isolation,
         'training_complete': complete_stage,
         **evaluation,
     }

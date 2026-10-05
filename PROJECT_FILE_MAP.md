@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **969**.
+Files indexed: **974**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -605,6 +605,7 @@ python scripts/generate_project_file_map.py
 - `research/internet-archive-source-disposition-2026-10-04.md`
 - `research/issues&improvement plan.md`
 - `research/language-quality-status-2026-09-10.md`
+- `research/meta-omnilingual-asr-adaptation-2026-10-05.md`
 - `research/meta-omnilingual-asr-validation-2026-10-04.md`
 - `research/model-accuracy-lineage-2026-09-24.md`
 - `research/model-accuracy-lineage-2026-09-28.md`
@@ -729,6 +730,7 @@ python scripts/generate_project_file_map.py
 - `scripts/collect_online.py`
 - `scripts/collect_vaani_reference_images.py`
 - `scripts/compare_archive_ocr_variants.py`
+- `scripts/compare_asr_predictions.py`
 - `scripts/dedup_report.py`
 - `scripts/deep_cleanup.py`
 - `scripts/download_garhwali_folktales.py`
@@ -787,6 +789,7 @@ python scripts/generate_project_file_map.py
 - `scripts/prepare_text_corpus.py`
 - `scripts/prepare_transcripts.py`
 - `scripts/prepare_vaani_supervised.py`
+- `scripts/prepare_whisper_compatible_manifests.py`
 - `scripts/promote_paharili_garhwali.py`
 - `scripts/propose_text_cleanup.py`
 - `scripts/reconcile_vaani_audio_paths.py`
@@ -935,6 +938,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_clean_text_corpus.py`
 - `tests/test_collect_online.py`
 - `tests/test_compare_archive_ocr_variants.py`
+- `tests/test_compare_asr_predictions.py`
 - `tests/test_deep_cleanup.py`
 - `tests/test_evaluate_indicbert_transfer.py`
 - `tests/test_evaluate_sravaani_finetune.py`
@@ -974,6 +978,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_prepare_text_corpus.py`
 - `tests/test_prepare_transcripts.py`
 - `tests/test_prepare_vaani_supervised.py`
+- `tests/test_prepare_whisper_compatible_manifests.py`
 - `tests/test_propose_text_cleanup.py`
 - `tests/test_record_schema.py`
 - `tests/test_redecode_sravaani_recovery.py`
@@ -1022,11 +1027,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **238,375**.
+- Workspace files counted: **238,403**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **969**.
-- Ignored or otherwise unlisted payload files: **237,406** (156,809,079,714 bytes).
-- Total workspace bytes counted: **156,825,876,671**.
+- Detailed file paths listed above: **974**.
+- Ignored or otherwise unlisted payload files: **237,429** (157,125,340,691 bytes).
+- Total workspace bytes counted: **157,142,186,130**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1051,7 +1056,7 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
 | `data/extracted/…/` | 736 | 104,222,504 |
 | `data/huggingface/…/` | 1,980 | 72,788,494,485 |
-| `data/processed/…/` | 110,551 | 40,778,667,253 |
+| `data/processed/…/` | 110,556 | 40,784,032,282 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |
 | `data/vaani/…/` | 115,189 | 32,112,461,505 |
@@ -1068,6 +1073,8 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `models/controlled_modeling/…/` | 39 | 17,979,528 |
 | `models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048-weighted-batches/…/` | 9 | 155,181,608 |
 | `models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048/…/` | 9 | 155,180,855 |
+| `models/whisper-tiny-garhwali-meta-multiseed-17/…/` | 9 | 155,447,974 |
+| `models/whisper-tiny-garhwali-meta-multiseed-29/…/` | 9 | 155,447,974 |
 | `models/whisper-tiny-garhwali-smoke/…/` | 9 | 155,001,786 |
 | `models/whisper-tiny-garhwali-v0.1/…/` | 9 | 155,076,358 |
 | `models/whisper-tiny-garhwali-v0.2/…/` | 10 | 155,077,066 |
