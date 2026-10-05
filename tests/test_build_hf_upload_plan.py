@@ -70,3 +70,26 @@ class HuggingFaceUploadPlanTests(unittest.TestCase):
             'reference_index_manifest.json',
             {artifact['path'] for artifact in report['artifacts']},
         )
+
+    def test_release_support_files_are_included_in_public_upload_plan(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.package(root, 'public')
+            for relative in m.SUPPORT_FILES:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('release support file\n')
+            report = m.build(root, visibility='public')
+        self.assertEqual(report['files'], 3 + len(m.SUPPORT_FILES))
+        paths = {artifact['path'] for artifact in report['artifacts']}
+        self.assertTrue(m.SUPPORT_FILES <= paths)
+
+    def test_unlisted_release_file_is_still_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.package(root, 'public')
+            extra = root / 'research/unreviewed.txt'
+            extra.parent.mkdir()
+            extra.write_text('not part of the release\n')
+            with self.assertRaisesRegex(ValueError, 'unmanifested files'):
+                m.build(root, visibility='public')

@@ -1,12 +1,23 @@
 # Garhwali Language Lab — deep final audit
 
-## Current release and local Archive intake — 2026-10-04
+## Current release and local Archive intake — 2026-10-05
 
-The current public corpus release is **v0.2.3** at Hub commit
-[`76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d).
-Its 246-row `text_resources/train` config surfaces existing catalog records;
-the package contains 827,450 overlapping-view rows. The speech repository
-remains at v0.2.1. The local Internet Archive intake contains 119
+The current public corpus release is **v0.2.4** at Hub commit
+[`76b93dc`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76b93dc0f35aca444ba06dfcab186fb7ca5106d1),
+with the latest card correction at current commit
+[`574aa66`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/574aa667a2486948444d28ff533c668ada3178e2); the
+developer quick-start is at [`32844de`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/32844de7cdd7d3632a11331cb1adc05b67a8be0c).
+It preserves the 246-row `text_resources/train` config and adds source
+attribution/revision metadata without changing text values; the release keeps
+earlier versioned paths. It contains 827,450 overlapping-view rows. Both
+package profiles pass preflight, the 47 versioned files and root card are
+present, and direct text/lexicon streaming works at latest revision `574aa66`.
+Viewer validity, splits, Parquet, and row-preview endpoints returned
+HTTP 200 after the initial correction; an immediate retry after the latest
+card update returned transient HTTP 500 busy responses. The source-level training audit found no recommendation-field
+mismatches and zero current text training recommendations; see its
+[report](research/huggingface-training-eligibility-audit-2026-10-05.md). The
+speech repository remains at v0.2.1. The local Internet Archive intake contains 119
 checksum-verified payload files (6,005,077,831 bytes) and 4,011 OCR page
 objects after two local DjVu sidecars were reconciled. There are 3,983
 non-empty OCR rows and 3,981 unique normalized non-empty values; one duplicate
@@ -148,7 +159,7 @@ row-level ledger stays Git-ignored.
 ## Repository verification — 2026-10-05
 
 The documented repository unittest discovery command passes locally
-**762/762**, and the release-index validator passes for the tracked v0.1.1
+**776/776**, and the release-index validator passes for the tracked v0.1.1
 snapshot. The bundle itself has no
 path/hash failures when source comparison is disabled. The full local
 `build_release_bundle.py --check` finds **60 stale-source entries**: 36

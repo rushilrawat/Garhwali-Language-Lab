@@ -1,0 +1,459 @@
+{
+  "package": "data/huggingface/garhwali-language-lab-v0.2.5-staging",
+  "release_id": "garhwali-language-lab-v0.2.5",
+  "manifest_profile": "public",
+  "record_schema_version": "1.0.0",
+  "diagnostic_only": true,
+  "counterfactual_definition": "In memory only, set every explicit source-level training_eligible=false in provenance, sources, and public_rights_basis to true, then rerun recommended_text_training_row. All rights, quality, split, language, and other fields remain unchanged. This does not grant permission or change any release record.",
+  "configs": {
+    "text": {
+      "stored_recommended_for_training": 0,
+      "recomputed_recommended_for_training": 0,
+      "explicit_source_training_false": 18949,
+      "explicit_source_experimental_training_true": 18949,
+      "explicit_source_experimental_training_false": 0,
+      "mixed_source_training_true_and_false": 1,
+      "source_quality_flags_present": 15440,
+      "record_quality_flags_present": 15658,
+      "strict_gold_tier_present": 12664,
+      "missing_public_rights_basis": 0,
+      "public_rights_basis_with_nonpublishable_item": 0,
+      "not_gbm_only": 0,
+      "diagnostic_recommended_if_false_source_flags_resolved": 1731,
+      "records": 18949,
+      "stored_recommendation_mismatches": 0,
+      "split_counts": {
+        "source_overlap": 1308,
+        "test": 765,
+        "train": 15981,
+        "validation": 895
+      },
+      "source_records": [
+        {
+          "source_id": "indic_dialect_asr_gbm",
+          "records": 10943,
+          "records_with_explicit_training_false": 10943,
+          "records_with_quality_flags": 10943,
+          "quality_flag_record_counts": {
+            "community_aggregation": 10943,
+            "possible_upstream_duplicate": 10943
+          }
+        },
+        {
+          "source_id": "meta_omni",
+          "records": 7930,
+          "records_with_explicit_training_false": 7930,
+          "records_with_quality_flags": 0,
+          "quality_flag_record_counts": {}
+        },
+        {
+          "source_id": "obs_tlf_gbm_v1",
+          "records": 1794,
+          "records_with_explicit_training_false": 1794,
+          "records_with_quality_flags": 1794,
+          "quality_flag_record_counts": {
+            "illustrations_excluded": 1794,
+            "native_review_pending": 1794,
+            "official_source_version": 1794,
+            "translation_quality_unreviewed": 1794
+          }
+        },
+        {
+          "source_id": "obs_garhwali",
+          "records": 1488,
+          "records_with_explicit_training_false": 1488,
+          "records_with_quality_flags": 1488,
+          "quality_flag_record_counts": {
+            "illustrations_excluded": 1488,
+            "item_page_has_no_license_block": 1488,
+            "translation_quality_unreviewed": 1488
+          }
+        },
+        {
+          "source_id": "lsi_1916_grierson_garhwali_table",
+          "records": 628,
+          "records_with_explicit_training_false": 628,
+          "records_with_quality_flags": 628,
+          "quality_flag_record_counts": {
+            "automated_ocr_unreviewed": 628,
+            "column_cropped_row_aligned_ocr": 628,
+            "historical_latin_transliteration": 628,
+            "low_ocr_confidence": 510
+          }
+        },
+        {
+          "source_id": "jambu-garhwali",
+          "records": 497,
+          "records_with_explicit_training_false": 497,
+          "records_with_quality_flags": 497,
+          "quality_flag_record_counts": {
+            "historical_lexical_reflex": 497,
+            "native_review_deferred": 497,
+            "source_spelling_preserved": 497
+          }
+        },
+        {
+          "source_id": "lsi_1916_grierson_garhwali_specimens",
+          "records": 286,
+          "records_with_explicit_training_false": 286,
+          "records_with_quality_flags": 286,
+          "quality_flag_record_counts": {
+            "automated_hindi_ocr_unreviewed": 286,
+            "historical_source": 286,
+            "native_review_pending": 286,
+            "page_headings_and_non_garhwali_ocr_lines_excluded": 286,
+            "unicode_nfc_applied": 286
+          }
+        },
+        {
+          "source_id": "wiktionary_swadesh_thematic",
+          "records": 191,
+          "records_with_explicit_training_false": 191,
+          "records_with_quality_flags": 191,
+          "quality_flag_record_counts": {
+            "community_edited": 191,
+            "needs_native_review": 191
+          }
+        },
+        {
+          "source_id": "garhwali-language-library",
+          "records": 182,
+          "records_with_explicit_training_false": 182,
+          "records_with_quality_flags": 182,
+          "quality_flag_record_counts": {
+            "language_identity_not_independently_verified": 182,
+            "native_review_deferred": 182,
+            "not_eligible_for_recommended_training": 182,
+            "upstream_labeled_garhwali": 182
+          }
+        },
+        {
+          "source_id": "opus_translatewiki_gbm",
+          "records": 173,
+          "records_with_explicit_training_false": 173,
+          "records_with_quality_flags": 173,
+          "quality_flag_record_counts": {
+            "native_accuracy_unverified": 173,
+            "software_interface_fragment": 173
+          }
+        },
+        {
+          "source_id": "lsi_cldf_garhwali",
+          "records": 170,
+          "records_with_explicit_training_false": 170,
+          "records_with_quality_flags": 170,
+          "quality_flag_record_counts": {
+            "source_level_duplicate_expected": 170,
+            "structured_derivative_of_existing_lsi_ocr": 170
+          }
+        },
+        {
+          "source_id": "sand_garhwali",
+          "records": 90,
+          "records_with_explicit_training_false": 90,
+          "records_with_quality_flags": 0,
+          "quality_flag_record_counts": {}
+        },
+        {
+          "source_id": "asjp",
+          "records": 88,
+          "records_with_explicit_training_false": 88,
+          "records_with_quality_flags": 0,
+          "quality_flag_record_counts": {}
+        },
+        {
+          "source_id": "wikimedia",
+          "records": 78,
+          "records_with_explicit_training_false": 78,
+          "records_with_quality_flags": 78,
+          "quality_flag_record_counts": {
+            "mechanically_rendered_wikitext": 78
+          }
+        },
+        {
+          "source_id": "wiktionary_en",
+          "records": 74,
+          "records_with_explicit_training_false": 74,
+          "records_with_quality_flags": 0,
+          "quality_flag_record_counts": {}
+        },
+        {
+          "source_id": "mamta_southasia_examples",
+          "records": 25,
+          "records_with_explicit_training_false": 25,
+          "records_with_quality_flags": 0,
+          "quality_flag_record_counts": {}
+        },
+        {
+          "source_id": "chan_numerals_garhwali",
+          "records": 24,
+          "records_with_explicit_training_false": 24,
+          "records_with_quality_flags": 0,
+          "quality_flag_record_counts": {}
+        },
+        {
+          "source_id": "tatoeba",
+          "records": 14,
+          "records_with_explicit_training_false": 14,
+          "records_with_quality_flags": 14,
+          "quality_flag_record_counts": {
+            "creator_attribution_recovered_from_sentence_page": 14,
+            "upstream_sentence_orphaned": 14
+          }
+        },
+        {
+          "source_id": "garhwalilanguage_dictionary",
+          "records": 8,
+          "records_with_explicit_training_false": 8,
+          "records_with_quality_flags": 8,
+          "quality_flag_record_counts": {
+            "needs_native_review": 8,
+            "publisher_license_not_stated": 8
+          }
+        },
+        {
+          "source_id": "panlex_gbm",
+          "records": 7,
+          "records_with_explicit_training_false": 7,
+          "records_with_quality_flags": 7,
+          "quality_flag_record_counts": {
+            "machine_aggregated_lexicon": 7,
+            "meaning_links_absent_in_mirror": 7
+          }
+        },
+        {
+          "source_id": "emagazine_animals",
+          "records": 6,
+          "records_with_explicit_training_false": 6,
+          "records_with_quality_flags": 6,
+          "quality_flag_record_counts": {
+            "community_compilation": 6,
+            "dialect_variation_possible": 6,
+            "needs_native_review": 6
+          }
+        },
+        {
+          "source_id": "incubator_wt",
+          "records": 6,
+          "records_with_explicit_training_false": 6,
+          "records_with_quality_flags": 6,
+          "quality_flag_record_counts": {
+            "mechanically_rendered_wikitext": 6
+          }
+        },
+        {
+          "source_id": "upreti_1894_garhwali",
+          "records": 3,
+          "records_with_explicit_training_false": 3,
+          "records_with_quality_flags": 3,
+          "quality_flag_record_counts": {
+            "historical_transliteration": 3,
+            "not_native_reviewed": 3
+          }
+        },
+        {
+          "source_id": "uttarakhandiwords_animals",
+          "records": 3,
+          "records_with_explicit_training_false": 3,
+          "records_with_quality_flags": 3,
+          "quality_flag_record_counts": {
+            "community_compilation": 3,
+            "needs_native_review": 3,
+            "source_gloss_typo_normalized_bear": 1
+          }
+        },
+        {
+          "source_id": "languageshome",
+          "records": 1,
+          "records_with_explicit_training_false": 0,
+          "records_with_quality_flags": 1,
+          "quality_flag_record_counts": {
+            "native_accuracy_unverified": 1,
+            "web_source": 1
+          }
+        }
+      ]
+    },
+    "text_expansion": {
+      "stored_recommended_for_training": 0,
+      "recomputed_recommended_for_training": 0,
+      "explicit_source_training_false": 1647,
+      "explicit_source_experimental_training_true": 1647,
+      "explicit_source_experimental_training_false": 0,
+      "mixed_source_training_true_and_false": 0,
+      "source_quality_flags_present": 1041,
+      "record_quality_flags_present": 1041,
+      "strict_gold_tier_present": 1647,
+      "missing_public_rights_basis": 0,
+      "public_rights_basis_with_nonpublishable_item": 0,
+      "not_gbm_only": 0,
+      "diagnostic_recommended_if_false_source_flags_resolved": 263,
+      "records": 1647,
+      "stored_recommendation_mismatches": 0,
+      "split_counts": {
+        "source_overlap": 363,
+        "train": 1284
+      },
+      "source_records": [
+        {
+          "source_id": "meta_omni",
+          "records": 1492,
+          "records_with_explicit_training_false": 1492,
+          "records_with_quality_flags": 0,
+          "quality_flag_record_counts": {}
+        },
+        {
+          "source_id": "indic_dialect_asr_gbm",
+          "records": 899,
+          "records_with_explicit_training_false": 899,
+          "records_with_quality_flags": 899,
+          "quality_flag_record_counts": {
+            "community_aggregation": 899,
+            "possible_upstream_duplicate": 899
+          }
+        },
+        {
+          "source_id": "obs_garhwali",
+          "records": 48,
+          "records_with_explicit_training_false": 48,
+          "records_with_quality_flags": 48,
+          "quality_flag_record_counts": {
+            "illustrations_excluded": 48,
+            "item_page_has_no_license_block": 48,
+            "translation_quality_unreviewed": 48
+          }
+        },
+        {
+          "source_id": "obs_tlf_gbm_v1",
+          "records": 48,
+          "records_with_explicit_training_false": 48,
+          "records_with_quality_flags": 48,
+          "quality_flag_record_counts": {
+            "illustrations_excluded": 48,
+            "native_review_pending": 48,
+            "official_source_version": 48,
+            "translation_quality_unreviewed": 48
+          }
+        },
+        {
+          "source_id": "wikimedia",
+          "records": 19,
+          "records_with_explicit_training_false": 19,
+          "records_with_quality_flags": 19,
+          "quality_flag_record_counts": {
+            "mechanically_rendered_wikitext": 19
+          }
+        },
+        {
+          "source_id": "tatoeba",
+          "records": 17,
+          "records_with_explicit_training_false": 17,
+          "records_with_quality_flags": 17,
+          "quality_flag_record_counts": {
+            "creator_attribution_recovered_from_sentence_page": 17,
+            "upstream_sentence_orphaned": 17
+          }
+        },
+        {
+          "source_id": "lsi_1916_grierson_garhwali_specimens",
+          "records": 8,
+          "records_with_explicit_training_false": 8,
+          "records_with_quality_flags": 8,
+          "quality_flag_record_counts": {
+            "automated_hindi_ocr_unreviewed": 8,
+            "historical_source": 8,
+            "native_review_pending": 8,
+            "page_headings_and_non_garhwali_ocr_lines_excluded": 8,
+            "unicode_nfc_applied": 8
+          }
+        },
+        {
+          "source_id": "garhwali-language-library",
+          "records": 2,
+          "records_with_explicit_training_false": 2,
+          "records_with_quality_flags": 2,
+          "quality_flag_record_counts": {
+            "language_identity_not_independently_verified": 2,
+            "native_review_deferred": 2,
+            "not_eligible_for_recommended_training": 2,
+            "upstream_labeled_garhwali": 2
+          }
+        },
+        {
+          "source_id": "paharili_gbm",
+          "records": 1,
+          "records_with_explicit_training_false": 1,
+          "records_with_quality_flags": 1,
+          "quality_flag_record_counts": {
+            "component_rights_review_required": 1,
+            "possible_modern_scripture_or_blog_text": 1,
+            "source_lineage_missing": 1
+          }
+        }
+      ]
+    },
+    "text_resources": {
+      "stored_recommended_for_training": 0,
+      "recomputed_recommended_for_training": 0,
+      "explicit_source_training_false": 246,
+      "explicit_source_experimental_training_true": 246,
+      "explicit_source_experimental_training_false": 0,
+      "mixed_source_training_true_and_false": 0,
+      "source_quality_flags_present": 118,
+      "record_quality_flags_present": 118,
+      "strict_gold_tier_present": 0,
+      "missing_public_rights_basis": 128,
+      "public_rights_basis_with_nonpublishable_item": 0,
+      "not_gbm_only": 0,
+      "diagnostic_recommended_if_false_source_flags_resolved": 0,
+      "records": 246,
+      "stored_recommendation_mismatches": 0,
+      "split_counts": {
+        "train": 246
+      },
+      "source_records": [
+        {
+          "source_id": "hindialect_gbm",
+          "records": 128,
+          "records_with_explicit_training_false": 128,
+          "records_with_quality_flags": 0,
+          "quality_flag_record_counts": {}
+        },
+        {
+          "source_id": "indic_dialect_asr_gbm",
+          "records": 115,
+          "records_with_explicit_training_false": 115,
+          "records_with_quality_flags": 115,
+          "quality_flag_record_counts": {
+            "community_aggregation": 115,
+            "possible_upstream_duplicate": 115
+          }
+        },
+        {
+          "source_id": "upreti_1894_garhwali",
+          "records": 2,
+          "records_with_explicit_training_false": 2,
+          "records_with_quality_flags": 2,
+          "quality_flag_record_counts": {
+            "historical_regional_stereotype_context": 1,
+            "historical_transliteration": 2,
+            "not_native_reviewed": 2,
+            "ocr_transliteration_uncertain": 1
+          }
+        },
+        {
+          "source_id": "lsi_1916_grierson_garhwali_table",
+          "records": 1,
+          "records_with_explicit_training_false": 1,
+          "records_with_quality_flags": 1,
+          "quality_flag_record_counts": {
+            "automated_ocr_unreviewed": 1,
+            "column_cropped_row_aligned_ocr": 1,
+            "historical_latin_transliteration": 1,
+            "low_ocr_confidence": 1
+          }
+        }
+      ]
+    }
+  }
+}

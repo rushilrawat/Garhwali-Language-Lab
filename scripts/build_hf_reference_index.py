@@ -108,7 +108,7 @@ def public_content_keys(public_root: Path) -> dict[str, dict[str, bool]]:
         for _, _, _, row in read_rows(public_root / "data" / config):
             key = row.get(key_field)
             if key is not None:
-                # The public catalog keeps every record, but many values are redacted.
+                # Every catalog record stays addressable; some expose metadata only.
                 keys[str(key)] = bool(row.get("text_publicly_available", True))
         result[config] = keys
     return result
@@ -244,8 +244,8 @@ def sync_quickstart_text(text: str, report: dict) -> str:
         "This guide is bundled with `" + release_id + "`; its",
         "configuration counts match that package manifest. Use the Hub cards for current publication",
         "status and immutable revisions. The packages preserve a common rights/quality",
-        "envelope, schema, and loading guidance. You can load current configs remotely",
-        "or use the local package copy shown below. Pass a commit SHA as `revision=` when",
+        "envelope, schema, and loading guidance. These examples stream the published",
+        "configs. Pass a commit SHA as `revision=` when",
         "you need an immutable Hub snapshot.",
     ))
     text = text[:start] + intro + text[end:]
@@ -319,10 +319,12 @@ def sync_quickstart_text(text: str, report: dict) -> str:
     if expansion_count:
         section = f'''## Load the fast-tracked text view
 
-The `text_expansion` config contains **{expansion_count:,}** train-only Garhwali
-values already present in the catalog. It is a filtered training view, not new
-source ingestion or an independent evaluation set. Rows retain their rights
-and quality fields; review each row before downstream reuse.
+The `text_expansion` config contains **{expansion_count:,}** train-split Garhwali
+candidates already present in the catalog. It is not new source ingestion or an
+independent evaluation set. Currently zero rows meet the conservative training-
+recommendation rule because source-level eligibility or quality evidence
+remains unresolved. Rows retain their rights and quality fields; review each
+row before downstream reuse.
 
 ```python
 from datasets import load_dataset
@@ -396,12 +398,12 @@ def update_dataset_card(report: dict) -> None:
     config_rows = []
     descriptions = {
         "text": "Garhwali text examples",
-        "text_expansion": "strict-tier supplementary text; train-only",
+        "text_expansion": "strict-tier train-split candidates; zero currently meet training recommendation; not evaluation data",
         "text_resources": "rights-cleared supplementary text; varied quality, not for evaluation",
         "lexicon": "vocabulary and pronunciation candidates",
         "asr": "provider/human transcripts (unadjudicated)",
         "sravaani_drafts": "machine transcript drafts; not ground truth",
-        "catalog": "unique text inventory; some values are redacted",
+        "catalog": "unique text inventory with content and metadata-only entries",
         "instructions": "instruction/response examples",
         "geography": "place facts and citations",
         "historical_terms": "historical names and terms",
@@ -483,7 +485,7 @@ The reference index includes **{report['source_catalog_records']:,} deduplicated
 
 The three metadata tables cover **{report['records']:,} records** from the complete local all-data archive. `record_index` has one row per archived record, `source_catalog` contains {report['source_catalog_records']:,} deduplicated source references, and `record_sources` contains {report['record_source_links']:,} join rows. The tables include source URLs, available attribution, rights and quality status, and factual catalog fields. They exclude source text, lyrics, transcripts, machine drafts, audio, speaker identifiers, local paths, and content hashes.
 
-The current public package has **{report['public_profile_package_rows']:,} rows** across its content configurations; **{report['records_with_content_in_public_profile']:,}** indexed records have a corresponding public content value. The difference is metadata-only catalog rows whose values are redacted. Reference-index rows are not training examples and must not be added to corpus sample counts. Source links point to original material and do not grant reuse rights.
+The current public package has **{report['public_profile_package_rows']:,} rows** across its content configurations; **{report['records_with_content_in_public_profile']:,}** indexed records have a corresponding public content value. Other catalog entries retain identifiers and source/rights metadata while their full text remains outside public content. Reference-index rows are not training examples and must not be added to corpus sample counts. Source links point to original material and do not grant reuse rights.
 
 See [`reference_index_manifest.json`](reference_index_manifest.json) for counts by family and the three table checksums.
 """

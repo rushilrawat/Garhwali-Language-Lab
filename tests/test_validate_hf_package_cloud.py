@@ -1,4 +1,5 @@
 import contextlib
+import hashlib
 import io
 import json
 import sys
@@ -35,6 +36,67 @@ class HuggingFaceCloudValidationTests(unittest.TestCase):
             }},
         }))
         return package
+
+    def test_preflight_rejects_upstream_heldout_record_left_in_train(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = self._write_schema_v1_package(root, {
+                'id': 'placeholder', 'rights_status': 'not_assessed',
+                'reuse_scope': 'not assessed', 'license_labels': [],
+                'quality_status': 'not_reviewed', 'record_quality_flags': [],
+            })
+            (package / 'data/lexicon/train-00000.jsonl').unlink()
+            text = 'गढ़वाली वाक्य।'
+            row = {
+                'id': hashlib.sha256(text.encode('utf-8')).hexdigest(),
+                'text': text, 'language': 'gbm', 'source_languages': ['gbm'],
+                'language_buckets': ['garhwali_candidate'],
+                'quality_tiers': ['experimental_review'], 'quality_flags': [],
+                'recommended_for_training': False, 'split': 'train',
+                'public_rights_basis': [], 'rights_status': 'not_assessed',
+                'reuse_scope': 'not assessed', 'license_labels': [],
+                'quality_status': 'not_reviewed', 'record_quality_flags': [],
+                'provenance': [{
+                    'source_id': 'meta_omni', 'record_id': 'meta:test:1',
+                    'training_eligible': False,
+                }],
+                'source_split_overlap_status': 'no_upstream_eval_match_detected',
+                'source_split_overlap_source_ids': [],
+            }
+            shard = package / 'data/text/train-00000.jsonl'
+            shard.parent.mkdir(parents=True)
+            shard.write_text(json.dumps(row, ensure_ascii=False) + '\n')
+            audit = package / 'research/huggingface-upstream-split-overlap-2026-10-05.json'
+            audit.parent.mkdir(parents=True, exist_ok=True)
+            audit.write_text('{}\n')
+            (audit.parent / 'huggingface-upstream-split-overlap-2026-10-05.md').write_text('audit\n')
+            manifest_path = package / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text())
+            manifest['configs'] = {'text/train': {
+                'files': [shard.name], 'records': 1,
+                'file_sha256': {shard.name: m.sha256(shard)},
+            }}
+            manifest['upstream_split_overlap_audit'] = {
+                'schema_version': 'garhwali-upstream-split-overlap-v1',
+                'sha256': m.sha256(audit),
+            }
+            manifest_path.write_text(json.dumps(manifest))
+            output = root / 'preflight.json'
+            with (
+                patch.object(m, 'upstream_split_overlap_ids',
+                             return_value=({'meta:test:1'}, set())),
+                patch.object(sys, 'argv', [
+                    'validate_hf_package_cloud.py', '--package', str(package),
+                    '--output', str(output),
+                ]),
+                contextlib.redirect_stdout(io.StringIO()),
+                self.assertRaises(SystemExit),
+            ):
+                m.main()
+            report = json.loads(output.read_text())
+
+        self.assertIn('upstream_eval_overlap_left_in_train:text/train:1', report['errors'])
+        self.assertIn('source_split_evidence_mismatch:text/train:2', report['errors'])
 
     def test_record_schema_envelope_accepts_empty_optional_lists(self):
         with tempfile.TemporaryDirectory() as directory:

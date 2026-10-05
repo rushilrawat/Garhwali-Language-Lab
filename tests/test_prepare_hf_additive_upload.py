@@ -81,6 +81,18 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 prepare(package, output, root / "plan.json")
 
+    def test_accepts_the_v025_split_overlap_audit_support_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            package = self.make_package(Path(directory))
+            (package / "research/huggingface-upstream-split-overlap-2026-10-05.json").write_text(
+                "{}\n", encoding="utf-8"
+            )
+            (package / "research/huggingface-upstream-split-overlap-2026-10-05.md").write_text(
+                "audit\n", encoding="utf-8"
+            )
+
+            self.assertEqual(len(validate_package(package)), 13)
+
     def test_rejects_non_public_or_audio_package(self):
         with tempfile.TemporaryDirectory() as directory:
             package = self.make_package(Path(directory))

@@ -202,5 +202,20 @@
     "text_recommended/train": 9486,
     "text_recommended/validation": 454
   },
-  "view_rows": 14703
+  "view_rows": 14703,
+  "audit_scope_note": "Counts below describe the frozen v0.2 draft exactly as recorded; the separate source-attribution follow-up enriches export candidates but does not rewrite the frozen rows or public-release flags.",
+  "attribution_export_followup": {
+    "report": "research/license-specific-source-export-audit-2026-10-05.md",
+    "tatoeba_sentence_authors_recovered": 36,
+    "tatoeba_unique_contributors": [
+      "sabretou"
+    ],
+    "wikimedia_incubator_source_rows_with_revision_history": 39,
+    "wiktionary_source_rows_with_revision_history": 280,
+    "license_specific_export_rows": 2432,
+    "unique_normalized_texts_across_exports": 2402,
+    "repeated_text_rows_retained_with_separate_lineage": 30,
+    "frozen_v02_public_release_flags_changed": false,
+    "huggingface_upload_performed": false
+  }
 }

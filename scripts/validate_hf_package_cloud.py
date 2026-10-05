@@ -13,6 +13,8 @@ from build_huggingface_dataset import (
     is_public_factual_metadata_row,
     is_publishable_provenance,
     recommended_text_training_row,
+    source_record_ids,
+    upstream_split_overlap_ids,
 )
 
 
@@ -163,6 +165,32 @@ def main():
     args = parser.parse_args()
     manifest = json.loads((args.package / "manifest.json").read_text())
     errors = []
+    overlap_audit_manifest = manifest.get('upstream_split_overlap_audit') or {}
+    direct_eval_record_ids = set()
+    aggregate_eval_record_ids = set()
+    if overlap_audit_manifest:
+        try:
+            direct_eval_record_ids, aggregate_eval_record_ids = upstream_split_overlap_ids()
+        except (FileNotFoundError, ValueError, KeyError, json.JSONDecodeError) as exc:
+            errors.append(f'upstream_split_audit_unavailable:{exc}')
+        audit_json_path = (
+            args.package / 'research'
+            / 'huggingface-upstream-split-overlap-2026-10-05.json'
+        )
+        audit_md_path = (
+            args.package / 'research'
+            / 'huggingface-upstream-split-overlap-2026-10-05.md'
+        )
+        if not audit_json_path.is_file():
+            errors.append(
+                'missing_file:research/huggingface-upstream-split-overlap-2026-10-05.json'
+            )
+        elif sha256(audit_json_path) != overlap_audit_manifest.get('sha256'):
+            errors.append('upstream_split_audit_hash_mismatch')
+        if not audit_md_path.is_file():
+            errors.append(
+                'missing_file:research/huggingface-upstream-split-overlap-2026-10-05.md'
+            )
     schema_version = manifest.get('record_schema_version')
     if schema_version is not None and schema_version != RECORD_SCHEMA_VERSION:
         errors.append(f'unsupported_record_schema_version:{schema_version}')
@@ -325,6 +353,32 @@ def main():
                             )
                         ):
                             stats['missing_admission_metadata'] += 1
+                    if overlap_audit_manifest and config in {
+                        'text', 'text_expansion', 'text_resources'
+                    }:
+                        row_source_ids = source_record_ids(row)
+                        direct_matches = row_source_ids & direct_eval_record_ids
+                        aggregate_matches = row_source_ids & aggregate_eval_record_ids
+                        expected_source_ids = sorted(direct_matches | aggregate_matches)
+                        if direct_matches and aggregate_matches:
+                            expected_status = 'upstream_record_and_transcript_match'
+                        elif direct_matches:
+                            expected_status = 'upstream_eval_record_id_match'
+                        elif aggregate_matches:
+                            expected_status = 'upstream_eval_transcript_match'
+                        else:
+                            expected_status = 'no_upstream_eval_match_detected'
+                        if row.get('source_split_overlap_status') != expected_status:
+                            stats['source_split_evidence_mismatch'] += 1
+                        if row.get('source_split_overlap_source_ids') != expected_source_ids:
+                            stats['source_split_evidence_mismatch'] += 1
+                        has_overlap = bool(expected_source_ids)
+                        if split == 'train' and has_overlap:
+                            stats['upstream_eval_overlap_left_in_train'] += 1
+                        if split == 'source_overlap' and not has_overlap:
+                            stats['source_overlap_split_without_evidence'] += 1
+                        if split == 'source_overlap' and has_overlap:
+                            stats['source_overlap_rows'] += 1
                     elif config == 'instructions':
                         prompt = ' '.join(
                             str(row.get('instruction') or '').casefold().split()
@@ -344,6 +398,8 @@ def main():
         for field in (
             'unsupported_garhwali_label', 'missing_admission_metadata',
             'invalid_training_recommendation',
+            'source_split_evidence_mismatch', 'upstream_eval_overlap_left_in_train',
+            'source_overlap_split_without_evidence',
             'missing_acceptable_responses', 'knowledge_missing_source_provenance',
             'knowledge_untraceable_source_provenance',
             'knowledge_missing_quality_metadata', 'knowledge_missing_rights_status',
@@ -387,6 +443,11 @@ def main():
         'ATTRIBUTION.md', 'REMOVAL_POLICY.md',
         'research/text-rights-resolution-2026-09-30.md',
     }
+    if overlap_audit_manifest:
+        expected_files.update({
+            'research/huggingface-upstream-split-overlap-2026-10-05.md',
+            'research/huggingface-upstream-split-overlap-2026-10-05.json',
+        })
     if schema_version == RECORD_SCHEMA_VERSION:
         schema_docs = (
             'DEVELOPER_QUICKSTART.md', 'DATASET_SCHEMA.md',

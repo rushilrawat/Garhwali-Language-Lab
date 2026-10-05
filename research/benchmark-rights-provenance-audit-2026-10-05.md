@@ -92,9 +92,9 @@ exports.
 | Source | Verified fact | Remaining work |
 | --- | --- | --- |
 | Meta Omnilingual (`meta_omni`) | The official dataset card declares CC BY 4.0; the v0.2 records carry the source URL, license URL, attribution, rights-evidence metadata path, and source record IDs. | Apply the card-level license decision to the specific transcript components after confirming the record-to-source mapping and carrying the citation/modification statement into the export. The current v0.2 rows still say `not_recorded`; this audit does not silently overwrite that state. |
-| Tatoeba | The sentence-text default is CC BY 2.0 France. Tatoeba requires the sentence author's name to be cited. All 36 sentence IDs are present, but their current attribution says the contributor is unavailable and their rights basis has no source URL or author. | Join each sentence ID to Tatoeba's sentence API `owner`, record the canonical sentence URL and retrieval time, and preserve the returned license. The current web/network environment blocked direct API-page access, so no contributor names were guessed. |
-| Wikimedia and Wikimedia Incubator | Wikimedia guidance says most Wikipedia content uses CC BY-SA 4.0, but page-specific licenses must be checked; attribution normally includes title, author, source, and license, plus modification notes. | Resolve every page/revision ID to its stable page/history URL and contributor attribution. Keep the 6 Incubator items distinct from the 78 Wikipedia items. |
-| Wiktionary and thematic Swadesh source | The export records CC BY-SA 4.0 metadata; source basis includes 59 distinct rows for Wiktionary English and 165 for Swadesh/thematic Wiktionary, with 10 rows linked to both. | Restore stable page/revision URLs and verify author/history attribution for each source component; carry share-alike and modification information. |
+| Tatoeba | All 36 sentence IDs are now matched to sentence pages. Each page identifies `sabretou` as the contributor; the API reports `owner=null` (orphaned) for all 36 and none as unapproved, with CC BY 2.0 FR declared for every row. | Attribution metadata is saved in [the Tatoeba sidecar](tatoeba-attribution-audit-2026-10-05.json), and a separately licensed local export is built by [the source export script](../scripts/export_licensed_sources.py). The frozen v0.2 rows still say `not_recorded`; their release flags were deliberately not rewritten by this supplement. |
+| Wikimedia and Wikimedia Incubator | The local source files have page/history links and immutable revisions for 35 `Wp/gbm` and 4 `Wt/gbm` records. The 6 `incubator_wt` and 80 `wikimedia` entries in the v0.2 view are component occurrences, not unique source-page counts. | The local license export standardizes page title, revision, oldid, and history fields. Page-specific third-party material and exact contributor lists remain unaudited; frozen v0.2 component statuses remain `not_recorded`. |
+| Wiktionary and thematic Swadesh source | The 77 English Wiktionary source rows have revision and history links. The 203 Swadesh rows share the saved source-page revision 87247279 but lacked item/history URLs. | The local export now constructs an immutable oldid and history link for the Swadesh revision and standardizes fields for all 280 source records. Wiktionary warns that some entries contain third-party material; item-level exceptions remain unaudited, and the frozen v0.2 component statuses remain `not_recorded`. |
 | IndicGenBench CrossSum | The official card declares CC BY-NC-SA 4.0, shows BBC source/target article URLs in examples, and limits intended use to evaluation (no LLM pretraining). The local export retains source and target URLs for all 699 rows. | Review whether the upstream declaration covers the embedded publisher article text as adapted, and keep commercial use blocked unless the rights basis expressly permits it. |
 | IndicGenBench FLORES | The official card declares CC BY-SA 4.0, maps its development/test files to the original FLORES dev/devtest files, and excludes LLM pretraining. | Carry source/version attribution, indicate extraction/normalization changes, and prepare a separate evaluation-only CC BY-SA export. |
 | IndicGenBench XORQA | The official card declares MIT, says the benchmark is evaluation-only (not LLM pretraining), and describes human translations of underlying task data. Its cited XORQA source describes TyDiQA lineage and the Wikipedia snapshot used for retrieval. | Reconcile underlying passages, questions, annotations, and translations individually; a repository-level MIT field is not the complete component map. |
@@ -122,10 +122,12 @@ PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_audit
 
 The structural validator passes all eight assets with zero errors. The rights
 audit is separate and still reports 14,703 false public-upload/release flags.
-This step is complete as an evidence/provenance audit. The next implementation
-step is to resolve the 36 Tatoeba author links, fill page-level attribution for
-Wikimedia/Wiktionary components, and then build separately licensed export
-views for components whose evidence and conditions are complete. Revisit
-CrossSum/XORQA article/passages and the local ASR privacy fields before a public
-benchmark package is generated. No external job, model run, data deletion, or
-Hugging Face upload was started.
+The Tatoeba attribution, wiki revision-link normalization, and local
+license-specific export work is now recorded in the
+[2026-10-05 follow-up](license-specific-source-export-audit-2026-10-05.md).
+That follow-up is supplemental evidence; it does not modify the frozen v0.2
+manifest or certify its package-level release flags. Remaining work is to
+reconcile source-level rights for Meta, CrossSum, FLORES, and XORQA components,
+prepare a public-safe projection of the 112-row ASR view, and complete semantic
+overlap/exposure checks. No external job, model run, data deletion, or Hugging
+Face upload was started.

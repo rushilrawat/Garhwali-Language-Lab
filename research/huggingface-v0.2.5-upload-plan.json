@@ -1,0 +1,274 @@
+{
+  "release_id": "garhwali-language-lab-v0.2.5",
+  "generated": "2026-10-05",
+  "target_repo": "rushilrawat/garhwali-corpus",
+  "repo_type": "dataset",
+  "planned_visibility": "public",
+  "publication_status": "ready_after_final_approval",
+  "profile": "public",
+  "include_audio": false,
+  "records": 827450,
+  "configurations": 25,
+  "catalog_records": 32072,
+  "catalog_redacted_text_records": 19466,
+  "files": 51,
+  "bytes": 818257864,
+  "aggregate_sha256": "a29eab32ad707324bb9e2d2a70f0eff3688695e696ed426dbfb8fb1e2ea6b300",
+  "artifacts": [
+    {
+      "path": "ATTRIBUTION.md",
+      "bytes": 2379,
+      "sha256": "bc6cb442490117d3db83df6dbae399a7adee71fad74eac5bfc2fbbe332532c02"
+    },
+    {
+      "path": "DATASET_SCHEMA.md",
+      "bytes": 4299,
+      "sha256": "fb743a02e6d4c9b7d54c30792c048b73abdec456fbe42224cf573f59f22e2d0e"
+    },
+    {
+      "path": "DEVELOPER_QUICKSTART.md",
+      "bytes": 8940,
+      "sha256": "dd83027317fb9f3d44835ef195aacb1e496e2bdfca3c9e703e50e31dfa29ea5e"
+    },
+    {
+      "path": "LICENSE_POLICY.md",
+      "bytes": 5553,
+      "sha256": "09cbf25bffe373d3efae99762f6aeeb559801dad2027e771aefa4a506beba78b"
+    },
+    {
+      "path": "README.md",
+      "bytes": 18058,
+      "sha256": "31cfec954c1e7a67b2340b49e75fbf08c74362c38218b1173a38e2463493a644"
+    },
+    {
+      "path": "REMOVAL_POLICY.md",
+      "bytes": 632,
+      "sha256": "7a890891eb04e0d53b05b1c9132b105ecd88bde3dcdcfec0d251268db2552a89"
+    },
+    {
+      "path": "data/asr/test-00000.jsonl",
+      "bytes": 107478,
+      "sha256": "2954c16ece3469ab122c502b951950d0a10375e4a40454306b30c5cf0d0e30e6"
+    },
+    {
+      "path": "data/asr/train-00000.jsonl",
+      "bytes": 1552979,
+      "sha256": "88c4f21eeeebee13e0ddc866d4fca9c0e8a829d86fe93258660b11b4b53b2aad"
+    },
+    {
+      "path": "data/asr/validation-00000.jsonl",
+      "bytes": 260368,
+      "sha256": "b2b68cedc1be2929e2432597d6459734e22a9e0b1b9da524bb7472979d12625f"
+    },
+    {
+      "path": "data/catalog/train-00000.jsonl",
+      "bytes": 38015230,
+      "sha256": "f3d3272fadf5de936ccd15b4da8ebb5ecb9ab4f50452a4b524490cf72ffb8001"
+    },
+    {
+      "path": "data/catalog/train-00001.jsonl",
+      "bytes": 38007992,
+      "sha256": "01b52f6e9474db90df66ce25def33d8ca21b36584a4b5227ad964a358e8864db"
+    },
+    {
+      "path": "data/catalog/train-00002.jsonl",
+      "bytes": 37584963,
+      "sha256": "51fab2c1639d57581ad56a2ad2c12ba08d5da8681efaecb60c080c7bdd88708c"
+    },
+    {
+      "path": "data/catalog/train-00003.jsonl",
+      "bytes": 7767640,
+      "sha256": "720ef9be6c8f8fd94a7ec76cc77f82d19d5aee8538288112e660f89e663157d4"
+    },
+    {
+      "path": "data/geography/train-00000.jsonl",
+      "bytes": 96581,
+      "sha256": "43abbf4e089f6f6f73a6336e7621694379e6813258f15dc04d44e302bbaaf683"
+    },
+    {
+      "path": "data/historical_terms/train-00000.jsonl",
+      "bytes": 49677,
+      "sha256": "5050d31bf2807a87fc97b19d1663b8d355a2d3ab9f2605c742ea1fb8364b8668"
+    },
+    {
+      "path": "data/instructions/test-00000.jsonl",
+      "bytes": 570277,
+      "sha256": "165f899bef5b996b1f95735a8e79916d0333d55b9a01078e92eb77a91cac2019"
+    },
+    {
+      "path": "data/instructions/train-00000.jsonl",
+      "bytes": 8602841,
+      "sha256": "ae102d8998a2ce149c6dd3ee4a96d274db101b90e5ec5521748785c346bac303"
+    },
+    {
+      "path": "data/instructions/validation-00000.jsonl",
+      "bytes": 1491583,
+      "sha256": "2b047e6185a1068ac48471ddff8bf9273c85882f5e79e768e4df62e6163c05a0"
+    },
+    {
+      "path": "data/lexicon/train-00000.jsonl",
+      "bytes": 4748002,
+      "sha256": "290d2b926f47e166ec319a1ec48b2f18da3255dff6822a8001f9f295fc1ce6f9"
+    },
+    {
+      "path": "data/literary_people/train-00000.jsonl",
+      "bytes": 38232,
+      "sha256": "6ec470303ec613483b9e6af05d657adaaad9890118757415d0f80308e3b4623b"
+    },
+    {
+      "path": "data/literary_works/train-00000.jsonl",
+      "bytes": 97039,
+      "sha256": "13c770f0bbc96c67197359e4855f26f3b20fcd6c579de0742f6451d11b7fdbc0"
+    },
+    {
+      "path": "data/popular_songs/train-00000.jsonl",
+      "bytes": 40282,
+      "sha256": "9af59f2301f41063e3928c86229a4c3dbf49ee3714d8fba17a9159146e20bea6"
+    },
+    {
+      "path": "data/record_index/train-00000.jsonl",
+      "bytes": 270668076,
+      "sha256": "6fb1a43ce1ce5404a0dc755e272d03cf5f01e622b768df0a943f2d245df814a2"
+    },
+    {
+      "path": "data/record_sources/train-00000.jsonl",
+      "bytes": 130042876,
+      "sha256": "c5dc8df55bb342548d61caf856ea48538786cac1e2081ade0b745fde16d8daa8"
+    },
+    {
+      "path": "data/source_catalog/train-00000.jsonl",
+      "bytes": 2995966,
+      "sha256": "9bf4e35eae2b11793d5c01a39ec5801397c65b2178db2b9e556e8f61fd4c4fe1"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00000.jsonl",
+      "bytes": 18076399,
+      "sha256": "0fe649851352d2df9218d111051c0c3e1cb733771cf433087812e9d1e905a9c2"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00001.jsonl",
+      "bytes": 18450282,
+      "sha256": "db5914d0d4760af6e44a211ad9647a7de0b376b46fae05cd2f39489a39a734f6"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00002.jsonl",
+      "bytes": 18806065,
+      "sha256": "3a94447a44396d3e6f7b8ae5487b86130931925286ebc5b11d52779b6cfa935c"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00003.jsonl",
+      "bytes": 18415623,
+      "sha256": "b0683c098b139ab35913f2acdf1bc184a568cafa2e500e1d2ea8cd9a2351bf52"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00004.jsonl",
+      "bytes": 17798719,
+      "sha256": "3f58db6b3304b4a1c91461fb8509b041acd95acff463d971aea96277a8de5d38"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00005.jsonl",
+      "bytes": 18632448,
+      "sha256": "90a1011fb520f19e93b5bd9116fdd629f706f7191e59f4f7fe11d3b11ebf6b2d"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00006.jsonl",
+      "bytes": 17954936,
+      "sha256": "80004eb4c9063fcdb968966ca80c0d3e8792d593737db5468a2dc67cf43b7d0b"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00007.jsonl",
+      "bytes": 17797437,
+      "sha256": "85a315122b78a1ca1d70c8b31258b4678d3eae3a90f2d0e715bc23490ef5eeac"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00008.jsonl",
+      "bytes": 18057669,
+      "sha256": "81ef2ef556144abf49d19256d721a96e32a11a903bb01fa3b1e936d7de3c4dbf"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00009.jsonl",
+      "bytes": 18778829,
+      "sha256": "7b2a1b3dffa350faafc9460f0053d788681cf0b0ef891d1e50df62d5e5ad407f"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00010.jsonl",
+      "bytes": 9228796,
+      "sha256": "a8027bf71719d2e43aa6bb8d7dadab5dd3ffb513b16ddd557f057f7d8b9fa3bc"
+    },
+    {
+      "path": "data/text/source_overlap-00000.jsonl",
+      "bytes": 3875746,
+      "sha256": "849d3c979c4d6ea4cc1309dcededd59278c69335d8d88cf6d2e68e059346152e"
+    },
+    {
+      "path": "data/text/test-00000.jsonl",
+      "bytes": 2525879,
+      "sha256": "54b43ae8fdbc75160206d64701804293de876960eb701a3bcd51744822094984"
+    },
+    {
+      "path": "data/text/train-00000.jsonl",
+      "bytes": 35762399,
+      "sha256": "a2ba3f5135437367d027011a7b83ae8852127be40f31d4268ddb76e3971ebb14"
+    },
+    {
+      "path": "data/text/train-00001.jsonl",
+      "bytes": 21390909,
+      "sha256": "9ec550f9b3218e7778cf7abc7415f592b120ab8d00a08aa9ceb28fb8289e2712"
+    },
+    {
+      "path": "data/text/validation-00000.jsonl",
+      "bytes": 3147113,
+      "sha256": "60a6dc3911f50d0ae42668ee8b884e13077d3e68d1ca29641743b7fe550e5d61"
+    },
+    {
+      "path": "data/text_expansion/source_overlap-00000.jsonl",
+      "bytes": 2729254,
+      "sha256": "4399b64f7e9ca0cd3f26f66d6b606a173163f82527ac6cfd23147068eb742792"
+    },
+    {
+      "path": "data/text_expansion/train-00000.jsonl",
+      "bytes": 12192020,
+      "sha256": "8122c7f891a6155ea6252b7b028dbcf99339a162e62e2fedfaf7b3684902e34b"
+    },
+    {
+      "path": "data/text_resources/train-00000.jsonl",
+      "bytes": 1758817,
+      "sha256": "98ceb23d89a8d31a50a30cd7965e853371a766a5fb5da329006975518c494810"
+    },
+    {
+      "path": "data/university_research/train-00000.jsonl",
+      "bytes": 13851,
+      "sha256": "cabf9366fad47f54c79719c8ae74b8c227bceb7da6bf82e9002b4f5f7836492c"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 16472,
+      "sha256": "e6840c1fa33e78aef76010cec4b153b44ebac8067af18430459be15d7e31b179"
+    },
+    {
+      "path": "reference_index_manifest.json",
+      "bytes": 5355,
+      "sha256": "8a086a8a7c4b08be41efca18c580453b56b4352dd5cd0d754a1c2a9be6e29445"
+    },
+    {
+      "path": "research/huggingface-upstream-split-overlap-2026-10-05.json",
+      "bytes": 31298,
+      "sha256": "731c1a4463ce994b60586194d5f2205ef9acd2083d1ae37e57e5c08d7b74ab20"
+    },
+    {
+      "path": "research/huggingface-upstream-split-overlap-2026-10-05.md",
+      "bytes": 4798,
+      "sha256": "ad47f95128367015627be2b28610ab89944be63458b8e610e01057a6297b3315"
+    },
+    {
+      "path": "research/text-rights-resolution-2026-09-30.md",
+      "bytes": 25938,
+      "sha256": "7f958352809bec84494e2ab90e513dd6a9c0a678968032888de0987f285f7fb6"
+    },
+    {
+      "path": "search_garhwali_lexicon.py",
+      "bytes": 2869,
+      "sha256": "b4462e401d6fdf6e0371a2f3426333864c961e9f7379c030cfc4a60056f5548c"
+    }
+  ]
+}

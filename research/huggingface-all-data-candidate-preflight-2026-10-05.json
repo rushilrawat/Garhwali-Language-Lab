@@ -1,0 +1,1305 @@
+{
+  "run_id": "garhwali-hf-all-data-cloud-validation-v0.2.4",
+  "release_id": "garhwali-language-lab-v0.2.4",
+  "status": "passed",
+  "manifest_profile": "all-data",
+  "record_schema_version": "1.0.0",
+  "metric_definitions": {
+    "rows_with_quality_status": "Rows with a non-empty quality_status label; this does not certify quality.",
+    "rows_with_quality_evidence_fields_present": "Rows containing at least one key from the validator's configured quality-detail fields; key presence only.",
+    "rows_with_nonempty_quality_evidence": "Rows with a non-empty value in at least one configured quality-detail field; not a human-review or correctness measure.",
+    "rows_with_quality_metadata": "Deprecated compatibility alias for rows_with_quality_evidence_fields_present.",
+    "rows_with_provenance_array": "Rows with a non-empty provenance or sources array; config-specific source pointers are not included.",
+    "rows_with_provenance": "Deprecated compatibility alias for rows_with_provenance_array.",
+    "rows_with_source_traceability": "Rows with the minimum config-specific source identifier and locator: text-like/knowledge configs need one provenance item with an identifier and URL, snapshot hash, capture path, record_id, or file+line; ASR/draft configs need an upstream source, valid audio SHA-256, and a positive source-row count; source_catalog needs a source_ref_id and a locator (including an explicit URL or item reference in attribution); record_index needs source_ref_ids_json; record_sources needs both join identifiers. This does not establish reuse rights or correctness.",
+    "rows_without_source_traceability": "Rows that do not meet the config-specific minimum source-locator rule. Reference-table rows are counted separately from content rows.",
+    "rights_status_counts": "Per-config counts of the first recorded value among redistribution_status, rights_status, or record_rights_status; values are counted as-is, not interpreted as legal clearance.",
+    "reuse_scope_counts": "Per-config counts of non-empty recorded reuse_scope strings; the validator does not infer scope from a source URL or license label.",
+    "license_label_counts": "Per-config counts of non-empty license_labels entries; recorded labels are not independently verified by this metric.",
+    "rows_with_public_rights_basis": "Rows with a non-empty public_rights_basis field; presence alone does not validate scope or evidence.",
+    "rows_with_noncommercial_rights_basis": "Rows with a non-empty noncommercial_rights_basis field; presence alone does not validate scope or evidence.",
+    "rows_with_factual_publication_basis": "Rows with a non-empty factual_publication_basis field; this is not a training or commercial-use license."
+  },
+  "configs": {
+    "asr/test": {
+      "records": 450,
+      "empty_content": 0,
+      "rows_with_rights_status": 450,
+      "rows_with_reuse_scope": 450,
+      "rows_with_license_label": 450,
+      "rows_with_public_rights_basis": 0,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 0,
+      "rows_with_provenance_array": 0,
+      "rows_with_source_traceability": 450,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 450,
+      "rows_with_quality_evidence_fields_present": 450,
+      "rows_with_nonempty_quality_evidence": 8,
+      "rows_with_quality_metadata": 450,
+      "scripts": {
+        "Beng": 8,
+        "Deva": 442
+      },
+      "rights_status_counts": {
+        "source_terms_recorded; inspect provenance": 450
+      },
+      "reuse_scope_counts": {
+        "attribution required under source license": 450
+      },
+      "license_label_counts": {
+        "CC-BY-4.0": 450
+      }
+    },
+    "asr/train": {
+      "records": 4778,
+      "empty_content": 0,
+      "rows_with_rights_status": 4778,
+      "rows_with_reuse_scope": 4778,
+      "rows_with_license_label": 4778,
+      "rows_with_public_rights_basis": 0,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 0,
+      "rows_with_provenance_array": 0,
+      "rows_with_source_traceability": 4778,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 4778,
+      "rows_with_quality_evidence_fields_present": 4778,
+      "rows_with_nonempty_quality_evidence": 5,
+      "rows_with_quality_metadata": 4778,
+      "scripts": {
+        "Deva": 4778
+      },
+      "rights_status_counts": {
+        "source_terms_recorded; inspect provenance": 4778
+      },
+      "reuse_scope_counts": {
+        "attribution required under source license": 4778
+      },
+      "license_label_counts": {
+        "CC-BY-4.0": 4778
+      }
+    },
+    "asr/validation": {
+      "records": 666,
+      "empty_content": 0,
+      "rows_with_rights_status": 666,
+      "rows_with_reuse_scope": 666,
+      "rows_with_license_label": 666,
+      "rows_with_public_rights_basis": 0,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 0,
+      "rows_with_provenance_array": 0,
+      "rows_with_source_traceability": 666,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 666,
+      "rows_with_quality_evidence_fields_present": 666,
+      "rows_with_nonempty_quality_evidence": 0,
+      "rows_with_quality_metadata": 666,
+      "scripts": {
+        "Deva": 666
+      },
+      "rights_status_counts": {
+        "source_terms_recorded; inspect provenance": 666
+      },
+      "reuse_scope_counts": {
+        "attribution required under source license": 666
+      },
+      "license_label_counts": {
+        "CC-BY-4.0": 666
+      }
+    },
+    "catalog/train": {
+      "records": 32072,
+      "empty_content": 0,
+      "rows_with_rights_status": 32072,
+      "rows_with_reuse_scope": 32072,
+      "rows_with_license_label": 31293,
+      "rows_with_public_rights_basis": 12456,
+      "rows_with_noncommercial_rights_basis": 141,
+      "rows_with_factual_publication_basis": 17,
+      "rows_with_provenance": 32072,
+      "rows_with_provenance_array": 32072,
+      "rows_with_source_traceability": 32072,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 32072,
+      "rows_with_quality_evidence_fields_present": 32072,
+      "rows_with_nonempty_quality_evidence": 32072,
+      "rows_with_quality_metadata": 32072,
+      "scripts": {
+        "Beng": 8,
+        "Deva": 27466,
+        "GREEK": 1,
+        "LATIN": 137,
+        "Latn": 4458,
+        "none": 2
+      },
+      "rights_status_counts": {
+        "individual_word_fact": 16,
+        "reproduced_under_source_policy": 198,
+        "rights_cleared": 12258,
+        "rights_cleared_noncommercial_sharealike": 134,
+        "rights_pending": 19466
+      },
+      "reuse_scope_counts": {
+        "no_source_license_claimed_for_single_word": 16,
+        "noncommercial_only; share-alike required": 134,
+        "not_cleared": 19466,
+        "not_explicitly_addressed_by_source_policy": 198,
+        "permitted_under_row_level_license": 11862,
+        "permitted_under_row_level_license; share-alike required": 396
+      },
+      "license_label_counts": {
+        "Apache-2.0-repository-declared": 15000,
+        "CC BY-SA 4.0": 50,
+        "CC-BY-2.0-FR": 36,
+        "CC-BY-3.0": 181,
+        "CC-BY-4.0": 9950,
+        "CC-BY-NC-SA-4.0": 734,
+        "CC-BY-SA-4.0": 389,
+        "CC0-1.0": 1,
+        "LicenseRef-All-Rights-Reserved": 258,
+        "LicenseRef-PIB-Copyright-Policy": 5,
+        "LicenseRef-Panos-Source-Policy-Restricted": 193,
+        "LicenseRef-Rights-Unassessed": 1772,
+        "MIT": 180,
+        "NOASSERTION": 172,
+        "ODC-BY-1.0-database-only": 18,
+        "PDM-1.0": 623,
+        "PIB reproduction policy (source-specific permission; not a standard open license)": 5,
+        "Panos source-specific reproduction guideline; press, educational and research institutions, and nonprofit organisations; attribution required": 193,
+        "Public-Domain": 304,
+        "Public-Domain-India": 2,
+        "Public-Domain-Mark-1.0": 34,
+        "Public-Domain-US-UK-India": 571,
+        "not_stated": 188,
+        "unknown": 769
+      }
+    },
+    "geography/train": {
+      "records": 50,
+      "rows_with_rights_status": 50,
+      "rows_with_reuse_scope": 50,
+      "rows_with_license_label": 0,
+      "rows_with_public_rights_basis": 0,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 50,
+      "rows_with_provenance_array": 50,
+      "rows_with_source_traceability": 50,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 50,
+      "rows_with_quality_evidence_fields_present": 50,
+      "rows_with_nonempty_quality_evidence": 50,
+      "rows_with_quality_metadata": 50,
+      "scripts": {},
+      "rights_status_counts": {
+        "reviewed_rights_unresolved": 50
+      },
+      "reuse_scope_counts": {
+        "not assessed": 50
+      },
+      "license_label_counts": {}
+    },
+    "historical_terms/train": {
+      "records": 36,
+      "rows_with_rights_status": 36,
+      "rows_with_reuse_scope": 36,
+      "rows_with_license_label": 0,
+      "rows_with_public_rights_basis": 0,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 36,
+      "rows_with_provenance_array": 36,
+      "rows_with_source_traceability": 36,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 36,
+      "rows_with_quality_evidence_fields_present": 36,
+      "rows_with_nonempty_quality_evidence": 36,
+      "rows_with_quality_metadata": 36,
+      "scripts": {},
+      "rights_status_counts": {
+        "reviewed_rights_unresolved": 36
+      },
+      "reuse_scope_counts": {
+        "not assessed": 36
+      },
+      "license_label_counts": {}
+    },
+    "instructions/test": {
+      "records": 256,
+      "rows_with_rights_status": 256,
+      "rows_with_reuse_scope": 256,
+      "rows_with_license_label": 256,
+      "rows_with_public_rights_basis": 186,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 256,
+      "rows_with_provenance_array": 256,
+      "rows_with_source_traceability": 256,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 256,
+      "rows_with_quality_evidence_fields_present": 0,
+      "rows_with_nonempty_quality_evidence": 0,
+      "rows_with_quality_metadata": 0,
+      "scripts": {},
+      "rights_status_counts": {
+        "licensed": 102,
+        "public_webpage_no_open_license_stated": 16,
+        "publicly_downloadable_but_no_license_or_authorship_statement": 4,
+        "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": 22,
+        "source_license_recorded; inspect provenance": 38,
+        "source_terms_recorded; inspect provenance": 50,
+        "translatewiki_translations_declared_CC_BY_3.0": 24
+      },
+      "reuse_scope_counts": {
+        "MIT terms; preserve copyright and license notice": 34,
+        "attribution and share-alike required under source license": 24,
+        "attribution required under source license": 128,
+        "source-specific terms; inspect provenance before reuse": 70
+      },
+      "license_label_counts": {
+        "CC-BY-3.0": 24,
+        "CC-BY-4.0": 104,
+        "CC-BY-SA-4.0": 24,
+        "LicenseRef-All-Rights-Reserved": 18,
+        "LicenseRef-Panos-Website-Terms-Unverified": 38,
+        "MIT": 34,
+        "NOASSERTION": 4,
+        "not_stated": 16
+      }
+    },
+    "instructions/train": {
+      "records": 3860,
+      "rows_with_rights_status": 3860,
+      "rows_with_reuse_scope": 3860,
+      "rows_with_license_label": 3860,
+      "rows_with_public_rights_basis": 2686,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 3860,
+      "rows_with_provenance_array": 3860,
+      "rows_with_source_traceability": 3860,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 3860,
+      "rows_with_quality_evidence_fields_present": 0,
+      "rows_with_nonempty_quality_evidence": 0,
+      "rows_with_quality_metadata": 0,
+      "scripts": {},
+      "rights_status_counts": {
+        "licensed": 1186,
+        "mixed_source_statuses; inspect provenance": 50,
+        "official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied": 8,
+        "public_webpage_no_open_license_stated": 234,
+        "publicly_downloadable_but_no_license_or_authorship_statement": 90,
+        "rights_assessed_compatible": 2,
+        "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": 338,
+        "source_license_recorded; inspect provenance": 784,
+        "source_terms_recorded; inspect provenance": 850,
+        "translatewiki_translations_declared_CC_BY_3.0": 318
+      },
+      "reuse_scope_counts": {
+        "MIT terms; preserve copyright and license notice": 406,
+        "attribution and share-alike required under source license": 398,
+        "attribution required under source license": 1868,
+        "noncommercial use; attribution and share-alike required": 14,
+        "source-specific terms; inspect provenance before reuse": 1174
+      },
+      "license_label_counts": {
+        "CC-BY-3.0": 326,
+        "CC-BY-4.0": 1564,
+        "CC-BY-NC-SA-4.0": 14,
+        "CC-BY-SA-4.0": 398,
+        "LicenseRef-All-Rights-Reserved": 576,
+        "LicenseRef-Government-Publication": 10,
+        "LicenseRef-Panos-Website-Terms-Unverified": 318,
+        "MIT": 442,
+        "NOASSERTION": 90,
+        "PDM-1.0": 2,
+        "not_stated": 234
+      }
+    },
+    "instructions/validation": {
+      "records": 454,
+      "rows_with_rights_status": 454,
+      "rows_with_reuse_scope": 454,
+      "rows_with_license_label": 454,
+      "rows_with_public_rights_basis": 356,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 454,
+      "rows_with_provenance_array": 454,
+      "rows_with_source_traceability": 454,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 454,
+      "rows_with_quality_evidence_fields_present": 0,
+      "rows_with_nonempty_quality_evidence": 0,
+      "rows_with_quality_metadata": 0,
+      "scripts": {},
+      "rights_status_counts": {
+        "licensed": 104,
+        "mixed_source_statuses; inspect provenance": 12,
+        "public_webpage_no_open_license_stated": 20,
+        "publicly_downloadable_but_no_license_or_authorship_statement": 6,
+        "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": 138,
+        "source_license_recorded; inspect provenance": 84,
+        "source_terms_recorded; inspect provenance": 72,
+        "translatewiki_translations_declared_CC_BY_3.0": 18
+      },
+      "reuse_scope_counts": {
+        "MIT terms; preserve copyright and license notice": 30,
+        "attribution and share-alike required under source license": 148,
+        "attribution required under source license": 176,
+        "noncommercial use; attribution and share-alike required": 2,
+        "source-specific terms; inspect provenance before reuse": 98
+      },
+      "license_label_counts": {
+        "CC-BY-3.0": 18,
+        "CC-BY-4.0": 160,
+        "CC-BY-NC-SA-4.0": 2,
+        "CC-BY-SA-4.0": 148,
+        "LicenseRef-All-Rights-Reserved": 74,
+        "LicenseRef-Panos-Website-Terms-Unverified": 20,
+        "MIT": 40,
+        "NOASSERTION": 6,
+        "not_stated": 20
+      }
+    },
+    "lexicon/train": {
+      "records": 1939,
+      "rows_with_rights_status": 1939,
+      "rows_with_reuse_scope": 1939,
+      "rows_with_license_label": 1939,
+      "rows_with_public_rights_basis": 1493,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 1939,
+      "rows_with_provenance_array": 1939,
+      "rows_with_source_traceability": 1939,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 1939,
+      "rows_with_quality_evidence_fields_present": 0,
+      "rows_with_nonempty_quality_evidence": 0,
+      "rows_with_quality_metadata": 0,
+      "scripts": {},
+      "rights_status_counts": {
+        "licensed": 856,
+        "mixed_source_statuses; inspect provenance": 16,
+        "official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied": 9,
+        "rights_assessed_compatible": 1,
+        "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": 233,
+        "source_license_recorded; inspect provenance": 384,
+        "source_terms_recorded; inspect provenance": 440
+      },
+      "reuse_scope_counts": {
+        "MIT terms; preserve copyright and license notice": 122,
+        "attribution and share-alike required under source license": 245,
+        "attribution required under source license": 1119,
+        "noncommercial use; attribution and share-alike required": 13,
+        "source-specific terms; inspect provenance before reuse": 440
+      },
+      "license_label_counts": {
+        "CC-BY-3.0": 3,
+        "CC-BY-4.0": 1126,
+        "CC-BY-NC-SA-4.0": 13,
+        "CC-BY-SA-4.0": 245,
+        "LicenseRef-All-Rights-Reserved": 258,
+        "LicenseRef-Government-Publication": 5,
+        "LicenseRef-Panos-Website-Terms-Unverified": 193,
+        "MIT": 131,
+        "PDM-1.0": 1
+      }
+    },
+    "literary_people/train": {
+      "records": 26,
+      "rows_with_rights_status": 26,
+      "rows_with_reuse_scope": 26,
+      "rows_with_license_label": 0,
+      "rows_with_public_rights_basis": 0,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 26,
+      "rows_with_provenance_array": 26,
+      "rows_with_source_traceability": 26,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 26,
+      "rows_with_quality_evidence_fields_present": 26,
+      "rows_with_nonempty_quality_evidence": 26,
+      "rows_with_quality_metadata": 26,
+      "scripts": {},
+      "rights_status_counts": {
+        "reviewed_rights_unresolved": 26
+      },
+      "reuse_scope_counts": {
+        "not assessed": 26
+      },
+      "license_label_counts": {}
+    },
+    "literary_works/train": {
+      "records": 66,
+      "rows_with_rights_status": 66,
+      "rows_with_reuse_scope": 66,
+      "rows_with_license_label": 0,
+      "rows_with_public_rights_basis": 0,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 66,
+      "rows_with_provenance_array": 66,
+      "rows_with_source_traceability": 66,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 66,
+      "rows_with_quality_evidence_fields_present": 66,
+      "rows_with_nonempty_quality_evidence": 66,
+      "rows_with_quality_metadata": 66,
+      "scripts": {},
+      "rights_status_counts": {
+        "reviewed_rights_unresolved": 66
+      },
+      "reuse_scope_counts": {
+        "not assessed": 66
+      },
+      "license_label_counts": {}
+    },
+    "popular_songs/train": {
+      "records": 30,
+      "rows_with_rights_status": 30,
+      "rows_with_reuse_scope": 30,
+      "rows_with_license_label": 0,
+      "rows_with_public_rights_basis": 0,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 30,
+      "rows_with_provenance_array": 30,
+      "rows_with_source_traceability": 30,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 30,
+      "rows_with_quality_evidence_fields_present": 30,
+      "rows_with_nonempty_quality_evidence": 30,
+      "rows_with_quality_metadata": 30,
+      "scripts": {},
+      "rights_status_counts": {
+        "metadata_only_commercial_recording_lyrics_not_licensed_for_reuse": 1,
+        "metadata_only_commercial_recording_no_reuse_license_stated": 10,
+        "metadata_only_cover_and_original_rights_not_cleared": 1,
+        "metadata_only_foundation_upload_no_reuse_license_stated": 1,
+        "metadata_only_full_lyrics_and_translation_not_licensed_for_reuse": 2,
+        "metadata_only_full_lyrics_not_licensed_for_reuse": 3,
+        "metadata_only_label_upload_lyrics_and_audio_not_licensed_for_reuse": 1,
+        "metadata_only_label_upload_lyrics_not_licensed_for_reuse": 1,
+        "metadata_only_no_licensed_transcript_located": 6,
+        "metadata_only_official_recording_reuse_terms_not_stated": 1,
+        "metadata_only_recording_and_arrangement_rights_not_cleared": 1,
+        "metadata_only_recording_and_lyrics_rights_not_cleared": 1,
+        "metadata_only_recording_rights_not_cleared": 1
+      },
+      "reuse_scope_counts": {
+        "metadata only; underlying-work rights are not asserted": 30
+      },
+      "license_label_counts": {}
+    },
+    "sravaani_drafts/train": {
+      "records": 104534,
+      "empty_content": 34,
+      "rows_with_rights_status": 104534,
+      "rows_with_reuse_scope": 104534,
+      "rows_with_license_label": 104534,
+      "rows_with_public_rights_basis": 0,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 0,
+      "rows_with_provenance_array": 0,
+      "rows_with_source_traceability": 104534,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 104534,
+      "rows_with_quality_evidence_fields_present": 104534,
+      "rows_with_nonempty_quality_evidence": 104534,
+      "rows_with_quality_metadata": 104534,
+      "scripts": {
+        "Beng": 254,
+        "Deva": 103464,
+        "GUJARATI": 55,
+        "GURMUKHI": 171,
+        "KANNADA": 134,
+        "Latn": 81,
+        "MALAYALAM": 59,
+        "MEETEI": 16,
+        "OL": 27,
+        "ORIYA": 73,
+        "TAMIL": 18,
+        "TELUGU": 148,
+        "none": 34
+      },
+      "rights_status_counts": {
+        "source_terms_recorded; inspect provenance": 104534
+      },
+      "reuse_scope_counts": {
+        "attribution required under source license": 104534
+      },
+      "license_label_counts": {
+        "CC-BY-4.0": 104534
+      }
+    },
+    "text/test": {
+      "records": 3439,
+      "empty_content": 0,
+      "rows_with_rights_status": 3439,
+      "rows_with_reuse_scope": 3439,
+      "rows_with_license_label": 3156,
+      "rows_with_public_rights_basis": 1047,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 3439,
+      "rows_with_provenance_array": 3439,
+      "rows_with_source_traceability": 3439,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 3439,
+      "rows_with_quality_evidence_fields_present": 3439,
+      "rows_with_nonempty_quality_evidence": 796,
+      "rows_with_quality_metadata": 3439,
+      "scripts": {
+        "Deva": 2624,
+        "LATIN": 4,
+        "Latn": 807,
+        "none": 4
+      },
+      "rights_status_counts": {
+        "dataset_LICENSE_link_missing; underlying_web_copyrights_not_cleared": 108,
+        "licensed": 35,
+        "mixed_source_statuses; inspect provenance": 3,
+        "noncommercial_sharealike; upstream component review required": 146,
+        "public_domain_us_uk_india_term_expired_grierson": 25,
+        "public_domain_us_uk_india_term_expired_upreti_proverbs": 113,
+        "public_webpage_no_open_license_stated": 1,
+        "publicly_accessible_no_open_license_recorded": 3,
+        "publicly_downloadable_no_open_license_recorded": 280,
+        "repository_Apache_2; underlying_blogs_and_translated_text_not_sublicensed": 757,
+        "rights_assessed_compatible": 42,
+        "rights_unassessed": 551,
+        "site_declares_CC_BY_NC_SA_4; quoted_works_require_component_review": 113,
+        "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": 40,
+        "source_license_recorded; inspect provenance": 279,
+        "source_terms_recorded; inspect provenance": 11,
+        "translatewiki_translations_declared_CC_BY_3.0": 7,
+        "upstream_meta_cc_by_4_0": 218,
+        "upstream_vaani_cc_by_4_0": 287,
+        "user_supplied_source_rights_unverified": 420
+      },
+      "reuse_scope_counts": {
+        "MIT terms; preserve copyright and license notice": 3,
+        "attribution and share-alike required under source license": 40,
+        "attribution required under source license": 737,
+        "noncommercial use; attribution and share-alike required": 259,
+        "not assessed": 283,
+        "public-domain mark or status recorded; verify source and jurisdiction": 267,
+        "source-specific terms; inspect provenance before reuse": 1850
+      },
+      "license_label_counts": {
+        "Apache-2.0-repository-declared": 757,
+        "CC-BY-3.0": 7,
+        "CC-BY-4.0": 730,
+        "CC-BY-NC-SA-4.0": 259,
+        "CC-BY-SA-4.0": 40,
+        "LicenseRef-All-Rights-Reserved": 6,
+        "LicenseRef-Panos-Website-Terms-Unverified": 5,
+        "LicenseRef-Rights-Unassessed": 551,
+        "MIT": 3,
+        "NOASSERTION": 110,
+        "PDM-1.0": 43,
+        "Public-Domain": 83,
+        "Public-Domain-Mark-1.0": 3,
+        "Public-Domain-US-UK-India": 139,
+        "not_stated": 3,
+        "unknown": 420
+      }
+    },
+    "text/train": {
+      "records": 144731,
+      "empty_content": 0,
+      "rows_with_rights_status": 144731,
+      "rows_with_reuse_scope": 144731,
+      "rows_with_license_label": 135579,
+      "rows_with_public_rights_basis": 43375,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 144731,
+      "rows_with_provenance_array": 144731,
+      "rows_with_source_traceability": 144731,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 144731,
+      "rows_with_quality_evidence_fields_present": 144731,
+      "rows_with_nonempty_quality_evidence": 50301,
+      "rows_with_quality_metadata": 144731,
+      "scripts": {
+        "Beng": 16,
+        "Deva": 92316,
+        "GREEK": 1,
+        "LATIN": 127,
+        "Latn": 51872,
+        "none": 399
+      },
+      "rights_status_counts": {
+        "1865_public_domain; archive_item_declares_CC0": 1,
+        "ODC_BY_1_covers_database; underlying_page_copyrights_not_cleared": 359,
+        "archive_item_declares_CC_BY_NC_SA_4; quoted_songs_require_component_review": 50,
+        "dataset_LICENSE_link_missing; underlying_web_copyrights_not_cleared": 2837,
+        "licensed": 825,
+        "mixed_source_statuses; inspect provenance": 2051,
+        "noncommercial_sharealike; upstream component review required": 2157,
+        "official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied": 9,
+        "public_domain_india_government_work_term_expired": 30,
+        "public_domain_us_uk_india_term_expired": 92,
+        "public_domain_us_uk_india_term_expired_grierson": 2586,
+        "public_domain_us_uk_india_term_expired_upreti_hill_dialects": 666,
+        "public_domain_us_uk_india_term_expired_upreti_proverbs": 8046,
+        "public_social_post_no_open_license_recorded": 30,
+        "public_webpage_no_open_license_stated": 129,
+        "publicly_accessible_no_open_license_recorded": 55,
+        "publicly_downloadable_but_no_license_or_authorship_statement": 3,
+        "publicly_downloadable_no_open_license_recorded": 9067,
+        "repository_Apache_2; underlying_blogs_and_translated_text_not_sublicensed": 13501,
+        "rights_assessed_compatible": 1605,
+        "rights_unassessed": 33775,
+        "sentence_license_declared_by_api; creator attributed from sentence page; sentence is orphaned in API": 14,
+        "site_declares_CC_BY_NC_SA_4; quoted_works_require_component_review": 11431,
+        "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": 359,
+        "source_license_recorded; inspect provenance": 17493,
+        "source_terms_recorded; inspect provenance": 413,
+        "translatewiki_translations_declared_CC_BY_3.0": 162,
+        "upstream_meta_cc_by_4_0": 4277,
+        "upstream_vaani_cc_by_4_0": 5667,
+        "user_supplied_source_rights_unverified": 27041
+      },
+      "reuse_scope_counts": {
+        "CC0 dedication recorded; verify any third-party content": 1,
+        "MIT terms; preserve copyright and license notice": 165,
+        "attribution and share-alike required under source license": 1163,
+        "attribution required under source license": 14134,
+        "noncommercial use; attribution and share-alike required": 15127,
+        "not assessed": 9152,
+        "public-domain mark or status recorded; verify source and jurisdiction": 26458,
+        "source-specific terms; inspect provenance before reuse": 78531
+      },
+      "license_label_counts": {
+        "Apache-2.0-repository-declared": 13767,
+        "CC BY-SA 4.0": 1435,
+        "CC-BY-2.0-FR": 36,
+        "CC-BY-3.0": 166,
+        "CC-BY-4.0": 13947,
+        "CC-BY-NC-SA-4.0": 15127,
+        "CC-BY-SA-4.0": 2598,
+        "CC0-1.0": 1,
+        "LicenseRef-All-Rights-Reserved": 246,
+        "LicenseRef-Government-Publication": 5,
+        "LicenseRef-Panos-Website-Terms-Unverified": 178,
+        "LicenseRef-Rights-Unassessed": 34122,
+        "MIT": 174,
+        "NOASSERTION": 3138,
+        "ODC-BY-1.0-database-only": 380,
+        "PDM-1.0": 828,
+        "Public-Domain": 12966,
+        "Public-Domain-India": 30,
+        "Public-Domain-Mark-1.0": 1285,
+        "Public-Domain-US-UK-India": 11421,
+        "not_stated": 184,
+        "unknown": 27099
+      }
+    },
+    "text/validation": {
+      "records": 3520,
+      "empty_content": 0,
+      "rows_with_rights_status": 3520,
+      "rows_with_reuse_scope": 3520,
+      "rows_with_license_label": 3231,
+      "rows_with_public_rights_basis": 1081,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 3520,
+      "rows_with_provenance_array": 3520,
+      "rows_with_source_traceability": 3520,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 3520,
+      "rows_with_quality_evidence_fields_present": 3520,
+      "rows_with_nonempty_quality_evidence": 841,
+      "rows_with_quality_metadata": 3520,
+      "scripts": {
+        "Deva": 2649,
+        "LATIN": 7,
+        "Latn": 853,
+        "none": 11
+      },
+      "rights_status_counts": {
+        "dataset_LICENSE_link_missing; underlying_web_copyrights_not_cleared": 1,
+        "licensed": 47,
+        "mixed_source_statuses; inspect provenance": 67,
+        "noncommercial_sharealike; upstream component review required": 50,
+        "public_domain_us_uk_india_term_expired": 4,
+        "public_domain_us_uk_india_term_expired_upreti_proverbs": 47,
+        "public_webpage_no_open_license_stated": 8,
+        "publicly_accessible_no_open_license_recorded": 1,
+        "publicly_downloadable_no_open_license_recorded": 288,
+        "repository_Apache_2; underlying_blogs_and_translated_text_not_sublicensed": 745,
+        "rights_assessed_compatible": 75,
+        "rights_unassessed": 712,
+        "site_declares_CC_BY_NC_SA_4; quoted_works_require_component_review": 230,
+        "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": 14,
+        "source_license_recorded; inspect provenance": 291,
+        "source_terms_recorded; inspect provenance": 16,
+        "translatewiki_translations_declared_CC_BY_3.0": 5,
+        "upstream_meta_cc_by_4_0": 206,
+        "upstream_vaani_cc_by_4_0": 325,
+        "user_supplied_source_rights_unverified": 388
+      },
+      "reuse_scope_counts": {
+        "MIT terms; preserve copyright and license notice": 5,
+        "attribution and share-alike required under source license": 37,
+        "attribution required under source license": 765,
+        "noncommercial use; attribution and share-alike required": 347,
+        "not assessed": 289,
+        "public-domain mark or status recorded; verify source and jurisdiction": 207,
+        "source-specific terms; inspect provenance before reuse": 1870
+      },
+      "license_label_counts": {
+        "Apache-2.0-repository-declared": 745,
+        "CC BY-SA 4.0": 67,
+        "CC-BY-3.0": 5,
+        "CC-BY-4.0": 760,
+        "CC-BY-NC-SA-4.0": 347,
+        "CC-BY-SA-4.0": 104,
+        "LicenseRef-All-Rights-Reserved": 6,
+        "LicenseRef-Panos-Website-Terms-Unverified": 10,
+        "LicenseRef-Rights-Unassessed": 712,
+        "MIT": 5,
+        "NOASSERTION": 1,
+        "PDM-1.0": 52,
+        "Public-Domain": 104,
+        "Public-Domain-US-UK-India": 51,
+        "not_stated": 8,
+        "unknown": 388
+      }
+    },
+    "text_expansion/train": {
+      "records": 1617,
+      "empty_content": 0,
+      "rows_with_rights_status": 1617,
+      "rows_with_reuse_scope": 1617,
+      "rows_with_license_label": 1617,
+      "rows_with_public_rights_basis": 1617,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 1617,
+      "rows_with_provenance_array": 1617,
+      "rows_with_source_traceability": 1617,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 1617,
+      "rows_with_quality_evidence_fields_present": 1617,
+      "rows_with_nonempty_quality_evidence": 1617,
+      "rows_with_quality_metadata": 1617,
+      "scripts": {
+        "Deva": 1617
+      },
+      "rights_status_counts": {
+        "rights_cleared": 1617
+      },
+      "reuse_scope_counts": {
+        "permitted_under_row_level_license": 1502,
+        "permitted_under_row_level_license; share-alike required": 115
+      },
+      "license_label_counts": {
+        "CC BY-SA 4.0": 48,
+        "CC-BY-4.0": 1492,
+        "CC-BY-SA-4.0": 115,
+        "MIT": 2,
+        "PDM-1.0": 8
+      }
+    },
+    "text_resources/train": {
+      "records": 109,
+      "empty_content": 0,
+      "rows_with_rights_status": 109,
+      "rows_with_reuse_scope": 109,
+      "rows_with_license_label": 109,
+      "rows_with_public_rights_basis": 1,
+      "rows_with_noncommercial_rights_basis": 108,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 109,
+      "rows_with_provenance_array": 109,
+      "rows_with_source_traceability": 109,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 109,
+      "rows_with_quality_evidence_fields_present": 109,
+      "rows_with_nonempty_quality_evidence": 109,
+      "rows_with_quality_metadata": 109,
+      "scripts": {
+        "Deva": 108,
+        "Latn": 1
+      },
+      "rights_status_counts": {
+        "rights_cleared": 1,
+        "rights_cleared_noncommercial_sharealike": 108
+      },
+      "reuse_scope_counts": {
+        "noncommercial_only; share-alike required": 108,
+        "permitted_under_row_level_license": 1
+      },
+      "license_label_counts": {
+        "CC-BY-NC-SA-4.0": 108,
+        "PDM-1.0": 1
+      }
+    },
+    "university_research/train": {
+      "records": 8,
+      "rows_with_rights_status": 8,
+      "rows_with_reuse_scope": 8,
+      "rows_with_license_label": 0,
+      "rows_with_public_rights_basis": 0,
+      "rows_with_noncommercial_rights_basis": 0,
+      "rows_with_factual_publication_basis": 0,
+      "rows_with_provenance": 8,
+      "rows_with_provenance_array": 8,
+      "rows_with_source_traceability": 8,
+      "rows_without_source_traceability": 0,
+      "rows_with_quality_status": 8,
+      "rows_with_quality_evidence_fields_present": 8,
+      "rows_with_nonempty_quality_evidence": 8,
+      "rows_with_quality_metadata": 8,
+      "scripts": {},
+      "rights_status_counts": {
+        "reviewed_rights_unresolved": 8
+      },
+      "reuse_scope_counts": {
+        "not assessed": 8
+      },
+      "license_label_counts": {}
+    }
+  },
+  "totals": {
+    "records": 302641,
+    "empty_content": 34,
+    "rows_with_rights_status": 302641,
+    "rows_with_reuse_scope": 302641,
+    "rows_with_license_label": 291922,
+    "rows_with_public_rights_basis": 64298,
+    "rows_with_noncommercial_rights_basis": 249,
+    "rows_with_factual_publication_basis": 17,
+    "rows_with_provenance": 192213,
+    "rows_with_provenance_array": 192213,
+    "rows_with_source_traceability": 302641,
+    "rows_without_source_traceability": 0,
+    "rows_with_quality_status": 302641,
+    "rows_with_quality_evidence_fields_present": 296132,
+    "rows_with_nonempty_quality_evidence": 190499,
+    "rows_with_quality_metadata": 296132
+  },
+  "cross_split_identity_overlap": {
+    "asr:test:train": 0,
+    "asr:test:validation": 0,
+    "asr:train:validation": 0,
+    "instructions:test:train": 0,
+    "instructions:test:validation": 0,
+    "instructions:train:validation": 0,
+    "text:test:train": 0,
+    "text:test:validation": 0,
+    "text:train:validation": 0,
+    "instructions_prompt:test:train": 0,
+    "instructions_prompt:test:validation": 0,
+    "instructions_prompt:train:validation": 0
+  },
+  "distinct_provenance_sources": 89,
+  "top_provenance_sources": [
+    [
+      "emagazineofuttarakhand",
+      41486
+    ],
+    [
+      "paharili_gbm",
+      30328
+    ],
+    [
+      "indic_dialect_asr_gbm",
+      19824
+    ],
+    [
+      "atkinson_himalayan_gazetteer",
+      14785
+    ],
+    [
+      "incoming_garhwali_hindi_dictionary",
+      12806
+    ],
+    [
+      "meta_omni",
+      12655
+    ],
+    [
+      "uou_cgl",
+      10043
+    ],
+    [
+      "proverbs1894",
+      9644
+    ],
+    [
+      "incoming_english_hindi_garhwali_dictionary",
+      9401
+    ],
+    [
+      "shanti_chaudhary_garhwali_lokkala_loksahitya_1994",
+      6332
+    ],
+    [
+      "govind_chatak_gadwali_lokgeet_1956",
+      4568
+    ],
+    [
+      "incoming_garhwali_language_and_culture",
+      3449
+    ],
+    [
+      "dcad_gbm",
+      3370
+    ],
+    [
+      "jambu-garhwali",
+      3273
+    ],
+    [
+      "uou_more",
+      3160
+    ],
+    [
+      "hindialect_gbm",
+      3104
+    ],
+    [
+      "lsi",
+      3048
+    ],
+    [
+      "obs_tlf_gbm_v1",
+      1893
+    ],
+    [
+      "incoming_garhwali_bhasha_linguistic_grammatical_study",
+      1842
+    ],
+    [
+      "obs_garhwali",
+      1600
+    ],
+    [
+      "kellogg_1893",
+      1517
+    ],
+    [
+      "lsi_1916_grierson_garhwali_table",
+      1294
+    ],
+    [
+      "wiktionary_swadesh_thematic",
+      1115
+    ],
+    [
+      "garhwali-language-library",
+      1011
+    ],
+    [
+      "lsi_cldf_garhwali",
+      997
+    ],
+    [
+      "mountainvoices_local_glossary",
+      955
+    ],
+    [
+      "incoming_chandola_syntactic_sketch",
+      849
+    ],
+    [
+      "opus_translatewiki_gbm",
+      732
+    ],
+    [
+      "hill_dialects_1900",
+      694
+    ],
+    [
+      "incoming_gadwali_sahitya",
+      607
+    ],
+    [
+      "sand_garhwali",
+      605
+    ],
+    [
+      "emagazine_animals",
+      550
+    ],
+    [
+      "asjp",
+      467
+    ],
+    [
+      "uttarakhandiwords_animals",
+      435
+    ],
+    [
+      "wiktionary_en",
+      420
+    ],
+    [
+      "madlad400_gbm_clean",
+      404
+    ],
+    [
+      "languageshome",
+      358
+    ],
+    [
+      "dhyani_occupations",
+      321
+    ],
+    [
+      "lsi_1916_grierson_garhwali_specimens",
+      306
+    ],
+    [
+      "mamta_southasia_examples",
+      266
+    ],
+    [
+      "wikimedia",
+      224
+    ],
+    [
+      "hikinegi_garhwali",
+      213
+    ],
+    [
+      "chan_numerals_garhwali",
+      202
+    ],
+    [
+      "idioms_proverbs",
+      200
+    ],
+    [
+      "garhwalilanguage_dictionary",
+      193
+    ],
+    [
+      "euttaranchal_3",
+      152
+    ],
+    [
+      "wikisource_garhwal_culture",
+      140
+    ],
+    [
+      "crooke_northern_india_folklore",
+      109
+    ],
+    [
+      "euttaranchal_2",
+      83
+    ],
+    [
+      "tatoeba",
+      72
+    ]
+  ],
+  "file_hashes": [
+    {
+      "path": "data/asr/test-00000.jsonl",
+      "sha256": "ca1312826c4c49c7517762532badb844f956bb11ba8d1274c3c006ee0ef9a248"
+    },
+    {
+      "path": "data/asr/train-00000.jsonl",
+      "sha256": "27860ea303065ca84ff838c76b3937d9ef0886172e373f5d03db582a9cffd6b8"
+    },
+    {
+      "path": "data/asr/validation-00000.jsonl",
+      "sha256": "19885953a35482ecbcc68cffd835e2644e686c165621e56ff2c1dcbe0a163f26"
+    },
+    {
+      "path": "data/catalog/train-00000.jsonl",
+      "sha256": "13ba8845d64a4d62c445877869917093cc7a27bfab4cb9f171ab65c9c1de37f9"
+    },
+    {
+      "path": "data/catalog/train-00001.jsonl",
+      "sha256": "845ca184fd7313328d47970b7196771e35b68719f7a421afb550b67a79ab9b4e"
+    },
+    {
+      "path": "data/catalog/train-00002.jsonl",
+      "sha256": "dc0efba4947cc0b47abd66e3ffcbca8995a5d243fcdec41ddd7a85f3bcda703a"
+    },
+    {
+      "path": "data/catalog/train-00003.jsonl",
+      "sha256": "10e04c7b7811a0275e1088b19207608186c5f20cdcbc308b9864db857d59cbc9"
+    },
+    {
+      "path": "data/geography/train-00000.jsonl",
+      "sha256": "ae23f8488ca6712f2126ca93e12a2f8d766d694993858846bb64dbc65ca0c361"
+    },
+    {
+      "path": "data/historical_terms/train-00000.jsonl",
+      "sha256": "e2c1b2ee7d3e06a4fb38ce52af8f980225d2779b80821f2a5973e37e08d2a753"
+    },
+    {
+      "path": "data/instructions/test-00000.jsonl",
+      "sha256": "06f7bbf7a32e20e5c7406fe1cf5ae7fc7cda6d2039ef5ffe91f693543893be8a"
+    },
+    {
+      "path": "data/instructions/train-00000.jsonl",
+      "sha256": "1c2cde8fc5980a1a3d440d73e3dd3d7a2ec77947590845eaafc42a190fdabe1a"
+    },
+    {
+      "path": "data/instructions/validation-00000.jsonl",
+      "sha256": "b8e10dedf0842d289c4165248046c8a75bca8d2cdefe1607b6a8d6a896356713"
+    },
+    {
+      "path": "data/lexicon/train-00000.jsonl",
+      "sha256": "6e1e3bb0780dd75326a19433472a3390a49ce6f34d21b53f5ff93f3d3db60c47"
+    },
+    {
+      "path": "data/literary_people/train-00000.jsonl",
+      "sha256": "e1d30d09d62620ec74e640538e60043459c4e3d2707f4ec75e529ede5570b63b"
+    },
+    {
+      "path": "data/literary_works/train-00000.jsonl",
+      "sha256": "791a42c8fc2f46a095e031281302fd889e8da2ef1d405e4b1f0564968d661862"
+    },
+    {
+      "path": "data/popular_songs/train-00000.jsonl",
+      "sha256": "8610a1e945673e62fc63766ac87e8fe220ec5ad89692815d99521d768cb04cd5"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00000.jsonl",
+      "sha256": "0fe649851352d2df9218d111051c0c3e1cb733771cf433087812e9d1e905a9c2"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00001.jsonl",
+      "sha256": "db5914d0d4760af6e44a211ad9647a7de0b376b46fae05cd2f39489a39a734f6"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00002.jsonl",
+      "sha256": "3a94447a44396d3e6f7b8ae5487b86130931925286ebc5b11d52779b6cfa935c"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00003.jsonl",
+      "sha256": "b0683c098b139ab35913f2acdf1bc184a568cafa2e500e1d2ea8cd9a2351bf52"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00004.jsonl",
+      "sha256": "3f58db6b3304b4a1c91461fb8509b041acd95acff463d971aea96277a8de5d38"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00005.jsonl",
+      "sha256": "90a1011fb520f19e93b5bd9116fdd629f706f7191e59f4f7fe11d3b11ebf6b2d"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00006.jsonl",
+      "sha256": "80004eb4c9063fcdb968966ca80c0d3e8792d593737db5468a2dc67cf43b7d0b"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00007.jsonl",
+      "sha256": "85a315122b78a1ca1d70c8b31258b4678d3eae3a90f2d0e715bc23490ef5eeac"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00008.jsonl",
+      "sha256": "81ef2ef556144abf49d19256d721a96e32a11a903bb01fa3b1e936d7de3c4dbf"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00009.jsonl",
+      "sha256": "7b2a1b3dffa350faafc9460f0053d788681cf0b0ef891d1e50df62d5e5ad407f"
+    },
+    {
+      "path": "data/sravaani_drafts/train-00010.jsonl",
+      "sha256": "a8027bf71719d2e43aa6bb8d7dadab5dd3ffb513b16ddd557f057f7d8b9fa3bc"
+    },
+    {
+      "path": "data/text/test-00000.jsonl",
+      "sha256": "a8faca9044a5aa07d914c9c720af010f3186f2b991c8d705e7dac3e42484b83c"
+    },
+    {
+      "path": "data/text/train-00000.jsonl",
+      "sha256": "653d7798b4dfb90594ccee00407a6e5e098cf5e16b61051568082eeff8f3b220"
+    },
+    {
+      "path": "data/text/train-00001.jsonl",
+      "sha256": "da1384c05b0a71e39b77fc78044158a3ae9f204b87e331e147639058f50a4b69"
+    },
+    {
+      "path": "data/text/train-00002.jsonl",
+      "sha256": "49a1c6d312723559ea62c32eb4962cc618f37121a318574be3a4d95328a23ff8"
+    },
+    {
+      "path": "data/text/train-00003.jsonl",
+      "sha256": "e2364ed280e69990de0d3b5391d59de603b9c9075117f36904d1130ab1ccdc53"
+    },
+    {
+      "path": "data/text/train-00004.jsonl",
+      "sha256": "24c643218642006dee409cddfc9629d307b3489b186fc102136f7e6ee9ad6a5c"
+    },
+    {
+      "path": "data/text/train-00005.jsonl",
+      "sha256": "118d27af9230b0541aeda13239e53edf1bb74b173de0a0f7b1b5700c0333a6e7"
+    },
+    {
+      "path": "data/text/train-00006.jsonl",
+      "sha256": "60e991ce21fa64085ea1e599c71cb15d4d3e4823bfc4ffc5baaacbaad0b696cb"
+    },
+    {
+      "path": "data/text/train-00007.jsonl",
+      "sha256": "d2e08c7142f939cdbe48c4f66e3e0ce37c4867188d97ce05bbfe17a26a10eb9f"
+    },
+    {
+      "path": "data/text/train-00008.jsonl",
+      "sha256": "0382811f48ffd6d559724494420f1eda2876c39694e4fff8310fd47446dd78ba"
+    },
+    {
+      "path": "data/text/train-00009.jsonl",
+      "sha256": "cb375258f676dcd21d6330e95483fb62c9f4ba4627f8a4437fd0cca29d0902e7"
+    },
+    {
+      "path": "data/text/train-00010.jsonl",
+      "sha256": "3d8dd519971d0cd4231ec03256857a5df08855bb0c2d6164f0b997a4bf6cd172"
+    },
+    {
+      "path": "data/text/train-00011.jsonl",
+      "sha256": "13a22d11268a4bb2c54986d209a805f9e64a144b8afcceb6a233d4ec793d5b54"
+    },
+    {
+      "path": "data/text/train-00012.jsonl",
+      "sha256": "b93af0a9450a3ef15b236b208606ee0fb9719642a267bf71af02a94ad4d1aa6d"
+    },
+    {
+      "path": "data/text/train-00013.jsonl",
+      "sha256": "6274848c61c193b2002ce17f4f4018a10c03967fff8937b24d9a7c5adeed5609"
+    },
+    {
+      "path": "data/text/train-00014.jsonl",
+      "sha256": "8eb9b76ed5c48d9dd850346dff4a6eb193257b8a40d5a41be43ca482dbf886ba"
+    },
+    {
+      "path": "data/text/validation-00000.jsonl",
+      "sha256": "46a56ada6a06387633acc6c94e3bdc0ca75bf8201ffe1406c164614bc42153a6"
+    },
+    {
+      "path": "data/text_expansion/train-00000.jsonl",
+      "sha256": "7af56ca0050d1b974b9cacfdfe1108d4eac78ad8ce88b9bbf12c704459a4a252"
+    },
+    {
+      "path": "data/text_resources/train-00000.jsonl",
+      "sha256": "529eaba9f95b8b259576188140f39b6f029da484afb4233eaad85ac50a0f0a7d"
+    },
+    {
+      "path": "data/university_research/train-00000.jsonl",
+      "sha256": "d2f199563c03c4455e8effc80a80fa54328fcda5b7531c9c06ab97cf48e3185e"
+    }
+  ],
+  "errors": [],
+  "records_deleted_or_mutated": 0
+}

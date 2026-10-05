@@ -84,6 +84,7 @@ PYTHONPATH=scripts .venv/bin/python scripts/audit_model_accuracy_lineage.py \
 ```
 
 The auditor's 5 October implementation is covered by
-`tests/test_audit_model_accuracy_lineage.py`. The full repository unittest
-suite passes **762/762**; the release index validator passes for the frozen
+`tests/test_audit_model_accuracy_lineage.py`. At this report's run, the full
+repository unittest suite passed **762/762**; a later v0.2.4 release follow-up
+added regression coverage and the current suite passes **774/774**. The release index validator passes for the frozen
 v0.1.1 snapshot.

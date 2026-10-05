@@ -1,12 +1,29 @@
 # Garhwali Language Lab — final review report
 
-## Current release and local source intake — 2026-10-04
+## Current release and local source intake — 2026-10-05
 
-The current public corpus release is **v0.2.3**, published at Hub commit
-[`76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d).
-It exposes a 246-row `text_resources/train` view over records already in the
-catalog; the release has 827,450 overlapping-view rows. The separate speech
-repository remains at v0.2.1. These figures are unchanged by the Archive intake.
+The current public corpus release is **v0.2.5**, published at payload commit
+[`46407fc`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/46407fcb623d7f51d3f401f5842f73209dbffc4c).
+The latest root/versioned card, including typed schemas for the two formerly
+failing Viewer configs, is at
+[`dc3308d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/dc3308d4eb1d0eb619ab78071d0b34c2cbe8ac09).
+This additive release keeps all 18,949 core text values: 1,308 rows linked to
+upstream held-out text/record sources are now in a public `source_overlap`
+split outside default `train`; 363 of the 1,647 catalog-expansion rows are
+similarly routed. Text values in the core, expansion, and resource configs
+match v0.2.4 exactly. The 827,450 package-view total includes 164,387 content
+rows plus 663,063 archive/source-reference rows; the views overlap. All 51
+versioned release files match their local plan by size and Git/LFS hash. The
+separate speech repository remains at v0.2.1. Independent package preflight
+passed with zero errors and zero deleted or mutated records; the full suite
+passes 791/791. Streaming successfully read one row from each new overlap split
+and from the lexicon config. The card now declares merged schemas for
+`text_expansion` and `sravaani_drafts`, and local validation reads all 13
+affected shards. Hugging Face now reports all Viewer capabilities enabled, all 25 splits and 25 Parquet outputs ready, and no pending or failed jobs. Row samples work for both repaired configs, and dataset-wide `/is-valid` is true. The current training audit reports zero
+recommendation mismatches and zero text rows recommended for training; see its
+[report](research/huggingface-training-eligibility-audit-2026-10-05.md).
+Full details are in the
+[v0.2.5 release report](research/huggingface-corpus-v0.2.5-release-2026-10-05.md).
 
 The 3–4 October Internet Archive search and acquisition added **119 local
 payload files (6,005,077,831 bytes)**. The initial 3,369-page index was
@@ -95,8 +112,8 @@ The 2026 study [*Seeds Before Objectives*](https://arxiv.org/abs/2608.10670)
 reports a five-seed, official-split w2v-BERT 2.0 standard-CTC mean of 47.0%
 WER. Its method supports reporting seed variation; it is not a like-for-like
 comparison to this single Whisper-tiny remainder score or an independent test
-for this project. The current local suite passes **762/762** tests (5 October
-2026, repository CI unittest discovery command).
+for this project. The current local suite passes **791/791** tests after the
+v0.2.5 split-safety work (repository CI unittest discovery command).
 
 ## Meta Omnilingual ASR validation — 2026-10-04 to 2026-10-05
 
@@ -153,8 +170,9 @@ remain preserved. The 292 safe Meta test rows remain unscored, and independent
 final-evidence eligibility stays **0/5**. The row-level ledger is Git-ignored;
 aggregate findings and hashes are in the [lineage refresh](research/model-lineage-refresh-2026-10-05.md).
 
-The 5 October repository test command passes **762/762** unittest cases and
-`validate_release_index.py` passes for release snapshot v0.1.1. Its compact
+The earlier v0.2.4 audit recorded **776/776** unittest cases. The follow-up
+v0.2.5 split-safety and Viewer-schema changes bring the current full suite to **791/791**. The
+`validate_release_index.py` check still passes for release snapshot v0.1.1. Its compact
 artifact hashes and paths also pass when checked without comparing against
 the current source tree. The stricter local `build_release_bundle.py --check`
 reports **60 stale-source entries** (36 selected current files absent from

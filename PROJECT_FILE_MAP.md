@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **977**.
+Files indexed: **997**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -580,14 +580,25 @@ python scripts/generate_project_file_map.py
 - `research/generation-output-diagnostics-2026-09-28.md`
 - `research/generation-quality-2026-09-25.md`
 - `research/generation-scoring-integration-2026-09-30.md`
+- `research/huggingface-all-data-candidate-preflight-2026-10-05.json`
+- `research/huggingface-corpus-v0.2.4-release-2026-10-05.md`
+- `research/huggingface-corpus-v0.2.5-release-2026-10-05.md`
+- `research/huggingface-corpus-v0.2.5-viewer-schema-repair-2026-10-05.md`
 - `research/huggingface-dataset-quality-roadmap.md`
 - `research/huggingface-existing-corpus-expansion-audit-2026-10-02.md`
 - `research/huggingface-quality-baseline-2026-10-01.md`
 - `research/huggingface-quality-candidate-preflight-2026-10-01.json`
 - `research/huggingface-quality-candidate-preflight-2026-10-02.json`
+- `research/huggingface-quality-candidate-preflight-2026-10-05.json`
 - `research/huggingface-release-overlap-audit-2026-09-24.md`
 - `research/huggingface-text-expansion-audit-2026-10-01.md`
+- `research/huggingface-training-eligibility-audit-2026-10-05.json`
+- `research/huggingface-training-eligibility-audit-2026-10-05.md`
+- `research/huggingface-upstream-split-overlap-2026-10-05.json`
+- `research/huggingface-upstream-split-overlap-2026-10-05.md`
 - `research/huggingface-v0.2.3-upload-plan.json`
+- `research/huggingface-v0.2.4-upload-plan.json`
+- `research/huggingface-v0.2.5-upload-plan.json`
 - `research/incoming-pdf-ingestion-2026-09-16.json`
 - `research/incoming-pdf-ingestion-2026-09-16.md`
 - `research/incoming-pdf-reocr-pilot-2026-09-17.md`
@@ -607,6 +618,7 @@ python scripts/generate_project_file_map.py
 - `research/internet-archive-source-disposition-2026-10-04.md`
 - `research/issues&improvement plan.md`
 - `research/language-quality-status-2026-09-10.md`
+- `research/license-specific-source-export-audit-2026-10-05.md`
 - `research/meta-omnilingual-asr-adaptation-2026-10-05.md`
 - `research/meta-omnilingual-asr-validation-2026-10-04.md`
 - `research/model-accuracy-lineage-2026-09-24.md`
@@ -633,6 +645,7 @@ python scripts/generate_project_file_map.py
 - `research/semantic-duplicate-audit-2026-09-16.md`
 - `research/semantic-duplicate-refinement-2026-09-16.md`
 - `research/social-media-ingestion-2026-09-10.md`
+- `research/source-attribution-overlays-2026-10-05.json`
 - `research/source-expansion-v2.0-2026-09-30.md`
 - `research/speech-baseline-comparison-2026-09-11.md`
 - `research/sravaani-adaptation-evaluation-2026-09-16.md`
@@ -647,6 +660,7 @@ python scripts/generate_project_file_map.py
 - `research/sravaani-transcript-recovery-2026-09-13.md`
 - `research/structured-rights-web-review-2026-09-23.md`
 - `research/task-result-eligibility-2026-09-28.md`
+- `research/tatoeba-attribution-audit-2026-10-05.json`
 - `research/text-accuracy-review-2026-09-15.md`
 - `research/text-noise-audit-2026-09-16.md`
 - `research/text-release-quality-2026-09-16.json`
@@ -690,6 +704,7 @@ python scripts/generate_project_file_map.py
 - `scripts/audit_benchmark_v02_rights.py`
 - `scripts/audit_final_release.py`
 - `scripts/audit_garhwali_expansion.py`
+- `scripts/audit_hf_training_eligibility.py`
 - `scripts/audit_indicbert_cloud_input.py`
 - `scripts/audit_model_accuracy_lineage.py`
 - `scripts/audit_multilingual_tokenizers.py`
@@ -697,6 +712,7 @@ python scripts/generate_project_file_map.py
 - `scripts/audit_semantic_duplicates.py`
 - `scripts/audit_text_release_quality.py`
 - `scripts/audit_text_sources.py`
+- `scripts/audit_upstream_split_overlap.py`
 - `scripts/audit_vaani.py`
 - `scripts/audit_vaani_official_split_lineage.py`
 - `scripts/audit_xorqa_source_page_families.py`
@@ -744,6 +760,7 @@ python scripts/generate_project_file_map.py
 - `scripts/evaluate_sravaani_finetune.py`
 - `scripts/evaluation_run_manifest.py`
 - `scripts/export_asr_finetuning_data.py`
+- `scripts/export_licensed_sources.py`
 - `scripts/extract_dhyani_idioms.py`
 - `scripts/extract_downloaded_folklore.py`
 - `scripts/extract_vaani_audio.py`
@@ -906,12 +923,14 @@ python scripts/generate_project_file_map.py
 - `tests/test_audit_benchmark_v02_rights.py`
 - `tests/test_audit_final_release.py`
 - `tests/test_audit_garhwali_expansion.py`
+- `tests/test_audit_hf_training_eligibility.py`
 - `tests/test_audit_indicbert_cloud_input.py`
 - `tests/test_audit_model_accuracy_lineage.py`
 - `tests/test_audit_multilingual_tokenizers.py`
 - `tests/test_audit_saved_asr_heldout_lineage.py`
 - `tests/test_audit_semantic_duplicates.py`
 - `tests/test_audit_text_sources.py`
+- `tests/test_audit_upstream_split_overlap.py`
 - `tests/test_audit_vaani_official_split_lineage.py`
 - `tests/test_audit_xorqa_source_page_families.py`
 - `tests/test_benchmark_metrics.py`
@@ -946,6 +965,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_evaluate_indicbert_transfer.py`
 - `tests/test_evaluate_sravaani_finetune.py`
 - `tests/test_evaluation_run_manifest.py`
+- `tests/test_export_licensed_sources.py`
 - `tests/test_generate_project_file_map.py`
 - `tests/test_hf_meta_omni_schema.py`
 - `tests/test_hf_meta_omni_speech.py`
@@ -1030,11 +1050,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **238,411**.
+- Workspace files counted: **238,944**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **977**.
-- Ignored or otherwise unlisted payload files: **237,434** (157,144,344,604 bytes).
-- Total workspace bytes counted: **157,161,253,415**.
+- Detailed file paths listed above: **997**.
+- Ignored or otherwise unlisted payload files: **237,947** (164,603,273,259 bytes).
+- Total workspace bytes counted: **164,620,986,895**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1058,7 +1078,7 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `data/cache/…/` | 2 | 104,176 |
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
 | `data/extracted/…/` | 736 | 104,222,504 |
-| `data/huggingface/…/` | 1,980 | 72,788,494,485 |
+| `data/huggingface/…/` | 2,493 | 80,247,423,140 |
 | `data/processed/…/` | 110,561 | 40,803,036,195 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |

@@ -1,6 +1,6 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Status snapshot:** Benchmark/model-lineage evidence refreshed 2026-10-05; public corpus release checked 2026-10-04 (corpus v0.2.3, speech v0.2.1)
+**Status snapshot:** Benchmark/model-lineage evidence refreshed 2026-10-05; public corpus v0.2.4 checked 2026-10-05 (speech v0.2.1)
 **Scope:** GarhwaliBench and the model-research suite in this repository
 **Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 
@@ -8,7 +8,8 @@ This is the working plan for moving from useful but mixed-history experiments to
 
 ## Current position and remaining work — 2026-10-05
 
-The public Garhwali corpus is **v0.2.3**; the 246-row `text_resources` view
+The public Garhwali corpus is **v0.2.4**; it adds source attribution and
+revision links but no new text values. The 246-row `text_resources` view
 re-exposes catalogued values and is not a new benchmark or model-training run.
 The benchmark remains local-only, and corpus publication does not make model
 results independent. The owner approved active work toward independent final
@@ -161,7 +162,7 @@ The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md]
 | ASR references and independence | VAANI validation/test predictions already exist. SraVaani's model card identifies VAANI as an upstream source and reports 31,255 hours of VAANI pretraining plus about 31,270 hours of labeled fine-tuning from VAANI and other open speech data; it does not expose example-level overlap. | VAANI results are open/development/historical evidence, not independent estimates of generalization. The 2026 multi-seed ASR paper also uses VAANI's official test. Do not tune, select, or claim blind final accuracy from these rows. |
 | TTS | Speech manifests and readiness checks exist; no TTS system has a valid Garhwali quality result. | Readiness and pair-integrity only. MOS or naturalness needs listeners and cannot be inferred from automated checks. |
 | Independent final accuracy | Evidence eligibility is 0/5 across language modeling, translation, retrieval, generation, and ASR; the owner approved active work toward each area on 2026-09-30. | There is no defensible single project-wide model-accuracy score today; existing sets are reused or model exposure is unresolved. |
-| Review and tests | Native adjudications remain deferred. The full configured unittest suite passes 762/762 as of 2026-10-05; historical release counts remain labeled by snapshot. | Test passes establish code/integrity properties only, not linguistic correctness. |
+| Review and tests | Native adjudications remain deferred. The full configured unittest suite passes 774/774 as of 2026-10-05; historical release counts remain labeled by snapshot. | Test passes establish code/integrity properties only, not linguistic correctness. |
 
 ### Key test-history rule
 
@@ -833,16 +834,27 @@ No test scoring or checkpoint promotion is authorized. Full hashes and limits ar
 [adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md).
 
 The benchmark-wide rights/provenance inventory pass is complete as of
-2026-10-05. Next, recover Tatoeba authors for 36 sentence IDs, add page/revision
-attribution for Wikimedia/Wiktionary records, and generate separate
-license-specific exports for source components whose conditions are complete.
-Then revisit source-text rights for CrossSum/XORQA, sanitize or restructure the
-112 VAANI rows, complete semantic/exposure checks, and prepare a genuinely
-fresh evaluation set with recorded model exposure. Native review remains
-deferred; automated checks cannot certify linguistic accuracy.
-No new paid Hugging Face job, model download, or Hub upload was started in this
-refresh. The account does have historical completed/canceled jobs; do not
-describe this as a zero-job history.
+2026-10-05. The immediate attribution/export follow-up is complete and published
+in the corpus v0.2.4 update:
+all 36 Tatoeba contributors were recovered from the sentence pages; the local
+Wikimedia/Wiktionary records now export with stable page, revision, and history
+links; and five license-specific candidate views were built for Tatoeba,
+Wikimedia Incubator, Wiktionary, Open Bible Stories v1, and the 1916 LSI text.
+The views contain 2,432 source rows and 2,402 exact normalized text values;
+they preserve source lineage, existing quality/training flags, and benchmark
+split labels. These benchmark task candidates remain separate from the corpus
+release and are not a public benchmark-release decision.
+Details and hashes are in the [source-export audit](license-specific-source-export-audit-2026-10-05.md).
+
+Next, reconcile source-level rights for Meta, CrossSum, FLORES, and XORQA; build
+a public-safe projection of the 112-row VAANI benchmark view; then finish
+semantic/exposure checks and prepare a genuinely fresh evaluation set with
+recorded model exposure. The frozen v0.2 benchmark still has all 14,703
+row-level public-upload/release flags set to false. Native review remains
+deferred; automated checks cannot certify linguistic accuracy. No new paid
+Hugging Face job, model download, or Hub upload was started in this refresh.
+The account does have historical completed/canceled jobs; do not describe this
+as a zero-job history.
 
 ## 10. Research basis
 

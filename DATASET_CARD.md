@@ -8,10 +8,17 @@ folklore, folk songs, educational material, historical linguistics, community
 writing, and cultural context without erasing source rights or uncertain language
 labels.
 
-The current public corpus release is **v0.2.3**, published additively at
-[Hugging Face commit `76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d).
-It adds a `text_resources/train` view of 246 already-catalogued records; this
-surfaces existing values and is not new source acquisition. The preceding
+The current public corpus release is **v0.2.5**. Its additive 51-file payload
+is at [Hub commit `46407fc`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/46407fcb623d7f51d3f401f5842f73209dbffc4c).
+The root and versioned cards are now at
+[`dc3308d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/dc3308d4eb1d0eb619ab78071d0b34c2cbe8ac09).
+That card-only update includes the corrected versioned paths first published
+at [`dbb1c99`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/dbb1c99503e11db454392a6c232254a37c9189d7) and explicit merged feature schemas for `text_expansion` and `sravaani_drafts`.
+All 18 LFS and 33 Git-blob files match the planned local hashes; earlier
+release paths remain. The new public `source_overlap` splits retain 1,308 core
+and 363 text-expansion rows linked to upstream held-out source material,
+outside default `train`. The release changes no text values and removes no
+rows. The preceding
 v0.2.2 release is at [commit `b9d0538`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/b9d0538b5b4dda3be73e5ae33b279b371ef75c3f),
 with its card correction at
 [commit `b18933b`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/b18933bb2e98f091add0b1889e70587448d9891f).
@@ -29,18 +36,27 @@ existing catalog texts exposed as a strict-tier, train-only view. This is a
 new access path, not newly ingested source material; its values remain in the
 catalog by design, and the row-level rights and quality labels still apply.
 Its content tables expose 12,606 of 32,072 exact-unique catalog values under
-source-specific terms or narrow fact-only treatment and redact 19,466 full
-texts whose compatible reuse basis is unresolved. All 216 structured records
+source-specific terms or narrow fact-only treatment. The other 19,466 catalog
+records remain listed with source and rights metadata but without the full text
+in public content, pending a compatible reuse basis. All 216 structured records
 are discoverable through factual/bibliographic projections; their expressive
 payloads are not included. The complete all-data package retains every value
-locally, but is not uploaded. The v0.2.3 package has **827,450 overlapping-view
+locally, but is not uploaded. The v0.2.5 package has **827,450 overlapping-view
 rows**: 164,387 content/config rows and 663,063 reference/join rows across 14
-content configs and 20 config-split views. The 246-row `text_resources` and
+content configs and 22 config-split views. Core text splits are 15,981 train,
+1,308 source-overlap, 895 validation, and 765 test; all 18,949 values remain.
+The 246-row `text_resources` and
 1,647-row `text_expansion` views expose existing catalog material; they are
-not new source acquisition. Dataset Viewer Parquet returned HTTP 500 and is
-still unverified. The public reference index covers 302,532
-archive rows, 5,019 source records, and 355,294 source links without copying
-redacted text or media. The linked
+not new source acquisition. None of the public `text`, `text_expansion`, or
+`text_resources` rows is currently recommended for training. The source-level
+eligibility audit reports zero stored/recomputed gate mismatches and changes no
+eligibility labels. Local schema validation loads all 13 JSONL shards across
+the two affected configs (1,647 expansion rows and 104,534 draft rows). The
+latest Viewer check reports every capability enabled, all 25 splits available, and all 25 Parquet outputs ready with no pending or failed jobs. The row API returns samples from `text_expansion/train` and `sravaani_drafts/train` (1,284 and 104,534 rows). Dataset-wide Viewer validity is confirmed.
+The public
+reference index covers 302,641 record-index rows, 5,019 source records, and
+355,403 source links without copying
+text or media that is not included in the public content views. The linked
 [`Garhwali Speech`](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 dataset is public separately. Native-speaker review and dialect annotation are
 deferred; benchmark and model scores remain automated research results, not
@@ -56,7 +72,7 @@ Use the [developer quick start](docs/DEVELOPER_QUICKSTART.md) for exact config
 counts, a copy-paste `datasets.load_dataset` sample, pandas and DuckDB recipes,
 and the searchable vocabulary CLI. The
 [schema guide](docs/DATASET_SCHEMA.md) defines common record-level rights and
-quality fields alongside each config's payload fields. The v0.2.3 corpus keeps
+quality fields alongside each config's payload fields. The v0.2.5 corpus keeps
 the common envelope and source-specific evidence fields. The local Internet
 Archive intake is separate research material and is not in this Hub release;
 see its [intake report](research/internet-archive-intake-2026-10-03.md) and
@@ -68,16 +84,16 @@ see its [intake report](research/internet-archive-intake-2026-10-03.md) and
 | --- | ---: |
 | Exact-unique parent texts | 32,072 |
 | Exact-unique sentence segments | 151,690 |
-| All-data package | 300,915 overlapping-view rows / 0 redacted texts |
-| Rights-filtered corpus profile | public v0.2.3: 164,387 content/config rows across 14 configs / 20 config-split views, plus 663,063 reference/join rows |
+| Local all-data text package | 302,641 overlapping-view rows, including all 32,072 full catalog text values; not uploaded |
+| Rights-filtered corpus profile | public v0.2.5: 164,387 content/config rows across 14 configs / 22 config-split views, plus 663,063 reference/join rows |
 | Total corpus package views | 827,450 overlapping-view rows; not unique examples |
 | `text_resources/train` | 246 existing catalog records for lookup/research |
 | Local Archive intake (not in Hub package) | 119 payloads / 6.01 GB; 3,369 OCR pages / 3,368 exact-unique texts; 39 media files. Zero exact or ≥0.85 5-gram near-match candidates against 32,072 cleaned parent texts |
 | Speech release (public v0.2.1) | 113,363 rows / 267 Parquet shards / 154.645 hours |
 | V0.2.1 speech file-tree size | 18.24 GB new release files; earlier files remain available |
-| Catalog text included in profile | 12,606 exposed / 19,466 redacted |
+| Catalog text in public content | 12,606 values; 19,466 catalog entries expose identifiers and source/rights metadata without full text |
 | Structured knowledge | 216 fact/bibliographic projections; expressive payloads omitted |
-| Metadata index in v0.2.3 | 302,532 records / 5,019 sources / 355,294 links |
+| Metadata index in v0.2.5 | 302,641 records / 5,019 sources / 355,403 links |
 | All supervised speech rows | 5,894 / 8.803724 hours |
 | Strict identified-speaker comparison rows | 2,002 / 3.562395 hours |
 | Normalized training-candidate WAVs | 1,736 |

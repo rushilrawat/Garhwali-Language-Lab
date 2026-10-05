@@ -51,6 +51,13 @@ def validate_package(package: Path) -> list[Path]:
                                 "reference_index_manifest.json",
                                 "research/text-rights-resolution-2026-09-30.md")
     }
+    optional_support_files = {
+        Path("research/huggingface-upstream-split-overlap-2026-10-05.json"),
+        Path("research/huggingface-upstream-split-overlap-2026-10-05.md"),
+    }
+    declared.update(
+        path for path in optional_support_files if (package / path).is_file()
+    )
     for config_name, details in manifest.get("configs", {}).items():
         family = config_name.split("/", 1)[0]
         for filename in details.get("files", []):

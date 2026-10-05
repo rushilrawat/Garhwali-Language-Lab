@@ -2,11 +2,11 @@
 
 This directory documents the project's initial openly licensed text sources; it
 is not the full current corpus. The v0.2.0 release snapshot contains 29,426
-exact-unique parent texts. The current public corpus release is v0.2.3 and
+exact-unique parent texts. The current public corpus release is v0.2.5 and
 contains 32,072 exact-unique parent texts and 151,690 exact-unique segments,
 with speech and experimental views plus separate rights-filtered exports. The
 package is live on [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
-at commit [`76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d). The initial source-expansion payload is preserved at [`5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1). The 246-row `text_resources` view in v0.2.3 re-exposes already catalogued values; it is not new source intake. Internet Archive files acquired on 3–4 October remain local-only and are not yet part of this corpus. See the [project overview](../README.md) and
+at payload commit [`46407fc`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/46407fcb623d7f51d3f401f5842f73209dbffc4c), with the latest root/versioned card at [`dc3308d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/dc3308d4eb1d0eb619ab78071d0b34c2cbe8ac09). The 51 versioned files match their planned hashes and sizes; older release paths remain. V0.2.5 routes 1,308 core-text and 363 expansion rows with upstream held-out-source overlap to public `source_overlap` splits. All text values remain unchanged. The card declares merged schemas for `text_expansion` and `sravaani_drafts`; local validation loads all 13 affected shards. The latest Viewer check reports all capabilities enabled, all 25 splits and 25 Parquet outputs ready, and no pending or failed jobs. Row samples load from `text_expansion/train` (1,284 rows) and `sravaani_drafts/train` (104,534 rows). The 246-row `text_resources` view in v0.2.3 and the 1,647-row `text_expansion` view expose existing catalog values; v0.2.4 added attribution/history metadata. Internet Archive files acquired on 3–4 October remain local-only and are not yet part of this corpus. See the [v0.2.5 release report](../research/huggingface-corpus-v0.2.5-release-2026-10-05.md), [project overview](../README.md), and
 [final review](../finalreport.md) for current counts, Hugging Face state, and
 release limits. This folder's source files retain their own licenses and review
 status.

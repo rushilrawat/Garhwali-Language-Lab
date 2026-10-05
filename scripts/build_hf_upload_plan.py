@@ -15,6 +15,14 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
 RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')
 DEFAULT_OUTPUT = ROOT / f'release/v{RELEASE_VERSION}/huggingface-all-data-upload.json'
+SUPPORT_FILES = {
+    'DATASET_SCHEMA.md',
+    'DEVELOPER_QUICKSTART.md',
+    'search_garhwali_lexicon.py',
+    'research/text-rights-resolution-2026-09-30.md',
+    'research/huggingface-upstream-split-overlap-2026-10-05.json',
+    'research/huggingface-upstream-split-overlap-2026-10-05.md',
+}
 
 
 def sha256(path):
@@ -44,7 +52,7 @@ def build(package, target_repo=None, visibility='private'):
     expected_files = {
         'README.md', 'manifest.json', 'LICENSE_POLICY.md',
         'ATTRIBUTION.md', 'REMOVAL_POLICY.md',
-    }
+    } | SUPPORT_FILES
     if manifest.get('reference_index'):
         expected_files.add('reference_index_manifest.json')
     for key, config in manifest['configs'].items():

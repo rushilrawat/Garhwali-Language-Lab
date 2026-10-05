@@ -86,11 +86,13 @@ never uploads to Hugging Face or changes repository visibility. Rights-pending
 source text remains in the local all-data package and is omitted from public
 content output; candidate counts are not a measure of verified Garhwali.
 
-The current public corpus release is v0.2.3 and contains 32,072 exact-unique
-parent texts from 49 source files. Its existing Hub payload paths remain
-unchanged. For a later release, bump the project version and output paths to
-v0.2.4. The v0.2.3 `text_resources` config is an access view over values
-already in the catalog, not additional source acquisition. The Internet
+The current public corpus release is v0.2.4 and contains 32,072 catalog
+records from 49 text source files. The v0.2.4 Hub upload is additive: it keeps
+the earlier release paths and adds source attribution/revision metadata for
+existing records; it adds no new text. For a later release, bump the project
+version and output paths to v0.2.5. The 246-row `text_resources` config is an
+access view over values already in the catalog, not additional source
+acquisition. The Internet
 Archive material acquired on 3–4 October is still local-only; its intake,
 quality profile, and canonical-text overlap audit are in
 [`research/internet-archive-intake-2026-10-03.md`](research/internet-archive-intake-2026-10-03.md)
@@ -99,18 +101,18 @@ and
 For example, after a new source intake:
 
 ```bash
-GARHWALI_RELEASE_VERSION=0.2.4 .venv/bin/python scripts/ingestion_graph.py run \
-  --wave tenth --run-id next-garhwali-wave-2026-10-01 --refresh-derived
+GARHWALI_RELEASE_VERSION=0.2.5 .venv/bin/python scripts/ingestion_graph.py run \
+  --wave tenth --run-id next-garhwali-wave-2026-10-05 --refresh-derived
 ```
 
-For an additive v0.2.4 package, stage it with a new prefix and unique ignored
+For an additive v0.2.5 package, stage it with a new prefix and unique ignored
 output paths:
 
 ```bash
-GARHWALI_RELEASE_VERSION=0.2.4 .venv/bin/python scripts/prepare_hf_additive_upload.py \
-  --prefix releases/v0.2.4 \
-  --output data/huggingface/garhwali-corpus-v0.2.4-additive-upload \
-  --plan data/huggingface/garhwali-corpus-v0.2.4-upload-plan.json
+GARHWALI_RELEASE_VERSION=0.2.5 .venv/bin/python scripts/prepare_hf_additive_upload.py \
+  --prefix releases/v0.2.5 \
+  --output data/huggingface/garhwali-corpus-v0.2.5-additive-upload \
+  --plan data/huggingface/garhwali-corpus-v0.2.5-upload-plan.json
 ```
 
 Review the plan, verify the prefix is unused, and run its generated upload

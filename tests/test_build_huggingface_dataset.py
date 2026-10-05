@@ -1,4 +1,5 @@
 import hashlib
+import importlib.util
 import json
 import tempfile
 import unittest
@@ -9,6 +10,205 @@ import build_huggingface_dataset as m
 
 
 class HuggingFaceDatasetBuilderTests(unittest.TestCase):
+    def test_hf_feature_schema_merges_null_list_types_across_splits(self):
+        value_null = {'dtype': 'null', '_type': 'Value'}
+        value_string = {'dtype': 'string', '_type': 'Value'}
+        overlap_features = {
+            'dialect_quality': {
+                'dialect_labels': {'feature': value_null, '_type': 'List'},
+            },
+            'source_split_overlap_source_ids': {
+                'feature': value_string, '_type': 'List',
+            },
+            'text_refinement': {
+                'automatic_changes': {'feature': value_null, '_type': 'List'},
+            },
+        }
+        train_features = {
+            'dialect_quality': {
+                'dialect_labels': {'feature': value_string, '_type': 'List'},
+            },
+            'source_split_overlap_source_ids': {
+                'feature': value_null, '_type': 'List',
+            },
+            'text_refinement': {
+                'automatic_changes': {'feature': value_string, '_type': 'List'},
+            },
+        }
+
+        merged = m.merge_hf_feature_schemas([overlap_features, train_features])
+
+        for field in (
+            merged['dialect_quality']['dialect_labels'],
+            merged['source_split_overlap_source_ids'],
+            merged['text_refinement']['automatic_changes'],
+        ):
+            self.assertEqual(field, {'feature': value_string, '_type': 'List'})
+
+    def test_hf_feature_schema_rejects_conflicting_non_null_types(self):
+        with self.assertRaisesRegex(ValueError, 'incompatible Hugging Face feature'):
+            m.merge_hf_feature_schemas([
+                {'label': {'dtype': 'string', '_type': 'Value'}},
+                {'label': {'dtype': 'bool', '_type': 'Value'}},
+            ])
+
+    @unittest.skipUnless(
+        importlib.util.find_spec('datasets'),
+        'Hugging Face datasets is installed by requirements-hf-release.txt',
+    )
+    def test_inferred_card_features_load_empty_list_fields_across_splits(self):
+        from datasets import Dataset, Features
+
+        with tempfile.TemporaryDirectory() as directory:
+            overlap = Path(directory) / 'source_overlap-00000.jsonl'
+            train = Path(directory) / 'train-00000.jsonl'
+            overlap.write_text(json.dumps({
+                'dialect_quality': {'dialect_labels': []},
+                'source_split_overlap_source_ids': ['meta:test:1'],
+            }) + '\n', encoding='utf-8')
+            train.write_text(json.dumps({
+                'dialect_quality': {'dialect_labels': ['rathi']},
+                'source_split_overlap_source_ids': [],
+            }) + '\n', encoding='utf-8')
+
+            features = Features._from_yaml_list(
+                m.infer_hf_config_features(Path(directory))
+            )
+            self.assertEqual(
+                features['dialect_quality']['dialect_labels'].feature.dtype,
+                'string',
+            )
+            self.assertEqual(
+                features['source_split_overlap_source_ids'].feature.dtype,
+                'string',
+            )
+            for path in (overlap, train):
+                loaded = Dataset.from_json(
+                    str(path), features=features, keep_in_memory=True,
+                    cache_dir=str(Path(directory) / 'cache'),
+                    chunksize=path.stat().st_size + 1,
+                )
+                self.assertEqual(len(loaded), 1)
+
+    def test_upstream_eval_link_keeps_text_but_moves_it_out_of_train(self):
+        original = {
+            'id': 'row-1', 'text': 'गढ़वाली वाक्य', 'split': 'train',
+            'original_split': 'train',
+            'provenance': [{'source_id': 'meta_omni', 'record_id': 'meta:test:1'}],
+            'split_assignment': 'existing assignment',
+            'recommended_for_training': True,
+        }
+
+        routed = m.route_upstream_split_overlap(
+            original, {'meta:test:1'}, set()
+        )
+
+        self.assertEqual(routed['split'], 'source_overlap')
+        self.assertEqual(routed['original_split'], 'train')
+        self.assertEqual(routed['source_split_overlap_status'], 'upstream_eval_record_id_match')
+        self.assertEqual(routed['source_split_overlap_source_ids'], ['meta:test:1'])
+        self.assertFalse(routed['recommended_for_training'])
+        self.assertIn('text retained', routed['split_assignment'])
+        self.assertEqual(original['split'], 'train')
+
+    def test_ambiguous_transcript_match_is_visible_but_not_in_default_train(self):
+        row = {
+            'id': 'row-2', 'split': 'train',
+            'sources': [{'source_id': 'indic_dialect_asr_gbm',
+                         'record_id': 'indic_dialect_asr_gbm:14'}],
+        }
+
+        routed = m.route_upstream_split_overlap(
+            row, set(), {'indic_dialect_asr_gbm:14'}
+        )
+
+        self.assertEqual(routed['split'], 'source_overlap')
+        self.assertEqual(
+            routed['source_split_overlap_status'], 'upstream_eval_transcript_match'
+        )
+
+    def test_non_train_rows_are_labeled_without_being_moved(self):
+        row = {
+            'id': 'row-3', 'split': 'test',
+            'provenance': [{'source_id': 'meta_omni', 'record_id': 'meta:test:2'}],
+        }
+
+        routed = m.route_upstream_split_overlap(row, {'meta:test:2'}, set())
+
+        self.assertEqual(routed['split'], 'test')
+        self.assertEqual(routed['source_split_overlap_status'], 'upstream_eval_record_id_match')
+
+    def test_rows_without_upstream_overlap_keep_their_split(self):
+        row = {'id': 'row-4', 'split': 'train', 'provenance': []}
+
+        routed = m.route_upstream_split_overlap(row, set(), set())
+
+        self.assertEqual(routed['split'], 'train')
+        self.assertEqual(
+            routed['source_split_overlap_status'], 'no_upstream_eval_match_detected'
+        )
+        self.assertEqual(routed['source_split_overlap_source_ids'], [])
+
+    def test_source_attribution_overlay_preserves_lineage_and_adds_reviewable_evidence(self):
+        source = {
+            'source_id': 'tatoeba',
+            'record_id': 'tatoeba:42',
+            'line': 7,
+            'quality_flags': ['missing_contributor'],
+        }
+        overlays = {
+            'tatoeba:42': {
+                'source_id': 'tatoeba',
+                'attribution_name': 'sabretou',
+                'contributor_profile_url': 'https://tatoeba.org/en/user/profile/sabretou',
+                'source_url': 'https://tatoeba.org/en/sentences/show/42',
+                'quality_flags': ['upstream_sentence_orphaned'],
+            },
+        }
+
+        enriched = m.enrich_source_attribution(source, overlays)
+
+        self.assertEqual(enriched['line'], 7)
+        self.assertEqual(enriched['attribution_name'], 'sabretou')
+        self.assertEqual(enriched['source_url'], 'https://tatoeba.org/en/sentences/show/42')
+        self.assertEqual(enriched['quality_flags'], ['upstream_sentence_orphaned'])
+        self.assertEqual(source['quality_flags'], ['missing_contributor'])
+
+    def test_source_attribution_overlay_rejects_source_identity_mismatch(self):
+        with self.assertRaisesRegex(ValueError, 'Source ID mismatch'):
+            m.enrich_source_attribution(
+                {'source_id': 'tatoeba', 'record_id': 'tatoeba:42'},
+                {'tatoeba:42': {'source_id': 'wiktionary_en'}},
+            )
+
+    def test_audited_attribution_overlay_enriches_tatoeba_and_wiki_provenance(self):
+        overlays = m.source_attribution_overlays()
+        self.assertEqual(len(overlays), 355)
+        self.assertNotIn('text_normalized', json.dumps(overlays, ensure_ascii=False))
+
+        tatoeba = m.catalog_provenance({
+            'source_id': 'tatoeba',
+            'record_id': 'tatoeba:4648044',
+            'quality_flags': ['missing_contributor'],
+        })
+        self.assertEqual(tatoeba['attribution_name'], 'sabretou')
+        self.assertEqual(tatoeba['contributor'], 'sabretou')
+        self.assertNotIn('missing_contributor', tatoeba['quality_flags'])
+        self.assertIn('upstream_sentence_orphaned', tatoeba['quality_flags'])
+        self.assertTrue(tatoeba['attribution_evidence_sha256'])
+
+        wiki_id, wiki_overlay = next(
+            (record_id, item) for record_id, item in overlays.items()
+            if item.get('source_id') == 'wikimedia'
+        )
+        wiki = m.catalog_provenance({
+            'source_id': 'wikimedia',
+            'record_id': wiki_id,
+        })
+        self.assertEqual(wiki['source_revision'], wiki_overlay['source_revision'])
+        self.assertIn(f"oldid={wiki['source_revision']}", wiki['source_url'])
+        self.assertIn('action=history', wiki['source_history_url'])
+
     def test_failed_managed_build_preserves_previous_package(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'package'
@@ -148,6 +348,43 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             [item['source_id'] for item in m.publishable_provenance_items(exact_duplicate)],
             ['open'],
         )
+
+    def test_training_recommendation_respects_explicit_source_eligibility(self):
+        rights_basis = {
+            'source_id': 'open',
+            'record_id': 'open:1',
+            'source_url': 'https://example.org/open/1',
+            'license_id': 'CC-BY-4.0',
+            'attribution': 'Open source contributors',
+        }
+        row = {
+            'language': 'gbm',
+            'source_languages': ['gbm'],
+            'language_buckets': ['garhwali_candidate'],
+            'quality_tiers': ['strict_gold_candidate'],
+            'quality_flags': [],
+            'provenance': [{**rights_basis, 'training_eligible': False}],
+            'public_rights_basis': [rights_basis],
+        }
+        self.assertFalse(m.recommended_text_training_row(row))
+        row['provenance'][0]['training_eligible'] = True
+        self.assertTrue(m.recommended_text_training_row(row))
+        row['split'] = 'validation'
+        self.assertFalse(m.recommended_text_training_row(row))
+        row['split'] = 'train'
+        self.assertTrue(m.recommended_text_training_row(row))
+        row['provenance'][0].pop('training_eligible')
+        self.assertTrue(m.recommended_text_training_row(row))
+
+    def test_catalog_provenance_preserves_source_training_flags(self):
+        exported = m.catalog_provenance({
+            'source_id': 'open',
+            'record_id': 'open:1',
+            'training_eligible': False,
+            'experimental_training_eligible': True,
+        })
+        self.assertIs(exported['training_eligible'], False)
+        self.assertIs(exported['experimental_training_eligible'], True)
 
     def test_public_knowledge_requires_explicit_rights_basis(self):
         cleared = {
@@ -976,7 +1213,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIn('factual/bibliographic form', card)
         self.assertNotIn('university-research resources built by the Garhwali Language Lab', card)
         self.assertNotIn('config_name: geography', card)
-        self.assertIn('The full source texts remain in the access-controlled all-data package', card)
+        self.assertIn('For retained catalog entries, the full text not included in this public profile remains in the local all-data package', card)
         self.assertIn('Garhwali Speech', card)
         self.assertIn('rushilrawat/garhwali-speech', card)
 
@@ -1078,8 +1315,113 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIn('v0.2.2 — improve traceability and report usable counts', card)
         self.assertIn('deduplicated `text_expansion` view', card)
         self.assertIn('`text_expansion` config adds **1,658** Garhwali candidate texts', card)
-        self.assertIn('**607** have no remaining record-quality flags', card)
+        self.assertIn("**607** currently meet the project's conservative training-recommendation rule", card)
+        self.assertIn('**1,051** do not pass the current source-eligibility or quality gates', card)
         self.assertIn('figures below describe the current v0.2.2 package', card)
+
+    def test_v0_2_4_card_documents_metadata_only_attribution_update(self):
+        report = {
+            'release_id': 'garhwali-language-lab-v0.2.4',
+            'profile': 'public',
+            'configs': {'text/train': {'records': 1}},
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'draft_unique_audio': 0,
+            'catalog_records': 1,
+            'catalog_redacted_text_records': 0,
+            'structured_knowledge_excluded_for_rights': {},
+            'structured_knowledge_metadata_only': {},
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+            'text_expansion_metrics': {},
+            'text_resource_metrics': {'records': 1, 'recommended_for_training': 0},
+        }
+
+        card = m.dataset_card(report)
+
+        flattened_card = ' '.join(card.split())
+        self.assertIn('v0.2.4 — improve source attribution and revision traceability', flattened_card)
+        self.assertIn('creator attribution for 36 existing Tatoeba sentences', flattened_card)
+        self.assertIn('319 existing Wikimedia and Wiktionary records', flattened_card)
+        self.assertIn('No new text is added', flattened_card)
+        self.assertIn('**0** are currently recommended for training', flattened_card)
+        self.assertLess(flattened_card.index('v0.2.2 — improve traceability'),
+                        flattened_card.index('v0.2.3 — surface additional'))
+
+    def test_v0_2_5_card_documents_source_overlap_split(self):
+        report = {
+            'release_id': 'garhwali-language-lab-v0.2.5',
+            'profile': 'public',
+            'configs': {'text/train': {'records': 2}},
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'draft_unique_audio': 0,
+            'catalog_records': 2,
+            'catalog_redacted_text_records': 0,
+            'structured_knowledge_excluded_for_rights': {},
+            'structured_knowledge_metadata_only': {},
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+            'text_source_overlap_records': 1308,
+            'text_expansion_metrics': {
+                'records': 1647,
+                'recommended_for_training': 0,
+                'source_split_overlap_records': 363,
+            },
+            'text_resource_metrics': {'records': 246, 'recommended_for_training': 0},
+        }
+
+        card = ' '.join(m.dataset_card(report).split())
+
+        self.assertIn('v0.2.5 — prevent upstream evaluation-source overlap', card)
+        self.assertIn('routes text linked to upstream Meta/VAANI development or test sources', card)
+        self.assertIn('text/source_overlap', card)
+        self.assertIn('**1,308** rows previously assigned to `text/train`', card)
+        self.assertIn('**363** similar catalog additions', card)
+        self.assertIn('The text package preserves every row', card)
+
+    def test_card_can_declare_explicit_features_for_problematic_config(self):
+        report = {
+            'release_id': 'garhwali-language-lab-v0.2.5',
+            'profile': 'public',
+            'configs': {'text_expansion/train': {'records': 1}},
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'draft_unique_audio': 0,
+            'catalog_records': 0,
+            'catalog_redacted_text_records': 0,
+            'structured_knowledge_excluded_for_rights': {},
+            'structured_knowledge_metadata_only': {},
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+            'text_expansion_metrics': {
+                'records': 1, 'recommended_for_training': 0,
+                'source_split_overlap_records': 0,
+            },
+            'text_resource_metrics': {'records': 0, 'recommended_for_training': 0},
+        }
+        dataset_info = [{
+            'config_name': 'text_expansion',
+            'features': [{'name': 'dialect_quality', 'struct': [
+                {'name': 'dialect_labels', 'list': {'dtype': 'string'}},
+            ]}],
+        }]
+
+        card = m.dataset_card(report, dataset_info=dataset_info)
+        metadata_line = next(
+            line for line in card.splitlines() if line.startswith('dataset_info: ')
+        )
+
+        self.assertEqual(json.loads(metadata_line.partition(': ')[2]), dataset_info)
 
     def test_catalog_includes_open_text(self):
         row = {

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import errno
 import hashlib
 import json
@@ -13,6 +14,7 @@ import shutil
 import tempfile
 import unicodedata
 from collections import Counter
+from functools import lru_cache
 from pathlib import Path
 
 from record_schema import normalize_record
@@ -22,6 +24,8 @@ from hf_source_registry import SOURCE_URLS, source_record_locator
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab'
 ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
+SOURCE_ATTRIBUTION_OVERLAY_PATH = ROOT / 'research/source-attribution-overlays-2026-10-05.json'
+UPSTREAM_SPLIT_OVERLAP_PATH = ROOT / 'research/huggingface-upstream-split-overlap-2026-10-05.json'
 # Preserve these earlier local output paths in the overwrite guard. Their names
 # are historical storage paths, not semantic project release versions.
 LEGACY_PUBLIC_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-v2.0.0-staging'
@@ -739,6 +743,87 @@ def source_record_ids(row):
     }
 
 
+@lru_cache(maxsize=1)
+def upstream_split_overlap_ids():
+    """Return audited source IDs whose upstream component split is held out."""
+    if not UPSTREAM_SPLIT_OVERLAP_PATH.is_file():
+        raise FileNotFoundError(
+            f'Missing upstream split audit: {UPSTREAM_SPLIT_OVERLAP_PATH}'
+        )
+    payload = json.loads(
+        UPSTREAM_SPLIT_OVERLAP_PATH.read_text(encoding='utf-8')
+    )
+    if payload.get('schema_version') != 'garhwali-upstream-split-overlap-v1':
+        raise ValueError('Unsupported upstream split overlap audit schema')
+    direct_ids = payload.get('meta_upstream_eval_record_ids')
+    aggregate_rows = payload.get('community_rows_with_eval_split_text_matches')
+    if not isinstance(direct_ids, list) or not isinstance(aggregate_rows, list):
+        raise ValueError('Upstream split overlap audit has incomplete ID lists')
+    aggregate_ids = {
+        str(row['record_id'])
+        for row in aggregate_rows
+        if isinstance(row, dict) and row.get('record_id')
+    }
+    return set(map(str, direct_ids)), aggregate_ids
+
+
+def route_upstream_split_overlap(row, direct_eval_ids, aggregate_eval_ids):
+    """Keep a row public but move a train row with upstream eval lineage aside."""
+    result = dict(row)
+    record_ids = source_record_ids(result)
+    direct_matches = sorted(record_ids & direct_eval_ids)
+    aggregate_matches = sorted(record_ids & aggregate_eval_ids)
+    if direct_matches and aggregate_matches:
+        status = 'upstream_record_and_transcript_match'
+    elif direct_matches:
+        status = 'upstream_eval_record_id_match'
+    elif aggregate_matches:
+        status = 'upstream_eval_transcript_match'
+    else:
+        status = 'no_upstream_eval_match_detected'
+    result['source_split_overlap_status'] = status
+    result['source_split_overlap_source_ids'] = sorted(
+        set(direct_matches + aggregate_matches)
+    )
+    if result.get('split') == 'train' and status != 'no_upstream_eval_match_detected':
+        result['original_split'] = result.get('original_split') or 'train'
+        result['split'] = 'source_overlap'
+        assignment = str(result.get('split_assignment') or '').strip()
+        reason = (
+            'upstream dev/test source overlap; text retained and routed to '
+            'source_overlap instead of default train'
+        )
+        result['split_assignment'] = f'{assignment}; {reason}'.strip('; ')
+        result['recommended_for_training'] = False
+    return result
+
+
+@lru_cache(maxsize=1)
+def source_attribution_overlays():
+    """Load audited, content-free creator and revision metadata once per build."""
+    if not SOURCE_ATTRIBUTION_OVERLAY_PATH.is_file():
+        return {}
+    payload = json.loads(SOURCE_ATTRIBUTION_OVERLAY_PATH.read_text(encoding='utf-8'))
+    if payload.get('schema_version') != 'garhwali-source-attribution-overlay-v1':
+        raise ValueError('Unsupported source attribution overlay schema')
+    records = payload.get('records')
+    if not isinstance(records, dict):
+        raise ValueError('Source attribution overlay has no record map')
+    return records
+
+
+def enrich_source_attribution(item, overlays=None):
+    """Overlay audited attribution metadata without replacing source content."""
+    item = dict(item)
+    record_id = item.get('record_id')
+    overlay = (source_attribution_overlays() if overlays is None else overlays).get(record_id)
+    if not overlay:
+        return item
+    if overlay.get('source_id') != item.get('source_id'):
+        raise ValueError(f'Source ID mismatch in attribution overlay for {record_id}')
+    return {**item, **overlay}
+
+
 def comparable_text_rows(rows, field):
     """Expose selected text-bearing fields to the shared exact-text deduper."""
     for row in rows:
@@ -827,7 +912,7 @@ def build_catalog_text_expansion(catalog_rows, existing_text_rows, benchmark_eva
             'split': 'train',
             'duplicate_component_id': None,
             'original_split': 'catalog/train',
-            'split_assignment': 'strict rights-cleared catalog addition; normalized-text and evaluation source-record overlaps excluded; source-page-family isolation not assessed',
+            'split_assignment': 'strict rights-cleared catalog addition; normalized-text and project evaluation-source overlaps excluded; known upstream dev/test overlaps route to source_overlap; source-page-family isolation not assessed',
             'quality_flags': quality_flags,
             'provenance': list(row.get('public_rights_basis') or []),
         })
@@ -929,7 +1014,8 @@ def build_catalog_text_resources(catalog_rows, existing_text_rows, benchmark_eva
             'split': 'train',
             'split_assignment': (
                 'supplementary redistributable resource; normalized duplicates and '
-                'held-out evaluation source-record overlaps excluded; not an '
+                'project held-out evaluation source-record overlaps excluded; '
+                'upstream dev/test overlaps route to source_overlap; not an '
                 'evaluation split'
             ),
             'intended_use': ['language_resource_lookup', 'research'],
@@ -949,7 +1035,30 @@ def build_catalog_text_resources(catalog_rows, existing_text_rows, benchmark_eva
 
 
 def recommended_text_training_row(row):
+    if row.get('split') not in (None, 'train'):
+        return False
     rights_basis = row.get('public_rights_basis') or []
+    provenance = row.get('provenance') or row.get('sources') or []
+    source_rows = [
+        item for item in [*provenance, *rights_basis]
+        if isinstance(item, dict)
+    ]
+    source_training_flags = [
+        item['training_eligible'] for item in source_rows
+        if isinstance(item.get('training_eligible'), bool)
+    ]
+    source_quality_flags = {
+        flag
+        for item in source_rows
+        for flag in item.get('quality_flags') or []
+        if isinstance(flag, str) and flag
+    }
+    if (
+        (source_training_flags and not any(source_training_flags))
+        or source_quality_flags
+        or row.get('record_quality_flags')
+    ):
+        return False
     return bool(
         row.get('language') == 'gbm'
         and set(row.get('source_languages') or []) == {'gbm'}
@@ -1013,7 +1122,9 @@ def text_row(row, parent_quality=None):
         'original_split': row.get('original_split') or '',
         'split_assignment': row.get('split_assignment') or '',
         'quality_flags': row.get('quality_flags') or [],
-        'provenance': provenance_items(row),
+        'provenance': [
+            enrich_source_attribution(item) for item in provenance_items(row)
+        ],
         'public_rights_basis': [
             catalog_provenance(item) for item in publishable_provenance_items(row)
         ],
@@ -1024,6 +1135,9 @@ def text_row(row, parent_quality=None):
 
 def with_public_rights_basis(row):
     enriched = dict(row)
+    enriched['provenance'] = [
+        enrich_source_attribution(item) for item in provenance_items(row)
+    ]
     enriched['public_rights_basis'] = [
         catalog_provenance(item) for item in publishable_provenance_items(row)
     ]
@@ -1057,6 +1171,7 @@ def refresh_acceptable_responses(rows):
 
 
 def catalog_provenance(item):
+    item = enrich_source_attribution(item)
     item = (
         open_bible_stories_provenance(item)
         or noncommercial_catalog_provenance(item)
@@ -1067,9 +1182,15 @@ def catalog_provenance(item):
     keep = (
         'source_id', 'source_url', 'source_title', 'source_kind',
         'source_snapshot_sha256', 'source_capture_id', 'source_capture_path',
-        'source_notes', 'source_capture_bytes', 'record_id', 'iso_639_3', 'genre', 'script',
+        'source_notes', 'source_capture_bytes', 'record_id', 'source_revision',
+        'source_history_url', 'source_title', 'item_url', 'iso_639_3', 'genre', 'script',
         'license', 'license_id', 'license_url', 'rights_status', 'quality_flags',
-        'rights_evidence', 'attribution',
+        'training_eligible', 'experimental_training_eligible',
+        'rights_evidence', 'attribution', 'attribution_name', 'contributor',
+        'contributor_profile_url', 'contributor_added_date', 'attribution_status',
+        'attribution_evidence_url', 'attribution_evidence_sha256',
+        'attribution_evidence_retrieved_at', 'source_api_url', 'api_retrieved_at',
+        'upstream_owner', 'upstream_orphaned', 'upstream_unapproved',
         'commercial_use_status', 'model_training_status',
         'third_party_material_included', 'sharealike_required',
         'permitted_audiences',
@@ -1490,10 +1611,120 @@ def source_expansion_metrics():
     }
 
 
-def dataset_card(report):
+def _is_hf_null_feature(feature):
+    return (
+        isinstance(feature, dict)
+        and feature.get('_type') == 'Value'
+        and feature.get('dtype') == 'null'
+    )
+
+
+def _merge_hf_feature_nodes(left, right, path):
+    if left == right:
+        return copy.deepcopy(left)
+    if _is_hf_null_feature(left):
+        return copy.deepcopy(right)
+    if _is_hf_null_feature(right):
+        return copy.deepcopy(left)
+    if isinstance(left, dict) and isinstance(right, dict):
+        left_type = left.get('_type')
+        right_type = right.get('_type')
+        if left_type == right_type == 'List':
+            return {
+                **copy.deepcopy(left),
+                'feature': _merge_hf_feature_nodes(
+                    left['feature'], right['feature'], f'{path}[]'
+                ),
+            }
+        if left_type or right_type:
+            raise ValueError(
+                f'incompatible Hugging Face feature at {path}: '
+                f'{left!r} versus {right!r}'
+            )
+        merged = {}
+        for key in sorted(set(left) | set(right)):
+            if key in left and key in right:
+                merged[key] = _merge_hf_feature_nodes(
+                    left[key], right[key], f'{path}.{key}'
+                )
+            else:
+                merged[key] = copy.deepcopy(
+                    left[key] if key in left else right[key]
+                )
+        return merged
+    raise ValueError(
+        f'incompatible Hugging Face feature at {path}: '
+        f'{left!r} versus {right!r}'
+    )
+
+
+def merge_hf_feature_schemas(schemas):
+    """Union JSON shard schemas, promoting null-only fields to observed types."""
+    merged = {}
+    for schema in schemas:
+        merged = _merge_hf_feature_nodes(merged, schema, 'root')
+    return merged
+
+
+def infer_hf_config_features(config_dir):
+    """Infer one stable Hub schema across a config's independently written shards."""
+    try:
+        from datasets import Dataset, Features
+    except ImportError as exc:
+        raise RuntimeError(
+            'Install requirements-hf-release.txt to infer Dataset Viewer feature metadata'
+        ) from exc
+
+    shard_paths = sorted(Path(config_dir).glob('*.jsonl'))
+    if not shard_paths:
+        raise ValueError(f'No JSONL shards found in {config_dir}')
+    with tempfile.TemporaryDirectory(prefix='garhwali-hf-feature-schema-') as cache_dir:
+        schemas = [
+            Dataset.from_json(
+                str(path), cache_dir=cache_dir, keep_in_memory=True,
+                chunksize=path.stat().st_size + 1,
+            ).features.to_dict()
+            for path in shard_paths
+        ]
+    features = Features.from_dict(merge_hf_feature_schemas(schemas))
+    return features._to_yaml_list()
+
+
+def dataset_card(report, dataset_info=None):
     release_version = str(report.get('release_id', '')).rsplit('-v', 1)[-1]
     candidate_history = ''
-    if release_version == '0.2.3':
+    if release_version == '0.2.4':
+        candidate_history = '''
+4. **v0.2.2 — improve traceability and report usable counts.** The package
+   resolves existing social-record IDs to their item URLs, separates source
+   references from content rows, reports rights and reuse labels by config, and
+   adds a deduplicated `text_expansion` view from already-collected catalog
+   values. Earlier files remain available.
+5. **v0.2.3 — surface additional existing Garhwali resources.** Adds a
+   deduplicated, rights-filtered `text_resources` view for catalog text not
+   already present in other text-bearing configurations. The view preserves
+   row-level rights and quality signals, excludes held-out evaluation source
+   records, and is explicitly not an evaluation set or uniformly training-ready.
+6. **v0.2.4 — improve source attribution and revision traceability.** Recovers
+   creator attribution for 36 existing Tatoeba sentences and adds immutable
+   page-revision/history links for 319 existing Wikimedia and Wiktionary
+   records. No new text is added; source text, release eligibility, and review
+   status are not promoted by this metadata update.'''
+    elif release_version == '0.2.5':
+        candidate_history = '''
+4. **v0.2.2 — improve traceability and report usable counts.** Resolves existing
+   social-record IDs to item URLs, separates source references from content,
+   and adds a deduplicated `text_expansion` view from collected catalog values.
+5. **v0.2.3 — surface existing Garhwali resources.** Adds a deduplicated,
+   rights-filtered `text_resources` view with row-level source and quality data.
+6. **v0.2.4 — improve source attribution and revision traceability.** Recovers
+   creator attribution for 36 Tatoeba sentences and immutable history links for
+   319 Wikimedia/Wiktionary records. It adds no source text.
+7. **v0.2.5 — prevent upstream evaluation-source overlap in default train.**
+   Keeps all records but routes text linked to upstream Meta/VAANI development
+   or test sources into an explicit `source_overlap` split. The split audit and
+   evidence IDs are included with the release.'''
+    elif release_version == '0.2.3':
         candidate_history = '''
 5. **v0.2.3 — surface additional existing Garhwali resources.** Adds a
    deduplicated, rights-filtered `text_resources` view for catalog text not
@@ -1551,9 +1782,18 @@ def dataset_card(report):
             f'- config_name: {name}\n  data_files:\n' + '\n'.join(files)
         )
     configs_yaml = '\n'.join(config_blocks)
+    dataset_info_yaml = ''
+    if dataset_info:
+        # JSON flow collections are valid YAML and keep generated feature
+        # metadata deterministic without adding a YAML dependency to the pipeline.
+        dataset_info_yaml = (
+            'dataset_info: '
+            + json.dumps(dataset_info, ensure_ascii=False, separators=(',', ':'))
+            + '\n'
+        )
     config_uses = {
         'asr': 'provider transcripts; not native-adjudicated',
-        'catalog': 'unique text inventory; some values may be redacted',
+        'catalog': 'unique text inventory with content and metadata-only entries',
         'geography': 'place facts and citations',
         'historical_terms': 'historical names and terms',
         'instructions': 'instruction/response examples',
@@ -1565,9 +1805,9 @@ def dataset_card(report):
         'record_sources': 'record-to-source links; not training examples',
         'source_catalog': 'deduplicated source and rights references',
         'sravaani_drafts': 'machine transcript drafts; not ground truth',
-        'text': 'Garhwali text examples',
-        'text_expansion': 'additional strict-tier text; source/evaluation-linked and normalized duplicates excluded',
-        'text_resources': 'additional rights-cleared Garhwali resources; quality varies; not an evaluation set',
+        'text': 'Garhwali text examples; source_overlap preserves rows linked to upstream dev/test content outside train',
+        'text_expansion': 'strict-tier candidates; upstream dev/test overlaps are in source_overlap; not evaluation data',
+        'text_resources': 'additional rights-cleared Garhwali resources; quality varies; upstream overlaps are separately split',
         'university_research': 'research bibliography',
     }
     config_rows = []
@@ -1621,21 +1861,30 @@ notes, lyrics, summaries, and source passages omitted.'''
 **{report['catalog_records']:,} exact-unique collected text records**. Rows whose
 source terms do not permit redistribution retain their stable content hash,
 source URL, rights status, quality tier, language evidence, and review reasons;
-their text remains redacted. The current catalog exposes **{report.get('catalog_noncommercial_records', 0):,}** CC BY-NC-SA 4.0 records,
+their full text is not included in public content. The current catalog exposes **{report.get('catalog_noncommercial_records', 0):,}** CC BY-NC-SA 4.0 records,
 **{report.get('catalog_sharealike_records', 0):,}** total share-alike records, and
 **{report.get('catalog_source_policy_records', 0):,}** entries under source-specific reproduction policies (5 PIB instrument facts and 193 Mountain Voices glossary headwords), plus **{report.get('catalog_factual_word_records', 0):,}** exact one-token facts published without definitions, source record positions, or list arrangement. The fact-only projection includes individually selected tokens and lexical tokens that appear in at least two distinct thematic source collections; it is not a copy of any source list. The Panos guideline permits attributed reproduction by press, educational/research institutions, and nonprofits; commercial scope and machine-learning training are not expressly addressed, so these headwords are excluded from model-training views. Per-row terms apply; the package asserts no blanket content license.'''
         metadata_only = sum(
             report.get('structured_knowledge_metadata_only', {}).values()
         )
-        access_notice = f'''All **{metadata_only:,} structured geography, history, literature, song, and research records** appear in factual/bibliographic form; no records are dropped from these metadata configurations. Prose notes, lyrics, translations, abstracts, and source passages are omitted unless separately licensed. The full source texts remain in the access-controlled all-data package. Each text-catalog record carries its specific rights state: CC BY-SA rows require attribution and share-alike; CC BY-NC-SA rows are noncommercial and share-alike; the five PIB instrument terms cite the PIB reproduction policy; and the 193 Mountain Voices glossary headwords carry Panos's attributed-reproduction guideline for press, educational/research institutions, and nonprofits. That guideline does not expressly address commercial scope or model training, so those values are excluded from model-training views. The **{report.get('catalog_factual_word_records', 0):,}** isolated one-token facts are listed without definitions, source record positions, or list ordering. Lexical facts from unlicensed thematic sources are included only when independently present in at least two distinct source collections; all such facts remain catalog-only, outside training views, and retain language-review flags. See the [source-by-source rights-resolution log](research/text-rights-resolution-2026-09-30.md). Native-speaker review and dialect annotation are deferred; benchmark and model scores are automated research results, not native-validated claims.'''
+        access_notice = f'''All **{metadata_only:,} structured geography, history, literature, song, and research records** appear in factual/bibliographic form; no records are dropped from these metadata configurations. Prose notes, lyrics, translations, abstracts, and source passages are omitted unless separately licensed. For retained catalog entries, the full text not included in this public profile remains in the local all-data package; entries whose source text was not acquired remain represented by their available source metadata. Each text-catalog record carries its specific rights state: CC BY-SA rows require attribution and share-alike; CC BY-NC-SA rows are noncommercial and share-alike; the five PIB instrument terms cite the PIB reproduction policy; and the 193 Mountain Voices glossary headwords carry Panos's attributed-reproduction guideline for press, educational/research institutions, and nonprofits. That guideline does not expressly address commercial scope or model training, so those values are excluded from model-training views. The **{report.get('catalog_factual_word_records', 0):,}** isolated one-token facts are listed without definitions, source record positions, or list ordering. Lexical facts from unlicensed thematic sources are included only when independently present in at least two distinct source collections; all such facts remain catalog-only, outside training views, and retain language-review flags. See the [source-by-source rights-resolution log](research/text-rights-resolution-2026-09-30.md). Native-speaker review and dialect annotation are deferred; benchmark and model scores are automated research results, not native-validated claims.'''
     expansion_metrics = report.get('text_expansion_metrics') or {}
     resource_metrics = report.get('text_resource_metrics') or {}
     text_expansion_summary = f'''## Fast-tracked text expansion
 
-The `text_expansion` config adds **{expansion_metrics.get('records', 0):,}** Garhwali candidate texts from the existing catalog. Each passed automated strict-tier and recorded rights-basis checks, is absent from the existing text splits after NFKC/alphanumeric normalization, and has no source-record ID matching existing text validation/test or frozen benchmark validation/test rows. The values remain machine-screened, not native-reviewed. **{expansion_metrics.get('recommended_for_training', 0):,}** have no remaining record-quality flags and pass the project's current training-recommendation rule. This config is train-only; source-page-family isolation is not assessed, so it is not an independent evaluation set. Values also appear in the `catalog` inventory by design; do not add config row counts when reporting unique texts.'''
+The `text_expansion` config adds **{expansion_metrics.get('records', 0):,}** Garhwali candidate texts from the existing catalog. Each passed automated strict-tier and recorded rights-basis checks, is absent from the existing text splits after NFKC/alphanumeric normalization, and has no source-record ID matching existing text validation/test or frozen benchmark validation/test rows. **{expansion_metrics.get('source_split_overlap_records', 0):,}** values with upstream Meta or VAANI development/test source matches remain published in the `source_overlap` split, outside default `train`. The values remain machine-screened, not native-reviewed. **{expansion_metrics.get('recommended_for_training', 0):,}** currently meet the project's conservative training-recommendation rule; **{max(0, expansion_metrics.get('records', 0) - expansion_metrics.get('recommended_for_training', 0)):,}** do not pass the current source-eligibility or quality gates. This is not training approval; source-page-family isolation is not assessed, so it is not an independent evaluation set. Values also appear in the `catalog` inventory by design; do not add config row counts when reporting unique texts.'''
     text_resources_summary = f'''## Supplementary text resources
 
-The `text_resources` config adds **{resource_metrics.get('records', 0):,}** additional normalized-unique Garhwali records ({resource_metrics.get('whitespace_words', 0):,} whitespace-delimited words; {resource_metrics.get('characters', 0):,} characters) already present in the source catalog. These pass the recorded redistribution-basis and Garhwali-language filters and are absent from the existing text-bearing views after normalized deduplication. Their quality tiers vary; **none are recommended for evaluation**, and the config is intended for lookup and research. Check each row's `redistribution_status`, license, quality flags, and source terms before reuse. CC BY-NC-SA rows are limited to noncommercial use and require share-alike; this subset is not uniformly training-ready or a native-reviewed text set.'''
+The `text_resources` config adds **{resource_metrics.get('records', 0):,}** additional normalized-unique Garhwali records ({resource_metrics.get('whitespace_words', 0):,} whitespace-delimited words; {resource_metrics.get('characters', 0):,} characters) already present in the source catalog. These pass the recorded redistribution-basis and Garhwali-language filters and are absent from the existing text-bearing views after normalized deduplication. Their quality tiers vary; **{resource_metrics.get('recommended_for_training', 0):,}** are currently recommended for training and none are recommended for evaluation. The config is intended for lookup and research. Check each row's `redistribution_status`, license, quality flags, and source terms before reuse. CC BY-NC-SA rows are limited to noncommercial use and require share-alike; this subset is not uniformly training-ready or a native-reviewed text set.'''
+    release_version = str(report.get('release_id', '')).rsplit('-v', 1)[-1]
+    overlap_audit_url = (
+        'https://huggingface.co/datasets/rushilrawat/garhwali-corpus/blob/main/'
+        f'releases/v{release_version}/research/'
+        'huggingface-upstream-split-overlap-2026-10-05.md'
+    )
+    text_source_overlap_summary = f'''## Upstream source-split overlap
+
+The text package preserves every row. The `text/source_overlap` split contains **{report.get('text_source_overlap_records', 0):,}** rows previously assigned to `text/train` that carry a Meta dev/test record ID or a transcript match to held-out Meta/VAANI source material. The `text_expansion/source_overlap` split contains **{expansion_metrics.get('source_split_overlap_records', 0):,}** similar catalog additions. These rows remain downloadable and retain their source metadata, but are kept outside the default train split. This is a conservative source-lineage warning, not a claim that all matched audio recordings are identical. See the [split-overlap audit]({overlap_audit_url}).'''
     draft_summary = (
         f'{package_summary}. The SraVaani draft config covers '
         f'**{draft_unique_audio:,} unique audio hashes**{draft_source_summary}: '
@@ -1716,7 +1965,7 @@ task_categories:
 - translation
 configs:
 {configs_yaml}
----
+{dataset_info_yaml}---
 
 # Garhwali Language Lab
 
@@ -1788,6 +2037,8 @@ for the latest measured results and limitations.
 
 {catalog_summary}
 
+{text_source_overlap_summary}
+
 {text_expansion_summary}
 
 {text_resources_summary}
@@ -1827,11 +2078,21 @@ release audit are in the [source repository](https://github.com/rushilrawat/Garh
 def _build_at(output, profile='public', include_audio=False,
               allow_partial_drafts=False, shard_rows=10_000):
     output = prepare_package_output(output)
+    direct_eval_record_ids, aggregate_eval_record_ids = upstream_split_overlap_ids()
+    overlap_audit = json.loads(
+        UPSTREAM_SPLIT_OVERLAP_PATH.read_text(encoding='utf-8')
+    )
     report = {
         'release_id': RELEASE_ID,
         'record_schema_version': '1.0.0',
         'profile': profile,
         'include_audio': include_audio,
+        'upstream_split_overlap_audit': {
+            'schema_version': overlap_audit['schema_version'],
+            'sha256': sha256_file(UPSTREAM_SPLIT_OVERLAP_PATH),
+            'direct_upstream_eval_record_ids': len(direct_eval_record_ids),
+            'community_transcript_overlap_record_ids': len(aggregate_eval_record_ids),
+        },
         'configs': {},
         'structured_knowledge_excluded_for_rights': {},
         'structured_knowledge_metadata_only': {},
@@ -1846,7 +2107,7 @@ def _build_at(output, profile='public', include_audio=False,
     text_dir = ROOT / 'data/processed/model_ready/splits/text'
     for split in ('train', 'validation', 'test'):
         rows = read_jsonl(text_dir / f'{split}.jsonl')
-        exported_rows = (text_row(row, parent_quality) for row in rows)
+        exported_rows = [text_row(row, parent_quality) for row in rows]
         if profile == 'public':
             exported_rows = (
                 exported
@@ -1854,10 +2115,29 @@ def _build_at(output, profile='public', include_audio=False,
                 if exported['language'] == 'gbm'
                 and is_public_garhwali_text_row(exported)
             )
-        report['configs'][f'text/{split}'] = write_shards(
-            exported_rows,
-            output / 'data/text', split, shard_rows
-        )
+        exported_rows = [
+            route_upstream_split_overlap(
+                row, direct_eval_record_ids, aggregate_eval_record_ids
+            )
+            for row in exported_rows
+        ]
+        if split == 'train':
+            train_rows = [row for row in exported_rows if row['split'] == 'train']
+            overlap_rows = [
+                row for row in exported_rows if row['split'] == 'source_overlap'
+            ]
+            report['text_source_overlap_records'] = len(overlap_rows)
+            report['configs']['text/train'] = write_shards(
+                train_rows, output / 'data/text', 'train', shard_rows
+            )
+            if overlap_rows:
+                report['configs']['text/source_overlap'] = write_shards(
+                    overlap_rows, output / 'data/text', 'source_overlap', shard_rows
+                )
+        else:
+            report['configs'][f'text/{split}'] = write_shards(
+                exported_rows, output / 'data/text', split, shard_rows
+            )
 
     existing_text_rows = []
     for path in sorted((output / 'data/text').glob('*.jsonl')):
@@ -1955,17 +2235,59 @@ def _build_at(output, profile='public', include_audio=False,
     text_expansion_rows, text_expansion_metrics = build_catalog_text_expansion(
         catalog_rows, existing_text_rows, benchmark_eval_rows
     )
+    text_expansion_rows = [
+        route_upstream_split_overlap(
+            row, direct_eval_record_ids, aggregate_eval_record_ids
+        )
+        for row in text_expansion_rows
+    ]
+    expansion_overlap_rows = [
+        row for row in text_expansion_rows if row['split'] == 'source_overlap'
+    ]
+    expansion_train_rows = [
+        row for row in text_expansion_rows if row['split'] == 'train'
+    ]
+    text_expansion_metrics['source_split_overlap_records'] = len(
+        expansion_overlap_rows
+    )
+    text_expansion_metrics['train_records'] = len(expansion_train_rows)
     report['text_expansion_metrics'] = text_expansion_metrics
     report['configs']['text_expansion/train'] = write_shards(
-        text_expansion_rows, output / 'data/text_expansion', 'train', shard_rows
+        expansion_train_rows, output / 'data/text_expansion', 'train', shard_rows
     )
+    if expansion_overlap_rows:
+        report['configs']['text_expansion/source_overlap'] = write_shards(
+            expansion_overlap_rows, output / 'data/text_expansion',
+            'source_overlap', shard_rows
+        )
     text_resource_rows, text_resource_metrics = build_catalog_text_resources(
         catalog_rows, [*existing_text_rows, *text_expansion_rows], benchmark_eval_rows
     )
+    text_resource_rows = [
+        route_upstream_split_overlap(
+            row, direct_eval_record_ids, aggregate_eval_record_ids
+        )
+        for row in text_resource_rows
+    ]
+    resource_overlap_rows = [
+        row for row in text_resource_rows if row['split'] == 'source_overlap'
+    ]
+    resource_train_rows = [
+        row for row in text_resource_rows if row['split'] == 'train'
+    ]
+    text_resource_metrics['source_split_overlap_records'] = len(
+        resource_overlap_rows
+    )
+    text_resource_metrics['train_records'] = len(resource_train_rows)
     report['text_resource_metrics'] = text_resource_metrics
     report['configs']['text_resources/train'] = write_shards(
-        text_resource_rows, output / 'data/text_resources', 'train', shard_rows
+        resource_train_rows, output / 'data/text_resources', 'train', shard_rows
     )
+    if resource_overlap_rows:
+        report['configs']['text_resources/source_overlap'] = write_shards(
+            resource_overlap_rows, output / 'data/text_resources',
+            'source_overlap', shard_rows
+        )
 
     for family, path in KNOWLEDGE_CONFIGS.items():
         if not path.exists():
@@ -2099,7 +2421,16 @@ def _build_at(output, profile='public', include_audio=False,
     report['newly_linked_audio_files'] = link_report['new']
     report['removed_audio_files'] = removed_audio_files
     output.mkdir(parents=True, exist_ok=True)
-    (output / 'README.md').write_text(dataset_card(report), encoding='utf-8')
+    dataset_info = []
+    for config_name in ('sravaani_drafts', 'text_expansion'):
+        if report['configs'].get(f'{config_name}/train', {}).get('records', 0):
+            dataset_info.append({
+                'config_name': config_name,
+                'features': infer_hf_config_features(output / 'data' / config_name),
+            })
+    (output / 'README.md').write_text(
+        dataset_card(report, dataset_info=dataset_info), encoding='utf-8'
+    )
     for name in ('LICENSE_POLICY.md', 'ATTRIBUTION.md', 'REMOVAL_POLICY.md'):
         shutil.copy2(ROOT / name, output / name)
     for name in ('DEVELOPER_QUICKSTART.md', 'DATASET_SCHEMA.md'):
@@ -2112,6 +2443,11 @@ def _build_at(output, profile='public', include_audio=False,
     rights_report_target = output / 'research' / rights_report.name
     rights_report_target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(rights_report, rights_report_target)
+    for name in (
+        'huggingface-upstream-split-overlap-2026-10-05.md',
+        'huggingface-upstream-split-overlap-2026-10-05.json',
+    ):
+        shutil.copy2(ROOT / 'research' / name, output / 'research' / name)
     (output / 'manifest.json').write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
         encoding='utf-8',
