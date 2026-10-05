@@ -9,7 +9,7 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from asr_metrics import score
+from asr_metrics import normalize, score
 
 
 def read_jsonl(path):
@@ -60,6 +60,36 @@ def aggregate(references, hypotheses):
     }, scores
 
 
+def paired_summary(rows):
+    references = [reference for reference, _, _ in rows]
+    baseline_hypotheses = [baseline for _, baseline, _ in rows]
+    candidate_hypotheses = [candidate for _, _, candidate in rows]
+    baseline, _ = aggregate(references, baseline_hypotheses)
+    candidate, _ = aggregate(references, candidate_hypotheses)
+    return {
+        'records': len(rows),
+        'baseline': baseline,
+        'candidate': candidate,
+        'delta_percentage_points': {
+            'wer': round((candidate['wer'] - baseline['wer']) * 100, 6),
+            'cer': round((candidate['cer'] - baseline['cer']) * 100, 6),
+        },
+    }
+
+
+def duration_bucket(row):
+    duration = row.get('duration_seconds')
+    if duration is None:
+        return 'unknown'
+    duration = float(duration)
+    return '<3s' if duration < 3 else '3-8s' if duration < 8 else '8-15s' if duration < 15 else '15s+'
+
+
+def reference_length_bucket(reference):
+    word_count = len(normalize(reference).split())
+    return '1-10' if word_count <= 10 else '11-25' if word_count <= 25 else '26+'
+
+
 def compare_predictions(
     manifest_rows,
     baseline_rows,
@@ -97,10 +127,14 @@ def compare_predictions(
     candidate_metrics, candidate_scores = aggregate(references, candidate_hypotheses)
     directions = Counter()
     speaker_rows = defaultdict(list)
+    duration_rows = defaultdict(list)
+    reference_length_rows = defaultdict(list)
     for key, manifest_row, base_score, candidate_score in zip(
         ordered_keys, (manifest[item] for item in ordered_keys),
         baseline_scores, candidate_scores,
     ):
+        base_prediction = baseline[key]
+        candidate_prediction = candidate[key]
         for metric, error_field in (
             ('wer', 'word_errors'), ('cer', 'character_errors'),
         ):
@@ -116,7 +150,14 @@ def compare_predictions(
         if speaker is not None and str(speaker).strip().casefold() not in {
             '', 'na', 'unknown', 'null', 'none',
         }:
-            speaker_rows[str(speaker)].append((manifest_row, baseline[key], candidate[key]))
+            speaker_rows[str(speaker)].append((manifest_row, base_prediction, candidate_prediction))
+        paired = (
+            manifest_row['asr_target_clean'],
+            base_prediction[baseline_field],
+            candidate_prediction[candidate_field],
+        )
+        duration_rows[duration_bucket(manifest_row)].append(paired)
+        reference_length_rows[reference_length_bucket(manifest_row['asr_target_clean'])].append(paired)
 
     by_speaker = {}
     for speaker, rows in sorted(speaker_rows.items()):
@@ -146,6 +187,14 @@ def compare_predictions(
                 'wer_better_rows', 'wer_worse_rows', 'wer_equal_rows',
                 'cer_better_rows', 'cer_worse_rows', 'cer_equal_rows',
             )
+        },
+        'by_duration': {
+            bucket: paired_summary(rows)
+            for bucket, rows in sorted(duration_rows.items())
+        },
+        'by_reference_length': {
+            bucket: paired_summary(rows)
+            for bucket, rows in sorted(reference_length_rows.items())
         },
         'by_speaker': by_speaker,
     }

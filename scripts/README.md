@@ -128,7 +128,7 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current working-tree suite passes **759 tests**. The
+The current working-tree suite passes **760 tests**. The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
 installs dependencies from `requirements-pipeline.txt`. Current benchmark
@@ -365,7 +365,8 @@ Train from the filtered train view and evaluate only on its paired validation
 view with `scripts/train_whisper_garhwali.py --train-manifest ...
 --eval-manifest ... --eval-split validation --seed 17`. Compare candidate and
 baseline predictions on the exact same IDs, audio hashes, and references with
-`scripts/compare_asr_predictions.py`. See the dated adaptation report for the
-full command, pinned input/model hashes, results, and limits. This result is a
-development diagnostic; it does not authorize scoring Meta test or promoting
-the checkpoint as independently accurate.
+`scripts/compare_asr_predictions.py`. The paired output includes aggregate,
+speaker, duration, and reference-length slices. See the dated adaptation
+report for the full command, pinned input/model hashes, results, and limits.
+This result is a development diagnostic; it does not authorize scoring Meta
+test or promoting the checkpoint as independently accurate.

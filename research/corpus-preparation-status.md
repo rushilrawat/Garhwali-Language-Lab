@@ -1,6 +1,6 @@
 # Corpus preparation status
 
-Updated 2026-10-05. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest discovery suite passed **759/759** on 5 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-10-05. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest discovery suite passed **760/760** on 5 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
 
 ## VAANI official-split lineage and ASR diagnostic — 2026-10-04
 
@@ -47,6 +47,11 @@ Updated 2026-10-05. This is a chronological preparation log: model-result paragr
   test rows remain unscored. No source transcripts changed, no test was used,
   and no paid job or model download was used. Details and hashes are in the
   [adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md).
+- A paired residual-error breakdown by duration and reference length is now
+  included in the adaptation report. All aggregate slices improved, but the
+  largest slice (219 references with 26+ words) still has 89.366% WER. The
+  3–8 second slice has only two rows and is not interpretable; there are no
+  clips under three seconds in this validation subset.
 
 ## Internet Archive deep intake — local snapshot, 2026-10-04
 

@@ -72,6 +72,31 @@ predictions are a subset of the earlier 271-row greedy run. The candidate
 prediction file SHA-256 is
 `2e7154923be78ca5af5bf1b94cd90bbcd52149329b5cc89aad208436fd515dfe`.
 
+## Residual error profile
+
+The paired comparison now reports duration and reference-length strata without
+including transcript text. Most of this compatible validation set consists of
+long clips and long transcripts: 164/241 clips are over 15 seconds, 75 are
+8–15 seconds, and 2 are 3–8 seconds; none are under 3 seconds. By reference
+length, 219/241 have at least 26 words and 22 have 11–25 words. No claim should
+be generalized to short conversational clips from this sample.
+
+| Slice | Rows | Baseline WER / CER | Adapted WER / CER | WER / CER change |
+| --- | ---: | ---: | ---: | ---: |
+| 15 seconds or longer | 164 | 94.266% / 73.887% | 90.790% / 72.512% | −3.476 / −1.376 pp |
+| 8–15 seconds | 75 | 90.199% / 58.055% | 83.981% / 53.930% | −6.218 / −4.125 pp |
+| 3–8 seconds | 2 | 104.444% / 70.968% | 84.444% / 51.613% | −20.000 / −19.355 pp |
+| 26 words or longer | 219 | 93.233% / 71.369% | 89.366% / 69.517% | −3.867 / −1.852 pp |
+| 11–25 words | 22 | 98.253% / 52.059% | 88.210% / 46.365% | −10.044 / −5.694 pp |
+
+All strata improve in aggregate, but the two-row duration group is too small to
+interpret. The largest group still has 89.366% WER after adaptation, so the
+model remains weak on these references despite the relative gain. These are
+descriptive slices of the same validation data, with no independent confidence
+interval or human transcription adjudication. The regenerated local comparison
+JSON has SHA-256
+`98b4e7324c8347c874bff23e4bbe51daa196871a15376351dd5508fe1029f0ab`.
+
 ## Seed check and claim limits
 
 The recipe was run under seed 17 and seed 29. Both runs produced the same

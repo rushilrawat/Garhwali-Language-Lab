@@ -1030,8 +1030,8 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 - Workspace files counted: **238,403**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
 - Detailed file paths listed above: **974**.
-- Ignored or otherwise unlisted payload files: **237,429** (157,125,340,691 bytes).
-- Total workspace bytes counted: **157,142,186,130**.
+- Ignored or otherwise unlisted payload files: **237,429** (157,125,343,971 bytes).
+- Total workspace bytes counted: **157,142,195,390**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1056,7 +1056,7 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
 | `data/extracted/…/` | 736 | 104,222,504 |
 | `data/huggingface/…/` | 1,980 | 72,788,494,485 |
-| `data/processed/…/` | 110,556 | 40,784,032,282 |
+| `data/processed/…/` | 110,556 | 40,784,035,562 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |
 | `data/vaani/…/` | 115,189 | 32,112,461,505 |

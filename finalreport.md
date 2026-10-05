@@ -95,7 +95,7 @@ The 2026 study [*Seeds Before Objectives*](https://arxiv.org/abs/2608.10670)
 reports a five-seed, official-split w2v-BERT 2.0 standard-CTC mean of 47.0%
 WER. Its method supports reporting seed variation; it is not a like-for-like
 comparison to this single Whisper-tiny remainder score or an independent test
-for this project. The current local suite passes **759/759** tests (5 October
+for this project. The current local suite passes **760/760** tests (5 October
 2026, repository CI unittest discovery command).
 
 ## Meta Omnilingual ASR validation — 2026-10-04 to 2026-10-05
@@ -125,9 +125,11 @@ because the recipe was deterministic; this is a reproducibility check, not a
 multi-seed uncertainty estimate. This is promising in-domain development
 evidence, not independent or native-validated accuracy. References remain
 unadjudicated, broad model exposure is incompletely known, and Meta test remains
-unscored. See the [full adaptation report](research/meta-omnilingual-asr-adaptation-2026-10-05.md).
+unscored. The 219-row long-reference slice still has 89.366% WER after
+adaptation; the two-row 3–8 second slice is too small to interpret. See the
+[full adaptation report](research/meta-omnilingual-asr-adaptation-2026-10-05.md).
 
-The 5 October repository test command passes **759/759** unittest cases and
+The 5 October repository test command passes **760/760** unittest cases and
 `validate_release_index.py` passes for release snapshot v0.1.1. Its compact
 artifact hashes and paths also pass when checked without comparing against
 the current source tree. The stricter local `build_release_bundle.py --check`

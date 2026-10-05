@@ -45,6 +45,35 @@ class CompareAsrPredictionsTests(unittest.TestCase):
         self.assertEqual(report['row_directions']['wer_equal_rows'], 1)
         self.assertEqual(report['by_speaker']['speaker-a']['records'], 1)
 
+    def test_reports_paired_duration_and_reference_length_slices(self):
+        manifest = [
+            {
+                **self.manifest_row('r1', 'a1', 'one two', 'speaker-a'),
+                'duration_seconds': 2.0,
+            },
+            {
+                **self.manifest_row('r2', 'a2', 'three four five', 'speaker-b'),
+                'duration_seconds': 5.0,
+            },
+        ]
+        baseline = [
+            self.prediction('r1', 'a1', 'one two', 'one', 'hypothesis'),
+            self.prediction('r2', 'a2', 'three four five', 'three', 'hypothesis'),
+        ]
+        candidate = [
+            self.prediction('r1', 'a1', 'one two', 'one two', 'prediction'),
+            self.prediction('r2', 'a2', 'three four five', 'three four', 'prediction'),
+        ]
+
+        report = compare_predictions(manifest, baseline, candidate)
+
+        self.assertEqual(report['by_duration']['<3s']['records'], 1)
+        self.assertEqual(report['by_duration']['<3s']['baseline']['word_errors'], 1)
+        self.assertEqual(report['by_duration']['<3s']['candidate']['word_errors'], 0)
+        self.assertEqual(report['by_reference_length']['1-10']['records'], 2)
+        self.assertEqual(report['by_reference_length']['1-10']['baseline']['word_errors'], 3)
+        self.assertEqual(report['by_reference_length']['1-10']['candidate']['word_errors'], 1)
+
     def test_rejects_candidate_missing_manifest_records(self):
         manifest = [self.manifest_row('r1', 'a1', 'one', 'speaker-a')]
         baseline = [self.prediction('r1', 'a1', 'one', 'one', 'hypothesis')]

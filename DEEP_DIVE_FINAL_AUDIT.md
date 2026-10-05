@@ -118,11 +118,15 @@ and predictions, so this is a rerun check rather than a seed-variance estimate.
 The gain is development-only: references are unreviewed, checkpoint exposure
 is incomplete, and Meta test was not scored. See the
 [adaptation report](research/meta-omnilingual-asr-adaptation-2026-10-05.md).
+Paired duration and reference-length slices all improve in aggregate; the
+largest group (219 references with 26+ words) nevertheless retains 89.366%
+WER. The 3–8 second slice has two records only; this set includes no clips
+shorter than three seconds.
 
 ## Repository verification — 2026-10-05
 
 The documented repository unittest discovery command passes locally
-**759/759**, and the release-index validator passes for the tracked v0.1.1
+**760/760**, and the release-index validator passes for the tracked v0.1.1
 snapshot. The bundle itself has no
 path/hash failures when source comparison is disabled. The full local
 `build_release_bundle.py --check` finds **60 stale-source entries**: 36
