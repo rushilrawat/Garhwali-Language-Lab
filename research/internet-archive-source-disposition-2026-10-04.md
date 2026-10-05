@@ -6,6 +6,8 @@ The captured local metadata covers **55 distinct Archive items**: 24 text items,
 
 No source text, page, or media was deleted or edited. No new Archive content was approved for model training or public redistribution by this pass. The full OCR pages and source files remain in the ignored local data folders; the tracked register contains item metadata and evidence labels, not extracted expressive text.
 
+**Follow-up:** a separate [priority-language and rights evidence review](internet-archive-priority-language-rights-review-2026-10-04.md) adds scholarly/catalog evidence for the five highest-priority works, identifies the scanned 1977 Himalayan Folklore reprint, and records unresolved Archive CC0 claims against book-level and statutory ownership evidence. This supplemental research does not overwrite the captured metadata claims or alter any eligibility flag.
+
 ## Rights evidence recorded
 
 The following counts describe captured metadata fields, not independently verified rights or permission from authors, publishers, performers, institutions, or other rightsholders:

@@ -41,6 +41,8 @@ The quality results and limits are in the
 [`intake quality audit`](internet-archive-intake-quality-2026-10-04.md).
 All 55 item decisions and source-linked page/media candidate-view details are
 in the [`source disposition report`](internet-archive-source-disposition-2026-10-04.md).
+The follow-up [priority-language and rights evidence review](internet-archive-priority-language-rights-review-2026-10-04.md)
+maps the five strongest works and documents edition and license-claim issues.
 
 ## Metric contract
 
@@ -102,7 +104,9 @@ by held-out evaluation. The complete v0.2.3 per-config preflight is in
 
 **Published 2 October 2026** at [Hub commit `76dac8d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76dac8de70d37595c7af9a3c642c81ece615ec5d). The new config streams through `datasets.load_dataset` with 246 records. The Dataset Viewer Parquet endpoint returned HTTP 500 twice; preview remains unverified. Full selection details are in the [existing-corpus expansion audit](huggingface-existing-corpus-expansion-audit-2026-10-02.md).
 
-**Next action:** the initial page-level triage now records script composition and OCR-warning signals for every candidate. Add stronger language/genre candidate evidence for the 920 priority language-study pages and 432 translated-folklore pages, then investigate item-level reuse evidence for works that contain Garhwali-language material. Keep all automated output as a review signal, not a verified language label; preserve every original page and exclude no candidate from the local inventory. Media language and transcript review is a separate later workstream. Re-run the additive release pipeline only for content with an evidenced compatible use basis.
+**Completed 2026-10-04:** added source-specific language/genre evidence for the 920 priority pages and the translated-folklore group (440 page objects: 432 non-empty, 8 empty), then checked item-level bibliographic and rights evidence for all five works. The priority group has 919 distinct normalized values; the translated group has 431 distinct non-empty normalized values, plus one OCR row that normalizes empty. A duplicated Juyal footer pair is preserved but is not useful language content. The review confirms a 1977 reprint mismatch and two unresolved uploader CC0 claims; the Juyal claim conflicts with an original “all rights reserved” page. No new content was cleared for training or public redistribution; no original page was deleted. See the [priority-language and rights evidence review](internet-archive-priority-language-rights-review-2026-10-04.md).
+
+**Next action:** build reversible page/section maps for the Chatak and Shailesh books, keep language examples separate from Hindi translations and commentary, and run overlap checks before counting any extracted segments. Re-OCR only pages with empty-content or transparent warning signals while retaining original text beside machine output. Review media language/transcripts as a separate source family. Add nothing to a public training/reuse view without a compatible documented basis.
 
 ## Ordered phases
 
@@ -304,6 +308,6 @@ versioned manifest and comparable metrics.
 | 3. Dedup/splits | Partial | `text_expansion` exact-string dedupe is cross-config; complete document-family leakage report remains |
 | 4. Text/lexicon | Active | 246-row supplementary view is public; quality remains mixed, with no training/evaluation promotion |
 | 5. Speech/transcripts | Existing partial audits | Explicit labeled/empty/draft counts and split-safe manifests |
-| 6. Coverage expansion | Active — intake, source disposition, and initial script/OCR triage complete | 119 local payloads; 4,011 OCR pages; 3,981 normalized unique non-empty texts; 2 exact / 0 ≥0.85 near candidates against 32,072 cleaned parent texts; 55 item dispositions; stronger page-language evidence, rights review, and media-content review remain |
+| 6. Coverage expansion | Active — intake, source disposition, priority language/genre evidence, and five-item rights-evidence review complete | 119 local payloads; 4,011 OCR pages; five priority works profiled; 920 language-study page objects and 440 translated-folklore objects; one duplicate footer pair and one normalization-empty row identified; rights remain unresolved; page mapping, OCR improvement, and media-content review remain |
 | 7. HF release views | v0.2.3 live | Upload at `76dac8d`; direct stream verified at 246 rows; retry Viewer/Parquet when the Hub endpoint recovers |
 | 8. Automation | Existing refresh command | Quality-gated, repeatable end-to-end release run |

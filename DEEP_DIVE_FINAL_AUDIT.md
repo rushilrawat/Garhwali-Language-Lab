@@ -23,6 +23,18 @@ See the [source ledger](research/internet-archive-intake-2026-10-03.md),
 [source-by-source disposition](research/internet-archive-source-disposition-2026-10-04.md),
 and [quality/overlap audit](research/internet-archive-intake-quality-2026-10-04.md).
 
+The follow-up examines five priority works: 920 language-study page objects
+and 440 translated/contextual folklore page objects (432 non-empty, 8 empty).
+After normalization, 1,350 distinct non-empty values remain; the repeated
+Juyal pair is digitizer-footer-only, and one Snow Balls row normalizes empty.
+External academic and library evidence strengthens the book-level
+classification of selected sources, but automated script composition does
+not identify page language. A scan dated 1935 in Archive metadata is a 1977
+reprint; the Juyal CC0 claim conflicts with the scan's “all rights reserved”
+notice; the Shailesh uploader claim has no verified rights-holder authority.
+No new Archive pages are eligible for public content or training based on this
+review. See the [detailed evidence report](research/internet-archive-priority-language-rights-review-2026-10-04.md).
+
 ## Hugging Face quality release v0.2.2 — 2026-10-01 (historical audit)
 
 At the time of this 1 October snapshot, the public corpus was v0.2.2; its corrective commit was

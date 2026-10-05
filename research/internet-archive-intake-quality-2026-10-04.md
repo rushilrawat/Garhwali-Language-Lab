@@ -10,14 +10,13 @@ review screens the intake without modifying original source files or promoting
 new records. The GitHub update publishes audit code and findings, not the
 6.01 GB of downloaded PDFs, OCR payloads, audio, or video.
 
-The first Phase 6 intake gate—source-by-source disposition, non-destructive
-candidate views, and comparison with the 32,072-row cleaned parent-text view—is
-complete. Initial page-level script and OCR-warning triage is now attached to
-each candidate and summarized by source group. The next step is stronger
-language/genre candidate evidence for the source-priority subsets, followed by
-source-specific reuse-evidence review. Page-level Garhwali identity, OCR
-accuracy, broader text layers, and media contents remain unverified.
-Native-speaker review remains deferred.
+The intake and first follow-up gates—source-by-source disposition,
+non-destructive candidate views, canonical-text comparison, priority-work
+language/genre evidence, and five-item bibliographic/rights research—are
+complete. See the [priority-language and rights evidence review](internet-archive-priority-language-rights-review-2026-10-04.md).
+Page-level Garhwali identity, OCR accuracy, broader text-layer overlap, legal
+reuse authority, and media contents remain unverified. Native-speaker review
+remains deferred.
 
 ## Intake and quality profile
 
@@ -135,6 +134,6 @@ and its [readable report](internet-archive-source-disposition-2026-10-04.md).
 The extracted page/media candidate JSONL stays in Git-ignored
 `data/extracted/research/internet_archive_candidate_views_2026-10-04/`.
 
-The repository's full configured unittest suite passes **716/716** after these
+The repository's full configured unittest suite passes **718/718** after these
 audit changes. These checks validate the reproducible code path and data
 contracts; they do not validate Garhwali language content or rights.

@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **949**.
+Files indexed: **952**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -599,6 +599,7 @@ python scripts/generate_project_file_map.py
 - `research/internet-archive-garhwali-search-2026-10-03.json`
 - `research/internet-archive-intake-2026-10-03.md`
 - `research/internet-archive-intake-quality-2026-10-04.md`
+- `research/internet-archive-priority-language-rights-review-2026-10-04.md`
 - `research/internet-archive-source-disposition-2026-10-04.json`
 - `research/internet-archive-source-disposition-2026-10-04.md`
 - `research/issues&improvement plan.md`
@@ -673,6 +674,7 @@ python scripts/generate_project_file_map.py
 - `scripts/asr_metrics.py`
 - `scripts/audit_archive_corpus_overlap.py`
 - `scripts/audit_archive_intake_quality.py`
+- `scripts/audit_archive_priority_page_evidence.py`
 - `scripts/audit_audio_quality.py`
 - `scripts/audit_benchmark_nested_overlap.py`
 - `scripts/audit_benchmark_overlap_candidates.py`
@@ -874,6 +876,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_analyze_saved_asr_validation.py`
 - `tests/test_analyze_sravaani_drafts.py`
 - `tests/test_analyze_translation_uncertainty.py`
+- `tests/test_archive_priority_page_evidence.py`
 - `tests/test_asr_metrics.py`
 - `tests/test_asr_requirements.py`
 - `tests/test_audit_archive_corpus_overlap.py`
@@ -1002,11 +1005,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **235,471**.
+- Workspace files counted: **235,475**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **949**.
-- Ignored or otherwise unlisted payload files: **234,522** (154,602,357,638 bytes).
-- Total workspace bytes counted: **154,618,944,688**.
+- Detailed file paths listed above: **952**.
+- Ignored or otherwise unlisted payload files: **234,523** (154,602,364,094 bytes).
+- Total workspace bytes counted: **154,618,976,682**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1029,7 +1032,7 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `corpus/wiktionary_en.jsonl/` | 1 | 164,557 |
 | `data/cache/…/` | 2 | 104,176 |
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
-| `data/extracted/…/` | 721 | 74,046,971 |
+| `data/extracted/…/` | 722 | 74,053,427 |
 | `data/huggingface/…/` | 1,980 | 72,788,494,485 |
 | `data/processed/…/` | 107,682 | 38,602,120,710 |
 | `data/raw/…/` | 1 | 21,905 |

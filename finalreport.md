@@ -27,6 +27,18 @@ already represented by Walton gazetteer records. See the [source intake report](
 [source-by-source disposition](research/internet-archive-source-disposition-2026-10-04.md),
 and [quality and overlap audit](research/internet-archive-intake-quality-2026-10-04.md).
 
+The priority follow-up distinguishes 920 page objects from three Garhwali
+language/folklore studies and 440 page objects from two translated/contextual
+folklore books (432 non-empty; 8 empty). There are 1,350 distinct normalized
+non-empty values, one duplicate pair containing only a repeated digitizer
+footer, and one row that normalizes to empty. Scholarly evidence confirms
+Garhwali epic content in Chatak's book at work level; page-level language and
+OCR accuracy remain unverified. The follow-up found a 1977-versus-1935 edition
+mismatch for *Himalayan Folklore*, a Juyal CC0/all-rights-reserved conflict,
+and no independently verified authority for the Shailesh CC0 claim. No
+Archive expressive text entered GitHub or Hugging Face. Full findings and
+source citations are in the [priority language and rights review](research/internet-archive-priority-language-rights-review-2026-10-04.md).
+
 ## Hugging Face quality release v0.2.2 — 2026-10-01 (historical review)
 
 At the time of this 1 October snapshot, the public corpus was v0.2.2, with its corrective [Hub commit `b18933b`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/b18933bb2e98f091add0b1889e70587448d9891f); the speech repository was at v0.2.1. The additive v0.2.2

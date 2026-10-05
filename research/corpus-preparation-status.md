@@ -1,6 +1,6 @@
 # Corpus preparation status
 
-Updated 2026-10-04. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest suite passed **716/716** on 4 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-10-04. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest suite passed **718/718** on 4 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
 
 ## Internet Archive deep intake — local snapshot, 2026-10-04
 
@@ -31,6 +31,26 @@ Updated 2026-10-04. This is a chronological preparation log: model-result paragr
 - The source-by-source Archive item register and non-destructive page/media
   candidate-view design are in the
   [source disposition report](internet-archive-source-disposition-2026-10-04.md).
+
+## Priority Garhwali-source language and rights evidence — 2026-10-04
+
+- The follow-up covers 920 pages from three language/folklore studies and 432
+  non-empty OCR pages from two translated/contextual folklore sources, plus 8
+  empty OCR pages. Across those five works there are 1,352 non-empty OCR rows,
+  1,350 distinct non-empty normalized values, one duplicate group consisting
+  only of a repeated Juyal digitizer footer, and one row that normalizes to no
+  text. The separate review report explains the per-source counts and language
+  evidence; script composition alone is not a Garhwali label.
+- Source review found a mismatch between the Himalayan Folklore Archive date
+  and the scanned 1977 reprint, a Juyal uploader CC0 claim contradicted by the
+  book's “all rights reserved” page, and no verified authority for the
+  Shailesh CC0 claim. Chatak's academic bibliographic evidence is strong for
+  book-level Garhwali epic content, but does not clear reuse or identify each
+  OCR page.
+- **No new rows were removed, added to the canonical corpus, or uploaded to
+  Hugging Face.** All original material remains in the ignored local intake;
+  all five works remain without a verified public-redistribution/training
+  basis. See the [priority language and rights review](internet-archive-priority-language-rights-review-2026-10-04.md).
 
 ## Hugging Face quality roadmap — published v0.2.2 — 2026-10-01
 
