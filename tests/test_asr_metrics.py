@@ -61,5 +61,28 @@ class AsrMetricTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             m.score_corpus([''], ['कुछ'])
 
+    def test_summarizes_duration_length_and_speaker_slices_without_inventing_audio_quality(self):
+        rows = [
+            {'asr_target_clean': 'एक दो', 'duration_seconds': 2, 'speaker_id': 'spk1'},
+            {'asr_target_clean': 'एक दो तीन चार पाँच छह सात आठ नौ दस ग्यारह', 'duration_seconds': 9, 'speaker_id': 'spk2'},
+        ]
+        scores = [
+            {'word_errors': 1, 'reference_words': 2, 'character_errors': 1, 'reference_characters': 4},
+            {'word_errors': 2, 'reference_words': 11, 'character_errors': 2, 'reference_characters': 22},
+        ]
+
+        report = m.summarize_slices(rows, scores)
+
+        self.assertEqual(report['duration_seconds']['<3s']['records'], 1)
+        self.assertEqual(report['duration_seconds']['8-15s']['wer'], 2 / 11)
+        self.assertEqual(report['reference_word_count']['11-25']['records'], 1)
+        self.assertEqual(report['speaker_id']['spk1']['cer'], 1 / 4)
+        self.assertIsNone(report['district'])
+        self.assertFalse(report['audio_quality']['available'])
+
+    def test_slice_scorer_rejects_unpaired_rows_and_scores(self):
+        with self.assertRaisesRegex(ValueError, 'same number'):
+            m.summarize_slices([{'asr_target_clean': 'एक'}], [])
+
 
 if __name__ == '__main__': unittest.main()

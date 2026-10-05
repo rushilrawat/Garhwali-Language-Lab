@@ -68,6 +68,60 @@ and zero ≥0.85 5-gram near-duplicate candidates (17,924 pairs scored). All
 source OCR remains local; rights and linguistic accuracy are unresolved. See
 the detailed review linked above.
 
+## VAANI official-split lineage and ASR diagnostic — 2026-10-04
+
+The prepared 5,894-row VAANI transcript manifest reconciles exactly to the
+official 4,778/666/450 train/validation/test counts, with 5,894 unique audio
+hashes and no cross-split hash duplicates. The strict project views (1,621 /
+269 / 112) are exact subsets of those respective official splits. The expanded
+human SraVaani training view is not safe for a full official-split evaluation:
+it trained on 397 official validation rows and 338 official test rows outside
+the project's smaller fixed evaluation manifests. Its previously recorded
+fixed-112 test result is a separate historical slice.
+
+The remaining 338 official-test rows were scored once with the local
+Whisper-tiny v0.2 checkpoint: **83.249% WER** (3,449/4,143 words) and
+**48.468% CER** (7,356/15,177 characters). All 338 audio files and prepared
+references are present; a separate verification matched every audio hash and
+reference and recomputed all per-row and aggregate metric counts. The score is
+open-test diagnostic evidence, not independent accuracy: the official split
+has been publicly evaluated by other researchers, our checkpoint was already
+scored on the related 112-row subset, and speaker IDs are present for only 5
+of these 338 rows. The checkpoint has no direct training-audio overlap with
+the remainder, but the unidentified speakers prevent a speaker-independent
+claim. See the [lineage and score report](research/vaani-official-split-lineage-2026-10-04.md).
+
+The 2026 study [*Seeds Before Objectives*](https://arxiv.org/abs/2608.10670)
+reports a five-seed, official-split w2v-BERT 2.0 standard-CTC mean of 47.0%
+WER. Its method supports reporting seed variation; it is not a like-for-like
+comparison to this single Whisper-tiny remainder score or an independent test
+for this project. The current local suite passes **743/743** tests (5 October
+2026, repository CI unittest discovery command).
+
+## Meta Omnilingual ASR validation — 2026-10-04 to 2026-10-05
+
+The new offline ASR preparation reconciled all 2,927 Meta Parquet rows against
+the pinned source and transcript manifests, preserving 70 unsafe rows with
+exclusion reasons. It produced 2,294 safe train, 271 safe validation, and 292
+safe test rows; every derived WAV was hash- and format-checked. Local
+Whisper-tiny Garhwali v0.2 scored **93.900% WER / 72.918% CER** on the safe
+validation view. Beam-5 reduced WER by 0.4543 percentage points but raised CER
+by 0.0325 points, so greedy decoding remains selected under the no-CER-
+regression rule. The result is poor development evidence, not independent
+accuracy. The base Whisper-tiny/SraVaani comparison is unavailable because
+the necessary local artifacts/runtime are missing; Meta test was not scored.
+Full hashes, slices, paired counts, and limits are in the [Meta ASR report](research/meta-omnilingual-asr-validation-2026-10-04.md).
+
+The 5 October repository test command passes **743/743** unittest cases and
+`validate_release_index.py` passes for release snapshot v0.1.1. Its compact
+artifact hashes and paths also pass when checked without comparing against
+the current source tree. The stricter local `build_release_bundle.py --check`
+reports 59 stale-source entries (35 selected current files absent from that
+frozen bundle and 24 changed); three missing entries are the new local Meta
+ASR reports. The v0.1.1 bundle was not rewritten because it is a historical
+snapshot. A future current-version release must regenerate a versioned bundle
+from its frozen inputs before publication.
+
 ## Hugging Face quality release v0.2.2 — 2026-10-01 (historical review)
 
 At the time of this 1 October snapshot, the public corpus was v0.2.2, with its corrective [Hub commit `b18933b`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/b18933bb2e98f091add0b1889e70587448d9891f); the speech repository was at v0.2.1. The additive v0.2.2

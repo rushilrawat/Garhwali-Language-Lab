@@ -47,6 +47,29 @@ def summarize_scores(scores):
     return totals
 
 
+def make_prediction_row(row, hypothesis, metrics):
+    """Keep stable manifest identity beside every ASR result."""
+    prediction = {
+        'audio_sha256': row['audio_sha256'],
+        'reference': row['asr_target_clean'],
+        'hypothesis': hypothesis,
+        **metrics,
+    }
+    for field in (
+        'record_id', 'source_split', 'split', 'text_sha256', 'source_file',
+        'source_file_sha256', 'source', 'source_url', 'source_revision',
+        'source_license', 'source_license_url', 'duplicate_audio_count',
+        'duplicate_text_count', 'cross_split_audio_overlap',
+        'cross_corpus_audio_overlap', 'cross_split_text_overlap',
+        'cross_corpus_text_overlap', 'cross_corpus_train_text_overlap',
+        'cross_corpus_evaluation_text_overlap', 'transcript_conflict_for_audio',
+        'split_safe_for_training', 'split_safe_for_evaluation',
+    ):
+        if row.get(field) is not None:
+            prediction[field] = row[field]
+    return prediction
+
+
 def sha256_file(path):
     digest = hashlib.sha256()
     with Path(path).open('rb') as handle:
@@ -77,7 +100,7 @@ def run(
     os.environ.setdefault('TOKENIZERS_PARALLELISM', 'false')
     import torch
     from transformers import AutoModel
-    from asr_metrics import score
+    from asr_metrics import score, summarize_slices
 
     model_path = validate_model_dir(model_path)
     if device == 'auto':
@@ -111,12 +134,7 @@ def run(
             for row, hypothesis in zip(batch, hypotheses):
                 metrics = score(row['asr_target_clean'], hypothesis)
                 scores.append(metrics)
-                predictions.append({
-                    'audio_sha256': row['audio_sha256'],
-                    'reference': row['asr_target_clean'],
-                    'hypothesis': hypothesis,
-                    **metrics,
-                })
+                predictions.append(make_prediction_row(row, hypothesis, metrics))
             completed = min(offset + len(batch), len(rows))
             current = summarize_scores(scores)
             print(f'{completed}/{len(rows)} WER={current["wer"]:.4f} CER={current["cer"]:.4f}', flush=True)
@@ -132,6 +150,7 @@ def run(
         'device': device,
         'batch_size': batch_size,
         'elapsed_seconds': round(time.monotonic() - start, 3),
+        'error_slices': summarize_slices(rows, scores),
         **summarize_scores(scores),
     }
     output_dir = Path(output_dir)

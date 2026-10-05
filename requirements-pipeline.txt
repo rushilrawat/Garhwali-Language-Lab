@@ -2,3 +2,4 @@ certifi==2026.7.22
 langgraph==1.2.11
 langgraph-checkpoint-sqlite==3.1.1
 pypdf==6.10.0
+pyarrow>=19,<26

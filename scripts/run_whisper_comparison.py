@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evaluate a pinned Whisper checkpoint on the speaker-safe Garhwali test set."""
+"""Evaluate a pinned Whisper checkpoint on a local Garhwali ASR manifest."""
 
 from __future__ import annotations
 
@@ -38,11 +38,73 @@ def summarize_scores(scores):
     return totals
 
 
+def make_prediction_row(row, hypothesis, metrics):
+    """Keep stable manifest identity beside every ASR result."""
+    prediction = {
+        'audio_sha256': row['audio_sha256'],
+        'reference': row['asr_target_clean'],
+        'hypothesis': hypothesis,
+        **metrics,
+    }
+    for field in (
+        'record_id', 'source_split', 'split', 'text_sha256', 'source_file',
+        'source_file_sha256', 'source', 'source_url', 'source_revision',
+        'source_license', 'source_license_url', 'duplicate_audio_count',
+        'duplicate_text_count', 'cross_split_audio_overlap',
+        'cross_corpus_audio_overlap', 'cross_split_text_overlap',
+        'cross_corpus_text_overlap', 'cross_corpus_train_text_overlap',
+        'cross_corpus_evaluation_text_overlap', 'transcript_conflict_for_audio',
+        'split_safe_for_training', 'split_safe_for_evaluation',
+    ):
+        if row.get(field) is not None:
+            prediction[field] = row[field]
+    return prediction
+
+
+def generation_kwargs(max_new_tokens=128, language_prompt='hi', num_beams=1):
+    if max_new_tokens < 1 or num_beams < 1:
+        raise ValueError('max_new_tokens and num_beams must be positive integers')
+    return {
+        'language': language_prompt,
+        'task': 'transcribe',
+        'max_length': max_new_tokens,
+        'do_sample': False,
+        'num_beams': num_beams,
+    }
+
+
+def resolve_run_id(model_id, run_id=None):
+    return run_id or f'{model_id.replace("/", "--")}-garhwali-speaker-safe-v0.1'
+
+
 def sha256_file(path):
     digest = hashlib.sha256()
     with Path(path).open('rb') as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b''):
             digest.update(chunk)
+    return digest.hexdigest()
+
+
+def model_weight_sha256(model_path):
+    """Fingerprint local model weight files without hashing training metadata."""
+    model_path = Path(model_path)
+    if model_path.is_file():
+        return sha256_file(model_path)
+    if not model_path.is_dir():
+        return None
+    weights = sorted(
+        path for pattern in ('*.safetensors', 'pytorch_model*.bin')
+        for path in model_path.glob(pattern)
+        if path.is_file()
+    )
+    if not weights:
+        return None
+    if len(weights) == 1:
+        return sha256_file(weights[0])
+    digest = hashlib.sha256()
+    for path in weights:
+        digest.update(path.name.encode('utf-8'))
+        digest.update(bytes.fromhex(sha256_file(path)))
     return digest.hexdigest()
 
 
@@ -56,11 +118,13 @@ def run(
     max_new_tokens=128,
     language_prompt='hi',
     device='auto',
+    run_id=None,
+    num_beams=1,
 ):
     os.environ.setdefault('TOKENIZERS_PARALLELISM', 'false')
     import torch
     from transformers import WhisperForConditionalGeneration, WhisperProcessor
-    from asr_metrics import score
+    from asr_metrics import score, summarize_slices
     from run_asr_baseline import read_audio
 
     if device == 'auto':
@@ -87,34 +151,33 @@ def run(
             ).input_features.to(device)
             generated = model.generate(
                 features,
-                language=language_prompt,
-                task='transcribe',
-                max_length=max_new_tokens,
-                do_sample=False,
+                **generation_kwargs(max_new_tokens, language_prompt, num_beams),
             )
-            hypothesis = processor.batch_decode(generated, skip_special_tokens=True)[0].strip()
+            hypothesis = processor.batch_decode(
+                generated,
+                skip_special_tokens=True,
+                clean_up_tokenization_spaces=False,
+            )[0].strip()
             metrics = score(row['asr_target_clean'], hypothesis)
             scores.append(metrics)
-            predictions.append({
-                'audio_sha256': row['audio_sha256'],
-                'reference': row['asr_target_clean'],
-                'hypothesis': hypothesis,
-                **metrics,
-            })
+            predictions.append(make_prediction_row(row, hypothesis, metrics))
             if index == 1 or index % 10 == 0 or index == len(rows):
                 current = summarize_scores(scores)
                 print(f'{index}/{len(rows)} WER={current["wer"]:.4f} CER={current["cer"]:.4f}', flush=True)
     report = {
-        'run_id': f'{model_id.replace("/", "--")}-garhwali-speaker-safe-v0.1',
+        'run_id': resolve_run_id(model_id, run_id),
         'model_id': model_id,
         'revision': revision,
+        'model_weight_sha256': model_weight_sha256(model_path),
         'language_prompt': language_prompt,
         'evaluation_manifest': str(input_path.relative_to(ROOT)),
         'evaluation_manifest_sha256': sha256_file(input_path),
         'evaluation_records': len(rows),
         'device': device,
         'max_target_tokens': max_new_tokens,
+        'num_beams': num_beams,
         'elapsed_seconds': round(time.monotonic() - start, 3),
+        'error_slices': summarize_slices(rows, scores),
         **summarize_scores(scores),
     }
     output_dir = Path(output_dir)
@@ -141,7 +204,9 @@ def main():
     parser.add_argument('--max-records', type=int, default=0)
     parser.add_argument('--max-new-tokens', type=int, default=128)
     parser.add_argument('--language-prompt', default='hi')
+    parser.add_argument('--num-beams', type=int, default=1)
     parser.add_argument('--device', choices=('auto', 'mps', 'cpu'), default='auto')
+    parser.add_argument('--run-id')
     args = parser.parse_args()
     print(json.dumps(run(
         model_path=args.model,
@@ -153,6 +218,8 @@ def main():
         max_new_tokens=args.max_new_tokens,
         language_prompt=args.language_prompt,
         device=args.device,
+        run_id=args.run_id,
+        num_beams=args.num_beams,
     ), ensure_ascii=False, indent=2, sort_keys=True))
 
 

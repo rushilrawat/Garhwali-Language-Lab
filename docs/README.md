@@ -17,6 +17,7 @@ This page indexes the project Markdown intended for the shared repository, inclu
 - [task-result-eligibility-2026-09-28.md](../research/task-result-eligibility-2026-09-28.md) — Current split labels, prior test use, and result-claim limits.
 - [model-accuracy-lineage-2026-09-28.md](../research/model-accuracy-lineage-2026-09-28.md) — Fresh split-manifest and saved-prediction matching audit.
 - [asr-heldout-lineage-audit-2026-09-28.md](../research/asr-heldout-lineage-audit-2026-09-28.md) — Paired post-hoc comparison of five saved ASR runs on the same held-out rows.
+- [meta-omnilingual-asr-validation-2026-10-04.md](../research/meta-omnilingual-asr-validation-2026-10-04.md) — Local Meta split reconciliation and development-only Whisper validation, with source hashes and error slices.
 - [benchmark-model-roadmap.md](../research/benchmark-model-roadmap.md) — Phased benchmark and model-research plan, metrics, tooling, and release gates.
 - [v0.2-public-announcement-roadmap-2026-09-29.md](../research/v0.2-public-announcement-roadmap-2026-09-29.md) — Verification, disclosure, documentation sync, and LinkedIn preparation for a truthful v0.2.0 announcement.
 - [issues & improvement plan](../research/issues%26improvement%20plan.md) — Evidence-backed issue log and blockers for roadmap implementation.
@@ -45,7 +46,7 @@ This page indexes the project Markdown intended for the shared repository, inclu
 
 - Treat `finalreport.md` as the current release decision and consolidated audit summary.
 - Treat `research/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard with later dated addenda; older experiment reports are historical snapshots.
-- The latest scorecard refresh is dated 2026-09-30. It reports development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
+- The latest broad benchmark scorecard refresh is dated 2026-09-30; the Meta Omnilingual ASR development addendum is dated 2026-10-04. These are development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
 - Keep dated research reports as records of the data and model version used at that time. Update the current status docs when new evidence supersedes them; do not rewrite history.
 - Treat `release/v0.1.0/`, `release/v0.1.1/`, and `release/v0.2.0/` as frozen snapshots. Their cards and reports preserve each package's own counts and terms. The current public Hugging Face releases are corpus v0.2.3 and speech v0.2.1; both cards link to verified commits and preserve earlier files. The Internet Archive acquisition dated 3–4 October remains local-only and is not in either package; the latest local inventory and item decisions are in the Archive source-disposition report.
 - Keep dataset-card and policy copies inside each Hugging Face package aligned with the root policies when preparing a new package.

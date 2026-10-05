@@ -1,6 +1,6 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Status snapshot:** Benchmark evidence measured 2026-09-30; public corpus release checked 2026-10-04 (corpus v0.2.3, speech v0.2.1)
+**Status snapshot:** Main benchmark evidence measured 2026-09-30; VAANI ASR lineage refreshed 2026-10-04; public corpus release checked 2026-10-04 (corpus v0.2.3, speech v0.2.1)
 **Scope:** GarhwaliBench and the model-research suite in this repository
 **Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 
@@ -18,6 +18,15 @@ approved active work toward independent
 final-accuracy results across language modeling, translation, retrieval,
 generation, and ASR. That approval sets the work priority; current evidence
 eligibility remains 0/5.
+
+The 2026-10-04 [VAANI lineage audit](vaani-official-split-lineage-2026-10-04.md)
+reconciles all 5,894 prepared transcript rows to the official 4,778/666/450
+split and shows that expanded-human SraVaani training included 397 official
+validation and 338 official test utterances outside the project's fixed
+269/112 views. Whisper-tiny v0.2 was scored once on the remaining 338 test
+rows: 83.249% WER / 48.468% CER. This is an open diagnostic, not independent or
+speaker-generalization evidence; the 2026 paper has also published results on
+the official split.
 
 | Workstream | Current verified position | Remaining gate |
 | --- | --- | --- |
@@ -110,16 +119,18 @@ The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md]
 | Retrieval | XORQA has 539 test questions with prior predictions; best saved IndicBERTv2 Recall@10 is 0.103896. The 500-query dev-only BM25 rerun gets 0.8% word and 1.0% character Recall@10; source-page-clustered 95% intervals are 0.2–1.6% and 0.2–2.0%, respectively. English-oracle BM25 gets 85.2% (clustered interval 82.1–88.3%). | A historical test baseline and clear Garhwali-to-English retrieval gap. Character-vs-word paired intervals touch zero; this dev result does not establish a reliable winner. Dense dev inference is blocked by missing local runtime/weights; the test is not fresh. |
 | Generation | All three mT0 32,768-step seeds and validation diagnostics are saved. Seed 43 has the best validation cross-entropy (4.188287); the best adapter chrF2 is 0.074003 versus 0.088327 for zero-shot base. Existing run records report one selected-seed evaluation on an 86-row test. | No generation adapter is promoted. Test is historical, and 172 test-prediction rows do not map to current local manifests; references remain unreviewed. The earlier partial-run report is superseded by a later seed-43 retry. |
 | ASR decoding | The six-configuration sweep completed. RNNT beam size 8 was selected on validation: WER 43.253%, CER 18.919%, versus greedy WER 43.454%, CER 18.948%. A post-hoc audit matches its saved 112 test predictions to the fixed audio/reference manifest; test WER/CER are 42.761%/17.410%. | Historical paired comparison to base: WER delta +0.000 pp (95% speaker-cluster interval −0.583 to +0.656); CER −0.196 pp (−0.391 to +0.000). No reliable difference. Upstream VAANI example overlap is unknown. |
+| VAANI official-split remainder | Reconciled all 5,894 transcript rows to official train/validation/test: 4,778/666/450, 5,894 unique audio hashes, no cross-split duplicates. The 338 rows outside our earlier fixed test view were scored once with local Whisper-tiny v0.2: 83.249% WER / 48.468% CER. | Open-test diagnostic only. It is not blind or independent; only 5/338 rows have identifiable speaker metadata, and the official VAANI test has also been used in published research. Do not tune or select on it. |
+| Meta Omnilingual ASR validation | All 2,927 source rows reconcile; safe views are 2,294 train / 271 validation / 292 test, with all 70 unsafe rows retained in the audit. Whisper-tiny Garhwali v0.2 greedy: 93.900% WER / 72.918% CER. Beam-5: 93.446% / 72.950%; WER −0.4543 pp, CER +0.0325 pp, so greedy remains selected. | Development-only; poor model performance and upstream references are unreviewed. SraVaani/base-Whisper comparison lacks local weights/runtime. Meta test exposure is unresolved and was not scored. See [the validation report](meta-omnilingual-asr-validation-2026-10-04.md). |
 | ASR fine-tuning: 61 trials | All 61 trials completed. Validation WER/CER improved from 43.454%/18.948% to 42.711%/18.660%. Post-hoc audit matches all 112 test audio hashes and cleaned references; test WER/CER are 43.528%/17.494%. | Historical paired deltas vs base: WER +0.767 pp (95% interval −0.107 to +1.591); CER −0.112 pp (−0.683 to +0.384). Both include zero; no promotion. This work was not stopped by a rate limit. |
-| ASR fine-tuning: expanded human transcripts | Training used 5,513 hash-filtered human-transcript clips (8.112 hours); 3,886 rows lacked complete speaker identity. Validation WER/CER are 42.209%/18.302%. Post-hoc audit matches all 112 test audio hashes and cleaned references; test WER/CER are 43.289%/17.396%. | Historical paired deltas vs base: WER +0.527 pp (95% interval −0.710 to +1.518); CER −0.210 pp (−0.949 to +0.366). Both include zero; no promotion. Training speaker metadata is incomplete and upstream exposure unresolved. |
-| ASR references and independence | VAANI validation/test predictions already exist. SraVaani's model card identifies VAANI as an upstream source and reports 31,255 hours of VAANI pretraining plus about 31,270 hours of labeled fine-tuning from VAANI and other open speech data; it does not expose example-level overlap. | VAANI results are development/historical evidence, not independent estimates of generalization. Do not rescore test to choose a model. |
+| ASR fine-tuning: expanded human transcripts | Training used 5,513 hash-filtered human-transcript clips (8.112 hours); 3,886 rows lacked complete speaker identity. Validation WER/CER are 42.209%/18.302%. Post-hoc audit matches all 112 fixed-test audio hashes and cleaned references; historical test WER/CER are 43.289%/17.396%. | Training also contains 397 other official validation rows and 338 other official test rows. Its fixed-112 score remains a separate historical result, but this checkpoint must not be evaluated on VAANI's complete official validation/test sets. |
+| ASR references and independence | VAANI validation/test predictions already exist. SraVaani's model card identifies VAANI as an upstream source and reports 31,255 hours of VAANI pretraining plus about 31,270 hours of labeled fine-tuning from VAANI and other open speech data; it does not expose example-level overlap. | VAANI results are open/development/historical evidence, not independent estimates of generalization. The 2026 multi-seed ASR paper also uses VAANI's official test. Do not tune, select, or claim blind final accuracy from these rows. |
 | TTS | Speech manifests and readiness checks exist; no TTS system has a valid Garhwali quality result. | Readiness and pair-integrity only. MOS or naturalness needs listeners and cannot be inferred from automated checks. |
 | Independent final accuracy | Evidence eligibility is 0/5 across language modeling, translation, retrieval, generation, and ASR; the owner approved active work toward each area on 2026-09-30. | There is no defensible single project-wide model-accuracy score today; existing sets are reused or model exposure is unresolved. |
-| Review and tests | Native adjudications remain deferred. Fresh 2026-09-29 unittest results are listed in the verification log; prior v0.2.0 release counts are historical. | Test passes establish code/integrity properties only, not linguistic correctness. |
+| Review and tests | Native adjudications remain deferred. The full configured unittest suite passes 743/743 as of 2026-10-05; historical release counts remain labeled by snapshot. | Test passes establish code/integrity properties only, not linguistic correctness. |
 
 ### Key test-history rule
 
-Some project fine-tuning experiments selected on validation and then evaluated once on the fixed VAANI test. That is a reasonable internal experiment protocol, but it does not make the result independent of upstream SraVaani exposure. All VAANI test scores are now historical. Use them to describe completed experiments; do not tune, choose, or claim a blind final model from them.
+Some project fine-tuning experiments selected on validation and then evaluated once on the fixed VAANI test. That is a reasonable internal experiment protocol, but it does not make the result independent of upstream SraVaani exposure. The expanded-human run further included 338 official-test rows outside the fixed 112-row test. The 338-row remainder score is open diagnostic evidence and is now used; all VAANI test results are historical/open. Use them to describe completed experiments; do not tune, choose, or claim a blind final model from them.
 
 Saved outputs for the 61-trial, six-decoder, and expanded-human runs are under **data/processed/evaluation/asr/sravaani_refined_61/cloud_output/**, **data/processed/evaluation/asr/sravaani_six_config_sweep/cloud_output/**, and **data/processed/evaluation/asr/sravaani_expanded_human/cloud_output/**. These are generated artifacts and should stay excluded from Git unless an explicit, rights-reviewed release package calls for selected derived files.
 
@@ -628,6 +639,7 @@ Use these labels:
 **Current assignments**
 - The configured split decisions and saved test artifacts were reconciled on 2026-09-28; see the [eligibility report](task-result-eligibility-2026-09-28.md) and [fresh lineage audit](model-accuracy-lineage-2026-09-28.md).
 - FLORES test (1,012 rows), XORQA test (539), VAANI ASR test (112), and instructions test (260; 134 exact saved-prediction matches) are historical-only.
+- Whisper-tiny v0.2 has a one-time 338-row score on the remainder of VAANI's official 450-row test: 83.249% WER / 48.468% CER. It is open-test diagnostic evidence only; 333 rows have no identifiable speaker and the official test is already represented in published research. See the [full split audit](vaani-official-split-lineage-2026-10-04.md).
 - The current 402-row internal text test is historical-only because the exact rows were scored by the aggregate character-bigram baseline, despite having no row-level prediction artifact. The new lineage implementation verifies manifest hash, text input hash, exact IDs/text, count, and row-set fingerprint before making that assignment.
 - CrossSum test (500) and Meta Omnilingual test (292 internally safe of 300) remain unresolved because checkpoint exposure is unknown; eight Meta rows are excluded from that evaluation view by internal safety flags but remain preserved.
 - CrossSum's 100-row dev references are available for development, but no saved prediction is reconciled to that split. FLORES/XORQA development results and VAANI/Meta/instruction validation results are development-only. The complete counts and prior-use evidence are in the eligibility report.
@@ -746,6 +758,16 @@ This does not change 0/5 independent-evidence eligibility. The next model-suite
 work remains blocked on missing compatible weights/runtime for new NLLB,
 dense-retrieval, and SraVaani inference; no fresh model run was made.
 
+**2026-10-04 VAANI follow-up:** `scripts/audit_vaani_official_split_lineage.py`
+and its tests now reconcile the local strict, expanded-human, and Whisper
+curriculum views to the official VAANI split and expose full-split training
+overlap. The 338-row remainder was scored once with the existing local
+Whisper-tiny v0.2 model, and an independent post-run check matched every audio
+hash/reference and reproduced all aggregate metrics. The result is open and
+speaker-generalization-unverified; independent-evaluation eligibility remains
+0/5. The next useful ASR experiment is a train/dev-only multi-seed comparison;
+reserve no open VAANI test slice for model selection.
+
 Next actionable work is a rights/provenance pass for each benchmark component;
 the current per-view and item-status counts are in the
 [rights inventory](garhwali-bench-v0.2-rights-inventory-2026-09-29.md), and the
@@ -768,6 +790,7 @@ The plan follows primary research and official tool documentation:
 - [A Call for Clarity in Reporting BLEU Scores (SacreBLEU)](https://aclanthology.org/W18-6319/) supports reproducible BLEU reporting with a metric signature.
 - [BEIR](https://arxiv.org/abs/2104.08663) and [MTEB](https://aclanthology.org/2023.eacl-main.148/) inform retrieval task separation and Recall/MRR/nDCG reporting.
 - [Dialect Matters: Cross-Lingual ASR Transfer for Low-Resource Indic Language Varieties](https://aclanthology.org/2026.vardial-1.12/) is directly relevant: it includes a Garhwali case study and examines dialect transfer and pretraining-language bias.
+- [Seeds Before Objectives: Rethinking Evaluation for Low-Resource Garhwali ASR](https://arxiv.org/abs/2608.10670) reports five-seed results on the official VAANI 4,778/666/450 split and finds that plausible single-run gains often do not replicate. Its [code and per-seed results](https://github.com/soodashima91/Garhwali-ASR) inform our train/dev-only seed analysis; the shared public test does not provide us an independent set.
 - The [SraVaani-1.0 model card](https://huggingface.co/ARTPARK-IISc/SraVaani-1.0) and its [paper](https://arxiv.org/abs/2608.08235) are sources for broad VAANI training exposure. Neither gives example-level IDs needed to clear our VAANI test.
 - [NVIDIA NeMo ASR documentation](https://docs.nvidia.com/nemo-framework/user-guide/25.07/nemotoolkit/asr/intro.html) documents decoding paths and language-model fusion. Support is architecture-specific; the project's failed TSD configuration remains recorded as failed.
 - [PyTorch reproducibility guidance](https://docs.pytorch.org/docs/stable/notes/randomness.html) explains why seeds/deterministic settings must be recorded but do not promise bit-for-bit identity across devices/releases.

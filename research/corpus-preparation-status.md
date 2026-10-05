@@ -1,6 +1,32 @@
 # Corpus preparation status
 
-Updated 2026-10-04. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest suite passed **731/731** on 4 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-10-05. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree CI unittest discovery suite passed **743/743** on 5 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+
+## VAANI official-split lineage and ASR diagnostic — 2026-10-04
+
+- Reconciled all 5,894 prepared transcript rows to VAANI's official 4,778 / 666 / 450 train/validation/test split with 5,894 unique audio hashes and no cross-split hash reuse. The project's strict ASR views (1,621 / 269 / 112) map exactly to the corresponding official partitions.
+- Audited actual training exposure: expanded human-transcript SraVaani training contains 397 official validation rows and 338 official test rows, despite excluding the smaller fixed project evaluation hashes. Do not score that checkpoint on VAANI's complete official validation/test sets. Its historical fixed-112 comparison is a separate view.
+- Scored the other 338 official test rows once with the existing human-only Whisper-tiny v0.2 checkpoint: 83.249% WER (3,449/4,143) and 48.468% CER (7,356/15,177). All 338 files and references were present; an independent recomputation matched every audio hash, reference, row metric, and aggregate.
+- The remainder has zero audio-hash overlap with strict ASR training; only five rows identify a speaker, so it cannot establish speaker-generalization. The result is open-test diagnostic evidence, not independent accuracy or a native-validated transcript score. The paper and reproducible details are in the [lineage report](vaani-official-split-lineage-2026-10-04.md).
+
+## Meta Omnilingual ASR development pass — 2026-10-04 to 2026-10-05
+
+- Reconciled all 2,927 local Meta Parquet rows against both manifests and all
+  seven source-shard hashes. The model-ready views contain 2,294 safe train,
+  271 safe validation, and 292 safe test rows. All 70 internally unsafe rows
+  remain in the row-level audit with reasons. All 2,857 derived WAVs passed
+  SHA-256 and mono/16 kHz/16-bit header verification; the files occupy 2.16 GB
+  and remain Git-ignored.
+- Whisper-tiny Garhwali v0.2 scored 93.900% WER / 72.918% CER on the 271-row
+  safe Meta validation view. One paired beam-5 candidate reduced WER by 0.4543
+  percentage points but raised CER by 0.0325 points. Under the no-CER-
+  regression guardrail, greedy remains selected. This is development evidence
+  only; it is a poor score, references are upstream/unadjudicated, and model
+  exposure is not fully characterized.
+- The original Whisper-tiny and runnable SraVaani weights/runtime are absent
+  locally. Meta test rows were not scored; their checkpoint exposure remains
+  unresolved. No checkpoint was downloaded and no paid Hugging Face job ran.
+  See the [full Meta validation report](meta-omnilingual-asr-validation-2026-10-04.md).
 
 ## Internet Archive deep intake — local snapshot, 2026-10-04
 

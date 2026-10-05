@@ -2,6 +2,7 @@
 """Dependency-free normalization and WER/CER metrics for ASR evaluation."""
 import re
 import unicodedata
+from collections import defaultdict
 
 
 def normalize(text):
@@ -98,3 +99,80 @@ def score_corpus(references, hypotheses, record_ids=None):
         'wer': totals['word_errors'] / totals['reference_words'],
         'cer': totals['character_errors'] / totals['reference_characters'],
     }
+
+
+def summarize_slices(rows, scores):
+    """Report micro WER/CER for metadata slices, without inventing labels."""
+    rows = list(rows)
+    scores = list(scores)
+    if len(rows) != len(scores):
+        raise ValueError('rows and scores must contain the same number of records')
+
+    grouped = {
+        'duration_seconds': defaultdict(list),
+        'reference_word_count': defaultdict(list),
+        'speaker_id': defaultdict(list),
+    }
+    has_speaker_ids = False
+    has_audio_quality = all(
+        'audio_quality_status' in row or 'audio_quality_flag' in row for row in rows
+    ) if rows else False
+    for row, score_row in zip(rows, scores):
+        duration = float(row.get('duration_seconds', 0))
+        duration_label = '<3s' if duration < 3 else '3-8s' if duration < 8 else '8-15s' if duration < 15 else '15s+'
+        words = len(normalize(row['asr_target_clean']).split())
+        word_label = '1-10' if words <= 10 else '11-25' if words <= 25 else '26+'
+        grouped['duration_seconds'][duration_label].append(score_row)
+        grouped['reference_word_count'][word_label].append(score_row)
+        speaker = row.get('speaker_id')
+        if speaker and str(speaker).strip().casefold() not in {'na', 'unknown', 'null'}:
+            has_speaker_ids = True
+            grouped['speaker_id'][str(speaker)].append(score_row)
+
+    def summarize(groups):
+        result = {}
+        for label in sorted(groups):
+            values = groups[label]
+            word_errors = sum(row['word_errors'] for row in values)
+            reference_words = sum(row['reference_words'] for row in values)
+            character_errors = sum(row['character_errors'] for row in values)
+            reference_characters = sum(row['reference_characters'] for row in values)
+            result[label] = {
+                'records': len(values),
+                'word_errors': word_errors,
+                'reference_words': reference_words,
+                'wer': word_errors / max(1, reference_words),
+                'character_errors': character_errors,
+                'reference_characters': reference_characters,
+                'cer': character_errors / max(1, reference_characters),
+            }
+        return result
+
+    slices = {
+        'duration_seconds': summarize(grouped['duration_seconds']),
+        'reference_word_count': summarize(grouped['reference_word_count']),
+        'speaker_id': summarize(grouped['speaker_id']) if has_speaker_ids else None,
+        'district': None,
+        'audio_quality': {
+            'available': has_audio_quality,
+            'field': 'audio_quality_status or audio_quality_flag' if has_audio_quality else None,
+            'note': None if has_audio_quality else 'No per-record audio-quality annotation is present in this manifest.',
+        },
+    }
+    if rows and all('district' in row for row in rows):
+        district_groups = defaultdict(list)
+        for row, score_row in zip(rows, scores):
+            district_groups[str(row['district'])].append(score_row)
+        slices['district'] = summarize(district_groups)
+    if has_audio_quality:
+        quality_groups = defaultdict(list)
+        for row, score_row in zip(rows, scores):
+            quality = row.get('audio_quality_status', row.get('audio_quality_flag'))
+            quality_groups[str(quality)].append(score_row)
+        slices['audio_quality'] = {
+            'available': True,
+            'field': 'audio_quality_status' if any('audio_quality_status' in row for row in rows) else 'audio_quality_flag',
+            'groups': summarize(quality_groups),
+            'note': 'Slices describe the supplied field; they do not establish acoustic or linguistic validity.',
+        }
+    return slices

@@ -8,6 +8,36 @@ import transcribe_sravaani_drafts as drafts
 
 
 class SraVaaniComparisonTests(unittest.TestCase):
+    def test_prediction_retains_manifest_identity_and_row_metrics(self):
+        row = {
+            'record_id': 'meta_omni:spk1:n1:s1',
+            'audio_sha256': 'a' * 64,
+            'source_split': 'dev',
+            'split': 'validation',
+            'asr_target_clean': 'गढ़वाली वाक्य',
+            'source_file': 'data/gbm_Deva/dev.parquet',
+            'source_file_sha256': 'f' * 64,
+            'transcript_conflict_for_audio': False,
+            'duplicate_audio_count': 1,
+        }
+        metrics = {
+            'word_errors': 1, 'reference_words': 2,
+            'character_errors': 1, 'reference_characters': 12,
+        }
+
+        prediction = m.make_prediction_row(row, 'गढ़वाली', metrics)
+
+        self.assertEqual(prediction['record_id'], row['record_id'])
+        self.assertEqual(prediction['audio_sha256'], row['audio_sha256'])
+        self.assertEqual(prediction['source_split'], 'dev')
+        self.assertEqual(prediction['split'], 'validation')
+        self.assertEqual(prediction['source_file_sha256'], 'f' * 64)
+        self.assertFalse(prediction['transcript_conflict_for_audio'])
+        self.assertEqual(prediction['duplicate_audio_count'], 1)
+        self.assertEqual(prediction['reference'], row['asr_target_clean'])
+        self.assertEqual(prediction['hypothesis'], 'गढ़वाली')
+        self.assertEqual(prediction['word_errors'], 1)
+
     def test_project_relative_input_path_is_resolved(self):
         self.assertEqual(
             m.resolve_input_path(Path('data/example.jsonl')),

@@ -128,7 +128,7 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current working-tree suite passes **731 tests**. The
+The current working-tree suite passes **743 tests**. The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
 installs dependencies from `requirements-pipeline.txt`. Current benchmark
@@ -156,6 +156,25 @@ not select or promote a model. Its local outputs stay ignored under
 `data/processed/evaluation/asr/heldout_lineage_audit_2026-09-28/`.
 See
 [`research/asr-heldout-lineage-audit-2026-09-28.md`](../research/asr-heldout-lineage-audit-2026-09-28.md).
+
+`audit_vaani_official_split_lineage.py` reconciles local prepared ASR views to
+VAANI's official 4,778/666/450 transcript splits. It reports aggregate counts
+only and can optionally write a local-only manifest for the 338 official-test
+rows outside the project's previously used 112-row subset. The 4 October
+report records the exposure of each training view and a one-time Whisper-tiny
+diagnostic on those 338 rows; it is open-test evidence, not a blind or
+speaker-independent score. Reproduce the audit with:
+
+```bash
+PYTHONPATH=scripts .venv/bin/python scripts/audit_vaani_official_split_lineage.py \
+  --remainder-manifest data/extracted/research/vaani-official-test-remainder.jsonl
+```
+
+The generated JSON/manifest are ignored under `data/`. The scoring runner
+accepts an explicit `--run-id` for non-speaker-safe views and records the local
+weight-file SHA-256; do not label an evaluation speaker-safe unless the exact
+data and speaker checks support that claim. See
+[`research/vaani-official-split-lineage-2026-10-04.md`](../research/vaani-official-split-lineage-2026-10-04.md).
 
 `manifest_saved_generation_validation.py` reconciles the three saved mT0
 generation systems against their shared frozen validation IDs and writes one
@@ -299,3 +318,32 @@ writing the second config. The generated package is gitignored; syncing it to
 Hugging Face requires a write-scoped repository credential. Re-running the
 metadata update is idempotent: it keeps one Meta config/card section and does
 not duplicate attribution or manifests.
+
+### Build local Meta Omnilingual ASR manifests
+
+With the pinned Meta Garhwali Parquet shards, transcript manifest, `pyarrow`,
+and FFmpeg already available locally, build an ASR-ready view without network
+access:
+
+```bash
+PYTHONPATH=scripts .venv/bin/python scripts/prepare_meta_omnilingual_asr.py \
+  --source-manifest data/huggingface/garhwali-language-lab-speech-2026-09-23/meta_omnilingual-manifest.jsonl \
+  --text-manifest corpus/meta_omni.jsonl \
+  --parquet-root data/downloads/meta_omni_gbm/data/gbm_Deva \
+  --output-dir data/processed/model_ready/splits/meta_omnilingual_asr \
+  --ffmpeg /opt/homebrew/bin/ffmpeg
+```
+
+The builder checks every Parquet shard and source row against both local
+manifests, writes 16 kHz mono PCM WAVs for eligible rows, and records every
+source row (including safety exclusions) in `source_audit.jsonl`. The 2,927-row
+source currently yields 2,294 safe train, 271 safe validation, and 292 safe
+test rows; Meta test remains unresolved and must not be scored. The generated
+audio and manifests are ignored by Git. A pre-existing output directory is
+never overwritten.
+
+To run the available Garhwali-adapted Whisper checkpoint on development
+validation, use a unique output path and keep `--input` on the safe validation
+manifest. Predictions carry record/audio identity and grouped error slices.
+SraVaani comparison requires its model weights and compatible NeMo runtime to
+be present locally; this pipeline does not download them or invoke paid jobs.

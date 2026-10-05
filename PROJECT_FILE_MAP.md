@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **963**.
+Files indexed: **969**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -605,6 +605,7 @@ python scripts/generate_project_file_map.py
 - `research/internet-archive-source-disposition-2026-10-04.md`
 - `research/issues&improvement plan.md`
 - `research/language-quality-status-2026-09-10.md`
+- `research/meta-omnilingual-asr-validation-2026-10-04.md`
 - `research/model-accuracy-lineage-2026-09-24.md`
 - `research/model-accuracy-lineage-2026-09-28.md`
 - `research/model-accuracy-preflight-2026-09-24.md`
@@ -656,6 +657,7 @@ python scripts/generate_project_file_map.py
 - `research/vaani-audit-2026-09-09.md`
 - `research/vaani-collection-completion-2026-09-09.md`
 - `research/vaani-full-use-plan.md`
+- `research/vaani-official-split-lineage-2026-10-04.md`
 - `research/xhigh-final-data-audit-2026-09-10.md`
 
 ## `review/`
@@ -692,6 +694,7 @@ python scripts/generate_project_file_map.py
 - `scripts/audit_text_release_quality.py`
 - `scripts/audit_text_sources.py`
 - `scripts/audit_vaani.py`
+- `scripts/audit_vaani_official_split_lineage.py`
 - `scripts/audit_xorqa_source_page_families.py`
 - `scripts/benchmark_metrics.py`
 - `scripts/build_all_data_view.py`
@@ -778,6 +781,7 @@ python scripts/generate_project_file_map.py
 - `scripts/prepare_indicbert_balanced_domain.py`
 - `scripts/prepare_indicbert_pdf_domain.py`
 - `scripts/prepare_low_confidence_asr_sample.py`
+- `scripts/prepare_meta_omnilingual_asr.py`
 - `scripts/prepare_sravaani_expanded_finetune.py`
 - `scripts/prepare_sravaani_finetune.py`
 - `scripts/prepare_text_corpus.py`
@@ -902,6 +906,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_audit_saved_asr_heldout_lineage.py`
 - `tests/test_audit_semantic_duplicates.py`
 - `tests/test_audit_text_sources.py`
+- `tests/test_audit_vaani_official_split_lineage.py`
 - `tests/test_audit_xorqa_source_page_families.py`
 - `tests/test_benchmark_metrics.py`
 - `tests/test_build_archive_source_disposition.py`
@@ -963,6 +968,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_prepare_audio_normalization.py`
 - `tests/test_prepare_hf_additive_upload.py`
 - `tests/test_prepare_indicbert_pdf_domain.py`
+- `tests/test_prepare_meta_omnilingual_asr.py`
 - `tests/test_prepare_sravaani_expanded_finetune.py`
 - `tests/test_prepare_sravaani_finetune.py`
 - `tests/test_prepare_text_corpus.py`
@@ -1016,11 +1022,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **235,495**.
+- Workspace files counted: **238,375**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **963**.
-- Ignored or otherwise unlisted payload files: **234,532** (154,631,335,411 bytes).
-- Total workspace bytes counted: **154,648,049,836**.
+- Detailed file paths listed above: **969**.
+- Ignored or otherwise unlisted payload files: **237,406** (156,809,079,714 bytes).
+- Total workspace bytes counted: **156,825,876,671**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1043,9 +1049,9 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `corpus/wiktionary_en.jsonl/` | 1 | 164,557 |
 | `data/cache/…/` | 2 | 104,176 |
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
-| `data/extracted/…/` | 731 | 103,024,744 |
+| `data/extracted/…/` | 736 | 104,222,504 |
 | `data/huggingface/…/` | 1,980 | 72,788,494,485 |
-| `data/processed/…/` | 107,682 | 38,602,120,710 |
+| `data/processed/…/` | 110,551 | 40,778,667,253 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |
 | `data/vaani/…/` | 115,189 | 32,112,461,505 |
