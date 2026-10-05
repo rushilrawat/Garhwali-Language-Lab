@@ -128,6 +128,10 @@ unadjudicated, broad model exposure is incompletely known, and Meta test remains
 unscored. The 219-row long-reference slice still has 89.366% WER after
 adaptation; the two-row 3–8 second slice is too small to interpret. See the
 [full adaptation report](research/meta-omnilingual-asr-adaptation-2026-10-05.md).
+An older local Whisper-tiny v0.1 checkpoint scored 95.370% WER / 71.878% CER
+on the same 241 rows, so the adaptation also outperforms that same-family
+historical checkpoint. This comparison is still development-only and does not
+resolve the two-speaker, unreviewed-reference, or upstream-exposure limits.
 
 The 5 October repository test command passes **760/760** unittest cases and
 `validate_release_index.py` passes for release snapshot v0.1.1. Its compact

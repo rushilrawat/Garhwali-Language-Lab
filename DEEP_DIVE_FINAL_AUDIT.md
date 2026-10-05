@@ -121,7 +121,11 @@ is incomplete, and Meta test was not scored. See the
 Paired duration and reference-length slices all improve in aggregate; the
 largest group (219 references with 26+ words) nevertheless retains 89.366%
 WER. The 3–8 second slice has two records only; this set includes no clips
-shorter than three seconds.
+shorter than three seconds. A strict-train Whisper-tiny v0.1 checkpoint was
+also run on the same 241 rows and scored 95.370% WER / 71.878% CER, worse than
+the adapted candidate's 89.318% / 68.502%. The v0.1 train manifest has zero
+exact audio-hash or normalized-transcript intersection with this Meta
+validation view. This remains development-only evidence.
 
 ## Repository verification — 2026-10-05
 

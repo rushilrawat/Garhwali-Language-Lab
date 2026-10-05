@@ -97,6 +97,34 @@ interval or human transcription adjudication. The regenerated local comparison
 JSON has SHA-256
 `98b4e7324c8347c874bff23e4bbe51daa196871a15376351dd5508fe1029f0ab`.
 
+## Older-checkpoint comparison
+
+I also ran the locally available strict-train Whisper-tiny v0.1 checkpoint on
+the exact same 241 validation records with greedy decoding, a Hindi prompt,
+and a 128-token limit. It scored **95.370% WER** (10,401/10,906 words) and
+**71.878% CER** (32,233/44,844 characters), worse than both Whisper-tiny v0.2
+before adaptation and the Meta-adapted candidate. The adapted candidate is
+lower than v0.1 by 6.052 WER points and 3.376 CER points; both speaker slices
+also favor the adapted candidate. The v0.1 checkpoint records 1,621 strict
+training rows; that local train manifest has zero exact audio-hash and
+normalized-transcript intersections with this Meta validation view.
+
+| Validation speaker | Rows | v0.1 WER / CER | Meta-adapted WER / CER |
+| --- | ---: | ---: | ---: |
+| `spk11` | 119 | 97.656% / 78.884% | 94.798% / 76.211% |
+| `spk17` | 122 | 92.928% / 64.343% | 83.466% / 60.210% |
+
+The v0.1 run used CPU inference for 199.707 seconds and model-weight SHA-256
+`d4b4ebeb5f7ffde5aae9268b5723110dc690a05776d5fbf759be21554fdce096`. Its
+prediction file and the exact-paired comparison JSON remain Git-ignored; their
+hashes are recorded in the local comparison output. The v0.1 prediction hash is
+`0ee73bf7155474f9ce50381a01084fc6858dd619b1e07668eb2a2fe6f17771f7`; the
+paired comparison JSON hash is
+`1e1c10b4c595b19c77c1e7602f6694f6eeb8e4ee7f81660ee0348e8cde28576f`. This is
+another development comparison on the same two speakers and cannot establish independent
+generalization or confirm reference correctness. It does show the result is not
+an artifact of comparing only against the immediately previous v0.2 checkpoint.
+
 ## Seed check and claim limits
 
 The recipe was run under seed 17 and seed 29. Both runs produced the same

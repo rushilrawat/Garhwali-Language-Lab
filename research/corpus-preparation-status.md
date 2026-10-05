@@ -52,6 +52,11 @@ Updated 2026-10-05. This is a chronological preparation log: model-result paragr
   largest slice (219 references with 26+ words) still has 89.366% WER. The
   3–8 second slice has only two rows and is not interpretable; there are no
   clips under three seconds in this validation subset.
+- The older local Whisper-tiny v0.1 checkpoint was also scored on those exact
+  241 records: 95.370% WER / 71.878% CER, versus 89.318% / 68.502% for the
+  Meta-adapted candidate. Its 1,621-row local training manifest has zero exact
+  audio-hash or normalized-text intersection with this Meta validation view.
+  This remains a two-speaker development comparison; no held-out data was used.
 
 ## Internet Archive deep intake — local snapshot, 2026-10-04
 

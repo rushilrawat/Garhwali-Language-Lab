@@ -87,7 +87,7 @@
 - [x] Document that 531 Whisper-incompatible rows remain preserved outside this experiment view and that the result is development-only.
 - [x] Add paired error slices by clip duration and reference length; keep text out of the report and explicitly label tiny buckets.
 
-**Outcome:** WER improved from 93.444% to 89.318%; CER improved from 70.522% to 68.502%. The largest reference-length slice (219 rows) remains at 89.366% WER, while its two-row 3–8 second slice is too small to interpret. Next, verify whether a compatible comparison checkpoint is already available locally; Meta test remains closed. See the [adaptation report](../../../research/meta-omnilingual-asr-adaptation-2026-10-05.md).
+**Outcome:** WER improved from 93.444% to 89.318%; CER improved from 70.522% to 68.502%. The older locally runnable strict-train Whisper-tiny v0.1 checkpoint scored 95.370% WER / 71.878% CER on the exact same 241 records, so it is not a better alternative. The largest reference-length slice (219 rows) remains at 89.366% WER; its two-row 3–8 second slice is too small to interpret. Further model comparison needs a runnable SraVaani/original-Whisper checkpoint or another compatible, provenance-known model. Meta test remains closed. See the [adaptation report](../../../research/meta-omnilingual-asr-adaptation-2026-10-05.md).
 
 ### Task 4: One held-out confirmation and report
 
