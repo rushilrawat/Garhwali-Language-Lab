@@ -36,7 +36,7 @@ def test_index_row_references_source_and_excludes_record_payloads():
     assert result["record_family"] == "text"
     assert result["record_rights_status"] == "not_recorded"
     assert result["rights_status"] == "resolve_via_record_and_source_join"
-    assert result["quality_status"] == "automated_flags_present; not linguistically reviewed"
+    assert result["quality_status"] == "automated_quality_assessed_unreviewed"
     assert isinstance(result["license_labels"], list)
     assert source_id in result["source_ref_ids_json"]
     assert "https://example.org/item" not in serialized

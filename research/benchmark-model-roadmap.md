@@ -15,6 +15,15 @@ results independent. The owner approved active work toward independent final
 accuracy across language modeling, translation, retrieval, generation, and
 ASR; current evidence eligibility remains **0/5**.
 
+**Benchmark rights/provenance audit (2026-10-05):** the frozen 14,703-view-row
+v0.2 draft still has every public-upload and release-clearance flag false. The
+audit verified snapshot hashes, retrieval times, and attribution across all
+3,847 external task rows, and confirmed all are marked evaluation-only for
+training. It also substantiated source-level bases for 1,793 Garhwali Open
+Bible Stories rows (CC BY-SA 4.0) and 284 1916 LSI rows (public domain/PDM),
+but no release package was regenerated. The remaining source-specific actions
+and exact counts are in the [rights/provenance report](benchmark-rights-provenance-audit-2026-10-05.md).
+
 The 2026-10-04 [VAANI lineage audit](vaani-official-split-lineage-2026-10-04.md)
 reconciles all 5,894 prepared transcript rows to the official 4,778/666/450
 split and shows that expanded-human SraVaani training included 397 official
@@ -390,6 +399,22 @@ reproduced all 997-row dev baseline metrics exactly. No fresh neural-model
 scores were generated. The v0.2 package remains a local draft because semantic
 overlap, source-group uncertainty, raw-text recovery, and release/rights gates
 remain open.
+
+**Rights and provenance refresh (2026-10-05):** the frozen v0.2 manifest
+`43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8` was
+re-audited against current provider cards and source pages. The structural
+validator still passes eight views / 14,703 rows. All 3,847 external rows carry
+source IDs, attribution, snapshot URLs, hashes, and retrieval times; all are
+marked `training_eligibility_as_recorded=false`. The 2,077 text rows already
+marked component-compatible now have source-specific supporting evidence:
+1,793 Garhwali OBS rows under CC BY-SA 4.0 and 284 1916 LSI rows whose Commons
+scan is marked public domain. Their row-level upload flags remain false until
+license-specific exports include required source and modification notices.
+The other 8,265 rows remain intact with component status `not_recorded`,
+including 36 Tatoeba rows whose author attribution must be recovered. The 112
+VAANI rows still contain local audio locators and identifiers. No benchmark
+payload was uploaded. Details and machine counts are in the
+[rights/provenance audit](benchmark-rights-provenance-audit-2026-10-05.md).
 
 ### Phase 4 — Build one small, reproducible evaluation runner
 
@@ -807,13 +832,14 @@ original-Whisper comparison remains blocked by absent local weights/runtime.
 No test scoring or checkpoint promotion is authorized. Full hashes and limits are in the
 [adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md).
 
-Next actionable work is a rights/provenance pass for each benchmark component;
-the current per-view and item-status counts are in the
-[rights inventory](garhwali-bench-v0.2-rights-inventory-2026-09-29.md), and the
-reproducible audit is `scripts/audit_benchmark_v02_rights.py`. After the source
-and component rights are resolved, complete semantic/exposure checks and
-prepare a genuinely fresh evaluation set with recorded model exposure. Native
-review remains deferred; automated checks cannot certify linguistic accuracy.
+The benchmark-wide rights/provenance inventory pass is complete as of
+2026-10-05. Next, recover Tatoeba authors for 36 sentence IDs, add page/revision
+attribution for Wikimedia/Wiktionary records, and generate separate
+license-specific exports for source components whose conditions are complete.
+Then revisit source-text rights for CrossSum/XORQA, sanitize or restructure the
+112 VAANI rows, complete semantic/exposure checks, and prepare a genuinely
+fresh evaluation set with recorded model exposure. Native review remains
+deferred; automated checks cannot certify linguistic accuracy.
 No new paid Hugging Face job, model download, or Hub upload was started in this
 refresh. The account does have historical completed/canceled jobs; do not
 describe this as a zero-job history.

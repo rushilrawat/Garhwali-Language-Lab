@@ -18,7 +18,14 @@ class BenchmarkRightsAuditTests(unittest.TestCase):
                 {
                     'view': 'text_recommended/train',
                     'rights': {'public_release_cleared': False, 'public_rights_basis_as_recorded': [
-                        {'rights_status': 'rights_assessed_compatible', 'source_id': 'open_a'},
+                        {
+                            'rights_status': 'rights_assessed_compatible',
+                            'source_id': 'open_a',
+                            'attribution': 'Creator name',
+                            'license_url': 'https://example.test/license',
+                            'source_url': 'https://example.test/source',
+                        },
+                        {'rights_status': 'rights_assessed_compatible', 'source_id': 'open_b'},
                     ]},
                     'privacy': {'public_upload_allowed': False},
                 },
@@ -31,8 +38,24 @@ class BenchmarkRightsAuditTests(unittest.TestCase):
                 },
                 {
                     'view': 'external/flores',
-                    'rights': {'public_release_cleared': False, 'declared_license_id': 'CC-BY-SA-4.0'},
+                    'provenance': {
+                        'attribution': 'source attribution',
+                        'source_id': 'flores',
+                        'provenance': {
+                            'url': 'https://example.test/snapshot',
+                            'sha256': 'abc123',
+                            'retrieved_at': '2026-10-05T00:00:00Z',
+                        },
+                    },
+                    'payload': {'source_example': {'source': 'source', 'target': 'target'}},
+                    'rights': {
+                        'public_release_cleared': False,
+                        'declared_license_id': 'CC-BY-SA-4.0',
+                        'component_rights_status': 'not_assessed',
+                        'redistribution_status': 'not_cleared',
+                    },
                     'privacy': {'public_upload_allowed': False},
+                    'usage': {'training_eligibility_as_recorded': False, 'usage_label': 'dev_select'},
                 },
                 {
                     'view': 'internal/asr',
@@ -58,7 +81,57 @@ class BenchmarkRightsAuditTests(unittest.TestCase):
             'all_components_compatible': 1,
             'all_components_not_recorded': 1,
         })
+        self.assertEqual(result['recommended_text_rows_with_basis_by_source'], {
+            'open_a': 1,
+            'open_b': 2,
+        })
+        self.assertEqual(result['recommended_text_basis_components_by_source'], {
+            'open_a': 1,
+            'open_b': 2,
+        })
         self.assertEqual(result['external_declared_license_rows'], {'CC-BY-SA-4.0': 1})
+        self.assertEqual(result['external_provenance_coverage_by_view'], {
+            'external/flores': {
+                'attribution_present': 1,
+                'source_id_present': 1,
+                'source_snapshot_url_present': 1,
+                'source_snapshot_sha256_present': 1,
+                'source_snapshot_retrieved_at_present': 1,
+                'source_example_present': 1,
+                'source_example_source_url_present': 0,
+                'source_example_target_url_present': 0,
+            },
+        })
+        self.assertEqual(result['external_training_eligibility_by_view'], {
+            'external/flores': {'False': 1},
+        })
+        self.assertEqual(result['external_rights_statuses_by_view'], {
+            'external/flores': {
+                'component_rights_status=not_assessed': 1,
+                'redistribution_status=not_cleared': 1,
+                'rights_status=missing': 1,
+            },
+        })
+        self.assertEqual(result['recommended_text_rights_evidence_coverage_by_source'], {
+            'open_a': {
+                'attribution_present': 1,
+                'author_present': 0,
+                'license_url_present': 1,
+                'source_url_present': 1,
+                'rights_evidence_present': 0,
+                'source_snapshot_sha256_present': 0,
+                'source_pdf_sha256_present': 0,
+            },
+            'open_b': {
+                'attribution_present': 0,
+                'author_present': 0,
+                'license_url_present': 0,
+                'source_url_present': 0,
+                'rights_evidence_present': 0,
+                'source_snapshot_sha256_present': 0,
+                'source_pdf_sha256_present': 0,
+            },
+        })
         self.assertEqual(result['asr_license_declaration_rows'], {'CC-BY-4.0': 1})
         self.assertEqual(result['asr_local_field_flags'], {
             'contains_local_audio_locator=True': 1,

@@ -1,6 +1,7 @@
 # GarhwaliBench v0.2 rights inventory
 
 **Reviewed:** 2026-09-29
+**Rights/provenance refresh:** 2026-10-05 (source-card and provenance audit; frozen draft unchanged)
 **Scope:** current local v0.2 draft, eight views / 14,703 view rows
 **Status:** inventory of recorded evidence; not a legal opinion or publication clearance
 
@@ -89,3 +90,44 @@ Reproduce the machine-readable inventory with:
 ```bash
 PYTHONPATH=scripts .venv/bin/python scripts/audit_benchmark_v02_rights.py
 ```
+
+## Refresh — 2026-10-05
+
+The frozen manifest remains SHA-256
+`43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8`.
+Structural validation passes all eight views with zero errors. The refreshed
+rights audit adds per-view source-snapshot coverage, recorded external training
+eligibility, source-row counts, and source-component counts. It confirms that
+all 3,847 external task rows have source IDs, attribution, snapshot URLs,
+snapshot hashes, and retrieval timestamps; every external row remains marked
+not eligible for training. CrossSum also has source and target article URLs on
+all 699 rows.
+
+The official Garhwali Open Bible Stories page supports the existing CC BY-SA
+4.0 basis for its 1,793 benchmark components. The Wikimedia Commons page for
+the matching 1916 LSI volume identifies the work as public domain; the 284
+components retain author, year, source scan hash, and source links. These are
+strong bases for separately attributed, license-specific exports, but the
+frozen package still marks both groups `public_upload_allowed=false` pending
+export-level notices and verification.
+
+The other 8,265 recommended-text rows remain `not_recorded`, not deleted or
+missing: 7,931 Meta-only, 36 Tatoeba-only, 78 Wikimedia-only, 49
+Wiktionary-English-only, 155 thematic-Swadesh-only, 10 linked to both
+Wiktionary families, and 6 Incubator-Wiktionary-only. Tatoeba's current 36
+attribution strings state that the contributor is unavailable; its official
+reuse rules require author attribution. Resolving those IDs through Tatoeba's
+sentence API is a concrete remaining item. For Wikimedia/Wiktionary sources,
+page/revision attribution still needs to be written into the export.
+
+The three IndicGenBench cards' license declarations and evaluation-only/no-
+pretraining statements were rechecked. The adapter records this limit as
+`training_eligibility_as_recorded=false` on all 3,847 external rows. CrossSum's
+source article text and XORQA's underlying passages still need separate
+component review. The 112 VAANI rows remain unsuitable for public upload in
+their current shape because all have local audio locators and local IDs.
+
+No counts or rights flags in the frozen v0.2 data were rewritten during this
+refresh. Full evidence and the machine-readable coverage report are in
+[the 2026-10-05 rights/provenance audit](benchmark-rights-provenance-audit-2026-10-05.md)
+and [its JSON result](benchmark-rights-provenance-audit-2026-10-05.json).

@@ -1,0 +1,206 @@
+{
+  "asr_license_declaration_rows": {
+    "CC-BY-4.0": 112
+  },
+  "asr_local_field_flags": {
+    "contains_local_audio_locator=True": 112,
+    "contains_local_identifiers=True": 112
+  },
+  "external_declared_license_rows": {
+    "CC-BY-NC-SA-4.0": 699,
+    "CC-BY-SA-4.0": 2009,
+    "MIT": 1139
+  },
+  "external_provenance_coverage_by_view": {
+    "external/crosssum": {
+      "attribution_present": 699,
+      "source_example_present": 699,
+      "source_example_source_url_present": 699,
+      "source_example_target_url_present": 699,
+      "source_id_present": 699,
+      "source_snapshot_retrieved_at_present": 699,
+      "source_snapshot_sha256_present": 699,
+      "source_snapshot_url_present": 699
+    },
+    "external/flores": {
+      "attribution_present": 2009,
+      "source_example_present": 2009,
+      "source_example_source_url_present": 0,
+      "source_example_target_url_present": 0,
+      "source_id_present": 2009,
+      "source_snapshot_retrieved_at_present": 2009,
+      "source_snapshot_sha256_present": 2009,
+      "source_snapshot_url_present": 2009
+    },
+    "external/xorqa": {
+      "attribution_present": 1139,
+      "source_example_present": 1139,
+      "source_example_source_url_present": 0,
+      "source_example_target_url_present": 0,
+      "source_id_present": 1139,
+      "source_snapshot_retrieved_at_present": 1139,
+      "source_snapshot_sha256_present": 1139,
+      "source_snapshot_url_present": 1139
+    }
+  },
+  "external_rights_statuses_by_view": {
+    "external/crosssum": {
+      "component_rights_status=not_assessed_by_v02_export": 699,
+      "redistribution_status=not_cleared_by_v02_export": 699,
+      "rights_status=upstream_declared_license; component_rights_review_before_redistribution": 699
+    },
+    "external/flores": {
+      "component_rights_status=not_assessed_by_v02_export": 2009,
+      "redistribution_status=not_cleared_by_v02_export": 2009,
+      "rights_status=upstream_declared_license; component_rights_review_before_redistribution": 2009
+    },
+    "external/xorqa": {
+      "component_rights_status=not_assessed_by_v02_export": 1139,
+      "redistribution_status=not_cleared_by_v02_export": 1139,
+      "rights_status=upstream_declared_license; component_rights_review_before_redistribution": 1139
+    }
+  },
+  "external_training_eligibility_by_view": {
+    "external/crosssum": {
+      "False": 699
+    },
+    "external/flores": {
+      "False": 2009
+    },
+    "external/xorqa": {
+      "False": 1139
+    }
+  },
+  "internal_text_component_rights_statuses": {
+    "dataset_declares_CC_BY_4; source_component_and_consent_review_pending": 227,
+    "not_recorded": 404,
+    "rights_assessed_compatible": 10
+  },
+  "manifest_public_upload_allowed": false,
+  "public_release_cleared_by_value": {
+    "False": 14703
+  },
+  "public_upload_allowed_by_value": {
+    "False": 14703
+  },
+  "recommended_text_basis_components_by_source": {
+    "incubator_wt": 6,
+    "lsi_1916_grierson_garhwali_specimens": 284,
+    "meta_omni": 8149,
+    "obs_tlf_gbm_v1": 1793,
+    "tatoeba": 36,
+    "wikimedia": 80,
+    "wiktionary_en": 60,
+    "wiktionary_swadesh_thematic": 168
+  },
+  "recommended_text_rights_evidence_coverage_by_source": {
+    "incubator_wt": {
+      "attribution_present": 6,
+      "author_present": 0,
+      "license_url_present": 6,
+      "rights_evidence_present": 0,
+      "source_pdf_sha256_present": 0,
+      "source_snapshot_sha256_present": 0,
+      "source_url_present": 0
+    },
+    "lsi_1916_grierson_garhwali_specimens": {
+      "attribution_present": 284,
+      "author_present": 284,
+      "license_url_present": 284,
+      "rights_evidence_present": 284,
+      "source_pdf_sha256_present": 284,
+      "source_snapshot_sha256_present": 0,
+      "source_url_present": 284
+    },
+    "meta_omni": {
+      "attribution_present": 8149,
+      "author_present": 0,
+      "license_url_present": 8149,
+      "rights_evidence_present": 8149,
+      "source_pdf_sha256_present": 0,
+      "source_snapshot_sha256_present": 0,
+      "source_url_present": 8149
+    },
+    "obs_tlf_gbm_v1": {
+      "attribution_present": 1793,
+      "author_present": 0,
+      "license_url_present": 1793,
+      "rights_evidence_present": 1793,
+      "source_pdf_sha256_present": 0,
+      "source_snapshot_sha256_present": 1793,
+      "source_url_present": 1793
+    },
+    "tatoeba": {
+      "attribution_present": 36,
+      "author_present": 0,
+      "license_url_present": 36,
+      "rights_evidence_present": 0,
+      "source_pdf_sha256_present": 0,
+      "source_snapshot_sha256_present": 0,
+      "source_url_present": 0
+    },
+    "wikimedia": {
+      "attribution_present": 80,
+      "author_present": 0,
+      "license_url_present": 80,
+      "rights_evidence_present": 0,
+      "source_pdf_sha256_present": 0,
+      "source_snapshot_sha256_present": 0,
+      "source_url_present": 0
+    },
+    "wiktionary_en": {
+      "attribution_present": 60,
+      "author_present": 0,
+      "license_url_present": 60,
+      "rights_evidence_present": 60,
+      "source_pdf_sha256_present": 0,
+      "source_snapshot_sha256_present": 0,
+      "source_url_present": 60
+    },
+    "wiktionary_swadesh_thematic": {
+      "attribution_present": 168,
+      "author_present": 0,
+      "license_url_present": 168,
+      "rights_evidence_present": 0,
+      "source_pdf_sha256_present": 0,
+      "source_snapshot_sha256_present": 0,
+      "source_url_present": 0
+    }
+  },
+  "recommended_text_rights_rows": {
+    "all_components_compatible": 2077,
+    "all_components_not_recorded": 8265
+  },
+  "recommended_text_rows_by_source_family": {
+    "incubator_wt": 6,
+    "lsi_1916_grierson_garhwali_specimens": 284,
+    "meta_omni": 7931,
+    "obs_tlf_gbm_v1": 1793,
+    "tatoeba": 36,
+    "wikimedia": 78,
+    "wiktionary_en": 49,
+    "wiktionary_en+wiktionary_swadesh_thematic": 10,
+    "wiktionary_swadesh_thematic": 155
+  },
+  "recommended_text_rows_with_basis_by_source": {
+    "incubator_wt": 6,
+    "lsi_1916_grierson_garhwali_specimens": 284,
+    "meta_omni": 7931,
+    "obs_tlf_gbm_v1": 1793,
+    "tatoeba": 36,
+    "wikimedia": 78,
+    "wiktionary_en": 59,
+    "wiktionary_swadesh_thematic": 165
+  },
+  "rows_by_view": {
+    "external/crosssum": 699,
+    "external/flores": 2009,
+    "external/xorqa": 1139,
+    "internal/asr": 112,
+    "internal/text": 402,
+    "text_recommended/test": 402,
+    "text_recommended/train": 9486,
+    "text_recommended/validation": 454
+  },
+  "view_rows": 14703
+}

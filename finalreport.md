@@ -164,6 +164,12 @@ derived-data indexes. The v0.1.1 bundle was not rewritten because it is a
 historical snapshot. A future current-version release must regenerate a
 versioned bundle from its frozen inputs before publication.
 
+## GarhwaliBench rights and provenance audit — 2026-10-05
+
+The frozen v0.2 benchmark manifest remains `43ba82ee2940c7f00115a059fdd4b895d81d2fbdeddf7aeacc17cbbd9e34d9e8`. Its eight views contain 14,703 view rows; the structural validator passes, but all rows still have `public_upload_allowed=false` and `public_release_cleared=false`. This pass changed neither payloads nor release gates.
+
+The audit verified source IDs, attribution, source snapshot URLs, hashes, and retrieval dates across all 3,847 external rows. Provider use labels keep all of those records out of model-training eligibility. It substantiated source-level evidence for 1,793 Garhwali Open Bible Stories components under CC BY-SA 4.0 and 284 1916 LSI components identified as public domain; those can be prepared as separate condition-specific exports after attribution and modification notices are added. Another 8,265 recommended text rows still have `not_recorded` component decisions, including 36 Tatoeba rows with sentence IDs but no contributor names. The internal 112-row VAANI view still contains local audio locators and IDs. No row was removed or redacted. The exact source dispositions and machine counts are in the [rights/provenance report](research/benchmark-rights-provenance-audit-2026-10-05.md) and [JSON audit](research/benchmark-rights-provenance-audit-2026-10-05.json).
+
 ## Hugging Face quality release v0.2.2 — 2026-10-01 (historical review)
 
 At the time of this 1 October snapshot, the public corpus was v0.2.2, with its corrective [Hub commit `b18933b`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/b18933bb2e98f091add0b1889e70587448d9891f); the speech repository was at v0.2.1. The additive v0.2.2
