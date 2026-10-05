@@ -121,6 +121,13 @@ SPLIT_MANIFESTS = {
         split: f"data/processed/model_ready/language_resources/tts/{split}.jsonl"
         for split in ("train", "validation", "test")
     },
+    "meta_omnilingual_whisper_compatible": {
+        split: (
+            "data/processed/model_ready/splits/meta_omnilingual_asr/"
+            f"whisper_tiny_compatible/{split}.jsonl"
+        )
+        for split in ("train", "validation")
+    },
 }
 
 SINGLE_MANIFESTS = {
@@ -130,6 +137,10 @@ SINGLE_MANIFESTS = {
         "required_splits": ("train", "validation", "test"),
     },
 }
+
+ADDITIONAL_PREDICTION_GLOBS = (
+    "models/whisper-tiny-garhwali-meta-*/evaluation_predictions.jsonl",
+)
 
 BENCHMARKS = {
     "flores": "benchmarks/indicgenbench_flores.jsonl",
@@ -216,13 +227,18 @@ METADATA_FIELDS = (
     "checkpoint_sha256",
     "base_checkpoint_sha256",
     "best_checkpoint_sha256",
+    "training_manifest",
     "training_manifest_sha256",
     "training_manifest_hashes",
+    "training_examples",
     "train_sha256",
     "validation_sha256",
+    "evaluation_manifest",
+    "evaluation_manifest_sha256",
     "test_sha256",
     "train_records",
     "validation_records",
+    "evaluation_records",
     "test_records",
     "test_opened_once",
     "test_opened_after_training_and_selection",
@@ -777,6 +793,96 @@ def _metadata_values(value: object) -> dict:
     return found
 
 
+def _manifest_lineage_checks(root: Path, metadata: dict) -> dict:
+    """Compare artifact-declared manifest hashes/counts with local inputs."""
+    checks = {}
+    specs = {
+        "training": (
+            "training_manifest",
+            "training_manifest_sha256",
+            ("training_examples", "train_records"),
+        ),
+        "evaluation": (
+            "evaluation_manifest",
+            "evaluation_manifest_sha256",
+            ("evaluation_records", "validation_records"),
+        ),
+    }
+    for role, (path_field, hash_field, count_fields) in specs.items():
+        declared_path = metadata.get(path_field)
+        declared_hash = metadata.get(hash_field)
+        declared_counts = {
+            field: metadata[field]
+            for field in count_fields
+            if isinstance(metadata.get(field), int)
+            and not isinstance(metadata.get(field), bool)
+        }
+        if declared_path is None and declared_hash is None and not declared_counts:
+            continue
+
+        check = {
+            "declared_path": declared_path,
+            "declared_sha256": declared_hash,
+            "declared_row_counts": declared_counts,
+            "actual_sha256": None,
+            "actual_row_count": None,
+            "hash_matches": None,
+            "row_count_matches": None,
+        }
+        if not isinstance(declared_path, str) or not declared_path.strip():
+            check["status"] = "missing_path"
+            checks[role] = check
+            continue
+
+        source_path = Path(declared_path)
+        if not source_path.is_absolute():
+            source_path = root / source_path
+        source_path = source_path.resolve()
+        try:
+            source_path.relative_to(root)
+        except ValueError:
+            check["status"] = "outside_project"
+            checks[role] = check
+            continue
+        if not source_path.is_file():
+            check["status"] = "missing_file"
+            checks[role] = check
+            continue
+
+        try:
+            check["actual_sha256"] = _sha256_file(source_path)
+            check["actual_row_count"] = len(read_jsonl(source_path))
+        except (OSError, ValueError):
+            check["status"] = "unreadable"
+            checks[role] = check
+            continue
+
+        if isinstance(declared_hash, str) and declared_hash:
+            check["hash_matches"] = (
+                check["actual_sha256"] == declared_hash.strip().lower()
+            )
+        if declared_counts:
+            check["row_count_matches"] = all(
+                count == check["actual_row_count"]
+                for count in declared_counts.values()
+            )
+        comparisons = [
+            result
+            for result in (check["hash_matches"], check["row_count_matches"])
+            if result is not None
+        ]
+        if not comparisons:
+            check["status"] = "not_verifiable"
+        elif not all(comparisons):
+            check["status"] = "mismatch"
+        elif check["hash_matches"] is True and check["row_count_matches"] is True:
+            check["status"] = "verified_match"
+        else:
+            check["status"] = "partial_match"
+        checks[role] = check
+    return checks
+
+
 def _prediction_files(root: Path) -> list[Path]:
     paths = []
     for relative_root in EVALUATION_ROOTS:
@@ -790,7 +896,13 @@ def _prediction_files(root: Path) -> list[Path]:
             and "prediction" in path.name.casefold()
             and path.suffix.casefold() in {".json", ".jsonl"}
         )
-    return sorted(paths, key=lambda path: path.relative_to(root).as_posix())
+    paths.extend(
+        path
+        for pattern in ADDITIONAL_PREDICTION_GLOBS
+        for path in root.glob(pattern)
+        if path.is_file()
+    )
+    return sorted(set(paths), key=lambda path: path.relative_to(root).as_posix())
 
 
 def _match_prediction_row(
@@ -974,6 +1086,10 @@ def _evaluation_decisions(
             "meta_omnilingual", "validation", True, "development_only",
             "Use the internally safe rows for development selection/error analysis only. Upstream checkpoint exposure is unknown, so results cannot establish independent generalization.",
         ),
+        "meta_omnilingual_whisper_compatible_validation": (
+            "meta_omnilingual_whisper_compatible", "validation", False, "development_only",
+            "This 241-row model-compatible view was used for adaptation and checkpoint comparison. It is development-only, even though its manifest is disjoint from the compatible training view.",
+        ),
         "meta_omnilingual_test": (
             "meta_omnilingual", "test", True, "unresolved",
             "Do not use as a final held-out claim until upstream checkpoint pretraining/fine-tuning overlap is resolved. The internal safety flags only address duplicates within this Meta manifest.",
@@ -1149,6 +1265,7 @@ def _prediction_report(root: Path, path: Path, records: list[dict], indexes: tup
         "sha256": _sha256_file(path),
         "rows": len(rows),
         "model_metadata": metadata,
+        "manifest_lineage_checks": _manifest_lineage_checks(root, metadata),
         "training_data_lineage": "unknown",
         "upstream_pretraining_overlap": "unknown",
         "matched_split_counts": {
@@ -1427,6 +1544,34 @@ def render_markdown(report: dict) -> str:
             f"{item['ambiguous_prediction_row_count']} | "
             f"{item['unmatched_prediction_row_count']} |"
         )
+    manifest_checks = [
+        (item["path"], role, check)
+        for item in report["predictions"]
+        for role, check in item.get("manifest_lineage_checks", {}).items()
+    ]
+    lines.extend(
+        [
+            "",
+            "## Model-declared manifest checks",
+            "",
+            "Artifact-declared manifest paths, hashes, and row counts are compared with local files when the paths are inside the project. A match verifies those recorded inputs only; it does not prove upstream pretraining exposure.",
+            "",
+            "| Prediction artifact | Role | Status | Declared SHA-256 | Observed SHA-256 | Declared rows | Observed rows |",
+            "|---|---|---|---|---|---:|---:|",
+        ]
+    )
+    for path, role, check in manifest_checks:
+        declared_counts = ", ".join(
+            str(value) for value in check["declared_row_counts"].values()
+        ) or "—"
+        lines.append(
+            f"| `{path}` | {role} | {check['status']} | "
+            f"`{check['declared_sha256'] or '—'}` | "
+            f"`{check['actual_sha256'] or '—'}` | {declared_counts} | "
+            f"{check['actual_row_count'] if check['actual_row_count'] is not None else '—'} |"
+        )
+    if not manifest_checks:
+        lines.append("| No artifact-declared manifest checks | — | — | — | — | — | — |")
     lines.extend(["", "## Exact previously scored rows", ""])
     for family, splits in sorted(report["previously_scored_rows"].items()):
         counts = ", ".join(f"{split}={len(rows)}" for split, rows in sorted(splits.items()))
@@ -1451,7 +1596,10 @@ def main() -> int:
     parser.add_argument(
         "--output-prefix",
         type=Path,
-        default=Path("research/model-accuracy-lineage-2026-09-24"),
+        default=Path(
+            "data/processed/evaluation/garhwali_bench/"
+            "model-accuracy-lineage-latest"
+        ),
     )
     args = parser.parse_args()
     report = build_report(args.project_root)

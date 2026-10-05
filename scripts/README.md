@@ -128,7 +128,7 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current working-tree suite passes **760 tests**. The
+The current working-tree suite passes **762 tests**. The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
 installs dependencies from `requirements-pipeline.txt`. Current benchmark
@@ -175,6 +175,28 @@ accepts an explicit `--run-id` for non-speaker-safe views and records the local
 weight-file SHA-256; do not label an evaluation speaker-safe unless the exact
 data and speaker checks support that claim. See
 [`research/vaani-official-split-lineage-2026-10-04.md`](../research/vaani-official-split-lineage-2026-10-04.md).
+
+`audit_model_accuracy_lineage.py` inventories configured source splits and
+saved predictions, assigning explicit development/historical/unresolved use
+states. It includes the filtered Whisper-compatible Meta train/validation
+manifests and scans their ignored adaptation prediction files under `models/`.
+The detailed row-level JSON is local-only and defaults under Git-ignored
+`data/processed/`; commit only a reviewed aggregate Markdown report. Rebuild
+the 5 October snapshot with:
+
+```bash
+PYTHONPATH=scripts .venv/bin/python scripts/audit_model_accuracy_lineage.py \
+  --output-prefix data/processed/evaluation/garhwali_bench/model-accuracy-lineage-2026-10-05
+```
+
+The model-compatible Meta train and validation views have no exact cross-split
+audio/text/speaker overlap, but their training transcripts match 31 rows in
+each recommended text validation and test view. This is a cross-task exposure
+warning, not evidence that Meta validation audio overlaps training. See
+[`research/model-lineage-refresh-2026-10-05.md`](../research/model-lineage-refresh-2026-10-05.md).
+The audit verifies each recorded local training/evaluation manifest path,
+SHA-256, and row count against the current file; mismatches and unavailable
+inputs are explicit in the output.
 
 `manifest_saved_generation_validation.py` reconciles the three saved mT0
 generation systems against their shared frozen validation IDs and writes one

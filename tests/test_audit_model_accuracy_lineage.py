@@ -128,6 +128,7 @@ class LineageReportTests(unittest.TestCase):
                 "text_recommended",
                 "instructions_v0.2",
                 "tts",
+                "meta_omnilingual_whisper_compatible",
             }.issubset(SPLIT_MANIFESTS)
         )
         self.assertIn("meta_omnilingual", SINGLE_MANIFESTS)
@@ -382,6 +383,127 @@ class LineageReportTests(unittest.TestCase):
             self.assertEqual(check["computed_true_rows"], 2)
             self.assertEqual(check["declared_true_rows"], 0)
             self.assertEqual(check["mismatch_count"], 2)
+
+    def test_meta_whisper_compatible_views_and_adaptation_predictions_are_audited(self):
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            self._write_required_manifests(root)
+            family = "meta_omnilingual_whisper_compatible"
+            compatible_paths = {
+                "train": "data/processed/model_ready/splits/meta_omnilingual_asr/whisper_tiny_compatible/train.jsonl",
+                "validation": "data/processed/model_ready/splits/meta_omnilingual_asr/whisper_tiny_compatible/validation.jsonl",
+            }
+            train_row = self._row(f"{family}:train:0", "train")
+            validation_row = self._row(f"{family}:validation:0", "validation")
+            for split, row in (("train", train_row), ("validation", validation_row)):
+                path = root / compatible_paths[split]
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(json.dumps(row) + "\n", encoding="utf-8")
+
+            prediction_path = (
+                root
+                / "models/whisper-tiny-garhwali-meta-multiseed-17/evaluation_predictions.jsonl"
+            )
+            prediction_path.parent.mkdir(parents=True, exist_ok=True)
+            prediction_path.write_text(
+                json.dumps({"record_id": validation_row["record_id"], "hypothesis": "draft"})
+                + "\n",
+                encoding="utf-8",
+            )
+            train_manifest_path = root / compatible_paths["train"]
+            validation_manifest_path = root / compatible_paths["validation"]
+            (prediction_path.parent / "report.json").write_text(
+                json.dumps(
+                    {
+                        "training_manifest": compatible_paths["train"],
+                        "training_manifest_sha256": hashlib.sha256(
+                            train_manifest_path.read_bytes()
+                        ).hexdigest(),
+                        "training_examples": 1,
+                        "evaluation_manifest": compatible_paths["validation"],
+                        "evaluation_manifest_sha256": hashlib.sha256(
+                            validation_manifest_path.read_bytes()
+                        ).hexdigest(),
+                        "evaluation_records": 1,
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            report = build_report(root)
+
+            compatible = report["manifest_families"][family]
+            self.assertEqual(compatible["row_counts"], {"train": 1, "validation": 1})
+            self.assertEqual(
+                compatible["overlaps"]["audio_sha256"]["cross_split_group_count"], 0
+            )
+            self.assertEqual(
+                compatible["overlaps"]["text_sha256"]["cross_split_group_count"], 0
+            )
+            self.assertEqual(
+                compatible["overlaps"]["speaker_id"]["cross_split_speaker_count"],
+                0,
+            )
+            prediction = next(
+                item
+                for item in report["predictions"]
+                if item["path"].endswith("evaluation_predictions.jsonl")
+            )
+            self.assertEqual(
+                prediction["matched_split_counts"][family]["validation"], 1
+            )
+            self.assertEqual(
+                prediction["model_metadata"]["training_manifest_sha256"],
+                hashlib.sha256(train_manifest_path.read_bytes()).hexdigest(),
+            )
+            self.assertEqual(
+                prediction["manifest_lineage_checks"]["training"]["status"],
+                "verified_match",
+            )
+            self.assertEqual(
+                prediction["manifest_lineage_checks"]["evaluation"]["status"],
+                "verified_match",
+            )
+            decision = report["evaluation_decisions"][
+                "meta_omnilingual_whisper_compatible_validation"
+            ]
+            self.assertEqual(decision["status"], "development_only")
+            self.assertEqual(decision["previously_scored_row_count"], 1)
+
+    def test_declared_manifest_hash_mismatch_is_reported(self):
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            self._write_required_manifests(root)
+            family = "meta_omnilingual_whisper_compatible"
+            train_path = root / SPLIT_MANIFESTS[family]["train"]
+            prediction_path = root / "models/whisper-tiny-garhwali-meta-mismatch/evaluation_predictions.jsonl"
+            prediction_path.parent.mkdir(parents=True, exist_ok=True)
+            prediction_path.write_text("{}\n", encoding="utf-8")
+            (prediction_path.parent / "report.json").write_text(
+                json.dumps(
+                    {
+                        "training_manifest": SPLIT_MANIFESTS[family]["train"],
+                        "training_manifest_sha256": "0" * 64,
+                        "training_examples": 2,
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            report = build_report(root)
+            prediction = next(
+                item
+                for item in report["predictions"]
+                if item["path"].endswith("evaluation_predictions.jsonl")
+            )
+
+            check = prediction["manifest_lineage_checks"]["training"]
+            self.assertEqual(check["status"], "mismatch")
+            self.assertFalse(check["hash_matches"])
+            self.assertFalse(check["row_count_matches"])
+            markdown = render_markdown(report)
+            self.assertIn("## Model-declared manifest checks", markdown)
+            self.assertIn("mismatch", markdown)
 
     def test_cross_family_train_to_test_audio_overlap_is_reported(self):
         with TemporaryDirectory() as temp_dir:

@@ -127,10 +127,28 @@ the adapted candidate's 89.318% / 68.502%. The v0.1 train manifest has zero
 exact audio-hash or normalized-transcript intersection with this Meta
 validation view. This remains development-only evidence.
 
+## Model lineage coverage refresh — 2026-10-05
+
+The model-lineage tool now audits the exact Whisper-compatible Meta train and
+validation manifests and finds the adaptation's saved prediction file under
+the ignored model directory. The run report's declared train/evaluation
+manifest paths, hashes, and row counts match the local 1,793-row and 241-row
+files; all 241 predictions match the compatible validation set, which is
+explicitly classified as development-only. Exact
+audio, transcript, and known-speaker intersections are zero between compatible
+train and validation and between strict VAANI training and Meta-compatible
+validation. The compatible train transcripts do match 31 rows in each current
+recommended text validation/test view, a cross-task exposure risk for later
+text evaluation with this checkpoint. It is not evidence of Meta audio overlap
+or semantic leakage. All rows remain retained; the 292 safe Meta test rows
+remain unscored, and independent-final eligibility remains 0/5. See the
+[aggregate lineage report](research/model-lineage-refresh-2026-10-05.md); the
+row-level ledger stays Git-ignored.
+
 ## Repository verification — 2026-10-05
 
 The documented repository unittest discovery command passes locally
-**760/760**, and the release-index validator passes for the tracked v0.1.1
+**762/762**, and the release-index validator passes for the tracked v0.1.1
 snapshot. The bundle itself has no
 path/hash failures when source comparison is disabled. The full local
 `build_release_bundle.py --check` finds **60 stale-source entries**: 36

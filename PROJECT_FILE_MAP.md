@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **974**.
+Files indexed: **975**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -611,6 +611,7 @@ python scripts/generate_project_file_map.py
 - `research/model-accuracy-lineage-2026-09-28.md`
 - `research/model-accuracy-preflight-2026-09-24.md`
 - `research/model-assisted-text-cleanup-2026-09-11.md`
+- `research/model-lineage-refresh-2026-10-05.md`
 - `research/mt0-16384-validation-2026-09-16.md`
 - `research/mt0-32768-partial-2026-09-16.md`
 - `research/mt0-cloud-continuation-2026-09-16.md`
@@ -1027,11 +1028,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **238,406**.
+- Workspace files counted: **238,409**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **974**.
-- Ignored or otherwise unlisted payload files: **237,432** (157,125,797,787 bytes).
-- Total workspace bytes counted: **157,142,652,262**.
+- Detailed file paths listed above: **975**.
+- Ignored or otherwise unlisted payload files: **237,434** (157,144,344,597 bytes).
+- Total workspace bytes counted: **157,161,221,045**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1056,7 +1057,7 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
 | `data/extracted/…/` | 736 | 104,222,504 |
 | `data/huggingface/…/` | 1,980 | 72,788,494,485 |
-| `data/processed/…/` | 110,559 | 40,784,489,378 |
+| `data/processed/…/` | 110,561 | 40,803,036,188 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |
 | `data/vaani/…/` | 115,189 | 32,112,461,505 |

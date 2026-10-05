@@ -95,7 +95,7 @@ The 2026 study [*Seeds Before Objectives*](https://arxiv.org/abs/2608.10670)
 reports a five-seed, official-split w2v-BERT 2.0 standard-CTC mean of 47.0%
 WER. Its method supports reporting seed variation; it is not a like-for-like
 comparison to this single Whisper-tiny remainder score or an independent test
-for this project. The current local suite passes **760/760** tests (5 October
+for this project. The current local suite passes **762/762** tests (5 October
 2026, repository CI unittest discovery command).
 
 ## Meta Omnilingual ASR validation — 2026-10-04 to 2026-10-05
@@ -133,7 +133,27 @@ on the same 241 rows, so the adaptation also outperforms that same-family
 historical checkpoint. This comparison is still development-only and does not
 resolve the two-speaker, unreviewed-reference, or upstream-exposure limits.
 
-The 5 October repository test command passes **760/760** unittest cases and
+## Model lineage coverage refresh — 2026-10-05
+
+The lineage auditor now includes the exact 1,793-row Whisper-compatible Meta
+training manifest, its 241-row validation manifest, and the adapted
+checkpoint's saved predictions. Its declared training and evaluation
+manifest paths, hashes, and row counts match the local files. All 241
+predictions map to the compatible validation rows, so that view is explicitly
+`development_only` and previously scored. Compatible train and validation
+have zero exact audio-hash, transcript-hash, or known-speaker crossings; the
+strict VAANI training view also has zero exact audio/text/speaker overlap with
+this validation view.
+
+The adapted training transcripts nevertheless share **31 exact-hash groups
+with 31 rows in each** of the current text validation and test views. These
+are cross-task exposure matches for any text-task evaluation using this
+checkpoint; they do not prove semantic leakage or Meta audio overlap. All rows
+remain preserved. The 292 safe Meta test rows remain unscored, and independent
+final-evidence eligibility stays **0/5**. The row-level ledger is Git-ignored;
+aggregate findings and hashes are in the [lineage refresh](research/model-lineage-refresh-2026-10-05.md).
+
+The 5 October repository test command passes **762/762** unittest cases and
 `validate_release_index.py` passes for release snapshot v0.1.1. Its compact
 artifact hashes and paths also pass when checked without comparing against
 the current source tree. The stricter local `build_release_bundle.py --check`

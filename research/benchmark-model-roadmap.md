@@ -1,23 +1,19 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Status snapshot:** Main benchmark evidence measured 2026-09-30; ASR development updated 2026-10-05; public corpus release checked 2026-10-04 (corpus v0.2.3, speech v0.2.1)
+**Status snapshot:** Benchmark/model-lineage evidence refreshed 2026-10-05; public corpus release checked 2026-10-04 (corpus v0.2.3, speech v0.2.1)
 **Scope:** GarhwaliBench and the model-research suite in this repository
 **Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 
 This is the working plan for moving from useful but mixed-history experiments to a reproducible, accurately described benchmark and model-research program. It records what exists, what evidence permits us to say, what happens next, the tools to use, and the gate for each phase.
 
-## Current position and remaining work — benchmark evidence 2026-09-30
+## Current position and remaining work — 2026-10-05
 
-The public Garhwali corpus has since advanced to **v0.2.3**; this roadmap's
-benchmark counts and model evidence remain the 30 September snapshot and were
-not changed by the 4 October Archive intake. The 246-row v0.2.3
-`text_resources` view re-exposes catalogued values and is not a new benchmark
-or model-training run. The benchmark remains local-only, and the corpus
-release does not make model results independent. On 2026-09-30, the owner
-approved active work toward independent
-final-accuracy results across language modeling, translation, retrieval,
-generation, and ASR. That approval sets the work priority; current evidence
-eligibility remains 0/5.
+The public Garhwali corpus is **v0.2.3**; the 246-row `text_resources` view
+re-exposes catalogued values and is not a new benchmark or model-training run.
+The benchmark remains local-only, and corpus publication does not make model
+results independent. The owner approved active work toward independent final
+accuracy across language modeling, translation, retrieval, generation, and
+ASR; current evidence eligibility remains **0/5**.
 
 The 2026-10-04 [VAANI lineage audit](vaani-official-split-lineage-2026-10-04.md)
 reconciles all 5,894 prepared transcript rows to the official 4,778/666/450
@@ -37,12 +33,27 @@ only results from two speakers; the 292 safe Meta test rows remain unscored.
 Seeds 17 and 29 were byte-identical because the recipe is deterministic. See
 the [adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md).
 
+**Model-lineage refresh (2026-10-05):** the audit now includes the exact
+1,793-row Whisper-compatible Meta training view, its 241-row validation view,
+all 241 saved adaptation predictions, and exact checks of the artifact-declared
+training/evaluation manifest paths, hashes, and row counts (both match the
+local files). The compatible train/validation
+views have zero exact audio, transcript, or known-speaker crossings, and
+strict VAANI training has zero exact audio/text/speaker overlap with this Meta
+validation view. However, Meta adaptation training transcripts match 31 rows
+in each recommended text validation and test view. These exact strings are a
+cross-task exposure warning; they do not prove semantic leakage or Meta audio
+overlap. All 241 predictions are recorded as previously scored
+`development_only`; the 292 safe Meta test rows remain unscored. See the
+[aggregate lineage report](model-lineage-refresh-2026-10-05.md). The row-level
+ledger remains local-only.
+
 | Workstream | Current verified position | Remaining gate |
 | --- | --- | --- |
 | Benchmark artifacts | Five candidate task artifacts; three external schemas cover 3,847 records. | Source/model exposure and reference suitability still limit independent claims. |
 | Benchmark contract | Local validator/export passes across eight views and 14,703 view rows; ASR corpus-WER/CER, generation EM/chrF2, and retrieval ranking policies are explicit in tested scorers. | Freeze the complete metric/task contract; finish rights and release review. |
-| Split integrity | Recommended text candidate has 9,486 train / 454 validation / 402 test; its test mirrors the internal text view. All 10,342 candidate IDs map to source segments covering 3,246 parent-text hashes with zero parent-hash crossings; 3,072 duplicate-component IDs also stay within one split. The 2026-09-30 model-lineage scan additionally finds 15 exact text overlaps from recommended train to instruction test and 29 to instruction validation; Meta Omnilingual has 4 train/test audio and 4 train/test text overlap groups, plus 27 train/validation text overlap groups. | Retain and flag overlapping rows. The exact cross-view matches are exposure risks unless model-training lineage proves non-use; the direct Meta and expanded-human ASR train/evaluation duplicates are not held-out. Coarse collection-file pointers span splits (9/11) and cannot establish document-level leakage; semantic/paraphrase and checkpoint exposure remain open. |
-| Evaluation and baselines | Hash-linked QA, summary, translation, BM25, ASR, and generation evidence exists. Saved generation outputs were reconciled to 130 of 320 current validation rows and rescored with the shared scorer; the current 402-row text test is historical/open. | Fresh neural inference needs model runtimes/weights; score only matched dev rows and do not reselect on used test sets. |
+| Split integrity | Current recommended text manifests contain 11,248 train / 521 validation / 466 test rows. The Meta-compatible ASR manifests contain 1,793 train / 241 validation rows with zero exact audio/text/speaker cross-split groups. Adaptation training text overlaps 31 exact-hash groups with 31 rows in each text validation and test view; raw Meta source manifests also retain flagged split overlaps. | Keep all rows and exposure flags. Exact cross-view matches are task/checkpoint-specific exposure risks, not automatic semantic-leakage findings. Semantic/paraphrase and upstream checkpoint exposure remain open. |
+| Evaluation and baselines | Hash-linked QA, summary, translation, BM25, ASR, and generation evidence exists. The current 466-row text test was aggregate-scored (character-bigram PPL 14.530362), so it is historical/open. Saved generation outputs were rescored on 130 of 320 current validation rows. | Score only matched development rows. Fresh NLLB, dense retrieval, and SraVaani inference still need compatible local runtimes/weights; do not reselect on used test sets. |
 | Independent evaluation | Owner approved work across all five areas; evidence eligibility remains 0/5. | Fresh frozen task sets, defensible source/model exposure, and suitable reference evidence are still required. |
 | Publication | Corpus and speech datasets are public; benchmark v0.2 remains local-only (`public_upload_allowed=false`; all 14,703 view rows currently carry `public_release_cleared=false`). | Resolve source/component rights and finish the metric/reproducibility gate before uploading benchmark payloads. |
 
@@ -52,10 +63,12 @@ the [adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md).
    cross-language-string, source-page, parent-document, and local source-file
    checks are recorded. They identify one exact external train/dev repeat,
    broad source families, four same-split near-text candidates, and 138 retained
-   XORQA diagnostic labels. The 2026-09-30 lineage scan finds 15 exact text
-   overlaps from recommended training to instruction test and 29 to validation;
-   Meta Omnilingual has 4 train/test audio and 4 train/test transcript-text
-   groups plus 27 train/validation transcript-text groups. Expanded-human ASR
+   XORQA diagnostic labels. The 2026-10-05 lineage refresh finds 20/43 exact
+   overlaps from recommended-text training to instruction test/validation and
+   31 exact Meta-adaptation training transcript groups matching each current
+   recommended text validation/test view. Raw Meta Omnilingual has 4 train/test
+   audio and 4 train/test transcript-text groups plus 27 train/validation
+   transcript-text groups. Expanded-human ASR
    train also overlaps experimental test in 338 audio and 575 transcript-text
    groups, and validation in 397 audio / 683 text groups. Keep all rows and
    flag affected evaluations; semantic/paraphrase coverage and upstream model
@@ -68,7 +81,9 @@ the [adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md).
 3. **Phases 4–5 — reproducibility and baselines (substantial historical work
    recorded):** task-level QA, summary, translation, retrieval, LM, generation,
    and ASR artifacts are inventoried. Current text aggregate evidence is
-   reconciled to 402/402 test rows. New NLLB, dense retrieval, and SraVaani
+   reconciled to 466/466 test rows (PPL 14.530362; historical/open). The latest
+   Meta adaptation predictions are now included in lineage checks. New NLLB,
+   dense retrieval, and SraVaani
    inference remain blocked in the project environment by missing compatible
    local runtimes/weights. No new paid jobs were launched in this pass; do not
    rescore historical tests.
@@ -91,8 +106,9 @@ the [adaptation report](meta-omnilingual-asr-adaptation-2026-10-05.md).
 ### Current blockers and explicit deferrals
 
 - Fresh NLLB, dense IndicBERT retrieval, and SraVaani inference need compatible
-  local runtimes and checkpoint assets. The project environment lacks these
-  dependencies; this refresh did not start a new job. Any future paid run must
+  local runtimes and checkpoint assets. A local Whisper-tiny model is available
+  for development, but its current candidate remains weak and development-only.
+  This refresh did not start a new job. Any future paid run must
   have a verified balance, a hard runtime cap, and a per-run cost ceiling.
 - Prior evaluation and undocumented upstream pretraining exposure cannot be
   undone; affected results remain historical or unresolved.
@@ -117,12 +133,12 @@ Native or dialect review is not a prerequisite for internal automated experiment
 
 ## 2. Honest status at this snapshot
 
-The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md](benchmark-research-status-2026-09-25.md), with a current 2026-09-29 refresh at its top; task cards are in [the local v0.2 draft card pack](garhwali-bench-v0.2-draft-cards.md). Translation, ASR, and detailed eligibility evidence remain in the linked dated reports. The fresh machine-readable model-lineage audit is generated locally at `data/processed/evaluation/garhwali_bench/model-accuracy-lineage-2026-09-29.json`; do not publish that file because it contains speaker identifiers.
+The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md](benchmark-research-status-2026-09-25.md); this is a mixed-date evidence inventory, and each result must retain its source snapshot. Task cards are in [the local v0.2 draft card pack](garhwali-bench-v0.2-draft-cards.md). The latest aggregate lineage findings are in [the 2026-10-05 refresh](model-lineage-refresh-2026-10-05.md). Its row-level JSON ledger is generated under Git-ignored `data/processed/` and contains speaker identifiers; do not publish it.
 
 | Area | Verified state | What the evidence supports |
 | --- | --- | --- |
 | Benchmark artifacts | Five candidate artifacts exist: FLORES, CrossSum, XORQA, internal text, internal ASR. Three external schemas pass validation across 3,847 records. | A machine-checkable candidate suite exists; it is not yet a fully independent or native-validated benchmark. |
-| Internal text | 402 candidate rows; exact test text/IDs match the recommended split's 402-row test. There is zero exact parent-document/source-file split crossing in the recommended split. Current character-bigram perplexity is 14.397995 using the 9,486-row train view. | This exact test was aggregate-scored, so it is historical/open evidence, not independent accuracy. |
+| Internal text | The current recommended split has 11,248 train / 521 validation / 466 test rows. The 466-row text test exactly reconciles to the internal candidate and has character-bigram PPL 14.530362 using the current training view. | This test was aggregate-scored, so it is historical/open evidence, not independent accuracy. |
 | Language modeling | IndicBERTv2's 4,096-step continuation has mean validation cross-entropy 5.089108 across three seeds. | Validation loss only; tokenizer and model differences limit comparisons, and no independent final set is approved. |
 | Translation | FLORES copy and translation-memory baselines cover 997 dev and 1,012 historical test rows. A shared scorer re-ran the saved 997-row dev translation-memory predictions and exactly reproduced the old report; a 2,000-resample paired record bootstrap compared them with source-copy. | Dev-only diagnostic: BLEU delta +0.01892665 (95% CI [0.01411908, 0.02385223]); chrF2 delta +0.23002697 ([0.22559907, 0.23435906]). The translation memory uses other dev targets, and intervals do not account for source-family clusters. It is not independent translation accuracy. The tiny NLLB Hindi-token proxy remains exploratory. |
 | Retrieval | XORQA has 539 test questions with prior predictions; best saved IndicBERTv2 Recall@10 is 0.103896. The 500-query dev-only BM25 rerun gets 0.8% word and 1.0% character Recall@10; source-page-clustered 95% intervals are 0.2–1.6% and 0.2–2.0%, respectively. English-oracle BM25 gets 85.2% (clustered interval 82.1–88.3%). | A historical test baseline and clear Garhwali-to-English retrieval gap. Character-vs-word paired intervals touch zero; this dev result does not establish a reliable winner. Dense dev inference is blocked by missing local runtime/weights; the test is not fresh. |
@@ -136,7 +152,7 @@ The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md]
 | ASR references and independence | VAANI validation/test predictions already exist. SraVaani's model card identifies VAANI as an upstream source and reports 31,255 hours of VAANI pretraining plus about 31,270 hours of labeled fine-tuning from VAANI and other open speech data; it does not expose example-level overlap. | VAANI results are open/development/historical evidence, not independent estimates of generalization. The 2026 multi-seed ASR paper also uses VAANI's official test. Do not tune, select, or claim blind final accuracy from these rows. |
 | TTS | Speech manifests and readiness checks exist; no TTS system has a valid Garhwali quality result. | Readiness and pair-integrity only. MOS or naturalness needs listeners and cannot be inferred from automated checks. |
 | Independent final accuracy | Evidence eligibility is 0/5 across language modeling, translation, retrieval, generation, and ASR; the owner approved active work toward each area on 2026-09-30. | There is no defensible single project-wide model-accuracy score today; existing sets are reused or model exposure is unresolved. |
-| Review and tests | Native adjudications remain deferred. The full configured unittest suite passes 760/760 as of 2026-10-05; historical release counts remain labeled by snapshot. | Test passes establish code/integrity properties only, not linguistic correctness. |
+| Review and tests | Native adjudications remain deferred. The full configured unittest suite passes 762/762 as of 2026-10-05; historical release counts remain labeled by snapshot. | Test passes establish code/integrity properties only, not linguistic correctness. |
 
 ### Key test-history rule
 
@@ -176,7 +192,7 @@ Every prediction should carry benchmark record ID, input hash, raw prediction, s
 
 | Task | Candidate data and baseline | Primary metrics | Required diagnostics and caveats |
 | --- | --- | --- | --- |
-| Text modeling | Current recommended 9,486-row Garhwali training view; 402-row internal candidate/test mirror; character-bigram baseline and IndicBERTv2 continuation. | Token cross-entropy/perplexity within the same tokenizer/model; character bits-per-character for a fixed character model. | Current text test was aggregate-scored (PPL 14.397995), so it is historical/open; record tokenizer and token fertility. Perplexities from different tokenizers are not fair direct comparisons. Break down by source and script. |
+| Text modeling | Current recommended 11,248-row Garhwali training view; 466-row internal candidate/test mirror; character-bigram baseline and IndicBERTv2 continuation. | Token cross-entropy/perplexity within the same tokenizer/model; character bits-per-character for a fixed character model. | Current text test was aggregate-scored (PPL 14.530362), so it is historical/open; record tokenizer and token fertility. Perplexities from different tokenizers are not fair direct comparisons. Break down by source and script. |
 | Machine translation | Garhwali-to-English FLORES candidate; copy-source and development translation-memory baselines; existing NLLB Hindi-token proxy. | SacreBLEU with full signature and chrF2; exact match only for canonical-answer tasks. | Report direction, tokenization, normalization, references, and copy baseline. FLORES test is already scored. The 32-row Hindi proxy is exploratory. |
 | Cross-lingual summarization | CrossSum candidate. | chrF2 and ROUGE-L; BLEU optional only for continuity. | Add source/target copy, length ratio, repetition, empty/malformed output, language checks. Verify source-family split isolation. |
 | Question answering | XORQA candidate. | Exact match and token F1 under pinned normalization. | Separate answer generation from evidence retrieval; record answerability and evidence passage. Preserve and flag the known exact train/dev repeat; neither repeated row is in test. |

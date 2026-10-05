@@ -1,6 +1,6 @@
 # Corpus preparation status
 
-Updated 2026-10-05. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest discovery suite passed **760/760** on 5 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-10-05. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest discovery suite passed **762/762** on 5 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
 
 ## VAANI official-split lineage and ASR diagnostic — 2026-10-04
 
@@ -56,7 +56,31 @@ Updated 2026-10-05. This is a chronological preparation log: model-result paragr
   241 records: 95.370% WER / 71.878% CER, versus 89.318% / 68.502% for the
   Meta-adapted candidate. Its 1,621-row local training manifest has zero exact
   audio-hash or normalized-text intersection with this Meta validation view.
-  This remains a two-speaker development comparison; no held-out data was used.
+- This remains a two-speaker development comparison; no held-out data was used.
+
+## Model lineage coverage refresh — 2026-10-05
+
+- Added the exact model-compatible Meta train (1,793) and validation (241)
+  manifests to the project lineage audit and included the adapted checkpoint's
+  saved predictions. Its recorded manifest paths, hashes, and row counts match
+  both local files. All 241 predictions match the compatible validation view,
+  now labeled
+  previously scored and `development_only`.
+- Exact audio-hash, transcript-hash, and known-speaker intersections are zero
+  between compatible train and validation, and between strict VAANI training
+  and Meta-compatible validation.
+- The Meta adaptation training transcripts share 31 exact-hash groups with 31
+  rows in each current recommended text validation and test view. This is a
+  cross-task exposure warning for possible future text-task evaluation, not
+  proof of semantic leakage or Meta validation audio overlap. The wider Meta
+  source manifest has flagged cross-split duplicates that are absent from the
+  filtered compatible views.
+- The 292 safe Meta test rows remain unscored. The adaptation stays
+  development-only, and independent-final evidence eligibility remains 0/5.
+  Native review/dialect annotation remain deferred. No inference, test scoring,
+  source-data changes, or uploads occurred in this audit.
+- Detailed hashes and the local-only row-level ledger location are documented
+  in the [lineage refresh](model-lineage-refresh-2026-10-05.md).
 
 ## Internet Archive deep intake — local snapshot, 2026-10-04
 
