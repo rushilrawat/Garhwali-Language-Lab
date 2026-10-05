@@ -27,6 +27,19 @@ already represented by Walton gazetteer records. See the [source intake report](
 [source-by-source disposition](research/internet-archive-source-disposition-2026-10-04.md),
 and [quality and overlap audit](research/internet-archive-intake-quality-2026-10-04.md).
 
+A separate technical media first pass re-hashed and reconciled all 39 files
+against the source-linked candidate and `ffprobe` records: 39/39 passed, with
+15 audio-only files, 24 videos with audio, and zero exact duplicate file
+hashes. Combined size is 4.38 GB (4.08 GiB). All files remain unreviewed;
+14:09:25.531 is playback duration, not verified Garhwali speech. One separate
+27.481-second local pilot created a repetitive machine draft with no reference
+for scoring. The saved model's existing test WER/CER are 74.3% / 40.4%, so it
+was not used for bulk transcription. No content or rights state changed. See
+the [media first-pass report](research/internet-archive-media-first-pass-2026-10-04.md).
+The captured listings for all 31 items (1,047 file entries) and local folders
+contain no transcript/caption sidecars. Six item language fields claim
+Garhwali, but no recording was language-reviewed.
+
 The priority follow-up distinguishes 920 page objects from three Garhwali
 language/folklore studies and 440 page objects from two translated/contextual
 folklore books (432 non-empty; 8 empty). There are 1,350 distinct normalized
@@ -38,6 +51,22 @@ mismatch for *Himalayan Folklore*, a Juyal CC0/all-rights-reserved conflict,
 and no independently verified authority for the Shailesh CC0 claim. No
 Archive expressive text entered GitHub or Hugging Face. Full findings and
 source citations are in the [priority language and rights review](research/internet-archive-priority-language-rights-review-2026-10-04.md).
+
+The local quality pass now maps all 722 Chatak/Shailesh scan pages. Shailesh's
+contents page supplies 15 ranges covering 416 scans; a +13 printed-to-scan
+offset was checked at the start, middle, and end of the numbered sequence.
+Pages 63–64 are a contents gap, and Chatak still has no edition-specific
+section map. A separate Hindi OCR covers the 29 flagged/empty pages; one
+previously empty page yielded text and two remain empty. The alternate has
+3,796 more characters than the prior OCR, which is not evidence of accuracy.
+A text-free comparison triaged the pages as 11 high, 3 medium, and 15 low
+priority for visual inspection. Inspecting all 14 high/medium pages found
+several administrative or blank scans and two unresolved language-text
+candidates; no transcription or OCR correction was promoted. Against the
+32,072-row cleaned parent-text view, the alternates have zero exact matches
+and zero ≥0.85 5-gram near-duplicate candidates (17,924 pairs scored). All
+source OCR remains local; rights and linguistic accuracy are unresolved. See
+the detailed review linked above.
 
 ## Hugging Face quality release v0.2.2 — 2026-10-01 (historical review)
 

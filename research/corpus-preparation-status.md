@@ -1,6 +1,6 @@
 # Corpus preparation status
 
-Updated 2026-10-04. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest suite passed **718/718** on 4 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
+Updated 2026-10-04. This is a chronological preparation log: model-result paragraphs retain the exact dataset snapshot used by each experiment and are not automatically current-release metrics. The current public corpus release is v0.2.3; the full working-tree unittest suite passed **731/731** on 4 October. The current counts, release blockers, and authoritative review status are in [`finalreport.md`](../finalreport.md). Raw and downloaded material remains under gitignore.
 
 ## Internet Archive deep intake — local snapshot, 2026-10-04
 
@@ -31,6 +31,15 @@ Updated 2026-10-04. This is a chronological preparation log: model-result paragr
 - The source-by-source Archive item register and non-destructive page/media
   candidate-view design are in the
   [source disposition report](internet-archive-source-disposition-2026-10-04.md).
+- A source-linked technical pass verified all 39 media file hashes, sizes, and
+  streams, counted 14:09:25.531 total playback, and found no exact file-hash
+  duplicates. It then ran a 27.481-second local ASR pilot that produced one
+  repetitive, unreviewed draft; this is not measured Garhwali speech or a
+  verified transcript. See the
+  [media first-pass report](internet-archive-media-first-pass-2026-10-04.md).
+- The same pass scanned 31 captured Archive snapshots (1,047 listed files) and
+  the local item folders for transcript/caption sidecars; it found none. Six
+  source language fields explicitly include Garhwali, but remain unverified.
 
 ## Priority Garhwali-source language and rights evidence — 2026-10-04
 
@@ -46,11 +55,45 @@ Updated 2026-10-04. This is a chronological preparation log: model-result paragr
   book's “all rights reserved” page, and no verified authority for the
   Shailesh CC0 claim. Chatak's academic bibliographic evidence is strong for
   book-level Garhwali epic content, but does not clear reuse or identify each
-  OCR page.
+  OCR page. A follow-up searched secondary author-life reports and the Indian
+  Copyright Act's author-term, joint-authorship, Government-first-owner, and
+  no-revival rules. It found a possible India-only public-domain lead for the
+  1935 *Himalayan Folklore* body under reported death-date scenarios, but the
+  dates conflict or lack primary evidence and the 1977 introduction is a
+  separate layer; no work was cleared.
 - **No new rows were removed, added to the canonical corpus, or uploaded to
   Hugging Face.** All original material remains in the ignored local intake;
   all five works remain without a verified public-redistribution/training
   basis. See the [priority language and rights review](internet-archive-priority-language-rights-review-2026-10-04.md).
+
+## Chatak/Shailesh page map and alternate OCR — 2026-10-04
+
+- A local, reproducible page map covers **722 scan pages** (Chatak 278;
+  Shailesh 444), aligns all 719 non-empty OCR candidate rows, and retains the
+  3 empty scans. Visual review of Shailesh's contents page established 15
+  printed-page ranges covering 416 scans; the printed-to-scan offset is +13,
+  checked on pages 13, 14, and 426. Printed pages 63–64 are absent from the
+  contents; the front matter and suffix scans remain unassigned. Chatak has
+  genre-term candidate signals but no edition-specific section map.
+- A separate Tesseract Hindi/English pass generated alternate OCR for **29**
+  flagged/empty pages. Twenty-seven have text; one empty scan page yielded an
+  alternate, while two remain empty. Alternate text totals 30,184 characters
+  versus 26,388 in the prior rows; that increase is coverage, not accuracy.
+  Mean word confidence is 66.39 (five non-empty Chatak pages) and 67.51
+  (22 Shailesh pages), not measured WER. No page was promoted or replaced.
+- The 29 alternatives have zero exact overlaps and zero ≥0.85 5-gram
+  near-duplicate candidates against the 32,072-row cleaned parent-text view
+  (17,924 pairs scored); rights remain unverified. Original and alternate
+  outputs are preserved under Git-ignored local data. See the
+  [page/rights review](internet-archive-priority-language-rights-review-2026-10-04.md).
+- A text-free comparison report triaged all 29 pages as 11 high-, 3 medium-,
+  and 15 low-priority for visual inspection. Image review of the 14 high/medium
+  pages found non-content library/title/index scans and two blank pages. A
+  full-resolution recheck corrected the page reference: Chatak scan page 144
+  carries a sparse heading already represented by its six-normalized-character
+  OCR record; page 145 is blank. One Shailesh literary page retains unresolved
+  OCR disagreement. No text was corrected or promoted; neither machine
+  confidence nor visual script identification is a language-accuracy claim.
 
 ## Hugging Face quality roadmap — published v0.2.2 — 2026-10-01
 

@@ -30,12 +30,16 @@ normalization, and 3,981 are distinct normalized values. Two page rows exactly
 match records already represented in the 32,072-row cleaned corpus; there are
 zero 5-gram Jaccard candidates at ≥0.85 among 1,910,194 scored pairs. This is a
 defined text-layer check, not a semantic or all-layer guarantee. The profile
-verified 39/39 media files are technically readable. It reports 1,194
-mostly-Devanagari pages, 1,485 mostly-Latin pages, 1,302 mixed-script pages,
-and 30 with no letters. These are script signals, not language
-identification: the audit cannot distinguish Garhwali from Hindi. Media totals
-14:09:25.531, not verified Garhwali speech time. No page or media content was
-newly cleared for training or public redistribution. See the
+verified 39/39 media files are technically readable. A subsequent file audit
+matched all 39 hashes, sizes, durations, and stream metadata and found no exact
+duplicate file hashes. The files total 4.38 GB and 14:09:25.531 playback, not
+measured Garhwali speech time. No local language-identification runtime is
+available for classification. A pinned local ASR runtime was later used for
+one pilot described below. It reports 1,194 mostly-Devanagari pages, 1,485 mostly-Latin pages,
+1,302 mixed-script pages, and 30 with no letters. These are script signals,
+not language identification: the audit cannot distinguish Garhwali from
+Hindi. No page or media content was newly cleared for training or public
+redistribution. See the
 [`Internet Archive intake report`](internet-archive-intake-2026-10-03.md).
 The quality results and limits are in the
 [`intake quality audit`](internet-archive-intake-quality-2026-10-04.md).
@@ -106,7 +110,39 @@ by held-out evaluation. The complete v0.2.3 per-config preflight is in
 
 **Completed 2026-10-04:** added source-specific language/genre evidence for the 920 priority pages and the translated-folklore group (440 page objects: 432 non-empty, 8 empty), then checked item-level bibliographic and rights evidence for all five works. The priority group has 919 distinct normalized values; the translated group has 431 distinct non-empty normalized values, plus one OCR row that normalizes empty. A duplicated Juyal footer pair is preserved but is not useful language content. The review confirms a 1977 reprint mismatch and two unresolved uploader CC0 claims; the Juyal claim conflicts with an original “all rights reserved” page. No new content was cleared for training or public redistribution; no original page was deleted. See the [priority-language and rights evidence review](internet-archive-priority-language-rights-review-2026-10-04.md).
 
-**Next action:** build reversible page/section maps for the Chatak and Shailesh books, keep language examples separate from Hindi translations and commentary, and run overlap checks before counting any extracted segments. Re-OCR only pages with empty-content or transparent warning signals while retaining original text beside machine output. Review media language/transcripts as a separate source family. Add nothing to a public training/reuse view without a compatible documented basis.
+**Completed 2026-10-04:** mapped Shailesh's 15 visually checked contents ranges to 416 physical scan pages using a +13 offset verified at three positions; left the printed-page gap, preliminaries, and suffix unassigned. Compared all 29 original/alternate OCR pairs without including text in the report, then visually inspected the 14 high/medium triage pages. Several were library/title/index matter or blank; Shailesh's literary page remains unresolved. A full-resolution check corrected the Chatak page reference: scan page 144 has the existing sparse heading OCR; scan page 145 is blank. No OCR was corrected or promoted. The overlap audit found no exact or ≥0.85 5-gram matches against the 32,072-row cleaned text view.
+
+**Completed 2026-10-04:** searched source-specific author-life, edition, and first-owner evidence for the five priority works. Secondary dates and the Indian Copyright Act produce conditional term scenarios, including a possible India-only public-domain lead for the original 1935 *Himalayan Folklore* body. Conflicting/unverified dates, the mixed 1977 reprint introduction, and worldwide reuse remain unresolved, so no rights state changed. See the [rights evidence review](internet-archive-priority-language-rights-review-2026-10-04.md).
+
+**Completed 2026-10-04:** the first technical media pass verified file hashes,
+sizes, durations, and streams for all 39 assets; zero exact file-hash duplicates
+were found. It confirms 15 audio-only files, 24 video-with-audio files, and
+14:09:25.531 combined playback across 31 Archive items. No local
+language-identification runtime is installed. See the
+[reproducible media first-pass report](internet-archive-media-first-pass-2026-10-04.md).
+
+**Completed 2026-10-04:** scanned 31 captured Archive metadata snapshots
+covering 1,047 listed files, plus the local item folders. No filename/format
+caption or transcript candidates and no matching local sidecars were found.
+Six catalog language fields explicitly include Garhwali, but these remain
+unverified item-level claims. The sidecar scan is included in the
+[reproducible media audit](internet-archive-media-first-pass-2026-10-04.md).
+
+**Completed 2026-10-04:** installed the already-pinned optional ASR requirements
+locally and ran a 27.481-second media pilot with the existing Whisper-tiny
+Garhwali checkpoint. It produced a repetitive, unreviewed machine draft with
+no reference for scoring. The checkpoint's existing 112-row test report has
+74.3% WER / 40.4% CER, so it is not suitable for bulk transcription as a
+quality improvement. No alternative general Whisper-tiny checkpoint is cached;
+no new weights or hosted compute were used. One local draft is kept in the
+ignored research output, and no rights/language/training status changed. See
+the [pilot findings](internet-archive-media-first-pass-2026-10-04.md).
+
+**Next action:** compare available no-cost local ASR candidates only if a
+checkpoint can be independently evaluated on the frozen Garhwali validation
+set. Until then, retain the single draft as experimental evidence and do not
+bulk-generate low-accuracy transcripts. Keep measured Garhwali speech hours
+separate from total playback; metadata and model output do not verify language.
 
 ## Ordered phases
 
@@ -308,6 +344,6 @@ versioned manifest and comparable metrics.
 | 3. Dedup/splits | Partial | `text_expansion` exact-string dedupe is cross-config; complete document-family leakage report remains |
 | 4. Text/lexicon | Active | 246-row supplementary view is public; quality remains mixed, with no training/evaluation promotion |
 | 5. Speech/transcripts | Existing partial audits | Explicit labeled/empty/draft counts and split-safe manifests |
-| 6. Coverage expansion | Active — intake, source disposition, priority language/genre evidence, and five-item rights-evidence review complete | 119 local payloads; 4,011 OCR pages; five priority works profiled; 920 language-study page objects and 440 translated-folklore objects; one duplicate footer pair and one normalization-empty row identified; rights remain unresolved; page mapping, OCR improvement, and media-content review remain |
+| 6. Coverage expansion | Active — intake, source disposition, page/section map, OCR comparison, visual triage, and technical media first pass complete | 119 local payloads; 4,011 OCR pages; 722-page Chatak/Shailesh map; zero exact and ≥0.85 near-text candidates against 32,072 cleaned rows; 39 media hashes/streams verified; content/language, OCR accuracy, and rights remain unresolved |
 | 7. HF release views | v0.2.3 live | Upload at `76dac8d`; direct stream verified at 246 rows; retry Viewer/Parquet when the Hub endpoint recovers |
 | 8. Automation | Existing refresh command | Quality-gated, repeatable end-to-end release run |

@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **952**.
+Files indexed: **963**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -599,6 +599,7 @@ python scripts/generate_project_file_map.py
 - `research/internet-archive-garhwali-search-2026-10-03.json`
 - `research/internet-archive-intake-2026-10-03.md`
 - `research/internet-archive-intake-quality-2026-10-04.md`
+- `research/internet-archive-media-first-pass-2026-10-04.md`
 - `research/internet-archive-priority-language-rights-review-2026-10-04.md`
 - `research/internet-archive-source-disposition-2026-10-04.json`
 - `research/internet-archive-source-disposition-2026-10-04.md`
@@ -672,8 +673,10 @@ python scripts/generate_project_file_map.py
 - `scripts/analyze_sravaani_drafts.py`
 - `scripts/analyze_translation_uncertainty.py`
 - `scripts/asr_metrics.py`
+- `scripts/audit_archive_alternate_ocr_overlap.py`
 - `scripts/audit_archive_corpus_overlap.py`
 - `scripts/audit_archive_intake_quality.py`
+- `scripts/audit_archive_media_first_pass.py`
 - `scripts/audit_archive_priority_page_evidence.py`
 - `scripts/audit_audio_quality.py`
 - `scripts/audit_benchmark_nested_overlap.py`
@@ -692,6 +695,7 @@ python scripts/generate_project_file_map.py
 - `scripts/audit_xorqa_source_page_families.py`
 - `scripts/benchmark_metrics.py`
 - `scripts/build_all_data_view.py`
+- `scripts/build_archive_book_page_map.py`
 - `scripts/build_archive_source_disposition.py`
 - `scripts/build_asr_training_curriculum.py`
 - `scripts/build_audio_training_manifests.py`
@@ -721,6 +725,7 @@ python scripts/generate_project_file_map.py
 - `scripts/clean_text_corpus.py`
 - `scripts/collect_online.py`
 - `scripts/collect_vaani_reference_images.py`
+- `scripts/compare_archive_ocr_variants.py`
 - `scripts/dedup_report.py`
 - `scripts/deep_cleanup.py`
 - `scripts/download_garhwali_folktales.py`
@@ -792,6 +797,7 @@ python scripts/generate_project_file_map.py
 - `scripts/register_asr_stage1_pilot.py`
 - `scripts/register_asr_stage1_weighted_batch_pilot.py`
 - `scripts/render_normalized_audio.py`
+- `scripts/reocr_archive_quality_pages.py`
 - `scripts/reprocess_ocr_candidates.py`
 - `scripts/route_sravaani_recovery.py`
 - `scripts/run_asr_baseline.py`
@@ -876,11 +882,14 @@ python scripts/generate_project_file_map.py
 - `tests/test_analyze_saved_asr_validation.py`
 - `tests/test_analyze_sravaani_drafts.py`
 - `tests/test_analyze_translation_uncertainty.py`
+- `tests/test_archive_alternate_ocr_overlap.py`
+- `tests/test_archive_book_page_map.py`
 - `tests/test_archive_priority_page_evidence.py`
 - `tests/test_asr_metrics.py`
 - `tests/test_asr_requirements.py`
 - `tests/test_audit_archive_corpus_overlap.py`
 - `tests/test_audit_archive_intake_quality.py`
+- `tests/test_audit_archive_media_first_pass.py`
 - `tests/test_audit_audio_quality.py`
 - `tests/test_audit_benchmark_nested_overlap.py`
 - `tests/test_audit_benchmark_overlap_candidates.py`
@@ -920,6 +929,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_check_source_freshness.py`
 - `tests/test_clean_text_corpus.py`
 - `tests/test_collect_online.py`
+- `tests/test_compare_archive_ocr_variants.py`
 - `tests/test_deep_cleanup.py`
 - `tests/test_evaluate_indicbert_transfer.py`
 - `tests/test_evaluate_sravaani_finetune.py`
@@ -968,6 +978,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_register_asr_stage1_pilot.py`
 - `tests/test_register_asr_stage1_weighted_batch_pilot.py`
 - `tests/test_render_normalized_audio.py`
+- `tests/test_reocr_archive_quality_pages.py`
 - `tests/test_reprocess_ocr_candidates.py`
 - `tests/test_route_sravaani_recovery.py`
 - `tests/test_run_indicbert_adaptation.py`
@@ -1005,11 +1016,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **235,475**.
+- Workspace files counted: **235,495**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **952**.
-- Ignored or otherwise unlisted payload files: **234,523** (154,602,364,094 bytes).
-- Total workspace bytes counted: **154,618,976,682**.
+- Detailed file paths listed above: **963**.
+- Ignored or otherwise unlisted payload files: **234,532** (154,631,335,411 bytes).
+- Total workspace bytes counted: **154,648,049,836**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1032,7 +1043,7 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `corpus/wiktionary_en.jsonl/` | 1 | 164,557 |
 | `data/cache/…/` | 2 | 104,176 |
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
-| `data/extracted/…/` | 722 | 74,053,427 |
+| `data/extracted/…/` | 731 | 103,024,744 |
 | `data/huggingface/…/` | 1,980 | 72,788,494,485 |
 | `data/processed/…/` | 107,682 | 38,602,120,710 |
 | `data/raw/…/` | 1 | 21,905 |

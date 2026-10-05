@@ -6,7 +6,18 @@ The captured local metadata covers **55 distinct Archive items**: 24 text items,
 
 No source text, page, or media was deleted or edited. No new Archive content was approved for model training or public redistribution by this pass. The full OCR pages and source files remain in the ignored local data folders; the tracked register contains item metadata and evidence labels, not extracted expressive text.
 
-**Follow-up:** a separate [priority-language and rights evidence review](internet-archive-priority-language-rights-review-2026-10-04.md) adds scholarly/catalog evidence for the five highest-priority works, identifies the scanned 1977 Himalayan Folklore reprint, and records unresolved Archive CC0 claims against book-level and statutory ownership evidence. This supplemental research does not overwrite the captured metadata claims or alter any eligibility flag.
+**Follow-up:** a separate [priority-language and rights evidence review](internet-archive-priority-language-rights-review-2026-10-04.md) adds scholarly/catalog evidence for the five highest-priority works, identifies the scanned 1977 Himalayan Folklore reprint, and records unresolved Archive CC0 claims against book-level and statutory ownership evidence. A later page-map, alternate-OCR comparison, and image-level triage covers Chatak and Shailesh locally. It adds no transcript corrections and does not overwrite captured OCR, metadata claims, or eligibility flags.
+
+The subsequent [media first pass](internet-archive-media-first-pass-2026-10-04.md)
+verified hashes, sizes, duration, and stream data for all 39 media files across
+31 items. It found zero exact file duplicates and did not change rights or
+source-language disposition. A later, separate local pilot created one
+unreviewed machine draft; it did not revise the captured source-transcript
+state or clear any content.
+Its listing audit also checked all 31 captured metadata snapshots (1,047 file
+entries) and local item folders: no transcript/caption candidates or sidecars
+were found. Six captured `language` fields explicitly include Garhwali; these
+are catalog claims only and were not promoted to verified language labels.
 
 ## Rights evidence recorded
 
@@ -129,7 +140,7 @@ Canonical exact-match references:
 
 Run the complete six-command sequence documented in [`scripts/README.md`](../scripts/README.md) from the project root when source indexes change. The disposition builder reads the captured Archive metadata plus the generated 4 October audits, then regenerates this report, the tracked JSON register, and ignored review indexes. It does not download anything, edit the input records, alter GitHub/Hugging Face, or contact any rightsholder.
 
-Captured Archive metadata is a snapshot. This run did not obtain independent confirmation from any source uploader/rightsholder or conduct legal research on the source works. The Archive metadata endpoint was not available to the browsing tool during this run; item URLs below point to the captured source records for follow-up.
+Captured Archive metadata is a snapshot. A follow-up reviewed publicly indexed bibliographic and author-life leads for the five priority works; it found no primary death record, assignment, uploader authority, publisher permission, or rightsholder response that changes a reuse decision. See the [priority-language and rights review](internet-archive-priority-language-rights-review-2026-10-04.md) for the conditional term calculations and source limitations. The Archive metadata endpoint was not available to the browsing tool during this run; item URLs below point to the captured source records for follow-up.
 
 The full review candidate set was compared with all 32,072 canonical cleaned parent-text rows: 2 exact page-row match(es), 0 5-gram Jaccard candidates at ≥0.85, and the within-intake duplicate group noted above. The exact overlaps are linked to existing source records in the local index; they were not added again. These checks cover this named text view and exact normalization, not all segments, transcripts, or semantic overlap.
 

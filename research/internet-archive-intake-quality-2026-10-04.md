@@ -89,12 +89,38 @@ These are engine signals, not measured word accuracy. The profile also counted
 3,701 zero-width joiner/non-joiner characters; these orthographic characters
 are preserved and are not classified as OCR defects.
 
-All 39 MP3/MP4 files pass container/stream probing. Their combined 14:09:25.531
-duration is **not Garhwali speech duration**. `ffprobe` does not reveal whether
-media contains Garhwali, Hindi, Kumaoni, music, lecture, usable speech, or
-reliable transcripts. Local ASR and language-identification runtimes were not
-available during this pass, so neither transcript generation nor audio
-language classification was performed.
+All 39 media files pass a reproducible source-hash, byte-size, duration, and
+stream reconciliation: 15 are audio-only and 24 are audiovisual, across 31
+Archive items; all have stereo audio, and no exact duplicate file hashes were
+found. They total 4,379,507,956 bytes (4.38 GB / 4.08 GiB) and 14:09:25.531
+playback. This duration is **not Garhwali speech duration**. `ffprobe` does not
+reveal whether media contains Garhwali, Hindi, Kumaoni, music, lecture, usable
+speech, or reliable transcripts. No language-identification or listening
+review was performed. After this technical check, one 27.481-second sample was
+run through the existing local Whisper-tiny checkpoint. It produced a
+repetitive 100-character machine draft without a reference; the checkpoint's
+prior 112-row test report has 74.3% WER / 40.4% CER, so the draft was not
+promoted and the model should not be scaled for quality transcripts. Thirty-
+eight media files have no local machine draft from this workstream; none of
+the 39 has content/language review. Full pilot details are in the
+[media first-pass report](internet-archive-media-first-pass-2026-10-04.md).
+The 31 available Archive metadata snapshots list 1,047 files; no transcript or
+caption filename/format marker was found, and a scan of their local item folders
+found no sidecar file. Six item `language` fields explicitly include
+“Garhwali”; the metadata-only values do not label individual recordings.
+
+A separate 300-dpi Tesseract `hin+eng` pass reprocessed the 29 flagged or
+empty pages in the Chatak and Shailesh scans. It recovered text for one
+previously empty page; two remain empty. The alternate OCR contains 30,184
+characters versus 26,388 in the selected original OCR rows, but its per-page
+mean engine confidence (66.39 for Chatak; 67.51 for Shailesh) is not measured
+accuracy. No OCR output was promoted or substituted. The next text-free
+comparison triaged 11 pages high, 3 medium, and 15 low priority; image review
+of the 14 high/medium cases found multiple administrative/index/blank pages
+and two unresolved text-bearing pages. Shailesh's contents page now maps 15
+printed ranges to 416 scan pages with a +13 offset; Chatak remains unmapped.
+This is page navigation and OCR triage, not language validation. See the
+detailed [page map and alternate-OCR report](internet-archive-priority-language-rights-review-2026-10-04.md).
 
 ## Recorded rights states
 
@@ -103,6 +129,9 @@ public redistribution. Captured item-level license and rights fields are
 source claims, not independent legal determinations. The 55-item register
 records those claims, one conflicting metadata pair, and the per-work decision
 in the [source disposition report](internet-archive-source-disposition-2026-10-04.md).
+The source-specific author-life and first-owner follow-up found conditional
+term scenarios but no primary evidence that changes any disposition. See the
+[rights evidence review](internet-archive-priority-language-rights-review-2026-10-04.md).
 
 An Archive item being publicly readable or downloadable does not itself make
 the scanned work reusable. Preserve all source and OCR material locally with
@@ -134,6 +163,6 @@ and its [readable report](internet-archive-source-disposition-2026-10-04.md).
 The extracted page/media candidate JSONL stays in Git-ignored
 `data/extracted/research/internet_archive_candidate_views_2026-10-04/`.
 
-The repository's full configured unittest suite passes **718/718** after these
+The repository's full configured unittest suite passes **731/731** after these
 audit changes. These checks validate the reproducible code path and data
 contracts; they do not validate Garhwali language content or rights.

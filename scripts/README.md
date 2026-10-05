@@ -98,6 +98,23 @@ PYTHONPATH=scripts .venv/bin/python scripts/build_archive_source_disposition.py
 The per-item decisions and limits are in the
 [`Internet Archive source disposition`](../research/internet-archive-source-disposition-2026-10-04.md).
 
+`audit_archive_media_first_pass.py` re-hashes each downloaded Archive media
+candidate and reconciles its path, byte size, duration, and stream metadata
+against the existing `ffprobe` report. It reports technical formats, exact
+duplicate hashes, captured rights, source-transcript status, and separately
+matched local machine drafts. It does not
+identify language, transcribe, change rights, or publish media. Rebuild the
+ignored local report with this command. It also checks each captured Archive
+file listing and local item folder for transcript/caption sidecars without
+reading their contents:
+
+```bash
+PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_media_first_pass.py
+```
+
+The verified 4 October results and interpretation are in the
+[`media first-pass report`](../research/internet-archive-media-first-pass-2026-10-04.md).
+
 `prepare_hf_additive_upload.py` validates the rights-filtered public package,
 its declared hashes, file inventory, and absence of source/audio payloads. It
 stages a release under a versioned Hub path without deletion operations. The
@@ -111,14 +128,15 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current working-tree suite passes **716 tests**. The
+The current working-tree suite passes **731 tests**. The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
-installs dependencies from `requirements-pipeline.txt`. Current benchmark refreshes use saved ASR outputs
-and dependency-free local translation/retrieval diagnostics; fresh NLLB, dense
-retrieval, and SraVaani inference are blocked by uncached model weights and
-missing runtime packages. No paid Hugging Face job was started for those
-refreshes. See the dated reports linked from the project README.
+installs dependencies from `requirements-pipeline.txt`. Current benchmark
+refreshes use saved ASR outputs and dependency-free local translation/retrieval
+diagnostics; fresh NLLB, dense retrieval, and SraVaani inference remain blocked
+by uncached model weights. The optional local ASR environment is pinned in
+`requirements-asr.txt`; no paid Hugging Face job was started for the Archive
+media pilot. See the dated reports linked from the project README.
 
 `analyze_saved_asr_validation.py` re-scores saved SraVaani and Whisper outputs
 using only the frozen 269-row ASR validation manifest. It filters by audio hash,

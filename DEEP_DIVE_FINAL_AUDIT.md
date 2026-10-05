@@ -23,6 +23,19 @@ See the [source ledger](research/internet-archive-intake-2026-10-03.md),
 [source-by-source disposition](research/internet-archive-source-disposition-2026-10-04.md),
 and [quality/overlap audit](research/internet-archive-intake-quality-2026-10-04.md).
 
+A technical media first pass re-hashed and reconciled all 39 files against the
+source-linked candidates and `ffprobe` records: 39/39 passed, comprising 15
+audio-only files and 24 videos with audio, with zero exact duplicate file
+hashes. They occupy 4.38 GB (4.08 GiB) and total 14:09:25.531 playback, not
+verified Garhwali speech. All remain unreviewed. One separate 27.481-second
+local pilot produced a repetitive machine draft with no reference for scoring;
+the saved model's existing test WER/CER are 74.3% / 40.4%, so bulk draft
+generation was not started. No content or rights state changed. See the
+[media first-pass report](research/internet-archive-media-first-pass-2026-10-04.md).
+No transcript/caption sidecars were found in 31 captured Archive snapshots
+(1,047 listed files) or their local item folders. Six item language fields
+claim Garhwali; the files remain unreviewed.
+
 The follow-up examines five priority works: 920 language-study page objects
 and 440 translated/contextual folklore page objects (432 non-empty, 8 empty).
 After normalization, 1,350 distinct non-empty values remain; the repeated
@@ -34,6 +47,23 @@ reprint; the Juyal CC0 claim conflicts with the scan's “all rights reserved”
 notice; the Shailesh uploader claim has no verified rights-holder authority.
 No new Archive pages are eligible for public content or training based on this
 review. See the [detailed evidence report](research/internet-archive-priority-language-rights-review-2026-10-04.md).
+
+The following local page/section map indexes 722 physical pages from Chatak
+and Shailesh, aligns 719 OCR records, and retains the three empty scans.
+Shailesh's visually checked contents page defines 15 printed-page ranges
+covering 416 scans; the +13 physical-to-printed offset was checked at three
+points. Printed pages 63–64 are unlisted; Chatak still has no edition-specific
+page map. A Hindi/English Tesseract alternate was generated for all 29
+flagged/empty pages; one empty scan yielded text and two remain empty. It adds
+3,796 characters versus the selected original rows, but this is not evidence
+of accuracy. A text-free comparison triaged 11 high-, 3 medium-, and 15
+low-priority pages. Image inspection of all 14 high/medium pages identified
+administrative/title matter, blank scans, index pages, and two unresolved
+text-bearing cases; it produced no transcription or correction. The 29
+alternates have no exact match or ≥0.85 5-gram Jaccard candidate against the
+32,072-row canonical cleaned text view (17,924 pairs scored). No record was
+promoted or deleted. Rights and page-language verification remain unresolved.
+See the [detailed evidence report](research/internet-archive-priority-language-rights-review-2026-10-04.md).
 
 ## Hugging Face quality release v0.2.2 — 2026-10-01 (historical audit)
 
