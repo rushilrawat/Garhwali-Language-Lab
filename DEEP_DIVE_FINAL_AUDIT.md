@@ -5,6 +5,35 @@
 > current corpus figures, public text gap, and remaining work are summarized in
 > [`finalreport.md`](finalreport.md) and the [text-availability audit](research/huggingface-corpus-gap-resolution-2026-10-06.md).
 
+## Follow-up — Kaggle packaging — 2026-10-06
+
+The current repository now includes a deterministic Kaggle exporter and two
+focused regression tests. The generated corpus CSVs preserve the 17 non-PahariLI
+v0.2.7 configs and their overlapping views; the PahariLI sentence bodies are
+replaced in this derivative with a content-free identifier/hash index. The
+speech metadata companion omits the Parquet `audio` column and links each row
+to the already public Hugging Face audio dataset. Local package hashes and
+exact-overlap results are in the [Kaggle release audit](research/kaggle-release-readiness-2026-10-06.md).
+The packages have not been uploaded to Kaggle or made public. This work does
+not clear the 8,444 unresolved full texts, benchmark rights, independent
+results, or native-language review.
+
+## Current metrics correction — 2026-10-06
+
+The current Hugging Face corpus page reports 961,533 displayed rows and 7.56 GB
+of repository files. The row display is a sum of overlapping views: 778,157
+(80.9%) are source/reference rows, leaving 183,376 content-config view rows,
+not unique text examples. The public `text` config has 18,598 rows / 291,914
+whitespace-separated words; `text`, `text_expansion`, and `text_resources`
+currently have zero rows recommended for general text-model training. The
+separate speech repository reports 113,363 rows / 36.5 GB; its 104,500
+non-empty SraVaani drafts are machine hypotheses, not gold transcripts. A
+fresh local inventory measures the whole `data/` tree at about 119.93 GiB
+allocated; those bytes include audio, downloads, model/evaluation artifacts,
+and hard-linked package snapshots, not just unique Garhwali text. See the
+[current metrics audit](research/huggingface-current-metrics-and-utility-2026-10-06.md)
+for definitions and breakdown. The verified unittest suite passes 820/820.
+
 ## Historical release and local Archive intake — 2026-10-05
 
 At this audit snapshot, the public corpus release was **v0.2.4** at Hub commit

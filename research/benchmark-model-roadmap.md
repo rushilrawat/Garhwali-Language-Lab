@@ -767,7 +767,7 @@ If every test reference is published openly, that is a valid open-benchmark choi
 | Tool | Role | Decision |
 | --- | --- | --- |
 | Python 3, JSONL, hashlib, pathlib | Deterministic manifests, hashes, task runners, reports | Use now; matches the repository. |
-| unittest and existing CI | Regression checks for splits, metrics, provenance, report rules | 818 tests pass in the 2026-10-06 closeout working tree; frozen v0.2.0 release-time counts 607/605 remain historical. |
+| unittest and existing CI | Regression checks for splits, metrics, provenance, report rules | 820 tests pass in the 2026-10-06 closeout working tree; frozen v0.2.0 release-time counts 607/605 remain historical. |
 | Draft v0.2 contract validator | Validate counts, hashes, normalization, references, provenance, rights, splits, and local ASR hashes | Use now; `scripts/validate_benchmark_v02.py` passes against eight views. |
 | Existing benchmark/lineage scripts | Build and audit current task files and prior-use ledger | Reuse; extend for a concrete missing check. |
 | PyTorch, Transformers, PEFT | Local IndicBERT/mT0 inference and adaptation | Only after local preflight; the project `.venv` lacks these packages, while the optional cached runtime has PyTorch/Transformers but not PEFT. |

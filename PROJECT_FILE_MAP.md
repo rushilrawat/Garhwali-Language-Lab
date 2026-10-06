@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **1,022**.
+Files indexed: **1,026**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -587,6 +587,7 @@ python scripts/generate_project_file_map.py
 - `research/huggingface-corpus-v0.2.5-viewer-schema-repair-2026-10-05.md`
 - `research/huggingface-corpus-v0.2.6-release-2026-10-05.md`
 - `research/huggingface-corpus-v0.2.7-release-2026-10-06.md`
+- `research/huggingface-current-metrics-and-utility-2026-10-06.md`
 - `research/huggingface-dataset-quality-roadmap.md`
 - `research/huggingface-existing-corpus-expansion-audit-2026-10-02.md`
 - `research/huggingface-indic_dialect_asr_gbm-catalog-lineage-2026-10-05.json`
@@ -636,6 +637,7 @@ python scripts/generate_project_file_map.py
 - `research/internet-archive-source-disposition-2026-10-04.json`
 - `research/internet-archive-source-disposition-2026-10-04.md`
 - `research/issues&improvement plan.md`
+- `research/kaggle-release-readiness-2026-10-06.md`
 - `research/language-quality-status-2026-09-10.md`
 - `research/license-specific-source-export-audit-2026-10-05.md`
 - `research/meta-omnilingual-asr-adaptation-2026-10-05.md`
@@ -754,6 +756,7 @@ python scripts/generate_project_file_map.py
 - `scripts/build_huggingface_dataset.py`
 - `scripts/build_instruction_accuracy_split.py`
 - `scripts/build_instruction_dataset.py`
+- `scripts/build_kaggle_release.py`
 - `scripts/build_language_resources.py`
 - `scripts/build_quality_tiers.py`
 - `scripts/build_recommended_text_view.py`
@@ -970,6 +973,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_build_huggingface_dataset.py`
 - `tests/test_build_instruction_accuracy_split.py`
 - `tests/test_build_instruction_dataset.py`
+- `tests/test_build_kaggle_release.py`
 - `tests/test_build_language_resources.py`
 - `tests/test_build_quality_tiers.py`
 - `tests/test_build_recommended_text_view.py`
@@ -1075,11 +1079,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **239,390**.
+- Workspace files counted: **239,424**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **1,022**.
-- Ignored or otherwise unlisted payload files: **238,368** (172,460,415,751 bytes).
-- Total workspace bytes counted: **172,478,519,362**.
+- Detailed file paths listed above: **1,026**.
+- Ignored or otherwise unlisted payload files: **238,398** (173,227,812,901 bytes).
+- Total workspace bytes counted: **173,245,969,552**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1103,7 +1107,8 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `data/cache/…/` | 2 | 104,176 |
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
 | `data/extracted/…/` | 736 | 104,222,678 |
-| `data/huggingface/…/` | 2,914 | 87,100,082,741 |
+| `data/huggingface/…/` | 2,914 | 87,100,087,872 |
+| `data/kaggle/…/` | 30 | 767,392,019 |
 | `data/processed/…/` | 110,561 | 41,807,390,124 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |

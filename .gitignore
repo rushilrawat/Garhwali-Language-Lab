@@ -30,6 +30,7 @@ data/temp/
 data/cache/
 data/generated/
 data/huggingface/
+data/kaggle/
 data/review_decisions/
 
 # Large dataset formats

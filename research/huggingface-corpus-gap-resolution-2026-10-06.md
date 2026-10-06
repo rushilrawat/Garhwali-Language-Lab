@@ -25,6 +25,20 @@ training example, or that it is easy to locate without the source lookup below.
 The 14,988 PahariLI matches inherit PahariLI's unresolved sentence-origin and
 language-label caveats.
 
+## Training readiness and size interpretation — 2026-10-06
+
+The current live corpus page reports 961,533 combined rows and 7.56 GB of
+repository storage. Of the displayed rows, 778,157 (80.9%) are the
+`record_index`, `source_catalog`, and `record_sources` reference views; they
+are valuable for source discovery but are not language examples. The remaining
+183,376 are overlapping content-config views, not unique passages. In the
+current public text configs, `text` has 18,598 rows / 291,914 words,
+`text_expansion` has 1,737 rows, and `text_resources` has 475 rows; all 20,810
+are currently marked not recommended for general text-model training. The
+separate speech repository reports 113,363 rows / 36.5 GB, but machine drafts
+are not gold transcripts. See the [full current metrics audit](huggingface-current-metrics-and-utility-2026-10-06.md)
+for counts, local disk accounting, and intended-use limits.
+
 ## What is already fixed
 
 All 8,444 locally retained texts have a source locator in their public

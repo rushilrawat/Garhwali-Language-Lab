@@ -25,7 +25,7 @@ below preserve earlier evidence.
 ## Current closeout status — 2026-10-06
 
 The public corpus is v0.2.7 and the public speech companion is v0.2.1. The
-current project suite passes 818 tests after this closeout edit. Corpus package/release checks pass
+current project suite passes 820 tests after this closeout edit. Corpus package/release checks pass
 for v0.2.7; the latest recorded live Viewer check reports 29 split views and
 Parquet exports. The catalog visibility audit separates 15,004 text values
 already found elsewhere in the public package from 8,444 distinct full texts
@@ -36,6 +36,19 @@ defines the source-by-source path to resolve that gap. The benchmark remains
 local-only and draft, and independent-final eligibility is still 0/5. Native
 language review and dialect annotation remain deferred. Active ingestion is
 closed at v0.2.7 for now; dated issue entries below are retained as history.
+
+**Metric correction:** the 961,533 public corpus rows are overlapping views;
+778,157 (80.9%) are source/reference tables, not language examples. The public
+`text` config has 18,598 rows / 291,914 whitespace-separated words and zero
+rows currently recommended for general text training. `text_expansion` (1,737)
+and `text_resources` (475) also have zero recommended rows. The speech repo
+has 113,363 rows and 154.65 audio hours, but its 104,500 non-empty SraVaani
+outputs are machine drafts, not gold transcripts. The local `data/` tree uses
+about 119.93 GiB on disk; these bytes include versioned Hub builds, source
+audio/media, and model/evaluation artifacts. See the [current metrics and
+utility audit](huggingface-current-metrics-and-utility-2026-10-06.md); treat
+dated aggregates below as historical unless that report identifies them as
+current.
 
 **Historical status — 4 October:** the public corpus was v0.2.3; speech remained v0.2.1.
 The Archive intake quality and overlap audit produced no benchmark or model

@@ -11,6 +11,25 @@ filter, and reuse for clearly described purposes. Progress is measured by
 quality-qualified content and reliable access—not by adding reference-table
 rows to a headline total.
 
+## Metrics and practical training status — 2026-10-06
+
+The live corpus page reports 961,533 rows, but 778,157 (80.9%) are source and
+reference-table rows, and all config totals overlap. The main text view contains
+18,598 rows / 291,914 whitespace-separated words; zero currently pass the
+project's general text-training recommendation flag. The 1,737 expansion and
+475 supplementary text-resource rows also have zero recommended rows. The
+14,988 PahariLI sentences are experimental language-identification material,
+not a general LM corpus. The 2,002-row strict ASR view is unreviewed. The
+speech repository has 113,363 rows and 154.65 hours of audio; its 104,500
+non-empty SraVaani drafts remain machine hypotheses, not references.
+
+This changes how phase progress is reported: file size, metadata rows, and
+record catalog size are not content-quality milestones. Track usable text
+words, rights/quality-qualified rows, reviewed ASR pairs, verified Garhwali
+audio hours, and unique source-linked records separately. See the [current
+metrics and utility audit](huggingface-current-metrics-and-utility-2026-10-06.md)
+for definitions, local storage breakdown, and limits.
+
 ## Current closeout — text availability and source resolution
 
 The public corpus v0.2.7 has 18 named configs and 29 config/split views. Its

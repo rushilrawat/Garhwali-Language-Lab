@@ -154,7 +154,7 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current working-tree suite passes **818 tests** (6 October 2026). The
+The current working-tree suite passes **820 tests** (6 October 2026). The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
 installs dependencies from `requirements-pipeline.txt`. Current benchmark

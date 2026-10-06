@@ -10,6 +10,25 @@ envelope, schema, and loading guidance. These examples stream the published
 configs. Pass a commit SHA as `revision=` when
 you need an immutable Hub snapshot.
 
+## Training readiness and honest counts
+
+The corpus repository is currently better for source discovery, vocabulary
+exploration, and research than for general language-model training. The Hub
+displays 961,533 rows, but 778,157 (80.9%) are provenance/reference-table rows;
+all config totals overlap. The main `text` config has 18,598 rows and 291,914
+whitespace-separated words, but **zero rows are currently marked
+recommended_for_training**. The 1,737 `text_expansion` and 475
+`text_resources` rows are also all marked not recommended for general text
+training. The 14,988-row PahariLI config is experimental language-identification
+material with unresolved sentence origins and unreviewed labels.
+
+The speech repo contains substantial audio (113,363 rows, about 154.65 hours),
+but only 2,002 strict speaker-disjoint reference rows are in the linked ASR
+view, and those transcripts are unreviewed. The 104,500 non-empty SraVaani
+outputs are machine drafts, not ground truth. See the [current metrics and
+utility audit](../research/huggingface-current-metrics-and-utility-2026-10-06.md)
+before selecting a config for training or evaluation.
+
 ## Try three vocabulary rows
 
 Install the small dependencies:

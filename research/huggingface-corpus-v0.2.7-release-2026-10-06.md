@@ -44,6 +44,12 @@ package; 8,444 distinct full texts remain local with rights pending. See the
 [availability audit](huggingface-corpus-gap-resolution-2026-10-06.md). The
 local root and versioned dataset cards now describe all 18 named configs and
 29 config/split views and point users to the source-URL lookup. No data payload
-or rights decision changed. The project test suite now passes 818/818 after
+or rights decision changed. The project test suite now passes 820/820 after
 two regression tests were added for release-preparation defaults; defaults
 target v0.2.8, leaving the published v0.2.7 package unchanged.
+
+The live Hub page was rechecked on 6 October and displays **7.56 GB** for the
+repository, versus 5.975 GiB in the release-time storage measurement above.
+These are different-time Hub totals that include retained versioned paths; they
+are not unique content size or comparable as a language-data growth measure.
+The current breakdown is in the [metrics and utility audit](huggingface-current-metrics-and-utility-2026-10-06.md).

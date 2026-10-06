@@ -1,5 +1,44 @@
 # Garhwali Language Lab — final review report
 
+## Metrics correction — 2026-10-06
+
+The earlier presentation of Hugging Face's 961,533 corpus rows could be read
+as a count of usable language examples; it is not. The live corpus page shows
+778,157 reference/index rows (80.9%) and 183,376 overlapping content-config
+views. The main `text` config has 18,598 rows / 291,914 whitespace-separated
+words, but **zero rows are currently marked recommended for general text
+training**. `text_expansion` and `text_resources` also have zero recommended
+rows. The 14,988 PahariLI sentences are experimental, with unresolved origins
+and unreviewed labels. Speech has substantial audio, but not one supervised
+pair per recording: only 2,002 strict speaker-disjoint references are in the
+linked ASR view, and they remain unreviewed. Machine drafts are not gold text.
+
+A fresh local inventory finds about **119.93 GiB allocated** under `data/`;
+the 171.25 GB sum of file-path sizes includes hard-linked release snapshots,
+source/audio, model/evaluation artifacts, and downloads. It is not unique
+Garhwali language content. The old 77 GB headline used a different or partial
+scope and should not be used as the project total. Detailed live/local metrics,
+definitions, and measurement methods are in the [6 October Hugging Face metrics
+and utility audit](research/huggingface-current-metrics-and-utility-2026-10-06.md).
+No data payload changed in this correction.
+
+## Kaggle packaging follow-up — 2026-10-06
+
+After the v0.2.7 closeout snapshot below, I prepared reproducible Kaggle
+exports without adding or deleting source records. The generated corpus package
+contains 17 configs / 946,545 overlapping config and reference rows, and a
+content-free index for 14,988 PahariLI sentence records. The speech companion
+contains 113,363 transcript/metadata rows and no audio bytes. The Kaggle files
+are local-only under ignored `data/kaggle/`; no Kaggle upload or public release
+has occurred yet. See the [Kaggle release audit](research/kaggle-release-readiness-2026-10-06.md)
+for scope, hashes, exact-overlap checks, and test evidence.
+
+The release review also caught no new source records; the principal gaps remain
+the 8,444 item-level rights decisions, unreviewed machine transcript drafts,
+benchmark rights/independence, and deferred native-speaker validation. The
+root test badge now reflects **820/820** passing tests after adding two focused
+Kaggle exporter regression tests.
+
 ## Project closeout snapshot — 2026-10-06
 
 This is the current handoff and the point where active project work is being
@@ -16,14 +55,20 @@ sections remain historical evidence for the exact snapshot they describe.
   `1f7b2ce`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/1f7b2ceed1b743412b75d6288757e1d2cadac9c4),
   with 18 named configs, 29 config/split views, 183,376 overlapping content
   rows, and 778,157 overlapping reference-table rows. These are view counts,
-  not unique examples. Its latest recorded Viewer check found all 29 split
-  views and Parquet exports available; this closeout did not re-query the Viewer
-  APIs from the restricted shell.
+  not unique examples. The live Hub page currently reports 961,533 rows and
+  7.56 GB. The detailed 29-split / Parquet readiness check remains documented
+  in the dated v0.2.7 release report.
 - **Hugging Face speech:** public **v0.2.1**, separate from the text corpus,
   with 113,363 rows, 113,350 unique audio hashes, and about 154.65 hours. It
   includes source/provider transcripts and a separate 104,534-row deduplicated
-  SraVaani-draft view; 104,500 drafts are non-empty and remain unreviewed.
-- **Automated checks:** the full project suite passes **818/818** tests after
+  SraVaani-draft view; 104,500 drafts are non-empty and remain unreviewed. The
+  live Hub page reports a 36.5 GB repository file size.
+- **Text training recommendation:** 0 of 18,598 main text rows, 0 of 1,737
+  expansion rows, and 0 of 475 supplementary-resource rows are currently
+  recommended for general text-model training. The `asr` config has 2,002
+  unreviewed speaker-disjoint reference rows; the PahariLI config remains
+  experimental and unresolved.
+- **Automated checks:** the full project suite passes **820/820** tests after
   the closeout and next-version-default fixes. These tests check software and
   data contracts, not linguistic correctness.
 

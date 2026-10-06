@@ -7,7 +7,13 @@
 
 The corpus brings together Garhwali text, vocabulary, speech references, machine-generated transcript drafts, songs and literary metadata, geography, historical terms, university research references, and source links. Each config is separately labeled because its source, task, quality, and reuse terms differ. The repo code is MIT-licensed; that license does not apply to corpus contents. The Hub reports the corpus license as `other` because there is no single license for all records.
 
-The v0.2.7 package has **18 named configs and 29 config/split views**. The 15 content configs contain **183,376 overlapping-view rows**. Three metadata/reference configs add **778,157 rows**, for **961,533 total view rows**. These are table-view totals, not a count of unique examples. The catalog has **36,105 exact-unique parent text records**; `text` has 18,598 rows; the speech dataset is separate.
+## Read this before using the row totals
+
+This release is a source-linked Garhwali research/resource collection, **not a ready-to-train general text corpus**. The live Hub page reports 961,533 rows, but these are overlapping config views. Three metadata/reference tables contribute 778,157 of them (80.9%); those rows describe records and sources and are not language examples. The other 183,376 rows are also overlapping views and include catalogs, reference material, speech transcripts, vocabulary, instructions, and experimental text.
+
+The published `text` config has **18,598 rows, 291,914 whitespace-separated words, and 1,373,045 characters**. All 18,598 are currently marked `recommended_for_training=false`. The 1,737 `text_expansion` and 475 `text_resources` rows are also all marked not recommended for general text training. The 14,988 `paharili_gbm` rows are experimental language-identification material with unresolved sentence origins and unreviewed labels; they are not a general-purpose LM corpus. The 2,002 strict speaker-disjoint ASR reference rows contain 36,228 transcript words, but all remain unreviewed and are not native-adjudicated. Machine-generated SraVaani drafts are hypotheses, never gold transcripts.
+
+The v0.2.7 package has **18 named configs and 29 config/split views**. The local parent-text catalog has **36,105 exact-unique records**; it is not equivalent to 36,105 public or training-ready passages. The Hub page reported **7.56 GB** total repository file size on 6 October 2026. The speech companion is separate and reported 113,363 rows / 36.5 GB. See the [current metrics and utility audit](research/huggingface-current-metrics-and-utility-2026-10-06.md) for methodology, local storage accounting, and intended-use limits.
 
 | Config | Rows | What it contains |
 | --- | ---: | --- |
@@ -15,7 +21,7 @@ The v0.2.7 package has **18 named configs and 29 config/split views**. The 15 co
 | `paharili_gbm` | 14,988 | PahariLI Garhwali-labeled sentence-classification examples; experimental |
 | `catalog` | 36,105 | Parent-text inventory; some `text` fields are empty in this config |
 | `text_expansion` | 1,737 | Existing catalog text selected for a separate access view; 1,283 train and 454 source-overlap |
-| `text_resources` | 475 | Supplementary text-resource view; 285 train and 190 source-overlap |
+| `text_resources` | 475 | Supplementary lookup/research view; 285 train, 190 source-overlap; 0 currently recommended for general text training |
 | `asr` | 2,002 | Strict speaker-disjoint ASR reference rows |
 | `sravaani_drafts` | 104,534 | Machine transcript drafts; 104,500 non-empty, 34 empty; not ground truth |
 | `lexicon` | 1,493 | Vocabulary and pronunciation candidates |
