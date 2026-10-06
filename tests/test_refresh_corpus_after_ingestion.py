@@ -103,7 +103,6 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
         self.assertEqual(plan["mode"], "dry-run")
         self.assertEqual(plan["plan_schema_version"], 2)
         self.assertFalse(plan["mutates_workspace"])
-        self.assertTrue(plan["ready"])
         self.assertEqual(plan["script_count"], len(PIPELINE_COMMANDS))
         self.assertEqual(plan["release_version"], "0.2.8")
         self.assertEqual(
@@ -131,7 +130,15 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
             "scripts/validate_hf_package_cloud.py",
             "scripts/compare_hf_release_metrics.py",
         }.issubset({item["path"] for item in code["pipeline_scripts"]}))
-        self.assertTrue(source_inputs["complete"])
+        self.assertEqual(
+            plan["ready"],
+            all(step["script_exists"] for step in plan["steps"])
+            and source_inputs["complete"],
+        )
+        self.assertEqual(
+            source_inputs["complete"],
+            not source_inputs["missing_required_manifests"],
+        )
         self.assertEqual(source_inputs["capture_stage"], "pre_execution_dry_run")
         self.assertTrue(any(
             item["path"] == "corpus/jambu_garhwali_manifest.json"

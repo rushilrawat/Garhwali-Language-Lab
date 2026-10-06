@@ -121,6 +121,12 @@ and online snapshot pointers. During a real refresh, the source inventory is
 captured after the pinned source-ingestion steps and saved with the local
 metrics report.
 
+The plan's `ready` value is true only when every pipeline script and required
+source-ingestion manifest is present. A clean GitHub Actions checkout may
+therefore report `ready: false` when local or ignored acquisition manifests
+are absent; that is an accurate input-availability signal, not a software-test
+failure. Restore the required inputs locally before executing the refresh.
+
 ```bash
 GARHWALI_RELEASE_VERSION=0.2.8 .venv/bin/python scripts/prepare_hf_additive_upload.py \
   --prefix releases/v0.2.7 \
