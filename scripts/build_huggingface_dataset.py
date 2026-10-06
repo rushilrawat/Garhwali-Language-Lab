@@ -169,6 +169,22 @@ OPEN_BIBLE_STORIES_SOURCE = {
     'attribution': 'Open Bible Stories — Garhwali (gbm), OBS-TLF v1 (2026-06-26), aggregated by the unfoldingWord OBS Library project; text-only extraction from the TLF umbrella OBS Android app. CC BY-SA 4.0. Audio and Sweet Publishing illustrations are excluded.',
 }
 
+META_OMNILINGUAL_TRAINING_DECISION = {
+    'decision_id': 'meta_omnilingual_cc_by_4_0_training_2026_10_06',
+    'source_id': 'meta_omni',
+    'source_url': 'https://huggingface.co/datasets/facebook/omnilingual-asr-corpus',
+    'rights_status': 'upstream_meta_cc_by_4_0',
+    'license_id': 'CC-BY-4.0',
+    'license_url': 'https://creativecommons.org/licenses/by/4.0/',
+    'rights_evidence': 'sources/online/meta_omni/card.md.metadata.json',
+    'rights_evidence_sha256': 'ec52ce7ee1bd2960f3c8d3b76d734683be979e4f8c0dc087e90d6e9ecaebf836',
+    'checked_at': '2026-10-06',
+    'evidence_urls': [
+        'https://huggingface.co/datasets/facebook/omnilingual-asr-corpus/blob/main/README.md',
+        'https://creativecommons.org/licenses/by/4.0/legalcode.en',
+    ],
+}
+
 PIB_INSTRUMENT_POLICY = {
     'source_url': 'https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/sep/doc2025929651301.pdf',
     'license_url': 'https://www.pib.gov.in/ContentPage.aspx?lang=2&menuid=3604&reg=48',
@@ -725,9 +741,12 @@ def source_languages(row):
 
 
 def normalized_text_key(text):
-    """Match the release audit's conservative Unicode/alphanumeric text key."""
+    """Normalize text while retaining letters, digits, and orthographic marks."""
     normalized = unicodedata.normalize('NFKC', str(text or '')).casefold()
-    return ''.join(character for character in normalized if character.isalnum())
+    return ''.join(
+        character for character in normalized
+        if unicodedata.category(character)[0] in {'L', 'M', 'N'}
+    )
 
 
 def source_record_ids(row):
@@ -1260,6 +1279,114 @@ def recommended_text_training_row(row):
         and rights_basis
         and all(is_publishable_provenance(item) for item in rights_basis)
     )
+
+
+def apply_meta_training_rights_decision(row):
+    """Apply the exact Meta CC BY-4.0 decision to a derived row, not its source."""
+    result = dict(row)
+    for field in ('provenance', 'public_rights_basis'):
+        items = result.get(field)
+        if not isinstance(items, list):
+            continue
+        decided = []
+        for item in items:
+            if not isinstance(item, dict):
+                decided.append(item)
+                continue
+            matches = all(
+                item.get(key) == META_OMNILINGUAL_TRAINING_DECISION[key]
+                for key in (
+                    'source_id', 'source_url', 'rights_status', 'license_id',
+                    'license_url', 'rights_evidence',
+                )
+            )
+            if not matches:
+                decided.append(item)
+                continue
+            updated = dict(item)
+            updated['training_eligible_before_project_decision'] = item.get(
+                'training_eligible'
+            )
+            updated['training_eligible'] = True
+            updated['training_eligibility_decision_id'] = (
+                META_OMNILINGUAL_TRAINING_DECISION['decision_id']
+            )
+            updated['training_eligibility_evidence'] = list(
+                META_OMNILINGUAL_TRAINING_DECISION['evidence_urls']
+            )
+            updated['training_eligibility_checked_at'] = (
+                META_OMNILINGUAL_TRAINING_DECISION['checked_at']
+            )
+            decided.append(updated)
+        result[field] = decided
+    return result
+
+
+def build_quality_screened_meta_text(rows_by_config):
+    """Select non-empty, strict, train-only Meta text without editing source rows."""
+    selected = []
+    seen_ids = set()
+    seen_text = {}
+    metrics = {
+        'candidate_rows_evaluated': 0,
+        'blank_excluded': 0,
+        'eligibility_excluded': 0,
+        'normalized_duplicate_excluded': 0,
+        'duplicate_exclusions': [],
+        'selected_rows': 0,
+        'whitespace_words': 0,
+        'characters': 0,
+    }
+    for config in ('text', 'text_expansion'):
+        for row in rows_by_config.get(config, []):
+            metrics['candidate_rows_evaluated'] += 1
+            text = row.get('text')
+            if not isinstance(text, str) or not text.strip():
+                metrics['blank_excluded'] += 1
+                continue
+            decided = apply_meta_training_rights_decision(row)
+            if not recommended_text_training_row(decided):
+                metrics['eligibility_excluded'] += 1
+                continue
+            record_id = str(decided.get('id') or '')
+            text_key = normalized_text_key(text)
+            if not record_id:
+                raise ValueError('Quality-screened text row is missing a stable ID')
+            if record_id in seen_ids:
+                raise ValueError(f'Duplicate quality-screened record ID: {record_id}')
+            if not text_key:
+                metrics['blank_excluded'] += 1
+                continue
+            if text_key in seen_text:
+                metrics['normalized_duplicate_excluded'] += 1
+                metrics['duplicate_exclusions'].append({
+                    'excluded_id': record_id,
+                    'retained_id': seen_text[text_key],
+                    'normalized_text_key_sha256': hashlib.sha256(
+                        text_key.encode('utf-8')
+                    ).hexdigest(),
+                })
+                continue
+            seen_ids.add(record_id)
+            seen_text[text_key] = record_id
+            decided.update({
+                'source_config': config,
+                'training_profile': 'strict_auto_screened_meta_gbm_v1',
+                'training_eligibility_decision_id': (
+                    META_OMNILINGUAL_TRAINING_DECISION['decision_id']
+                ),
+                'upstream_recommended_for_training': bool(
+                    row.get('recommended_for_training', False)
+                ),
+                'recommended_for_training': True,
+                'project_recommendation_status': 'experimental_training_candidate',
+                'native_reviewed': False,
+            })
+            selected.append(decided)
+            metrics['whitespace_words'] += len(text.split())
+            metrics['characters'] += len(text)
+    metrics['selected_rows'] = len(selected)
+    return selected, metrics
 
 
 def text_row(row, parent_quality=None):

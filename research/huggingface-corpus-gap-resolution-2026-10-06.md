@@ -1,5 +1,16 @@
 # Hugging Face corpus text-availability and closeout audit — 2026-10-06
 
+## v0.2.8 follow-up — 6 October 2026
+
+The 1,841-row training config and 110-row context config added in v0.2.8
+contain exact text values already present in the v0.2.7 `text` and
+`text_expansion` configs. They add a filtered, attributed use view but do not
+make new unique text public. A direct comparison found no match between the
+1,951 values and the 8,444 full catalog texts previously absent from all
+public configs, so the reported rights-pending availability gap is unchanged.
+The [quality-screened text report](quality-screened-text-release-report-2026-10-06.md)
+documents the comparison and current publication commits.
+
 ## Result
 
 The public corpus is usable as a source-linked Garhwali research resource, but it

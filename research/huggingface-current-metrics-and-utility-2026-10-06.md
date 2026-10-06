@@ -1,20 +1,37 @@
 # Hugging Face dataset size, content, and training utility — 2026-10-06
 
+## v0.2.8 publication addendum — 6 October 2026
+
+The live corpus now includes two additive configs. Hugging Face data commit
+[`48f9107d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/48f9107d0285b3b3ec3c893303efb8a997cfc49b)
+added `screened_meta_gbm` (1,841 rows; 47,566 whitespace-separated words)
+and `short_utterances_meta_gbm` (110 context rows). The corrected card at
+[`cf60b2175`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cf60b217d9d3de045d81fb41d82514e29db2bf33)
+reports **963,484 displayed rows**, **185,327 overlapping content-view rows**,
+778,157 reference rows, 20 named configs, 31 config/split views, and 7.57 GB.
+The source text values were already present in v0.2.7 `text`/`text_expansion`;
+the new views improve filtering and expose a documented training-use decision,
+not new unique transcripts. A direct check found zero overlap between the
+1,951 selected values and the 8,444 rights-pending catalog texts; that local
+full-text availability gap remains unchanged. All figures in the tables below
+are the pinned v0.2.7 baseline unless a row is explicitly labeled v0.2.8.
+
 ## Executive result
 
-The public corpus is a useful source/provenance catalogue and research resource,
-but it is **not currently a ready-to-train general Garhwali text corpus**. Its
+The v0.2.7 corpus was a useful source/provenance catalogue and research
+resource, but it was **not a ready-to-train general Garhwali text corpus**. Its
 Hub headline of 961,533 rows sums overlapping config views and reference tables;
-it does not mean 961,533 language examples. In the published `text`,
-`text_expansion`, and `text_resources` configs, **zero rows are currently marked
-recommended for general text training**. The separate speech repository has
+it does not mean 961,533 language examples. In those v0.2.7 `text`,
+`text_expansion`, and `text_resources` configs, zero rows were marked
+recommended for general text training. The v0.2.8 addendum above records the
+new, small experimental text view. The separate speech repository has
 substantial audio, but most audio has no provider transcript, and its machine
 drafts are not reference transcripts.
 
 This report replaces storage totals or viewer row counts as proxies for model-
 ready data. It does not remove, rewrite, or change the rights status of records.
 
-## Live Hugging Face repositories
+## v0.2.7 baseline Hugging Face repository metrics
 
 The Hub pages were checked on 6 October 2026:
 

@@ -1,11 +1,27 @@
 # Kaggle release preparation audit — 2026-10-06
 
+## Quality-first text package follow-up — 2026-10-06
+
+A separate, focused package is built locally for direct Kaggle use:
+1,841 sentence-length training rows plus 110 nonblank short utterances in a
+separate context CSV. It carries CC BY 4.0 attribution, row-level provenance,
+quality labels, a documented duplicate exclusion, and matching source/output
+hashes. The matching configs are already live in the Hugging Face corpus at
+[v0.2.8 commit `48f9107`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/48f9107d0285b3b3ec3c893303efb8a997cfc49b).
+The corrected live card is at [commit `cf60b2175`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cf60b217d9d3de045d81fb41d82514e29db2bf33).
+The focused package is **not published on Kaggle yet**;
+see the [quality-screened text release report](quality-screened-text-release-report-2026-10-06.md)
+and [publication roadmap](huggingface-kaggle-quality-release-roadmap-2026-10-06.md).
+
 ## Status
 
-The reproducible Kaggle packages are built locally. Neither package has been
-uploaded or published on Kaggle yet. They are kept under the Git-ignored
-`data/kaggle/` directory. Public visibility still needs to be confirmed at the
-time it is changed.
+The reproducible Kaggle packages are built locally and kept under the
+Git-ignored `data/kaggle/` directory. The broad corpus and speech-metadata
+packages remain unpublished. The focused screened-text package is also not
+published yet. The user approved enabling the ChatGPT extension's local-file
+access permission, but a browser security restriction prevents automated
+extension-setting changes; the user must toggle it manually. No Kaggle upload
+has occurred.
 
 ## Packages prepared
 

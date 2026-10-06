@@ -30,6 +30,7 @@ and other source-specific fields remain the evidence of record.
 
 | Config | Main fields |
 | --- | --- |
+| `screened_meta_gbm`, `short_utterances_meta_gbm` | `text`, `language`, `script`, `source_record_ids`, source URL, CC BY 4.0 evidence hash/URL, training decision ID, upstream eligibility value, training profile/recommendation, `word_count`, `character_count`, text hash, quality and split-overlap status; `native_reviewed` is false |
 | `text` | `id`, `text`, `language`, `script`, `split`, `quality_tiers`, `quality_flags`, `provenance`, `public_rights_basis` |
 | `paharili_gbm` | normalized-unique Garhwali-labeled PahariLI sentences, source text variants, upstream split, source record IDs, raw-file URL/SHA-256, repository license declaration, and source/quality flags |
 | `lexicon` | `form`, `glosses`, `graphemes`, `pronunciation_status`, `dialect_quality`, source hashes and provenance |
@@ -49,6 +50,13 @@ Its upstream `test` partition is only the source language-identification
 holdout; it is not a project-wide independent evaluation set. Row-level
 rights/quality fields identify that the repository's Apache-2.0 declaration
 does not resolve the individual sentence origins.
+
+The two v0.2.8 Meta transcript views are purpose-built projections of rows
+already present in the v0.2.7 `text` and `text_expansion` configs. The
+`screened_meta_gbm` view contains the 1,841 sentence-length experimental
+training candidates; `short_utterances_meta_gbm` retains 110 shorter context
+rows and marks them not recommended for general LM training. They are
+machine-screened, not native-reviewed.
 
 ## Speech schema
 

@@ -1,6 +1,6 @@
 # Garhwali Corpus — dataset card
 
-**Current corpus release:** `garhwali-language-lab-v0.2.7`, public at [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) and [commit `1f7b2ce`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/1f7b2ceed1b743412b75d6288757e1d2cadac9c4).
+**Current corpus release:** `garhwali-language-lab-v0.2.8`, public at [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus). The two additive text configs were uploaded at [data commit `48f9107`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/48f9107d0285b3b3ec3c893303efb8a997cfc49b); current counts are in the corrected card at [commit `cf60b217`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cf60b217d9d3de045d81fb41d82514e29db2bf33).
 **Speech companion:** [Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech), release `v0.2.1`.
 
 ## What is in this dataset
@@ -9,14 +9,18 @@ The corpus brings together Garhwali text, vocabulary, speech references, machine
 
 ## Read this before using the row totals
 
-This release is a source-linked Garhwali research/resource collection, **not a ready-to-train general text corpus**. The live Hub page reports 961,533 rows, but these are overlapping config views. Three metadata/reference tables contribute 778,157 of them (80.9%); those rows describe records and sources and are not language examples. The other 183,376 rows are also overlapping views and include catalogs, reference material, speech transcripts, vocabulary, instructions, and experimental text.
+This release is a source-linked Garhwali research/resource collection, **not a large ready-to-train general text corpus**. The live Hub page reports **963,484 displayed rows** and **7.57 GB**. These are overlapping config views: three metadata/reference tables contribute 778,157 rows (80.8%), while content configurations contribute 185,327 overlapping rows. Neither figure is a count of unique language examples.
 
-The published `text` config has **18,598 rows, 291,914 whitespace-separated words, and 1,373,045 characters**. All 18,598 are currently marked `recommended_for_training=false`. The 1,737 `text_expansion` and 475 `text_resources` rows are also all marked not recommended for general text training. The 14,988 `paharili_gbm` rows are experimental language-identification material with unresolved sentence origins and unreviewed labels; they are not a general-purpose LM corpus. The 2,002 strict speaker-disjoint ASR reference rows contain 36,228 transcript words, but all remain unreviewed and are not native-adjudicated. Machine-generated SraVaani drafts are hypotheses, never gold transcripts.
+The new `screened_meta_gbm` config contains **1,841** non-empty sentence-length rows (47,566 whitespace-separated words); `short_utterances_meta_gbm` contains **110** non-empty short context rows. Both are selected from existing Meta Omnilingual transcripts and were already present in the v0.2.7 `text`/`text_expansion` views. Thus, the v0.2.8 addition creates a clean, attributed, filterable training surface; it does not add 1,951 newly sourced unique texts. The training view has zero normalized duplicates internally and is recommended only for experimental sentence-level LM work. Every row remains machine-screened and **not native-speaker reviewed**.
 
-The v0.2.7 package has **18 named configs and 29 config/split views**. The local parent-text catalog has **36,105 exact-unique records**; it is not equivalent to 36,105 public or training-ready passages. The Hub page reported **7.56 GB** total repository file size on 6 October 2026. The speech companion is separate and reported 113,363 rows / 36.5 GB. See the [current metrics and utility audit](research/huggingface-current-metrics-and-utility-2026-10-06.md) for methodology, local storage accounting, and intended-use limits.
+The historical v0.2.7 `text` config has **18,598 rows, 291,914 whitespace-separated words, and 1,373,045 characters**; those rows remain marked `recommended_for_training=false`. Its 1,737 `text_expansion` and 475 `text_resources` rows remain general-purpose training-ineligible. The 14,988 `paharili_gbm` rows are experimental language-identification material with unresolved sentence origins and unreviewed labels. The 2,002 strict speaker-disjoint ASR reference rows contain 36,228 transcript words, but all remain unreviewed and not native-adjudicated. Machine-generated SraVaani drafts are hypotheses, never gold transcripts.
+
+The current package has **20 named configs and 31 config/split views**. The local parent-text catalog has **36,105 exact-unique records**; it is not equivalent to 36,105 public or training-ready passages. The speech companion is separate and reported 113,363 rows / 36.5 GB. See the [current metrics and utility audit](research/huggingface-current-metrics-and-utility-2026-10-06.md) and [v0.2.8 quality-release report](research/quality-screened-text-release-report-2026-10-06.md) for methodology and use limits.
 
 | Config | Rows | What it contains |
 | --- | ---: | --- |
+| `screened_meta_gbm` | 1,841 | Strict, non-empty Meta Garhwali transcripts; experimental LM candidates, not native-reviewed |
+| `short_utterances_meta_gbm` | 110 | Short transcript context; not recommended for general LM training |
 | `text` | 18,598 | Main text segments with train, validation, test, and source-overlap splits |
 | `paharili_gbm` | 14,988 | PahariLI Garhwali-labeled sentence-classification examples; experimental |
 | `catalog` | 36,105 | Parent-text inventory; some `text` fields are empty in this config |
@@ -35,7 +39,7 @@ The v0.2.7 package has **18 named configs and 29 config/split views**. The local
 
 ## Text availability and the remaining gap
 
-In the `catalog` config, 12,657 rows carry text and 23,448 rows expose metadata without the text value. That per-config count overstated how much text was missing from Hugging Face as a whole. A closeout audit compared every pending catalog value with all string values in all 961,533 public JSONL rows using Unicode NFKC normalization, case folding, and collapsed whitespace. It found **15,004 values already exposed elsewhere**—14,988 in `paharili_gbm` and 16 in other public fields. **8,444 distinct full texts, totaling 2,936,664 whitespace-separated words and 16,388,267 characters, do not appear in any public config.** They remain in the local all-data package; each is marked `rights_pending` / `not_cleared`.
+In the `catalog` config, 12,657 rows carry text and 23,448 rows expose metadata without the text value. That per-config count overstates how much text is missing from Hugging Face as a whole. The v0.2.7 closeout scan found **15,004 values already exposed elsewhere** and **8,444 distinct full texts**, totaling 2,936,664 words and 16,388,267 characters, absent from public configs. They remain in the local all-data package, marked `rights_pending` / `not_cleared`. The v0.2.8 text configs re-expose rows already present in v0.2.7; a direct comparison found no overlap between these 1,951 values and the 8,444 pending catalog texts, so that unresolved public-availability count is unchanged.
 
 The public reference tables retain source locators for these records: 7,675
 have inline URLs and 769 resolve a URL through `source_catalog`. The quick

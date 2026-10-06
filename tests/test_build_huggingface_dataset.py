@@ -10,6 +10,120 @@ import build_huggingface_dataset as m
 
 
 class HuggingFaceDatasetBuilderTests(unittest.TestCase):
+    def test_normalized_text_key_preserves_devanagari_vowel_marks(self):
+        self.assertNotEqual(
+            m.normalized_text_key('कला'), m.normalized_text_key('काली')
+        )
+        self.assertEqual(
+            m.normalized_text_key('गढ़वाली वाक्य।'),
+            m.normalized_text_key('  गढ़वाली   वाक्य! '),
+        )
+
+    def test_meta_cc_by_decision_is_narrow_and_makes_strict_training_candidate_eligible(self):
+        original = {
+            'source_id': 'meta_omni',
+            'source_url': 'https://huggingface.co/datasets/facebook/omnilingual-asr-corpus',
+            'rights_status': 'upstream_meta_cc_by_4_0',
+            'rights_evidence': 'sources/online/meta_omni/card.md.metadata.json',
+            'license_id': 'CC-BY-4.0',
+            'license_url': 'https://creativecommons.org/licenses/by/4.0/',
+            'training_eligible': False,
+            'quality_flags': [],
+        }
+        row = {
+            'id': 'meta-row-1',
+            'text': 'गढ़वाली का साफ उदाहरण।',
+            'language': 'gbm',
+            'source_languages': ['gbm'],
+            'language_buckets': ['garhwali_candidate'],
+            'quality_tiers': ['strict_gold_candidate'],
+            'quality_flags': [],
+            'record_quality_flags': [],
+            'split': 'train',
+            'source_split_overlap_status': 'no_upstream_eval_match_detected',
+            'provenance': [original],
+            'public_rights_basis': [original],
+        }
+
+        decided = m.apply_meta_training_rights_decision(row)
+
+        self.assertTrue(m.recommended_text_training_row(decided))
+        self.assertFalse(original['training_eligible'])
+        self.assertFalse(decided['provenance'][0]['training_eligible_before_project_decision'])
+        self.assertTrue(decided['provenance'][0]['training_eligible'])
+        self.assertTrue(decided['public_rights_basis'][0]['training_eligible'])
+
+    def test_meta_training_rights_decision_does_not_apply_to_other_or_restrictive_sources(self):
+        base = {
+            'source_url': 'https://huggingface.co/datasets/facebook/omnilingual-asr-corpus',
+            'rights_status': 'upstream_meta_cc_by_4_0',
+            'rights_evidence': 'sources/online/meta_omni/card.md.metadata.json',
+            'license_id': 'CC-BY-4.0',
+            'license_url': 'https://creativecommons.org/licenses/by/4.0/',
+            'training_eligible': False,
+            'quality_flags': [],
+        }
+        other_source = {**base, 'source_id': 'other'}
+        restricted_meta = {**base, 'source_id': 'meta_omni', 'license_id': 'CC-BY-NC-SA-4.0'}
+
+        self.assertFalse(m.apply_meta_training_rights_decision({'provenance': [other_source]})['provenance'][0]['training_eligible'])
+        self.assertFalse(m.apply_meta_training_rights_decision({'provenance': [restricted_meta]})['provenance'][0]['training_eligible'])
+
+    def test_quality_text_view_excludes_blank_and_audits_normalized_duplicates(self):
+        source = {
+            'source_id': 'meta_omni',
+            'source_url': 'https://huggingface.co/datasets/facebook/omnilingual-asr-corpus',
+            'rights_status': 'upstream_meta_cc_by_4_0',
+            'rights_evidence': 'sources/online/meta_omni/card.md.metadata.json',
+            'license_id': 'CC-BY-4.0',
+            'license_url': 'https://creativecommons.org/licenses/by/4.0/',
+            'training_eligible': False,
+            'quality_flags': [],
+        }
+        base = {
+            'language': 'gbm',
+            'source_languages': ['gbm'],
+            'language_buckets': ['garhwali_candidate'],
+            'quality_tiers': ['strict_gold_candidate'],
+            'quality_flags': [],
+            'record_quality_flags': [],
+            'split': 'train',
+            'source_split_overlap_status': 'no_upstream_eval_match_detected',
+            'provenance': [source],
+            'public_rights_basis': [source],
+            'recommended_for_training': False,
+        }
+        rows = {
+            'text': [
+                {**base, 'id': 'one', 'text': 'गढ़वाली वाक्य।'},
+                {**base, 'id': 'blank', 'text': '  '},
+            ],
+            'text_expansion': [],
+        }
+
+        selected, metrics = m.build_quality_screened_meta_text(rows)
+
+        self.assertEqual(len(selected), 1)
+        self.assertEqual(selected[0]['id'], 'one')
+        self.assertTrue(selected[0]['recommended_for_training'])
+        self.assertFalse(selected[0]['native_reviewed'])
+        self.assertEqual(metrics['blank_excluded'], 1)
+        self.assertEqual(metrics['selected_rows'], 1)
+
+        duplicate_rows = {
+            'text': [
+                {**base, 'id': 'one', 'text': 'गढ़वाली वाक्य।'},
+                {**base, 'id': 'two', 'text': '  गढ़वाली   वाक्य। '},
+            ],
+            'text_expansion': [],
+        }
+        deduplicated, duplicate_metrics = m.build_quality_screened_meta_text(duplicate_rows)
+        self.assertEqual([row['id'] for row in deduplicated], ['one'])
+        self.assertEqual(duplicate_metrics['normalized_duplicate_excluded'], 1)
+        self.assertEqual(
+            duplicate_metrics['duplicate_exclusions'][0]['excluded_id'], 'two'
+        )
+
     def test_default_release_version_targets_next_additive_candidate(self):
         self.assertEqual(m.RELEASE_VERSION, '0.2.8')
 

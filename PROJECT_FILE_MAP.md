@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **1,026**.
+Files indexed: **1,031**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -594,6 +594,7 @@ python scripts/generate_project_file_map.py
 - `research/huggingface-indic_dialect_asr_gbm-cleaned-lineage-2026-10-05.json`
 - `research/huggingface-indic_dialect_asr_gbm-lineage-2026-10-05.json`
 - `research/huggingface-indic_dialect_asr_gbm-v0.2.5-text-lineage-2026-10-05.json`
+- `research/huggingface-kaggle-quality-release-roadmap-2026-10-06.md`
 - `research/huggingface-meta_omnilingual-catalog-lineage-2026-10-05.json`
 - `research/huggingface-meta_omnilingual-cleaned-lineage-2026-10-05.json`
 - `research/huggingface-meta_omnilingual-lineage-2026-10-05.json`
@@ -642,6 +643,7 @@ python scripts/generate_project_file_map.py
 - `research/license-specific-source-export-audit-2026-10-05.md`
 - `research/meta-omnilingual-asr-adaptation-2026-10-05.md`
 - `research/meta-omnilingual-asr-validation-2026-10-04.md`
+- `research/meta-omnilingual-training-rights-decision-2026-10-06.md`
 - `research/model-accuracy-lineage-2026-09-24.md`
 - `research/model-accuracy-lineage-2026-09-28.md`
 - `research/model-accuracy-preflight-2026-09-24.md`
@@ -658,6 +660,7 @@ python scripts/generate_project_file_map.py
 - `research/outreach-drafts.md`
 - `research/popular-song-ingestion-2026-09-15.md`
 - `research/product-progress-2026-09-29.md`
+- `research/quality-screened-text-release-report-2026-10-06.md`
 - `research/retrieval-baseline-2026-09-11.md`
 - `research/retrieval-miss-analysis-2026-09-28.md`
 - `research/retrieval-quality-2026-09-25.md`
@@ -758,6 +761,7 @@ python scripts/generate_project_file_map.py
 - `scripts/build_instruction_dataset.py`
 - `scripts/build_kaggle_release.py`
 - `scripts/build_language_resources.py`
+- `scripts/build_quality_text_release.py`
 - `scripts/build_quality_tiers.py`
 - `scripts/build_recommended_text_view.py`
 - `scripts/build_release_bundle.py`
@@ -975,6 +979,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_build_instruction_dataset.py`
 - `tests/test_build_kaggle_release.py`
 - `tests/test_build_language_resources.py`
+- `tests/test_build_quality_text_release.py`
 - `tests/test_build_quality_tiers.py`
 - `tests/test_build_recommended_text_view.py`
 - `tests/test_build_release_bundle.py`
@@ -1079,11 +1084,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **239,424**.
+- Workspace files counted: **239,446**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **1,026**.
-- Ignored or otherwise unlisted payload files: **238,398** (173,227,812,901 bytes).
-- Total workspace bytes counted: **173,245,969,552**.
+- Detailed file paths listed above: **1,031**.
+- Ignored or otherwise unlisted payload files: **238,415** (173,233,529,619 bytes).
+- Total workspace bytes counted: **173,251,770,296**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1107,8 +1112,8 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `data/cache/…/` | 2 | 104,176 |
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
 | `data/extracted/…/` | 736 | 104,222,678 |
-| `data/huggingface/…/` | 2,914 | 87,100,087,872 |
-| `data/kaggle/…/` | 30 | 767,392,019 |
+| `data/huggingface/…/` | 2,922 | 87,103,618,367 |
+| `data/kaggle/…/` | 39 | 769,578,242 |
 | `data/processed/…/` | 110,561 | 41,807,390,124 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |

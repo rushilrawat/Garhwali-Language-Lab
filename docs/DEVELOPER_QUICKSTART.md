@@ -3,9 +3,9 @@
 The dataset IDs are `rushilrawat/garhwali-corpus` (text and reference tables)
 and `rushilrawat/garhwali-speech` (audio and speech metadata). Both repositories
 are public. The Hub cards link to the latest published revisions and preserve release history.
-This guide is bundled with `garhwali-language-lab-v0.2.7`; its
-configuration counts match that package manifest. Use the Hub cards for current publication
-status and immutable revisions. The packages preserve a common rights/quality
+This guide covers the v0.2.7 base package and its additive v0.2.8 configs.
+Use the Hub cards for current publication status and immutable revisions. The
+packages preserve a common rights/quality
 envelope, schema, and loading guidance. These examples stream the published
 configs. Pass a commit SHA as `revision=` when
 you need an immutable Hub snapshot.
@@ -13,20 +13,49 @@ you need an immutable Hub snapshot.
 ## Training readiness and honest counts
 
 The corpus repository is currently better for source discovery, vocabulary
-exploration, and research than for general language-model training. The Hub
-displays 961,533 rows, but 778,157 (80.9%) are provenance/reference-table rows;
-all config totals overlap. The main `text` config has 18,598 rows and 291,914
-whitespace-separated words, but **zero rows are currently marked
-recommended_for_training**. The 1,737 `text_expansion` and 475
-`text_resources` rows are also all marked not recommended for general text
-training. The 14,988-row PahariLI config is experimental language-identification
-material with unresolved sentence origins and unreviewed labels.
+exploration, and research than for large-scale language-model training. Its
+current Hub card displays 963,484 configuration rows and 7.57 GB; 778,157 rows
+are source/reference tables, and all config totals overlap. The v0.2.7 `text`
+config has 18,598 rows, none recommended for general text training. The
+additive v0.2.8 `screened_meta_gbm` view makes 1,841 non-empty, deduplicated
+sentence-length Meta transcript rows available as experimental training
+candidates; a separate 110-row short-utterance view is context-only. Those
+texts were already in the v0.2.7 public `text`/`text_expansion` views, so the
+new configs improve usability and labeling but do not add 1,951 newly sourced
+unique texts. The 14,988-row PahariLI config remains experimental
+language-identification material with unresolved sentence origins and
+unreviewed labels.
+
+## Start with the screened Garhwali text view
+
+For a small, clean starting point, load `screened_meta_gbm`. It has **1,841**
+non-empty rows, zero normalized duplicate text within the view, 47,566
+whitespace-separated words, CC BY 4.0 attribution, and train-only source
+lineage. Automated checks do not establish spelling, meaning, or dialect
+accuracy; the rows have not received native-speaker review. The separate
+`short_utterances_meta_gbm` config has **110** non-empty context rows and is
+not recommended for general LM training.
+
+```python
+from datasets import load_dataset
+
+train_text = load_dataset(
+    "rushilrawat/garhwali-corpus", "screened_meta_gbm", split="train"
+)
+print(len(train_text), train_text[0]["text"])
+```
+
+To inspect the short context rows, replace the config name with
+`short_utterances_meta_gbm`. Filter using `recommended_for_training`,
+`rights_status`, and `quality_status` rather than relying on the config name
+alone. These configs intentionally overlap the earlier corpus configs; do not
+sum their row counts as unique examples.
 
 The speech repo contains substantial audio (113,363 rows, about 154.65 hours),
 but only 2,002 strict speaker-disjoint reference rows are in the linked ASR
 view, and those transcripts are unreviewed. The 104,500 non-empty SraVaani
 outputs are machine drafts, not ground truth. See the [current metrics and
-utility audit](../research/huggingface-current-metrics-and-utility-2026-10-06.md)
+utility audit](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/research/huggingface-current-metrics-and-utility-2026-10-06.md)
 before selecting a config for training or evaluation.
 
 ## Try three vocabulary rows
@@ -96,6 +125,13 @@ tool streams the Hub config:
 python examples/search_garhwali_lexicon.py "water" --limit 10
 ```
 
+If you downloaded the v0.2.8 Hub release files, use the script shipped next to
+this guide:
+
+```bash
+python search_garhwali_lexicon.py "water" --limit 10
+```
+
 To pin the search to a specific Hub commit, pass `--revision COMMIT_SHA`.
 
 For example, a record is `गाड़` (“river”, Hindi `नदी`); its row-level
@@ -106,10 +142,11 @@ status separately. The demo prints these fields with each match.
 
 The `text_expansion` config contains **1,737** rows: 1,283 in `train` and 454
 in `source_overlap`. They are candidates already present in the catalog, not
-new source ingestion or an independent evaluation set. Currently zero rows meet
-the conservative training-recommendation rule because source-level eligibility
-or quality evidence remains unresolved. Rows retain their rights and quality
-fields; review each row before downstream reuse.
+new source ingestion or an independent evaluation set. Zero rows in this
+historical config are marked for general text-model training; use the separate
+v0.2.8 `screened_meta_gbm` view for the narrower Meta-only experimental
+training candidates. Rows retain their rights and quality fields; review each
+row before downstream reuse.
 
 ```python
 from datasets import load_dataset
@@ -145,7 +182,9 @@ overlap; adding their row counts does not give the number of unique examples.
 
 | Config | Rows | Intended use |
 | --- | ---: | --- |
-| `text` | 18,598 | Main Garhwali text splits, with source, rights, and quality metadata |
+| `screened_meta_gbm` | 1,841 | Non-empty Meta transcript sentences; experimental LM training candidates, automated and unreviewed |
+| `short_utterances_meta_gbm` | 110 | Short Meta transcript context; not general LM training |
+| `text` | 18,598 | v0.2.7 main Garhwali text splits, with source, rights, and quality metadata |
 | `paharili_gbm` | 14,988 | PahariLI-derived Garhwali text-language-identification examples |
 | `text_expansion` | 1,737 | Additional deduplicated text view; inspect row-level status |
 | `text_resources` | 475 | Supplementary research text; inspect row-level status |
@@ -164,7 +203,11 @@ overlap; adding their row counts does not give the number of unique examples.
 | `source_catalog` | 9,571 | Deduplicated sources and their known terms |
 | `record_sources` | 412,740 | Record-to-source join rows |
 
-The `garhwali-language-lab-v0.2.7` package manifest reports **961,533 total view rows**: 183,376 content/config rows plus 778,157 reference rows. This is not a unique-example count.
+The `garhwali-language-lab-v0.2.7` package manifest reports **961,533 total view rows**: 183,376 content/config rows plus 778,157 reference rows. This is not a unique-example count. The additive v0.2.8 overlay adds two views, bringing
+the current displayed total to **963,484**: 185,327 content-config rows plus
+778,157 reference rows. These are configuration rows, not unique examples.
+The 1,951 added config rows repeat texts already present in v0.2.7; the
+training-use decision and clearer quality labels are the improvement.
 
 ## Follow a catalog record to its source
 
@@ -203,7 +246,7 @@ not present in any public config. Those 8,444 remain in the local all-data
 package with rights pending. Of those rows, 7,675 have an inline source URL and
 769 use the `source_catalog` lookup. A URL may identify a dataset or collection
 rather than the exact work/page; verify the edition and rights evidence before
-reuse. See the [text-availability audit](../research/huggingface-corpus-gap-resolution-2026-10-06.md).
+reuse. See the [text-availability audit](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/research/huggingface-corpus-gap-resolution-2026-10-06.md).
 
 Reuse terms vary by source; the package has no blanket content license. Use
 each row's rights and quality fields rather than treating config or split

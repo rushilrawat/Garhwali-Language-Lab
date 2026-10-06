@@ -1,5 +1,32 @@
 # Garhwali Language Lab — final review report
 
+## Quality-first Hugging Face and Kaggle follow-up — 2026-10-06 (latest)
+
+An additive, screened transcript-text release is prepared locally from the
+v0.2.7 source package. It contains **1,841 sentence-length training rows**
+(47,566 words) and a separate **110-row short-utterance context view**. The
+main training view has zero blank rows and zero normalized duplicate values;
+one punctuation-only duplicate was excluded with both record IDs logged. The
+deduplication key preserves Unicode combining marks so distinct Devanagari
+vowel forms do not collapse. Every included row has exact Meta provenance,
+CC BY 4.0 attribution and rights evidence, upstream train-only scope, and
+automated quality labels. None has native-speaker review. The additive
+Hugging Face card and matching Kaggle CSV package pass local schema, parsing,
+hash, row-parity, and deterministic-rebuild checks. The Hugging Face update is
+live as additive v0.2.8 paths at [data commit
+`48f9107d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/48f9107d0285b3b3ec3c893303efb8a997cfc49b).
+After identifying stale overview counts, the corrected card was published
+and read back at [commit `cf60b2175`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cf60b217d9d3de045d81fb41d82514e29db2bf33); it reports 963,484 displayed
+rows, including 778,157 reference rows and 185,327 overlapping content-view
+rows across 20 named configurations.
+Both configs load online with 1,841 and 110 rows and pass blank/duplicate
+checks. Kaggle remains unpublished: the user approved enabling file-URL access,
+but a Chrome security restriction requires the setting to be toggled manually.
+See the [quality-release report](research/quality-screened-text-release-report-2026-10-06.md),
+[roadmap](research/huggingface-kaggle-quality-release-roadmap-2026-10-06.md),
+and [Meta rights decision](research/meta-omnilingual-training-rights-decision-2026-10-06.md).
+The full project test suite passes **827/827** tests.
+
 ## Metrics correction — 2026-10-06
 
 The earlier presentation of Hugging Face's 961,533 corpus rows could be read
