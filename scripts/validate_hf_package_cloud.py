@@ -23,6 +23,7 @@ KNOWLEDGE_CONFIGS = {
     'literary_works', 'popular_songs', 'university_research',
 }
 RECORD_SCHEMA_VERSION = '1.0.0'
+VALIDATION_CONTRACT_VERSION = '1.0.0'
 RECORD_ENVELOPE_STRING_FIELDS = (
     'rights_status', 'reuse_scope', 'quality_status',
 )
@@ -511,6 +512,8 @@ def main():
         "status": "passed" if not errors else "failed",
         "manifest_profile": manifest["profile"],
         "record_schema_version": schema_version,
+        "validation_contract_version": VALIDATION_CONTRACT_VERSION,
+        "validator_sha256": sha256(Path(__file__).resolve()),
         "metric_definitions": {
             "rows_with_quality_status": (
                 "Rows with a non-empty quality_status label; this does not certify quality."

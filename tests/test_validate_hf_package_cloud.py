@@ -131,6 +131,8 @@ class HuggingFaceCloudValidationTests(unittest.TestCase):
             report = json.loads(output.read_text())
         self.assertEqual(report['status'], 'passed')
         self.assertEqual(report['record_schema_version'], '1.0.0')
+        self.assertEqual(report['validation_contract_version'], '1.0.0')
+        self.assertEqual(len(report['validator_sha256']), 64)
 
     def test_quality_status_and_detailed_evidence_are_distinct_metrics(self):
         with tempfile.TemporaryDirectory() as directory:

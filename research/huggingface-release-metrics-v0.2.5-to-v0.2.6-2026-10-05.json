@@ -1,0 +1,4363 @@
+{
+  "comparison_schema_version": 1,
+  "comparison_script_sha256": "677cae11fb6e23e876a851740acf3e1a132f40037676bd0cf03718c65c6a58bb",
+  "config_split_record_counts": {
+    "candidate": {
+      "asr/test": 112,
+      "asr/train": 1621,
+      "asr/validation": 269,
+      "catalog/train": 36105,
+      "geography/train": 50,
+      "historical_terms/train": 36,
+      "instructions/test": 186,
+      "instructions/train": 2686,
+      "instructions/validation": 356,
+      "lexicon/train": 1493,
+      "literary_people/train": 26,
+      "literary_works/train": 66,
+      "popular_songs/train": 30,
+      "record_index/train": 355537,
+      "record_sources/train": 412431,
+      "source_catalog/train": 9570,
+      "sravaani_drafts/train": 104534,
+      "text/source_overlap": 1305,
+      "text/test": 745,
+      "text/train": 15664,
+      "text/validation": 884,
+      "text_expansion/source_overlap": 454,
+      "text_expansion/train": 1283,
+      "text_resources/source_overlap": 190,
+      "text_resources/train": 285,
+      "university_research/train": 8
+    },
+    "previous": {
+      "asr/test": 112,
+      "asr/train": 1621,
+      "asr/validation": 269,
+      "catalog/train": 32072,
+      "geography/train": 50,
+      "historical_terms/train": 36,
+      "instructions/test": 186,
+      "instructions/train": 2686,
+      "instructions/validation": 356,
+      "lexicon/train": 1493,
+      "literary_people/train": 26,
+      "literary_works/train": 66,
+      "popular_songs/train": 30,
+      "record_index/train": 302641,
+      "record_sources/train": 355403,
+      "source_catalog/train": 5019,
+      "sravaani_drafts/train": 104534,
+      "text/source_overlap": 1308,
+      "text/test": 765,
+      "text/train": 15981,
+      "text/validation": 895,
+      "text_expansion/source_overlap": 363,
+      "text_expansion/train": 1284,
+      "text_resources/train": 246,
+      "university_research/train": 8
+    }
+  },
+  "input_reports": {
+    "candidate": {
+      "release_id": "garhwali-language-lab-v0.2.6",
+      "run_id": "garhwali-hf-public-cloud-validation-v0.2.6",
+      "sha256": "1b561d44a9a98d35622b01e385f48bf41df77be584515a002062f7d750f86171"
+    },
+    "previous": {
+      "release_id": "garhwali-language-lab-v0.2.5",
+      "run_id": "garhwali-hf-public-cloud-validation-v0.2.5",
+      "sha256": "4cfff4b10577f490eb1b94f2bc77a1f9c0bbd061450515dbc554d66042ee95e4"
+    }
+  },
+  "metric_contract": {
+    "metric_definitions_sha256": "8e1d7328e5158ee815efecc0f5619cc326b472ce09d9f8d3a1951b470489a15b",
+    "record_schema_version": "1.0.0",
+    "same_contract_verified": true,
+    "validation_contract_version": "1.0.0",
+    "validator_sha256": "7b24c0833710c42dd19e793f02fc82f895857fd81f46a639b122270f1c63fffe"
+  },
+  "per_config_split": {
+    "asr/test": {
+      "candidate_records": 112,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-4.0": {
+            "candidate": 112,
+            "delta": 0,
+            "previous": 112
+          }
+        },
+        "reuse_scope_counts": {
+          "attribution required under source license": {
+            "candidate": 112,
+            "delta": 0,
+            "previous": 112
+          }
+        },
+        "rights_status_counts": {
+          "source_terms_recorded; inspect provenance": {
+            "candidate": 112,
+            "delta": 0,
+            "previous": 112
+          }
+        },
+        "scripts": {
+          "Deva": {
+            "candidate": 112,
+            "delta": 0,
+            "previous": 112
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 112,
+          "delta": 0,
+          "previous": 112
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 112,
+          "delta": 0,
+          "previous": 112
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance_array": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 112,
+          "delta": 0,
+          "previous": 112
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 112,
+          "delta": 0,
+          "previous": 112
+        },
+        "rows_with_quality_status": {
+          "candidate": 112,
+          "delta": 0,
+          "previous": 112
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 112,
+          "delta": 0,
+          "previous": 112
+        },
+        "rows_with_rights_status": {
+          "candidate": 112,
+          "delta": 0,
+          "previous": 112
+        },
+        "rows_with_source_traceability": {
+          "candidate": 112,
+          "delta": 0,
+          "previous": 112
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 112,
+      "record_delta": 0
+    },
+    "asr/train": {
+      "candidate_records": 1621,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-4.0": {
+            "candidate": 1621,
+            "delta": 0,
+            "previous": 1621
+          }
+        },
+        "reuse_scope_counts": {
+          "attribution required under source license": {
+            "candidate": 1621,
+            "delta": 0,
+            "previous": 1621
+          }
+        },
+        "rights_status_counts": {
+          "source_terms_recorded; inspect provenance": {
+            "candidate": 1621,
+            "delta": 0,
+            "previous": 1621
+          }
+        },
+        "scripts": {
+          "Deva": {
+            "candidate": 1621,
+            "delta": 0,
+            "previous": 1621
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 1621,
+          "delta": 0,
+          "previous": 1621
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 1621,
+          "delta": 0,
+          "previous": 1621
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance_array": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 1621,
+          "delta": 0,
+          "previous": 1621
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 1621,
+          "delta": 0,
+          "previous": 1621
+        },
+        "rows_with_quality_status": {
+          "candidate": 1621,
+          "delta": 0,
+          "previous": 1621
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 1621,
+          "delta": 0,
+          "previous": 1621
+        },
+        "rows_with_rights_status": {
+          "candidate": 1621,
+          "delta": 0,
+          "previous": 1621
+        },
+        "rows_with_source_traceability": {
+          "candidate": 1621,
+          "delta": 0,
+          "previous": 1621
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 1621,
+      "record_delta": 0
+    },
+    "asr/validation": {
+      "candidate_records": 269,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-4.0": {
+            "candidate": 269,
+            "delta": 0,
+            "previous": 269
+          }
+        },
+        "reuse_scope_counts": {
+          "attribution required under source license": {
+            "candidate": 269,
+            "delta": 0,
+            "previous": 269
+          }
+        },
+        "rights_status_counts": {
+          "source_terms_recorded; inspect provenance": {
+            "candidate": 269,
+            "delta": 0,
+            "previous": 269
+          }
+        },
+        "scripts": {
+          "Deva": {
+            "candidate": 269,
+            "delta": 0,
+            "previous": 269
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 269,
+          "delta": 0,
+          "previous": 269
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 269,
+          "delta": 0,
+          "previous": 269
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance_array": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 269,
+          "delta": 0,
+          "previous": 269
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 269,
+          "delta": 0,
+          "previous": 269
+        },
+        "rows_with_quality_status": {
+          "candidate": 269,
+          "delta": 0,
+          "previous": 269
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 269,
+          "delta": 0,
+          "previous": 269
+        },
+        "rows_with_rights_status": {
+          "candidate": 269,
+          "delta": 0,
+          "previous": 269
+        },
+        "rows_with_source_traceability": {
+          "candidate": 269,
+          "delta": 0,
+          "previous": 269
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 269,
+      "record_delta": 0
+    },
+    "catalog/train": {
+      "candidate_records": 36105,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "Apache-2.0-repository-declared": {
+            "candidate": 15000,
+            "delta": 0,
+            "previous": 15000
+          },
+          "CC BY-SA 4.0": {
+            "candidate": 50,
+            "delta": 0,
+            "previous": 50
+          },
+          "CC-BY-2.0-FR": {
+            "candidate": 36,
+            "delta": 0,
+            "previous": 36
+          },
+          "CC-BY-3.0": {
+            "candidate": 181,
+            "delta": 0,
+            "previous": 181
+          },
+          "CC-BY-4.0": {
+            "candidate": 10001,
+            "delta": 51,
+            "previous": 9950
+          },
+          "CC-BY-NC-SA-4.0": {
+            "candidate": 734,
+            "delta": 0,
+            "previous": 734
+          },
+          "CC-BY-SA-4.0": {
+            "candidate": 389,
+            "delta": 0,
+            "previous": 389
+          },
+          "CC0-1.0": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "LicenseRef-All-Rights-Reserved": {
+            "candidate": 258,
+            "delta": 0,
+            "previous": 258
+          },
+          "LicenseRef-PIB-Copyright-Policy": {
+            "candidate": 5,
+            "delta": 0,
+            "previous": 5
+          },
+          "LicenseRef-Panos-Source-Policy-Restricted": {
+            "candidate": 193,
+            "delta": 0,
+            "previous": 193
+          },
+          "LicenseRef-Rights-Unassessed": {
+            "candidate": 1772,
+            "delta": 0,
+            "previous": 1772
+          },
+          "MIT": {
+            "candidate": 180,
+            "delta": 0,
+            "previous": 180
+          },
+          "NOASSERTION": {
+            "candidate": 172,
+            "delta": 0,
+            "previous": 172
+          },
+          "ODC-BY-1.0-database-only": {
+            "candidate": 18,
+            "delta": 0,
+            "previous": 18
+          },
+          "PDM-1.0": {
+            "candidate": 623,
+            "delta": 0,
+            "previous": 623
+          },
+          "PIB reproduction policy (source-specific permission; not a standard open license)": {
+            "candidate": 5,
+            "delta": 0,
+            "previous": 5
+          },
+          "Panos source-specific reproduction guideline; press, educational and research institutions, and nonprofit organisations; attribution required": {
+            "candidate": 193,
+            "delta": 0,
+            "previous": 193
+          },
+          "Public-Domain": {
+            "candidate": 304,
+            "delta": 0,
+            "previous": 304
+          },
+          "Public-Domain-India": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "Public-Domain-Mark-1.0": {
+            "candidate": 34,
+            "delta": 0,
+            "previous": 34
+          },
+          "Public-Domain-US-UK-India": {
+            "candidate": 571,
+            "delta": 0,
+            "previous": 571
+          },
+          "not_stated": {
+            "candidate": 188,
+            "delta": 0,
+            "previous": 188
+          },
+          "unknown": {
+            "candidate": 769,
+            "delta": 0,
+            "previous": 769
+          }
+        },
+        "reuse_scope_counts": {
+          "no_source_license_claimed_for_single_word": {
+            "candidate": 16,
+            "delta": 0,
+            "previous": 16
+          },
+          "noncommercial_only; share-alike required": {
+            "candidate": 134,
+            "delta": 0,
+            "previous": 134
+          },
+          "not_cleared": {
+            "candidate": 23448,
+            "delta": 3982,
+            "previous": 19466
+          },
+          "not_explicitly_addressed_by_source_policy": {
+            "candidate": 198,
+            "delta": 0,
+            "previous": 198
+          },
+          "permitted_under_row_level_license": {
+            "candidate": 11913,
+            "delta": 51,
+            "previous": 11862
+          },
+          "permitted_under_row_level_license; share-alike required": {
+            "candidate": 396,
+            "delta": 0,
+            "previous": 396
+          }
+        },
+        "rights_status_counts": {
+          "individual_word_fact": {
+            "candidate": 16,
+            "delta": 0,
+            "previous": 16
+          },
+          "reproduced_under_source_policy": {
+            "candidate": 198,
+            "delta": 0,
+            "previous": 198
+          },
+          "rights_cleared": {
+            "candidate": 12309,
+            "delta": 51,
+            "previous": 12258
+          },
+          "rights_cleared_noncommercial_sharealike": {
+            "candidate": 134,
+            "delta": 0,
+            "previous": 134
+          },
+          "rights_pending": {
+            "candidate": 23448,
+            "delta": 3982,
+            "previous": 19466
+          }
+        },
+        "scripts": {
+          "Beng": {
+            "candidate": 10,
+            "delta": 2,
+            "previous": 8
+          },
+          "Deva": {
+            "candidate": 9734,
+            "delta": 49,
+            "previous": 9685
+          },
+          "GREEK": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "LATIN": {
+            "candidate": 137,
+            "delta": 0,
+            "previous": 137
+          },
+          "Latn": {
+            "candidate": 2774,
+            "delta": 0,
+            "previous": 2774
+          },
+          "none": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 36105,
+          "delta": 4033,
+          "previous": 32072
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 17,
+          "delta": 0,
+          "previous": 17
+        },
+        "rows_with_license_label": {
+          "candidate": 31344,
+          "delta": 51,
+          "previous": 31293
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 141,
+          "delta": 0,
+          "previous": 141
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 36105,
+          "delta": 4033,
+          "previous": 32072
+        },
+        "rows_with_provenance": {
+          "candidate": 36105,
+          "delta": 4033,
+          "previous": 32072
+        },
+        "rows_with_provenance_array": {
+          "candidate": 36105,
+          "delta": 4033,
+          "previous": 32072
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 12507,
+          "delta": 51,
+          "previous": 12456
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 36105,
+          "delta": 4033,
+          "previous": 32072
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 36105,
+          "delta": 4033,
+          "previous": 32072
+        },
+        "rows_with_quality_status": {
+          "candidate": 36105,
+          "delta": 4033,
+          "previous": 32072
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 36105,
+          "delta": 4033,
+          "previous": 32072
+        },
+        "rows_with_rights_status": {
+          "candidate": 36105,
+          "delta": 4033,
+          "previous": 32072
+        },
+        "rows_with_source_traceability": {
+          "candidate": 36105,
+          "delta": 4033,
+          "previous": 32072
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 32072,
+      "record_delta": 4033
+    },
+    "geography/train": {
+      "candidate_records": 50,
+      "count_distribution_deltas": {
+        "license_label_counts": {},
+        "reuse_scope_counts": {
+          "metadata facts only; underlying-work rights are not asserted": {
+            "candidate": 50,
+            "delta": 0,
+            "previous": 50
+          }
+        },
+        "rights_status_counts": {
+          "metadata_only; no license asserted for underlying work": {
+            "candidate": 50,
+            "delta": 0,
+            "previous": 50
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 50,
+          "delta": 0,
+          "previous": 50
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 50,
+          "delta": 0,
+          "previous": 50
+        },
+        "rows_with_provenance": {
+          "candidate": 50,
+          "delta": 0,
+          "previous": 50
+        },
+        "rows_with_provenance_array": {
+          "candidate": 50,
+          "delta": 0,
+          "previous": 50
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 50,
+          "delta": 0,
+          "previous": 50
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 50,
+          "delta": 0,
+          "previous": 50
+        },
+        "rows_with_quality_status": {
+          "candidate": 50,
+          "delta": 0,
+          "previous": 50
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 50,
+          "delta": 0,
+          "previous": 50
+        },
+        "rows_with_rights_status": {
+          "candidate": 50,
+          "delta": 0,
+          "previous": 50
+        },
+        "rows_with_source_traceability": {
+          "candidate": 50,
+          "delta": 0,
+          "previous": 50
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 50,
+      "record_delta": 0
+    },
+    "historical_terms/train": {
+      "candidate_records": 36,
+      "count_distribution_deltas": {
+        "license_label_counts": {},
+        "reuse_scope_counts": {
+          "metadata facts only; underlying-work rights are not asserted": {
+            "candidate": 36,
+            "delta": 0,
+            "previous": 36
+          }
+        },
+        "rights_status_counts": {
+          "metadata_only; no license asserted for underlying work": {
+            "candidate": 36,
+            "delta": 0,
+            "previous": 36
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 36,
+          "delta": 0,
+          "previous": 36
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 36,
+          "delta": 0,
+          "previous": 36
+        },
+        "rows_with_provenance": {
+          "candidate": 36,
+          "delta": 0,
+          "previous": 36
+        },
+        "rows_with_provenance_array": {
+          "candidate": 36,
+          "delta": 0,
+          "previous": 36
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 36,
+          "delta": 0,
+          "previous": 36
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 36,
+          "delta": 0,
+          "previous": 36
+        },
+        "rows_with_quality_status": {
+          "candidate": 36,
+          "delta": 0,
+          "previous": 36
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 36,
+          "delta": 0,
+          "previous": 36
+        },
+        "rows_with_rights_status": {
+          "candidate": 36,
+          "delta": 0,
+          "previous": 36
+        },
+        "rows_with_source_traceability": {
+          "candidate": 36,
+          "delta": 0,
+          "previous": 36
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 36,
+      "record_delta": 0
+    },
+    "instructions/test": {
+      "candidate_records": 186,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-3.0": {
+            "candidate": 24,
+            "delta": 0,
+            "previous": 24
+          },
+          "CC-BY-4.0": {
+            "candidate": 104,
+            "delta": 0,
+            "previous": 104
+          },
+          "CC-BY-SA-4.0": {
+            "candidate": 24,
+            "delta": 0,
+            "previous": 24
+          },
+          "LicenseRef-All-Rights-Reserved": {
+            "candidate": 6,
+            "delta": 0,
+            "previous": 6
+          },
+          "MIT": {
+            "candidate": 34,
+            "delta": 0,
+            "previous": 34
+          }
+        },
+        "reuse_scope_counts": {
+          "MIT terms; preserve copyright and license notice": {
+            "candidate": 34,
+            "delta": 0,
+            "previous": 34
+          },
+          "attribution and share-alike required under source license": {
+            "candidate": 24,
+            "delta": 0,
+            "previous": 24
+          },
+          "attribution required under source license": {
+            "candidate": 128,
+            "delta": 0,
+            "previous": 128
+          }
+        },
+        "rights_status_counts": {
+          "licensed": {
+            "candidate": 102,
+            "delta": 0,
+            "previous": 102
+          },
+          "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": {
+            "candidate": 22,
+            "delta": 0,
+            "previous": 22
+          },
+          "source_license_recorded; inspect provenance": {
+            "candidate": 38,
+            "delta": 0,
+            "previous": 38
+          },
+          "translatewiki_translations_declared_CC_BY_3.0": {
+            "candidate": 24,
+            "delta": 0,
+            "previous": 24
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 186,
+          "delta": 0,
+          "previous": 186
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 186,
+          "delta": 0,
+          "previous": 186
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance": {
+          "candidate": 186,
+          "delta": 0,
+          "previous": 186
+        },
+        "rows_with_provenance_array": {
+          "candidate": 186,
+          "delta": 0,
+          "previous": 186
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 186,
+          "delta": 0,
+          "previous": 186
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_status": {
+          "candidate": 186,
+          "delta": 0,
+          "previous": 186
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 186,
+          "delta": 0,
+          "previous": 186
+        },
+        "rows_with_rights_status": {
+          "candidate": 186,
+          "delta": 0,
+          "previous": 186
+        },
+        "rows_with_source_traceability": {
+          "candidate": 186,
+          "delta": 0,
+          "previous": 186
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 186,
+      "record_delta": 0
+    },
+    "instructions/train": {
+      "candidate_records": 2686,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-3.0": {
+            "candidate": 326,
+            "delta": 0,
+            "previous": 326
+          },
+          "CC-BY-4.0": {
+            "candidate": 1564,
+            "delta": 0,
+            "previous": 1564
+          },
+          "CC-BY-NC-SA-4.0": {
+            "candidate": 14,
+            "delta": 0,
+            "previous": 14
+          },
+          "CC-BY-SA-4.0": {
+            "candidate": 398,
+            "delta": 0,
+            "previous": 398
+          },
+          "LicenseRef-All-Rights-Reserved": {
+            "candidate": 54,
+            "delta": 0,
+            "previous": 54
+          },
+          "MIT": {
+            "candidate": 442,
+            "delta": 0,
+            "previous": 442
+          },
+          "PDM-1.0": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          }
+        },
+        "reuse_scope_counts": {
+          "MIT terms; preserve copyright and license notice": {
+            "candidate": 406,
+            "delta": 0,
+            "previous": 406
+          },
+          "attribution and share-alike required under source license": {
+            "candidate": 398,
+            "delta": 0,
+            "previous": 398
+          },
+          "attribution required under source license": {
+            "candidate": 1868,
+            "delta": 0,
+            "previous": 1868
+          },
+          "noncommercial use; attribution and share-alike required": {
+            "candidate": 14,
+            "delta": 0,
+            "previous": 14
+          }
+        },
+        "rights_status_counts": {
+          "licensed": {
+            "candidate": 1186,
+            "delta": 0,
+            "previous": 1186
+          },
+          "mixed_source_statuses; inspect provenance": {
+            "candidate": 50,
+            "delta": 0,
+            "previous": 50
+          },
+          "official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied": {
+            "candidate": 8,
+            "delta": 0,
+            "previous": 8
+          },
+          "rights_assessed_compatible": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": {
+            "candidate": 338,
+            "delta": 0,
+            "previous": 338
+          },
+          "source_license_recorded; inspect provenance": {
+            "candidate": 784,
+            "delta": 0,
+            "previous": 784
+          },
+          "translatewiki_translations_declared_CC_BY_3.0": {
+            "candidate": 318,
+            "delta": 0,
+            "previous": 318
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 2686,
+          "delta": 0,
+          "previous": 2686
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 2686,
+          "delta": 0,
+          "previous": 2686
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance": {
+          "candidate": 2686,
+          "delta": 0,
+          "previous": 2686
+        },
+        "rows_with_provenance_array": {
+          "candidate": 2686,
+          "delta": 0,
+          "previous": 2686
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 2686,
+          "delta": 0,
+          "previous": 2686
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_status": {
+          "candidate": 2686,
+          "delta": 0,
+          "previous": 2686
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 2686,
+          "delta": 0,
+          "previous": 2686
+        },
+        "rows_with_rights_status": {
+          "candidate": 2686,
+          "delta": 0,
+          "previous": 2686
+        },
+        "rows_with_source_traceability": {
+          "candidate": 2686,
+          "delta": 0,
+          "previous": 2686
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 2686,
+      "record_delta": 0
+    },
+    "instructions/validation": {
+      "candidate_records": 356,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-3.0": {
+            "candidate": 18,
+            "delta": 0,
+            "previous": 18
+          },
+          "CC-BY-4.0": {
+            "candidate": 160,
+            "delta": 0,
+            "previous": 160
+          },
+          "CC-BY-NC-SA-4.0": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "CC-BY-SA-4.0": {
+            "candidate": 148,
+            "delta": 0,
+            "previous": 148
+          },
+          "LicenseRef-All-Rights-Reserved": {
+            "candidate": 22,
+            "delta": 0,
+            "previous": 22
+          },
+          "MIT": {
+            "candidate": 40,
+            "delta": 0,
+            "previous": 40
+          }
+        },
+        "reuse_scope_counts": {
+          "MIT terms; preserve copyright and license notice": {
+            "candidate": 30,
+            "delta": 0,
+            "previous": 30
+          },
+          "attribution and share-alike required under source license": {
+            "candidate": 148,
+            "delta": 0,
+            "previous": 148
+          },
+          "attribution required under source license": {
+            "candidate": 176,
+            "delta": 0,
+            "previous": 176
+          },
+          "noncommercial use; attribution and share-alike required": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          }
+        },
+        "rights_status_counts": {
+          "licensed": {
+            "candidate": 104,
+            "delta": 0,
+            "previous": 104
+          },
+          "mixed_source_statuses; inspect provenance": {
+            "candidate": 12,
+            "delta": 0,
+            "previous": 12
+          },
+          "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": {
+            "candidate": 138,
+            "delta": 0,
+            "previous": 138
+          },
+          "source_license_recorded; inspect provenance": {
+            "candidate": 84,
+            "delta": 0,
+            "previous": 84
+          },
+          "translatewiki_translations_declared_CC_BY_3.0": {
+            "candidate": 18,
+            "delta": 0,
+            "previous": 18
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 356,
+          "delta": 0,
+          "previous": 356
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 356,
+          "delta": 0,
+          "previous": 356
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance": {
+          "candidate": 356,
+          "delta": 0,
+          "previous": 356
+        },
+        "rows_with_provenance_array": {
+          "candidate": 356,
+          "delta": 0,
+          "previous": 356
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 356,
+          "delta": 0,
+          "previous": 356
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_status": {
+          "candidate": 356,
+          "delta": 0,
+          "previous": 356
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 356,
+          "delta": 0,
+          "previous": 356
+        },
+        "rows_with_rights_status": {
+          "candidate": 356,
+          "delta": 0,
+          "previous": 356
+        },
+        "rows_with_source_traceability": {
+          "candidate": 356,
+          "delta": 0,
+          "previous": 356
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 356,
+      "record_delta": 0
+    },
+    "lexicon/train": {
+      "candidate_records": 1493,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-3.0": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          },
+          "CC-BY-4.0": {
+            "candidate": 1126,
+            "delta": 0,
+            "previous": 1126
+          },
+          "CC-BY-NC-SA-4.0": {
+            "candidate": 7,
+            "delta": 0,
+            "previous": 7
+          },
+          "CC-BY-SA-4.0": {
+            "candidate": 245,
+            "delta": 0,
+            "previous": 245
+          },
+          "LicenseRef-All-Rights-Reserved": {
+            "candidate": 16,
+            "delta": 0,
+            "previous": 16
+          },
+          "MIT": {
+            "candidate": 131,
+            "delta": 0,
+            "previous": 131
+          },
+          "PDM-1.0": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          }
+        },
+        "reuse_scope_counts": {
+          "MIT terms; preserve copyright and license notice": {
+            "candidate": 122,
+            "delta": 0,
+            "previous": 122
+          },
+          "attribution and share-alike required under source license": {
+            "candidate": 245,
+            "delta": 0,
+            "previous": 245
+          },
+          "attribution required under source license": {
+            "candidate": 1119,
+            "delta": 0,
+            "previous": 1119
+          },
+          "noncommercial use; attribution and share-alike required": {
+            "candidate": 7,
+            "delta": 0,
+            "previous": 7
+          }
+        },
+        "rights_status_counts": {
+          "licensed": {
+            "candidate": 856,
+            "delta": 0,
+            "previous": 856
+          },
+          "mixed_source_statuses; inspect provenance": {
+            "candidate": 16,
+            "delta": 0,
+            "previous": 16
+          },
+          "official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          },
+          "rights_assessed_compatible": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": {
+            "candidate": 233,
+            "delta": 0,
+            "previous": 233
+          },
+          "source_license_recorded; inspect provenance": {
+            "candidate": 384,
+            "delta": 0,
+            "previous": 384
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 1493,
+          "delta": 0,
+          "previous": 1493
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 1493,
+          "delta": 0,
+          "previous": 1493
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance": {
+          "candidate": 1493,
+          "delta": 0,
+          "previous": 1493
+        },
+        "rows_with_provenance_array": {
+          "candidate": 1493,
+          "delta": 0,
+          "previous": 1493
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 1493,
+          "delta": 0,
+          "previous": 1493
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_status": {
+          "candidate": 1493,
+          "delta": 0,
+          "previous": 1493
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 1493,
+          "delta": 0,
+          "previous": 1493
+        },
+        "rows_with_rights_status": {
+          "candidate": 1493,
+          "delta": 0,
+          "previous": 1493
+        },
+        "rows_with_source_traceability": {
+          "candidate": 1493,
+          "delta": 0,
+          "previous": 1493
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 1493,
+      "record_delta": 0
+    },
+    "literary_people/train": {
+      "candidate_records": 26,
+      "count_distribution_deltas": {
+        "license_label_counts": {},
+        "reuse_scope_counts": {
+          "metadata facts only; underlying-work rights are not asserted": {
+            "candidate": 26,
+            "delta": 0,
+            "previous": 26
+          }
+        },
+        "rights_status_counts": {
+          "metadata_only; no license asserted for underlying work": {
+            "candidate": 26,
+            "delta": 0,
+            "previous": 26
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 26,
+          "delta": 0,
+          "previous": 26
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 26,
+          "delta": 0,
+          "previous": 26
+        },
+        "rows_with_provenance": {
+          "candidate": 26,
+          "delta": 0,
+          "previous": 26
+        },
+        "rows_with_provenance_array": {
+          "candidate": 26,
+          "delta": 0,
+          "previous": 26
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 26,
+          "delta": 0,
+          "previous": 26
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 26,
+          "delta": 0,
+          "previous": 26
+        },
+        "rows_with_quality_status": {
+          "candidate": 26,
+          "delta": 0,
+          "previous": 26
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 26,
+          "delta": 0,
+          "previous": 26
+        },
+        "rows_with_rights_status": {
+          "candidate": 26,
+          "delta": 0,
+          "previous": 26
+        },
+        "rows_with_source_traceability": {
+          "candidate": 26,
+          "delta": 0,
+          "previous": 26
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 26,
+      "record_delta": 0
+    },
+    "literary_works/train": {
+      "candidate_records": 66,
+      "count_distribution_deltas": {
+        "license_label_counts": {},
+        "reuse_scope_counts": {
+          "metadata facts only; underlying-work rights are not asserted": {
+            "candidate": 66,
+            "delta": 0,
+            "previous": 66
+          }
+        },
+        "rights_status_counts": {
+          "metadata_only; no license asserted for underlying work": {
+            "candidate": 66,
+            "delta": 0,
+            "previous": 66
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 66,
+          "delta": 0,
+          "previous": 66
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 66,
+          "delta": 0,
+          "previous": 66
+        },
+        "rows_with_provenance": {
+          "candidate": 66,
+          "delta": 0,
+          "previous": 66
+        },
+        "rows_with_provenance_array": {
+          "candidate": 66,
+          "delta": 0,
+          "previous": 66
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 66,
+          "delta": 0,
+          "previous": 66
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 66,
+          "delta": 0,
+          "previous": 66
+        },
+        "rows_with_quality_status": {
+          "candidate": 66,
+          "delta": 0,
+          "previous": 66
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 66,
+          "delta": 0,
+          "previous": 66
+        },
+        "rows_with_rights_status": {
+          "candidate": 66,
+          "delta": 0,
+          "previous": 66
+        },
+        "rows_with_source_traceability": {
+          "candidate": 66,
+          "delta": 0,
+          "previous": 66
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 66,
+      "record_delta": 0
+    },
+    "popular_songs/train": {
+      "candidate_records": 30,
+      "count_distribution_deltas": {
+        "license_label_counts": {},
+        "reuse_scope_counts": {
+          "metadata facts only; underlying-work rights are not asserted": {
+            "candidate": 30,
+            "delta": 0,
+            "previous": 30
+          }
+        },
+        "rights_status_counts": {
+          "metadata_only; no license asserted for underlying work": {
+            "candidate": 30,
+            "delta": 0,
+            "previous": 30
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 30,
+          "delta": 0,
+          "previous": 30
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 30,
+          "delta": 0,
+          "previous": 30
+        },
+        "rows_with_provenance": {
+          "candidate": 30,
+          "delta": 0,
+          "previous": 30
+        },
+        "rows_with_provenance_array": {
+          "candidate": 30,
+          "delta": 0,
+          "previous": 30
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 30,
+          "delta": 0,
+          "previous": 30
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 30,
+          "delta": 0,
+          "previous": 30
+        },
+        "rows_with_quality_status": {
+          "candidate": 30,
+          "delta": 0,
+          "previous": 30
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 30,
+          "delta": 0,
+          "previous": 30
+        },
+        "rows_with_rights_status": {
+          "candidate": 30,
+          "delta": 0,
+          "previous": 30
+        },
+        "rows_with_source_traceability": {
+          "candidate": 30,
+          "delta": 0,
+          "previous": 30
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 30,
+      "record_delta": 0
+    },
+    "record_index/train": {
+      "candidate_records": 355537,
+      "count_distribution_deltas": {
+        "license_label_counts": {},
+        "reuse_scope_counts": {
+          "resolve_via_record_and_source_join": {
+            "candidate": 355537,
+            "delta": 52896,
+            "previous": 302641
+          }
+        },
+        "rights_status_counts": {
+          "1865_public_domain; archive_item_declares_CC0": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "ODC_BY_1_covers_database; underlying_page_copyrights_not_cleared": {
+            "candidate": 359,
+            "delta": 0,
+            "previous": 359
+          },
+          "archive_item_declares_CC_BY_NC_SA_4; quoted_songs_require_component_review": {
+            "candidate": 50,
+            "delta": 0,
+            "previous": 50
+          },
+          "dataset_LICENSE_link_missing; underlying_web_copyrights_not_cleared": {
+            "candidate": 2946,
+            "delta": 0,
+            "previous": 2946
+          },
+          "individual_word_fact": {
+            "candidate": 16,
+            "delta": 0,
+            "previous": 16
+          },
+          "licensed": {
+            "candidate": 3155,
+            "delta": 0,
+            "previous": 3155
+          },
+          "metadata_only_commercial_recording_lyrics_not_licensed_for_reuse": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "metadata_only_commercial_recording_no_reuse_license_stated": {
+            "candidate": 10,
+            "delta": 0,
+            "previous": 10
+          },
+          "metadata_only_cover_and_original_rights_not_cleared": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "metadata_only_foundation_upload_no_reuse_license_stated": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "metadata_only_full_lyrics_and_translation_not_licensed_for_reuse": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "metadata_only_full_lyrics_not_licensed_for_reuse": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          },
+          "metadata_only_label_upload_lyrics_and_audio_not_licensed_for_reuse": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "metadata_only_label_upload_lyrics_not_licensed_for_reuse": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "metadata_only_no_licensed_transcript_located": {
+            "candidate": 6,
+            "delta": 0,
+            "previous": 6
+          },
+          "metadata_only_official_recording_reuse_terms_not_stated": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "metadata_only_recording_and_arrangement_rights_not_cleared": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "metadata_only_recording_and_lyrics_rights_not_cleared": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "metadata_only_recording_rights_not_cleared": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "mixed_source_statuses; inspect provenance": {
+            "candidate": 2343,
+            "delta": 144,
+            "previous": 2199
+          },
+          "noncommercial_sharealike; upstream component review required": {
+            "candidate": 2326,
+            "delta": -27,
+            "previous": 2353
+          },
+          "official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied": {
+            "candidate": 26,
+            "delta": 0,
+            "previous": 26
+          },
+          "public_domain_india_government_work_term_expired": {
+            "candidate": 30,
+            "delta": 0,
+            "previous": 30
+          },
+          "public_domain_us_uk_india_term_expired": {
+            "candidate": 96,
+            "delta": 0,
+            "previous": 96
+          },
+          "public_domain_us_uk_india_term_expired_grierson": {
+            "candidate": 2605,
+            "delta": -6,
+            "previous": 2611
+          },
+          "public_domain_us_uk_india_term_expired_upreti_hill_dialects": {
+            "candidate": 666,
+            "delta": 0,
+            "previous": 666
+          },
+          "public_domain_us_uk_india_term_expired_upreti_proverbs": {
+            "candidate": 8196,
+            "delta": -10,
+            "previous": 8206
+          },
+          "public_social_post_no_open_license_recorded": {
+            "candidate": 30,
+            "delta": 0,
+            "previous": 30
+          },
+          "public_webpage_no_open_license_stated": {
+            "candidate": 407,
+            "delta": -1,
+            "previous": 408
+          },
+          "publicly_accessible_no_open_license_recorded": {
+            "candidate": 59,
+            "delta": 0,
+            "previous": 59
+          },
+          "publicly_downloadable_but_no_license_or_authorship_statement": {
+            "candidate": 103,
+            "delta": 0,
+            "previous": 103
+          },
+          "publicly_downloadable_no_open_license_recorded": {
+            "candidate": 9624,
+            "delta": -11,
+            "previous": 9635
+          },
+          "repository_Apache_2; underlying_blogs_and_translated_text_not_sublicensed": {
+            "candidate": 15003,
+            "delta": 0,
+            "previous": 15003
+          },
+          "reproduced_under_source_policy": {
+            "candidate": 198,
+            "delta": 0,
+            "previous": 198
+          },
+          "reviewed_rights_unresolved": {
+            "candidate": 186,
+            "delta": 0,
+            "previous": 186
+          },
+          "rights_assessed_compatible": {
+            "candidate": 1721,
+            "delta": -4,
+            "previous": 1725
+          },
+          "rights_cleared": {
+            "candidate": 13927,
+            "delta": 51,
+            "previous": 13876
+          },
+          "rights_cleared_noncommercial_sharealike": {
+            "candidate": 247,
+            "delta": 5,
+            "previous": 242
+          },
+          "rights_pending": {
+            "candidate": 23448,
+            "delta": 3982,
+            "previous": 19466
+          },
+          "rights_unassessed": {
+            "candidate": 35014,
+            "delta": -24,
+            "previous": 35038
+          },
+          "sentence_license_declared_by_api; creator attributed from sentence page; sentence is orphaned in API": {
+            "candidate": 14,
+            "delta": 0,
+            "previous": 14
+          },
+          "site_declares_CC_BY_NC_SA_4; quoted_works_require_component_review": {
+            "candidate": 11769,
+            "delta": -5,
+            "previous": 11774
+          },
+          "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": {
+            "candidate": 1143,
+            "delta": -1,
+            "previous": 1144
+          },
+          "source_license_recorded; inspect provenance": {
+            "candidate": 16048,
+            "delta": -3305,
+            "previous": 19353
+          },
+          "source_terms_recorded; inspect provenance": {
+            "candidate": 112280,
+            "delta": 0,
+            "previous": 112280
+          },
+          "translatewiki_translations_declared_CC_BY_3.0": {
+            "candidate": 534,
+            "delta": 0,
+            "previous": 534
+          },
+          "upstream_meta_cc_by_4_0": {
+            "candidate": 7955,
+            "delta": 3254,
+            "previous": 4701
+          },
+          "upstream_vaani_cc_by_4_0": {
+            "candidate": 6280,
+            "delta": 1,
+            "previous": 6279
+          },
+          "user_supplied_source_rights_unverified": {
+            "candidate": 27815,
+            "delta": -34,
+            "previous": 27849
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 355537,
+          "delta": 52896,
+          "previous": 302641
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance_array": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_status": {
+          "candidate": 355537,
+          "delta": 52896,
+          "previous": 302641
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 355537,
+          "delta": 52896,
+          "previous": 302641
+        },
+        "rows_with_rights_status": {
+          "candidate": 355537,
+          "delta": 52896,
+          "previous": 302641
+        },
+        "rows_with_source_traceability": {
+          "candidate": 355537,
+          "delta": 52896,
+          "previous": 302641
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 302641,
+      "record_delta": 52896
+    },
+    "record_sources/train": {
+      "candidate_records": 412431,
+      "count_distribution_deltas": {
+        "license_label_counts": {},
+        "reuse_scope_counts": {
+          "resolve_via_record_and_source_join": {
+            "candidate": 412431,
+            "delta": 57028,
+            "previous": 355403
+          }
+        },
+        "rights_status_counts": {
+          "resolve_via_record_and_source_join": {
+            "candidate": 412431,
+            "delta": 57028,
+            "previous": 355403
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 412431,
+          "delta": 57028,
+          "previous": 355403
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance_array": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_status": {
+          "candidate": 412431,
+          "delta": 57028,
+          "previous": 355403
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 412431,
+          "delta": 57028,
+          "previous": 355403
+        },
+        "rows_with_rights_status": {
+          "candidate": 412431,
+          "delta": 57028,
+          "previous": 355403
+        },
+        "rows_with_source_traceability": {
+          "candidate": 412431,
+          "delta": 57028,
+          "previous": 355403
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 355403,
+      "record_delta": 57028
+    },
+    "source_catalog/train": {
+      "candidate_records": 9570,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "Apache-2.0-repository-declared": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "CC-BY-2.0-FR": {
+            "candidate": 36,
+            "delta": 0,
+            "previous": 36
+          },
+          "CC-BY-3.0": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          },
+          "CC-BY-4.0": {
+            "candidate": 782,
+            "delta": 1,
+            "previous": 781
+          },
+          "CC-BY-NC-SA-4.0": {
+            "candidate": 68,
+            "delta": 0,
+            "previous": 68
+          },
+          "CC-BY-SA-4.0": {
+            "candidate": 326,
+            "delta": 0,
+            "previous": 326
+          },
+          "CC0-1.0": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "LicenseRef-All-Rights-Reserved": {
+            "candidate": 8,
+            "delta": 0,
+            "previous": 8
+          },
+          "LicenseRef-Government-Publication": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "LicenseRef-PIB-Copyright-Policy": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "LicenseRef-Panos-Source-Policy-Restricted": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "LicenseRef-Panos-Website-Terms-Unverified": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "LicenseRef-Rights-Unassessed": {
+            "candidate": 3544,
+            "delta": 0,
+            "previous": 3544
+          },
+          "MIT": {
+            "candidate": 4,
+            "delta": 0,
+            "previous": 4
+          },
+          "NOASSERTION": {
+            "candidate": 5,
+            "delta": 0,
+            "previous": 5
+          },
+          "ODC-BY-1.0-database-only": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "PDM-1.0": {
+            "candidate": 8,
+            "delta": 0,
+            "previous": 8
+          },
+          "Public-Domain": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          },
+          "Public-Domain-India": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "Public-Domain-Mark-1.0": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "Public-Domain-US-UK-India": {
+            "candidate": 8,
+            "delta": 0,
+            "previous": 8
+          },
+          "not_stated": {
+            "candidate": 9,
+            "delta": 0,
+            "previous": 9
+          }
+        },
+        "reuse_scope_counts": {
+          "CC0 dedication recorded; verify any third-party content": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "MIT terms; preserve copyright and license notice": {
+            "candidate": 4,
+            "delta": 0,
+            "previous": 4
+          },
+          "attribution and share-alike required under source license": {
+            "candidate": 326,
+            "delta": 0,
+            "previous": 326
+          },
+          "attribution required under source license": {
+            "candidate": 821,
+            "delta": 1,
+            "previous": 820
+          },
+          "noncommercial use; attribution and share-alike required": {
+            "candidate": 68,
+            "delta": 0,
+            "previous": 68
+          },
+          "not assessed": {
+            "candidate": 4752,
+            "delta": 4550,
+            "previous": 202
+          },
+          "public-domain mark or status recorded; verify source and jurisdiction": {
+            "candidate": 23,
+            "delta": 0,
+            "previous": 23
+          },
+          "source-specific terms; inspect provenance before reuse": {
+            "candidate": 3574,
+            "delta": 0,
+            "previous": 3574
+          }
+        },
+        "rights_status_counts": {
+          "1865_public_domain; archive_item_declares_CC0": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "ODC_BY_1_covers_database; underlying_page_copyrights_not_cleared": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "PIB_policy_permits_reproduction_of_PIB_material_with_attribution; third_party_material_excluded": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "PanLex_database_declares_CC_BY_NC_SA_4; commercial_use_requires_written_permission": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "Panos_archive_guidelines_permit_reproduction_by_press_education_research_institutions_and_nonprofits_with_attribution; model_training_scope_unspecified": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "archive_item_declares_CC_BY_NC_SA_4; quoted_songs_require_component_review": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "catalog_footer_CC_BY_NC_SA_4; item_page_has_no_license_block": {
+            "candidate": 50,
+            "delta": 0,
+            "previous": 50
+          },
+          "dataset_LICENSE_link_missing; underlying_web_copyrights_not_cleared": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "licensed": {
+            "candidate": 767,
+            "delta": 0,
+            "previous": 767
+          },
+          "noncommercial_sharealike; upstream component review required": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "not_assessed": {
+            "candidate": 175,
+            "delta": 0,
+            "previous": 175
+          },
+          "official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "public_domain_india_government_work_term_expired": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "public_domain_us_uk_india_term_expired": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "public_domain_us_uk_india_term_expired_grierson": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "public_domain_us_uk_india_term_expired_upreti_hill_dialects": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "public_domain_us_uk_india_term_expired_upreti_proverbs": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "public_social_post_no_open_license_recorded": {
+            "candidate": 12,
+            "delta": 0,
+            "previous": 12
+          },
+          "public_webpage_no_open_license_stated": {
+            "candidate": 9,
+            "delta": 0,
+            "previous": 9
+          },
+          "publicly_accessible_no_open_license_recorded": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "publicly_downloadable_but_no_license_or_authorship_statement": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          },
+          "publicly_downloadable_no_open_license_recorded": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "repository_Apache_2; underlying_blogs_and_translated_text_not_sublicensed": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "rights_assessed_compatible": {
+            "candidate": 108,
+            "delta": 0,
+            "previous": 108
+          },
+          "rights_unassessed": {
+            "candidate": 3544,
+            "delta": 0,
+            "previous": 3544
+          },
+          "sentence_license_declared_by_api; creator attributed from sentence page; sentence is orphaned in API": {
+            "candidate": 36,
+            "delta": 0,
+            "previous": 36
+          },
+          "site_declares_CC_BY_NC_SA_4; quoted_works_require_component_review": {
+            "candidate": 12,
+            "delta": 0,
+            "previous": 12
+          },
+          "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": {
+            "candidate": 169,
+            "delta": 0,
+            "previous": 169
+          },
+          "source_terms_recorded; inspect provenance": {
+            "candidate": 34,
+            "delta": -2,
+            "previous": 36
+          },
+          "translatewiki_translations_declared_CC_BY_3.0": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          },
+          "upstream_dataset_declares_CC_BY_NC_SA_4": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "upstream_meta_cc_by_4_0": {
+            "candidate": 4,
+            "delta": 2,
+            "previous": 2
+          },
+          "upstream_openbiblestories_declares_CC_BY_SA_4; v1_2026_06_26; text_only": {
+            "candidate": 50,
+            "delta": 0,
+            "previous": 50
+          },
+          "upstream_vaani_cc_by_4_0": {
+            "candidate": 3,
+            "delta": 1,
+            "previous": 2
+          },
+          "user_supplied_source_rights_unverified": {
+            "candidate": 12,
+            "delta": 0,
+            "previous": 12
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 9570,
+          "delta": 4551,
+          "previous": 5019
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 4818,
+          "delta": 1,
+          "previous": 4817
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance_array": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_status": {
+          "candidate": 9570,
+          "delta": 4551,
+          "previous": 5019
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 9570,
+          "delta": 4551,
+          "previous": 5019
+        },
+        "rows_with_rights_status": {
+          "candidate": 9570,
+          "delta": 4551,
+          "previous": 5019
+        },
+        "rows_with_source_traceability": {
+          "candidate": 9570,
+          "delta": 4551,
+          "previous": 5019
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 5019,
+      "record_delta": 4551
+    },
+    "sravaani_drafts/train": {
+      "candidate_records": 104534,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-4.0": {
+            "candidate": 104534,
+            "delta": 0,
+            "previous": 104534
+          }
+        },
+        "reuse_scope_counts": {
+          "attribution required under source license": {
+            "candidate": 104534,
+            "delta": 0,
+            "previous": 104534
+          }
+        },
+        "rights_status_counts": {
+          "source_terms_recorded; inspect provenance": {
+            "candidate": 104534,
+            "delta": 0,
+            "previous": 104534
+          }
+        },
+        "scripts": {
+          "Beng": {
+            "candidate": 254,
+            "delta": 0,
+            "previous": 254
+          },
+          "Deva": {
+            "candidate": 103464,
+            "delta": 0,
+            "previous": 103464
+          },
+          "GUJARATI": {
+            "candidate": 55,
+            "delta": 0,
+            "previous": 55
+          },
+          "GURMUKHI": {
+            "candidate": 171,
+            "delta": 0,
+            "previous": 171
+          },
+          "KANNADA": {
+            "candidate": 134,
+            "delta": 0,
+            "previous": 134
+          },
+          "Latn": {
+            "candidate": 81,
+            "delta": 0,
+            "previous": 81
+          },
+          "MALAYALAM": {
+            "candidate": 59,
+            "delta": 0,
+            "previous": 59
+          },
+          "MEETEI": {
+            "candidate": 16,
+            "delta": 0,
+            "previous": 16
+          },
+          "OL": {
+            "candidate": 27,
+            "delta": 0,
+            "previous": 27
+          },
+          "ORIYA": {
+            "candidate": 73,
+            "delta": 0,
+            "previous": 73
+          },
+          "TAMIL": {
+            "candidate": 18,
+            "delta": 0,
+            "previous": 18
+          },
+          "TELUGU": {
+            "candidate": 148,
+            "delta": 0,
+            "previous": 148
+          },
+          "none": {
+            "candidate": 34,
+            "delta": 0,
+            "previous": 34
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 34,
+          "delta": 0,
+          "previous": 34
+        },
+        "records": {
+          "candidate": 104534,
+          "delta": 0,
+          "previous": 104534
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 104534,
+          "delta": 0,
+          "previous": 104534
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 104534,
+          "delta": 0,
+          "previous": 104534
+        },
+        "rows_with_provenance": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_provenance_array": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 104534,
+          "delta": 0,
+          "previous": 104534
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 104534,
+          "delta": 0,
+          "previous": 104534
+        },
+        "rows_with_quality_status": {
+          "candidate": 104534,
+          "delta": 0,
+          "previous": 104534
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 104534,
+          "delta": 0,
+          "previous": 104534
+        },
+        "rows_with_rights_status": {
+          "candidate": 104534,
+          "delta": 0,
+          "previous": 104534
+        },
+        "rows_with_source_traceability": {
+          "candidate": 104534,
+          "delta": 0,
+          "previous": 104534
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 104534,
+      "record_delta": 0
+    },
+    "text/source_overlap": {
+      "candidate_records": 1305,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-4.0": {
+            "candidate": 1305,
+            "delta": -3,
+            "previous": 1308
+          }
+        },
+        "reuse_scope_counts": {
+          "attribution required under source license": {
+            "candidate": 1305,
+            "delta": -2,
+            "previous": 1307
+          }
+        },
+        "rights_status_counts": {
+          "upstream_meta_cc_by_4_0": {
+            "candidate": 1304,
+            "delta": 1225,
+            "previous": 79
+          },
+          "upstream_vaani_cc_by_4_0": {
+            "candidate": 1,
+            "delta": -2,
+            "previous": 3
+          }
+        },
+        "scripts": {
+          "Deva": {
+            "candidate": 1305,
+            "delta": -2,
+            "previous": 1307
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 0,
+          "delta": -1,
+          "previous": 1
+        },
+        "rows_with_provenance": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_with_provenance_array": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_with_quality_status": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_with_rights_status": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_with_source_traceability": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "source_overlap_rows": {
+          "candidate": 1305,
+          "delta": -3,
+          "previous": 1308
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 1308,
+      "record_delta": -3
+    },
+    "text/test": {
+      "candidate_records": 745,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-3.0": {
+            "candidate": 6,
+            "delta": 0,
+            "previous": 6
+          },
+          "CC-BY-4.0": {
+            "candidate": 690,
+            "delta": -20,
+            "previous": 710
+          },
+          "CC-BY-SA-4.0": {
+            "candidate": 4,
+            "delta": 0,
+            "previous": 4
+          },
+          "MIT": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          },
+          "PDM-1.0": {
+            "candidate": 42,
+            "delta": 0,
+            "previous": 42
+          }
+        },
+        "reuse_scope_counts": {
+          "MIT terms; preserve copyright and license notice": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          },
+          "attribution and share-alike required under source license": {
+            "candidate": 4,
+            "delta": 0,
+            "previous": 4
+          },
+          "attribution required under source license": {
+            "candidate": 696,
+            "delta": -20,
+            "previous": 716
+          },
+          "public-domain mark or status recorded; verify source and jurisdiction": {
+            "candidate": 42,
+            "delta": 0,
+            "previous": 42
+          }
+        },
+        "rights_status_counts": {
+          "licensed": {
+            "candidate": 22,
+            "delta": 0,
+            "previous": 22
+          },
+          "rights_assessed_compatible": {
+            "candidate": 42,
+            "delta": 0,
+            "previous": 42
+          },
+          "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": {
+            "candidate": 4,
+            "delta": 0,
+            "previous": 4
+          },
+          "source_license_recorded; inspect provenance": {
+            "candidate": 17,
+            "delta": -169,
+            "previous": 186
+          },
+          "translatewiki_translations_declared_CC_BY_3.0": {
+            "candidate": 6,
+            "delta": 0,
+            "previous": 6
+          },
+          "upstream_meta_cc_by_4_0": {
+            "candidate": 387,
+            "delta": 169,
+            "previous": 218
+          },
+          "upstream_vaani_cc_by_4_0": {
+            "candidate": 267,
+            "delta": -20,
+            "previous": 287
+          }
+        },
+        "scripts": {
+          "Deva": {
+            "candidate": 677,
+            "delta": -20,
+            "previous": 697
+          },
+          "LATIN": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "Latn": {
+            "candidate": 66,
+            "delta": 0,
+            "previous": 66
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 68,
+          "delta": 0,
+          "previous": 68
+        },
+        "rows_with_provenance": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_with_provenance_array": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_with_quality_status": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_with_rights_status": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_with_source_traceability": {
+          "candidate": 745,
+          "delta": -20,
+          "previous": 765
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 765,
+      "record_delta": -20
+    },
+    "text/train": {
+      "candidate_records": 15664,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC BY-SA 4.0": {
+            "candidate": 1421,
+            "delta": 0,
+            "previous": 1421
+          },
+          "CC-BY-2.0-FR": {
+            "candidate": 14,
+            "delta": 0,
+            "previous": 14
+          },
+          "CC-BY-3.0": {
+            "candidate": 162,
+            "delta": 0,
+            "previous": 162
+          },
+          "CC-BY-4.0": {
+            "candidate": 11980,
+            "delta": -316,
+            "previous": 12296
+          },
+          "CC-BY-NC-SA-4.0": {
+            "candidate": 1428,
+            "delta": 0,
+            "previous": 1428
+          },
+          "CC-BY-SA-4.0": {
+            "candidate": 2525,
+            "delta": 0,
+            "previous": 2525
+          },
+          "LicenseRef-All-Rights-Reserved": {
+            "candidate": 16,
+            "delta": 0,
+            "previous": 16
+          },
+          "MIT": {
+            "candidate": 174,
+            "delta": 0,
+            "previous": 174
+          },
+          "PDM-1.0": {
+            "candidate": 822,
+            "delta": -1,
+            "previous": 823
+          },
+          "not_stated": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          }
+        },
+        "reuse_scope_counts": {
+          "MIT terms; preserve copyright and license notice": {
+            "candidate": 165,
+            "delta": 0,
+            "previous": 165
+          },
+          "attribution and share-alike required under source license": {
+            "candidate": 1104,
+            "delta": 0,
+            "previous": 1104
+          },
+          "attribution required under source license": {
+            "candidate": 12145,
+            "delta": -316,
+            "previous": 12461
+          },
+          "noncommercial use; attribution and share-alike required": {
+            "candidate": 1428,
+            "delta": 0,
+            "previous": 1428
+          },
+          "public-domain mark or status recorded; verify source and jurisdiction": {
+            "candidate": 822,
+            "delta": -1,
+            "previous": 823
+          }
+        },
+        "rights_status_counts": {
+          "licensed": {
+            "candidate": 612,
+            "delta": 0,
+            "previous": 612
+          },
+          "mixed_source_statuses; inspect provenance": {
+            "candidate": 1441,
+            "delta": 2,
+            "previous": 1439
+          },
+          "official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          },
+          "rights_assessed_compatible": {
+            "candidate": 1601,
+            "delta": -3,
+            "previous": 1604
+          },
+          "sentence_license_declared_by_api; creator attributed from sentence page; sentence is orphaned in API": {
+            "candidate": 14,
+            "delta": 0,
+            "previous": 14
+          },
+          "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": {
+            "candidate": 309,
+            "delta": 0,
+            "previous": 309
+          },
+          "source_license_recorded; inspect provenance": {
+            "candidate": 325,
+            "delta": -1690,
+            "previous": 2015
+          },
+          "translatewiki_translations_declared_CC_BY_3.0": {
+            "candidate": 158,
+            "delta": 0,
+            "previous": 158
+          },
+          "upstream_meta_cc_by_4_0": {
+            "candidate": 5869,
+            "delta": 1689,
+            "previous": 4180
+          },
+          "upstream_vaani_cc_by_4_0": {
+            "candidate": 5332,
+            "delta": -315,
+            "previous": 5647
+          }
+        },
+        "scripts": {
+          "Deva": {
+            "candidate": 14336,
+            "delta": -315,
+            "previous": 14651
+          },
+          "LATIN": {
+            "candidate": 85,
+            "delta": 0,
+            "previous": 85
+          },
+          "Latn": {
+            "candidate": 1240,
+            "delta": -2,
+            "previous": 1242
+          },
+          "none": {
+            "candidate": 3,
+            "delta": 0,
+            "previous": 3
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 1373,
+          "delta": -1,
+          "previous": 1374
+        },
+        "rows_with_provenance": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_with_provenance_array": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_with_quality_status": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_with_rights_status": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_with_source_traceability": {
+          "candidate": 15664,
+          "delta": -317,
+          "previous": 15981
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 15981,
+      "record_delta": -317
+    },
+    "text/validation": {
+      "candidate_records": 884,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC BY-SA 4.0": {
+            "candidate": 67,
+            "delta": 0,
+            "previous": 67
+          },
+          "CC-BY-3.0": {
+            "candidate": 5,
+            "delta": 0,
+            "previous": 5
+          },
+          "CC-BY-4.0": {
+            "candidate": 728,
+            "delta": -10,
+            "previous": 738
+          },
+          "CC-BY-NC-SA-4.0": {
+            "candidate": 67,
+            "delta": 0,
+            "previous": 67
+          },
+          "CC-BY-SA-4.0": {
+            "candidate": 94,
+            "delta": -1,
+            "previous": 95
+          },
+          "MIT": {
+            "candidate": 5,
+            "delta": 0,
+            "previous": 5
+          },
+          "PDM-1.0": {
+            "candidate": 52,
+            "delta": 0,
+            "previous": 52
+          }
+        },
+        "reuse_scope_counts": {
+          "MIT terms; preserve copyright and license notice": {
+            "candidate": 5,
+            "delta": 0,
+            "previous": 5
+          },
+          "attribution and share-alike required under source license": {
+            "candidate": 27,
+            "delta": -1,
+            "previous": 28
+          },
+          "attribution required under source license": {
+            "candidate": 733,
+            "delta": -10,
+            "previous": 743
+          },
+          "noncommercial use; attribution and share-alike required": {
+            "candidate": 67,
+            "delta": 0,
+            "previous": 67
+          },
+          "public-domain mark or status recorded; verify source and jurisdiction": {
+            "candidate": 52,
+            "delta": 0,
+            "previous": 52
+          }
+        },
+        "rights_status_counts": {
+          "licensed": {
+            "candidate": 32,
+            "delta": 0,
+            "previous": 32
+          },
+          "mixed_source_statuses; inspect provenance": {
+            "candidate": 67,
+            "delta": 0,
+            "previous": 67
+          },
+          "rights_assessed_compatible": {
+            "candidate": 75,
+            "delta": 0,
+            "previous": 75
+          },
+          "source project declares CC BY-SA 4.0; revision and history linked; item-specific third-party-material exceptions not independently audited": {
+            "candidate": 4,
+            "delta": -1,
+            "previous": 5
+          },
+          "source_license_recorded; inspect provenance": {
+            "candidate": 17,
+            "delta": -165,
+            "previous": 182
+          },
+          "translatewiki_translations_declared_CC_BY_3.0": {
+            "candidate": 5,
+            "delta": 0,
+            "previous": 5
+          },
+          "upstream_meta_cc_by_4_0": {
+            "candidate": 369,
+            "delta": 165,
+            "previous": 204
+          },
+          "upstream_vaani_cc_by_4_0": {
+            "candidate": 315,
+            "delta": -10,
+            "previous": 325
+          }
+        },
+        "scripts": {
+          "Deva": {
+            "candidate": 788,
+            "delta": -11,
+            "previous": 799
+          },
+          "LATIN": {
+            "candidate": 4,
+            "delta": 0,
+            "previous": 4
+          },
+          "Latn": {
+            "candidate": 84,
+            "delta": 0,
+            "previous": 84
+          },
+          "none": {
+            "candidate": 8,
+            "delta": 0,
+            "previous": 8
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 96,
+          "delta": -1,
+          "previous": 97
+        },
+        "rows_with_provenance": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_with_provenance_array": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_with_quality_status": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_with_rights_status": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_with_source_traceability": {
+          "candidate": 884,
+          "delta": -11,
+          "previous": 895
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 895,
+      "record_delta": -11
+    },
+    "text_expansion/source_overlap": {
+      "candidate_records": 454,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-4.0": {
+            "candidate": 454,
+            "delta": 91,
+            "previous": 363
+          }
+        },
+        "reuse_scope_counts": {
+          "permitted_under_row_level_license": {
+            "candidate": 454,
+            "delta": 91,
+            "previous": 363
+          }
+        },
+        "rights_status_counts": {
+          "rights_cleared": {
+            "candidate": 454,
+            "delta": 91,
+            "previous": 363
+          }
+        },
+        "scripts": {
+          "Deva": {
+            "candidate": 454,
+            "delta": 91,
+            "previous": 363
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_provenance": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_provenance_array": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_quality_status": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_rights_status": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_with_source_traceability": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "source_overlap_rows": {
+          "candidate": 454,
+          "delta": 91,
+          "previous": 363
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 363,
+      "record_delta": 91
+    },
+    "text_expansion/train": {
+      "candidate_records": 1283,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "Apache-2.0-repository-declared": {
+            "candidate": 1,
+            "delta": 0,
+            "previous": 1
+          },
+          "CC BY-SA 4.0": {
+            "candidate": 48,
+            "delta": 0,
+            "previous": 48
+          },
+          "CC-BY-2.0-FR": {
+            "candidate": 17,
+            "delta": 0,
+            "previous": 17
+          },
+          "CC-BY-4.0": {
+            "candidate": 1141,
+            "delta": -1,
+            "previous": 1142
+          },
+          "CC-BY-SA-4.0": {
+            "candidate": 115,
+            "delta": 0,
+            "previous": 115
+          },
+          "MIT": {
+            "candidate": 2,
+            "delta": 0,
+            "previous": 2
+          },
+          "PDM-1.0": {
+            "candidate": 8,
+            "delta": 0,
+            "previous": 8
+          }
+        },
+        "reuse_scope_counts": {
+          "permitted_under_row_level_license": {
+            "candidate": 1168,
+            "delta": -1,
+            "previous": 1169
+          },
+          "permitted_under_row_level_license; share-alike required": {
+            "candidate": 115,
+            "delta": 0,
+            "previous": 115
+          }
+        },
+        "rights_status_counts": {
+          "rights_cleared": {
+            "candidate": 1283,
+            "delta": -1,
+            "previous": 1284
+          }
+        },
+        "scripts": {
+          "Deva": {
+            "candidate": 1283,
+            "delta": -1,
+            "previous": 1284
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_provenance": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_provenance_array": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_quality_status": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_rights_status": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_with_source_traceability": {
+          "candidate": 1283,
+          "delta": -1,
+          "previous": 1284
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 1284,
+      "record_delta": -1
+    },
+    "text_resources/train": {
+      "candidate_records": 285,
+      "count_distribution_deltas": {
+        "license_label_counts": {
+          "CC-BY-4.0": {
+            "candidate": 153,
+            "delta": 38,
+            "previous": 115
+          },
+          "CC-BY-NC-SA-4.0": {
+            "candidate": 128,
+            "delta": 0,
+            "previous": 128
+          },
+          "PDM-1.0": {
+            "candidate": 4,
+            "delta": 1,
+            "previous": 3
+          }
+        },
+        "reuse_scope_counts": {
+          "noncommercial_only; share-alike required": {
+            "candidate": 128,
+            "delta": 0,
+            "previous": 128
+          },
+          "permitted_under_row_level_license": {
+            "candidate": 157,
+            "delta": 39,
+            "previous": 118
+          }
+        },
+        "rights_status_counts": {
+          "rights_cleared": {
+            "candidate": 157,
+            "delta": 39,
+            "previous": 118
+          },
+          "rights_cleared_noncommercial_sharealike": {
+            "candidate": 128,
+            "delta": 0,
+            "previous": 128
+          }
+        },
+        "scripts": {
+          "Deva": {
+            "candidate": 281,
+            "delta": 38,
+            "previous": 243
+          },
+          "Latn": {
+            "candidate": 4,
+            "delta": 1,
+            "previous": 3
+          }
+        }
+      },
+      "numeric_metric_deltas": {
+        "empty_content": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "records": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 128,
+          "delta": 0,
+          "previous": 128
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_with_provenance": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_with_provenance_array": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 157,
+          "delta": 39,
+          "previous": 118
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_with_quality_status": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_with_rights_status": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_with_source_traceability": {
+          "candidate": 285,
+          "delta": 39,
+          "previous": 246
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 246,
+      "record_delta": 39
+    },
+    "university_research/train": {
+      "candidate_records": 8,
+      "count_distribution_deltas": {
+        "license_label_counts": {},
+        "reuse_scope_counts": {
+          "metadata facts only; underlying-work rights are not asserted": {
+            "candidate": 8,
+            "delta": 0,
+            "previous": 8
+          }
+        },
+        "rights_status_counts": {
+          "metadata_only; no license asserted for underlying work": {
+            "candidate": 8,
+            "delta": 0,
+            "previous": 8
+          }
+        },
+        "scripts": {}
+      },
+      "numeric_metric_deltas": {
+        "records": {
+          "candidate": 8,
+          "delta": 0,
+          "previous": 8
+        },
+        "rows_with_factual_publication_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_license_label": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_noncommercial_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_nonempty_quality_evidence": {
+          "candidate": 8,
+          "delta": 0,
+          "previous": 8
+        },
+        "rows_with_provenance": {
+          "candidate": 8,
+          "delta": 0,
+          "previous": 8
+        },
+        "rows_with_provenance_array": {
+          "candidate": 8,
+          "delta": 0,
+          "previous": 8
+        },
+        "rows_with_public_rights_basis": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        },
+        "rows_with_quality_evidence_fields_present": {
+          "candidate": 8,
+          "delta": 0,
+          "previous": 8
+        },
+        "rows_with_quality_metadata": {
+          "candidate": 8,
+          "delta": 0,
+          "previous": 8
+        },
+        "rows_with_quality_status": {
+          "candidate": 8,
+          "delta": 0,
+          "previous": 8
+        },
+        "rows_with_reuse_scope": {
+          "candidate": 8,
+          "delta": 0,
+          "previous": 8
+        },
+        "rows_with_rights_status": {
+          "candidate": 8,
+          "delta": 0,
+          "previous": 8
+        },
+        "rows_with_source_traceability": {
+          "candidate": 8,
+          "delta": 0,
+          "previous": 8
+        },
+        "rows_without_source_traceability": {
+          "candidate": 0,
+          "delta": 0,
+          "previous": 0
+        }
+      },
+      "numeric_metrics_missing_on_one_side": [],
+      "previous_records": 8,
+      "record_delta": 0
+    }
+  },
+  "summary": {
+    "added_config_splits": [
+      "text_resources/source_overlap"
+    ],
+    "candidate_config_split_count": 26,
+    "candidate_overlapping_config_split_rows": 945926,
+    "candidate_records_deleted_or_mutated": 0,
+    "common_config_split_count": 25,
+    "overlapping_config_split_row_delta": 118476,
+    "previous_config_split_count": 25,
+    "previous_overlapping_config_split_rows": 827450,
+    "previous_records_deleted_or_mutated": 0,
+    "removed_config_splits": []
+  },
+  "total_metric_deltas": {
+    "empty_content": {
+      "candidate": 34,
+      "delta": 0,
+      "previous": 34
+    },
+    "records": {
+      "candidate": 945926,
+      "delta": 118476,
+      "previous": 827450
+    },
+    "rows_with_factual_publication_basis": {
+      "candidate": 17,
+      "delta": 0,
+      "previous": 17
+    },
+    "rows_with_license_label": {
+      "candidate": 168229,
+      "delta": 20,
+      "previous": 168209
+    },
+    "rows_with_noncommercial_rights_basis": {
+      "candidate": 269,
+      "delta": 0,
+      "previous": 269
+    },
+    "rows_with_nonempty_quality_evidence": {
+      "candidate": 144604,
+      "delta": 4349,
+      "previous": 140255
+    },
+    "rows_with_provenance": {
+      "candidate": 61852,
+      "delta": 4001,
+      "previous": 57851
+    },
+    "rows_with_provenance_array": {
+      "candidate": 61852,
+      "delta": 4001,
+      "previous": 57851
+    },
+    "rows_with_public_rights_basis": {
+      "candidate": 37910,
+      "delta": 19,
+      "previous": 37891
+    },
+    "rows_with_quality_evidence_fields_present": {
+      "candidate": 163667,
+      "delta": 4001,
+      "previous": 159666
+    },
+    "rows_with_quality_metadata": {
+      "candidate": 163667,
+      "delta": 4001,
+      "previous": 159666
+    },
+    "rows_with_quality_status": {
+      "candidate": 945926,
+      "delta": 118476,
+      "previous": 827450
+    },
+    "rows_with_reuse_scope": {
+      "candidate": 945926,
+      "delta": 118476,
+      "previous": 827450
+    },
+    "rows_with_rights_status": {
+      "candidate": 945926,
+      "delta": 118476,
+      "previous": 827450
+    },
+    "rows_with_source_traceability": {
+      "candidate": 945926,
+      "delta": 118476,
+      "previous": 827450
+    },
+    "rows_without_source_traceability": {
+      "candidate": 0,
+      "delta": 0,
+      "previous": 0
+    },
+    "source_overlap_rows": {
+      "candidate": 1949,
+      "delta": 278,
+      "previous": 1671
+    }
+  },
+  "total_metrics_missing_on_one_side": []
+}

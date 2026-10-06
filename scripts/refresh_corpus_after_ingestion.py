@@ -4,16 +4,28 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
 import sys
 from pathlib import Path
 
+from ingest_jambu_garhwali import SNAPSHOT_MANIFEST as JAMBU_SNAPSHOT_MANIFEST
+from ingest_garhwali_language_library import RAW_DIR as LANGUAGE_LIBRARY_RAW_DIR
+from prepare_text_corpus import discover as discover_text_inputs
+
 
 ROOT = Path(__file__).resolve().parents[1]
 START_MARKER = "<!-- AUTO-CORPUS-METRICS:START -->"
 END_MARKER = "<!-- AUTO-CORPUS-METRICS:END -->"
+REQUIRED_SOURCE_MANIFESTS = (
+    Path("corpus/jambu_garhwali_manifest.json"),
+    Path("corpus/garhwali_language_library_manifest.json"),
+    Path("data/extracted/web_goldmines/report.json"),
+    JAMBU_SNAPSHOT_MANIFEST,
+    LANGUAGE_LIBRARY_RAW_DIR / "snapshot-manifest.json",
+)
 PIPELINE_COMMANDS = (
     ("ingest_jambu_garhwali.py", ("--offline",)),
     ("ingest_garhwali_language_library.py", ()),
@@ -41,6 +53,126 @@ PIPELINE_COMMANDS = (
     ("build_hf_reference_index.py", ()),
     ("generate_project_file_map.py", ()),
 )
+PROVENANCE_SCRIPT_PATHS = tuple(sorted({
+    *(Path("scripts") / script for script, _ in PIPELINE_COMMANDS),
+    Path("scripts/refresh_corpus_after_ingestion.py"),
+    Path("scripts/prepare_text_corpus.py"),
+    Path("scripts/ingestion_graph.py"),
+    Path("scripts/validate_hf_package_cloud.py"),
+    Path("scripts/compare_hf_release_metrics.py"),
+}, key=lambda path: path.as_posix()))
+
+
+def sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def git_output(root: Path, *arguments: str) -> str | None:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), *arguments],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError:
+        return None
+    if result.returncode:
+        return None
+    return result.stdout.strip()
+
+
+def git_diff_sha256(root: Path, is_dirty: bool) -> str | None:
+    if not is_dirty:
+        return None
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "diff", "HEAD", "--binary"],
+            capture_output=True,
+            check=False,
+        )
+    except OSError:
+        return None
+    return sha256_bytes(result.stdout) if result.returncode == 0 else None
+
+
+def build_code_provenance(root: Path) -> dict:
+    revision = git_output(root, "rev-parse", "HEAD")
+    status = git_output(root, "status", "--porcelain=v1", "--untracked-files=no")
+    is_dirty = bool(status)
+    return {
+        "git_revision": revision,
+        "tracked_worktree_dirty": is_dirty,
+        "tracked_diff_sha256": git_diff_sha256(root, is_dirty),
+        "pipeline_scripts": [
+            {
+                "path": path.as_posix(),
+                "sha256": sha256_file(root / path) if (root / path).is_file() else None,
+            }
+            for path in PROVENANCE_SCRIPT_PATHS
+        ],
+    }
+
+
+def build_source_input_provenance(root: Path, capture_stage: str) -> dict:
+    inputs: dict[Path, str] = {}
+    for path in discover_text_inputs(root):
+        inputs[path.relative_to(root)] = "text_record_jsonl"
+
+    for relative in REQUIRED_SOURCE_MANIFESTS:
+        if (root / relative).is_file():
+            inputs[relative] = "required_source_manifest"
+
+    for folder in (root / "corpus", root / "data" / "extracted"):
+        if folder.exists():
+            for path in folder.rglob("*manifest*.json"):
+                if path.is_file():
+                    inputs[path.relative_to(root)] = "source_manifest"
+    online = root / "sources" / "online"
+    if online.exists():
+        for path in online.rglob("*.metadata.json"):
+            if path.is_file():
+                inputs[path.relative_to(root)] = "source_snapshot_pointer"
+
+    files = [
+        {
+            "path": path.as_posix(),
+            "kind": inputs[path],
+            "bytes": (root / path).stat().st_size,
+            "sha256": sha256_file(root / path),
+        }
+        for path in sorted(inputs)
+    ]
+    missing = [
+        path.as_posix() for path in REQUIRED_SOURCE_MANIFESTS
+        if not (root / path).is_file()
+    ]
+    identity = [
+        {"path": entry["path"], "bytes": entry["bytes"], "sha256": entry["sha256"]}
+        for entry in files
+    ]
+    return {
+        "capture_stage": capture_stage,
+        "file_count": len(files),
+        "text_record_jsonl_count": sum(
+            entry["kind"] == "text_record_jsonl" for entry in files
+        ),
+        "total_bytes": sum(entry["bytes"] for entry in files),
+        "inventory_sha256": sha256_bytes(json.dumps(
+            identity, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")),
+        "missing_required_manifests": missing,
+        "complete": not missing,
+        "files": files,
+    }
 
 
 def replace_metrics_block(readme: str, table: str) -> str:
@@ -67,7 +199,8 @@ def configure_environment(environment: dict[str, str]) -> dict[str, str]:
 
 
 def build_pipeline_plan(root: Path = ROOT,
-                        environment: dict[str, str] | None = None) -> dict:
+                        environment: dict[str, str] | None = None,
+                        include_source_inputs: bool = True) -> dict:
     environment = configure_environment(dict(os.environ) if environment is None else environment)
     steps = []
     for index, (script, arguments) in enumerate(PIPELINE_COMMANDS, start=1):
@@ -86,25 +219,42 @@ def build_pipeline_plan(root: Path = ROOT,
             "command": command,
             "script_exists": (root / "scripts" / script).is_file(),
         })
+    source_inputs = (
+        build_source_input_provenance(root, "pre_execution_dry_run")
+        if include_source_inputs else None
+    )
+    provenance = {"code": build_code_provenance(root)}
+    if source_inputs is not None:
+        provenance["source_inputs"] = source_inputs
     return {
-        "plan_schema_version": 1,
+        "plan_schema_version": 2,
         "mode": "dry-run",
         "mutates_workspace": False,
         "release_version": environment["GARHWALI_RELEASE_VERSION"],
         "all_data_output": environment["GARHWALI_HF_ALL_DATA_OUTPUT"],
         "public_output": environment["GARHWALI_HF_PUBLIC_OUTPUT"],
         "script_count": len(steps),
-        "ready": all(step["script_exists"] for step in steps),
+        "ready": (
+            all(step["script_exists"] for step in steps)
+            and (source_inputs is None or source_inputs["complete"])
+        ),
+        "provenance": provenance,
         "steps": steps,
     }
 
 
 def run_pipeline(root: Path = ROOT, runner=subprocess.run,
-                 environment: dict[str, str] | None = None) -> None:
+                 environment: dict[str, str] | None = None) -> dict:
     environment = configure_environment(dict(os.environ) if environment is None else environment)
-    plan = build_pipeline_plan(root, environment)
+    plan = build_pipeline_plan(root, environment, include_source_inputs=False)
+    provenance = {"code": plan["provenance"]["code"]}
     for step in plan["steps"]:
         runner(step["command"], cwd=root, check=True, env=environment)
+        if step["index"] == 2:
+            provenance["source_inputs"] = build_source_input_provenance(
+                root, "after_source_ingestion_before_derivation"
+            )
+    return provenance
 
 
 def read_json(path: Path) -> dict:
@@ -213,8 +363,9 @@ def render_metrics_table(metrics: dict) -> str:
 def refresh(root: Path = ROOT, runner=subprocess.run,
             environment: dict[str, str] | None = None) -> dict:
     environment = configure_environment(dict(os.environ) if environment is None else environment)
-    run_pipeline(root, runner=runner, environment=environment)
+    provenance = run_pipeline(root, runner=runner, environment=environment)
     metrics = collect_metrics(root, environment=environment)
+    metrics["refresh_provenance"] = provenance
     metrics_path = root / "data/extracted/current_corpus_metrics.json"
     metrics_path.parent.mkdir(parents=True, exist_ok=True)
     metrics_path.write_text(

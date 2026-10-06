@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **1,015**.
+Files indexed: **1,020**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -601,6 +601,8 @@ python scripts/generate_project_file_map.py
 - `research/huggingface-quality-candidate-preflight-2026-10-02.json`
 - `research/huggingface-quality-candidate-preflight-2026-10-05.json`
 - `research/huggingface-release-continuity-v0.2.5-v0.2.6-2026-10-05.json`
+- `research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.json`
+- `research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.md`
 - `research/huggingface-release-overlap-audit-2026-09-24.md`
 - `research/huggingface-text-expansion-audit-2026-10-01.md`
 - `research/huggingface-training-eligibility-audit-2026-10-05.json`
@@ -609,6 +611,7 @@ python scripts/generate_project_file_map.py
 - `research/huggingface-upstream-split-overlap-2026-10-05.md`
 - `research/huggingface-v0.2.3-upload-plan.json`
 - `research/huggingface-v0.2.4-upload-plan.json`
+- `research/huggingface-v0.2.5-comparison-preflight-2026-10-05.json`
 - `research/huggingface-v0.2.5-upload-plan.json`
 - `research/huggingface-v0.2.6-candidate-preflight-2026-10-05.json`
 - `research/huggingface-v0.2.6-remote-file-verification-2026-10-05.json`
@@ -766,6 +769,7 @@ python scripts/generate_project_file_map.py
 - `scripts/collect_vaani_reference_images.py`
 - `scripts/compare_archive_ocr_variants.py`
 - `scripts/compare_asr_predictions.py`
+- `scripts/compare_hf_release_metrics.py`
 - `scripts/dedup_report.py`
 - `scripts/deep_cleanup.py`
 - `scripts/download_garhwali_folktales.py`
@@ -979,6 +983,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_collect_online.py`
 - `tests/test_compare_archive_ocr_variants.py`
 - `tests/test_compare_asr_predictions.py`
+- `tests/test_compare_hf_release_metrics.py`
 - `tests/test_deep_cleanup.py`
 - `tests/test_evaluate_indicbert_transfer.py`
 - `tests/test_evaluate_sravaani_finetune.py`
@@ -1068,11 +1073,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **239,188**.
+- Workspace files counted: **239,193**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **1,015**.
+- Detailed file paths listed above: **1,020**.
 - Ignored or otherwise unlisted payload files: **238,173** (169,400,252,184 bytes).
-- Total workspace bytes counted: **169,418,092,834**.
+- Total workspace bytes counted: **169,418,313,986**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |

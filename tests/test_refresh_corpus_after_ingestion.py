@@ -1,4 +1,5 @@
 import os
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -6,6 +7,8 @@ from refresh_corpus_after_ingestion import (
     END_MARKER,
     START_MARKER,
     PIPELINE_COMMANDS,
+    REQUIRED_SOURCE_MANIFESTS,
+    build_source_input_provenance,
     build_pipeline_plan,
     configure_environment,
     replace_metrics_block,
@@ -98,6 +101,7 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
         plan = build_pipeline_plan(Path(__file__).resolve().parents[1])
 
         self.assertEqual(plan["mode"], "dry-run")
+        self.assertEqual(plan["plan_schema_version"], 2)
         self.assertFalse(plan["mutates_workspace"])
         self.assertTrue(plan["ready"])
         self.assertEqual(plan["script_count"], len(PIPELINE_COMMANDS))
@@ -115,6 +119,73 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
             public_build["command"][-2:],
             ["--output", "data/huggingface/garhwali-language-lab-v0.2.6-staging"],
         )
+        code = plan["provenance"]["code"]
+        source_inputs = plan["provenance"]["source_inputs"]
+        self.assertEqual(len(code["git_revision"]), 40)
+        self.assertTrue(any(
+            item["path"] == "scripts/refresh_corpus_after_ingestion.py"
+            and len(item["sha256"]) == 64
+            for item in code["pipeline_scripts"]
+        ))
+        self.assertTrue({
+            "scripts/validate_hf_package_cloud.py",
+            "scripts/compare_hf_release_metrics.py",
+        }.issubset({item["path"] for item in code["pipeline_scripts"]}))
+        self.assertTrue(source_inputs["complete"])
+        self.assertEqual(source_inputs["capture_stage"], "pre_execution_dry_run")
+        self.assertTrue(any(
+            item["path"] == "corpus/jambu_garhwali_manifest.json"
+            for item in source_inputs["files"]
+        ))
+        self.assertEqual(len(source_inputs["inventory_sha256"]), 64)
+
+    def test_source_input_inventory_hashes_text_manifests_and_snapshot_pointers(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for path in REQUIRED_SOURCE_MANIFESTS:
+                target = root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text('{"pinned":true}\n', encoding="utf-8")
+            text_input = root / "experimental" / "new_source.jsonl"
+            text_input.parent.mkdir(parents=True)
+            text_input.write_text('{"text":"गढ़वाळि"}\n', encoding="utf-8")
+            pointer = root / "sources/online/test/source.metadata.json"
+            pointer.parent.mkdir(parents=True)
+            pointer.write_text('{"sha256":"source-snapshot"}\n', encoding="utf-8")
+
+            inventory = build_source_input_provenance(root, "test")
+
+            self.assertTrue(inventory["complete"])
+            self.assertEqual(inventory["text_record_jsonl_count"], 1)
+            self.assertEqual(inventory["capture_stage"], "test")
+            kinds = {item["path"]: item["kind"] for item in inventory["files"]}
+            self.assertEqual(kinds["experimental/new_source.jsonl"], "text_record_jsonl")
+            self.assertEqual(kinds["sources/online/test/source.metadata.json"], "source_snapshot_pointer")
+            self.assertEqual(len(inventory["inventory_sha256"]), 64)
+
+    def test_run_pipeline_captures_source_inputs_after_pinned_ingestors(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            calls = []
+
+            def runner(command, *, cwd, check, env):
+                calls.append(command)
+                if len(calls) == 2:
+                    source = root / "corpus/new_source.jsonl"
+                    source.parent.mkdir(parents=True, exist_ok=True)
+                    source.write_text('{"text":"गढ़वाली"}\n', encoding="utf-8")
+
+            provenance = run_pipeline(root, runner=runner)
+
+            self.assertEqual(len(calls), len(PIPELINE_COMMANDS))
+            self.assertEqual(
+                provenance["source_inputs"]["capture_stage"],
+                "after_source_ingestion_before_derivation",
+            )
+            self.assertTrue(any(
+                item["path"] == "corpus/new_source.jsonl"
+                for item in provenance["source_inputs"]["files"]
+            ))
 
     def test_default_pipeline_version_matches_current_schema_release(self):
         environment = configure_environment({})

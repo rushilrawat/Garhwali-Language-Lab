@@ -29,7 +29,11 @@ explicit release actions after the generated checks pass.
 For a read-only preview of the derived-data refresh, run
 `python scripts/refresh_corpus_after_ingestion.py --dry-run`. It prints the
 ordered commands, release version, and package output paths, and checks that
-all planned scripts exist without creating or changing files.
+all planned scripts exist without creating or changing files. The plan also
+records the current Git revision and tracked-diff hash, hashes each pipeline
+script, and inventories the text JSONL inputs, source manifests, and online
+snapshot pointers. A real refresh captures that input inventory after the
+source-ingestion steps and stores it with the regenerated metrics.
 
 `ingest_archive_language_studies.py` extracts the downloaded Internet Archive
 DjVu OCR for the 1967 Juyal and 1976 Bhatta Garhwali-language studies into
@@ -128,6 +132,21 @@ and preflight-report hash. A failed preflight creates no upload tree or plan.
 The script stages files additively and does not upload; publication is a
 separate authenticated step after the remote destination prefix is checked.
 
+`compare_hf_release_metrics.py` compares two successful full-package preflight
+reports. It refuses a failed report or mismatched record-schema version,
+validator contract/hash, or metric definitions, then writes JSON and Markdown
+with per-config/split row deltas and metric counts. The aggregate rows are
+explicitly labeled as overlapping views, not unique examples or accuracy.
+Reproduce the v0.2.5-to-v0.2.6 comparison with:
+
+```bash
+PYTHONPATH=scripts .venv/bin/python scripts/compare_hf_release_metrics.py \
+  --previous research/huggingface-v0.2.5-comparison-preflight-2026-10-05.json \
+  --candidate research/huggingface-v0.2.6-candidate-preflight-2026-10-05.json \
+  --json-output research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.json \
+  --markdown-output research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.md
+```
+
 Unit tests live in `tests/` and mirror the Python command name. Run all tests
 with:
 
@@ -135,7 +154,7 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current working-tree suite passes **807 tests**. The
+The current working-tree suite passes **814 tests**. The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
 installs dependencies from `requirements-pipeline.txt`. Current benchmark

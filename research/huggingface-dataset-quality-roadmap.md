@@ -24,11 +24,15 @@ the three metadata reference configs. A final live check confirms all 26/26
 split views and 26/26 Parquet outputs with no pending or failed jobs. The
 preview, viewer, search, and filter capabilities are enabled; sample rows load
 for text, text resources, and the three reference tables. Statistics are not
-available from the Hub endpoint. All 807 project tests pass and local package
+available from the Hub endpoint. All 814 project tests pass and local package
 preflight reports zero errors. Phase 7 is complete; Phase 8 is active, with the
-refresh dry-run and additive-upload preflight/version gate implemented. The
-remaining automation work is to pin source-input manifests and code revision,
-then compare candidate metrics with the previous release. See the [release report](huggingface-corpus-v0.2.6-release-2026-10-05.md),
+refresh dry-run, additive-upload preflight/version gate, source/code provenance,
+and same-contract release comparison implemented. The v0.2.5-to-v0.2.6 audit
+compares 827,450 to 945,926 overlapping-view rows (+118,476), adds one
+190-row `text_resources/source_overlap` view, and records zero deletions or
+mutations. This is not a unique-text increase or accuracy gain. See the
+[comparison report](huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.md),
+[release report](huggingface-corpus-v0.2.6-release-2026-10-05.md),
 [schema/card fix report](huggingface-v0.2.6-viewer-schema-hotfix-2026-10-05.md),
 and [remote verification JSON](huggingface-v0.2.6-remote-file-verification-2026-10-05.json).
 
@@ -393,10 +397,27 @@ fresh environment.
   pins the input-manifest SHA-256, schema version, preflight run ID, and
   preflight-report SHA-256. A real v0.2.6 package passes this path across all
   26 configs; malformed-package and version-mismatch cases are covered by tests.
-- Next, pin the source/input manifests and code revision used by refresh runs,
-  then compare candidate metrics with the prior release using the same metric
-  contract. Keep the checkpointed LangGraph ingest, deterministic
-  deduplication, per-config scorecards, and source audits in the flow.
+- **Complete:** the dry-run fingerprints Git revision/tracked diff and all
+  pipeline scripts; it also hashes every discovered text JSONL input, source
+  manifest, and online snapshot pointer. A real refresh captures those inputs
+  after its pinned source-ingestion steps and stores the inventory alongside
+  the metrics. The current dry-run resolves 455 input files, including 75 text
+  JSONL files (212,625,108 bytes), with all required manifests present.
+- **Complete — same-contract release comparison:**
+  `compare_hf_release_metrics.py` accepts two passing preflight reports and
+  refuses mismatched record-schema versions, validator hashes/contracts, or
+  metric definitions. Fresh preflights for v0.2.5 and v0.2.6 produce the
+  [JSON](huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.json) and
+  [Markdown](huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.md)
+  comparison. Both have zero errors; the same validator SHA-256 and metric
+  definitions were verified. The comparison covers 25 shared config/splits,
+  one added view, no removed views, and zero reported deleted/mutated rows.
+  Its 118,476 aggregate-row increase sums overlapping views and reference
+  tables; it is not a count of new unique texts.
+- For future releases, run the same comparison after candidate preflight and
+  include both preflight reports and the comparison in the release audit.
+  Keep the checkpointed LangGraph ingest, deterministic deduplication,
+  per-config scorecards, and source audits in the flow.
 - Require successful tests, rights checks, overlap checks, and card/manifest
   reconciliation before any Hub upload.
 - Compare each release against its predecessor using the same metric contract.
@@ -434,4 +455,4 @@ versioned manifest and comparable metrics.
 | 5. Speech/transcripts | Existing partial audits | Explicit labeled/empty/draft counts and split-safe manifests |
 | 6. Coverage expansion | Active — intake, source disposition, page/section map, OCR comparison, visual triage, and technical media first pass complete | 119 local payloads; 4,011 OCR pages; 722-page Chatak/Shailesh map; zero exact and ≥0.85 near-text candidates against 32,072 cleaned rows; 39 media hashes/streams verified; content/language, OCR accuracy, and rights remain unresolved |
 | 7. HF release views | Complete for v0.2.6 | Data at `bddb006`; schemas/reference configs at `dc2bab7`/`cd43e9e`; 53 paths/hashes match, all 348 earlier paths remain, and live Viewer lists 26/26 splits plus 26/26 Parquet outputs; sample previews work |
-| 8. Automation | In progress | Refresh dry-run plus full preflight/version gate are implemented; upload plan pins manifest/schema/preflight hashes. Next pin upstream input manifests and code revision, then add same-contract predecessor comparison |
+| 8. Automation | In progress; comparison implemented | Refresh dry-run, upload preflight/version gate, source/code provenance, and reproducible v0.2.5-to-v0.2.6 same-contract report are complete; future releases must attach equivalent predecessor comparisons |

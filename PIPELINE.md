@@ -107,7 +107,11 @@ GARHWALI_RELEASE_VERSION=0.2.7 .venv/bin/python scripts/ingestion_graph.py run \
 
 Inspect the planned commands and paths first with
 `.venv/bin/python scripts/refresh_corpus_after_ingestion.py --dry-run`. The
-plan performs no writes.
+plan performs no writes. It also fingerprints the pipeline scripts and Git
+state, and records hashes for the current text-record files, source manifests,
+and online snapshot pointers. During a real refresh, the source inventory is
+captured after the pinned source-ingestion steps and saved with the local
+metrics report.
 
 ```bash
 GARHWALI_RELEASE_VERSION=0.2.7 .venv/bin/python scripts/prepare_hf_additive_upload.py \
@@ -247,3 +251,14 @@ configurations, generates the dataset card and manifest, filters the public
 profile using component-level license evidence, and hard-links content-addressed
 audio. Its final mode rejects an incomplete SraVaani draft set; partial output is
 available only through the explicit preview flag.
+
+## Compare release metrics
+
+After a candidate package passes `validate_hf_package_cloud.py`, run
+`compare_hf_release_metrics.py` with the previous and candidate JSON reports.
+The comparator requires passing reports with identical record-schema versions,
+validator contract/hash, and metric definitions; it writes a hash-linked JSON
+result and a Markdown review table. For the recorded v0.2.5-to-v0.2.6 run, see
+[`research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.md`](research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.md).
+Aggregate config/split rows include overlapping views and reference tables,
+so report them separately from unique texts and model-quality scores.

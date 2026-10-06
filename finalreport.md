@@ -17,7 +17,7 @@ overlapping configs and reference tables; they are not unique examples.
 The local package preflight reports zero errors, zero missing source-traceability
 rows, zero deleted or mutated records, and zero remaining identity leakage
 across its configured splits. All v0.2.5 unique text values remain represented.
-The current full suite passes **807/807** tests. The Viewer initially identified a
+The current full suite passes **814/814** tests. The Viewer initially identified a
 schema-inference error for `text` and `text_resources`; the cards now declare
 stable schemas and all three metadata-reference configs, and their remote
 hashes match local files. The final live check confirms **26/26 splits** and
@@ -29,6 +29,15 @@ Dataset Viewer release check are complete.
 See the [v0.2.6 publication report](research/huggingface-corpus-v0.2.6-release-2026-10-05.md),
 [schema hotfix report](research/huggingface-v0.2.6-viewer-schema-hotfix-2026-10-05.md),
 and [remote verification JSON](research/huggingface-v0.2.6-remote-file-verification-2026-10-05.json).
+
+A same-contract rerun now compares the v0.2.5 and v0.2.6 local package
+preflights. It verifies matching schema version, validator SHA-256, and metric
+definitions across 25 shared config/splits; v0.2.6 adds one 190-row
+`text_resources/source_overlap` view, removes no view, and reports zero
+deleted or mutated records. Aggregate view rows rise from 827,450 to 945,926
+(+118,476), a total across overlapping configs and reference tables—not new
+unique text or an accuracy gain. See the [comparison report](research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.md)
+and its [machine-readable result](research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.json).
 
 The separate speech repository remains at v0.2.1. The current training audit
 reports zero recommendation mismatches and zero text rows recommended for
@@ -126,8 +135,9 @@ comparison to this single Whisper-tiny remainder score or an independent test
 for this project. The v0.2.6 publication-era suite passed **802/802** tests
 after the provenance and Viewer-schema work. Phase 8's read-only dry-run test
 brought the suite to **803/803**. The additive-upload preflight/version guard
-and four regression cases bring the current full suite to **807/807** (the
-repository CI unittest discovery command).
+and four regression cases plus two provenance cases brought the suite at that
+checkpoint to **809/809** (the repository CI unittest discovery command). Five
+release-comparison regression tests bring the current suite to **814/814**.
 
 ## Meta Omnilingual ASR validation — 2026-10-04 to 2026-10-05
 
@@ -188,8 +198,10 @@ The earlier v0.2.4 audit recorded **776/776** unittest cases; the v0.2.5
 split-safety milestone raised this to **791/791**, and the v0.2.6 provenance
 and Viewer-schema additions brought the suite to **802/802**. Phase 8's
 read-only dry-run regression test brought that to **803/803**. The additive-
-upload preflight/version checks and four regression cases bring the current
-full suite to **807/807**. The
+upload preflight/version checks and four regression cases brought the suite to
+**807/807**. Two source/code-provenance cases brought that checkpoint to
+**809/809**; five release-comparison tests bring the current suite to
+**814/814**. The
 `validate_release_index.py` check still passes for release snapshot v0.1.1. Its compact
 artifact hashes and paths also pass when checked without comparing against
 the current source tree. The stricter local `build_release_bundle.py --check`
