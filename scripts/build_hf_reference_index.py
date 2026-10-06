@@ -46,6 +46,7 @@ PUBLIC_KEY_FIELDS = {
     "catalog": "id",
     "instructions": "instruction_sha256",
     "lexicon": "form_sha256",
+    "paharili_gbm": "id",
     "sravaani_drafts": "audio_sha256",
     "text": "id",
     "text_expansion": "id",
@@ -111,6 +112,26 @@ def public_content_keys(public_root: Path) -> dict[str, dict[str, bool]]:
                 # Every catalog record stays addressable; some expose metadata only.
                 keys[str(key)] = bool(row.get("text_publicly_available", True))
         result[config] = keys
+    paharili_source_ids = {}
+    for config in (
+        "paharili_gbm", "text", "text_expansion", "text_resources",
+        "asr", "sravaani_drafts", "instructions", "lexicon",
+    ):
+        for _, _, _, row in read_rows(public_root / "data" / config):
+            for field in ("provenance", "sources"):
+                sources = row.get(field) or []
+                if isinstance(sources, dict):
+                    sources = sources.get("provenance") or []
+                if not isinstance(sources, list):
+                    continue
+                for source in sources:
+                    if (
+                        isinstance(source, dict)
+                        and source.get("source_id") == "paharili_gbm"
+                        and source.get("record_id")
+                    ):
+                        paharili_source_ids[str(source["record_id"])] = True
+    result["paharili_gbm_source_ids"] = paharili_source_ids
     return result
 
 
@@ -174,6 +195,17 @@ def make_record_row(config: str, split: str, shard: str, ordinal: int, row: dict
     available = False
     if key_field and row.get(key_field) is not None:
         available = content_keys.get(config, {}).get(str(row[key_field]), False)
+    if not available:
+        sources = row.get("provenance") or row.get("sources") or []
+        if isinstance(sources, dict):
+            sources = sources.get("provenance") or []
+        available = any(
+            isinstance(source, dict)
+            and content_keys.get("paharili_gbm_source_ids", {}).get(
+                str(source.get("record_id") or ""), False
+            )
+            for source in sources
+        )
     row_rights = row.get("rights_status") or row.get("redistribution_status") or "not_recorded"
     metadata = {
         key: row[key]
@@ -373,11 +405,25 @@ def update_dataset_card(report: dict) -> None:
     text = path.read_text(encoding="utf-8")
     front, body = text.split("---\n", 2)[1:]
     quick_heading = "## Developer quick start"
-    quick_start_at = body.find(quick_heading)
-    if quick_start_at >= 0:
-        summary_at = body.find("\n## What this repository provides", quick_start_at)
-        if summary_at >= 0:
-            body = body[:quick_start_at] + body[summary_at + 1:]
+    lines = body.splitlines()
+    while quick_heading in lines:
+        start = lines.index(quick_heading)
+        end = next(
+            (index for index in range(start + 1, len(lines))
+             if lines[index].startswith("## ")),
+            len(lines),
+        )
+        del lines[start:end]
+    old_config_heading = "## Configurations and current row counts"
+    while old_config_heading in lines:
+        start = lines.index(old_config_heading)
+        end = start + 1
+        while end < len(lines) and (
+            not lines[end].strip() or lines[end].lstrip().startswith("|")
+        ):
+            end += 1
+        del lines[start:end]
+    body = "\n".join(lines)
     config_blocks = "".join(
         f"- config_name: {name}\n  data_files:\n  - split: train\n    path: data/{name}/train-00000.jsonl\n"
         for name in TABLES
@@ -398,6 +444,7 @@ def update_dataset_card(report: dict) -> None:
     config_rows = []
     descriptions = {
         "text": "Garhwali text examples",
+        "paharili_gbm": "PahariLI Garhwali-labeled text-classification examples; sentence origins and rights remain unresolved",
         "text_expansion": "strict-tier train-split candidates; zero currently meet training recommendation; not evaluation data",
         "text_resources": "rights-cleared supplementary text; varied quality, not for evaluation",
         "lexicon": "vocabulary and pronunciation candidates",
@@ -462,7 +509,7 @@ is shipped at the release root.
 """
     summary = f"""## What this repository provides
 
-This public dataset has rights-filtered content configurations containing **{report['public_profile_package_rows']:,} rows** across {report.get('public_content_config_count', 0)} named configurations and {report.get('public_content_config_split_views', 0)} config/split views. Separately, the metadata-only reference index covers every one of the **{report['records']:,} rows** in the complete all-data archive, including all 216 structured geography, history, literature, music, and research records.
+This public dataset has **{report['public_profile_package_rows']:,} rows** across {report.get('public_content_config_count', 0)} named configurations and {report.get('public_content_config_split_views', 0)} config/split views. Reuse terms vary by row and configuration. The `paharili_gbm` config is an explicitly labeled experimental inclusion: PahariLI declares an Apache-2.0 repository license, while sentence-level source origins remain unresolved. Separately, the metadata-only reference index covers every one of the **{report['records']:,} rows** in the complete all-data archive, including all 216 structured geography, history, literature, music, and research records.
 
 The reference index includes **{report['source_catalog_records']:,} deduplicated source records** and **{report['record_source_links']:,} record-to-source links**. It exposes available names and titles, source URLs, attribution, rights status, and quality metadata. Record-level rights are marked `not_recorded` for **{report.get('record_rights_status_counts', {}).get('not_recorded', 0):,} rows**; other rows include rights-pending, reviewed-unresolved, metadata-only, or cleared statuses. `not_recorded` is not permission to reuse a record: inspect its linked source entry and terms. The index does not contain the referenced works' text, lyrics, transcripts, audio, speaker identifiers, local paths, or content hashes. These are archive-row counts with overlapping views, not unique-example counts; the reference rows themselves are not training examples. Links and bibliographic facts do not grant rights to copy or reuse source material.
 """
@@ -485,7 +532,7 @@ The reference index includes **{report['source_catalog_records']:,} deduplicated
 
 The three metadata tables cover **{report['records']:,} records** from the complete local all-data archive. `record_index` has one row per archived record, `source_catalog` contains {report['source_catalog_records']:,} deduplicated source references, and `record_sources` contains {report['record_source_links']:,} join rows. The tables include source URLs, available attribution, rights and quality status, and factual catalog fields. They exclude source text, lyrics, transcripts, machine drafts, audio, speaker identifiers, local paths, and content hashes.
 
-The current public package has **{report['public_profile_package_rows']:,} rows** across its content configurations; **{report['records_with_content_in_public_profile']:,}** indexed records have a corresponding public content value. Other catalog entries retain identifiers and source/rights metadata while their full text remains outside public content. Reference-index rows are not training examples and must not be added to corpus sample counts. Source links point to original material and do not grant reuse rights.
+The current public package has **{report['public_profile_package_rows']:,} rows** across its content configurations; **{report['records_with_content_in_public_profile']:,}** indexed records have a corresponding public content value. Some catalog entries retain identifiers and source/rights metadata while their full text remains outside the `catalog` config; PahariLI text is separately exposed in `paharili_gbm` with its unresolved origin status. Reference-index rows are not training examples and must not be added to corpus sample counts. Source links point to original material and do not grant reuse rights.
 
 See [`reference_index_manifest.json`](reference_index_manifest.json) for counts by family and the three table checksums.
 """

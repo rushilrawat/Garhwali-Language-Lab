@@ -489,6 +489,14 @@ def main():
                 errors.append(f'missing_file:{filename}')
     if manifest.get('reference_index'):
         expected_files.add('reference_index_manifest.json')
+    if any(
+        key.split('/', 1)[0] == 'paharili_gbm'
+        for key in manifest['configs']
+    ):
+        paharili_license = 'licenses/PahariLI-Apache-2.0.txt'
+        expected_files.add(paharili_license)
+        if not (args.package / paharili_license).is_file():
+            errors.append(f'missing_file:{paharili_license}')
     for key, config in manifest['configs'].items():
         group, _ = key.split('/', 1)
         expected_files.update(

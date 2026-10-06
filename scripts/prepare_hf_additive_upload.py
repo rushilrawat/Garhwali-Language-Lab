@@ -58,10 +58,16 @@ def validate_package(package: Path) -> list[Path]:
     optional_support_files = {
         Path("research/huggingface-upstream-split-overlap-2026-10-05.json"),
         Path("research/huggingface-upstream-split-overlap-2026-10-05.md"),
+        Path("licenses/PahariLI-Apache-2.0.txt"),
     }
     declared.update(
         path for path in optional_support_files if (package / path).is_file()
     )
+    if any(
+        config.split("/", 1)[0] == "paharili_gbm"
+        for config in manifest.get("configs", {})
+    ) and Path("licenses/PahariLI-Apache-2.0.txt") not in declared:
+        raise ValueError("PahariLI data requires its upstream license text in the package")
     for config_name, details in manifest.get("configs", {}).items():
         family = config_name.split("/", 1)[0]
         for filename in details.get("files", []):

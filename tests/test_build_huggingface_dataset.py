@@ -108,6 +108,10 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                     {'id': 'resource-1', 'forms': []},
                     {'id': 'resource-2', 'forms': ['गढ़वाली']},
                 ],
+                'paharili_gbm': [
+                    {'id': 'paharili-1', 'text': 'गढ़वाली वाक्य', 'source_record_ids': ['paharili_gbm:train:1']},
+                    {'id': 'paharili-2', 'text': 'दूसरा वाक्य', 'source_record_ids': []},
+                ],
             }
             for config_name, rows in config_rows.items():
                 config_dir = output / 'data' / config_name
@@ -125,7 +129,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
 
             self.assertEqual(
                 [entry['config_name'] for entry in dataset_info],
-                ['text', 'text_resources'],
+                ['text', 'text_resources', 'paharili_gbm'],
             )
             for entry in dataset_info:
                 config_name = entry['config_name']
@@ -562,6 +566,75 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertFalse(rows[1]['recommended_for_training'])
         self.assertEqual(rows[0]['public_rights_basis'][0]['license_id'], 'CC-BY-4.0')
         self.assertEqual(rows[0]['split'], 'train')
+
+    def test_paharili_view_deduplicates_and_preserves_upstream_provenance(self):
+        def source(record_id, text, split, language='gbm'):
+            source_split = record_id.split(':')[1]
+            return {
+                'record_id': record_id,
+                'text_original': text,
+                'text_normalized': text,
+                'split': split,
+                'iso_639_3': language,
+                'upstream_label': language,
+                'source_id': 'paharili_gbm',
+                'source_url': 'https://github.com/rachanagusain/PahariLI',
+                'attribution': 'Rachana Gusain, PahariLI repository',
+                'license_id': 'Apache-2.0-repository-declared',
+                'license_url': 'https://www.apache.org/licenses/LICENSE-2.0',
+                'rights_status': (
+                    'repository_Apache_2; underlying_blogs_and_translated_text_not_sublicensed'
+                ),
+                'quality_status': 'unreviewed',
+                'quality_flags': [
+                    'source_lineage_missing', 'component_rights_review_required',
+                    'possible_modern_scripture_or_blog_text',
+                ],
+                'provenance': {
+                    'url': f'https://raw.githubusercontent.com/rachanagusain/PahariLI/main/data/{source_split}.txt',
+                    'sha256': 'a' * 64 if source_split == 'train' else 'b' * 64,
+                    'bytes': 123,
+                },
+            }
+
+        rows, metrics = m.build_paharili_gbm_rows(
+            [
+                source('paharili_gbm:train:1', 'गार्हवाली वाक्य।', 'train'),
+                source('paharili_gbm:test:2', 'गार्हवाली वाक्य!', 'test'),
+                source('paharili_gbm:test:3', 'मि ठीक छौं।', 'test'),
+                source('paharili_gbm:train:4', 'नयाँ वाक्य', 'train'),
+                source('paharili_gbm:train:5', 'अन्य भाषा।', 'train', language='doi'),
+            ],
+            [
+                {
+                    'text': 'मि ठीक छौं।',
+                    'provenance': [{'record_id': 'paharili_gbm:test:3'}],
+                },
+            ],
+        )
+
+        self.assertEqual(len(rows), 2)
+        overlap = next(row for row in rows if row['split'] == 'source_overlap')
+        train = next(row for row in rows if row['split'] == 'train')
+        self.assertEqual(
+            overlap['source_record_ids'],
+            ['paharili_gbm:test:2', 'paharili_gbm:train:1'],
+        )
+        self.assertEqual(overlap['upstream_splits'], ['test', 'train'])
+        self.assertEqual(overlap['source_text_variants'], ['गार्हवाली वाक्य!', 'गार्हवाली वाक्य।'])
+        self.assertEqual(train['text'], 'नयाँ वाक्य')
+        self.assertFalse(train['training_eligible'])
+        self.assertEqual(train['rights_status'], (
+            'repository_Apache_2; underlying_blogs_and_translated_text_not_sublicensed'
+        ))
+        self.assertIn('component_rights_review_required', train['record_quality_flags'])
+        self.assertEqual(metrics['input_records'], 5)
+        self.assertEqual(metrics['garhwali_source_records'], 4)
+        self.assertEqual(metrics['normalized_unique_source_texts'], 3)
+        self.assertEqual(metrics['collapsed_duplicate_source_records'], 1)
+        self.assertEqual(metrics['already_present_in_existing_configs'], 1)
+        self.assertEqual(metrics['new_records'], 2)
+        self.assertEqual(metrics['split_records'], {'source_overlap': 1, 'train': 1})
 
     def test_catalog_text_resources_keep_broad_rights_cleared_text_separate(self):
         open_basis = {
@@ -1416,6 +1489,45 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIn("**607** currently meet the project's conservative training-recommendation rule", card)
         self.assertIn('**1,051** do not pass the current source-eligibility or quality gates', card)
         self.assertIn('figures below describe the current v0.2.2 package', card)
+
+    def test_v0_2_7_card_explains_paharili_addition_and_rights_limits(self):
+        report = {
+            'release_id': 'garhwali-language-lab-v0.2.7',
+            'profile': 'public',
+            'configs': {
+                'paharili_gbm/train': {'records': 11989},
+                'paharili_gbm/test': {'records': 2995},
+                'paharili_gbm/source_overlap': {'records': 4},
+            },
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'draft_unique_audio': 0,
+            'catalog_records': 0,
+            'catalog_redacted_text_records': 0,
+            'structured_knowledge_excluded_for_rights': {},
+            'structured_knowledge_metadata_only': {},
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+            'paharili_gbm_metrics': {
+                'garhwali_source_records': 15000,
+                'normalized_unique_source_texts': 14989,
+                'collapsed_duplicate_source_records': 11,
+                'already_present_in_existing_configs': 1,
+                'new_records': 14988,
+                'split_records': {'source_overlap': 4, 'test': 2995, 'train': 11989},
+            },
+        }
+
+        card = m.dataset_card(report)
+
+        self.assertIn('config_name: paharili_gbm', card)
+        self.assertIn('adds **14,988 normalized-unique Garhwali-labeled sentence records**', card)
+        self.assertIn('11 repeated source rows', card)
+        self.assertIn('4 text groups that occur in both upstream splits', card)
+        self.assertIn('README does not identify the sentence-level source of each item', card)
 
     def test_v0_2_4_card_documents_metadata_only_attribution_update(self):
         report = {

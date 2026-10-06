@@ -25,6 +25,14 @@ required share-alike or noncommercial condition. Records with conflicting source
 terms take the most restrictive applicable treatment until the conflict is
 resolved.
 
+The v0.2.7 public corpus explicitly includes the Garhwali-labeled PahariLI
+sentence config even though sentence-level origins and redistribution rights
+are unresolved. Its rows expose the upstream Apache-2.0 repository declaration
+and the unresolved underlying-source status; inclusion does not assert that the
+repository license covers those source texts or grant downstream rights. This
+is an experimental project inclusion, separate from the ordinary public-rights
+filter, and must not be described as uniformly rights-cleared.
+
 Copyright does not depend on a visible copyright notice. Public accessibility,
 indexing, or the absence of an explicit “private” label is not a reuse license.
 Short individual facts, names, titles, and words can be represented as facts

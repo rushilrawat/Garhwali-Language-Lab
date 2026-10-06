@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **1,020**.
+Files indexed: **1,021**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -585,6 +585,7 @@ python scripts/generate_project_file_map.py
 - `research/huggingface-corpus-v0.2.5-release-2026-10-05.md`
 - `research/huggingface-corpus-v0.2.5-viewer-schema-repair-2026-10-05.md`
 - `research/huggingface-corpus-v0.2.6-release-2026-10-05.md`
+- `research/huggingface-corpus-v0.2.7-release-2026-10-06.md`
 - `research/huggingface-dataset-quality-roadmap.md`
 - `research/huggingface-existing-corpus-expansion-audit-2026-10-02.md`
 - `research/huggingface-indic_dialect_asr_gbm-catalog-lineage-2026-10-05.json`
@@ -1073,11 +1074,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **239,193**.
+- Workspace files counted: **239,388**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **1,020**.
-- Ignored or otherwise unlisted payload files: **238,173** (169,400,252,184 bytes).
-- Total workspace bytes counted: **169,418,313,986**.
+- Detailed file paths listed above: **1,021**.
+- Ignored or otherwise unlisted payload files: **238,367** (172,460,408,130 bytes).
+- Total workspace bytes counted: **172,478,497,476**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1101,7 +1102,7 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `data/cache/…/` | 2 | 104,176 |
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
 | `data/extracted/…/` | 736 | 104,222,678 |
-| `data/huggingface/…/` | 2,719 | 84,039,919,174 |
+| `data/huggingface/…/` | 2,913 | 87,100,075,120 |
 | `data/processed/…/` | 110,561 | 41,807,390,124 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |

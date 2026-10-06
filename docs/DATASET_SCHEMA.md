@@ -8,10 +8,10 @@ provenance or turn an upstream source's terms into one corpus-wide license.
 
 Current envelope version: **1.0.0** (recorded in each package manifest).
 
-The v0.2.1 corpus schema adds these fields to every corpus record. The speech
-builders emit the same envelope when the Parquet package is regenerated.
-Existing source-specific rights, license, quality, transcript, and provenance
-columns remain intact.
+The corpus builder adds these fields to each released corpus record. The speech
+builder emits the same envelope in its regenerated package. Existing
+source-specific rights, license, quality, transcript, and provenance columns
+remain intact.
 
 | Field | Type | Meaning |
 | --- | --- | --- |
@@ -31,6 +31,7 @@ and other source-specific fields remain the evidence of record.
 | Config | Main fields |
 | --- | --- |
 | `text` | `id`, `text`, `language`, `script`, `split`, `quality_tiers`, `quality_flags`, `provenance`, `public_rights_basis` |
+| `paharili_gbm` | normalized-unique Garhwali-labeled PahariLI sentences, source text variants, upstream split, source record IDs, raw-file URL/SHA-256, repository license declaration, and source/quality flags |
 | `lexicon` | `form`, `glosses`, `graphemes`, `pronunciation_status`, `dialect_quality`, source hashes and provenance |
 | `asr` | `audio_sha256`, `transcript`, `source`, `district`, `split`, transcript review and quality fields |
 | `sravaani_drafts` | `audio_sha256`, `transcript`, machine model/revision, review and confidence evidence; nested evidence may be compact JSON strings |
@@ -40,6 +41,14 @@ and other source-specific fields remain the evidence of record.
 | `record_index` | content-free record reference, `record_family`, rights/quality summary, and source reference IDs |
 | `source_catalog` | deduplicated source details, attribution, source-specific terms, and quality/provenance status |
 | `record_sources` | record/source join IDs; resolve rights and reuse through the linked record and source |
+
+The `paharili_gbm` config preserves the upstream `train` and `test` split
+labels. A normalized text found in both is represented once in
+`source_overlap`, with both source IDs and original surface forms retained.
+Its upstream `test` partition is only the source language-identification
+holdout; it is not a project-wide independent evaluation set. Row-level
+rights/quality fields identify that the repository's Apache-2.0 declaration
+does not resolve the individual sentence origins.
 
 ## Speech schema
 

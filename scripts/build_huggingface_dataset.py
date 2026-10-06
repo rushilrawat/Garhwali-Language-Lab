@@ -26,6 +26,8 @@ DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab'
 ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
 SOURCE_ATTRIBUTION_OVERLAY_PATH = ROOT / 'research/source-attribution-overlays-2026-10-05.json'
 UPSTREAM_SPLIT_OVERLAP_PATH = ROOT / 'research/huggingface-upstream-split-overlap-2026-10-05.json'
+PAHARILI_GBM_ROWS_PATH = ROOT / 'experimental/paharili_gbm.jsonl'
+PAHARILI_LICENSE_PATH = ROOT / 'sources/online/paharili/c71d239df91726fc-LICENSE'
 # Preserve these earlier local output paths in the overwrite guard. Their names
 # are historical storage paths, not semantic project release versions.
 LEGACY_PUBLIC_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-v2.0.0-staging'
@@ -741,6 +743,179 @@ def source_record_ids(row):
         item.get('record_id') for item in values
         if isinstance(item, dict) and item.get('record_id')
     }
+
+
+def build_paharili_gbm_rows(source_rows, existing_text_rows):
+    """Build a traceable Garhwali-only PahariLI view without duplicate text rows."""
+    source_rows = list(source_rows)
+    groups = {}
+    garhwali_rows = []
+    seen_record_ids = set()
+    for row in source_rows:
+        if row.get('iso_639_3') != 'gbm' or row.get('upstream_label') != 'gbm':
+            continue
+        record_id = str(row.get('record_id') or '')
+        if record_id in seen_record_ids:
+            raise ValueError(f'Duplicate PahariLI record ID: {record_id}')
+        seen_record_ids.add(record_id)
+        if not record_id.startswith('paharili_gbm:'):
+            raise ValueError(f'Invalid PahariLI record ID: {record_id!r}')
+        text = str(row.get('text_original') or row.get('text_normalized') or '')
+        key = normalized_text_key(text)
+        if not key:
+            raise ValueError(f'Empty Garhwali PahariLI record: {record_id}')
+        origin = row.get('provenance') or {}
+        if not origin.get('url') or not re.fullmatch(
+            r'[0-9a-f]{64}', str(origin.get('sha256') or '')
+        ):
+            raise ValueError(f'Missing raw-file provenance for {record_id}')
+        if row.get('split') not in {'train', 'test'}:
+            raise ValueError(
+                f'Unexpected upstream PahariLI split for {record_id}: {row.get("split")!r}'
+            )
+        groups.setdefault(key, {})[record_id] = row
+        garhwali_rows.append(row)
+
+    existing_by_key = {}
+    for row in existing_text_rows:
+        for field in (
+            'text', 'release_text', 'text_normalized', 'text_original',
+            'transcript', 'asr_target_clean', 'machine_transcript', 'form',
+        ):
+            value = row.get(field)
+            key = normalized_text_key(value) if isinstance(value, str) else ''
+            if key:
+                existing_by_key.setdefault(key, []).append(row)
+
+    output = []
+    already_present = 0
+    already_present_source_ids = 0
+    source_overlap_groups = 0
+    split_records = Counter()
+    for key, group in sorted(groups.items()):
+        group_rows = list(group.values())
+        record_ids = sorted(group)
+        source_splits = sorted({str(row['split']) for row in group_rows})
+        if key in existing_by_key:
+            represented_ids = set().union(*(
+                source_record_ids(existing)
+                for existing in existing_by_key[key]
+            ))
+            missing_ids = set(record_ids) - represented_ids
+            if missing_ids:
+                raise ValueError(
+                    'PahariLI text already exists in another release config but '
+                    f'its source IDs are not preserved: {sorted(missing_ids)[:5]}'
+                )
+            already_present += 1
+            already_present_source_ids += len(record_ids)
+            continue
+
+        split = 'source_overlap' if len(source_splits) > 1 else source_splits[0]
+        source_overlap_groups += split == 'source_overlap'
+        split_records[split] += 1
+        source_texts = sorted({
+            str(row.get('text_original') or row.get('text_normalized') or '')
+            for row in group_rows
+        })
+        provenance = []
+        for record_id in record_ids:
+            row = group[record_id]
+            origin = row['provenance']
+            split_name = str(row['split'])
+            try:
+                source_record_index = int(record_id.rsplit(':', 1)[1])
+            except (IndexError, ValueError) as exc:
+                raise ValueError(f'Invalid PahariLI source index: {record_id}') from exc
+            provenance.append({
+                'source_id': 'paharili_gbm',
+                'source_ref_id': 'PahariLI',
+                'record_id': record_id,
+                'source_url': str(row.get('source_url') or ''),
+                'source_file_url': str(origin['url']),
+                'source_file_sha256': str(origin['sha256']),
+                'source_split': split_name,
+                'source_record_index': source_record_index,
+                'source_line_number': source_record_index + 1,
+                'iso_639_3': 'gbm',
+                'upstream_label': 'gbm',
+                'license_id': str(row.get('license_id') or ''),
+                'license_url': str(row.get('license_url') or ''),
+                'rights_status': str(row.get('rights_status') or ''),
+                'attribution': str(row.get('attribution') or ''),
+            })
+
+        first = group_rows[0]
+        license_id = str(first.get('license_id') or '')
+        rights_status = str(first.get('rights_status') or 'not_assessed')
+        flags = sorted({
+            str(flag)
+            for row in group_rows
+            for flag in row.get('quality_flags') or []
+            if flag
+        })
+        text = source_texts[0]
+        digest = hashlib.sha256(key.encode('utf-8')).hexdigest()
+        output.append({
+            'id': f'paharili-gbm-{digest}',
+            'text': text,
+            'text_sha256': hashlib.sha256(text.encode('utf-8')).hexdigest(),
+            'normalized_text_key_sha256': digest,
+            'source_text_variants': source_texts,
+            'source_record_ids': record_ids,
+            'upstream_splits': source_splits,
+            'split': split,
+            'split_assignment': (
+                'upstream_paharili_train_test; '
+                'cross-split text grouped in source_overlap'
+            ),
+            'language': 'gbm',
+            'iso_639_3': 'gbm',
+            'language_name': 'Garhwali',
+            'language_label_source': (
+                'PahariLI upstream label; not independently reviewed'
+            ),
+            'script': str(first.get('script') or 'Deva'),
+            'genre': 'mixed_web_and_scripture',
+            'upstream_task': 'text language identification',
+            'provenance': provenance,
+            'attribution': 'Rachana Gusain, PahariLI repository',
+            'license_id': license_id,
+            'license_url': str(first.get('license_url') or ''),
+            'rights_status': rights_status,
+            'reuse_scope': (
+                'The PahariLI repository declares Apache-2.0; sentence-level '
+                'origins and redistribution rights are not independently established.'
+            ),
+            'license_labels': [license_id] if license_id else [],
+            'quality_status': 'unreviewed; no native-language review',
+            'quality_flags': flags,
+            'record_quality_flags': flags,
+            'native_reviewed': False,
+            'training_eligible': False,
+            'experimental_training_eligible': split == 'train',
+            'recommended_for_general_language_model_training': False,
+        })
+
+    metrics = {
+        'input_records': len(source_rows),
+        'garhwali_source_records': len(garhwali_rows),
+        'excluded_non_garhwali_records': len(source_rows) - len(garhwali_rows),
+        'normalized_unique_source_texts': len(groups),
+        'collapsed_duplicate_source_records': len(garhwali_rows) - len(groups),
+        'already_present_in_existing_configs': already_present,
+        'source_record_ids_already_in_existing_configs': already_present_source_ids,
+        'new_records': len(output),
+        'new_source_record_ids': sum(len(row['source_record_ids']) for row in output),
+        'all_source_record_ids_preserved': (
+            already_present_source_ids
+            + sum(len(row['source_record_ids']) for row in output)
+            == len(garhwali_rows)
+        ),
+        'source_split_overlap_groups': source_overlap_groups,
+        'split_records': dict(sorted(split_records.items())),
+    }
+    return output, metrics
 
 
 @lru_cache(maxsize=1)
@@ -1713,6 +1888,7 @@ def dataset_info_for_release(output, config_report):
     dataset_info = []
     for config_name in (
         'sravaani_drafts', 'text', 'text_expansion', 'text_resources',
+        'paharili_gbm',
     ):
         if config_report.get(f'{config_name}/train', {}).get('records', 0):
             dataset_info.append({
@@ -1835,6 +2011,7 @@ def dataset_card(report, dataset_info=None):
         'literary_people': 'writer and contributor metadata',
         'literary_works': 'work-level bibliography',
         'popular_songs': 'song-level metadata; no lyrics',
+        'paharili_gbm': 'Garhwali-labeled PahariLI language-identification text; unreviewed and retains source-lineage and rights caveats',
         'record_index': 'archive references; not training examples',
         'record_sources': 'record-to-source links; not training examples',
         'source_catalog': 'deduplicated source and rights references',
@@ -1886,7 +2063,7 @@ metadata attached.'''
             f'across {config_count} named {config_word} '
             f'({len(nonempty_configs)} config/split entries)'
         )
-        resource_summary = '''This rights-filtered profile contains Garhwali
+        resource_summary = '''This public profile contains Garhwali
 text, human transcripts, lexicon and instructions, plus experimental SraVaani
 drafts. The geography, history, literature, song, and university-research
 configurations contain factual and bibliographic metadata, with expressive
@@ -1904,12 +2081,23 @@ their full text is not included in public content. The current catalog exposes *
         access_notice = f'''All **{metadata_only:,} structured geography, history, literature, song, and research records** appear in factual/bibliographic form; no records are dropped from these metadata configurations. Prose notes, lyrics, translations, abstracts, and source passages are omitted unless separately licensed. For retained catalog entries, the full text not included in this public profile remains in the local all-data package; entries whose source text was not acquired remain represented by their available source metadata. Each text-catalog record carries its specific rights state: CC BY-SA rows require attribution and share-alike; CC BY-NC-SA rows are noncommercial and share-alike; the five PIB instrument terms cite the PIB reproduction policy; and the 193 Mountain Voices glossary headwords carry Panos's attributed-reproduction guideline for press, educational/research institutions, and nonprofits. That guideline does not expressly address commercial scope or model training, so those values are excluded from model-training views. The **{report.get('catalog_factual_word_records', 0):,}** isolated one-token facts are listed without definitions, source record positions, or list ordering. Lexical facts from unlicensed thematic sources are included only when independently present in at least two distinct source collections; all such facts remain catalog-only, outside training views, and retain language-review flags. See the [source-by-source rights-resolution log](research/text-rights-resolution-2026-09-30.md). Native-speaker review and dialect annotation are deferred; benchmark and model scores are automated research results, not native-validated claims.'''
     expansion_metrics = report.get('text_expansion_metrics') or {}
     resource_metrics = report.get('text_resource_metrics') or {}
+    paharili_metrics = report.get('paharili_gbm_metrics') or {}
     text_expansion_summary = f'''## Fast-tracked text expansion
 
 The `text_expansion` config adds **{expansion_metrics.get('records', 0):,}** Garhwali candidate texts from the existing catalog. Each passed automated strict-tier and recorded rights-basis checks, is absent from the existing text splits after NFKC/alphanumeric normalization, and has no source-record ID matching existing text validation/test or frozen benchmark validation/test rows. **{expansion_metrics.get('source_split_overlap_records', 0):,}** values with upstream Meta or VAANI development/test source matches remain published in the `source_overlap` split, outside default `train`. The values remain machine-screened, not native-reviewed. **{expansion_metrics.get('recommended_for_training', 0):,}** currently meet the project's conservative training-recommendation rule; **{max(0, expansion_metrics.get('records', 0) - expansion_metrics.get('recommended_for_training', 0)):,}** do not pass the current source-eligibility or quality gates. This is not training approval; source-page-family isolation is not assessed, so it is not an independent evaluation set. Values also appear in the `catalog` inventory by design; do not add config row counts when reporting unique texts.'''
     text_resources_summary = f'''## Supplementary text resources
 
 The `text_resources` config adds **{resource_metrics.get('records', 0):,}** additional normalized-unique Garhwali records ({resource_metrics.get('whitespace_words', 0):,} whitespace-delimited words; {resource_metrics.get('characters', 0):,} characters) already present in the source catalog. These pass the recorded redistribution-basis and Garhwali-language filters and are absent from the existing text-bearing views after normalized deduplication. Their quality tiers vary; **{resource_metrics.get('recommended_for_training', 0):,}** are currently recommended for training and none are recommended for evaluation. The config is intended for lookup and research. Check each row's `redistribution_status`, license, quality flags, and source terms before reuse. CC BY-NC-SA rows are limited to noncommercial use and require share-alike; this subset is not uniformly training-ready or a native-reviewed text set.'''
+    paharili_summary = ''
+    if paharili_metrics:
+        split_counts = paharili_metrics.get('split_records') or {}
+        paharili_summary = f'''## PahariLI Garhwali text addition
+
+The new `paharili_gbm` config adds **{paharili_metrics.get('new_records', 0):,} normalized-unique Garhwali-labeled sentence records** from the [PahariLI corpus](https://github.com/rachanagusain/PahariLI). It starts from {paharili_metrics.get('garhwali_source_records', 0):,} upstream GBM-labeled rows, which reduce to {paharili_metrics.get('normalized_unique_source_texts', 0):,} distinct normalized texts after collapsing {paharili_metrics.get('collapsed_duplicate_source_records', 0):,} repeated source rows. All source record IDs and surface variants are retained: {paharili_metrics.get('new_source_record_ids', 0):,} source IDs appear in this config, and {paharili_metrics.get('source_record_ids_already_in_existing_configs', 0):,} remain on the exact-matching row already in `text_expansion`. That existing text is not duplicated here.
+
+The config keeps the upstream language-identification splits: {split_counts.get('train', 0):,} train, {split_counts.get('test', 0):,} test, and {split_counts.get('source_overlap', 0):,} text groups that occur in both upstream splits. The last group stays in `source_overlap` to avoid train/test leakage. This test split is the upstream PahariLI classification split; it is not an independent evaluation set for the project's language model or other tasks.
+
+The PahariLI repository includes an Apache-2.0 license file, but its README does not identify the sentence-level source of each item. Each row therefore keeps the repository-level license declaration, raw-file URL and SHA-256, source index, attribution, and the existing `source_lineage_missing`, `component_rights_review_required`, and possible scripture/blog flags. The release makes no claim that Apache-2.0 independently clears underlying source text. Rows are unreviewed and not recommended for general language-model training; the upstream `train` partition remains usable for experimental language-identification work. The upstream license text is included at `licenses/PahariLI-Apache-2.0.txt`.'''
     release_version = str(report.get('release_id', '')).rsplit('-v', 1)[-1]
     overlap_audit_url = (
         'https://huggingface.co/datasets/rushilrawat/garhwali-corpus/blob/main/'
@@ -1995,6 +2183,7 @@ language:
 license: other
 task_categories:
 - automatic-speech-recognition
+- text-classification
 - text-generation
 - translation
 configs:
@@ -2076,6 +2265,8 @@ for the latest measured results and limitations.
 {text_expansion_summary}
 
 {text_resources_summary}
+
+{paharili_summary}
 
 The `asr` configuration contains human transcripts from VAANI. The
 `sravaani_drafts` configuration contains machine-generated hypotheses from
@@ -2323,6 +2514,24 @@ def _build_at(output, profile='public', include_audio=False,
             'source_overlap', shard_rows
         )
 
+    if not PAHARILI_GBM_ROWS_PATH.is_file():
+        raise FileNotFoundError(
+            f'Missing prepared PahariLI Garhwali rows: {PAHARILI_GBM_ROWS_PATH}'
+        )
+    paharili_existing_rows = [
+        *existing_text_rows, *text_expansion_rows, *text_resource_rows,
+    ]
+    paharili_rows, paharili_metrics = build_paharili_gbm_rows(
+        read_jsonl(PAHARILI_GBM_ROWS_PATH), paharili_existing_rows
+    )
+    report['paharili_gbm_metrics'] = paharili_metrics
+    for split in ('train', 'test', 'source_overlap'):
+        split_rows = [row for row in paharili_rows if row['split'] == split]
+        if split_rows:
+            report['configs'][f'paharili_gbm/{split}'] = write_shards(
+                split_rows, output / 'data/paharili_gbm', split, shard_rows
+            )
+
     for family, path in KNOWLEDGE_CONFIGS.items():
         if not path.exists():
             raise FileNotFoundError(f'Missing structured knowledge catalog: {path}')
@@ -2463,6 +2672,13 @@ def _build_at(output, profile='public', include_audio=False,
         shutil.copy2(ROOT / name, output / name)
     for name in ('DEVELOPER_QUICKSTART.md', 'DATASET_SCHEMA.md'):
         shutil.copy2(ROOT / 'docs' / name, output / name)
+    if not PAHARILI_LICENSE_PATH.is_file():
+        raise FileNotFoundError(
+            f'Missing PahariLI repository license: {PAHARILI_LICENSE_PATH}'
+        )
+    paharili_license_target = output / 'licenses' / 'PahariLI-Apache-2.0.txt'
+    paharili_license_target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(PAHARILI_LICENSE_PATH, paharili_license_target)
     shutil.copy2(
         ROOT / 'examples' / 'search_garhwali_lexicon.py',
         output / 'search_garhwali_lexicon.py',

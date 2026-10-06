@@ -2,14 +2,13 @@
 
 The dataset IDs are `rushilrawat/garhwali-corpus` (text and reference tables)
 and `rushilrawat/garhwali-speech` (audio and speech metadata). Both repositories
-are public. The latest corpus release is v0.2.4 on the public
-[Garhwali Corpus dataset page](https://huggingface.co/datasets/rushilrawat/garhwali-corpus); the speech dataset is at commit
-[`9da266e`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/9da266e23bfc198f70784a6e81edbf32f946102f).
-The v0.2.3 release added a deduplicated `text_resources` view of 246 existing
-catalog values. The v0.2.4 release adds contributor attribution and source
-revision links, but no text values. Counts below describe the v0.2.4 corpus and
-current speech package. Pass a commit SHA as `revision=` when you need an
-immutable Hub snapshot.
+are public. The Hub cards link to the latest published revisions and preserve release history.
+This guide is bundled with `garhwali-language-lab-v0.2.7`; its
+configuration counts match that package manifest. Use the Hub cards for current publication
+status and immutable revisions. The packages preserve a common rights/quality
+envelope, schema, and loading guidance. These examples stream the published
+configs. Pass a commit SHA as `revision=` when
+you need an immutable Hub snapshot.
 
 ## Try three vocabulary rows
 
@@ -44,9 +43,32 @@ for row in lexicon.select(range(3)):
     print("quality:", row.get("quality_status", "not supplied"))
 ```
 
-The `lexicon` config has **1,493 rows**. Entries retain source spelling;
-pronunciation and dialect labels can be absent, and native-speaker review is
-deferred.
+The current `lexicon` row count is on the dataset card. Entries retain source
+spelling; pronunciation and dialect labels can be absent, and native-speaker
+review is deferred.
+
+## Try Garhwali text-classification examples
+
+The `paharili_gbm` config provides the Garhwali-labeled portion of PahariLI's
+text language-identification corpus:
+
+```python
+from datasets import load_dataset
+
+sentences = load_dataset(
+    "rushilrawat/garhwali-corpus", "paharili_gbm",
+    split="train", streaming=True,
+)
+for row in sentences.take(3):
+    print(row["text"], row["source_record_ids"], row["rights_status"])
+```
+
+PahariLI's repository declares Apache-2.0, but its README does not identify the
+source of each sentence. Rows preserve that caveat, upstream file hashes, and
+source-lineage flags. The config is unreviewed, is not a general language-model
+training recommendation, and its upstream test split is not an independent
+evaluation set for other tasks. Check `rights_status`, `reuse_scope`, and
+`record_quality_flags` before reuse.
 
 Search the public lexicon directly from the project checkout; by default, the
 tool streams the Hub config:
@@ -61,43 +83,73 @@ For example, a record is `गाड़` (“river”, Hindi `नदी`); its ro
 metadata marks source terms, attribution conditions, and unreviewed linguistic
 status separately. The demo prints these fields with each match.
 
+## Load the fast-tracked text view
+
+The `text_expansion` config contains **1,737** train-split Garhwali
+candidates already present in the catalog. It is not new source ingestion or an
+independent evaluation set. Currently zero rows meet the conservative training-
+recommendation rule because source-level eligibility or quality evidence
+remains unresolved. Rows retain their rights and quality fields; review each
+row before downstream reuse.
+
+```python
+from datasets import load_dataset
+
+extra_text = load_dataset(
+    "rushilrawat/garhwali-corpus", "text_expansion", split="train", streaming=True
+)
+for row in extra_text.take(3):
+    print(row["text"], row["rights_status"], row["quality_status"])
+```
+
+## Load supplementary text resources
+
+The `text_resources` config exposes **475** additional unique
+Garhwali records already present in the source catalog. This is a lookup and
+research view with varied quality; it is not an evaluation set or uniformly
+training-ready. Check record-level rights and quality fields before reuse.
+
+```python
+from datasets import load_dataset
+
+resources = load_dataset(
+    "rushilrawat/garhwali-corpus", "text_resources", split="train", streaming=True
+)
+for row in resources.take(3):
+    print(row["text"], row["redistribution_status"], row["quality_status"])
+```
+
 ## Configurations and exact release counts
 
-Counts below were reconciled against the v0.2.4 release. A config may contain train,
-validation, and test splits; numbers are summed across those splits. Views can
-overlap, so do not add the table to calculate unique training examples.
+Counts below are synchronized from the release manifest. Config views can
+overlap; adding their row counts does not give the number of unique examples.
 
 | Config | Rows | Intended use |
 | --- | ---: | --- |
-| `text` | 18,949 | Rights-filtered text examples; train 17,289, validation 895, test 765 |
-| `text_expansion` | 1,647 | Strict-tier candidates already in the catalog; train split only, machine-screened |
-| `text_resources` | 246 | Existing catalog text for lookup/research; mixed quality, not recommended for training or evaluation |
+| `text` | 18,598 | Main Garhwali text splits, with source, rights, and quality metadata |
+| `paharili_gbm` | 14,988 | PahariLI-derived Garhwali text-language-identification examples |
+| `text_expansion` | 1,737 | Additional deduplicated text view; inspect row-level status |
+| `text_resources` | 475 | Supplementary research text; inspect row-level status |
 | `lexicon` | 1,493 | Word forms, gloss candidates, and pronunciation metadata |
-| `asr` | 2,002 | Strict speaker-disjoint subset of 5,894 VAANI provider transcripts; 1,621 train, 269 validation, 112 test; not native-adjudicated |
-| `sravaani_drafts` | 104,534 | Unique audio hashes: 104,500 non-empty machine drafts and 34 empty outputs; experimental, not ground truth |
-| `instructions` | 3,228 | Instruction/response examples; train 2,686, validation 356, test 186 |
-| `catalog` | 32,072 | Exact-unique inventory; 12,606 values appear in public content and 19,466 catalog entries expose metadata without full text |
-| `geography` | 50 | Place facts and citations, without source prose |
+| `asr` | 2,002 | Provider transcripts, not native-adjudicated |
+| `sravaani_drafts` | 104,534 | Machine transcript drafts; not ground truth |
+| `instructions` | 3,228 | Instruction and response examples |
+| `catalog` | 36,105 | Unique text inventory with content and metadata-only entries |
+| `geography` | 50 | Place facts and citations |
 | `historical_terms` | 36 | Historical names and terms |
 | `literary_people` | 26 | Writer and contributor metadata |
-| `literary_works` | 66 | Work-level bibliography; not the works themselves |
-| `popular_songs` | 30 | Song metadata; no lyrics |
+| `literary_works` | 66 | Work-level bibliography |
+| `popular_songs` | 30 | Song-level metadata |
 | `university_research` | 8 | Research bibliography |
-| `record_index` | 302,641 | Content-free archive references; not training examples |
-| `source_catalog` | 5,019 | Deduplicated sources and their known terms |
-| `record_sources` | 355,403 | Join rows connecting records to sources |
+| `record_index` | 355,846 | Archive references; not training examples |
+| `source_catalog` | 9,571 | Deduplicated sources and their known terms |
+| `record_sources` | 412,740 | Record-to-source join rows |
 
-No rows in the public `text`, `text_expansion`, or `text_resources` configs are
-currently marked `recommended_for_training`; use each record's rights and
-quality fields rather than treating split membership as a training approval.
+The `garhwali-language-lab-v0.2.7` package manifest reports **961,533 total view rows**: 183,376 content/config rows plus 778,157 reference rows. This is not a unique-example count.
 
-The release reports **827,450 total view rows**: 164,387 content/config rows
-plus 663,063 reference rows. This is not 827,450 unique examples. The corpus
-also has different reuse terms by source; it does not have one blanket license.
-The 19,466 catalog entries without a compatible public redistribution basis
-retain their identifiers and source/rights metadata, while their full text is
-not included in public content. Speech is a linked dataset, with separate
-source, split-safety, transcript, and audio terms.
+Reuse terms vary by source; the package has no blanket content license. Use
+each row's rights and quality fields rather than treating config or split
+membership as approval for a particular use.
 
 ## Pandas and DuckDB
 
@@ -145,8 +197,6 @@ speech = speech.cast_column("audio", Audio(decode=False))
 print(next(iter(speech)))
 ```
 
-The configs contain **110,436 VAANI rows** (train 109,320, validation 666,
-test 450) and **2,927 Meta rows** (train 2,329, validation 298, test 300).
 Use the `meta_omnilingual` config for the separate Meta subset. Check
 `split_safe_for_training` or `split_safe_for_evaluation` before using a row in
 training or evaluation. `transcript_review_status` distinguishes provider

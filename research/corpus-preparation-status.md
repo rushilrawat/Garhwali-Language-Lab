@@ -724,3 +724,9 @@ acquired content. Exact preflight reports and the generated comparison are
 linked from the [comparison report](huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.md).
 The five new comparator tests pass; full unittest discovery passes 814/814.
 No corpus data, model scores, or Hugging Face files changed.
+
+## Hugging Face text expansion — 2026-10-06
+
+Published v0.2.7 at [commit `1f7b2ce`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/1f7b2ceed1b743412b75d6288757e1d2cadac9c4), adding a dedicated `paharili_gbm` configuration. It exposes 14,988 normalized-unique Garhwali-labeled sentences (236,566 whitespace-separated words) from 15,000 upstream rows. Eleven repeated source rows were collapsed, one normalized text already present in `text_expansion` was not duplicated, and four train/test-overlap groups were isolated in `source_overlap`. All PahariLI row IDs, source URLs, hashes, and surface variants remain traceable. The upstream repository declares Apache-2.0; sentence-level origins and reuse rights are unresolved, and the language labels have not had native review. The config is therefore explicitly source/task-specific and not recommended as general LM text or independent evaluation data.
+
+Public content/config views rise from 168,388 in v0.2.6 to 183,376 in v0.2.7 (+14,988); these view rows can overlap. The release preflight passed, and the project `.venv` passes all 816 tests. A streaming read of three rows from the exact Hub commit succeeds, and the live Hub confirms v0.2.6 files remain. Dataset Viewer `/splits` and `/parquet` work is currently pending across configs with no failures reported; `/is-valid` currently returns all preview/view/search/filter/statistics flags as false. Recheck after the Hub finishes processing. Details: [v0.2.7 release report](huggingface-corpus-v0.2.7-release-2026-10-06.md).
