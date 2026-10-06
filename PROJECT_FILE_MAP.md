@@ -2,7 +2,7 @@
 
 This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **997**.
+Files indexed: **1,015**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -584,12 +584,23 @@ python scripts/generate_project_file_map.py
 - `research/huggingface-corpus-v0.2.4-release-2026-10-05.md`
 - `research/huggingface-corpus-v0.2.5-release-2026-10-05.md`
 - `research/huggingface-corpus-v0.2.5-viewer-schema-repair-2026-10-05.md`
+- `research/huggingface-corpus-v0.2.6-release-2026-10-05.md`
 - `research/huggingface-dataset-quality-roadmap.md`
 - `research/huggingface-existing-corpus-expansion-audit-2026-10-02.md`
+- `research/huggingface-indic_dialect_asr_gbm-catalog-lineage-2026-10-05.json`
+- `research/huggingface-indic_dialect_asr_gbm-cleaned-lineage-2026-10-05.json`
+- `research/huggingface-indic_dialect_asr_gbm-lineage-2026-10-05.json`
+- `research/huggingface-indic_dialect_asr_gbm-v0.2.5-text-lineage-2026-10-05.json`
+- `research/huggingface-meta_omnilingual-catalog-lineage-2026-10-05.json`
+- `research/huggingface-meta_omnilingual-cleaned-lineage-2026-10-05.json`
+- `research/huggingface-meta_omnilingual-lineage-2026-10-05.json`
+- `research/huggingface-meta_omnilingual-v0.2.5-text-lineage-2026-10-05.json`
+- `research/huggingface-phase2-source-rights-lineage-audit-2026-10-05.md`
 - `research/huggingface-quality-baseline-2026-10-01.md`
 - `research/huggingface-quality-candidate-preflight-2026-10-01.json`
 - `research/huggingface-quality-candidate-preflight-2026-10-02.json`
 - `research/huggingface-quality-candidate-preflight-2026-10-05.json`
+- `research/huggingface-release-continuity-v0.2.5-v0.2.6-2026-10-05.json`
 - `research/huggingface-release-overlap-audit-2026-09-24.md`
 - `research/huggingface-text-expansion-audit-2026-10-01.md`
 - `research/huggingface-training-eligibility-audit-2026-10-05.json`
@@ -599,6 +610,9 @@ python scripts/generate_project_file_map.py
 - `research/huggingface-v0.2.3-upload-plan.json`
 - `research/huggingface-v0.2.4-upload-plan.json`
 - `research/huggingface-v0.2.5-upload-plan.json`
+- `research/huggingface-v0.2.6-candidate-preflight-2026-10-05.json`
+- `research/huggingface-v0.2.6-remote-file-verification-2026-10-05.json`
+- `research/huggingface-v0.2.6-viewer-schema-hotfix-2026-10-05.md`
 - `research/incoming-pdf-ingestion-2026-09-16.json`
 - `research/incoming-pdf-ingestion-2026-09-16.md`
 - `research/incoming-pdf-reocr-pilot-2026-09-17.md`
@@ -704,6 +718,8 @@ python scripts/generate_project_file_map.py
 - `scripts/audit_benchmark_v02_rights.py`
 - `scripts/audit_final_release.py`
 - `scripts/audit_garhwali_expansion.py`
+- `scripts/audit_hf_release_continuity.py`
+- `scripts/audit_hf_source_lineage.py`
 - `scripts/audit_hf_training_eligibility.py`
 - `scripts/audit_indicbert_cloud_input.py`
 - `scripts/audit_model_accuracy_lineage.py`
@@ -923,6 +939,8 @@ python scripts/generate_project_file_map.py
 - `tests/test_audit_benchmark_v02_rights.py`
 - `tests/test_audit_final_release.py`
 - `tests/test_audit_garhwali_expansion.py`
+- `tests/test_audit_hf_release_continuity.py`
+- `tests/test_audit_hf_source_lineage.py`
 - `tests/test_audit_hf_training_eligibility.py`
 - `tests/test_audit_indicbert_cloud_input.py`
 - `tests/test_audit_model_accuracy_lineage.py`
@@ -1050,11 +1068,11 @@ python scripts/generate_project_file_map.py
 
 The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
 
-- Workspace files counted: **238,944**.
+- Workspace files counted: **239,188**.
 - Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **997**.
-- Ignored or otherwise unlisted payload files: **237,947** (164,603,273,259 bytes).
-- Total workspace bytes counted: **164,620,986,895**.
+- Detailed file paths listed above: **1,015**.
+- Ignored or otherwise unlisted payload files: **238,173** (169,400,252,184 bytes).
+- Total workspace bytes counted: **169,418,092,834**.
 
 | Payload directory | Files | Bytes |
 | --- | ---: | ---: |
@@ -1069,7 +1087,7 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `corpus/incubator_wt.jsonl/` | 1 | 10,768 |
 | `corpus/jambu_garhwali.jsonl/` | 1 | 1,292,863 |
 | `corpus/mamta_southasia_examples.jsonl/` | 1 | 91,753 |
-| `corpus/meta_omni.jsonl/` | 1 | 8,271,137 |
+| `corpus/meta_omni.jsonl/` | 1 | 8,399,925 |
 | `corpus/opus_translatewiki_gbm.jsonl/` | 1 | 320,301 |
 | `corpus/sand_garhwali.jsonl/` | 1 | 213,000 |
 | `corpus/tatoeba.jsonl/` | 1 | 43,662 |
@@ -1077,9 +1095,9 @@ The detailed index above lists all tracked and non-ignored files. This inventory
 | `corpus/wiktionary_en.jsonl/` | 1 | 164,557 |
 | `data/cache/…/` | 2 | 104,176 |
 | `data/downloads/…/` | 1,136 | 9,350,565,536 |
-| `data/extracted/…/` | 736 | 104,222,504 |
-| `data/huggingface/…/` | 2,493 | 80,247,423,140 |
-| `data/processed/…/` | 110,561 | 40,803,036,195 |
+| `data/extracted/…/` | 736 | 104,222,678 |
+| `data/huggingface/…/` | 2,719 | 84,039,919,174 |
+| `data/processed/…/` | 110,561 | 41,807,390,124 |
 | `data/raw/…/` | 1 | 21,905 |
 | `data/temp/…/` | 1 | 39,533 |
 | `data/vaani/…/` | 115,189 | 32,112,461,505 |

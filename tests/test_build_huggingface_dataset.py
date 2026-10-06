@@ -90,6 +90,66 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 )
                 self.assertEqual(len(loaded), 1)
 
+    @unittest.skipUnless(
+        importlib.util.find_spec('datasets'),
+        'Hugging Face datasets is installed by requirements-hf-release.txt',
+    )
+    def test_release_card_declares_stable_text_and_resource_schemas(self):
+        from datasets import Dataset, Features
+
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            config_rows = {
+                'text': [
+                    {'id': 'text-1', 'text': 'पहिलो', 'optional_label': None},
+                    {'id': 'text-2', 'text': 'दोस्रो', 'optional_label': 'verified'},
+                ],
+                'text_resources': [
+                    {'id': 'resource-1', 'forms': []},
+                    {'id': 'resource-2', 'forms': ['गढ़वाली']},
+                ],
+            }
+            for config_name, rows in config_rows.items():
+                config_dir = output / 'data' / config_name
+                config_dir.mkdir(parents=True)
+                (config_dir / 'train-00000.jsonl').write_text(
+                    ''.join(json.dumps(row, ensure_ascii=False) + '\n' for row in rows),
+                    encoding='utf-8',
+                )
+
+            config_report = {
+                f'{config_name}/train': {'records': len(rows)}
+                for config_name, rows in config_rows.items()
+            }
+            dataset_info = m.dataset_info_for_release(output, config_report)
+
+            self.assertEqual(
+                [entry['config_name'] for entry in dataset_info],
+                ['text', 'text_resources'],
+            )
+            for entry in dataset_info:
+                config_name = entry['config_name']
+                features = Features._from_yaml_list(entry['features'])
+                loaded = Dataset.from_json(
+                    str(output / 'data' / config_name / 'train-00000.jsonl'),
+                    features=features,
+                    keep_in_memory=True,
+                    cache_dir=str(output / 'cache' / config_name),
+                )
+                self.assertEqual(len(loaded), 2)
+            self.assertEqual(
+                Features._from_yaml_list(dataset_info[0]['features'])[
+                    'optional_label'
+                ].dtype,
+                'string',
+            )
+            self.assertEqual(
+                Features._from_yaml_list(dataset_info[1]['features'])[
+                    'forms'
+                ].feature.dtype,
+                'string',
+            )
+
     def test_upstream_eval_link_keeps_text_but_moves_it_out_of_train(self):
         original = {
             'id': 'row-1', 'text': 'गढ़वाली वाक्य', 'split': 'train',
@@ -148,6 +208,29 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             routed['source_split_overlap_status'], 'no_upstream_eval_match_detected'
         )
         self.assertEqual(routed['source_split_overlap_source_ids'], [])
+
+    def test_vaani_official_test_remainder_rows_are_routed_out_of_train(self):
+        row = {
+            'id': 'row-5', 'text': 'गढ़वाली वाक्य', 'split': 'train',
+            'provenance': [{
+                'source_id': 'vaani-transcription-part',
+                'record_id': 'vaani:official-test-row',
+                'transcription_split': 'test',
+                'canonical_transcript_source': 'ARTPARK-IISc/Vaani-transcription-part',
+            }],
+        }
+
+        routed = m.route_upstream_split_overlap(row, set(), set())
+
+        self.assertEqual(routed['split'], 'source_overlap')
+        self.assertEqual(
+            routed['source_split_overlap_status'],
+            'upstream_vaani_test_source_record_match',
+        )
+        self.assertEqual(
+            routed['source_split_overlap_source_ids'], ['vaani:official-test-row']
+        )
+        self.assertFalse(routed['recommended_for_training'])
 
     def test_source_attribution_overlay_preserves_lineage_and_adds_reviewable_evidence(self):
         source = {
@@ -385,6 +468,21 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         })
         self.assertIs(exported['training_eligible'], False)
         self.assertIs(exported['experimental_training_eligible'], True)
+
+    def test_catalog_provenance_preserves_upstream_transcript_split(self):
+        exported = m.catalog_provenance({
+            'source_id': 'vaani-transcription-part',
+            'record_id': 'vaani:official-test-row',
+            'canonical_transcript_source': 'ARTPARK-IISc/Vaani-transcription-part',
+            'transcription_split': 'test',
+            'main_split': 'train',
+        })
+        self.assertEqual(exported['transcription_split'], 'test')
+        self.assertEqual(exported['main_split'], 'train')
+        self.assertEqual(
+            exported['canonical_transcript_source'],
+            'ARTPARK-IISc/Vaani-transcription-part',
+        )
 
     def test_public_knowledge_requires_explicit_rights_basis(self):
         cleared = {

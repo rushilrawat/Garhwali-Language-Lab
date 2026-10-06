@@ -137,6 +137,11 @@ class CollectionTests(unittest.TestCase):
         self.assertEqual(rec['split'], 'test')
         self.assertFalse(rec['native_reviewed'])
         self.assertFalse(rec['training_eligible'])
+        self.assertEqual(rec['rights_status'], 'upstream_meta_cc_by_4_0')
+        self.assertEqual(
+            rec['rights_evidence'],
+            'sources/online/meta_omni/card.md.metadata.json',
+        )
         self.assertEqual(rec['text_original'], row['raw_text'])
         with self.assertRaises(ValueError):
             mod.meta_record(dict(row, iso_639_3='hin'), 'test', 0, {})

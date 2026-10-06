@@ -46,6 +46,8 @@ DOCUMENT_PROVENANCE_FIELDS = (
     "source_cell_ocr_confidence", "english_gloss_ocr",
     "english_gloss_ocr_confidence", "ocr_model", "ocr_model_sha256",
     "ocr_mean_confidence", "source_ocr_method",
+    "source", "transcription_split", "main_split",
+    "canonical_transcript_source",
 )
 
 
@@ -160,6 +162,31 @@ def prepare(paths: list[Path], output_dir: Path, root: Path = ROOT) -> dict:
                         if row.get(name) not in (None, "", [])
                     },
                 }
+                if (
+                    path.stem == "vaani-official-test-remainder"
+                    and row.get("canonical_transcript_source")
+                    == "ARTPARK-IISc/Vaani-transcription-part"
+                ):
+                    # The text in this remainder manifest comes from the
+                    # transcription-part repository, even when its audio row
+                    # was matched back to the main Vaani repository.
+                    provenance["source_id"] = "vaani-transcription-part"
+                    provenance.update({
+                        "source_url": (
+                            "https://huggingface.co/datasets/"
+                            "ARTPARK-IISc/Vaani-transcription-part"
+                        ),
+                        "license": "CC-BY-4.0",
+                        "license_id": "CC-BY-4.0",
+                        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+                        "rights_status": "upstream_vaani_cc_by_4_0",
+                        "rights_evidence": (
+                            "https://huggingface.co/datasets/"
+                            "ARTPARK-IISc/Vaani-transcription-part"
+                        ),
+                        "attribution": "Project VAANI, IISc/ARTPARK",
+                        "training_eligible": False,
+                    })
                 if digest not in groups:
                     groups[digest] = {
                         "text_sha256": digest,

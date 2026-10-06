@@ -1,0 +1,15 @@
+{
+  "schema_version": "hf-release-continuity-audit-v1",
+  "old_release_id": "garhwali-language-lab-v0.2.5",
+  "new_release_id": "garhwali-language-lab-v0.2.6",
+  "normalization": "NFKC, casefold, and whitespace collapse; content values themselves are never emitted",
+  "old_text_rows": 18949,
+  "new_text_rows": 18598,
+  "old_text_rows_without_same_id_in_new_text": 351,
+  "old_unique_normalized_values": 18934,
+  "old_unique_values_exactly_present_in_new_package": 18902,
+  "old_unique_values_in_linked_public_catalog_parent": 32,
+  "old_unique_values_unrepresented": 0,
+  "unrepresented_value_sha256": [],
+  "all_old_text_values_represented": true
+}

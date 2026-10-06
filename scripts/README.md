@@ -26,6 +26,11 @@ stops, resume it with the same run ID and `--refresh-derived` flag. The command
 does not publish to GitHub or upload packages to Hugging Face; those remain
 explicit release actions after the generated checks pass.
 
+For a read-only preview of the derived-data refresh, run
+`python scripts/refresh_corpus_after_ingestion.py --dry-run`. It prints the
+ordered commands, release version, and package output paths, and checks that
+all planned scripts exist without creating or changing files.
+
 `ingest_archive_language_studies.py` extracts the downloaded Internet Archive
 DjVu OCR for the 1967 Juyal and 1976 Bhatta Garhwali-language studies into
 page-level local research records. It verifies each source PDF against its

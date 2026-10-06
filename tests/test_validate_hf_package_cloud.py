@@ -12,6 +12,22 @@ import validate_hf_package_cloud as m
 
 
 class HuggingFaceCloudValidationTests(unittest.TestCase):
+    def test_split_evidence_recognizes_vaani_test_lineage(self):
+        row = {
+            'split': 'source_overlap',
+            'provenance': [{
+                'source_id': 'vaani-transcription-part',
+                'record_id': 'vaani:test:1',
+                'transcription_split': 'test',
+                'canonical_transcript_source': 'ARTPARK-IISc/Vaani-transcription-part',
+            }],
+        }
+
+        status, record_ids = m.source_split_overlap_evidence(row, set(), set())
+
+        self.assertEqual(status, 'upstream_vaani_test_source_record_match')
+        self.assertEqual(record_ids, ['vaani:test:1'])
+
     def _write_schema_v1_package(self, root, row):
         package = root / 'package'
         for relative in (

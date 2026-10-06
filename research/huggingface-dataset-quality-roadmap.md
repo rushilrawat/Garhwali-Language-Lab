@@ -2,7 +2,7 @@
 
 **Started:** 2026-10-01
 **Scope:** Make `rushilrawat/garhwali-corpus` and `rushilrawat/garhwali-speech` more useful, trustworthy, and easy to apply.
-**Current public release:** v0.2.5. New releases remain additive; existing records and source evidence are preserved.
+**Current public release:** v0.2.6. New releases remain additive; existing records and source evidence are preserved.
 
 ## Goal
 
@@ -11,21 +11,46 @@ filter, and reuse for clearly described purposes. Progress is measured by
 quality-qualified content and reliable access—not by adding reference-table
 rows to a headline total.
 
-## Current work focus — Phase 2 rights/provenance reconciliation
+## Current work focus — Phase 8 release automation
 
-The v0.2.5 data payload is live at
-[Hub commit `46407fc`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/46407fcb623d7f51d3f401f5842f73209dbffc4c);
-the latest root/versioned cards, including typed feature schemas, are at
-[commit `dc3308d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/dc3308d4eb1d0eb619ab78071d0b34c2cbe8ac09).
-All 51 release files match their planned sizes and Git/LFS hashes. The release
-retains all text values and routes 1,308 core and 363 expansion rows linked to
-upstream held-out sources to public `source_overlap` splits. The package has
-827,450 overlapping-view rows: 164,387 content rows plus 663,063
-reference/join rows. No text row currently passes the project's training
-recommendation rule. The latest Viewer check reports all capabilities enabled, all 25 splits and 25 Parquet outputs ready, and no pending or failed jobs. Row samples load for both repaired configs; dataset-wide `/is-valid` is true.
-The next Phase 2 task remains source-by-source rights and eligibility evidence
-reconciliation. Results and the diagnostic-only counterfactual are in the
-[eligibility audit](huggingface-training-eligibility-audit-2026-10-05.md).
+The v0.2.6 data package is live at
+[Hub commit `bddb006`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/bddb00665a7d6452a9e94c4484e9165d5b2d39b1).
+All 53 planned release paths and sizes match, 19 LFS SHA-256 values and 34 Git
+blob SHA-1 values match, and all 348 earlier paths remain. A metadata-only
+card updates at [`dc2bab7`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/dc2bab784c725d88d89541a27dcfb1084f5ec886)
+and [`cd43e9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cd43e9e505ba0632cf2cbad87ff67f33bf40469e)
+add stable whole-config schemas for `text` and `text_resources` and restore
+the three metadata reference configs. A final live check confirms all 26/26
+split views and 26/26 Parquet outputs with no pending or failed jobs. The
+preview, viewer, search, and filter capabilities are enabled; sample rows load
+for text, text resources, and the three reference tables. Statistics are not
+available from the Hub endpoint. All 803 project tests pass and local package
+preflight reports zero errors. Phase 7 is complete; the next roadmap task is
+Phase 8: make ingestion and release repeatable. See the [release report](huggingface-corpus-v0.2.6-release-2026-10-05.md),
+[schema/card fix report](huggingface-v0.2.6-viewer-schema-hotfix-2026-10-05.md),
+and [remote verification JSON](huggingface-v0.2.6-remote-file-verification-2026-10-05.json).
+
+The release retains all v0.2.5 unique text values and routes upstream held-out
+source overlaps outside default training. The package has 945,926
+overlapping-view rows in its full preflight; this is not a unique-example
+count. No text row currently passes the project's training recommendation
+rule.
+**Phase 2 source-family pass started — 2026-10-05:** the first primary-source
+review confirms CC BY 4.0 evidence for the Meta and VAANI transcripts, CC
+BY-SA 4.0 for Garhwali Open Bible Stories, and public-domain evidence for the
+1916 LSI scan. It also found a material HinDialect license-scope conflict:
+MTEB's card frontmatter says CC BY-SA 4.0 while its citation for the underlying
+LINDAT source says CC BY-NC-SA 4.0; the 128 Garhwali lookup rows therefore keep
+the more restrictive noncommercial share-alike scope. The accompanying
+[rights and lineage audit](huggingface-phase2-source-rights-lineage-audit-2026-10-05.md)
+records source terms and row counts without changing any rights or training
+flags.
+
+**Updated 5 October:** the v0.2.6 rebuild maps the VAANI test remainder to its actual canonical transcript source, `ARTPARK-IISc/Vaani-transcription-part`, and preserves its CC BY 4.0 evidence and `transcription_split=test` on all 338 records. Matching train-view rows are routed to `source_overlap`; no source text is deleted.
+
+The source-lineage audit finds all 7,823 Indic-Dialect records in cleaned parents and the public catalog, and all 2,927 Meta records in both views. The segment-oriented public `text` config directly links 7,476 Indic-Dialect IDs (347 are still represented as catalog text) and 2,915 Meta IDs (12 are still represented as catalog text). This view distinction is documented rather than counted as source-record deletion.
+
+The [v0.2.6 preflight](huggingface-v0.2.6-candidate-preflight-2026-10-05.json) passes all 26 configs: 945,926 overlapping-view rows, zero missing source traceability, zero deleted or mutated records, and zero remaining cross-split identity leakage. The [continuity audit](huggingface-release-continuity-v0.2.5-v0.2.6-2026-10-05.json) represents all 18,934 prior unique text values: 18,902 exact matches, 32 contained in linked catalog parents, and zero unrepresented. The 53-file additive release (907,215,611 bytes) is live at `bddb006`, with schemas and reference-table configs at `dc2bab7` and `cd43e9e`. Hub file and card hashes are verified; the final live Viewer check confirms all 26 splits and Parquet outputs, with sampled previews working. HinDialect license scope and direct segment-view lineage gaps remain documented. Keep training flags false until source, quality, and split gates pass. The original [training eligibility audit](huggingface-training-eligibility-audit-2026-10-05.md) remains the scorecard for that recommendation rule.
 
 Phase 6 has completed automated intake profiling, source-by-source metadata
 disposition, non-destructive candidate views, and cross-deduplication against
@@ -81,20 +106,21 @@ Use these terms consistently in reports and dataset cards:
 
 The 1 October baseline and its definitions are in
 [`huggingface-quality-baseline-2026-10-01.md`](huggingface-quality-baseline-2026-10-01.md).
-The published v0.2.2 release's config-level machine preflight is in
-[`huggingface-quality-candidate-preflight-2026-10-01.json`](huggingface-quality-candidate-preflight-2026-10-01.json).
-The current v0.2.5 corpus package has **827,450** overlapping-view rows:
-164,387 content/config rows and 663,063 reference/join rows. The
-`text_resources/train` config exposes **246** already-catalogued records; the
-earlier `text_expansion/train` config exposes **1,647** values. Neither view
-adds newly collected source texts. The public `text` config remains 18,949
-rows; the separate speech dataset has 113,363 audio rows and 154.645 hours.
-The v0.2.5 public package preflight has zero errors and reports zero deleted or
-mutated records. All 51 uploaded release files match the local plan. An
-ID/text comparison against v0.2.4 confirms unchanged values in `text`,
-`text_expansion`, and `text_resources`. Viewer `/is-valid`, `/splits`,
-`/parquet`, and `/rows` were busy immediately after the corrected root card;
-service-side re-indexing remains pending. See the [v0.2.5 release
+The live Hub is v0.2.6; its payload is hash-verified and the final Viewer check
+lists 26/26 splits and 26/26 Parquet outputs, with previews available for the
+core text and reference-table configs. The public release has 36,105 parent catalog records: 12,657 public
+full-text entries and 23,448 metadata-only entries under current source-use
+decisions. Its `text` view has 18,598 rows (15,664 train, 1,305
+source-overlap, 884 validation, and 745 test); `text_expansion` has 1,737 rows
+(1,283 train and 454 source-overlap); and `text_resources` has 475 (285 train,
+190 source-overlap). The public content configs total 168,388 overlapping-view
+rows, while the metadata/reference index has 355,537 rows. These totals include
+overlapping views, not unique examples. The additive upload plan has 53 files
+and totals 907,215,611 bytes. See the [v0.2.6 Phase 2 audit](huggingface-phase2-source-rights-lineage-audit-2026-10-05.md),
+[candidate preflight](huggingface-v0.2.6-candidate-preflight-2026-10-05.json),
+and [continuity report](huggingface-release-continuity-v0.2.5-v0.2.6-2026-10-05.json).
+The separate speech dataset remains v0.2.1 with 113,363 audio rows and 154.645
+hours. Historical v0.2.5 publication details remain in the [release
 report](huggingface-corpus-v0.2.5-release-2026-10-05.md).
 
 The shared v1.0.0 record envelope is present across the package. Important gaps
@@ -334,7 +360,7 @@ files remain outside the published package.
 groups, rights outcomes, and eligible yield; no source is described as added
 until its output is reconciled against the existing corpus.
 
-### Phase 7 — Publish purpose-built, stable Hugging Face views — active
+### Phase 7 — Publish purpose-built, stable Hugging Face views — complete for v0.2.6
 
 - Keep text, lexicon, provider ASR, machine drafts, speech, factual knowledge,
   and source references clearly separated and documented.
@@ -345,15 +371,24 @@ until its output is reconciled against the existing corpus.
 - Preserve prior release paths; do not upload local caches, secrets, or
   unreviewed expressive text.
 
+**v0.2.6 result:** zero package/preflight errors; all 26 expected splits and
+Parquet outputs load, required previews work, and the card schemas match the
+release manifest. Statistics remain unavailable from the Hub endpoint.
+
 **Targets:** zero package/preflight errors; zero undocumented config changes;
 every card count matches its manifest; the documented quick-start works from a
 fresh environment.
 
 ### Phase 8 — Make ingestion and release repeatable
 
-- Extend the existing refresh pipeline with a dry-run report, pinned inputs,
-  checkpoints, idempotent deduplication, per-config quality scorecards, and
-  release preflight.
+- **Complete:** `refresh_corpus_after_ingestion.py --dry-run` prints the exact
+  ordered commands and output paths, checks that each script exists, and
+  writes nothing. Its default staging paths now follow the current v0.2.6
+  schema version; a regression test covers the planned command list.
+- Next, add pinned input/version provenance and a candidate preflight gate
+  before any release upload. Keep the existing checkpointed LangGraph ingest,
+  deterministic deduplication, per-config scorecards, and source audits as
+  parts of the flow.
 - Require successful tests, rights checks, overlap checks, and card/manifest
   reconciliation before any Hub upload.
 - Compare each release against its predecessor using the same metric contract.
@@ -384,11 +419,11 @@ versioned manifest and comparable metrics.
 | Phase | Status | Current proof / next deliverable |
 | --- | --- | --- |
 | 0. Baseline | Complete | [1 Oct baseline](huggingface-quality-baseline-2026-10-01.md) |
-| 1. Quality scorecard | Complete | Public v0.2.5 preflight passes with zero errors; 827,450 is an overlapping-view count, not unique examples |
-| 2. Rights/provenance | Active | Per-config rights/status metrics implemented; source-by-source reuse-scope reconciliation next |
-| 3. Dedup/splits | Partial | v0.2.5 exposes 1,671 upstream-overlap rows outside default train; complete document/source-family, semantic, audio, and speaker leakage review remains |
-| 4. Text/lexicon | Active | 246-row supplementary view is public; quality remains mixed, with no training/evaluation promotion |
+| 1. Quality scorecard | Complete for local candidate | v0.2.6 preflight passes 26 configs and 945,926 overlapping-view rows, with zero errors, missing traceability, deletion, or mutation; not a linguistic accuracy score |
+| 2. Rights/provenance | Active; candidate reconciled | VAANI test-remainder lineage and source terms recorded; 12,657 catalog entries have public full text and 23,448 are metadata-only publicly; HinDialect license scope remains conservative |
+| 3. Dedup/splits | Partial | v0.2.6 routes 1,949 overlapping rows across text/resource views outside default train; preflight finds zero identity leakage; complete source-family, semantic, audio, and speaker review remains |
+| 4. Text/lexicon | Active | Candidate has 1,737 expansion and 475 resource view rows; no text row currently meets model-training recommendation |
 | 5. Speech/transcripts | Existing partial audits | Explicit labeled/empty/draft counts and split-safe manifests |
 | 6. Coverage expansion | Active — intake, source disposition, page/section map, OCR comparison, visual triage, and technical media first pass complete | 119 local payloads; 4,011 OCR pages; 722-page Chatak/Shailesh map; zero exact and ≥0.85 near-text candidates against 32,072 cleaned rows; 39 media hashes/streams verified; content/language, OCR accuracy, and rights remain unresolved |
-| 7. HF release views | v0.2.5 live; Viewer checks green | Payload at `46407fc`; typed root/versioned card at `dc3308d`; 51 files hash/size verified; 25 splits and 25 Parquet outputs; all Viewer capabilities enabled |
-| 8. Automation | Existing refresh command | Quality-gated, repeatable end-to-end release run |
+| 7. HF release views | Complete for v0.2.6 | Data at `bddb006`; schemas/reference configs at `dc2bab7`/`cd43e9e`; 53 paths/hashes match, all 348 earlier paths remain, and live Viewer lists 26/26 splits plus 26/26 Parquet outputs; sample previews work |
+| 8. Automation | In progress | Added a non-mutating refresh dry-run that enumerates the exact ordered commands and versioned outputs, checks script availability, and defaults to v0.2.6. Next add explicit candidate preflight gating and input/version provenance |

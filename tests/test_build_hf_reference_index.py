@@ -217,6 +217,23 @@ class ReferenceIndexCardTests(unittest.TestCase):
             )
             self.assertEqual(refs[0]["license_id"], "CC-BY-4.0")
 
+    def test_vaani_test_remainder_reference_has_official_locator_and_rights_evidence(self):
+        ref = indexer.source_objects({"provenance": [{
+            "source_id": "vaani-official-test-remainder",
+            "rights_status": "upstream_vaani_cc_by_4_0",
+            "license_id": "CC-BY-4.0",
+            "rights_evidence": "https://vaani.iisc.ac.in/dataset/Version1",
+            "attribution": "Project VAANI, IISc/ARTPARK",
+        }]})[0]
+
+        self.assertEqual(
+            ref["source_url"], "https://huggingface.co/datasets/ARTPARK-IISc/Vaani"
+        )
+        self.assertEqual(ref["rights_status"], "upstream_vaani_cc_by_4_0")
+        self.assertEqual(
+            ref["rights_evidence"], "https://vaani.iisc.ac.in/dataset/Version1"
+        )
+
     def test_card_describes_complete_reference_layer_once(self):
         with tempfile.TemporaryDirectory() as directory:
             card = Path(directory) / "README.md"

@@ -1,0 +1,60 @@
+{
+  "schema_version": "hf-source-lineage-audit-v1",
+  "source_id": "meta_omni",
+  "upstream_source_rows": 2927,
+  "upstream_source_rows_by_origin": {
+    "not_recorded": 2927
+  },
+  "upstream_source_rows_by_license": {
+    "CC-BY-4.0": 2927
+  },
+  "upstream_source_rows_by_rights_status": {
+    "not_recorded": 2927
+  },
+  "view_rows_with_source": 7930,
+  "view_rows_by_split": {
+    "source_overlap": 1305,
+    "test": 387,
+    "train": 5869,
+    "validation": 369
+  },
+  "distinct_source_record_ids_linked": 2915,
+  "distinct_source_record_links": 8152,
+  "source_records_with_fanout": 1707,
+  "source_record_fanout_histogram": {
+    "0": 12,
+    "1": 1208,
+    "2": 420,
+    "3": 385,
+    "4": 336,
+    "5": 223,
+    "6": 130,
+    "7": 98,
+    "8": 60,
+    "9": 28,
+    "10": 15,
+    "11": 7,
+    "12": 2,
+    "13": 2,
+    "14": 0,
+    "15": 1
+  },
+  "view_rows_with_multiple_source_records": 214,
+  "unlinked_source_record_count": 12,
+  "unlinked_source_record_ids": [
+    "meta_omni:spk03:i037:s01",
+    "meta_omni:spk03:s020:s01",
+    "meta_omni:spk03:w053:s01",
+    "meta_omni:spk05:a016:s01",
+    "meta_omni:spk05:f033:s01",
+    "meta_omni:spk05:f041:s01",
+    "meta_omni:spk05:m009:s01",
+    "meta_omni:spk05:m010:s01",
+    "meta_omni:spk05:m011:s01",
+    "meta_omni:spk12:n025:s01",
+    "meta_omni:spk15:f033:s01",
+    "meta_omni:spk17:a047:s01"
+  ],
+  "unknown_view_source_record_ids": [],
+  "audited_release_id": "garhwali-language-lab-v0.2.5"
+}

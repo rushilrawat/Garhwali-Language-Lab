@@ -773,17 +773,34 @@ def route_upstream_split_overlap(row, direct_eval_ids, aggregate_eval_ids):
     record_ids = source_record_ids(result)
     direct_matches = sorted(record_ids & direct_eval_ids)
     aggregate_matches = sorted(record_ids & aggregate_eval_ids)
+    vaani_test_matches = sorted({
+        str(item.get('record_id'))
+        for item in provenance_items(result)
+        if isinstance(item, dict)
+        and (
+            item.get('source_id') in {
+                'vaani-official-test-remainder',
+                'vaani-transcription-part',
+            }
+            or item.get('canonical_transcript_source')
+            == 'ARTPARK-IISc/Vaani-transcription-part'
+        )
+        and item.get('transcription_split') == 'test'
+        and item.get('record_id')
+    })
     if direct_matches and aggregate_matches:
         status = 'upstream_record_and_transcript_match'
     elif direct_matches:
         status = 'upstream_eval_record_id_match'
     elif aggregate_matches:
         status = 'upstream_eval_transcript_match'
+    elif vaani_test_matches:
+        status = 'upstream_vaani_test_source_record_match'
     else:
         status = 'no_upstream_eval_match_detected'
     result['source_split_overlap_status'] = status
     result['source_split_overlap_source_ids'] = sorted(
-        set(direct_matches + aggregate_matches)
+        set(direct_matches + aggregate_matches + vaani_test_matches)
     )
     if result.get('split') == 'train' and status != 'no_upstream_eval_match_detected':
         result['original_split'] = result.get('original_split') or 'train'
@@ -1184,6 +1201,7 @@ def catalog_provenance(item):
         'source_snapshot_sha256', 'source_capture_id', 'source_capture_path',
         'source_notes', 'source_capture_bytes', 'record_id', 'source_revision',
         'source_history_url', 'source_title', 'item_url', 'iso_639_3', 'genre', 'script',
+        'transcription_split', 'main_split', 'canonical_transcript_source',
         'license', 'license_id', 'license_url', 'rights_status', 'quality_flags',
         'training_eligible', 'experimental_training_eligible',
         'rights_evidence', 'attribution', 'attribution_name', 'contributor',
@@ -1690,6 +1708,22 @@ def infer_hf_config_features(config_dir):
     return features._to_yaml_list()
 
 
+def dataset_info_for_release(output, config_report):
+    """Declare stable features for configs that the Hub cannot safely infer."""
+    dataset_info = []
+    for config_name in (
+        'sravaani_drafts', 'text', 'text_expansion', 'text_resources',
+    ):
+        if config_report.get(f'{config_name}/train', {}).get('records', 0):
+            dataset_info.append({
+                'config_name': config_name,
+                'features': infer_hf_config_features(
+                    Path(output) / 'data' / config_name
+                ),
+            })
+    return dataset_info
+
+
 def dataset_card(report, dataset_info=None):
     release_version = str(report.get('release_id', '')).rsplit('-v', 1)[-1]
     candidate_history = ''
@@ -1884,7 +1918,7 @@ The `text_resources` config adds **{resource_metrics.get('records', 0):,}** addi
     )
     text_source_overlap_summary = f'''## Upstream source-split overlap
 
-The text package preserves every row. The `text/source_overlap` split contains **{report.get('text_source_overlap_records', 0):,}** rows previously assigned to `text/train` that carry a Meta dev/test record ID or a transcript match to held-out Meta/VAANI source material. The `text_expansion/source_overlap` split contains **{expansion_metrics.get('source_split_overlap_records', 0):,}** similar catalog additions. These rows remain downloadable and retain their source metadata, but are kept outside the default train split. This is a conservative source-lineage warning, not a claim that all matched audio recordings are identical. See the [split-overlap audit]({overlap_audit_url}).'''
+The text package preserves every row. The `text/source_overlap` split contains **{report.get('text_source_overlap_records', 0):,}** rows previously assigned to `text/train` that carry a Meta dev/test record ID, an official VAANI test-remainder source record, or a transcript match to held-out Meta/VAANI source material. The `text_expansion/source_overlap` split contains **{expansion_metrics.get('source_split_overlap_records', 0):,}** similar catalog additions. These rows remain downloadable and retain their source metadata, but are kept outside the default train split. This is a conservative source-lineage warning, not a claim that all matched audio recordings are identical. See the [split-overlap audit]({overlap_audit_url}).'''
     draft_summary = (
         f'{package_summary}. The SraVaani draft config covers '
         f'**{draft_unique_audio:,} unique audio hashes**{draft_source_summary}: '
@@ -2421,13 +2455,7 @@ def _build_at(output, profile='public', include_audio=False,
     report['newly_linked_audio_files'] = link_report['new']
     report['removed_audio_files'] = removed_audio_files
     output.mkdir(parents=True, exist_ok=True)
-    dataset_info = []
-    for config_name in ('sravaani_drafts', 'text_expansion'):
-        if report['configs'].get(f'{config_name}/train', {}).get('records', 0):
-            dataset_info.append({
-                'config_name': config_name,
-                'features': infer_hf_config_features(output / 'data' / config_name),
-            })
+    dataset_info = dataset_info_for_release(output, report['configs'])
     (output / 'README.md').write_text(
         dataset_card(report, dataset_info=dataset_info), encoding='utf-8'
     )

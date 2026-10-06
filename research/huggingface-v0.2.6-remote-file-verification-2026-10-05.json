@@ -1,0 +1,188 @@
+{
+  "schema_version": "garhwali-hf-remote-release-verification-v1",
+  "repo_id": "rushilrawat/garhwali-corpus",
+  "release_id": "garhwali-language-lab-v0.2.6",
+  "commit": "bddb00665a7d6452a9e94c4484e9165d5b2d39b1",
+  "previous_release_commit": "dc3308d4eb1d0eb619ab78071d0b34c2cbe8ac09",
+  "planned_file_count": 53,
+  "planned_payload_bytes": 907215611,
+  "remote_tree_file_count_at_release_commit": 400,
+  "planned_paths_missing": 0,
+  "planned_file_size_mismatches": 0,
+  "sha256_lfs_files_compared": 19,
+  "git_blob_sha1_files_compared": 34,
+  "content_hash_mismatches": 0,
+  "previous_paths_missing": 0,
+  "previous_noncard_paths_changed": 1,
+  "previous_paths_preserved": 348,
+  "additive_release_prefix": "releases/v0.2.6",
+  "remote_prefix_file_count": 52,
+  "missing_paths_sample": [],
+  "size_mismatch_paths_sample": [],
+  "hash_mismatch_paths_sample": [],
+  "old_missing_paths_sample": [],
+  "old_changed_paths_sample": [
+    ".gitattributes"
+  ],
+  "previous_gitattributes_rules_added": 19,
+  "previous_gitattributes_rules_removed": 0,
+  "previous_gitattributes_change_scope": "Append-only LFS tracking rules for v0.2.6 shards; no earlier rule was removed.",
+  "viewer_schema_hotfix_commit": "dc2bab784c725d88d89541a27dcfb1084f5ec886",
+  "viewer_schema_hotfix_files": [
+    {
+      "path": "README.md",
+      "sha256": "7f6dc91cf55bfe77caca998554e1ec878d7786a47d43d6043675f6adc46f5d00"
+    },
+    {
+      "path": "releases/v0.2.6/README.md",
+      "sha256": "7f6dc91cf55bfe77caca998554e1ec878d7786a47d43d6043675f6adc46f5d00"
+    }
+  ],
+  "viewer_schema_hotfix_verified": true,
+  "viewer_schema_configs_declared": [
+    "text",
+    "text_resources"
+  ],
+  "viewer_recheck_after_schema_hotfix": {
+    "schema_card_commit": "dc2bab784c725d88d89541a27dcfb1084f5ec886",
+    "latest_card_commit": "cd43e9e505ba0632cf2cbad87ff67f33bf40469e",
+    "is_valid": {
+      "http_status": 200,
+      "preview": false,
+      "viewer": false,
+      "search": false,
+      "filter": false,
+      "statistics": false
+    },
+    "splits": {
+      "http_status": 200,
+      "expected": 26,
+      "listed": 21,
+      "pending_configs": [
+        "text_expansion",
+        "text_resources",
+        "university_research"
+      ],
+      "failed": []
+    },
+    "parquet": {
+      "http_status": 200,
+      "expected": 26,
+      "listed": 12,
+      "pending_configs": [
+        "popular_songs",
+        "record_index",
+        "record_sources",
+        "source_catalog",
+        "sravaani_drafts",
+        "text",
+        "text_expansion",
+        "text_resources",
+        "university_research"
+      ],
+      "failed": []
+    },
+    "first_rows": {
+      "text": {
+        "http_status": 200,
+        "rows_returned": 57
+      },
+      "text_resources": {
+        "http_status": 500,
+        "error": "service-busy"
+      },
+      "record_index": {
+        "http_status": 200,
+        "rows_returned": 100
+      },
+      "source_catalog": {
+        "http_status": 200,
+        "rows_returned": 100
+      },
+      "record_sources": {
+        "http_status": 200,
+        "rows_returned": 100
+      }
+    },
+    "viewer_verification": "pending Hub indexing; the latest response lists pending jobs and no failed Viewer tasks"
+  },
+  "latest_card_commit": "cd43e9e505ba0632cf2cbad87ff67f33bf40469e",
+  "card_update_commits": [
+    "dc2bab784c725d88d89541a27dcfb1084f5ec886",
+    "cd43e9e505ba0632cf2cbad87ff67f33bf40469e"
+  ],
+  "reference_configs_restored": [
+    "record_index",
+    "source_catalog",
+    "record_sources"
+  ],
+  "expected_config_split_count": 26,
+  "viewer_recheck_after_final_card": {
+    "card_commit": "cd43e9e505ba0632cf2cbad87ff67f33bf40469e",
+    "is_valid": {
+      "http_status": 200,
+      "preview": true,
+      "viewer": true,
+      "search": true,
+      "filter": true,
+      "statistics": false
+    },
+    "splits": {
+      "http_status": 200,
+      "expected": 26,
+      "listed": 26,
+      "pending": [],
+      "failed": []
+    },
+    "parquet": {
+      "http_status": 200,
+      "expected": 26,
+      "listed": 26,
+      "pending": [],
+      "failed": [],
+      "configs": [
+        "asr",
+        "catalog",
+        "geography",
+        "historical_terms",
+        "instructions",
+        "lexicon",
+        "literary_people",
+        "literary_works",
+        "popular_songs",
+        "record_index",
+        "record_sources",
+        "source_catalog",
+        "sravaani_drafts",
+        "text",
+        "text_expansion",
+        "text_resources",
+        "university_research"
+      ]
+    },
+    "first_rows": {
+      "text": {
+        "http_status": 200,
+        "rows_returned": 57
+      },
+      "text_resources": {
+        "http_status": 200,
+        "rows_returned": 29
+      },
+      "record_index": {
+        "http_status": 200,
+        "rows_returned": 100
+      },
+      "source_catalog": {
+        "http_status": 200,
+        "rows_returned": 100
+      },
+      "record_sources": {
+        "http_status": 200,
+        "rows_returned": 100
+      }
+    },
+    "viewer_verification": "complete; all expected splits, Parquet outputs, and sampled rows load; Hub statistics capability is unavailable"
+  },
+  "viewer_verification": "complete"
+}

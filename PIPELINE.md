@@ -86,33 +86,34 @@ never uploads to Hugging Face or changes repository visibility. Rights-pending
 source text remains in the local all-data package and is omitted from public
 content output; candidate counts are not a measure of verified Garhwali.
 
-The current public corpus release is v0.2.4 and contains 32,072 catalog
-records from 49 text source files. The v0.2.4 Hub upload is additive: it keeps
-the earlier release paths and adds source attribution/revision metadata for
-existing records; it adds no new text. For a later release, bump the project
-version and output paths to v0.2.5. The 246-row `text_resources` config is an
-access view over values already in the catalog, not additional source
-acquisition. The Internet
-Archive material acquired on 3–4 October is still local-only; its intake,
-quality profile, and canonical-text overlap audit are in
+The current public corpus release is v0.2.6. It contains 36,105 parent
+catalog records and 18,598 segment-oriented `text` rows; the multiple configs
+and reference tables overlap, so their totals are not unique-example counts.
+The release is additive and retains all prior release paths. The 475-row
+`text_resources` config is an access view over existing catalog values, not
+additional source acquisition. The Internet Archive material acquired on
+3–4 October remains local-only; its intake, quality profile, and canonical-text
+overlap audit are in
 [`research/internet-archive-intake-2026-10-03.md`](research/internet-archive-intake-2026-10-03.md)
 and
 [`research/internet-archive-intake-quality-2026-10-04.md`](research/internet-archive-intake-quality-2026-10-04.md).
-For example, after a new source intake:
+The refresh defaults to v0.2.6 for local staging paths. Set a new version
+explicitly when preparing the next release so candidate files remain separate:
 
 ```bash
-GARHWALI_RELEASE_VERSION=0.2.5 .venv/bin/python scripts/ingestion_graph.py run \
-  --wave tenth --run-id next-garhwali-wave-2026-10-05 --refresh-derived
+GARHWALI_RELEASE_VERSION=0.2.7 .venv/bin/python scripts/ingestion_graph.py run \
+  --wave tenth --run-id next-garhwali-wave-YYYY-MM-DD --refresh-derived
 ```
 
-For an additive v0.2.5 package, stage it with a new prefix and unique ignored
-output paths:
+Inspect the planned commands and paths first with
+`.venv/bin/python scripts/refresh_corpus_after_ingestion.py --dry-run`. The
+plan performs no writes.
 
 ```bash
-GARHWALI_RELEASE_VERSION=0.2.5 .venv/bin/python scripts/prepare_hf_additive_upload.py \
-  --prefix releases/v0.2.5 \
-  --output data/huggingface/garhwali-corpus-v0.2.5-additive-upload \
-  --plan data/huggingface/garhwali-corpus-v0.2.5-upload-plan.json
+GARHWALI_RELEASE_VERSION=0.2.7 .venv/bin/python scripts/prepare_hf_additive_upload.py \
+  --prefix releases/v0.2.7 \
+  --output data/huggingface/garhwali-corpus-v0.2.7-additive-upload \
+  --plan data/huggingface/garhwali-corpus-v0.2.7-upload-plan.json
 ```
 
 Review the plan, verify the prefix is unused, and run its generated upload

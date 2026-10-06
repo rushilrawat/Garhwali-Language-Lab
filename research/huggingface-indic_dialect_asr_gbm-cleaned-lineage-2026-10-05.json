@@ -1,0 +1,34 @@
+{
+  "schema_version": "hf-source-lineage-audit-v1",
+  "source_id": "indic_dialect_asr_gbm",
+  "upstream_source_rows": 7823,
+  "upstream_source_rows_by_origin": {
+    "Vaani/Uttarakhand_TehriGarhwal": 3999,
+    "Vaani/Uttarakhand_Uttarkashi": 1894,
+    "facebook/omnilingual-asr-corpus": 1930
+  },
+  "upstream_source_rows_by_license": {
+    "CC-BY-4.0": 7823
+  },
+  "upstream_source_rows_by_rights_status": {
+    "upstream_meta_cc_by_4_0": 1930,
+    "upstream_vaani_cc_by_4_0": 5893
+  },
+  "view_rows_with_source": 7796,
+  "view_rows_by_split": {
+    "test": 362,
+    "train": 7034,
+    "validation": 400
+  },
+  "distinct_source_record_ids_linked": 7823,
+  "distinct_source_record_links": 7823,
+  "source_records_with_fanout": 0,
+  "source_record_fanout_histogram": {
+    "0": 0,
+    "1": 7823
+  },
+  "view_rows_with_multiple_source_records": 27,
+  "unlinked_source_record_count": 0,
+  "unlinked_source_record_ids": [],
+  "unknown_view_source_record_ids": []
+}

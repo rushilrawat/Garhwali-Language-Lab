@@ -89,6 +89,55 @@ class TextPreparationTests(unittest.TestCase):
             )
             self.assertEqual(provenance["attribution"], "Example contributors")
 
+    def test_prepare_resolves_vaani_transcription_test_rights_and_keeps_split_lineage(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "data" / "extracted" / "research" / "vaani-official-test-remainder.jsonl"
+            source.parent.mkdir(parents=True)
+            rows = [
+                {
+                    "audio_path": "vaani-row.wav",
+                    "source": "ARTPARK-IISc/Vaani",
+                    "canonical_transcript_source": "ARTPARK-IISc/Vaani-transcription-part",
+                    "transcription_split": "test",
+                    "main_split": "train",
+                    "transcript": "गढ़वाली वाक्य",
+                    "license": "CC-BY-4.0",
+                },
+                {
+                    "audio_path": "transcription-part-row.wav",
+                    "source": "ARTPARK-IISc/Vaani-transcription-part",
+                    "canonical_transcript_source": "ARTPARK-IISc/Vaani-transcription-part",
+                    "transcription_split": "test",
+                    "transcript": "गढ़वाली दूसरा वाक्य",
+                },
+            ]
+            source.write_text(
+                "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
+                encoding="utf-8",
+            )
+
+            m.prepare([source], root / "out", root=root)
+            records = [json.loads(line) for line in (root / "out/canonical.jsonl").read_text().splitlines()]
+            provenance_rows = [record["provenance"][0] for record in records]
+
+        self.assertEqual(len(provenance_rows), 2)
+        for provenance in provenance_rows:
+            self.assertEqual(provenance["source_id"], "vaani-transcription-part")
+            self.assertEqual(provenance["rights_status"], "upstream_vaani_cc_by_4_0")
+            self.assertEqual(provenance["license_id"], "CC-BY-4.0")
+            self.assertEqual(provenance["transcription_split"], "test")
+            self.assertEqual(
+                provenance["canonical_transcript_source"],
+                "ARTPARK-IISc/Vaani-transcription-part",
+            )
+            self.assertEqual(
+                provenance["rights_evidence"],
+                "https://huggingface.co/datasets/ARTPARK-IISc/Vaani-transcription-part",
+            )
+            self.assertFalse(provenance["training_eligible"])
+        self.assertEqual(provenance_rows[0]["main_split"], "train")
+
     def test_prepare_preserves_versioned_archive_provenance(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

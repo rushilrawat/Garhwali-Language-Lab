@@ -15,6 +15,8 @@ SOURCE_URLS = {
     "pib_ramman_instruments": "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/sep/doc2025929651301.pdf",
     "user-literature-writers-2026-09-16": "https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/sources/manual/garhwali-literature-writers-2026-09-16.md",
     "uttarakhandiwords_animals": "https://uttarakhandiwords.blogspot.com/2011/09/blog-post.html",
+    "vaani-transcription-part": "https://huggingface.co/datasets/ARTPARK-IISc/Vaani-transcription-part",
+    "vaani-official-test-remainder": "https://huggingface.co/datasets/ARTPARK-IISc/Vaani",
     "wiktionary_swadesh_thematic": "https://en.wiktionary.org/wiki/Appendix:Garhwali_Swadesh_list",
 }
 

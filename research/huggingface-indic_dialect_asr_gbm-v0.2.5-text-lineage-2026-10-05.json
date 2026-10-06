@@ -1,0 +1,66 @@
+{
+  "schema_version": "hf-source-lineage-audit-v1",
+  "source_id": "indic_dialect_asr_gbm",
+  "upstream_source_rows": 7823,
+  "upstream_source_rows_by_origin": {
+    "Vaani/Uttarakhand_TehriGarhwal": 3999,
+    "Vaani/Uttarakhand_Uttarkashi": 1894,
+    "facebook/omnilingual-asr-corpus": 1930
+  },
+  "upstream_source_rows_by_license": {
+    "CC-BY-4.0": 7823
+  },
+  "upstream_source_rows_by_rights_status": {
+    "upstream_meta_cc_by_4_0": 1930,
+    "upstream_vaani_cc_by_4_0": 5893
+  },
+  "view_rows_with_source": 10943,
+  "view_rows_by_split": {
+    "source_overlap": 82,
+    "test": 505,
+    "train": 9827,
+    "validation": 529
+  },
+  "distinct_source_record_ids_linked": 7806,
+  "distinct_source_record_links": 11040,
+  "source_records_with_fanout": 1246,
+  "source_record_fanout_histogram": {
+    "0": 17,
+    "1": 6560,
+    "2": 384,
+    "3": 315,
+    "4": 249,
+    "5": 150,
+    "6": 68,
+    "7": 47,
+    "8": 20,
+    "9": 9,
+    "10": 3,
+    "11": 0,
+    "12": 0,
+    "13": 1
+  },
+  "view_rows_with_multiple_source_records": 97,
+  "unlinked_source_record_count": 17,
+  "unlinked_source_record_ids": [
+    "indic_dialect_asr_gbm:1372",
+    "indic_dialect_asr_gbm:1373",
+    "indic_dialect_asr_gbm:1374",
+    "indic_dialect_asr_gbm:1457",
+    "indic_dialect_asr_gbm:1467",
+    "indic_dialect_asr_gbm:1543",
+    "indic_dialect_asr_gbm:176",
+    "indic_dialect_asr_gbm:2033",
+    "indic_dialect_asr_gbm:2034",
+    "indic_dialect_asr_gbm:2098",
+    "indic_dialect_asr_gbm:2099",
+    "indic_dialect_asr_gbm:2940",
+    "indic_dialect_asr_gbm:2941",
+    "indic_dialect_asr_gbm:2942",
+    "indic_dialect_asr_gbm:3822",
+    "indic_dialect_asr_gbm:4597",
+    "indic_dialect_asr_gbm:522"
+  ],
+  "unknown_view_source_record_ids": [],
+  "audited_release_id": "garhwali-language-lab-v0.2.5"
+}

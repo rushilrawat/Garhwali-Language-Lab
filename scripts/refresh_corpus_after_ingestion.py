@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import subprocess
@@ -53,7 +54,7 @@ def replace_metrics_block(readme: str, table: str) -> str:
 
 
 def configure_environment(environment: dict[str, str]) -> dict[str, str]:
-    version = environment.setdefault("GARHWALI_RELEASE_VERSION", "0.2.1").removeprefix("v")
+    version = environment.setdefault("GARHWALI_RELEASE_VERSION", "0.2.6").removeprefix("v")
     environment.setdefault(
         "GARHWALI_HF_ALL_DATA_OUTPUT",
         f"data/huggingface/garhwali-language-lab-all-data-v{version}-local",
@@ -65,10 +66,11 @@ def configure_environment(environment: dict[str, str]) -> dict[str, str]:
     return environment
 
 
-def run_pipeline(root: Path = ROOT, runner=subprocess.run,
-                 environment: dict[str, str] | None = None) -> None:
+def build_pipeline_plan(root: Path = ROOT,
+                        environment: dict[str, str] | None = None) -> dict:
     environment = configure_environment(dict(os.environ) if environment is None else environment)
-    for script, arguments in PIPELINE_COMMANDS:
+    steps = []
+    for index, (script, arguments) in enumerate(PIPELINE_COMMANDS, start=1):
         arguments = list(arguments)
         if script == "build_huggingface_dataset.py":
             output = (
@@ -77,7 +79,32 @@ def run_pipeline(root: Path = ROOT, runner=subprocess.run,
             )
             arguments.extend(("--output", output))
         command = [sys.executable, str(root / "scripts" / script), *arguments]
-        runner(command, cwd=root, check=True, env=environment)
+        steps.append({
+            "index": index,
+            "script": script,
+            "arguments": arguments,
+            "command": command,
+            "script_exists": (root / "scripts" / script).is_file(),
+        })
+    return {
+        "plan_schema_version": 1,
+        "mode": "dry-run",
+        "mutates_workspace": False,
+        "release_version": environment["GARHWALI_RELEASE_VERSION"],
+        "all_data_output": environment["GARHWALI_HF_ALL_DATA_OUTPUT"],
+        "public_output": environment["GARHWALI_HF_PUBLIC_OUTPUT"],
+        "script_count": len(steps),
+        "ready": all(step["script_exists"] for step in steps),
+        "steps": steps,
+    }
+
+
+def run_pipeline(root: Path = ROOT, runner=subprocess.run,
+                 environment: dict[str, str] | None = None) -> None:
+    environment = configure_environment(dict(os.environ) if environment is None else environment)
+    plan = build_pipeline_plan(root, environment)
+    for step in plan["steps"]:
+        runner(step["command"], cwd=root, check=True, env=environment)
 
 
 def read_json(path: Path) -> dict:
@@ -91,6 +118,9 @@ def collect_metrics(root: Path = ROOT, environment: dict[str, str] | None = None
     quality_report = read_json(root / "data/processed/model_ready/quality_v2/report.json")
     all_manifest = read_json(
         root / environment["GARHWALI_HF_ALL_DATA_OUTPUT"] / "manifest.json"
+    )
+    public_manifest = read_json(
+        root / environment["GARHWALI_HF_PUBLIC_OUTPUT"] / "manifest.json"
     )
     reference_index = read_json(
         root / environment["GARHWALI_HF_PUBLIC_OUTPUT"] / "reference_index_manifest.json"
@@ -108,7 +138,11 @@ def collect_metrics(root: Path = ROOT, environment: dict[str, str] | None = None
     all_package_rows = sum(
         details["records"] for details in all_manifest.get("configs", {}).values()
     )
+    public_configs = public_manifest.get("configs", {})
+    catalog_records = int(public_manifest.get("catalog_records", 0))
+    catalog_metadata_only = int(public_manifest.get("catalog_redacted_text_records", 0))
     return {
+        "release_id": public_manifest.get("release_id", "local candidate"),
         "source_files": text_report["source_files"],
         "source_records": text_report["source_records"],
         "exact_unique_parent_texts": text_report["unique_texts"],
@@ -124,6 +158,12 @@ def collect_metrics(root: Path = ROOT, environment: dict[str, str] | None = None
         "public_profile_package_rows_overlapping_views": reference_index["public_profile_package_rows"],
         "public_profile_rows_with_content": reference_index["records_with_content_in_public_profile"],
         "reference_index_rows": reference_index["records"],
+        "public_catalog_text_records": catalog_records - catalog_metadata_only,
+        "public_catalog_metadata_only_records": catalog_metadata_only,
+        "public_text_config_rows": sum(
+            details["records"] for name, details in public_configs.items()
+            if name.split("/", 1)[0] == "text"
+        ),
         "reference_sources": reference_index["source_catalog_records"],
         "reference_source_links": reference_index["record_source_links"],
         "web_goldmine_candidates_before_dedup": wave["candidate_records_before_dedup"],
@@ -151,38 +191,20 @@ def collect_metrics(root: Path = ROOT, environment: dict[str, str] | None = None
 
 def render_metrics_table(metrics: dict) -> str:
     rows = (
-        ("Canonical source records before exact deduplication", metrics["source_records"]),
+        ("Source files / records before deduplication", f"{metrics['source_files']:,} / {metrics['source_records']:,}"),
         ("Exact-unique parent texts", metrics["exact_unique_parent_texts"]),
-        ("Parent text characters", metrics["text_characters"]),
-        ("Whitespace tokens (engineering count)", metrics["whitespace_tokens"]),
-        ("Exact-unique prepared segments", metrics["exact_unique_segments"]),
-        ("Segment occurrences before exact deduplication", metrics["source_segments"]),
-        ("Text quality tiers (strict / experimental / rights-pending)", "/".join(
-            f"{metrics['quality_tiers'].get(key, 0):,}"
-            for key in ("strict_gold_candidate", "experimental_review", "high_quality_rights_pending")
-        )),
-        ("All-data local package rows (overlapping views)", metrics["all_data_package_rows_overlapping_views"]),
-        ("Public-profile package rows, including redacted catalog (overlapping views)", metrics["public_profile_package_rows_overlapping_views"]),
-        ("Public-profile rows with content (overlapping views)", metrics["public_profile_rows_with_content"]),
+        ("Characters / whitespace-separated tokens", f"{metrics['text_characters']:,} / {metrics['whitespace_tokens']:,}"),
+        ("Prepared segment occurrences / exact-unique segments", f"{metrics['source_segments']:,} / {metrics['exact_unique_segments']:,}"),
+        ("Public catalog rows with text / metadata-only", f"{metrics['public_catalog_text_records']:,} full-text / {metrics['public_catalog_metadata_only_records']:,} metadata-only"),
+        ("Main text config rows across splits", metrics["public_text_config_rows"]),
+        ("Public content-config rows (overlapping content-view rows)", metrics["public_profile_package_rows_overlapping_views"]),
         ("Metadata-only reference-index rows", metrics["reference_index_rows"]),
-        ("Reference sources / record-source links", f"{metrics['reference_sources']:,} / {metrics['reference_source_links']:,}"),
-        ("New web candidates before deduplication", metrics["web_goldmine_candidates_before_dedup"]),
-        ("Exact duplicate web records skipped", metrics["web_goldmine_exact_duplicates_skipped"]),
-        ("Exact-new web records (rights-unassessed; local experimental)", metrics["web_goldmine_exact_new_records"]),
-        ("New web-source characters before package normalization", metrics["web_goldmine_source_characters"]),
-        ("New web rows in public Hugging Face profile", metrics["web_goldmine_public_rows_added"]),
-        ("Jambu source rows / distinct Garhwali forms", f"{metrics['jambu_source_records']:,} / {metrics['jambu_unique_forms']:,}"),
-        ("Jambu forms already present in the pre-refresh corpus", metrics["jambu_already_in_current_corpus"]),
-        ("Jambu net-new forms this refresh", metrics["jambu_net_new_this_refresh"]),
-        ("Jambu historically new forms versus non-Jambu sources", metrics["jambu_historically_new_vs_other_sources"]),
-        ("Language Library static rows / distinct strings", f"{metrics['language_library_source_records']:,} / {metrics['language_library_unique_strings']:,}"),
-        ("Language Library exact-new strings after cross-corpus deduplication", metrics["language_library_exact_new_strings"]),
-        ("Language Library source rows by type", ", ".join(
-            f"{kind} {count:,}" for kind, count in sorted(metrics["language_library_records_by_type"].items())
-        )),
     )
     return "\n".join(
-        ["| Metric | Current local working tree |", "| --- | ---: |"]
+        [
+            f"| Metric | {metrics.get('release_id', 'Current local candidate')} local candidate |",
+            "| --- | ---: |",
+        ]
         + [f"| {label} | {value:,} |" if isinstance(value, int) else f"| {label} | {value} |"
            for label, value in rows]
     )
@@ -208,4 +230,16 @@ def refresh(root: Path = ROOT, runner=subprocess.run,
 
 
 if __name__ == "__main__":
-    print(json.dumps(refresh(), ensure_ascii=False, indent=2, sort_keys=True))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--dry-run", action="store_true",
+        help="print the exact ordered refresh plan without running commands or writing files",
+    )
+    args = parser.parse_args()
+    if args.dry_run:
+        plan = build_pipeline_plan()
+        print(json.dumps(plan, ensure_ascii=False, indent=2, sort_keys=True))
+        if not plan["ready"]:
+            raise SystemExit(2)
+    else:
+        print(json.dumps(refresh(), ensure_ascii=False, indent=2, sort_keys=True))

@@ -158,6 +158,41 @@ def has_source_traceability(config, row):
     return False
 
 
+def source_split_overlap_evidence(row, direct_eval_record_ids, aggregate_eval_record_ids):
+    """Return the upstream held-out evidence label used by the exporter."""
+    row_source_ids = source_record_ids(row)
+    direct_matches = row_source_ids & direct_eval_record_ids
+    aggregate_matches = row_source_ids & aggregate_eval_record_ids
+    provenance = row.get('provenance') or row.get('sources') or []
+    if isinstance(provenance, dict):
+        provenance = provenance.get('provenance') or []
+    vaani_test_matches = {
+        str(item.get('record_id'))
+        for item in provenance if isinstance(item, dict)
+        and (
+            item.get('source_id') in {
+                'vaani-official-test-remainder',
+                'vaani-transcription-part',
+            }
+            or item.get('canonical_transcript_source')
+            == 'ARTPARK-IISc/Vaani-transcription-part'
+        )
+        and item.get('transcription_split') == 'test'
+        and item.get('record_id')
+    }
+    if direct_matches and aggregate_matches:
+        status = 'upstream_record_and_transcript_match'
+    elif direct_matches:
+        status = 'upstream_eval_record_id_match'
+    elif aggregate_matches:
+        status = 'upstream_eval_transcript_match'
+    elif vaani_test_matches:
+        status = 'upstream_vaani_test_source_record_match'
+    else:
+        status = 'no_upstream_eval_match_detected'
+    return status, sorted(direct_matches | aggregate_matches | vaani_test_matches)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--package", type=Path, required=True)
@@ -356,23 +391,17 @@ def main():
                     if overlap_audit_manifest and config in {
                         'text', 'text_expansion', 'text_resources'
                     }:
-                        row_source_ids = source_record_ids(row)
-                        direct_matches = row_source_ids & direct_eval_record_ids
-                        aggregate_matches = row_source_ids & aggregate_eval_record_ids
-                        expected_source_ids = sorted(direct_matches | aggregate_matches)
-                        if direct_matches and aggregate_matches:
-                            expected_status = 'upstream_record_and_transcript_match'
-                        elif direct_matches:
-                            expected_status = 'upstream_eval_record_id_match'
-                        elif aggregate_matches:
-                            expected_status = 'upstream_eval_transcript_match'
-                        else:
-                            expected_status = 'no_upstream_eval_match_detected'
+                        expected_status, expected_source_ids = (
+                            source_split_overlap_evidence(
+                                row, direct_eval_record_ids,
+                                aggregate_eval_record_ids,
+                            )
+                        )
                         if row.get('source_split_overlap_status') != expected_status:
                             stats['source_split_evidence_mismatch'] += 1
                         if row.get('source_split_overlap_source_ids') != expected_source_ids:
                             stats['source_split_evidence_mismatch'] += 1
-                        has_overlap = bool(expected_source_ids)
+                        has_overlap = expected_status != 'no_upstream_eval_match_detected'
                         if split == 'train' and has_overlap:
                             stats['upstream_eval_overlap_left_in_train'] += 1
                         if split == 'source_overlap' and not has_overlap:

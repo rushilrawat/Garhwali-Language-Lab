@@ -30,7 +30,7 @@ TABLES = {
 SOURCE_FIELDS = (
     "source_id", "source_title", "source_url", "source_authority", "attribution",
     "source_kind", "license_id", "license_url", "rights_status", "genre",
-    "modality", "iso_639_3", "source_snapshot_sha256",
+    "modality", "iso_639_3", "source_snapshot_sha256", "rights_evidence",
 )
 METADATA_FIELDS = {
     "geography": ("name", "name_local", "place_type", "division", "districts", "wikipedia_title"),

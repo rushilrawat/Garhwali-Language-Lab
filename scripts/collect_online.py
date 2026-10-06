@@ -548,6 +548,7 @@ def meta_record(row, split, index, info):
                        segment_id=row.get('segment_id'), duration_seconds=row.get('duration'),
                        modality='speech_transcript', genre='prompted_speech', corpus_layer='core_open',
                        source_url='https://huggingface.co/datasets/facebook/omnilingual-asr-corpus',
+                       rights_status='upstream_meta_cc_by_4_0',
                        rights_evidence='sources/online/meta_omni/card.md.metadata.json',
                        audio_downloaded=False)
 

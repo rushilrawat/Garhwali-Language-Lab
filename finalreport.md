@@ -2,28 +2,39 @@
 
 ## Current release and local source intake — 2026-10-05
 
-The current public corpus release is **v0.2.5**, published at payload commit
-[`46407fc`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/46407fcb623d7f51d3f401f5842f73209dbffc4c).
-The latest root/versioned card, including typed schemas for the two formerly
-failing Viewer configs, is at
-[`dc3308d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/dc3308d4eb1d0eb619ab78071d0b34c2cbe8ac09).
-This additive release keeps all 18,949 core text values: 1,308 rows linked to
-upstream held-out text/record sources are now in a public `source_overlap`
-split outside default `train`; 363 of the 1,647 catalog-expansion rows are
-similarly routed. Text values in the core, expansion, and resource configs
-match v0.2.4 exactly. The 827,450 package-view total includes 164,387 content
-rows plus 663,063 archive/source-reference rows; the views overlap. All 51
-versioned release files match their local plan by size and Git/LFS hash. The
-separate speech repository remains at v0.2.1. Independent package preflight
-passed with zero errors and zero deleted or mutated records; the full suite
-passes 791/791. Streaming successfully read one row from each new overlap split
-and from the lexicon config. The card now declares merged schemas for
-`text_expansion` and `sravaani_drafts`, and local validation reads all 13
-affected shards. Hugging Face now reports all Viewer capabilities enabled, all 25 splits and 25 Parquet outputs ready, and no pending or failed jobs. Row samples work for both repaired configs, and dataset-wide `/is-valid` is true. The current training audit reports zero
-recommendation mismatches and zero text rows recommended for training; see its
-[report](research/huggingface-training-eligibility-audit-2026-10-05.md).
-Full details are in the
-[v0.2.5 release report](research/huggingface-corpus-v0.2.5-release-2026-10-05.md).
+The current public corpus release is **v0.2.6**, with data at
+[commit `bddb006`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/bddb00665a7d6452a9e94c4484e9165d5b2d39b1).
+The latest root/versioned cards are at metadata-only
+[commit `cd43e9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cd43e9e505ba0632cf2cbad87ff67f33bf40469e).
+The 53 planned release paths match remote sizes and hashes (19 LFS SHA-256
+and 34 Git blob SHA-1 checks); all 348 prior paths remain. The `.gitattributes`
+change adds 19 LFS rules for the new shards and removes no earlier rule. The
+additive release contains 36,105 parent catalog records, 12,657 public
+full-text catalog records, 23,448 metadata-only catalog records, and 18,598
+rows in the segment-oriented `text` view. Its 945,926 preflight rows span
+overlapping configs and reference tables; they are not unique examples.
+
+The local package preflight reports zero errors, zero missing source-traceability
+rows, zero deleted or mutated records, and zero remaining identity leakage
+across its configured splits. All v0.2.5 unique text values remain represented.
+The current full suite passes **803/803** tests. The Viewer initially identified a
+schema-inference error for `text` and `text_resources`; the cards now declare
+stable schemas and all three metadata-reference configs, and their remote
+hashes match local files. The final live check confirms **26/26 splits** and
+**26/26 Parquet outputs**, with no pending or failed jobs. Preview, viewer,
+search, and filter capabilities are enabled. Sample rows load for `text`,
+`text_resources`, `record_index`, `source_catalog`, and `record_sources`;
+Viewer statistics remain unavailable. Hugging Face publication and the
+Dataset Viewer release check are complete.
+See the [v0.2.6 publication report](research/huggingface-corpus-v0.2.6-release-2026-10-05.md),
+[schema hotfix report](research/huggingface-v0.2.6-viewer-schema-hotfix-2026-10-05.md),
+and [remote verification JSON](research/huggingface-v0.2.6-remote-file-verification-2026-10-05.json).
+
+The separate speech repository remains at v0.2.1. The current training audit
+reports zero recommendation mismatches and zero text rows recommended for
+training; see its [report](research/huggingface-training-eligibility-audit-2026-10-05.md).
+The earlier v0.2.5 publication and its successful Viewer check remain in the
+[historical v0.2.5 release report](research/huggingface-corpus-v0.2.5-release-2026-10-05.md).
 
 The 3–4 October Internet Archive search and acquisition added **119 local
 payload files (6,005,077,831 bytes)**. The initial 3,369-page index was
@@ -112,8 +123,10 @@ The 2026 study [*Seeds Before Objectives*](https://arxiv.org/abs/2608.10670)
 reports a five-seed, official-split w2v-BERT 2.0 standard-CTC mean of 47.0%
 WER. Its method supports reporting seed variation; it is not a like-for-like
 comparison to this single Whisper-tiny remainder score or an independent test
-for this project. The current local suite passes **791/791** tests after the
-v0.2.5 split-safety work (repository CI unittest discovery command).
+for this project. The v0.2.6 publication-era suite passed **802/802** tests
+after the provenance and Viewer-schema work. Phase 8's read-only dry-run test
+brings the current full suite to **803/803** (repository CI unittest discovery
+command).
 
 ## Meta Omnilingual ASR validation — 2026-10-04 to 2026-10-05
 
@@ -170,8 +183,10 @@ remain preserved. The 292 safe Meta test rows remain unscored, and independent
 final-evidence eligibility stays **0/5**. The row-level ledger is Git-ignored;
 aggregate findings and hashes are in the [lineage refresh](research/model-lineage-refresh-2026-10-05.md).
 
-The earlier v0.2.4 audit recorded **776/776** unittest cases. The follow-up
-v0.2.5 split-safety and Viewer-schema changes bring the current full suite to **791/791**. The
+The earlier v0.2.4 audit recorded **776/776** unittest cases; the v0.2.5
+split-safety milestone raised this to **791/791**, and the v0.2.6 provenance
+and Viewer-schema additions brought the suite to **802/802**. Phase 8's
+read-only dry-run regression test brings the current full suite to **803/803**. The
 `validate_release_index.py` check still passes for release snapshot v0.1.1. Its compact
 artifact hashes and paths also pass when checked without comparing against
 the current source tree. The stricter local `build_release_bundle.py --check`

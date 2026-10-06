@@ -76,3 +76,6 @@ texts as correct Garhwali, establish independent evaluation, or grant
 redistribution/training rights. The next Phase 2 deliverable is a source-family
 evidence matrix separating public display, text redistribution, research,
 model-training, commercial use, attribution, and unresolved quality issues.
+The first matrix and a source-row/view-row count reconciliation are now in the
+[Phase 2 source rights and lineage audit](huggingface-phase2-source-rights-lineage-audit-2026-10-05.md).
+That follow-up does not change this audit's recommendations or any row flags.

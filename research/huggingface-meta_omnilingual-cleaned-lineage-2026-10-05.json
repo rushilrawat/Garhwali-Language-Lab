@@ -1,0 +1,31 @@
+{
+  "schema_version": "hf-source-lineage-audit-v1",
+  "source_id": "meta_omni",
+  "upstream_source_rows": 2927,
+  "upstream_source_rows_by_origin": {
+    "not_recorded": 2927
+  },
+  "upstream_source_rows_by_license": {
+    "CC-BY-4.0": 2927
+  },
+  "upstream_source_rows_by_rights_status": {
+    "upstream_meta_cc_by_4_0": 2927
+  },
+  "view_rows_with_source": 2864,
+  "view_rows_by_split": {
+    "test": 143,
+    "train": 2581,
+    "validation": 140
+  },
+  "distinct_source_record_ids_linked": 2927,
+  "distinct_source_record_links": 2927,
+  "source_records_with_fanout": 0,
+  "source_record_fanout_histogram": {
+    "0": 0,
+    "1": 2927
+  },
+  "view_rows_with_multiple_source_records": 63,
+  "unlinked_source_record_count": 0,
+  "unlinked_source_record_ids": [],
+  "unknown_view_source_record_ids": []
+}
