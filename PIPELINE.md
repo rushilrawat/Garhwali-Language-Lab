@@ -117,8 +117,12 @@ GARHWALI_RELEASE_VERSION=0.2.7 .venv/bin/python scripts/prepare_hf_additive_uplo
 ```
 
 Review the plan, verify the prefix is unused, and run its generated upload
-command only after checks pass. It writes under the new version path and uses no
-deletion operations. The original source-expansion payload is at [HF commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); the corrected cards are at [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). Its original `releases/v2.0.0/` folder is a preserved Hub storage path, not the project's release version.
+command only after checks pass. The preparer runs the record-level package
+validator before staging, rejects a version prefix that disagrees with the
+manifest, and records the input-manifest and preflight-report hashes in its
+plan. A failed preflight writes no upload tree or plan. It writes under the new
+version path and uses no deletion operations. The original source-expansion
+payload is at [HF commit `5db2673`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/5db26737c4dcb4bd3e6a3750d30c2d9cae3048c1); the corrected cards are at [`53a0aff`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53a0aff5ebaf7e676954065d86e2d78c0ff70504). Its original `releases/v2.0.0/` folder is a preserved Hub storage path, not the project's release version.
 
 The package is limited to the rights-filtered public profile. This procedure
 preserves old versioned files and updates the root card to point at the new

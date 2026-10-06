@@ -1,10 +1,17 @@
 import hashlib
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
-from scripts.prepare_hf_additive_upload import prepare, validate_package, version_card
+from scripts.prepare_hf_additive_upload import (
+    preflight_candidate,
+    prepare,
+    validate_package,
+    version_card,
+)
 
 
 class AdditiveHuggingFaceUploadTests(unittest.TestCase):
@@ -35,9 +42,11 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
         }), encoding="utf-8")
         (package / "manifest.json").write_text(json.dumps({
             "profile": "public", "release_id": "garhwali-language-lab-v0.2.0",
+            "record_schema_version": "1.0.0",
             "include_audio": False, "linked_audio_files": 0,
             "removed_audio_files": 0,
             "configs": {"catalog/train": {
+                "records": 1,
                 "files": ["train-00000.jsonl"],
                 "file_sha256": {"train-00000.jsonl": digest},
             }},
@@ -67,8 +76,22 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             package = self.make_package(root)
             self.assertEqual(len(validate_package(package)), 11)
             output = root / "upload"
-            plan = prepare(package, output, root / "plan.json")
+            preflight = {
+                "run_id": "garhwali-hf-public-cloud-validation-v0.2.0",
+                "status": "passed",
+                "report_sha256": "a" * 64,
+                "record_schema_version": "1.0.0",
+                "config_count": 1,
+            }
+            with patch(
+                "scripts.prepare_hf_additive_upload.preflight_candidate",
+                return_value=preflight,
+            ):
+                plan = prepare(package, output, root / "plan.json")
             self.assertEqual(plan["file_count"], 12)
+            self.assertEqual(plan["candidate_preflight"], preflight)
+            self.assertEqual(plan["record_schema_version"], "1.0.0")
+            self.assertEqual(len(plan["input_manifest_sha256"]), 64)
             self.assertIn("releases/v0.2.0/data/catalog/train-*.jsonl", (output / "README.md").read_text())
             self.assertIn(
                 "resolve/main/releases/v0.2.0/reference_index_manifest.json",
@@ -80,6 +103,54 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             self.assertEqual((root / "plan.json").stat().st_size > 0, True)
             with self.assertRaises(FileExistsError):
                 prepare(package, output, root / "plan.json")
+
+    def test_full_preflight_rejects_package_that_passes_inventory_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            package = self.make_package(Path(directory))
+            validate_package(package)
+
+            with self.assertRaisesRegex(ValueError, "Candidate full preflight failed"):
+                preflight_candidate(package)
+
+    def test_preflight_rejects_report_for_a_different_manifest_release(self):
+        with tempfile.TemporaryDirectory() as directory:
+            package = self.make_package(Path(directory))
+
+            def write_mismatched_report(command, **kwargs):
+                report_path = Path(command[command.index("--output") + 1])
+                report_path.write_text(json.dumps({
+                    "run_id": "garhwali-hf-public-cloud-validation-v0.2.1",
+                    "release_id": "garhwali-language-lab-v0.2.1",
+                    "status": "passed",
+                    "record_schema_version": "1.0.0",
+                    "configs": {},
+                }), encoding="utf-8")
+                return subprocess.CompletedProcess(command, 0, "", "")
+
+            with patch(
+                "scripts.prepare_hf_additive_upload.subprocess.run",
+                side_effect=write_mismatched_report,
+            ):
+                with self.assertRaisesRegex(
+                    ValueError, "preflight and manifest provenance disagree"
+                ):
+                    preflight_candidate(package)
+
+    def test_failed_preflight_writes_no_upload_tree_or_plan(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = self.make_package(root)
+            output = root / "upload"
+            plan_path = root / "plan.json"
+            with patch(
+                "scripts.prepare_hf_additive_upload.preflight_candidate",
+                side_effect=ValueError("Candidate full preflight failed: fixture"),
+            ):
+                with self.assertRaisesRegex(ValueError, "Candidate full preflight failed"):
+                    prepare(package, output, plan_path)
+
+            self.assertFalse(output.exists())
+            self.assertFalse(plan_path.exists())
 
     def test_accepts_the_v025_split_overlap_audit_support_files(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -117,6 +188,16 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "safe relative POSIX path"):
                 prepare(package, root / "upload", root / "plan.json", "../outside")
 
+    def test_rejects_release_prefix_that_disagrees_with_manifest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = self.make_package(root)
+            with self.assertRaisesRegex(ValueError, "must match manifest release_id"):
+                prepare(
+                    package, root / "upload", root / "plan.json",
+                    "releases/v0.2.1",
+                )
+
     def test_plan_commit_message_uses_the_manifest_release_version(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -126,10 +207,20 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             manifest["release_id"] = "garhwali-language-lab-v0.2.1"
             manifest_path.write_text(json.dumps(manifest))
 
-            plan = prepare(
-                package, root / "upload", root / "plan.json",
-                "releases/v0.2.1",
-            )
+            with patch(
+                "scripts.prepare_hf_additive_upload.preflight_candidate",
+                return_value={
+                    "run_id": "garhwali-hf-public-cloud-validation-v0.2.1",
+                    "status": "passed",
+                    "report_sha256": "b" * 64,
+                    "record_schema_version": "1.0.0",
+                    "config_count": 1,
+                },
+            ):
+                plan = prepare(
+                    package, root / "upload", root / "plan.json",
+                    "releases/v0.2.1",
+                )
 
             self.assertIn("Add Garhwali corpus v0.2.1", plan["command"])
 

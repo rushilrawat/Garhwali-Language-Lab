@@ -7,6 +7,10 @@ import argparse
 import hashlib
 import json
 import os
+import re
+import subprocess
+import sys
+import tempfile
 from pathlib import Path
 from pathlib import PurePosixPath
 
@@ -93,6 +97,47 @@ def validate_package(package: Path) -> list[Path]:
     return [package / path for path in sorted(actual)]
 
 
+def preflight_candidate(package: Path) -> dict:
+    """Run the full record-level release validator without writing into the package."""
+    with tempfile.TemporaryDirectory(prefix="garhwali-hf-preflight-") as directory:
+        report_path = Path(directory) / "report.json"
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "validate_hf_package_cloud.py"),
+                "--package", str(package),
+                "--output", str(report_path),
+            ],
+            cwd=ROOT,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=False,
+        )
+        if not report_path.is_file():
+            detail = result.stderr.strip() or "validator produced no report"
+            raise ValueError(f"Candidate preflight could not complete: {detail}")
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        if result.returncode or report.get("status") != "passed":
+            errors = report.get("errors") or [result.stderr.strip()]
+            raise ValueError(f"Candidate full preflight failed: {errors[:5]}")
+        manifest = json.loads((package / "manifest.json").read_text(encoding="utf-8"))
+        if (
+            report.get("release_id") != manifest.get("release_id")
+            or not report.get("record_schema_version")
+            or report.get("record_schema_version")
+            != manifest.get("record_schema_version")
+        ):
+            raise ValueError("Candidate preflight and manifest provenance disagree")
+        return {
+            "run_id": report["run_id"],
+            "status": report["status"],
+            "report_sha256": sha256(report_path),
+            "record_schema_version": report.get("record_schema_version"),
+            "config_count": len(report.get("configs", {})),
+        }
+
+
 def version_card(source: str, prefix: str) -> str:
     old_path = "path: data/"
     new_path = f"path: {prefix}/data/"
@@ -128,8 +173,14 @@ def prepare(
     release_id = json.loads(
         (package / "manifest.json").read_text(encoding="utf-8")
     )["release_id"]
-    version = release_id.removeprefix("garhwali-language-lab-v")
-    prefix = prefix or f"releases/v{version}"
+    release_match = re.fullmatch(
+        r"garhwali-language-lab-v(?P<version>\d+\.\d+\.\d+)", release_id
+    )
+    if not release_match:
+        raise ValueError(f"Invalid release_id: {release_id}")
+    version = release_match.group("version")
+    expected_prefix = f"releases/v{version}"
+    prefix = prefix or expected_prefix
     prefix_path = PurePosixPath(prefix)
     if (
         not prefix
@@ -138,9 +189,14 @@ def prepare(
         or "\\" in prefix
     ):
         raise ValueError("Release prefix must be a safe relative POSIX path")
+    if prefix != expected_prefix:
+        raise ValueError(
+            f"Release prefix must match manifest release_id: {expected_prefix}"
+        )
     if output.exists():
         raise FileExistsError(f"Refusing to overwrite existing upload tree: {output}")
     files = validate_package(package)
+    preflight = preflight_candidate(package)
     card = version_card((package / "README.md").read_text(encoding="utf-8"), prefix)
     output.mkdir(parents=True)
     uploads = []
@@ -166,6 +222,9 @@ def prepare(
         "repo_id": "rushilrawat/garhwali-corpus",
         "repo_type": "dataset",
         "release_id": release_id,
+        "input_manifest_sha256": sha256(package / "manifest.json"),
+        "record_schema_version": preflight["record_schema_version"],
+        "candidate_preflight": preflight,
         "strategy": "add files under a versioned prefix and update the root dataset card; no deletion operations",
         "release_prefix": prefix,
         "file_count": len(uploads),

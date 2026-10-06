@@ -17,7 +17,7 @@ overlapping configs and reference tables; they are not unique examples.
 The local package preflight reports zero errors, zero missing source-traceability
 rows, zero deleted or mutated records, and zero remaining identity leakage
 across its configured splits. All v0.2.5 unique text values remain represented.
-The current full suite passes **803/803** tests. The Viewer initially identified a
+The current full suite passes **807/807** tests. The Viewer initially identified a
 schema-inference error for `text` and `text_resources`; the cards now declare
 stable schemas and all three metadata-reference configs, and their remote
 hashes match local files. The final live check confirms **26/26 splits** and
@@ -125,8 +125,9 @@ WER. Its method supports reporting seed variation; it is not a like-for-like
 comparison to this single Whisper-tiny remainder score or an independent test
 for this project. The v0.2.6 publication-era suite passed **802/802** tests
 after the provenance and Viewer-schema work. Phase 8's read-only dry-run test
-brings the current full suite to **803/803** (repository CI unittest discovery
-command).
+brought the suite to **803/803**. The additive-upload preflight/version guard
+and four regression cases bring the current full suite to **807/807** (the
+repository CI unittest discovery command).
 
 ## Meta Omnilingual ASR validation — 2026-10-04 to 2026-10-05
 
@@ -186,7 +187,9 @@ aggregate findings and hashes are in the [lineage refresh](research/model-lineag
 The earlier v0.2.4 audit recorded **776/776** unittest cases; the v0.2.5
 split-safety milestone raised this to **791/791**, and the v0.2.6 provenance
 and Viewer-schema additions brought the suite to **802/802**. Phase 8's
-read-only dry-run regression test brings the current full suite to **803/803**. The
+read-only dry-run regression test brought that to **803/803**. The additive-
+upload preflight/version checks and four regression cases bring the current
+full suite to **807/807**. The
 `validate_release_index.py` check still passes for release snapshot v0.1.1. Its compact
 artifact hashes and paths also pass when checked without comparing against
 the current source tree. The stricter local `build_release_bundle.py --check`

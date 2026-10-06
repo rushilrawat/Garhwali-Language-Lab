@@ -120,11 +120,13 @@ PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_media_first_pass.py
 The verified 4 October results and interpretation are in the
 [`media first-pass report`](../research/internet-archive-media-first-pass-2026-10-04.md).
 
-`prepare_hf_additive_upload.py` validates the rights-filtered public package,
-its declared hashes, file inventory, and absence of source/audio payloads. It
-stages a release under a versioned Hub path without deletion operations. The
-script does not upload; publication is a separate authenticated step after the
-remote destination prefix is checked.
+`prepare_hf_additive_upload.py` validates the public package inventory and
+hashes, then runs `validate_hf_package_cloud.py` before writing any upload
+files. The manifest release ID must match the `releases/vX.Y.Z` prefix. Its
+upload plan records the manifest hash, record-schema version, preflight run ID,
+and preflight-report hash. A failed preflight creates no upload tree or plan.
+The script stages files additively and does not upload; publication is a
+separate authenticated step after the remote destination prefix is checked.
 
 Unit tests live in `tests/` and mirror the Python command name. Run all tests
 with:
@@ -133,7 +135,7 @@ with:
 PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The current working-tree suite passes **762 tests**. The
+The current working-tree suite passes **807 tests**. The
 frozen v0.2.0 release run passed 607/607 pytest and 605/605 unittest tests.
 The project's CI uses the documented `.venv/bin/python -m unittest` command and
 installs dependencies from `requirements-pipeline.txt`. Current benchmark

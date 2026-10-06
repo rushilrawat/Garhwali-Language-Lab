@@ -24,9 +24,11 @@ the three metadata reference configs. A final live check confirms all 26/26
 split views and 26/26 Parquet outputs with no pending or failed jobs. The
 preview, viewer, search, and filter capabilities are enabled; sample rows load
 for text, text resources, and the three reference tables. Statistics are not
-available from the Hub endpoint. All 803 project tests pass and local package
-preflight reports zero errors. Phase 7 is complete; the next roadmap task is
-Phase 8: make ingestion and release repeatable. See the [release report](huggingface-corpus-v0.2.6-release-2026-10-05.md),
+available from the Hub endpoint. All 807 project tests pass and local package
+preflight reports zero errors. Phase 7 is complete; Phase 8 is active, with the
+refresh dry-run and additive-upload preflight/version gate implemented. The
+remaining automation work is to pin source-input manifests and code revision,
+then compare candidate metrics with the previous release. See the [release report](huggingface-corpus-v0.2.6-release-2026-10-05.md),
 [schema/card fix report](huggingface-v0.2.6-viewer-schema-hotfix-2026-10-05.md),
 and [remote verification JSON](huggingface-v0.2.6-remote-file-verification-2026-10-05.json).
 
@@ -385,10 +387,16 @@ fresh environment.
   ordered commands and output paths, checks that each script exists, and
   writes nothing. Its default staging paths now follow the current v0.2.6
   schema version; a regression test covers the planned command list.
-- Next, add pinned input/version provenance and a candidate preflight gate
-  before any release upload. Keep the existing checkpointed LangGraph ingest,
-  deterministic deduplication, per-config scorecards, and source audits as
-  parts of the flow.
+- **Complete:** the additive upload preparer runs the full record-level
+  validator before staging, requires the manifest version to match
+  `releases/vX.Y.Z`, and writes nothing if validation fails. Its upload plan
+  pins the input-manifest SHA-256, schema version, preflight run ID, and
+  preflight-report SHA-256. A real v0.2.6 package passes this path across all
+  26 configs; malformed-package and version-mismatch cases are covered by tests.
+- Next, pin the source/input manifests and code revision used by refresh runs,
+  then compare candidate metrics with the prior release using the same metric
+  contract. Keep the checkpointed LangGraph ingest, deterministic
+  deduplication, per-config scorecards, and source audits in the flow.
 - Require successful tests, rights checks, overlap checks, and card/manifest
   reconciliation before any Hub upload.
 - Compare each release against its predecessor using the same metric contract.
@@ -426,4 +434,4 @@ versioned manifest and comparable metrics.
 | 5. Speech/transcripts | Existing partial audits | Explicit labeled/empty/draft counts and split-safe manifests |
 | 6. Coverage expansion | Active — intake, source disposition, page/section map, OCR comparison, visual triage, and technical media first pass complete | 119 local payloads; 4,011 OCR pages; 722-page Chatak/Shailesh map; zero exact and ≥0.85 near-text candidates against 32,072 cleaned rows; 39 media hashes/streams verified; content/language, OCR accuracy, and rights remain unresolved |
 | 7. HF release views | Complete for v0.2.6 | Data at `bddb006`; schemas/reference configs at `dc2bab7`/`cd43e9e`; 53 paths/hashes match, all 348 earlier paths remain, and live Viewer lists 26/26 splits plus 26/26 Parquet outputs; sample previews work |
-| 8. Automation | In progress | Added a non-mutating refresh dry-run that enumerates the exact ordered commands and versioned outputs, checks script availability, and defaults to v0.2.6. Next add explicit candidate preflight gating and input/version provenance |
+| 8. Automation | In progress | Refresh dry-run plus full preflight/version gate are implemented; upload plan pins manifest/schema/preflight hashes. Next pin upstream input manifests and code revision, then add same-contract predecessor comparison |
