@@ -186,7 +186,7 @@ def replace_metrics_block(readme: str, table: str) -> str:
 
 
 def configure_environment(environment: dict[str, str]) -> dict[str, str]:
-    version = environment.setdefault("GARHWALI_RELEASE_VERSION", "0.2.6").removeprefix("v")
+    version = environment.setdefault("GARHWALI_RELEASE_VERSION", "0.2.8").removeprefix("v")
     environment.setdefault(
         "GARHWALI_HF_ALL_DATA_OUTPUT",
         f"data/huggingface/garhwali-language-lab-all-data-v{version}-local",

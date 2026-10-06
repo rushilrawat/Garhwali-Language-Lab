@@ -1,15 +1,15 @@
-# Garhwali corpus: first ingestion
+# Garhwali corpus: source records and first ingestion
 
-This directory documents the project's initial openly licensed text sources; it
-is not the full current corpus. The v0.2.0 release snapshot contains 29,426
-exact-unique parent texts. The current public corpus release is v0.2.5 and
-contains 32,072 exact-unique parent texts and 151,690 exact-unique segments,
-with speech and experimental views plus separate rights-filtered exports. The
-package is live on [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
-at payload commit [`46407fc`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/46407fcb623d7f51d3f401f5842f73209dbffc4c), with the latest root/versioned card at [`dc3308d`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/dc3308d4eb1d0eb619ab78071d0b34c2cbe8ac09). The 51 versioned files match their planned hashes and sizes; older release paths remain. V0.2.5 routes 1,308 core-text and 363 expansion rows with upstream held-out-source overlap to public `source_overlap` splits. All text values remain unchanged. The card declares merged schemas for `text_expansion` and `sravaani_drafts`; local validation loads all 13 affected shards. The latest Viewer check reports all capabilities enabled, all 25 splits and 25 Parquet outputs ready, and no pending or failed jobs. Row samples load from `text_expansion/train` (1,284 rows) and `sravaani_drafts/train` (104,534 rows). The 246-row `text_resources` view in v0.2.3 and the 1,647-row `text_expansion` view expose existing catalog values; v0.2.4 added attribution/history metadata. Internet Archive files acquired on 3–4 October remain local-only and are not yet part of this corpus. See the [v0.2.5 release report](../research/huggingface-corpus-v0.2.5-release-2026-10-05.md), [project overview](../README.md), and
-[final review](../finalreport.md) for current counts, Hugging Face state, and
-release limits. This folder's source files retain their own licenses and review
-status.
+This directory contains the project's initial openly licensed source layer; it
+is not the complete corpus. The current public corpus is **v0.2.7**, with 18
+named configs and 29 config/split views. Current counts, text availability,
+source use, and release limits are summarized in the [project README](../README.md)
+and [final report](../finalreport.md). The current text-access gap and its
+source-by-source resolution path are in the [closeout audit](../research/huggingface-corpus-gap-resolution-2026-10-06.md).
+
+The dated material below records the first ingestion layer and its source
+files; historical release counts and checks are not current totals. Source
+records here retain their own licenses, attribution, hashes, and review status.
 
 Run `python3 scripts/ingest_open.py` from the project root. Standard-library Python and curl are sufficient. Raw responses and acquisition metadata live in `sources/web/`; subsequent runs verify their checksums and reuse them. Each importer replaces only its own JSONL file atomically, so repeated runs do not append duplicates or overwrite other sources.
 

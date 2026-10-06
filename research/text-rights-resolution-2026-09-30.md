@@ -1,5 +1,19 @@
 # Text rights resolution — 2026-10-01
 
+## Current cross-config availability addendum — 2026-10-06
+
+The source decisions below remain historical and are not replaced by this
+addendum. The current public corpus is v0.2.7. Its `catalog` config has 23,448
+blank text fields; an exhaustive normalized comparison across the public JSONL
+package finds 15,004 values elsewhere and 8,444 distinct full texts absent from
+all public configs. Those 8,444 remain locally retained with
+`rights_pending` / `not_cleared` status. Each is traceable to a source URL via
+the public reference tables. The detailed methodology, source group counts,
+and resolution steps are in the [6 October availability audit](huggingface-corpus-gap-resolution-2026-10-06.md).
+
+This discovery changes how the public text gap is counted; it does not clear
+rights, change a record, or alter a release payload.
+
 ## Decision and release state
 
 This is the source-by-source decision log for the interim rights-resolution

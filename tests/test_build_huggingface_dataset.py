@@ -10,6 +10,9 @@ import build_huggingface_dataset as m
 
 
 class HuggingFaceDatasetBuilderTests(unittest.TestCase):
+    def test_default_release_version_targets_next_additive_candidate(self):
+        self.assertEqual(m.RELEASE_VERSION, '0.2.8')
+
     def test_hf_feature_schema_merges_null_list_types_across_splits(self):
         value_null = {'dtype': 'null', '_type': 'Value'}
         value_string = {'dtype': 'string', '_type': 'Value'}

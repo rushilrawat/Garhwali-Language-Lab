@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.prepare_hf_additive_upload import (
+    RELEASE_VERSION,
     preflight_candidate,
     prepare,
     validate_package,
@@ -15,6 +16,9 @@ from scripts.prepare_hf_additive_upload import (
 
 
 class AdditiveHuggingFaceUploadTests(unittest.TestCase):
+    def test_default_release_version_targets_next_additive_candidate(self):
+        self.assertEqual(RELEASE_VERSION, "0.2.8")
+
     def make_package(self, root: Path) -> Path:
         package = root / "package"
         (package / "data/catalog").mkdir(parents=True)

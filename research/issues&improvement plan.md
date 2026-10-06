@@ -1,6 +1,6 @@
 # Benchmark and model roadmap issues & improvement plan
 
-**Updated:** 2026-10-04 (public corpus v0.2.3; benchmark evidence remains the 1 October snapshot)
+**Updated:** 2026-10-06 (project closeout at corpus v0.2.7; detailed benchmark evidence below remains dated snapshots)
 
 **Scope:** issues found while executing the benchmark/model roadmap and its
 immediately preceding retrieval, generation, and ASR work. This is a living
@@ -22,12 +22,27 @@ occurred. The pipeline now has a tested one-command resumable ingest-and-refresh
 mode. Use this current summary for present benchmark counts; dated entries
 below preserve earlier evidence.
 
-**4 October status:** the public corpus is now v0.2.3; speech remains v0.2.1.
+## Current closeout status — 2026-10-06
+
+The public corpus is v0.2.7 and the public speech companion is v0.2.1. The
+current project suite passes 818 tests after this closeout edit. Corpus package/release checks pass
+for v0.2.7; the latest recorded live Viewer check reports 29 split views and
+Parquet exports. The catalog visibility audit separates 15,004 text values
+already found elsewhere in the public package from 8,444 distinct full texts
+still local with rights pending. Each has a source locator: 7,675 inline URLs
+and 769 URLs via `source_catalog`; some point only to a source container, not
+an exact work or page. The [closeout audit](huggingface-corpus-gap-resolution-2026-10-06.md)
+defines the source-by-source path to resolve that gap. The benchmark remains
+local-only and draft, and independent-final eligibility is still 0/5. Native
+language review and dialect annotation remain deferred. Active ingestion is
+closed at v0.2.7 for now; dated issue entries below are retained as history.
+
+**Historical status — 4 October:** the public corpus was v0.2.3; speech remained v0.2.1.
 The Archive intake quality and overlap audit produced no benchmark or model
 results. The full working-tree unittest suite passes **707/707**; those tests
 check code and data contracts, not linguistic correctness.
 
-## Current roadmap position — benchmark snapshot 2026-09-30
+## Historical roadmap position — benchmark snapshot 2026-09-30
 
 The public corpus is at v0.2.3 and speech is at v0.2.1. GarhwaliBench remains
 a local draft; the benchmark counts below are the preserved 30 September
@@ -82,7 +97,8 @@ other 190 rows have no saved predictions.
    reproducibility gates pass.
 
 The frozen v0.2.0 release verification's 607/607 pytest and 605/605 unittest
-counts are historical; the current v0.2.1 working tree passes 682/682 tests.
+counts are historical; the 682/682 run was the recorded v0.2.1 working-tree
+check, not the current project test count.
 Fresh NLLB, dense IndicBERT retrieval, and SraVaani inference remain blocked:
 the project `.venv` has no PyTorch/Transformers/NeMo/PEFT/PyArrow, while the
 optional cached runtime lacks NeMo/PEFT/audio readers and the necessary NLLB/

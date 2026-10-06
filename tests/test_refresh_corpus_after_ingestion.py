@@ -105,10 +105,10 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
         self.assertFalse(plan["mutates_workspace"])
         self.assertTrue(plan["ready"])
         self.assertEqual(plan["script_count"], len(PIPELINE_COMMANDS))
-        self.assertEqual(plan["release_version"], "0.2.6")
+        self.assertEqual(plan["release_version"], "0.2.8")
         self.assertEqual(
             plan["public_output"],
-            "data/huggingface/garhwali-language-lab-v0.2.6-staging",
+            "data/huggingface/garhwali-language-lab-v0.2.8-staging",
         )
         public_build = next(
             step for step in plan["steps"]
@@ -117,7 +117,7 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
         )
         self.assertEqual(
             public_build["command"][-2:],
-            ["--output", "data/huggingface/garhwali-language-lab-v0.2.6-staging"],
+            ["--output", "data/huggingface/garhwali-language-lab-v0.2.8-staging"],
         )
         code = plan["provenance"]["code"]
         source_inputs = plan["provenance"]["source_inputs"]
@@ -189,14 +189,14 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
 
     def test_default_pipeline_version_matches_current_schema_release(self):
         environment = configure_environment({})
-        self.assertEqual(environment['GARHWALI_RELEASE_VERSION'], '0.2.6')
+        self.assertEqual(environment['GARHWALI_RELEASE_VERSION'], '0.2.8')
         self.assertEqual(
             environment['GARHWALI_HF_PUBLIC_OUTPUT'],
-            'data/huggingface/garhwali-language-lab-v0.2.6-staging',
+            'data/huggingface/garhwali-language-lab-v0.2.8-staging',
         )
         self.assertEqual(
             environment['GARHWALI_HF_ALL_DATA_OUTPUT'],
-            'data/huggingface/garhwali-language-lab-all-data-v0.2.6-local',
+            'data/huggingface/garhwali-language-lab-all-data-v0.2.8-local',
         )
 
     def test_pipeline_refreshes_cleaned_text_before_language_quality_tags(self):

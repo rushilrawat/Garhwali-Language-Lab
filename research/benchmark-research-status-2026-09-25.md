@@ -1,4 +1,12 @@
-# Benchmark and research suite: measured status
+# Benchmark and research suite: historical measured status
+
+> **Status note — 2026-10-06:** The measurements below are dated research
+> snapshots, not the current project status. The benchmark remains a local
+> draft, public benchmark rights are unresolved, and independent-final
+> eligibility is 0/5 task areas. Use [`finalreport.md`](../finalreport.md) for
+> the closeout decision and [`benchmark-model-roadmap.md`](benchmark-model-roadmap.md)
+> for the current roadmap boundary. Old test counts and scores below are not
+> current release metrics.
 
 **Original scorecard:** 2026-09-25; dated evidence below includes historical refreshes through 2026-09-28.
 **Benchmark evidence refresh:** 2026-10-01. The public corpus has since
@@ -102,7 +110,7 @@ accurate measure of Garhwali. The counts below separate those gates.
 | External source-split repeats | 1 exact primary-text group / 2 rows in XORQA `train` and `dev`; neither row is in `test` | Flagged; rows preserved |
 | Independent final accuracy sets | 0 of 5 currently eligible: language modeling, translation, retrieval, generation, and ASR. Owner approved work across all five on 2026-09-30. | Not established |
 | Native-language validation | 0 adjudications | Deferred at the owner's direction |
-| Automated project tests | Current v0.2.1 working tree: 682/682 tests; frozen v0.2.0 release snapshot: 607/607 pytest and 605/605 unittest; 2026-09-28 snapshot: 584/584 and 582/582 | Current full suite passes; counts verify code/contracts, not language correctness or rights |
+| Automated project tests | At the recorded v0.2.1 snapshot: 682/682 tests; frozen v0.2.0 release snapshot: 607/607 pytest and 605/605 unittest; 2026-09-28 snapshot: 584/584 and 582/582 | Historical counts verify code/contracts, not language correctness or rights; the 2026-10-06 closeout suite count is 818/818 |
 
 “Pass” above means only that the automated, checksum-addressed files satisfy the
 listed checks. It does not certify spelling, meaning, dialect, or reference

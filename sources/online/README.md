@@ -10,18 +10,22 @@ error. No credentials, paywalls, robots restrictions or access controls were
 bypassed. No remote audio or video was bulk downloaded during that initial
 crawl; later Archive media intake is documented below.
 
-## Current project context (v0.2.3 published release, 2026-10-02)
+## Current project context — closeout at v0.2.7, 2026-10-06
 
-The current project contains **32,072 exact-unique parent texts** from
-34,505 source rows / 49 source files and **151,690 exact-unique prepared text
-segments**; these are project-wide counts, not totals for the initial online
-crawl. The current inventory also includes seven supplied
-PDFs (six unique books, 769 active page records, and one exact duplicate),
-structured literature, songs, geography, historical terms, and university
-research records. Earlier Hub storage paths remain for compatibility; the current release and rights counts are maintained in the
-[root README](../../README.md) and [final report](../../finalreport.md). Source
-discovery and acquisition history remain in this register; each later addition
-retains its own provenance and rights status.
+The current public corpus is **v0.2.7**. Its 18 named configs and 29
+config/split views include text, lexicon, source references, factual and
+bibliographic records, transcript drafts, and the experimental PahariLI
+`paharili_gbm` view. Config rows overlap and are not unique-example counts.
+The separate public speech dataset remains v0.2.1. Current release metrics
+and limitations are maintained in the [root README](../../README.md) and
+[final report](../../finalreport.md); the 8,444-text public-availability gap
+and resolution workflow are in the [closeout audit](../../research/huggingface-corpus-gap-resolution-2026-10-06.md).
+
+This file is an acquisition and source-discovery register, not a current
+manifest of everything published. Each entry below is a dated snapshot or
+source-specific finding; check the linked current reports before using old
+release counts. Local Archive material and unresolved expressive text remain
+outside the public corpus.
 
 The published v0.2.3 package has 827,450 overlapping-view rows: 164,387
 content/config rows and 663,063 reference/join rows. Its `text_resources/train`

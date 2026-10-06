@@ -32,7 +32,7 @@ PAHARILI_LICENSE_PATH = ROOT / 'sources/online/paharili/c71d239df91726fc-LICENSE
 # are historical storage paths, not semantic project release versions.
 LEGACY_PUBLIC_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-v2.0.0-staging'
 LEGACY_ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data-v2.0.0-local'
-RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.2.1').removeprefix('v')
+RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.2.8').removeprefix('v')
 RELEASE_PUBLIC_OUTPUT = ROOT / f'data/huggingface/garhwali-language-lab-v{RELEASE_VERSION}-staging'
 RELEASE_ALL_DATA_OUTPUT = ROOT / f'data/huggingface/garhwali-language-lab-all-data-v{RELEASE_VERSION}-local'
 MANAGED_OUTPUTS = {

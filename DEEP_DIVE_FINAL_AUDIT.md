@@ -1,8 +1,13 @@
 # Garhwali Language Lab — deep final audit
 
-## Current release and local Archive intake — 2026-10-05
+> **Historical audit snapshot.** This file retains the 5 October audit and its
+> evidence; it is not the current project status. The 6 October closeout,
+> current corpus figures, public text gap, and remaining work are summarized in
+> [`finalreport.md`](finalreport.md) and the [text-availability audit](research/huggingface-corpus-gap-resolution-2026-10-06.md).
 
-The current public corpus release is **v0.2.4** at Hub commit
+## Historical release and local Archive intake — 2026-10-05
+
+At this audit snapshot, the public corpus release was **v0.2.4** at Hub commit
 [`76b93dc`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/76b93dc0f35aca444ba06dfcab186fb7ca5106d1),
 with the latest card correction at current commit
 [`574aa66`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/574aa667a2486948444d28ff533c668ada3178e2); the
@@ -312,7 +317,7 @@ See the [v0.2.0 source expansion report](research/garhwali-data-expansion-2026-0
 ## Post-release local web expansion before the v0.2.1 refresh (2026-09-30)
 
 The counts in this section are an interim pre-refresh snapshot and are retained for
-history; the current corpus values are at the top of this audit.
+history; current release values are in the linked [`finalreport.md`](finalreport.md).
 
 The tenth ingestion wave scanned 6,844 entries from the Uttarakhand e-Magazine
 Blogger feed plus two Khabar Saar short-story pages. It selected 1,818 page

@@ -1,12 +1,26 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Status snapshot:** Benchmark/model-lineage evidence refreshed 2026-10-05; public corpus v0.2.4 checked 2026-10-05 (speech v0.2.1)
+**Updated:** 2026-10-06. Current corpus closeout: v0.2.7; speech companion: v0.2.1. Benchmark/model findings below retain their dated evaluation snapshots.
 **Scope:** GarhwaliBench and the model-research suite in this repository
 **Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 
 This is the working plan for moving from useful but mixed-history experiments to a reproducible, accurately described benchmark and model-research program. It records what exists, what evidence permits us to say, what happens next, the tools to use, and the gate for each phase.
 
-## Current position and remaining work — 2026-10-05
+## Current closeout position — 2026-10-06
+
+Corpus documentation and public availability are summarized in the
+[project closeout](../finalreport.md) and
+[text-availability audit](huggingface-corpus-gap-resolution-2026-10-06.md).
+The corpus release is public at v0.2.7; the speech companion remains public at
+v0.2.1. GarhwaliBench is still a local draft, its data is not cleared for
+public upload, and independent-final eligibility remains 0/5 task areas.
+Previously scored test sets, source/model exposure, reference quality, and
+rights still limit accuracy claims. Native-speaker review remains deferred.
+The rest of this roadmap records the research plan and findings at their
+original dates; it does not imply the project will continue beyond this
+closeout.
+
+## Historical position and remaining work — 2026-10-05
 
 The public Garhwali corpus is **v0.2.4**; it adds source attribution and
 revision links but no new text values. The 246-row `text_resources` view
@@ -753,7 +767,7 @@ If every test reference is published openly, that is a valid open-benchmark choi
 | Tool | Role | Decision |
 | --- | --- | --- |
 | Python 3, JSONL, hashlib, pathlib | Deterministic manifests, hashes, task runners, reports | Use now; matches the repository. |
-| unittest and existing CI | Regression checks for splits, metrics, provenance, report rules | Current v0.2.1 working tree: 682/682 tests; frozen v0.2.0 release-time counts 607/605 remain historical. |
+| unittest and existing CI | Regression checks for splits, metrics, provenance, report rules | 818 tests pass in the 2026-10-06 closeout working tree; frozen v0.2.0 release-time counts 607/605 remain historical. |
 | Draft v0.2 contract validator | Validate counts, hashes, normalization, references, provenance, rights, splits, and local ASR hashes | Use now; `scripts/validate_benchmark_v02.py` passes against eight views. |
 | Existing benchmark/lineage scripts | Build and audit current task files and prior-use ledger | Reuse; extend for a concrete missing check. |
 | PyTorch, Transformers, PEFT | Local IndicBERT/mT0 inference and adaptation | Only after local preflight; the project `.venv` lacks these packages, while the optional cached runtime has PyTorch/Transformers but not PEFT. |

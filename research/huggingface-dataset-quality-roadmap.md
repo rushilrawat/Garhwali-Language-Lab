@@ -2,7 +2,7 @@
 
 **Started:** 2026-10-01
 **Scope:** Make `rushilrawat/garhwali-corpus` and `rushilrawat/garhwali-speech` more useful, trustworthy, and easy to apply.
-**Current public release:** v0.2.6. New releases remain additive; existing records and source evidence are preserved.
+**Current public release:** v0.2.7 (2026-10-06 closeout). New releases remain additive; existing records and source evidence are preserved.
 
 ## Goal
 
@@ -11,7 +11,28 @@ filter, and reuse for clearly described purposes. Progress is measured by
 quality-qualified content and reliable access—not by adding reference-table
 rows to a headline total.
 
-## Current work focus — Phase 8 release automation
+## Current closeout — text availability and source resolution
+
+The public corpus v0.2.7 has 18 named configs and 29 config/split views. Its
+latest recorded Viewer check found all 29 splits and Parquet exports available.
+The text-availability audit found that 15,004 of 23,448 blank catalog values
+already occur elsewhere in the public package, while 8,444 distinct texts are
+not represented as text in any public config. All 8,444 remain in the local
+all-data package with rights pending. Source locators are available for all:
+7,675 rows carry inline URLs and 769 resolve through the public
+`source_catalog`; some links identify only a source collection or dataset. The
+public developer quick start contains the lookup recipe. See the
+[gap audit](huggingface-corpus-gap-resolution-2026-10-06.md) for methods,
+source groups, and the rights-resolution workflow.
+
+This roadmap closes here at v0.2.7. The remaining public-content work is
+source/edition-specific rights evidence or permission, followed by an additive
+package rebuild and complete preflight. PahariLI remains a labeled experimental
+exception with unresolved sentence origins; it is not a reusable-rights or
+language-quality precedent. Native review remains deferred. Historical phase
+details below describe the release and checks at their recorded dates.
+
+## Historical v0.2.6 work focus — Phase 8 release automation
 
 The v0.2.6 data package is live at
 [Hub commit `bddb006`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/bddb00665a7d6452a9e94c4484e9165d5b2d39b1).
@@ -108,7 +129,7 @@ Use these terms consistently in reports and dataset cards:
   rights-cleared units, and use-eligible units separately for every source
   intake. Do not set a raw-row growth target.
 
-## Current verified release state
+## Historical v0.2.6 verified release state — 2026-10-05
 
 The 1 October baseline and its definitions are in
 [`huggingface-quality-baseline-2026-10-01.md`](huggingface-quality-baseline-2026-10-01.md).
@@ -389,8 +410,9 @@ fresh environment.
 
 - **Complete:** `refresh_corpus_after_ingestion.py --dry-run` prints the exact
   ordered commands and output paths, checks that each script exists, and
-  writes nothing. Its default staging paths now follow the current v0.2.6
-  schema version; a regression test covers the planned command list.
+  writes nothing. At the time of the v0.2.6 snapshot, its default staging
+  paths followed that schema version; a regression test covers the planned
+  command list. Current next-candidate defaults are v0.2.8.
 - **Complete:** the additive upload preparer runs the full record-level
   validator before staging, requires the manifest version to match
   `releases/vX.Y.Z`, and writes nothing if validation fails. Its upload plan
@@ -448,11 +470,11 @@ versioned manifest and comparable metrics.
 | Phase | Status | Current proof / next deliverable |
 | --- | --- | --- |
 | 0. Baseline | Complete | [1 Oct baseline](huggingface-quality-baseline-2026-10-01.md) |
-| 1. Quality scorecard | Complete for local candidate | v0.2.6 preflight passes 26 configs and 945,926 overlapping-view rows, with zero errors, missing traceability, deletion, or mutation; not a linguistic accuracy score |
-| 2. Rights/provenance | Active; candidate reconciled | VAANI test-remainder lineage and source terms recorded; 12,657 catalog entries have public full text and 23,448 are metadata-only publicly; HinDialect license scope remains conservative |
-| 3. Dedup/splits | Partial | v0.2.6 routes 1,949 overlapping rows across text/resource views outside default train; preflight finds zero identity leakage; complete source-family, semantic, audio, and speaker review remains |
-| 4. Text/lexicon | Active | Candidate has 1,737 expansion and 475 resource view rows; no text row currently meets model-training recommendation |
+| 1. Quality scorecard | Complete for published package checks | v0.2.7 preflight passed; latest recorded Viewer check lists 29 splits and Parquet exports. These are integrity checks, not linguistic accuracy. |
+| 2. Rights/provenance | Closed at the current release; clearance gap documented | v0.2.7 closeout: 15,004 of 23,448 blank catalog values occur elsewhere in the public package; 8,444 distinct full texts remain local with rights pending. PahariLI sentence origins also remain unresolved. |
+| 3. Dedup/splits | Partial | v0.2.7 isolates four PahariLI source-overlap groups; earlier preflight found zero identity leakage for its tested views. Source-family, semantic, audio, and speaker review remain incomplete. |
+| 4. Text/lexicon | Closed for this project stage | The public views contain 1,737 expansion and 475 resource rows; no text row currently meets the conservative model-training recommendation. |
 | 5. Speech/transcripts | Existing partial audits | Explicit labeled/empty/draft counts and split-safe manifests |
-| 6. Coverage expansion | Active — intake, source disposition, page/section map, OCR comparison, visual triage, and technical media first pass complete | 119 local payloads; 4,011 OCR pages; 722-page Chatak/Shailesh map; zero exact and ≥0.85 near-text candidates against 32,072 cleaned rows; 39 media hashes/streams verified; content/language, OCR accuracy, and rights remain unresolved |
-| 7. HF release views | Complete for v0.2.6 | Data at `bddb006`; schemas/reference configs at `dc2bab7`/`cd43e9e`; 53 paths/hashes match, all 348 earlier paths remain, and live Viewer lists 26/26 splits plus 26/26 Parquet outputs; sample previews work |
-| 8. Automation | In progress; comparison implemented | Refresh dry-run, upload preflight/version gate, source/code provenance, and reproducible v0.2.5-to-v0.2.6 same-contract report are complete; future releases must attach equivalent predecessor comparisons |
+| 6. Coverage expansion | Closed at v0.2.7; Archive intake remains local | 119 local payloads, 4,011 OCR pages, 722-page Chatak/Shailesh map, and 39 media files were not newly cleared or published. No verified Garhwali rows were promoted from this intake. |
+| 7. HF release views | Complete for v0.2.7 | Data at `1f7b2ce`; 18 named configs, 29 config/split views; prior release paths retained; latest recorded live Viewer check lists 29/29 splits and Parquet outputs |
+| 8. Automation | Local preparation automated; publication remains deliberate | Ingestion/refresh graph, provenance, package preflight, and additive upload-plan gates exist. HF uploads remain explicit; the next default candidate is v0.2.8. |

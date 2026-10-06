@@ -1,6 +1,86 @@
 # Garhwali Language Lab — final review report
 
-## Current release and local source intake — 2026-10-05
+## Project closeout snapshot — 2026-10-06
+
+This is the current handoff and the point where active project work is being
+closed for now. It supersedes the older “current release” paragraphs and
+status counts preserved below. Dated release, experiment, and source-audit
+sections remain historical evidence for the exact snapshot they describe.
+
+### What is available now
+
+- **GitHub:** the project repository and its source, pipeline, schemas, and
+  documentation are public. The source tree does not contain the ignored raw
+  downloads, source PDFs, VAANI audio cache, or complete all-data package.
+- **Hugging Face corpus:** public release **v0.2.7** at [commit
+  `1f7b2ce`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/1f7b2ceed1b743412b75d6288757e1d2cadac9c4),
+  with 18 named configs, 29 config/split views, 183,376 overlapping content
+  rows, and 778,157 overlapping reference-table rows. These are view counts,
+  not unique examples. Its latest recorded Viewer check found all 29 split
+  views and Parquet exports available; this closeout did not re-query the Viewer
+  APIs from the restricted shell.
+- **Hugging Face speech:** public **v0.2.1**, separate from the text corpus,
+  with 113,363 rows, 113,350 unique audio hashes, and about 154.65 hours. It
+  includes source/provider transcripts and a separate 104,534-row deduplicated
+  SraVaani-draft view; 104,500 drafts are non-empty and remain unreviewed.
+- **Automated checks:** the full project suite passes **818/818** tests after
+  the closeout and next-version-default fixes. These tests check software and
+  data contracts, not linguistic correctness.
+
+### The actual content gap
+
+The public `catalog` config has 23,448 blank text fields. A cross-config scan
+found 15,004 corresponding values elsewhere in public JSONL fields; that
+visibility does not itself grant reuse rights or make every match a suitable
+training example. The other **8,444 distinct full texts** (2,936,664
+whitespace-separated words; 16,388,267 characters) remain in the local
+all-data package with `rights_pending` / `not_cleared`. Each has a source
+locator: 7,675 rows carry an inline URL and 769 resolve a URL through the
+public `source_catalog`. Some locators identify a collection or dataset rather
+than the exact work or page. The local
+quick-start now shows that lookup, and the source-group clearance queue and
+method are in the [closeout gap audit](research/huggingface-corpus-gap-resolution-2026-10-06.md).
+No text payload or rights status changed in this documentation closeout.
+
+The v0.2.7 `paharili_gbm` config is available as an explicitly experimental
+exception. PahariLI declares Apache-2.0 for its repository, but the row-level
+sentence origins are unidentified and Garhwali labels are unreviewed. It must
+not be called rights-cleared, native-validated, a general LM-training set, or
+an independent evaluation set.
+
+### What this project has and has not established
+
+The project has a versioned, provenance-preserving public corpus; separate
+speech resources; source and quality metadata; reproducible preparation and
+release checks; vocabulary access examples; and local benchmark/model research
+artifacts. It has **not** established comprehensive coverage of Garhwali, a
+native-validated dataset, a gold benchmark, or independent-final accuracy
+claims. GarhwaliBench remains local and uncleared for public upload; independent
+evaluation eligibility is 0/5 task areas. Native review and dialect
+annotation remain deferred. The API, hosted service, leaderboard, and
+community review layer were not built.
+
+### Closeout decision and remaining gap-resolution path
+
+Active source ingestion stops at v0.2.7 here. No data was archived, deleted,
+or overwritten. The public datasets remain available for clearly scoped
+research and development. To expand the public text content later, resolve
+rights by source/edition using authoritative licenses, written permission, or
+edition-specific public-domain evidence; rebuild the additive package; then
+rerun rights, quality, continuity, and Viewer checks. Keep all other records
+discoverable through source metadata while their reuse basis remains unknown.
+Linguistic review is a separate later workstream and is not asserted complete.
+
+For developers, start at [`README.md`](README.md) and
+[`docs/DEVELOPER_QUICKSTART.md`](docs/DEVELOPER_QUICKSTART.md). The indexed
+current documentation and historical-snapshot policy are in
+[`docs/README.md`](docs/README.md).
+
+## Prior v0.2.6 status snapshot — 2026-10-05 (superseded)
+
+The next section is retained as the v0.2.6 and 5 October audit snapshot. Its
+use of “current” refers to that dated state; use the closeout above for present
+release and availability counts.
 
 The current public corpus release is **v0.2.6**, with data at
 [commit `bddb006`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/bddb00665a7d6452a9e94c4484e9165d5b2d39b1).
@@ -565,7 +645,7 @@ The complete all-data content package remains local/access-controlled; the publi
 
 Before attaching a public release, rerun the package builders, public/all-data cloud preflights, final audit, release-index validation, complete tests, compilation/shell checks, and bundle check against the exact commit referenced by `v0.1.1`. Do not move the existing v0.1.0 tag.
 
-## Remaining limitations and follow-up
+## Historical v0.2.1 limitations (superseded by the closeout snapshot above)
 
 ### Language quality
 

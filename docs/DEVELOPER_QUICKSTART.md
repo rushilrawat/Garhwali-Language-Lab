@@ -85,12 +85,12 @@ status separately. The demo prints these fields with each match.
 
 ## Load the fast-tracked text view
 
-The `text_expansion` config contains **1,737** train-split Garhwali
-candidates already present in the catalog. It is not new source ingestion or an
-independent evaluation set. Currently zero rows meet the conservative training-
-recommendation rule because source-level eligibility or quality evidence
-remains unresolved. Rows retain their rights and quality fields; review each
-row before downstream reuse.
+The `text_expansion` config contains **1,737** rows: 1,283 in `train` and 454
+in `source_overlap`. They are candidates already present in the catalog, not
+new source ingestion or an independent evaluation set. Currently zero rows meet
+the conservative training-recommendation rule because source-level eligibility
+or quality evidence remains unresolved. Rows retain their rights and quality
+fields; review each row before downstream reuse.
 
 ```python
 from datasets import load_dataset
@@ -104,8 +104,8 @@ for row in extra_text.take(3):
 
 ## Load supplementary text resources
 
-The `text_resources` config exposes **475** additional unique
-Garhwali records already present in the source catalog. This is a lookup and
+The `text_resources` config exposes **475** rows already present in the source
+catalog: 285 in `train` and 190 in `source_overlap`. This is a lookup and
 research view with varied quality; it is not an evaluation set or uniformly
 training-ready. Check record-level rights and quality fields before reuse.
 
@@ -134,7 +134,7 @@ overlap; adding their row counts does not give the number of unique examples.
 | `asr` | 2,002 | Provider transcripts, not native-adjudicated |
 | `sravaani_drafts` | 104,534 | Machine transcript drafts; not ground truth |
 | `instructions` | 3,228 | Instruction and response examples |
-| `catalog` | 36,105 | Unique text inventory with content and metadata-only entries |
+| `catalog` | 36,105 | Unique text inventory with included text and source-linked metadata rows |
 | `geography` | 50 | Place facts and citations |
 | `historical_terms` | 36 | Historical names and terms |
 | `literary_people` | 26 | Writer and contributor metadata |
@@ -146,6 +146,45 @@ overlap; adding their row counts does not give the number of unique examples.
 | `record_sources` | 412,740 | Record-to-source join rows |
 
 The `garhwali-language-lab-v0.2.7` package manifest reports **961,533 total view rows**: 183,376 content/config rows plus 778,157 reference rows. This is not a unique-example count.
+
+## Follow a catalog record to its source
+
+The catalog exposes `id`, `text_publicly_available`, and a `sources` list. The
+separate `source_catalog` config supplies deduplicated source URLs. Use the
+`source_id` in the catalog row to resolve its source; a link is a locator, not a
+reuse license.
+
+```python
+from datasets import load_dataset
+
+catalog = load_dataset(
+    "rushilrawat/garhwali-corpus", "catalog", split="train", streaming=True
+)
+source_rows = load_dataset(
+    "rushilrawat/garhwali-corpus", "source_catalog", split="train"
+)
+source_by_id = {row["source_id"]: row for row in source_rows}
+
+metadata_only = next(row for row in catalog if not row["text_publicly_available"])
+for source in metadata_only.get("sources", []):
+    reference = source_by_id.get(source.get("source_id"))
+    source_url = source.get("source_url") or (reference or {}).get("source_url")
+    source_title = (
+        source.get("source_title")
+        or (reference or {}).get("source_title")
+        or source.get("source_id")
+    )
+    if source_url:
+        print(metadata_only["id"], source_title, source_url)
+```
+
+The 2026-10-06 cross-config audit found 15,004 values from these catalog rows
+already present elsewhere in the public JSONL tables and 8,444 full-text values
+not present in any public config. Those 8,444 remain in the local all-data
+package with rights pending. Of those rows, 7,675 have an inline source URL and
+769 use the `source_catalog` lookup. A URL may identify a dataset or collection
+rather than the exact work/page; verify the edition and rights evidence before
+reuse. See the [text-availability audit](../research/huggingface-corpus-gap-resolution-2026-10-06.md).
 
 Reuse terms vary by source; the package has no blanket content license. Use
 each row's rights and quality fields rather than treating config or split

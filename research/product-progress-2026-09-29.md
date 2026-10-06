@@ -1,6 +1,11 @@
-# Product progress scorecard — refreshed 2026-09-30
+# Product progress scorecard — historical estimates (refreshed 2026-09-30)
 
-This scorecard covers every product in the current Garhwali Language Lab plan.
+> **Historical snapshot:** This scorecard predates corpus v0.2.7 and the
+> 2026-10-06 project closeout. Its completion percentages are dated estimates,
+> not current percentages. For the current verified state, use
+> [`finalreport.md`](../finalreport.md) and [`README.md`](../README.md).
+
+This scorecard covered every product in the plan as of its dated snapshot.
 It reflects delivered implementation and verified artifacts, not linguistic
 accuracy, public completeness, or the percentage of Garhwali that has been
 captured. A released dataset can be operational while still needing broader

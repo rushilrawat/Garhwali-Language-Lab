@@ -79,6 +79,13 @@ owner, contributor, or speaker can submit a removal request using the source or
 audio identifier; derived records and future releases must carry the resulting
 exclusion while preserving a private audit entry.
 
+## Historical v0.2.1 publication example
+
+The following counts describe the **v0.2.1 public package**, not the current
+v0.2.7 catalog or its current availability totals. The 6 October
+[cross-config availability audit](research/huggingface-corpus-gap-resolution-2026-10-06.md)
+is the current text-visibility reference.
+
 The **v0.2.1 public package** includes all 216 structured knowledge
 records as factual or bibliographic metadata and omits their unresolved prose,
 lyrics, translations, abstracts, and source passages. It also exposes
