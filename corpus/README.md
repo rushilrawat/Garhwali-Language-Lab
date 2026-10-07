@@ -1,9 +1,11 @@
 # Garhwali corpus: source records and first ingestion
 
 This directory contains the project's initial openly licensed source layer; it
-is not the complete corpus. The current public corpus is **v0.2.7**, with 18
-named configs and 29 config/split views. Current counts, text availability,
-source use, and release limits are summarized in the [project README](../README.md)
+is not the complete corpus. The current public corpus is **v0.2.8**, with 20
+named configs and 31 config/split views. The live Hugging Face page reports
+963,484 overlapping view rows and 7.57 GB as checked on 7 October 2026. Current
+counts, text availability, source use, and release limits are summarized in
+the [project README](../README.md), [current metrics audit](../research/current-platform-metrics-2026-10-07.md),
 and [final report](../finalreport.md). The current text-access gap and its
 source-by-source resolution path are in the [closeout audit](../research/huggingface-corpus-gap-resolution-2026-10-06.md).
 
