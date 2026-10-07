@@ -2,7 +2,8 @@
 
 The dataset IDs are `rushilrawat/garhwali-corpus` (text and reference tables)
 and `rushilrawat/garhwali-speech` (audio and speech metadata). Both repositories
-are public. The Hub cards link to the latest published revisions and preserve release history.
+are public and tagged for Garhwali (`gbm`). The Hub cards link to the latest
+published revisions and preserve release history.
 This guide covers the v0.2.7 base package and its additive v0.2.8 configs.
 Use the Hub cards for current publication status and immutable revisions. The
 packages preserve a common rights/quality
@@ -51,11 +52,15 @@ To inspect the short context rows, replace the config name with
 alone. These configs intentionally overlap the earlier corpus configs; do not
 sum their row counts as unique examples.
 
-The speech repo contains substantial audio (113,363 rows, about 154.65 hours),
-but only 2,002 strict speaker-disjoint reference rows are in the linked ASR
-view, and those transcripts are unreviewed. The 104,500 non-empty SraVaani
-outputs are machine drafts, not ground truth. See the [current metrics and
-utility audit](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/research/huggingface-current-metrics-and-utility-2026-10-06.md)
+The speech audio configs contain 113,363 rows (about 154.65 hours). Its latest
+`asr_reference` index contains 2,718 speaker-disjoint VAANI references
+(2,202 train / 373 validation / 143 test), and the optional
+`asr_meta_extra_train` index has 2,294 Meta train rows. Both are text-only
+indexes joined to the existing audio by `source_record_id`. The corpus's
+separate `asr` config remains at 2,002 rows. References are unadjudicated; the
+104,500 non-empty SraVaani outputs are machine drafts, not ground truth. The
+speech page's 118,375 displayed rows includes audio and both text-only indexes.
+See the [7 October metrics audit](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/research/current-platform-metrics-2026-10-07.md)
 before selecting a config for training or evaluation.
 
 ## Try three vocabulary rows
@@ -203,9 +208,13 @@ overlap; adding their row counts does not give the number of unique examples.
 | `source_catalog` | 9,571 | Deduplicated sources and their known terms |
 | `record_sources` | 412,740 | Record-to-source join rows |
 
-The `garhwali-language-lab-v0.2.7` package manifest reports **961,533 total view rows**: 183,376 content/config rows plus 778,157 reference rows. This is not a unique-example count. The additive v0.2.8 overlay adds two views, bringing
-the current displayed total to **963,484**: 185,327 content-config rows plus
-778,157 reference rows. These are configuration rows, not unique examples.
+The v0.2.7 package manifest recorded **961,533 total view rows** at that
+release. The live corpus page, checked 7 October 2026, reports **963,484**:
+185,327 content-config rows plus 778,157 reference rows. The additive v0.2.8
+overlay added two views and preserves earlier paths. These are configuration
+rows, not unique examples. The live speech page reports 118,375 displayed rows
+because its 113,363 audio/source rows are shown alongside two text-only label
+indexes (2,718 and 2,294 rows).
 The 1,951 added config rows repeat texts already present in v0.2.7; the
 training-use decision and clearer quality labels are the improvement.
 
