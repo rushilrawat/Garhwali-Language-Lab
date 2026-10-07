@@ -1,24 +1,26 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Updated:** 2026-10-06. Current corpus closeout: v0.2.7; speech companion: v0.2.1. Benchmark/model findings below retain their dated evaluation snapshots.
+**Updated:** 2026-10-07. Current corpus: v0.2.8; speech companion: v0.2.1. Benchmark/model findings below retain their dated evaluation snapshots. See the [7 October platform metrics audit](current-platform-metrics-2026-10-07.md) for current counts and limits.
 **Scope:** GarhwaliBench and the model-research suite in this repository
 **Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 
 This is the working plan for moving from useful but mixed-history experiments to a reproducible, accurately described benchmark and model-research program. It records what exists, what evidence permits us to say, what happens next, the tools to use, and the gate for each phase.
 
-## Current closeout position — 2026-10-06
+## Current closeout position — 2026-10-07
 
 Corpus documentation and public availability are summarized in the
 [project closeout](../finalreport.md) and
 [text-availability audit](huggingface-corpus-gap-resolution-2026-10-06.md).
-The corpus release is public at v0.2.7; the speech companion remains public at
-v0.2.1. GarhwaliBench is still a local draft, its data is not cleared for
+The corpus release is public at v0.2.8 over the v0.2.7 source package; the
+speech companion remains public at v0.2.1. The v0.2.8 text views expose 1,841
+existing Meta transcript values as experimental LM candidates and 110 as
+context-only rows; they add no new source text. GarhwaliBench is still a local draft, its data is not cleared for
 public upload, and independent-final eligibility remains 0/5 task areas.
 Previously scored test sets, source/model exposure, reference quality, and
 rights still limit accuracy claims. Native-speaker review remains deferred.
-The rest of this roadmap records the research plan and findings at their
-original dates; it does not imply the project will continue beyond this
-closeout.
+The remaining phases are gated by rights, independent evaluation, and native
+review. Dated findings below remain evidence for the snapshots they measured;
+they are not live model results.
 
 ## Historical position and remaining work — 2026-10-05
 

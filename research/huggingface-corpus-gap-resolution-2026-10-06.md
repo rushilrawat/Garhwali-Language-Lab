@@ -36,16 +36,26 @@ training example, or that it is easy to locate without the source lookup below.
 The 14,988 PahariLI matches inherit PahariLI's unresolved sentence-origin and
 language-label caveats.
 
-## Training readiness and size interpretation — 2026-10-06
+## Training readiness and size interpretation — 6 October snapshot; updated pointer for 7 October
 
-The current live corpus page reports 961,533 combined rows and 7.56 GB of
-repository storage. Of the displayed rows, 778,157 (80.9%) are the
+The paragraph and counts below preserve the v0.2.7 snapshot measured on 6
+October. The additive v0.2.8 views changed the live display to 963,484 rows /
+7.57 GB across 20 configs and 31 config/split views: 185,327 overlapping
+content views plus 778,157 source/reference rows. The 1,841-row screened Meta
+view and 110-row context view reuse existing transcript values. The 8,444
+distinct full texts absent from public configs remain rights-pending. See the
+[7 October cross-platform metrics audit](current-platform-metrics-2026-10-07.md)
+for live counts and definitions.
+
+At the 6 October v0.2.7 snapshot, the live corpus page reported 961,533
+combined rows and 7.56 GB of repository storage. Of the displayed rows,
+778,157 (80.9%) were the
 `record_index`, `source_catalog`, and `record_sources` reference views; they
 are valuable for source discovery but are not language examples. The remaining
 183,376 are overlapping content-config views, not unique passages. In the
 current public text configs, `text` has 18,598 rows / 291,914 words,
-`text_expansion` has 1,737 rows, and `text_resources` has 475 rows; all 20,810
-are currently marked not recommended for general text-model training. The
+`text_expansion` had 1,737 rows, and `text_resources` had 475 rows; all 20,810
+were marked not recommended for general text-model training in that snapshot. The
 separate speech repository reports 113,363 rows / 36.5 GB, but machine drafts
 are not gold transcripts. See the [full current metrics audit](huggingface-current-metrics-and-utility-2026-10-06.md)
 for counts, local disk accounting, and intended-use limits.

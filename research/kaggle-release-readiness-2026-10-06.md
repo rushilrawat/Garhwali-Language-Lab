@@ -13,7 +13,7 @@ and [ASR v0.2 sync report](kaggle-asr-v0.2-sync-2026-10-07.md).
 The initial packaging report below remains a snapshot; its statements that
 these packages were unpublished describe the state on 6 October.
 
-## Quality-first text package follow-up — 2026-10-06
+## Quality-first text package follow-up — 2026-10-06 snapshot
 
 A separate, focused package is built locally for direct Kaggle use:
 1,841 sentence-length training rows plus 110 nonblank short utterances in a
@@ -26,7 +26,7 @@ The focused package is **not published on Kaggle yet**;
 see the [quality-screened text release report](quality-screened-text-release-report-2026-10-06.md)
 and [publication roadmap](huggingface-kaggle-quality-release-roadmap-2026-10-06.md).
 
-## Status
+## Status — original 6 October snapshot (historical)
 
 The reproducible Kaggle packages are built locally and kept under the
 Git-ignored `data/kaggle/` directory. The broad corpus and speech-metadata

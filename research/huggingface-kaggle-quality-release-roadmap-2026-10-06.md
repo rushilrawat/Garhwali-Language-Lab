@@ -1,6 +1,7 @@
 # Hugging Face and Kaggle quality-first release roadmap
 
-**Updated:** 6 October 2026
+**Original plan:** 6 October 2026  
+**Current status:** checked 7 October 2026; see the [cross-platform metrics audit](current-platform-metrics-2026-10-07.md).
 **Scope:** Improve the user-facing training value of the existing Garhwali
 Hugging Face corpus, then mirror the same quality-screened data on Kaggle.
 **Policy:** Add purpose-built views and preserve prior releases. A filter may
@@ -130,9 +131,10 @@ and manifest totals reconcile; every training field is present and non-empty.
   rights notice, and local artifact hashes.
 
 **Exit check:** passed locally and against the live Hugging Face configs. Kaggle
-preview validation remains pending until upload.
+publication and manifest-preview state is summarized in step 5 below and the
+7 October sync report.
 
-### 5. Publish additively and verify online — Hugging Face complete; Kaggle pending
+### 5. Publish additively and verify online — complete as of 2026-10-07
 
 - **Hugging Face complete:** added both configs under `releases/v0.2.8/` in
   `rushilrawat/garhwali-corpus`, retaining earlier release paths. Commit:
@@ -145,13 +147,15 @@ preview validation remains pending until upload.
 - **Hugging Face online load verified:** `screened_meta_gbm` returned 1,841
   rows and `short_utterances_meta_gbm` returned 110. Both have zero blank rows
   and exact duplicate values; all language and license fields match the build.
-- **Kaggle pending:** the matching package is prepared. The user approved
-  enabling the ChatGPT extension's access to local file URLs, but a browser
-  security restriction blocks automated extension-setting changes. The user
-  must toggle that permission manually before the authorized upload can proceed.
-  No Kaggle dataset has been created or uploaded.
-- After Kaggle upload, inspect its public preview, files, license/source
-  description, and loading instructions, then record the URL and version.
+- **Kaggle screened text complete:** public version 1 contains 1,841 training
+  candidates and 110 context rows, matching the Hugging Face views. It reuses
+  existing Meta transcript values and adds no unique examples.
+- **Kaggle ASR references complete:** private version 2 contains 2,718 existing
+  VAANI reference pairs (2,202 train / 373 validation / 143 test), preserving
+  the earlier 2,002 pairs and indexing 716 already-existing references. Its
+  manifest preview works.
+- **Notebook saved:** baseline notebook version 3 selects the v2 input but has
+  not been run. See the [7 October Kaggle sync report](kaggle-asr-v0.2-sync-2026-10-07.md).
 
 **Exit check:** a fresh user can load the exact text subset from either platform
 and sees the same count, schema, source attribution, and review limitations.
@@ -186,17 +190,18 @@ license scope, validation, and task-specific loading example.
 - Native-speaker review remains a later accuracy step and is not implied by
   automated screening.
 
-## Current stop point and estimate
+## Current stop point — 2026-10-07
 
 Baseline profiling, source-specific rights review, Unicode-safe duplicate
 handling, screening, and local package generation are complete. Hugging Face
-publication and online row/card checks are complete; the Kaggle mirror awaits
-the user-approved manual Chrome file-URL permission toggle. This is additive:
-v0.2.7 and its source rows are preserved. ASR, lexicon, and book/OCR resources
-need separate quality and rights gates; they are outside these text counts.
+publication and online row/card checks are complete. The screened-text dataset
+is public on Kaggle; the reference-clips dataset remains private. The baseline
+notebook is saved but unrun. This is additive: v0.2.7 and its source rows are
+preserved. ASR, lexicon, and book/OCR resources need separate quality and
+rights gates; they are outside these text counts.
 
 The latest release report and current-metrics audit remain the source of truth
-for historical v0.2.7 counts. The focused text view reuses rows already present
-in that corpus; v0.2.8 is an additive usable view, not a claim that new source
-material was collected. The Kaggle mirror and any broader modality-specific
-views remain unfinished.
+for published counts. The focused text view reuses rows already present in the
+v0.2.7 source package; v0.2.8 is an additive usable view, not a claim that new
+source material was collected. Broader modality-specific views still need
+separate quality and rights gates.
