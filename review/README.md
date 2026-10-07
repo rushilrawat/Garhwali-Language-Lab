@@ -1,12 +1,14 @@
 # Native-review workflow
 
-## Current status (2026-09-26)
+## Current status (checked 2026-10-07)
 
-The review system is ready, but **0 records have been adjudicated**. The latest
-release snapshot has 176 text-accuracy packets and 113 transcript packets, with
-five ambiguous supervised transcripts carrying additional model evidence. The
-project owner has deferred native-language and dialect review; therefore the
-corpus and benchmark remain automated candidates, not native-validated data.
+The review system is ready, but **0 records have been adjudicated**. The
+current packet inventory has 176 text-accuracy packets and 113 transcript
+packets, with five ambiguous supervised transcripts carrying additional model
+evidence. The project owner has deferred native-language and dialect review;
+therefore the corpus and benchmark remain automated candidates, not
+native-validated data. Packet generation and counts are local and do not
+change the published dataset.
 These queues do not block local experiments, and no model output is promoted to
 ground truth without review. Current aggregate status is in
 [`research/corpus-preparation-status.md`](../research/corpus-preparation-status.md).
