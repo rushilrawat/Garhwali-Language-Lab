@@ -10,16 +10,17 @@ error. No credentials, paywalls, robots restrictions or access controls were
 bypassed. No remote audio or video was bulk downloaded during that initial
 crawl; later Archive media intake is documented below.
 
-## Current project context — closeout at v0.2.7, 2026-10-06
+## Current project context — live status checked 2026-10-07
 
-The current public corpus is **v0.2.7**. Its 18 named configs and 29
-config/split views include text, lexicon, source references, factual and
-bibliographic records, transcript drafts, and the experimental PahariLI
-`paharili_gbm` view. Config rows overlap and are not unique-example counts.
-The separate public speech dataset remains v0.2.1. Current release metrics
-and limitations are maintained in the [root README](../../README.md) and
-[final report](../../finalreport.md); the 8,444-text public-availability gap
-and resolution workflow are in the [closeout audit](../../research/huggingface-corpus-gap-resolution-2026-10-06.md).
+The public corpus is **v0.2.8**, with 20 named configs, 31 config/split
+views, 963,484 displayed rows, and 7.57 GB on Hugging Face. Its separate
+speech companion shows 118,375 rows / 36.5 GB, including 113,363 audio/source
+rows and two text-only indexes. These are overlapping platform views, not
+unique-example counts. The full 7 October metrics and limits are in the
+[current platform audit](../../research/current-platform-metrics-2026-10-07.md),
+[root README](../../README.md), and [final report](../../finalreport.md).
+The 8,444-text public-availability gap and resolution workflow are in the
+[closeout audit](../../research/huggingface-corpus-gap-resolution-2026-10-06.md).
 
 This file is an acquisition and source-discovery register, not a current
 manifest of everything published. Each entry below is a dated snapshot or
