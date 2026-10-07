@@ -7,14 +7,18 @@ training-index rows are existing VAANI provider labels newly exposed after
 source-backed speaker-identity recovery; no audio payload or transcript text
 was created.
 
+The review queues, raw source material, model outputs, and builders named below
+remain local-only unless a public URL is explicitly provided. They are not
+linked to downloadable repository artifacts.
+
 ## Progress by step
 
 1. **Human review of existing transcripts — queued, no labels changed.** The
    80-row review queue contains the 55 existing `possibly_incomplete` validation
    references and 25 high-disagreement records. Corrections remain blank and
    each row is marked `pending_listen`; a model disagreement is not a correction.
-   See the [review CSV](../data/review/existing-asr-validation-labels-v0.1/review.csv)
-   and [audit](../data/review/existing-asr-validation-labels-v0.1/audit.json).
+   The local review CSV and audit JSON remain under
+   `data/review/existing-asr-validation-labels-v0.1/` and are not published.
 
 2. **Recover missing source speaker IDs — completed and published.** An exact,
    unique `speakerImageHash` to existing `speakerID` join resolved 718 records;
@@ -25,8 +29,9 @@ was created.
    audio hash maps to the already-published audio. Raw speaker IDs and image
    hashes are not exposed. The Hub update is [commit `18fb1fb`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/18fb1fb85ee40cc0ba59be4b1c5484b3a0993f8b);
    its wording correction is [commit `dcf12e5`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/dcf12e50b0c88529c44ad6723877c64d551c4b28).
-   Local builder and split report: [builder](../scripts/build_vaani_speaker_recovered_asr_v0_1.py)
-   and `data/processed/model_ready/splits/asr_speaker_recovered_v0.1/report.json`.
+   The builder and split report remain local at
+   `scripts/build_vaani_speaker_recovered_asr_v0_1.py` and
+   `data/processed/model_ready/splits/asr_speaker_recovered_v0.1/report.json`.
 
 3. **Report by district — completed as a post-hoc diagnostic.** The saved
    baseline and fine-tuned predictions cover the same 449 already-consulted
@@ -66,8 +71,8 @@ was created.
 
 6. **Audit long Meta clips — review list prepared, no guessed segmentation.**
    There are 434 existing clips over 30 seconds (399 train / 10 validation /
-   25 test). The local [review queue](../data/review/meta-omnilingual-long-clips-v0.1/long_clip_review.csv)
-   points to the existing clips and records duration and transcript length.
+   25 test). A local-only review queue points to existing clips and records
+   duration and transcript length.
    No audio was copied, no transcript changed, and no segment was created:
    source transcripts do not contain reliable time boundaries.
 
@@ -85,8 +90,8 @@ was created.
    their OCR or row alignment is unreliable; five separate standard-form OCR
    values are already present in public text and are not dialect-cell labels.
    A local queue leaves all six corrections blank for page transcription and
-   fluent-speaker review. No LSI text was uploaded. See the [rights triage](pdf-text-release-rights-triage-2026-10-07.md)
-   and [LSI review queue](../data/review/lsi-1916-dialect-ocr-check-v0.1/review.csv).
+   fluent-speaker review. No LSI text was uploaded. See the [rights triage](pdf-text-release-rights-triage-2026-10-07.md);
+   its local LSI review queue remains unpublished.
 
 9. **Prepare the local Whisper Tiny release description — corrected, not
    published.** The card now uses the primary 269-row development comparison
@@ -110,9 +115,8 @@ This Viewer recovery followed Hub processing; it did not add data.
 
 ## Artifacts
 
-- Local combined split builder: `scripts/build_vaani_speaker_recovered_asr_v0_1.py`
-- Local Hugging Face training view: `data/huggingface/garhwali-speech-training-views-v0.2-upload/`
-- Long-clip review queue: `data/review/meta-omnilingual-long-clips-v0.1/`
-- Historical LSI cell review queue: `data/review/lsi-1916-dialect-ocr-check-v0.1/`
-- Corrected local model card: `models/whisper-tiny-garhwali-cpu-v0.1/README.md`
-- Corrected staged model card: `data/huggingface/model-release-staging/garhwali-whisper-tiny-cpu-v0.1/README.md`
+Local artifacts (not published): the combined split builder, Hugging Face
+training view, long-clip and LSI review queues, and corrected local/staged
+Whisper Tiny model cards are retained in their corresponding `scripts/`,
+`data/`, and `models/` workspace directories. No model weights or review
+labels are included in this report.
