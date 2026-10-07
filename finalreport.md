@@ -1,6 +1,37 @@
 # Garhwali Language Lab — final review report
 
-## Quality-first Hugging Face and Kaggle follow-up — 2026-10-06 (latest)
+## Live platform status — 2026-10-07
+
+This update supersedes the 6 October closeout figures below. It is based on the
+live Hugging Face Dataset Viewer/cards and Kaggle dataset cards read on 7
+October; it reports published state, not a new model run.
+
+- **Hugging Face corpus:** v0.2.8, 963,484 displayed rows / 7.57 GB across 20
+  configs and 31 split views. Of these, 778,157 are source/reference rows and
+  185,327 are overlapping content-view rows. The 1,841 sentence-level text
+  candidates and 110 short-context entries already exist in the earlier text
+  views; this is clearer training selection, not new unique content.
+- **Hugging Face speech:** the page displays 118,375 rows / 36.5 GB. This
+  includes 113,363 source/audio rows plus text-only indexes of 2,718 VAANI
+  `asr_reference` rows and 2,294 optional Meta train rows. Audio totals 113,350
+  unique hashes and about 154.65 hours. The VAANI view has 2,202 train / 373
+  validation / 143 test rows. The older corpus `asr` view remains at 2,002.
+  Provider references have no native-speaker adjudication; the Meta view is
+  train-only and not an independent evaluation set.
+- **Kaggle:** the screened-text dataset is public at version 1 with 1,841
+  candidate training texts and 110 context rows. The ASR dataset is private at
+  version 2 with the same 2,718 existing VAANI references as the speech
+  `asr_reference` view. It preserves the former 2,002 pairs and indexes 716
+  additional existing references; no recording or transcript was created.
+  The baseline notebook is saved at version 3 with version 2 input selected;
+  it was not run.
+- **GitHub language metadata:** the README identifies Garhwali (`gbm`); the
+  repository About description now includes `gbm`, and the repository topic
+  is `gbm`. GitHub's Languages bar continues to describe programming languages.
+
+Definitions and source links are in the [7 October live metrics audit](research/current-platform-metrics-2026-10-07.md).
+
+## Quality-first Hugging Face and Kaggle follow-up — 2026-10-06 (historical snapshot)
 
 An additive, screened transcript-text release is prepared locally from the
 v0.2.7 source package. It contains **1,841 sentence-length training rows**
@@ -27,7 +58,7 @@ See the [quality-release report](research/quality-screened-text-release-report-2
 and [Meta rights decision](research/meta-omnilingual-training-rights-decision-2026-10-06.md).
 The full project test suite passes **827/827** tests.
 
-## Metrics correction — 2026-10-06
+## Metrics correction — 2026-10-06 (historical snapshot)
 
 The earlier presentation of Hugging Face's 961,533 corpus rows could be read
 as a count of usable language examples; it is not. The live corpus page shows
@@ -49,7 +80,7 @@ definitions, and measurement methods are in the [6 October Hugging Face metrics
 and utility audit](research/huggingface-current-metrics-and-utility-2026-10-06.md).
 No data payload changed in this correction.
 
-## Kaggle packaging follow-up — 2026-10-06
+## Kaggle packaging follow-up — 2026-10-06 (historical snapshot)
 
 After the v0.2.7 closeout snapshot below, I prepared reproducible Kaggle
 exports without adding or deleting source records. The generated corpus package
@@ -66,7 +97,7 @@ benchmark rights/independence, and deferred native-speaker validation. The
 root test badge now reflects **820/820** passing tests after adding two focused
 Kaggle exporter regression tests.
 
-## Project closeout snapshot — 2026-10-06
+## Project closeout snapshot — 2026-10-06 (superseded)
 
 This is the current handoff and the point where active project work is being
 closed for now. It supersedes the older “current release” paragraphs and

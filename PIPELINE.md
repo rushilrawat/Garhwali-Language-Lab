@@ -82,20 +82,22 @@ rewrite source-specific rights and language findings; add a dated intake report
 and source-catalog entry for each new source wave.
 
 The package profiles and reference index are local previews only. This helper
-never uploads to Hugging Face or changes repository visibility. The current
-v0.2.7 release includes the separate experimental `paharili_gbm` config even
+never uploads to Hugging Face or changes repository visibility. The live
+v0.2.8 release includes the separate experimental `paharili_gbm` config even
 though its sentence-level origins and reuse rights are unresolved; this is an
 explicit exception, not a rights clearance or recommendation for general model
 training. Other rights-pending source texts remain in the local all-data
 package. Candidate counts are not a measure of verified Garhwali.
 
-The current public corpus release is v0.2.7. It contains 36,105 parent
-catalog records and 18,598 segment-oriented `text` rows; the multiple configs
-and reference tables overlap, so their totals are not unique-example counts.
-The release is additive and retains all prior release paths. The `catalog`
-config has 23,448 blank text fields; 15,004 normalized text values match
-content elsewhere in the public package, while 8,444 distinct values are not
-otherwise exposed. See the [availability audit](research/huggingface-corpus-gap-resolution-2026-10-06.md).
+The current public corpus release is v0.2.8. The live Viewer reports 20 named
+configs, 31 config/split views, 963,484 displayed rows, and 7.57 GB. Those
+counts include overlapping views and 778,157 source/reference rows; they are
+not unique-example totals. The release is additive and retains prior release
+paths. The `catalog` config has 23,448 blank text fields; 15,004 normalized
+text values match content elsewhere in the public package, while 8,444
+distinct values are not otherwise exposed. See the [availability
+audit](research/huggingface-corpus-gap-resolution-2026-10-06.md) and the
+[7 October live metrics audit](research/current-platform-metrics-2026-10-07.md).
 The 475-row `text_resources` config is an access view over existing catalog
 values, not additional source acquisition. The Internet Archive material acquired on
 3–4 October remains local-only; its intake, quality profile, and canonical-text
@@ -103,13 +105,13 @@ overlap audit are in
 [`research/internet-archive-intake-2026-10-03.md`](research/internet-archive-intake-2026-10-03.md)
 and
 [`research/internet-archive-intake-quality-2026-10-04.md`](research/internet-archive-intake-quality-2026-10-04.md).
-The refresh, package-builder, upload-preparer, and local-release defaults now target v0.2.8,
-the next additive candidate after the published v0.2.7 release. This avoids
-accidentally rebuilding into the older v0.2.6 staging path. Set an explicit
-version for a different candidate:
+The refresh, package-builder, upload-preparer, and local-release defaults
+still target v0.2.8, which is now already published. Set an explicit new
+version such as v0.2.9 before building another release so the existing v0.2.8
+staging and Hub paths are not reused:
 
 ```bash
-GARHWALI_RELEASE_VERSION=0.2.8 .venv/bin/python scripts/ingestion_graph.py run \
+GARHWALI_RELEASE_VERSION=0.2.9 .venv/bin/python scripts/ingestion_graph.py run \
   --wave tenth --run-id next-garhwali-wave-YYYY-MM-DD --refresh-derived
 ```
 
@@ -128,10 +130,10 @@ are absent; that is an accurate input-availability signal, not a software-test
 failure. Restore the required inputs locally before executing the refresh.
 
 ```bash
-GARHWALI_RELEASE_VERSION=0.2.8 .venv/bin/python scripts/prepare_hf_additive_upload.py \
-  --prefix releases/v0.2.7 \
-  --output data/huggingface/garhwali-corpus-v0.2.7-additive-upload \
-  --plan data/huggingface/garhwali-corpus-v0.2.7-upload-plan.json
+GARHWALI_RELEASE_VERSION=0.2.9 .venv/bin/python scripts/prepare_hf_additive_upload.py \
+  --prefix releases/v0.2.9 \
+  --output data/huggingface/garhwali-corpus-v0.2.9-additive-upload \
+  --plan data/huggingface/garhwali-corpus-v0.2.9-upload-plan.json
 ```
 
 Review the plan, verify the prefix is unused, and run its generated upload
