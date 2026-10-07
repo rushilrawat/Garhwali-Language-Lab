@@ -1,6 +1,6 @@
 # Benchmark and model roadmap issues & improvement plan
 
-**Updated:** 2026-10-06 (project closeout at corpus v0.2.7; detailed benchmark evidence below remains dated snapshots)
+**Updated:** 2026-10-07 (current platform status; detailed benchmark evidence below remains dated snapshots)
 
 **Scope:** issues found while executing the benchmark/model roadmap and its
 immediately preceding retrieval, generation, and ASR work. This is a living
@@ -22,33 +22,29 @@ occurred. The pipeline now has a tested one-command resumable ingest-and-refresh
 mode. Use this current summary for present benchmark counts; dated entries
 below preserve earlier evidence.
 
-## Current closeout status — 2026-10-06
+## Current closeout status — 2026-10-07
 
-The public corpus is v0.2.7 and the public speech companion is v0.2.1. The
-current project suite passes 820 tests after this closeout edit. Corpus package/release checks pass
-for v0.2.7; the latest recorded live Viewer check reports 29 split views and
-Parquet exports. The catalog visibility audit separates 15,004 text values
-already found elsewhere in the public package from 8,444 distinct full texts
-still local with rights pending. Each has a source locator: 7,675 inline URLs
-and 769 URLs via `source_catalog`; some point only to a source container, not
-an exact work or page. The [closeout audit](huggingface-corpus-gap-resolution-2026-10-06.md)
-defines the source-by-source path to resolve that gap. The benchmark remains
-local-only and draft, and independent-final eligibility is still 0/5. Native
-language review and dialect annotation remain deferred. Active ingestion is
-closed at v0.2.7 for now; dated issue entries below are retained as history.
+The public corpus is v0.2.8; its current Hugging Face Viewer reports 20 named
+configs, 31 config/split views, 963,484 displayed rows, and 7.57 GB. The speech
+page reports 118,375 rows / 36.5 GB, including 113,363 audio/source rows and
+text-only indexes of 2,718 VAANI references and 2,294 optional Meta train
+references. These platform totals overlap and are not unique examples. The
+current ASR reference and Kaggle status is in the [7 October cross-platform
+audit](current-platform-metrics-2026-10-07.md). The public Kaggle text view is
+version 1; the private ASR package is version 2. Its baseline notebook is
+saved at version 3 and has not been run.
 
-**Metric correction:** the 961,533 public corpus rows are overlapping views;
-778,157 (80.9%) are source/reference tables, not language examples. The public
-`text` config has 18,598 rows / 291,914 whitespace-separated words and zero
-rows currently recommended for general text training. `text_expansion` (1,737)
-and `text_resources` (475) also have zero recommended rows. The speech repo
-has 113,363 rows and 154.65 audio hours, but its 104,500 non-empty SraVaani
-outputs are machine drafts, not gold transcripts. The local `data/` tree uses
-about 119.93 GiB on disk; these bytes include versioned Hub builds, source
-audio/media, and model/evaluation artifacts. See the [current metrics and
-utility audit](huggingface-current-metrics-and-utility-2026-10-06.md); treat
-dated aggregates below as historical unless that report identifies them as
-current.
+The most recent recorded full project suite run was 827 passing tests on
+6 October; this documentation refresh did not rerun it. The catalog visibility
+audit separates 15,004 text values already found elsewhere in the public
+package from 8,444 distinct full texts still local with rights pending. Each
+has a source locator: 7,675 inline URLs and 769 URLs via `source_catalog`; some
+point only to a source container, not an exact work or page. The
+[closeout audit](huggingface-corpus-gap-resolution-2026-10-06.md) defines the
+source-by-source path to resolve that gap. The benchmark remains local-only
+and draft, independent-final eligibility is still 0/5, and native-language
+review and dialect annotation remain deferred. Detailed benchmark evidence
+and issue entries below are dated historical snapshots.
 
 **Historical status — 4 October:** the public corpus was v0.2.3; speech remained v0.2.1.
 The Archive intake quality and overlap audit produced no benchmark or model

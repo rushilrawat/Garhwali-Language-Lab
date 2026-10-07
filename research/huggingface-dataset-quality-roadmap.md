@@ -2,7 +2,25 @@
 
 **Started:** 2026-10-01
 **Scope:** Make `rushilrawat/garhwali-corpus` and `rushilrawat/garhwali-speech` more useful, trustworthy, and easy to apply.
-**Current public release:** v0.2.7 (2026-10-06 closeout). New releases remain additive; existing records and source evidence are preserved.
+**Current public corpus release:** v0.2.8 (checked 2026-10-07). New releases remain additive; existing records and source evidence are preserved.
+
+## Latest platform state — 2026-10-07
+
+The live corpus page reports 963,484 displayed rows / 7.57 GB across 20
+configs and 31 split views: 778,157 reference rows and 185,327 overlapping
+content rows. The 1,841-row sentence-level candidate view and 110-row context
+view are live; both re-index existing Meta-derived text and remain unreviewed.
+The speech page reports 118,375 displayed rows / 36.5 GB: 113,363 audio/source
+rows, 2,718 VAANI `asr_reference` rows, and 2,294 train-only Meta
+`asr_meta_extra_train` rows. The audio is unchanged. The corpus's original
+`asr` config remains a separate 2,002-row view. The current ASR references are
+unadjudicated. See the [live metrics audit](current-platform-metrics-2026-10-07.md).
+
+The public Kaggle text dataset is version 1 (1,841 candidate texts plus 110
+context rows). The private Kaggle ASR dataset is version 2 (2,718 existing
+VAANI audio/reference pairs); no unique data was added. The ASR notebook source
+was saved as version 3 but has not been run. GitHub README and repository
+metadata use Garhwali (`gbm`).
 
 ## Goal
 
@@ -11,9 +29,9 @@ filter, and reuse for clearly described purposes. Progress is measured by
 quality-qualified content and reliable access—not by adding reference-table
 rows to a headline total.
 
-## Metrics and practical training status — 2026-10-06
+## Metrics and practical training status — 2026-10-06 baseline
 
-The live corpus page reports 961,533 rows, but 778,157 (80.9%) are source and
+The v0.2.7 corpus page reported 961,533 rows, but 778,157 (80.9%) were source and
 reference-table rows, and all config totals overlap. The main text view contains
 18,598 rows / 291,914 whitespace-separated words; zero currently pass the
 project's general text-training recommendation flag. The 1,737 expansion and
@@ -32,7 +50,7 @@ for definitions, local storage breakdown, and limits.
 
 ## Current closeout — text availability and source resolution
 
-The public corpus v0.2.7 has 18 named configs and 29 config/split views. Its
+The v0.2.7 public corpus had 18 named configs and 29 config/split views. Its
 latest recorded Viewer check found all 29 splits and Parquet exports available.
 The text-availability audit found that 15,004 of 23,448 blank catalog values
 already occur elsewhere in the public package, while 8,444 distinct texts are
@@ -44,7 +62,8 @@ public developer quick start contains the lookup recipe. See the
 [gap audit](huggingface-corpus-gap-resolution-2026-10-06.md) for methods,
 source groups, and the rights-resolution workflow.
 
-This roadmap closes here at v0.2.7. The remaining public-content work is
+The v0.2.7 phase notes below remain a historical closeout. The current
+public-content work is
 source/edition-specific rights evidence or permission, followed by an additive
 package rebuild and complete preflight. PahariLI remains a labeled experimental
 exception with unresolved sentence origins; it is not a reusable-rights or

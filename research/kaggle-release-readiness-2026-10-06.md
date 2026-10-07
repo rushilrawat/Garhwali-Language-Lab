@@ -1,5 +1,18 @@
 # Kaggle release preparation audit — 2026-10-06
 
+## Live platform follow-up — 2026-10-07
+
+This audit records the original 6 October packaging state. Since then, the
+focused screened-text package was published publicly at Kaggle version 1
+(1,841 training candidates and 110 context rows), and the ASR package was
+updated privately to version 2 (2,718 existing VAANI references). The
+baseline notebook is saved at version 3 with v2 input and remains unrun. The
+latest counts and status are in the [cross-platform metrics audit](current-platform-metrics-2026-10-07.md)
+and [ASR v0.2 sync report](kaggle-asr-v0.2-sync-2026-10-07.md).
+
+The initial packaging report below remains a snapshot; its statements that
+these packages were unpublished describe the state on 6 October.
+
 ## Quality-first text package follow-up — 2026-10-06
 
 A separate, focused package is built locally for direct Kaggle use:
