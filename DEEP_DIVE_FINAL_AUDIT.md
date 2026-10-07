@@ -1,11 +1,11 @@
 # Garhwali Language Lab — deep final audit
 
-> **Historical audit snapshot.** This file retains the 5 October audit and its
-> evidence; it is not the current project status. The 6 October closeout,
-> current corpus figures, public text gap, and remaining work are summarized in
-> [`finalreport.md`](finalreport.md) and the [text-availability audit](research/huggingface-corpus-gap-resolution-2026-10-06.md).
+> **Historical audit with a 7 October status pointer.** The detailed checks in
+> this file retain their dated snapshots; they are not all current metrics.
+> Current corpus and platform status is summarized in [`finalreport.md`](finalreport.md)
+> and the [7 October cross-platform audit](research/current-platform-metrics-2026-10-07.md).
 
-## Follow-up — Kaggle packaging — 2026-10-06
+## Follow-up — Kaggle packaging — 2026-10-06 snapshot
 
 The current repository now includes a deterministic Kaggle exporter and two
 focused regression tests. The generated corpus CSVs preserve the 17 non-PahariLI
@@ -14,13 +14,15 @@ replaced in this derivative with a content-free identifier/hash index. The
 speech metadata companion omits the Parquet `audio` column and links each row
 to the already public Hugging Face audio dataset. Local package hashes and
 exact-overlap results are in the [Kaggle release audit](research/kaggle-release-readiness-2026-10-06.md).
-The packages have not been uploaded to Kaggle or made public. This work does
-not clear the 8,444 unresolved full texts, benchmark rights, independent
-results, or native-language review.
+As of this 6 October snapshot, the packages had not been uploaded. The 7 October
+state is recorded in the [current cross-platform audit](research/current-platform-metrics-2026-10-07.md):
+the screened-text dataset is public, while the ASR-reference dataset is private.
+This packaging work does not clear the 8,444 unresolved full texts, benchmark
+rights, independent results, or native-language review.
 
-## Current metrics correction — 2026-10-06
+## Metrics correction — 2026-10-06 snapshot
 
-The current Hugging Face corpus page reports 961,533 displayed rows and 7.56 GB
+At the 6 October v0.2.7 snapshot, the Hugging Face corpus page reported 961,533 displayed rows and 7.56 GB
 of repository files. The row display is a sum of overlapping views: 778,157
 (80.9%) are source/reference rows, leaving 183,376 content-config view rows,
 not unique text examples. The public `text` config has 18,598 rows / 291,914

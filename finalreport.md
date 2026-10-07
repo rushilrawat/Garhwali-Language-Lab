@@ -113,9 +113,11 @@ sections remain historical evidence for the exact snapshot they describe.
   `1f7b2ce`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/1f7b2ceed1b743412b75d6288757e1d2cadac9c4),
   with 18 named configs, 29 config/split views, 183,376 overlapping content
   rows, and 778,157 overlapping reference-table rows. These are view counts,
-  not unique examples. The live Hub page currently reports 961,533 rows and
-  7.56 GB. The detailed 29-split / Parquet readiness check remains documented
-  in the dated v0.2.7 release report.
+  not unique examples. At the 6 October v0.2.7 snapshot, the live Hub page
+  reported 961,533 rows and 7.56 GB. The current v0.2.8 figures are at the top
+  of this report and in the [7 October live metrics audit](research/current-platform-metrics-2026-10-07.md).
+  The detailed 29-split / Parquet readiness check remains documented in the
+  dated v0.2.7 release report.
 - **Hugging Face speech:** public **v0.2.1**, separate from the text corpus,
   with 113,363 rows, 113,350 unique audio hashes, and about 154.65 hours. It
   includes source/provider transcripts and a separate 104,534-row deduplicated
