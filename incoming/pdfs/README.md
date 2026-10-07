@@ -1,6 +1,11 @@
 # PDF intake
 
-## Current intake status (2026-09-26)
+## Current intake status (2026-10-07)
+
+The inventory of PDFs supplied in this folder remains seven files (six unique
+books); the latest rights triage on 7 October cleared no additional full text
+for Hugging Face or Kaggle. See the
+[7 October rights triage](../../research/pdf-text-release-rights-triage-2026-10-07.md).
 
 Seven supplied PDFs have been hash-checked: six unique books yielded **769
 active page records** and 1,774,697 extracted characters; one exact duplicate
