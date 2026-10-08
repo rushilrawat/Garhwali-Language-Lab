@@ -17,7 +17,7 @@ We organize Garhwali text, speech, folklore, scholarship, and local knowledge in
 
 Garhwali resources are scattered across archives, books, websites, research, and speech collections. This project brings them together and prepares reproducible text, speech, vocabulary, and evaluation resources for language research and future language tools.
 
-Language identifier: **Garhwali — gbm** (ISO 639-3). The GitHub repository uses gbm in its description and topic.
+Primary language identifier: **garhwali:gbm** (Garhwali, ISO 639-3). English (`eng`) appears in documentation, glosses, and translation/evaluation references; Hindi (`hin`) appears in bilingual glosses and some translation/evaluation material. Kumaoni (`kfy`) occurs in a small number of mixed-source entries, not as a standalone training subset. This is a Garhwali-focused corpus, not a balanced multilingual dataset; use row-level language and quality labels when selecting data.
 
 ## Current versions
 
