@@ -3,7 +3,7 @@
 > Historical snapshot. The current 2026-09-23 release candidate contains
 > 257,807 all-data rows and 146,684 rights-filtered public rows. The public
 > profile now excludes 216 structured records without compatible rights
-> evidence. See [`finalreport.md`](../finalreport.md) for current audit results.
+> evidence. See [`project-status/finalreport.md`](../project-status/finalreport.md) for current audit results.
 
 This report describes the access-controlled `all-data` Hugging Face
 profile. It preserves every collected text value and all experimental speech

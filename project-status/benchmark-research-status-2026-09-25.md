@@ -3,8 +3,8 @@
 > **Status note — 2026-10-06:** The measurements below are dated research
 > snapshots, not the current project status. The benchmark remains a local
 > draft, public benchmark rights are unresolved, and independent-final
-> eligibility is 0/5 task areas. Use [`finalreport.md`](../finalreport.md) for
-> the closeout decision and [`benchmark-model-roadmap.md`](benchmark-model-roadmap.md)
+> eligibility is 0/5 task areas. Use [`project-status/finalreport.md`](finalreport.md) for
+> the closeout decision and [`benchmark-model-roadmap.md`](../research/benchmark-model-roadmap.md)
 > for the current roadmap boundary. Old test counts and scores below are not
 > current release metrics.
 
@@ -27,11 +27,11 @@ unrecorded, and component rights remain unresolved. Semantic/paraphrase and
 upstream model exposure are also unresolved. The owner approved work toward
 independent evidence across all five task areas; **eligibility remains 0/5**.
 Latest full tests: 656/656 unittest; v0.2.0 release-time counts (607/605) are
-historical. See the [roadmap](benchmark-model-roadmap.md),
-[rights inventory](garhwali-bench-v0.2-rights-inventory-2026-09-29.md),
-[ASR integration check](asr-corpus-metric-integration-2026-09-29.md),
-[generation scorer report](generation-scoring-integration-2026-09-30.md), and
-[issue log](issues%26improvement%20plan.md).
+historical. See the [roadmap](../research/benchmark-model-roadmap.md),
+[rights inventory](../research/garhwali-bench-v0.2-rights-inventory-2026-09-29.md),
+[ASR integration check](../research/asr-corpus-metric-integration-2026-09-29.md),
+[generation scorer report](../research/generation-scoring-integration-2026-09-30.md), and
+[issue log](../research/issues%26improvement%20plan.md).
 **Checked:** 2026-09-30 current counts and lineage; older model-score tables remain historical snapshots.
 **Priority:** GarhwaliBench integrity, then controlled model research  
 **Execution:** local only; no Hugging Face jobs or paid compute
@@ -56,7 +56,7 @@ historical. See the [roadmap](benchmark-model-roadmap.md),
 | --- | --- | --- |
 | Better neural model scores | Rechecked local runtimes and model artifacts. The project `.venv` has no PyTorch, Transformers, NeMo, PEFT, PyArrow, SentenceTransformers, or Datasets. Fine-tuned SraVaani `.nemo` checkpoints and adapters exist, but required base assets/runtime are not usable in this environment. Existing outputs and sweeps remain preserved. | No fresh NLLB, dense retrieval, or SraVaani inference was run. All available test scores are historical or exposure-unknown. A fresh run needs compatible weights/runtime and a verified, explicitly capped compute budget; this refresh incurred $0. |
 | Independent accuracy | Owner approved work in all five task areas; evidence eligibility remains 0/5. Existing public tests have saved predictions or unknown upstream model exposure. | A new, sealed post-freeze evaluation set must be newly authored/recorded, source-grouped, rights-cleared, and kept out of model selection/training. Existing public data cannot be relabeled as blind. |
-| Public benchmark release | Revalidated 8 views / 14,703 view rows with zero structural errors. Shared scoring covers ASR corpus/per-record WER/CER and saved generation validation predictions with exact ID coverage and metric/code hashes. | All 14,703 draft view rows currently say `public_release_cleared=false`, and the manifest remains `public_upload_allowed=false`. Full component/field-level rights review remains open. See the [rights inventory](garhwali-bench-v0.2-rights-inventory-2026-09-29.md). |
+| Public benchmark release | Revalidated 8 views / 14,703 view rows with zero structural errors. Shared scoring covers ASR corpus/per-record WER/CER and saved generation validation predictions with exact ID coverage and metric/code hashes. | All 14,703 draft view rows currently say `public_release_cleared=false`, and the manifest remains `public_upload_allowed=false`. Full component/field-level rights review remains open. See the [rights inventory](../research/garhwali-bench-v0.2-rights-inventory-2026-09-29.md). |
 | Native-validated claims | Regenerated two-reviewer packets and templates. Transcript reviewers now have a blind first-pass CSV that omits references and model hypotheses; current packets include 176 priority text rows and 113 transcript rows. | Zero decisions/adjudications exist. Two independent Garhwali reviewers must complete the queue; automated checks and model agreement cannot establish linguistic correctness. No dialect claim is being made. |
 
 ### Source terms checked for benchmark payloads
@@ -81,13 +81,13 @@ The ASR metric implementation is in
 [`scripts/asr_metrics.py`](../scripts/asr_metrics.py), with synthetic edge-case
 coverage in [`tests/test_asr_metrics.py`](../tests/test_asr_metrics.py). The
 native-review workflow and current zero-decision status are detailed in
-[`native-reference-review-readiness-2026-09-15.md`](native-reference-review-readiness-2026-09-15.md).
+[`project-status/native-reference-review-readiness-2026-09-15.md`](native-reference-review-readiness-2026-09-15.md).
 The task-by-task data collection and exposure protocol is
-[`independent-evaluation-protocol-2026-09-29.md`](independent-evaluation-protocol-2026-09-29.md);
+[`independent-evaluation-protocol-2026-09-29.md`](../research/independent-evaluation-protocol-2026-09-29.md);
 it is a protocol, not evidence that new items or reviews already exist.
 
 The six local draft cards are in
-[`garhwali-bench-v0.2-draft-cards.md`](garhwali-bench-v0.2-draft-cards.md).
+[`garhwali-bench-v0.2-draft-cards.md`](../research/garhwali-bench-v0.2-draft-cards.md).
 No source values, audio, speaker IDs, or test payloads were copied into that
 document. Older metric tables below retain their original measured snapshots;
 do not compare scores across different input manifests as if they were one
@@ -210,7 +210,7 @@ candidates requiring eligibility labels; they are not grounds to delete rows or
 claim leakage without source/task review. The scan is same-language/script for
 near-duplicates and performs no semantic or translation-equivalence search.
 
-The [Phase 2 adjudication record](benchmark-overlap-adjudication-2026-09-26.md)
+The [Phase 2 adjudication record](../research/benchmark-overlap-adjudication-2026-09-26.md)
 verifies all 27 XORQA context groups against `source_example.context`. The
 refreshed row-level overlay labels 67 unique records for open diagnostics: the
 27 context groups, one repeated top-level Garhwali question group, and five
@@ -220,7 +220,7 @@ source-generalization claims. The four near-text pairs were also inspected:
 three recommended-training pairs already share duplicate-component IDs, and
 one pair in XORQA dev has the same exact context and answer. All stay within
 their original split; the dev diagnostics should group those questions by
-source context. A new [nested-field overlap review](benchmark-nested-overlap-review-2026-09-27.md)
+source context. A new [nested-field overlap review](../research/benchmark-nested-overlap-review-2026-09-27.md)
 scanned 10,571 task fields and found 41 same-field cross-split groups (27
 contexts, 6 English answer spans, 5 English oracle questions, 2 Garhwali
 translated-answer spans, 1 Garhwali question), zero cross-field groups within
@@ -232,7 +232,7 @@ all at 2–6 normalized characters. These are common-answer candidates, not
 confirmed translation errors or leakage, and were not added to the overlay.
 Only oracle-question groups were newly added to the use overlay; repeated
 answer spans remain candidates. See the
-[cross-language exact-overlap review](benchmark-cross-language-exact-overlap-2026-09-28.md).
+[cross-language exact-overlap review](../research/benchmark-cross-language-exact-overlap-2026-09-28.md).
 The candidate phase remains open for semantic and broader source-family review.
 
 ### Source-page family refresh (2026-09-28)
@@ -246,7 +246,7 @@ records. All remain in their original files and splits. This is source-lineage
 evidence, not proof of model exposure or answer leakage. The v0.2 adapter now
 carries a source-page family hash on XORQA rows; its rebuilt local draft still
 contains all eight views and 12,622 rows. See the
-[source-page family review](benchmark-source-page-families-2026-09-28.md).
+[source-page family review](../research/benchmark-source-page-families-2026-09-28.md).
 
 ### Parent-safe split and other source-family refresh (2026-09-28)
 
@@ -273,11 +273,11 @@ only a dataset-level source identifier and no row-level URLs, so its finer
 source-family split independence cannot be determined from the available
 fields. Semantic/paraphrase and cross-language matching remain open. Full
 hashes, counts, and limitations are in the
-[parent-safe split audit](benchmark-parent-safe-split-audit-2026-09-28.md).
+[parent-safe split audit](../research/benchmark-parent-safe-split-audit-2026-09-28.md).
 
 ### Phase 3 v0.2 contract draft (2026-09-26)
 
-[`garhwali-bench-v0.2-schema-contract.md`](garhwali-bench-v0.2-schema-contract.md)
+[`garhwali-bench-v0.2-schema-contract.md`](../research/garhwali-bench-v0.2-schema-contract.md)
 defines the proposed record and usage axes and migration gates. The dependency-
 free [`validate_benchmark_v02.py`](../scripts/validate_benchmark_v02.py) checked
 eight asset views / 12,622 rows and found zero structural/integrity errors,
@@ -297,7 +297,7 @@ benchmark and their test usage is not interchangeable.
 | Text modeling | Recommended-view character baseline above; IndicBERTv2 4,096-step continuation averaged 5.089108 validation cross-entropy across 3 seeds | The 4,164-row recommended test remains unresolved for final claims; pretrained exposure for IndicBERTv2 is unknown |
 | Translation | Historical test: 1,012 rows; latest dev-only refresh: 997 rows, copy 0.000995 BLEU / 0.008060 chrF2; leave-exact-source-out TM 0.019922 / 0.238087; historical 32-row NLLB Hindi-token proxy | No Garhwali-token NLLB configuration or independent final test; FLORES test and prior NLLB output are already scored |
 | Retrieval | Historical: 539-question XORQA test; best IndicBERTv2 Recall@10 is 0.103896. Current dev rerun: Garhwali word/character BM25 Recall@10 is 0.8%/1.0%, with source-page-clustered 95% intervals 0.2–1.6%/0.2–2.0%; English-oracle BM25 is 85.2% [82.1–88.3%] | Historical test has prior predictions. Character-vs-word paired intervals touch zero; cross-language retrieval remains unsolved and zero independent final score is approved |
-| Speech | Saved ASR comparisons: SraVaani base 42.761% WER / 17.606% CER; decoder sweep selected RNNT beam-8 on validation, test 42.761% / 17.410%; 61-trial test 43.528% / 17.494%; expanded-human test 43.289% / 17.396%. A 2026-09-28 post-hoc audit verifies all five runs against the same 112 audio hashes and cleaned references, and provides speaker-clustered paired intervals. | All scores remain historical. Every paired WER/CER interval includes zero or touches it, so no fine-tune improvement is established. SraVaani's VAANI training overlap is unknown at example level, and references are not native-adjudicated. See the [ASR consolidation](asr-baseline-consolidation-2026-09-26.md) and [held-out lineage audit](asr-heldout-lineage-audit-2026-09-28.md). |
+| Speech | Saved ASR comparisons: SraVaani base 42.761% WER / 17.606% CER; decoder sweep selected RNNT beam-8 on validation, test 42.761% / 17.410%; 61-trial test 43.528% / 17.494%; expanded-human test 43.289% / 17.396%. A 2026-09-28 post-hoc audit verifies all five runs against the same 112 audio hashes and cleaned references, and provides speaker-clustered paired intervals. | All scores remain historical. Every paired WER/CER interval includes zero or touches it, so no fine-tune improvement is established. SraVaani's VAANI training overlap is unknown at example level, and references are not native-adjudicated. See the [ASR consolidation](../research/asr-baseline-consolidation-2026-09-26.md) and [held-out lineage audit](../research/asr-heldout-lineage-audit-2026-09-28.md). |
 | Generation/instructions | All three mT0 32,768-step seeds and validation diagnostics are saved. Seed 43 has best validation cross-entropy (4.188287); best adapter chrF2 is 0.074003 versus 0.088327 for base. An existing report says the selected model was evaluated once on an 86-row test after selection. | No adapter is promoted. Test is historical; its 172 prediction rows do not map to the current local manifest inventory, and references remain unreviewed. |
 
 ### Translation refresh (2026-09-26)
@@ -310,13 +310,13 @@ zero exact normalized-source duplicate groups in dev. NLLB was not run because
 the base model snapshot and local ML packages are missing. No FLORES test was
 scored again. Exact IDs, manifest digests, metric configuration, predictions,
 and limitations are in
-[`translation-quality-2026-09-26.md`](translation-quality-2026-09-26.md).
+[`translation-quality-2026-09-26.md`](../research/translation-quality-2026-09-26.md).
 
 ### ASR refresh (2026-09-26; later lineage update supersedes this note)
 
 Saved SraVaani greedy, beam-8, six-config fine-tune, 61-trial fine-tune, and
 expanded-human predictions were consolidated in
-[`asr-baseline-consolidation-2026-09-26.md`](asr-baseline-consolidation-2026-09-26.md).
+[`asr-baseline-consolidation-2026-09-26.md`](../research/asr-baseline-consolidation-2026-09-26.md).
 All five validation files align on the same 269 ordered audio paths and
 references; recomputed validation error counts match the stored values. Fine-
 tunes are not promoted: the test numbers are historical aggregates. At this
@@ -326,11 +326,11 @@ fixed audio/reference pairs and computed speaker-clustered intervals. The
 report also flags an older SraVaani validation comparator whose result differs
 slightly and lacks sufficient sweep-row/config provenance. No saved ASR trial
 report indicates a rate-limit interruption. The latest lineage evidence is in
-the [held-out audit](asr-heldout-lineage-audit-2026-09-28.md).
+the [held-out audit](../research/asr-heldout-lineage-audit-2026-09-28.md).
 
 ### Retrieval refresh (2026-09-25)
 
-The new [development-only retrieval report](retrieval-quality-2026-09-25.md)
+The new [development-only retrieval report](../research/retrieval-quality-2026-09-25.md)
 records a reproducible 500-query run over 1,059 unique passages from 1,139
 source rows. BM25 has almost no coverage for Garhwali questions against the
 English passages (4/500 word matches; 7/500 character matches), while paired
@@ -339,7 +339,7 @@ now correctly treated as not retrieved. The 539-row test was not scored again.
 Dense IndicBERTv2 evaluation is blocked by missing local runtime packages and
 uncached pinned weights; no download or paid job was used.
 
-The follow-up [source-page-clustered uncertainty analysis](retrieval-source-page-cluster-uncertainty-2026-09-28.md)
+The follow-up [source-page-clustered uncertainty analysis](../research/retrieval-source-page-cluster-uncertainty-2026-09-28.md)
 reused those 500 saved dev predictions. Exact ID and hash checks passed; 2,000
 whole-family resamples cover 461 page families. The character-minus-word paired
 Recall@10 difference is +0.2 percentage points (95% interval 0.0–0.6), so the
@@ -347,7 +347,7 @@ small difference is inconclusive. This is conditional on the fixed
 1,059-document corpus drawn from every original split; it does not estimate
 generalization to unseen pages. No test score was produced.
 
-The subsequent [retrieval miss analysis](retrieval-miss-analysis-2026-09-28.md)
+The subsequent [retrieval miss analysis](../research/retrieval-miss-analysis-2026-09-28.md)
 verified that all 500/500 dev gold passages are present in the fixed 1,059-
 passage corpus. Of the 500 queries, Garhwali word BM25 has 496 zero-score
 misses and character BM25 has 493 zero-score misses plus two gold passages
@@ -367,7 +367,7 @@ but the base mT0 has higher validation chrF2 than every adapter, so no adapter
 is promoted. Existing run records report one evaluation of the selected seed on
 an 86-row test; it is historical, and its 172 prediction rows remain unmatched
 to the current local manifest inventory. Details and hashes are in
-[`generation-quality-2026-09-25.md`](generation-quality-2026-09-25.md).
+[`generation-quality-2026-09-25.md`](../research/generation-quality-2026-09-25.md).
 
 ### Translation scoring and uncertainty refresh (2026-09-27)
 
@@ -396,7 +396,7 @@ SraVaani 43.3936% WER / 18.9252% CER and Whisper v0.2 78.0522% / 46.2980%.
 No inference was run, and held-out rows were not scored. This is a validation
 reproduction, not independent accuracy; source-model exposure and reference
 quality remain limitations. Details and hashes are in the
-[ASR manifest report](asr-validation-run-manifest-2026-09-27.md).
+[ASR manifest report](../research/asr-validation-run-manifest-2026-09-27.md).
 
 The three saved mT0 generation systems now also have hash-linked manifests.
 Each run reconciles 130 prediction IDs to the validation file, verifies task
@@ -406,7 +406,7 @@ saved report. Current unreviewed alternate references shift chrF2 by
 0.0019–0.0025 across seeds; this is reference sensitivity, not a model-quality
 gain. No inference or test scoring ran. The synced analysis omits original
 sampling parameters and per-seed checkpoint hashes; see the
-[mT0 manifest report](mt0-validation-run-manifest-2026-09-27.md).
+[mT0 manifest report](../research/mt0-validation-run-manifest-2026-09-27.md).
 
 ### Saved generation-output diagnostics (2026-09-28)
 
@@ -422,7 +422,7 @@ diversity and structural health do not establish reference accuracy. Length,
 repetition, and script profiles are descriptive heuristics, and no inference,
 held-out scoring, or native-language judgment ran. The aggregate local output
 contains no generated text. See
-[`generation-output-diagnostics-2026-09-28.md`](generation-output-diagnostics-2026-09-28.md).
+[`generation-output-diagnostics-2026-09-28.md`](../research/generation-output-diagnostics-2026-09-28.md).
 
 ## Remaining work, refreshed 2026-09-28
 
@@ -451,8 +451,8 @@ contains no generated text. See
    source-page-clustered intervals and fixed-corpus gold-passage/rank
    diagnostics; saved mT0 generation outputs have task-local structural and
    mode-concentration diagnostics. Phase 8 result eligibility is reconciled in
-   [the 2026-09-28 report](task-result-eligibility-2026-09-28.md), and the
-   current [lineage audit](model-accuracy-lineage-2026-09-28.md) regenerates
+   [the 2026-09-28 report](../research/task-result-eligibility-2026-09-28.md), and the
+   current [lineage audit](../research/model-accuracy-lineage-2026-09-28.md) regenerates
    with historical-only labels whenever saved predictions match test rows.
    CrossSum and Meta Omnilingual test exposure remains unresolved. Add
    source-family uncertainty to translation and other tasks where lineage

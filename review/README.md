@@ -11,7 +11,7 @@ native-validated data. Packet generation and counts are local and do not
 change the published dataset.
 These queues do not block local experiments, and no model output is promoted to
 ground truth without review. Current aggregate status is in
-[`research/corpus-preparation-status.md`](../research/corpus-preparation-status.md).
+[`project-status/corpus-preparation-status.md`](../project-status/corpus-preparation-status.md).
 
 Run `python3 scripts/native_review_workflow.py` to rebuild review packets under
 `data/processed/native_review/packets/`. Each packet has a stable target ID, the

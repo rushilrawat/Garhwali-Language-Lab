@@ -8,7 +8,7 @@ current release counts. A fresh v0.2.7 package scan finds `text` 18,598 rows,
 three configs currently carry `recommended_for_training=true`**. The main `text`
 view contains 291,914 whitespace-separated words and 1,373,045 characters.
 The v0.2.7 counts and live repository totals are documented in the [current
-Hugging Face metrics and utility audit](huggingface-current-metrics-and-utility-2026-10-06.md).
+Hugging Face metrics and utility audit](../project-status/huggingface-current-metrics-and-utility-2026-10-06.md).
 This update changes documentation only; no row flag or payload was changed.
 
 ## Scope and method

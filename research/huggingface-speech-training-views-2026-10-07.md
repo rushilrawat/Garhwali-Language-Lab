@@ -8,8 +8,8 @@ Meta `asr_meta_extra_train` index. The counts in the initial v0.1 publication
 table below (1,621 / 269 / 112) are historical. The current VAANI view has
 2,202 train / 373 validation / 143 test rows after adding 716 existing
 references; no audio or transcript was newly created. See the [current live
-metrics audit](current-platform-metrics-2026-10-07.md) and the [nine-step
-ASR report](asr-nine-step-progress-2026-10-07.md).
+metrics audit](../project-status/current-platform-metrics-2026-10-08.md) and the [nine-step
+ASR report](../project-status/asr-nine-step-progress-2026-10-07.md).
 
 Published to [`rushilrawat/garhwali-speech`](https://huggingface.co/datasets/rushilrawat/garhwali-speech) in commit [`caaf398`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/caaf398aa8db981d0855785ff94c1e424ffbcc63), then repaired in commit [`070057b`](https://huggingface.co/datasets/rushilrawat/garhwali-speech/commit/070057be180c3e5279b92722cb4360421097d38f).
 

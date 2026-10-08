@@ -1,6 +1,6 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Updated:** 2026-10-07. Current corpus: v0.2.8; speech companion: v0.2.1. Benchmark/model findings below retain their dated evaluation snapshots. See the [7 October platform metrics audit](current-platform-metrics-2026-10-07.md) for current counts and limits.
+**Updated:** 2026-10-08. Current corpus: v0.2.8; speech companion: v0.2.1. Benchmark/model findings below retain their dated evaluation snapshots. See the [8 October platform metrics audit](../project-status/current-platform-metrics-2026-10-08.md) for current counts and limits.
 **Scope:** GarhwaliBench and the model-research suite in this repository
 **Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 
@@ -9,7 +9,7 @@ This is the working plan for moving from useful but mixed-history experiments to
 ## Current closeout position — 2026-10-07
 
 Corpus documentation and public availability are summarized in the
-[project closeout](../finalreport.md) and
+[project closeout](../project-status/finalreport.md) and
 [text-availability audit](huggingface-corpus-gap-resolution-2026-10-06.md).
 The corpus release is public at v0.2.8 over the v0.2.7 source package; the
 speech companion remains public at v0.2.1. The v0.2.8 text views expose 1,841
@@ -159,7 +159,7 @@ Native or dialect review is not a prerequisite for internal automated experiment
 
 ## 2. Honest status at this snapshot
 
-The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md](benchmark-research-status-2026-09-25.md); this is a mixed-date evidence inventory, and each result must retain its source snapshot. Task cards are in [the local v0.2 draft card pack](garhwali-bench-v0.2-draft-cards.md). The latest aggregate lineage findings are in [the 2026-10-05 refresh](model-lineage-refresh-2026-10-05.md). Its row-level JSON ledger is generated under Git-ignored `data/processed/` and contains speaker identifiers; do not publish it.
+The project-wide measured scorecard is [benchmark-research-status-2026-09-25.md](../project-status/benchmark-research-status-2026-09-25.md); this is a mixed-date evidence inventory, and each result must retain its source snapshot. Task cards are in [the local v0.2 draft card pack](garhwali-bench-v0.2-draft-cards.md). The latest aggregate lineage findings are in [the 2026-10-05 refresh](model-lineage-refresh-2026-10-05.md). Its row-level JSON ledger is generated under Git-ignored `data/processed/` and contains speaker identifiers; do not publish it.
 
 | Area | Verified state | What the evidence supports |
 | --- | --- | --- |
@@ -267,7 +267,7 @@ Each phase has a deliverable and exit gate. A phase can be complete for internal
 
 **Exit gate:** deterministic rerun agrees with the current scorecard; changed counts or missing model artifacts become explicit findings.
 
-**Status (2026-09-26):** the benchmark builder, final release audit, model-lineage audit, and no-download runtime preflight were rerun. The benchmark manifest rebuilt to SHA-256 `ce93c7c1c06680d04bf9b861cbfdf8ca11b6cf9bf1968ba9cf19687655b8865b`; the final audit passed with zero errors and one preserved XORQA train/dev exact-text warning. The suite passed 508 before Phase 4, 516 after its first runner slice, 518 after manifest/device-preflight checks, and now 519 after historical-test gating. The model-lineage report inventories 11 manifest families and 34 prediction artifacts, with exact split/cross-role overlaps retained in its local-only JSON ledger. The project `.venv` lacks model/audio dependencies; `.cache/asr-runtime` exposes PyTorch and Transformers but not PEFT, NeMo, PyArrow, SoundFile, librosa, or torchaudio. SraVaani base weights and the NLLB snapshot are not cached. The SraVaani fine-tuned checkpoints and Whisper-tiny checkpoint exist locally, but a complete local audio-to-prediction path remains unverified. No download or paid job was used. The detailed hashes and limitations are recorded in [the updated measured status](benchmark-research-status-2026-09-25.md).
+**Status (2026-09-26):** the benchmark builder, final release audit, model-lineage audit, and no-download runtime preflight were rerun. The benchmark manifest rebuilt to SHA-256 `ce93c7c1c06680d04bf9b861cbfdf8ca11b6cf9bf1968ba9cf19687655b8865b`; the final audit passed with zero errors and one preserved XORQA train/dev exact-text warning. The suite passed 508 before Phase 4, 516 after its first runner slice, 518 after manifest/device-preflight checks, and now 519 after historical-test gating. The model-lineage report inventories 11 manifest families and 34 prediction artifacts, with exact split/cross-role overlaps retained in its local-only JSON ledger. The project `.venv` lacks model/audio dependencies; `.cache/asr-runtime` exposes PyTorch and Transformers but not PEFT, NeMo, PyArrow, SoundFile, librosa, or torchaudio. SraVaani base weights and the NLLB snapshot are not cached. The SraVaani fine-tuned checkpoints and Whisper-tiny checkpoint exist locally, but a complete local audio-to-prediction path remains unverified. No download or paid job was used. The detailed hashes and limitations are recorded in [the updated measured status](../project-status/benchmark-research-status-2026-09-25.md).
 
 ### Phase 2 — Close split and contamination gaps
 

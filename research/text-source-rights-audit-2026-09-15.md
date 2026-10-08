@@ -3,7 +3,7 @@
 > Historical snapshot from 2026-09-15. Its row counts and 145,497-row package
 > figure was superseded by later package builds. This report and the linked
 > 2026-09-19 report are historical snapshots, not current inventories. See
-> [`finalreport.md`](../finalreport.md) for the current 146,684-row public and
+> [`project-status/finalreport.md`](../project-status/finalreport.md) for the current 146,684-row public and
 > 257,807-row all-data package counts and structured-record rights status.
 
 ## Outcome

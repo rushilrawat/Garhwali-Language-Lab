@@ -3,7 +3,7 @@
 > The 92 cross-split pairs below describe the pre-rebuild split. The current
 > connected split uses supported semantic edges, reassigns 120 records, and
 > reports zero supported-semantic cross-split leakage; see the generated split
-> report and [`finalreport.md`](../finalreport.md).
+> report and [`project-status/finalreport.md`](../project-status/finalreport.md).
 
 Updated: 2026-09-16
 Job: [`6aab31eaf76d6a098a712001`](https://huggingface.co/jobs/rushilrawat/6aab31eaf76d6a098a712001)

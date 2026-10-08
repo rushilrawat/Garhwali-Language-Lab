@@ -1,7 +1,7 @@
-# Current platform metrics — 7 October 2026
+# Current platform metrics — 8 October 2026
 
 This is the current cross-platform status checked against the live dataset
-pages on 7 October 2026. Dataset Viewer and Kaggle totals count configurations,
+pages on 8 October 2026. Dataset Viewer and Kaggle totals count configurations,
 files, or index views; they are not all unique language examples. Historical
 release and experiment reports below this date retain the measurements they
 recorded at the time.
@@ -70,12 +70,24 @@ repository has the `gbm` topic. GitHub's Languages bar still classifies
 programming languages; the About description and topic provide the language
 identifier for this natural-language project.
 
+## Developer tools and release checks
+
+The [GitHub developer update](https://github.com/rushilrawat/Garhwali-Language-Lab/commit/a62c9945521f70a957658d1094ffafe0afbdef46)
+published a Python 3.12 setup, a CPU-first masked-language-model example, a
+Kaggle ASR notebook, dataset contracts, and a readiness guide. The
+[8 October CI run](https://github.com/rushilrawat/Garhwali-Language-Lab/actions/runs/37802743148)
+passed **832 tests** and the frozen v0.1.1 bundle-integrity check. The full
+source-freshness comparison still finds newer ignored local artifacts; it is
+not a new bundle release. Neither new training example has been rerun from a
+clean public account environment, and no independently validated model is
+claimed.
+
 ## Sources and metric limits
 
 - Hugging Face corpus Dataset Viewer and card: the linked corpus page above.
 - Hugging Face speech Dataset Viewer and card: the linked speech page above.
 - Kaggle dataset cards and previews: the linked text and ASR pages above.
-- Project release checks and immutable upload records: [Hugging Face speech-view report](huggingface-speech-training-views-2026-10-07.md), [Kaggle ASR sync report](kaggle-asr-v0.2-sync-2026-10-07.md), and [ASR nine-step progress report](asr-nine-step-progress-2026-10-07.md).
+- Project release checks and immutable upload records: [Hugging Face speech-view report](../research/huggingface-speech-training-views-2026-10-07.md), [Kaggle ASR sync report](../research/kaggle-asr-v0.2-sync-2026-10-07.md), and [ASR nine-step progress report](asr-nine-step-progress-2026-10-07.md).
 
 No new model training or benchmark run is reported here. Row totals are
 platform view counts. Word totals use whitespace separation. Automated

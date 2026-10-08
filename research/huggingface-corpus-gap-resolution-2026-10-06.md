@@ -44,7 +44,7 @@ October. The additive v0.2.8 views changed the live display to 963,484 rows /
 content views plus 778,157 source/reference rows. The 1,841-row screened Meta
 view and 110-row context view reuse existing transcript values. The 8,444
 distinct full texts absent from public configs remain rights-pending. See the
-[7 October cross-platform metrics audit](current-platform-metrics-2026-10-07.md)
+[8 October cross-platform metrics audit](../project-status/current-platform-metrics-2026-10-08.md)
 for live counts and definitions.
 
 At the 6 October v0.2.7 snapshot, the live corpus page reported 961,533
@@ -57,7 +57,7 @@ current public text configs, `text` has 18,598 rows / 291,914 words,
 `text_expansion` had 1,737 rows, and `text_resources` had 475 rows; all 20,810
 were marked not recommended for general text-model training in that snapshot. The
 separate speech repository reports 113,363 rows / 36.5 GB, but machine drafts
-are not gold transcripts. See the [full current metrics audit](huggingface-current-metrics-and-utility-2026-10-06.md)
+are not gold transcripts. See the [full current metrics audit](../project-status/huggingface-current-metrics-and-utility-2026-10-06.md)
 for counts, local disk accounting, and intended-use limits.
 
 ## What is already fixed
@@ -141,5 +141,5 @@ v0.2.7 all-data and public-package snapshots. The raw expressive text and
 row-level candidate list are not copied into this tracked report. Package
 counts, release checks, and current project limits are summarized in
 [`README.md`](../README.md), [`DATASET_CARD.md`](../DATASET_CARD.md), and
-[`finalreport.md`](../finalreport.md); the public release itself is documented
+[`project-status/finalreport.md`](../project-status/finalreport.md); the public release itself is documented
 in the [v0.2.7 release report](huggingface-corpus-v0.2.7-release-2026-10-06.md).

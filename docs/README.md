@@ -1,29 +1,31 @@
 # Documentation index
 
-This page indexes the project Markdown intended for the shared repository, including current release, status, source-intake, roadmap, and review documents. Local-only draft artifacts, ignored caches, downloaded dependency documentation, and model outputs are not part of this public-facing index. Cross-platform status was checked on 2026-10-07. Dated release and experiment notes remain historical evidence and are not rewritten to look current.
+This page indexes the project Markdown intended for the shared repository, including current release, status, source-intake, roadmap, and review documents. Local-only draft artifacts, ignored caches, downloaded dependency documentation, and model outputs are not part of this public-facing index. Cross-platform status was checked on 2026-10-08. Dated release and experiment notes remain historical evidence and are not rewritten to look current.
+
+Project-wide status, readiness, metrics, progress, and audit reports are grouped in [`project-status/`](../project-status/README.md).
 
 ## Read these first
 
 - [README.md](../README.md) — Project overview and current narrative.
-- [current-platform-metrics-2026-10-07.md](../research/current-platform-metrics-2026-10-07.md) — Live Hugging Face and Kaggle row counts, split views, publication status, and count definitions.
+- [current-platform-metrics-2026-10-08.md](../project-status/current-platform-metrics-2026-10-08.md) — Live Hugging Face and Kaggle row counts, split views, GitHub CI status, and count definitions.
 - [DEVELOPER_QUICKSTART.md](DEVELOPER_QUICKSTART.md) — Exact Hugging Face config counts, copy-paste loaders, pandas/DuckDB examples, and lexicon search.
-- [DEVELOPER_READINESS.md](DEVELOPER_READINESS.md) — CPU text training, ASR example, data contracts, smoke checks, and interpretation limits.
+- [DEVELOPER_READINESS.md](DEVELOPER_READINESS.md) — Five-step developer readiness status and limits of current training examples.
 - [DATASET_CARD.md](../DATASET_CARD.md) — Current v0.2.8 release scope, corrected counts, availability gap, and reuse limitations.
-- [huggingface-current-metrics-and-utility-2026-10-06.md](../research/huggingface-current-metrics-and-utility-2026-10-06.md) — Corrected live Hub sizes, content-vs-reference counts, local storage accounting, and v0.2.7 training readiness; see the separate v0.2.8 screened-text report for the new usable view.
+- [huggingface-current-metrics-and-utility-2026-10-06.md](../project-status/huggingface-current-metrics-and-utility-2026-10-06.md) — Corrected live Hub sizes, content-vs-reference counts, local storage accounting, and v0.2.7 training readiness; see the separate v0.2.8 screened-text report for the new usable view.
 - [huggingface-kaggle-quality-release-roadmap-2026-10-06.md](../research/huggingface-kaggle-quality-release-roadmap-2026-10-06.md) — Quality gates and ordered publication plan for the focused text add-on.
 - [quality-screened-text-release-report-2026-10-06.md](../research/quality-screened-text-release-report-2026-10-06.md) — Exact local package counts, quality checks, source lineage, and publication status.
 - [meta-omnilingual-training-rights-decision-2026-10-06.md](../research/meta-omnilingual-training-rights-decision-2026-10-06.md) — Narrow rights decision and evidence for the Meta-only transcript views.
 - [DATASET_SCHEMA.md](DATASET_SCHEMA.md) — Common rights/quality envelope and configuration-specific fields.
 - [PROJECT_FILE_MAP.md](../PROJECT_FILE_MAP.md) — Generated inventory of tracked and non-ignored project files plus ignored payload totals.
 - [v2.0-release-report-2026-09-30.md](../research/v2.0-release-report-2026-09-30.md) — 30 September source intake, metrics, rights-aware package, and publication record.
-- [finalreport.md](../finalreport.md) — Current 7 October platform status followed by dated release and experiment history.
-- [product-progress-2026-09-29.md](../research/product-progress-2026-09-29.md) — Historical completion estimates; not current percentages.
+- [finalreport.md](../project-status/finalreport.md) — Current 8 October addendum followed by dated release and experiment history.
+- [product-progress-2026-09-29.md](../project-status/product-progress-2026-09-29.md) — Historical completion estimates; not current percentages.
 - [huggingface-corpus-v0.2.5-release-2026-10-05.md](../research/huggingface-corpus-v0.2.5-release-2026-10-05.md) — v0.2.5 publication commits, split-safety change, exact counts, and checks.
 - [huggingface-corpus-v0.2.5-viewer-schema-repair-2026-10-05.md](../research/huggingface-corpus-v0.2.5-viewer-schema-repair-2026-10-05.md) — Dataset Viewer schema repair and re-index status at that release stage.
 - [huggingface-corpus-v0.2.6-release-2026-10-05.md](../research/huggingface-corpus-v0.2.6-release-2026-10-05.md) — v0.2.6 corpus upload, exact file verification, continuity, and Viewer status.
 - [huggingface-corpus-v0.2.7-release-2026-10-06.md](../research/huggingface-corpus-v0.2.7-release-2026-10-06.md) — v0.2.7 PahariLI expansion, exact row and storage deltas, and completed Viewer checks.
 - [huggingface-corpus-gap-resolution-2026-10-06.md](../research/huggingface-corpus-gap-resolution-2026-10-06.md) — Cross-config text-availability audit, 8,444-text remaining public-content gap, source counts, and resolution path.
-- [kaggle-release-readiness-2026-10-06.md](../research/kaggle-release-readiness-2026-10-06.md) — Reproducible Kaggle text and speech-metadata package scope, rights boundaries, duplicate scan, checksums, and publication status.
+- [kaggle-release-readiness-2026-10-06.md](../project-status/kaggle-release-readiness-2026-10-06.md) — Reproducible Kaggle text and speech-metadata package scope, rights boundaries, duplicate scan, checksums, and publication status.
 - [build_kaggle_release.py](../scripts/build_kaggle_release.py) — Rebuilds the Kaggle-ready corpus CSVs and metadata-only speech companion from the verified Hugging Face staging packages.
 - [huggingface-v0.2.6-viewer-schema-hotfix-2026-10-05.md](../research/huggingface-v0.2.6-viewer-schema-hotfix-2026-10-05.md) — Root/versioned card schema repair, follow-up commit, and post-fix Viewer check.
 - [huggingface-v0.2.6-remote-file-verification-2026-10-05.json](../research/huggingface-v0.2.6-remote-file-verification-2026-10-05.json) — Remote release path, file-size/hash, continuity, and card-hotfix evidence.
@@ -36,9 +38,9 @@ This page indexes the project Markdown intended for the shared repository, inclu
 - [huggingface-upstream-split-overlap-2026-10-05.md](../research/huggingface-upstream-split-overlap-2026-10-05.md) — Content-free audit of source-split overlap and preserved public rows.
 - [Hugging Face source-lineage reports](../research/huggingface-phase2-source-rights-lineage-audit-2026-10-05.md) — Six machine-readable reports linked from the audit compare Indic-Dialect and Meta source rows in the public text view, cleaned parents, and public catalog.
 - [scripts/audit_hf_source_lineage.py](../scripts/audit_hf_source_lineage.py) — Reproducible content-free source-lineage counter used by the Phase 2 audit.
-- [DEEP_DIVE_FINAL_AUDIT.md](../DEEP_DIVE_FINAL_AUDIT.md) — Detailed code, data, and release audit.
+- [DEEP_DIVE_FINAL_AUDIT.md](../project-status/DEEP_DIVE_FINAL_AUDIT.md) — Detailed code, data, and release audit.
 - [text-rights-resolution-2026-09-30.md](../research/text-rights-resolution-2026-09-30.md) — Rights decisions, source-associated pending queue, and release boundaries.
-- [benchmark-research-status-2026-09-25.md](../research/benchmark-research-status-2026-09-25.md) — Historical measured benchmark and model-research snapshot; see its status note for current eligibility.
+- [benchmark-research-status-2026-09-25.md](../project-status/benchmark-research-status-2026-09-25.md) — Historical measured benchmark and model-research snapshot; see its status note for current eligibility.
 - [task-result-eligibility-2026-09-28.md](../research/task-result-eligibility-2026-09-28.md) — Current split labels, prior test use, and result-claim limits.
 - [model-accuracy-lineage-2026-09-28.md](../research/model-accuracy-lineage-2026-09-28.md) — Fresh split-manifest and saved-prediction matching audit.
 - [asr-heldout-lineage-audit-2026-09-28.md](../research/asr-heldout-lineage-audit-2026-09-28.md) — Paired post-hoc comparison of five saved ASR runs on the same held-out rows.
@@ -60,7 +62,7 @@ This page indexes the project Markdown intended for the shared repository, inclu
 - [translation-quality-2026-09-26.md](../research/translation-quality-2026-09-26.md) — Development-only translation metrics and NLLB runtime preflight.
 - [retrieval-quality-2026-09-25.md](../research/retrieval-quality-2026-09-25.md) — Development retrieval scores and dense-model blockers.
 - [generation-quality-2026-09-25.md](../research/generation-quality-2026-09-25.md) — mT0 generation diagnostics and historical test limits.
-- [corpus-preparation-status.md](../research/corpus-preparation-status.md) — Chronological corpus-preparation log.
+- [corpus-preparation-status.md](../project-status/corpus-preparation-status.md) — Chronological corpus-preparation log.
 - [internet-archive-intake-2026-10-03.md](../research/internet-archive-intake-2026-10-03.md) — Internet Archive intake ledger, source checksums, rights notes, and media inventory.
 - [internet-archive-intake-quality-2026-10-04.md](../research/internet-archive-intake-quality-2026-10-04.md) — Automated OCR/media profile and cross-dedup against the canonical cleaned text view; identifies what remains local and unverified.
 - [internet-archive-source-disposition-2026-10-04.md](../research/internet-archive-source-disposition-2026-10-04.md) — Item-by-item Archive metadata claims, expanded 4,011-page inventory, source-linked local review views, and duplicate links to already-ingested records.
@@ -70,12 +72,12 @@ This page indexes the project Markdown intended for the shared repository, inclu
 
 ## How to keep the docs consistent
 
-- Treat the 7 October section at the top of `finalreport.md` and [current-platform-metrics-2026-10-07.md](../research/current-platform-metrics-2026-10-07.md) as the latest cross-platform status.
-- Treat [the 6 October Hugging Face metrics audit](../research/huggingface-current-metrics-and-utility-2026-10-06.md) as the v0.2.7 baseline snapshot, the [quality-release report](../research/quality-screened-text-release-report-2026-10-06.md) as the v0.2.8 text addendum, and [current-platform-metrics-2026-10-07.md](../research/current-platform-metrics-2026-10-07.md) as the live cross-platform audit. The 1,841-row training view and 110-row context view reuse existing transcript values. The corpus page reports 963,484 overlapping config rows; the speech page reports 118,375, comprising 113,363 audio/source rows plus text-only indexes of 2,718 and 2,294. None of these totals is a unique-language-example count.
-- Treat `research/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard with later dated addenda; older experiment reports are historical snapshots.
+- Treat the 8 October addendum at the top of `project-status/finalreport.md` and [current-platform-metrics-2026-10-08.md](../project-status/current-platform-metrics-2026-10-08.md) as the latest cross-platform status.
+- Treat [the 6 October Hugging Face metrics audit](../project-status/huggingface-current-metrics-and-utility-2026-10-06.md) as the v0.2.7 baseline snapshot, the [quality-release report](../research/quality-screened-text-release-report-2026-10-06.md) as the v0.2.8 text addendum, and [current-platform-metrics-2026-10-08.md](../project-status/current-platform-metrics-2026-10-08.md) as the live cross-platform audit. The 1,841-row training view and 110-row context view reuse existing transcript values. The corpus page reports 963,484 overlapping config rows; the speech page reports 118,375, comprising 113,363 audio/source rows plus text-only indexes of 2,718 and 2,294. None of these totals is a unique-language-example count.
+- Treat `project-status/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard with later dated addenda; older experiment reports are historical snapshots.
 - The latest broad benchmark scorecard refresh is dated 2026-09-30; the Meta Omnilingual ASR validation and adaptation addenda are dated 2026-10-04/05. These are development diagnostics, not independent final accuracy; no native-language adjudications have been completed.
 - Keep dated research reports as records of the data and model version used at that time. Update the current status docs when new evidence supersedes them; do not rewrite history.
-- Treat `release/v0.1.0/`, `release/v0.1.1/`, and `release/v0.2.0/` as frozen snapshots. The v0.2.7 base at commit [`1f7b2ce`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/1f7b2ceed1b743412b75d6288757e1d2cadac9c4) added `paharili_gbm` with 14,988 normalized-unique sentences and preserved v0.2.6 paths. The live repository includes the additive v0.2.8 text configs; data was uploaded at commit [`48f9107`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/48f9107d0285b3b3ec3c893303efb8a997cfc49b), with the card corrected at [`cf60b217`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cf60b217d9d3de045d81fb41d82514e29db2bf33). The most recent recorded full project suite run was 827 passing tests on 6 October; this documentation refresh did not rerun it. Current live counts are in the 7 October metrics audit, not the older 29-view check. The catalog has 23,448 blank text fields; a cross-config scan found 15,004 matching values already public elsewhere and 8,444 distinct texts not otherwise exposed. All 8,444 have a source locator: 7,675 inline URLs and 769 URLs recovered through `source_catalog`. Some locators identify a dataset or collection rather than the exact item; the full text remains local pending rights evidence. See the [v0.2.7 release report](../research/huggingface-corpus-v0.2.7-release-2026-10-06.md) and the [closeout availability audit](../research/huggingface-corpus-gap-resolution-2026-10-06.md). The Internet Archive intake remains local-only; see its source-disposition report.
+- Treat `release/v0.1.0/`, `release/v0.1.1/`, and `release/v0.2.0/` as frozen snapshots. The v0.2.7 base at commit [`1f7b2ce`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/1f7b2ceed1b743412b75d6288757e1d2cadac9c4) added `paharili_gbm` with 14,988 normalized-unique sentences and preserved v0.2.6 paths. The live repository includes the additive v0.2.8 text configs; data was uploaded at commit [`48f9107`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/48f9107d0285b3b3ec3c893303efb8a997cfc49b), with the card corrected at [`cf60b217`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cf60b217d9d3de045d81fb41d82514e29db2bf33). The published 8 October CI run passed 832 tests. Current live counts are in the 8 October metrics audit, not the older 29-view check. The catalog has 23,448 blank text fields; a cross-config scan found 15,004 matching values already public elsewhere and 8,444 distinct texts not otherwise exposed. All 8,444 have a source locator: 7,675 inline URLs and 769 URLs recovered through `source_catalog`. Some locators identify a dataset or collection rather than the exact item; the full text remains local pending rights evidence. See the [v0.2.7 release report](../research/huggingface-corpus-v0.2.7-release-2026-10-06.md) and the [closeout availability audit](../research/huggingface-corpus-gap-resolution-2026-10-06.md). The Internet Archive intake remains local-only; see its source-disposition report.
 - Keep dataset-card and policy copies inside each Hugging Face package aligned with the root policies when preparing a new package.
 - The historical v0.2.5 corpus contains 32,072 exact-unique parent texts; its 246-row `text_resources` and 1,647-row `text_expansion` views surface existing catalog values, not new source acquisition. V0.2.5 adds no source text; it makes upstream held-out-source overlap explicit while preserving all rows. See the [release verification](../research/huggingface-corpus-v0.2.5-release-2026-10-05.md) and source-expansion report. The frozen v0.2.0 snapshot remains documented below.
 - Historical v0.2.1 rights-resolution evidence: the package at commit [`53c1ce9`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/53c1ce9baa07e6fb05722e5a1ed750f33096124b) and docs amendment [`f2def9e`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/f2def9e717390008ebf7aac05decebf1c264fa98) recorded 19,466 pending texts at that time. Current v0.2.7 availability counts are in the 6 October closeout audit.
@@ -100,18 +102,18 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - `REMOVAL_POLICY.md`: root copy and v0.1.0/v0.1.1 release copies.
 - Online-ingestion report: v0.1.0 and v0.1.1 release copies.
 
-## Full Git-tracked Markdown inventory
+## Selected Markdown inventory
 
 ### Root-level docs
 
 - [`ATTRIBUTION.md`](../ATTRIBUTION.md) — Dataset attribution
 - [`DATASET_CARD.md`](../DATASET_CARD.md) — Dataset card: Garhwali Language Lab
-- [`DEEP_DIVE_FINAL_AUDIT.md`](../DEEP_DIVE_FINAL_AUDIT.md) — Garhwali Language Lab — deep final audit
+- [`project-status/DEEP_DIVE_FINAL_AUDIT.md`](../project-status/DEEP_DIVE_FINAL_AUDIT.md) — Garhwali Language Lab — deep final audit
 - [`LICENSE_POLICY.md`](../LICENSE_POLICY.md) — Corpus redistribution and model-use policy
 - [`PIPELINE.md`](../PIPELINE.md) — Garhwali ingestion pipeline
 - [`README.md`](../README.md) — 🏔️ Garhwali Language Lab
 - [`REMOVAL_POLICY.md`](../REMOVAL_POLICY.md) — Data correction and removal policy
-- [`finalreport.md`](../finalreport.md) — Garhwali Language Lab — final review report
+- [`project-status/finalreport.md`](../project-status/finalreport.md) — Garhwali Language Lab — final review report
 - [`report-source.md`](../report-source.md) — GarhwaliCorpus source inventory — research note
 
 ### Corpus documentation
@@ -161,7 +163,7 @@ The four exact-duplicate groups below are package/release copies, not competing 
 
 ### Research archive
 
-- [`research/product-progress-2026-09-29.md`](../research/product-progress-2026-09-29.md) — Product progress graphs across corpus, benchmark, research, models, community, API, and public infrastructure
+- [`project-status/product-progress-2026-09-29.md`](../project-status/product-progress-2026-09-29.md) — Product progress graphs across corpus, benchmark, research, models, community, API, and public infrastructure
 - [`research/all-data-package-2026-09-15.md`](../research/all-data-package-2026-09-15.md) — Complete all-data package
 - [`research/all-data-package-2026-09-19.md`](../research/all-data-package-2026-09-19.md) — Complete all-data package — 2026-09-19
 - [`research/asr-baseline-2026-09-10.md`](../research/asr-baseline-2026-09-10.md) — Garhwali ASR baseline
@@ -173,7 +175,7 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/asr-weighted-batch-ablation-2026-09-14.md`](../research/asr-weighted-batch-ablation-2026-09-14.md) — ASR normalized weighted-batch ablation
 - [`research/asr-weighted-trainer-2026-09-14.md`](../research/asr-weighted-trainer-2026-09-14.md) — Weighted curriculum trainer and dry-run audit
 - [`research/automated-pre-release-quality-plan.md`](../research/automated-pre-release-quality-plan.md) — Automated Pre-release Quality Plan
-- [`research/benchmark-research-status-2026-09-25.md`](../research/benchmark-research-status-2026-09-25.md) — Benchmark and research suite: measured status
+- [`project-status/benchmark-research-status-2026-09-25.md`](../project-status/benchmark-research-status-2026-09-25.md) — Benchmark and research suite: measured status
 - [`research/garhwali-bench-v0.2-rights-inventory-2026-09-29.md`](../research/garhwali-bench-v0.2-rights-inventory-2026-09-29.md) — Current component and item-level rights inventory for GarhwaliBench v0.2
 - [`research/retrieval-source-page-cluster-uncertainty-2026-09-28.md`](../research/retrieval-source-page-cluster-uncertainty-2026-09-28.md) — Clustered uncertainty for XORQA BM25 development retrieval
 - [`research/retrieval-miss-analysis-2026-09-28.md`](../research/retrieval-miss-analysis-2026-09-28.md) — Gold-passage availability and BM25 miss types for saved XORQA dev queries
@@ -188,7 +190,7 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/asr-baseline-consolidation-2026-09-26.md`](../research/asr-baseline-consolidation-2026-09-26.md) — ASR baseline consolidation — 2026-09-26
 - [`research/controlled-modeling-2026-09-12.md`](../research/controlled-modeling-2026-09-12.md) — Controlled Garhwali modeling: continuation and instruction tuning
 - [`research/controlled-text-scaling-2026-09-11.md`](../research/controlled-text-scaling-2026-09-11.md) — Controlled Garhwali text-scaling experiment
-- [`research/corpus-preparation-status.md`](../research/corpus-preparation-status.md) — Corpus preparation status
+- [`project-status/corpus-preparation-status.md`](../project-status/corpus-preparation-status.md) — Corpus preparation status
 - [`research/cultural-ingestion-report.md`](../research/cultural-ingestion-report.md) — Garhwali cultural-source ingestion report
 - [`research/dataset-splits-2026-09-10.md`](../research/dataset-splits-2026-09-10.md) — Garhwali dataset split status
 - [`research/gap-closure-plan.md`](../research/gap-closure-plan.md) — Garhwali data gap-closure plan
@@ -205,7 +207,7 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/indicbert-pdf-domain-2026-09-16.md`](../research/indicbert-pdf-domain-2026-09-16.md) — IndicBERTv2 incoming-PDF domain continuation
 - [`research/indicbert-pdf-domain-extended-2026-09-16.md`](../research/indicbert-pdf-domain-extended-2026-09-16.md) — Extended incoming-PDF domain continuation
 - [`research/intensive-quality-audit-2026-09-14.md`](../research/intensive-quality-audit-2026-09-14.md) — Intensive quality audit
-- [`research/language-quality-status-2026-09-10.md`](../research/language-quality-status-2026-09-10.md) — Garhwali language-quality status
+- [`project-status/language-quality-status-2026-09-10.md`](../project-status/language-quality-status-2026-09-10.md) — Garhwali language-quality status
 - [`research/model-accuracy-lineage-2026-09-24.md`](../research/model-accuracy-lineage-2026-09-24.md) — Model accuracy split and evaluation lineage audit
 - [`research/model-accuracy-lineage-2026-09-28.md`](../research/model-accuracy-lineage-2026-09-28.md) — Current split and saved-prediction lineage audit
 - [`research/task-result-eligibility-2026-09-28.md`](../research/task-result-eligibility-2026-09-28.md) — Current task-result eligibility decisions
@@ -218,7 +220,7 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/mt0-extended-validation-2026-09-16.md`](../research/mt0-extended-validation-2026-09-16.md) — Extended mT0 validation-only continuation
 - [`research/mt0-validation-run-manifest-2026-09-27.md`](../research/mt0-validation-run-manifest-2026-09-27.md) — Reconciled saved mT0 validation predictions and per-seed manifests
 - [`research/multilingual-model-audit-2026-09-11.md`](../research/multilingual-model-audit-2026-09-11.md) — Multilingual model audit
-- [`research/native-reference-review-readiness-2026-09-15.md`](../research/native-reference-review-readiness-2026-09-15.md) — Native-reference review readiness
+- [`project-status/native-reference-review-readiness-2026-09-15.md`](../project-status/native-reference-review-readiness-2026-09-15.md) — Native-reference review readiness
 - [`research/ocr-proposal-validation-2026-09-16.md`](../research/ocr-proposal-validation-2026-09-16.md) — OCR and spelling proposal validation
 - [`research/outreach-drafts.md`](../research/outreach-drafts.md) — Outreach drafts for Garhwali dataset access
 - [`research/popular-song-ingestion-2026-09-15.md`](../research/popular-song-ingestion-2026-09-15.md) — Garhwali popular-song ingestion — 2026-09-15
@@ -229,7 +231,7 @@ The four exact-duplicate groups below are package/release copies, not competing 
 - [`research/social-media-ingestion-2026-09-10.md`](../research/social-media-ingestion-2026-09-10.md) — Garhwali social-media ingestion
 - [`research/speech-baseline-comparison-2026-09-11.md`](../research/speech-baseline-comparison-2026-09-11.md) — Garhwali speech baseline comparison
 - [`research/sravaani-adaptation-evaluation-2026-09-16.md`](../research/sravaani-adaptation-evaluation-2026-09-16.md) — SraVaani Garhwali adaptation evaluation
-- [`research/sravaani-adaptation-readiness-2026-09-14.md`](../research/sravaani-adaptation-readiness-2026-09-14.md) — SraVaani Garhwali adaptation readiness
+- [`project-status/sravaani-adaptation-readiness-2026-09-14.md`](../project-status/sravaani-adaptation-readiness-2026-09-14.md) — SraVaani Garhwali adaptation readiness
 - [`research/sravaani-audio-grounded-review-2026-09-14.md`](../research/sravaani-audio-grounded-review-2026-09-14.md) — SraVaani structural-outlier audio evidence
 - [`research/sravaani-budget-sweep-2026-09-16.md`](../research/sravaani-budget-sweep-2026-09-16.md) — SraVaani Garhwali budget sweep
 - [`research/sravaani-confidence-integration-2026-09-14.md`](../research/sravaani-confidence-integration-2026-09-14.md) — SraVaani confidence-aware manifest integration

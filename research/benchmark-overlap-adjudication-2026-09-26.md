@@ -1,7 +1,7 @@
 # Benchmark overlap adjudication — 2026-09-26
 
 This review follows the automated, review-only scan in
-[the benchmark research status](benchmark-research-status-2026-09-25.md#phase-2-candidate-scan-2026-09-26).
+[the benchmark research status](../project-status/benchmark-research-status-2026-09-25.md#phase-2-candidate-scan-2026-09-26).
 It applies only to exact XORQA question/context reuse and the four reported
 same-split near-text pairs. It does not establish native-language correctness,
 rights, model exposure, or cross-language semantic independence.

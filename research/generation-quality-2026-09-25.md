@@ -13,7 +13,7 @@ seed-43 run completed all 32,768 steps. A later validation-analysis job then
 generated and scored all three adapters on the same 130-row validation split.
 The older partial report is still accurate about its canceled job; it is not
 the current status of the experiment. See the [initial-run addendum](mt0-32768-partial-2026-09-16.md)
-and the [corpus status record](corpus-preparation-status.md).
+and the [corpus status record](../project-status/corpus-preparation-status.md).
 
 All validation predictions were independently rescored from the saved JSONL
 with the repository's current exact-match and chrF2 functions. The recomputed

@@ -1,8 +1,8 @@
 # Project File Map
 
-This generated index maps every Git-tracked and non-ignored project file. Ignored raw downloads, caches, model weights, and generated corpus payloads are not line-listed; their on-disk totals are summarized below, and their record inventories and hashes live in source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
+This index maps Git-tracked and non-ignored files in the public checkout. Ignored raw downloads, caches, model weights, and generated corpus payloads are not listed. Local disk totals vary by checkout; source and release inventories live in the linked reports and manifests.
 
-Files indexed: **1,031**.
+Files indexed: **1,050**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -15,19 +15,19 @@ python scripts/generate_project_file_map.py
 - `.gitignore`
 - `ATTRIBUTION.md`
 - `DATASET_CARD.md`
-- `DEEP_DIVE_FINAL_AUDIT.md`
 - `LICENSE`
 - `LICENSE_POLICY.md`
 - `PIPELINE.md`
 - `PROJECT_FILE_MAP.md`
 - `README.md`
 - `REMOVAL_POLICY.md`
-- `finalreport.md`
 - `report-source.md`
 - `requirements-asr.txt`
+- `requirements-dev.txt`
 - `requirements-hf-release.txt`
 - `requirements-model-audit.txt`
 - `requirements-pipeline.txt`
+- `requirements-training.txt`
 
 ## `.github/`
 
@@ -45,6 +45,7 @@ python scripts/generate_project_file_map.py
 
 - `docs/DATASET_SCHEMA.md`
 - `docs/DEVELOPER_QUICKSTART.md`
+- `docs/DEVELOPER_READINESS.md`
 - `docs/README.md`
 - `docs/superpowers/plans/2026-09-10-corpus-preparation.md`
 - `docs/superpowers/plans/2026-09-18-final-release-review.md`
@@ -61,6 +62,8 @@ python scripts/generate_project_file_map.py
 ## `examples/`
 
 - `examples/search_garhwali_lexicon.py`
+- `examples/text_training_utils.py`
+- `examples/train_text_mlm.py`
 
 ## `incoming/`
 
@@ -72,6 +75,28 @@ python scripts/generate_project_file_map.py
 - `incoming/pdfs/Garhwali language and culture.json`
 - `incoming/pdfs/Garhwali, A Syntactic Sketch of (Chandola).json`
 - `incoming/pdfs/README.md`
+
+## `notebooks/`
+
+- `notebooks/garhwali_asr_reference_kaggle.ipynb`
+
+## `project-status/`
+
+- `project-status/DEEP_DIVE_FINAL_AUDIT.md`
+- `project-status/README.md`
+- `project-status/asr-nine-step-progress-2026-10-07.md`
+- `project-status/benchmark-research-status-2026-09-25.md`
+- `project-status/corpus-preparation-status.md`
+- `project-status/current-platform-metrics-2026-10-07.md`
+- `project-status/current-platform-metrics-2026-10-08.md`
+- `project-status/finalreport.md`
+- `project-status/huggingface-current-metrics-and-utility-2026-10-06.md`
+- `project-status/kaggle-release-readiness-2026-10-06.md`
+- `project-status/language-quality-status-2026-09-10.md`
+- `project-status/model-training-readiness-2026-10-06.md`
+- `project-status/native-reference-review-readiness-2026-09-15.md`
+- `project-status/product-progress-2026-09-29.md`
+- `project-status/sravaani-adaptation-readiness-2026-09-14.md`
 
 ## `release/`
 
@@ -534,6 +559,7 @@ python scripts/generate_project_file_map.py
 - `research/asr-corpus-metric-integration-2026-09-29.md`
 - `research/asr-curriculum-stage0-2026-09-14.md`
 - `research/asr-curriculum-stage1-pilot-2026-09-14.md`
+- `research/asr-existing-data-quality-2026-10-07.md`
 - `research/asr-heldout-lineage-audit-2026-09-28.md`
 - `research/asr-training-curriculum-2026-09-14.md`
 - `research/asr-validation-error-analysis-2026-09-24.json`
@@ -547,14 +573,12 @@ python scripts/generate_project_file_map.py
 - `research/benchmark-nested-overlap-review-2026-09-27.md`
 - `research/benchmark-overlap-adjudication-2026-09-26.md`
 - `research/benchmark-parent-safe-split-audit-2026-09-28.md`
-- `research/benchmark-research-status-2026-09-25.md`
 - `research/benchmark-rights-provenance-audit-2026-10-05.json`
 - `research/benchmark-rights-provenance-audit-2026-10-05.md`
 - `research/benchmark-source-page-families-2026-09-28.md`
 - `research/benchmark-v02-export-2026-09-26.md`
 - `research/controlled-modeling-2026-09-12.md`
 - `research/controlled-text-scaling-2026-09-11.md`
-- `research/corpus-preparation-status.md`
 - `research/cultural-ingestion-report.md`
 - `research/cultural-source-leads.json`
 - `research/dataset-splits-2026-09-10.md`
@@ -587,7 +611,6 @@ python scripts/generate_project_file_map.py
 - `research/huggingface-corpus-v0.2.5-viewer-schema-repair-2026-10-05.md`
 - `research/huggingface-corpus-v0.2.6-release-2026-10-05.md`
 - `research/huggingface-corpus-v0.2.7-release-2026-10-06.md`
-- `research/huggingface-current-metrics-and-utility-2026-10-06.md`
 - `research/huggingface-dataset-quality-roadmap.md`
 - `research/huggingface-existing-corpus-expansion-audit-2026-10-02.md`
 - `research/huggingface-indic_dialect_asr_gbm-catalog-lineage-2026-10-05.json`
@@ -608,6 +631,7 @@ python scripts/generate_project_file_map.py
 - `research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.json`
 - `research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.md`
 - `research/huggingface-release-overlap-audit-2026-09-24.md`
+- `research/huggingface-speech-training-views-2026-10-07.md`
 - `research/huggingface-text-expansion-audit-2026-10-01.md`
 - `research/huggingface-training-eligibility-audit-2026-10-05.json`
 - `research/huggingface-training-eligibility-audit-2026-10-05.md`
@@ -638,8 +662,8 @@ python scripts/generate_project_file_map.py
 - `research/internet-archive-source-disposition-2026-10-04.json`
 - `research/internet-archive-source-disposition-2026-10-04.md`
 - `research/issues&improvement plan.md`
-- `research/kaggle-release-readiness-2026-10-06.md`
-- `research/language-quality-status-2026-09-10.md`
+- `research/kaggle-asr-run-2026-10-07.md`
+- `research/kaggle-asr-v0.2-sync-2026-10-07.md`
 - `research/license-specific-source-export-audit-2026-10-05.md`
 - `research/meta-omnilingual-asr-adaptation-2026-10-05.md`
 - `research/meta-omnilingual-asr-validation-2026-10-04.md`
@@ -655,11 +679,10 @@ python scripts/generate_project_file_map.py
 - `research/mt0-extended-validation-2026-09-16.md`
 - `research/mt0-validation-run-manifest-2026-09-27.md`
 - `research/multilingual-model-audit-2026-09-11.md`
-- `research/native-reference-review-readiness-2026-09-15.md`
 - `research/ocr-proposal-validation-2026-09-16.md`
 - `research/outreach-drafts.md`
+- `research/pdf-text-release-rights-triage-2026-10-07.md`
 - `research/popular-song-ingestion-2026-09-15.md`
-- `research/product-progress-2026-09-29.md`
 - `research/quality-screened-text-release-report-2026-10-06.md`
 - `research/retrieval-baseline-2026-09-11.md`
 - `research/retrieval-miss-analysis-2026-09-28.md`
@@ -673,7 +696,6 @@ python scripts/generate_project_file_map.py
 - `research/source-expansion-v2.0-2026-09-30.md`
 - `research/speech-baseline-comparison-2026-09-11.md`
 - `research/sravaani-adaptation-evaluation-2026-09-16.md`
-- `research/sravaani-adaptation-readiness-2026-09-14.md`
 - `research/sravaani-audio-grounded-review-2026-09-14.md`
 - `research/sravaani-budget-sweep-2026-09-16.md`
 - `research/sravaani-confidence-integration-2026-09-14.md`
@@ -700,6 +722,8 @@ python scripts/generate_project_file_map.py
 - `research/vaani-collection-completion-2026-09-09.md`
 - `research/vaani-full-use-plan.md`
 - `research/vaani-official-split-lineage-2026-10-04.md`
+- `research/whisper-cpu-finetune-2026-10-07.md`
+- `research/whisper-untranscribed-draft-pilot-2026-10-07.md`
 - `research/xhigh-final-data-audit-2026-09-10.md`
 
 ## `review/`
@@ -1069,6 +1093,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_sweep_sravaani_garhwali.py`
 - `tests/test_sync_release_index.py`
 - `tests/test_tag_language_quality.py`
+- `tests/test_text_training_utils.py`
 - `tests/test_train_sravaani_garhwali.py`
 - `tests/test_train_whisper_garhwali.py`
 - `tests/test_transcribe_vaani_drafts.py`
@@ -1079,77 +1104,3 @@ python scripts/generate_project_file_map.py
 - `tests/test_validate_release_index.py`
 - `tests/test_verify_ingestion.py`
 - `tests/test_wikitext_plain.py`
-
-## Workspace payload inventory
-
-The detailed index above lists all tracked and non-ignored files. This inventory also accounts for ignored/generated files without copying a 226,000-plus-row binary-path dump into the Markdown map.
-
-- Workspace files counted: **239,446**.
-- Excluded from the count: Git internals, virtual environments, and runtime caches.
-- Detailed file paths listed above: **1,031**.
-- Ignored or otherwise unlisted payload files: **238,415** (173,233,529,619 bytes).
-- Total workspace bytes counted: **173,251,770,296**.
-
-| Payload directory | Files | Bytes |
-| --- | ---: | ---: |
-| `.superpowers/sdd/…/` | 9 | 13,679 |
-| `Root-level payloads` | 1 | 77 |
-| `benchmarks/indicgenbench_crosssum.jsonl/` | 1 | 4,698,112 |
-| `benchmarks/indicgenbench_flores.jsonl/` | 1 | 5,242,368 |
-| `benchmarks/indicgenbench_xorqa.jsonl/` | 1 | 3,092,221 |
-| `corpus/asjp.jsonl/` | 1 | 78,762 |
-| `corpus/chan_numerals_garhwali.jsonl/` | 1 | 54,508 |
-| `corpus/garhwali_language_library.jsonl/` | 1 | 304,351 |
-| `corpus/incubator_wt.jsonl/` | 1 | 10,768 |
-| `corpus/jambu_garhwali.jsonl/` | 1 | 1,292,863 |
-| `corpus/mamta_southasia_examples.jsonl/` | 1 | 91,753 |
-| `corpus/meta_omni.jsonl/` | 1 | 8,399,925 |
-| `corpus/opus_translatewiki_gbm.jsonl/` | 1 | 320,301 |
-| `corpus/sand_garhwali.jsonl/` | 1 | 213,000 |
-| `corpus/tatoeba.jsonl/` | 1 | 43,662 |
-| `corpus/wikimedia.jsonl/` | 1 | 124,714 |
-| `corpus/wiktionary_en.jsonl/` | 1 | 164,557 |
-| `data/cache/…/` | 2 | 104,176 |
-| `data/downloads/…/` | 1,136 | 9,350,565,536 |
-| `data/extracted/…/` | 736 | 104,222,678 |
-| `data/huggingface/…/` | 2,922 | 87,103,618,367 |
-| `data/kaggle/…/` | 39 | 769,578,242 |
-| `data/processed/…/` | 110,561 | 41,807,390,124 |
-| `data/raw/…/` | 1 | 21,905 |
-| `data/temp/…/` | 1 | 39,533 |
-| `data/vaani/…/` | 115,189 | 32,112,461,505 |
-| `experimental/dcad_gbm.jsonl/` | 1 | 2,405,996 |
-| `experimental/garhwali_web_goldmines.jsonl/` | 1 | 23,532,696 |
-| `experimental/hikinegi_garhwali.jsonl/` | 1 | 83,393 |
-| `experimental/incoming_pdfs.jsonl/` | 1 | 5,787,773 |
-| `experimental/indic_dialect_asr_gbm.jsonl/` | 1 | 58,611,938 |
-| `experimental/madlad400_gbm_clean.jsonl/` | 1 | 360,489 |
-| `experimental/paharili_gbm.jsonl/` | 1 | 26,926,978 |
-| `experimental/web_learning_garhwali.jsonl/` | 1 | 159,991 |
-| `extracted/historical/…/` | 8 | 7,732,983 |
-| `incoming/pdfs/…/` | 7 | 165,313,272 |
-| `models/controlled_modeling/…/` | 39 | 17,979,528 |
-| `models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048-weighted-batches/…/` | 9 | 155,181,608 |
-| `models/whisper-tiny-garhwali-curriculum-stage-1-pilot-h32-m2048/…/` | 9 | 155,180,855 |
-| `models/whisper-tiny-garhwali-meta-multiseed-17/…/` | 9 | 155,447,974 |
-| `models/whisper-tiny-garhwali-meta-multiseed-29/…/` | 9 | 155,447,974 |
-| `models/whisper-tiny-garhwali-smoke/…/` | 9 | 155,001,786 |
-| `models/whisper-tiny-garhwali-v0.1/…/` | 9 | 155,076,358 |
-| `models/whisper-tiny-garhwali-v0.2/…/` | 10 | 155,077,066 |
-| `outputs/garhwali-corpus-inventory-2026-09-07/…/` | 6 | 1,901,768 |
-| `outputs/online-ingestion-2026-09-07/…/` | 3 | 531,867 |
-| `research/model-accuracy-lineage-2026-09-24.json/` | 1 | 15,995,502 |
-| `restricted/archive_folksong_thesis.jsonl/` | 1 | 7,498 |
-| `restricted/hindialect_gbm.jsonl/` | 1 | 1,025,826 |
-| `restricted/obs_garhwali.jsonl/` | 1 | 835,004 |
-| `restricted/panlex_gbm.jsonl/` | 1 | 18,515 |
-| `restricted/thematic_web_lexicon.jsonl/` | 1 | 959,665 |
-| `restricted/uou_cgl_pages.jsonl/` | 1 | 4,087,789 |
-| `restricted/uou_cgl_report.json/` | 1 | 148 |
-| `restricted/uou_more_pages.jsonl/` | 1 | 1,754,652 |
-| `restricted/uou_more_report.json/` | 1 | 284 |
-| `sources/online/…/` | 747 | 520,948,495 |
-| `sources/web/…/` | 8 | 130,802 |
-| `tmp/incoming-pdf-reocr-full.log/` | 1 | 461 |
-| `tmp/incoming-pdf-reocr-full.pid/` | 1 | 6 |
-| `tmp/pdfs/…/` | 6,901 | 17,874,992 |

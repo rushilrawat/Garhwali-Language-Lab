@@ -29,13 +29,13 @@ configs, 31 config/split views, 963,484 displayed rows, and 7.57 GB. The speech
 page reports 118,375 rows / 36.5 GB, including 113,363 audio/source rows and
 text-only indexes of 2,718 VAANI references and 2,294 optional Meta train
 references. These platform totals overlap and are not unique examples. The
-current ASR reference and Kaggle status is in the [7 October cross-platform
-audit](current-platform-metrics-2026-10-07.md). The public Kaggle text view is
+current ASR reference and Kaggle status is in the [8 October cross-platform
+audit](../project-status/current-platform-metrics-2026-10-08.md). The public Kaggle text view is
 version 1; the private ASR package is version 2. Its baseline notebook is
 saved at version 3 and has not been run.
 
-The most recent recorded full project suite run was 827 passing tests on
-6 October; this documentation refresh did not rerun it. The catalog visibility
+The 8 October GitHub CI run passed 832 tests; the older 827-test run was recorded on
+6 October. The catalog visibility
 audit separates 15,004 text values already found elsewhere in the public
 package from 8,444 distinct full texts still local with rights pending. Each
 has a source locator: 7,675 inline URLs and 769 URLs via `source_catalog`; some
@@ -329,7 +329,7 @@ diagnostics cannot be called native-validated.
 - **Evidence:** The 2026-09-26 exact-hash lineage audit flags the XORQA train/dev
   primary-text repeat, cross-split ASR target repeats in experimental views,
   and Meta Omnilingual audio/text duplicate groups. The new local-only
-  candidate output is summarized in the [measured status report](benchmark-research-status-2026-09-25.md#phase-2-candidate-scan-2026-09-26); its generated artifact is
+  candidate output is summarized in the [measured status report](../project-status/benchmark-research-status-2026-09-25.md#phase-2-candidate-scan-2026-09-26); its generated artifact is
   `data/processed/evaluation/garhwali_bench/overlap_candidates.md`. It scans
   12,510 text rows and records 407 normalized exact-text groups. Only one
   spans source splits (the known XORQA train/dev repeat); 398 cross-view groups
@@ -717,5 +717,5 @@ diagnostics cannot be called native-validated.
 | 2026-09-30 | Five-area evaluation-lineage refresh | Re-audited 11 manifest families and 41 saved prediction files; found 15/29 recommended-train-to-instruction exact-text overlaps, 4 Meta Omnilingual train/test audio and 4 text groups plus 27 train/validation text groups, and 338 audio / 575 text groups from expanded-human train to experimental ASR test; experimental validation also has 397 audio / 683 text groups. Test sets remain historical/unresolved; 0/5 independent final-accuracy eligibility. Row-level ledger saved under ignored `data/processed/evaluation/garhwali_bench/model_accuracy_lineage_2026-09-30` because it includes speaker identifiers. |
 
 See the [benchmark/model roadmap](benchmark-model-roadmap.md) for remaining
-phases and the [benchmark research status](benchmark-research-status-2026-09-25.md)
+phases and the [benchmark research status](../project-status/benchmark-research-status-2026-09-25.md)
 for the earlier project-wide snapshot.

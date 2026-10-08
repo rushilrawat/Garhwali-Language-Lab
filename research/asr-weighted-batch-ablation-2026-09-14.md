@@ -102,4 +102,4 @@ starting point and avoids another round of self-distillation into a weaker model
 
 The human-reference SraVaani data package and guarded training plan are now ready.
 The remaining external dependencies are documented in
-[`sravaani-adaptation-readiness-2026-09-14.md`](sravaani-adaptation-readiness-2026-09-14.md).
+[`project-status/sravaani-adaptation-readiness-2026-09-14.md`](../project-status/sravaani-adaptation-readiness-2026-09-14.md).

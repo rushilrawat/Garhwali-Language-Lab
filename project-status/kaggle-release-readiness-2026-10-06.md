@@ -7,8 +7,8 @@ focused screened-text package was published publicly at Kaggle version 1
 (1,841 training candidates and 110 context rows), and the ASR package was
 updated privately to version 2 (2,718 existing VAANI references). The
 baseline notebook is saved at version 3 with v2 input and remains unrun. The
-latest counts and status are in the [cross-platform metrics audit](current-platform-metrics-2026-10-07.md)
-and [ASR v0.2 sync report](kaggle-asr-v0.2-sync-2026-10-07.md).
+latest counts and status are in the [cross-platform metrics audit](current-platform-metrics-2026-10-08.md)
+and [ASR v0.2 sync report](../research/kaggle-asr-v0.2-sync-2026-10-07.md).
 
 The initial packaging report below remains a snapshot; its statements that
 these packages were unpublished describe the state on 6 October.
@@ -23,8 +23,8 @@ hashes. The matching configs are already live in the Hugging Face corpus at
 [v0.2.8 commit `48f9107`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/48f9107d0285b3b3ec3c893303efb8a997cfc49b).
 The corrected live card is at [commit `cf60b2175`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/cf60b217d9d3de045d81fb41d82514e29db2bf33).
 The focused package is **not published on Kaggle yet**;
-see the [quality-screened text release report](quality-screened-text-release-report-2026-10-06.md)
-and [publication roadmap](huggingface-kaggle-quality-release-roadmap-2026-10-06.md).
+see the [quality-screened text release report](../research/quality-screened-text-release-report-2026-10-06.md)
+and [publication roadmap](../research/huggingface-kaggle-quality-release-roadmap-2026-10-06.md).
 
 ## Status — original 6 October snapshot (historical)
 

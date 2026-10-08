@@ -52,4 +52,4 @@ The live Hub page was rechecked on 6 October and displays **7.56 GB** for the
 repository, versus 5.975 GiB in the release-time storage measurement above.
 These are different-time Hub totals that include retained versioned paths; they
 are not unique content size or comparable as a language-data growth measure.
-The current breakdown is in the [metrics and utility audit](huggingface-current-metrics-and-utility-2026-10-06.md).
+The current breakdown is in the [metrics and utility audit](../project-status/huggingface-current-metrics-and-utility-2026-10-06.md).

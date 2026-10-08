@@ -2,6 +2,10 @@
 
 Status: **ready for exploratory use; not a validated model release**.
 
+The [8 October GitHub CI run](https://github.com/rushilrawat/Garhwali-Language-Lab/actions/runs/37802743148)
+passed 832 tests and the frozen release snapshot check. No full training run
+or new bundle release is implied by that check.
+
 The project has a fresh-clone setup, a CPU-first text training example, an ASR
 training notebook, explicit dataset contracts, and repeatable development
 metrics. Human transcript review is not required to run these tools. Until

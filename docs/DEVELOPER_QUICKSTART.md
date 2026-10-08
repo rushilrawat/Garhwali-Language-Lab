@@ -100,7 +100,7 @@ indexes joined to the existing audio by `source_record_id`. The corpus's
 separate `asr` config remains at 2,002 rows. References are unadjudicated; the
 104,500 non-empty SraVaani outputs are machine drafts, not ground truth. The
 speech page's 118,375 displayed rows includes audio and both text-only indexes.
-See the [7 October metrics audit](../research/current-platform-metrics-2026-10-07.md)
+See the [8 October metrics audit](../project-status/current-platform-metrics-2026-10-08.md)
 before selecting a config for training or evaluation.
 
 For an audio fine-tuning example, open
@@ -258,7 +258,7 @@ overlap; adding their row counts does not give the number of unique examples.
 | `record_sources` | 412,740 | Record-to-source join rows |
 
 The v0.2.7 package manifest recorded **961,533 total view rows** at that
-release. The live corpus page, checked 7 October 2026, reports **963,484**:
+release. The live corpus page, checked 8 October 2026, reports **963,484**:
 185,327 content-config rows plus 778,157 reference rows. The additive v0.2.8
 overlay added two views and preserves earlier paths. These are configuration
 rows, not unique examples. The live speech page reports 118,375 displayed rows

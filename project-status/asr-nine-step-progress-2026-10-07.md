@@ -59,8 +59,8 @@ linked to downloadable repository artifacts.
    decoding (WER/CER 0.4325/0.1892 on the same 269 references), but its model
    card reports substantial VAANI pretraining, so it is not independent
    evidence of generalization. Reports:
-   [stage-1 pilot](asr-curriculum-stage1-pilot-2026-09-14.md) and
-   [weighted-batch ablation](asr-weighted-batch-ablation-2026-09-14.md).
+   [stage-1 pilot](../research/asr-curriculum-stage1-pilot-2026-09-14.md) and
+   [weighted-batch ablation](../research/asr-weighted-batch-ablation-2026-09-14.md).
 
 5. **Make the supervised loader direct — completed.** The published
    [`asr_reference` v0.2 guide](https://huggingface.co/datasets/rushilrawat/garhwali-speech/blob/main/training_views/v0.2/TRAINING_GUIDE.md)
@@ -80,7 +80,7 @@ linked to downloadable repository artifacts.
    Meta training view and 110-row context view added in the previous release
    are exact normalized values already present in the existing public
    `text`/`text_expansion` configs. They make a filtered view, not new unique
-   text. See the [corpus gap audit](huggingface-corpus-gap-resolution-2026-10-06.md).
+   text. See the [corpus gap audit](../research/huggingface-corpus-gap-resolution-2026-10-06.md).
 
 8. **Check PDF-derived text and rights — candidate review queued, no import.**
    The rights audit keeps unlicensed or uncertain books local. In the
@@ -90,7 +90,7 @@ linked to downloadable repository artifacts.
    their OCR or row alignment is unreliable; five separate standard-form OCR
    values are already present in public text and are not dialect-cell labels.
    A local queue leaves all six corrections blank for page transcription and
-   fluent-speaker review. No LSI text was uploaded. See the [rights triage](pdf-text-release-rights-triage-2026-10-07.md);
+   fluent-speaker review. No LSI text was uploaded. See the [rights triage](../research/pdf-text-release-rights-triage-2026-10-07.md);
    its local LSI review queue remains unpublished.
 
 9. **Prepare the local Whisper Tiny release description — corrected, not

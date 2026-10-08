@@ -1,7 +1,7 @@
 # Hugging Face and Kaggle quality-first release roadmap
 
-**Original plan:** 6 October 2026  
-**Current status:** checked 7 October 2026; see the [cross-platform metrics audit](current-platform-metrics-2026-10-07.md).
+**Original plan:** 6 October 2026
+**Current status:** checked 8 October 2026; see the [cross-platform metrics audit](../project-status/current-platform-metrics-2026-10-08.md). The data releases are unchanged; GitHub now publishes the developer examples and its 832-test CI run passes.
 **Scope:** Improve the user-facing training value of the existing Garhwali
 Hugging Face corpus, then mirror the same quality-screened data on Kaggle.
 **Policy:** Add purpose-built views and preserve prior releases. A filter may

@@ -126,7 +126,7 @@ The adapted checkpoint report records 43.5283% WER and 17.4516% CER on a
 CER on a different manifest hash. Matching counts do not verify identical rows,
 so these scores are historical aggregates rather than a verified paired
 comparison. The adapted checkpoint remains experimental and is not promoted.
-See [`sravaani-adaptation-evaluation-2026-09-16.md`](sravaani-adaptation-evaluation-2026-09-16.md).
+See [`sravaani-adaptation-evaluation-2026-09-16.md`](../research/sravaani-adaptation-evaluation-2026-09-16.md).
 
 The local-directory mounts are uploaded to Hugging Face's private transient
 `jobs-artifacts` storage for the run. The CLI prints the exact sync command for

@@ -14,7 +14,7 @@ The speech page reports 118,375 displayed rows / 36.5 GB: 113,363 audio/source
 rows, 2,718 VAANI `asr_reference` rows, and 2,294 train-only Meta
 `asr_meta_extra_train` rows. The audio is unchanged. The corpus's original
 `asr` config remains a separate 2,002-row view. The current ASR references are
-unadjudicated. See the [live metrics audit](current-platform-metrics-2026-10-07.md).
+unadjudicated. See the [live metrics audit](../project-status/current-platform-metrics-2026-10-08.md).
 
 The public Kaggle text dataset is version 1 (1,841 candidate texts plus 110
 context rows). The private Kaggle ASR dataset is version 2 (2,718 existing
@@ -45,7 +45,7 @@ This changes how phase progress is reported: file size, metadata rows, and
 record catalog size are not content-quality milestones. Track usable text
 words, rights/quality-qualified rows, reviewed ASR pairs, verified Garhwali
 audio hours, and unique source-linked records separately. See the [current
-metrics and utility audit](huggingface-current-metrics-and-utility-2026-10-06.md)
+metrics and utility audit](../project-status/huggingface-current-metrics-and-utility-2026-10-06.md)
 for definitions, local storage breakdown, and limits.
 
 ## Current closeout — text availability and source resolution

@@ -78,7 +78,7 @@
 
 **Files:**
 - Create: `scripts/build_review_queues.py`
-- Create: `research/corpus-preparation-status.md`
+- Create: `project-status/corpus-preparation-status.md`
 
 **Interfaces:**
 - Consumes: Tasks 1–3 reports and prepared views.

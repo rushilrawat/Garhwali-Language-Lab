@@ -10,7 +10,7 @@ Produce a reproducible Garhwali release in which:
 
 - all **257,807 packaged records** pass structural checks, and every data family
   has its source and quality metadata checked. (Current audit coverage is
-  incomplete for the six structured-knowledge configurations; see finalreport.md.)
+  incomplete for the six structured-knowledge configurations; see the [final review report](../project-status/finalreport.md).)
 - **65,000 unique SraVaani recordings** have independent Whisper-large-v3-turbo agreement evidence; the unfunded remainder stays unchanged;
 - every OCR-derived record retains its original text, corrected text, page identity, source, and correction history;
 - exact and semantic duplicates are grouped without losing source attribution;

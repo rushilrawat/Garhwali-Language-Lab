@@ -33,7 +33,7 @@ The local pipeline's pre-refresh `canonical.jsonl` reported 31,908 exact-unique
 parent texts. The 164 exact-new library strings therefore imply 32,072 after
 rebuild if no unrelated inputs change. The generated v0.2.1 metrics and package
 manifests are the authoritative post-build counts; see
-[`current_corpus_metrics.json`](../data/extracted/current_corpus_metrics.json)
+`data/extracted/current_corpus_metrics.json` (local generated file)
 and the root [README](../README.md). Package row totals overlap across configs
 and must not be presented as unique examples.
 

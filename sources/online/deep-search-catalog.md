@@ -74,7 +74,7 @@ not treated as permission to redistribute text, audio, images, or user posts.
 
 ## Exact deduplication
 
-[`dedup-report.json`](../../outputs/online-ingestion-2026-09-07/dedup-report.json)
+[`dedup-report.json`](../../release/v0.2.0/artifacts/outputs/online-ingestion-2026-09-07/dedup-report.json)
 computes SHA-256 over each `text_normalized` value across all layers. The
 2026-09-07 search snapshot had 33,156 source records and 31,052 exact unique
 normalized texts. The 2,104 repeated rows were retained only where source provenance is
@@ -111,7 +111,7 @@ are generated in the repository [README](../../README.md).
 
 ## Rate limits and blocked endpoints
 
-The request ledger is [`requests.jsonl`](requests.jsonl). Wiktionary's 429 was
+The request ledger is `requests.jsonl` (local request ledger). Wiktionary's 429 was
 resolved by bounded requests with a delay. The Hugging Face row viewer failed
 after offset 200; range reads against the pinned Parquet shards recovered all
 7,823 rows without downloading audio. Google Books' metadata API returned 429,

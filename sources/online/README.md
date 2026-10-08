@@ -16,9 +16,9 @@ The public corpus is **v0.2.8**, with 20 named configs, 31 config/split
 views, 963,484 displayed rows, and 7.57 GB on Hugging Face. Its separate
 speech companion shows 118,375 rows / 36.5 GB, including 113,363 audio/source
 rows and two text-only indexes. These are overlapping platform views, not
-unique-example counts. The full 7 October metrics and limits are in the
-[current platform audit](../../research/current-platform-metrics-2026-10-07.md),
-[root README](../../README.md), and [final report](../../finalreport.md).
+unique-example counts. The full 8 October metrics and limits are in the
+[current platform audit](../../project-status/current-platform-metrics-2026-10-08.md),
+[root README](../../README.md), and [final report](../../project-status/finalreport.md).
 The 8,444-text public-availability gap and resolution workflow are in the
 [closeout audit](../../research/huggingface-corpus-gap-resolution-2026-10-06.md).
 
@@ -108,7 +108,7 @@ hikinegi 53, DCAD 119, and 18 exact-novel MADLAD clean documents. Across every
 layer there are 32,967 source records and 30,913 exact unique normalized texts;
 these counts describe that dated ingestion pass, not the current integrated
 package. See the machine-generated [dedup
-report](../../outputs/online-ingestion-2026-09-07/dedup-report.json). No record
+report](../../release/v0.2.0/artifacts/outputs/online-ingestion-2026-09-07/dedup-report.json). No record
 has native-speaker review yet; no record is a released training recommendation.
 
 The later user-supplied book intake and multi-layout OCR evidence are documented

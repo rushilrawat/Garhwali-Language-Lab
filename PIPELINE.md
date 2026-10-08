@@ -97,7 +97,7 @@ paths. The `catalog` config has 23,448 blank text fields; 15,004 normalized
 text values match content elsewhere in the public package, while 8,444
 distinct values are not otherwise exposed. See the [availability
 audit](research/huggingface-corpus-gap-resolution-2026-10-06.md) and the
-[7 October live metrics audit](research/current-platform-metrics-2026-10-07.md).
+[8 October live metrics audit](project-status/current-platform-metrics-2026-10-08.md).
 The 475-row `text_resources` config is an access view over existing catalog
 values, not additional source acquisition. The Internet Archive material acquired on
 3–4 October remains local-only; its intake, quality profile, and canonical-text

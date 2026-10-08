@@ -7,7 +7,7 @@
 We organize Garhwali text, speech, folklore, scholarship, and local knowledge into reusable resources with source, rights, and quality information.
 
 [![Python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-832%20passing%20(last%20run%208%20Oct)-brightgreen.svg)](research/corpus-preparation-status.md)
+[![Tests](https://img.shields.io/badge/tests-832%20passing%20(last%20run%208%20Oct)-brightgreen.svg)](project-status/corpus-preparation-status.md)
 [![Hugging Face corpus](https://img.shields.io/badge/Hugging%20Face-corpus-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![Hugging Face speech](https://img.shields.io/badge/Hugging%20Face-speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 
@@ -21,7 +21,7 @@ Primary language identifier: **garhwali:gbm** (Garhwali, ISO 639-3). English (`e
 
 ## Current versions
 
-Platform versions below were checked on **7 October 2026**. This table shows current versions only; dated release reports preserve earlier history.
+Platform versions below were checked on **8 October 2026**. This table shows current versions only; dated release reports preserve earlier history.
 
 | Resource | Current version | What it contains |
 | --- | --- | --- |
@@ -33,11 +33,12 @@ Platform versions below were checked on **7 October 2026**. This table shows cur
 
 ## Training starting points
 
-For fresh-clone setup and a CPU-first text training example, use the
-[developer quick start](docs/DEVELOPER_QUICKSTART.md). The [developer readiness
-guide](docs/DEVELOPER_READINESS.md) explains the data contract, experimental
-evaluation, and release limits. The ASR example uses a private Kaggle audio
-package; its provider references have not been adjudicated.
+For fresh-clone setup and runnable CPU-first text training, start at the
+[developer quick start](docs/DEVELOPER_QUICKSTART.md). Its ASR section links to
+a Kaggle Whisper fine-tuning notebook. Both examples use existing data and
+unreviewed labels; their loss and WER/CER outputs are experimental, not
+independent quality claims. See the [developer readiness checklist](docs/DEVELOPER_READINESS.md)
+for the current release boundary.
 
 ### Text experiments
 
@@ -61,9 +62,9 @@ The optional `asr_meta_extra_train` index adds 2,294 train-only Meta references.
 
 The Hugging Face corpus page displays **963,484 rows** and **7.57 GB** across 20 configurations and 31 config/split views. The display includes **778,157 source/reference rows** and **185,327 overlapping content-view rows**. These are view counts, not unique passages or training examples. The speech page displays **118,375 rows** because it totals the 113,363 audio/source rows and both text-only indexes.
 
-Source terms vary; there is no single license for the entire corpus. Check each source and the row-level rights fields before reuse. The main catalog gap is **8,444 distinct full texts** retained locally pending rights evidence; they are not part of the public corpus. See the [license policy](LICENSE_POLICY.md), [attribution guide](ATTRIBUTION.md), and [current metrics audit](research/current-platform-metrics-2026-10-07.md).
+Source terms vary; there is no single license for the entire corpus. Check each source and the row-level rights fields before reuse. The main catalog gap is **8,444 distinct full texts** retained locally pending rights evidence; they are not part of the public corpus. See the [license policy](LICENSE_POLICY.md), [attribution guide](ATTRIBUTION.md), and [current metrics audit](project-status/current-platform-metrics-2026-10-08.md).
 
-Automated screening does not verify Garhwali spelling, meaning, dialect, or transcript accuracy. The benchmark remains a local draft, and independent-final evaluation eligibility is **0 of 5 task areas**. Existing model scores are development results, not independent confirmation. See the [model roadmap](research/benchmark-model-roadmap.md) and [final review](finalreport.md).
+Automated screening does not verify Garhwali spelling, meaning, dialect, or transcript accuracy. The benchmark remains a local draft, and independent-final evaluation eligibility is **0 of 5 task areas**. Existing model scores are development results, not independent confirmation. See the [model roadmap](research/benchmark-model-roadmap.md) and [final review](project-status/finalreport.md).
 
 ## Work with the project
 
@@ -82,9 +83,11 @@ Raw downloads, PDFs, caches, and generated data are excluded from Git. Review th
 - [Dataset card](DATASET_CARD.md) — scope, configurations, and intended use.
 - [Dataset schema](docs/DATASET_SCHEMA.md) — common fields and per-configuration layouts.
 - [Developer quick start](docs/DEVELOPER_QUICKSTART.md) — loading and querying examples.
-- [Developer readiness](docs/DEVELOPER_READINESS.md) — training examples, data contract, evaluation, and release checks.
+- [Developer readiness](docs/DEVELOPER_READINESS.md) — setup, training examples, data contract, evaluation, and release checks.
 - [Documentation index](docs/README.md) — project documentation and research.
-- [Corpus status](research/corpus-preparation-status.md) — current preparation state.
+- [Project status and audit index](project-status/README.md) — current status, readiness, metrics, and project-wide reports.
+- [Current platform metrics](project-status/current-platform-metrics-2026-10-08.md) — verified Hugging Face, Kaggle, GitHub, and CI state.
+- [Corpus preparation status](project-status/corpus-preparation-status.md) — current preparation state.
 - [Kaggle and Hugging Face roadmap](research/huggingface-kaggle-quality-release-roadmap-2026-10-06.md) — release decisions and remaining gates.
 - [Source catalog](sources/online/deep-search-catalog.md) — investigated source leads.
 - [Review guide](review/README.md) — ways to contribute checks and corrections.

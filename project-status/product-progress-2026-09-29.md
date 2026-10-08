@@ -3,7 +3,7 @@
 > **Historical snapshot:** This scorecard predates corpus v0.2.7 and the
 > 2026-10-06 project closeout. Its completion percentages are dated estimates,
 > not current percentages. For the current verified state, use
-> [`finalreport.md`](../finalreport.md) and [`README.md`](../README.md).
+> [`project-status/finalreport.md`](finalreport.md) and [`README.md`](../README.md).
 
 This scorecard covered every product in the plan as of its dated snapshot.
 It reflects delivered implementation and verified artifacts, not linguistic
@@ -203,14 +203,14 @@ products.
 
 ## Evidence and limits
 
-- Current corpus and release evidence: [`finalreport.md`](../finalreport.md),
+- Current corpus and release evidence: [`project-status/finalreport.md`](finalreport.md),
   [`README.md`](../README.md), and
-  [`corpus-preparation-status.md`](corpus-preparation-status.md).
+  [`project-status/corpus-preparation-status.md`](corpus-preparation-status.md).
 - Benchmark and modeling phase evidence:
-  [`benchmark-model-roadmap.md`](benchmark-model-roadmap.md),
-  [`garhwali-bench-v0.2-rights-inventory-2026-09-29.md`](garhwali-bench-v0.2-rights-inventory-2026-09-29.md),
-  [`benchmark-research-status-2026-09-25.md`](benchmark-research-status-2026-09-25.md),
-  and [`task-result-eligibility-2026-09-28.md`](task-result-eligibility-2026-09-28.md).
+  [`benchmark-model-roadmap.md`](../research/benchmark-model-roadmap.md),
+  [`garhwali-bench-v0.2-rights-inventory-2026-09-29.md`](../research/garhwali-bench-v0.2-rights-inventory-2026-09-29.md),
+  [`project-status/benchmark-research-status-2026-09-25.md`](benchmark-research-status-2026-09-25.md),
+  and [`task-result-eligibility-2026-09-28.md`](../research/task-result-eligibility-2026-09-28.md).
 - Candidate benchmark example cards and supplementary working protocols remain
   local-only; the rights inventory records why they are not public release
   artifacts.
