@@ -7,6 +7,7 @@ This page indexes the project Markdown intended for the shared repository, inclu
 - [README.md](../README.md) — Project overview and current narrative.
 - [current-platform-metrics-2026-10-07.md](../research/current-platform-metrics-2026-10-07.md) — Live Hugging Face and Kaggle row counts, split views, publication status, and count definitions.
 - [DEVELOPER_QUICKSTART.md](DEVELOPER_QUICKSTART.md) — Exact Hugging Face config counts, copy-paste loaders, pandas/DuckDB examples, and lexicon search.
+- [DEVELOPER_READINESS.md](DEVELOPER_READINESS.md) — CPU text training, ASR example, data contracts, smoke checks, and interpretation limits.
 - [DATASET_CARD.md](../DATASET_CARD.md) — Current v0.2.8 release scope, corrected counts, availability gap, and reuse limitations.
 - [huggingface-current-metrics-and-utility-2026-10-06.md](../research/huggingface-current-metrics-and-utility-2026-10-06.md) — Corrected live Hub sizes, content-vs-reference counts, local storage accounting, and v0.2.7 training readiness; see the separate v0.2.8 screened-text report for the new usable view.
 - [huggingface-kaggle-quality-release-roadmap-2026-10-06.md](../research/huggingface-kaggle-quality-release-roadmap-2026-10-06.md) — Quality gates and ordered publication plan for the focused text add-on.

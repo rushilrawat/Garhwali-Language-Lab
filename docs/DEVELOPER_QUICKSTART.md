@@ -11,6 +11,27 @@ envelope, schema, and loading guidance. These examples stream the published
 configs. Pass a commit SHA as `revision=` when
 you need an immutable Hub snapshot.
 
+## Fresh-clone setup
+
+Use Python 3.12. The developer requirements install the corpus pipeline and
+Hugging Face Datasets without downloading model weights or audio:
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements-dev.txt
+.venv/bin/python examples/search_garhwali_lexicon.py "water" --limit 3
+```
+
+For local model training, install the optional CPU-capable stack separately:
+
+```bash
+.venv/bin/python -m pip install -r requirements-training.txt
+```
+
+The first training run downloads the public dataset and model weights. The
+small text example below uses CPU by default; it does not need a paid service.
+For immutable reruns, pass a Hugging Face commit SHA with `--revision`.
+
 ## Training readiness and honest counts
 
 The corpus repository is currently better for source discovery, vocabulary
@@ -46,6 +67,25 @@ train_text = load_dataset(
 print(len(train_text), train_text[0]["text"])
 ```
 
+To run an actual masked-language-model training smoke experiment:
+
+```bash
+.venv/bin/python examples/train_text_mlm.py \
+  --max-train-records 64 --max-dev-records 32 \
+  --output outputs/garhwali-indicbert-mlm-smoke
+```
+
+The script uses `ai4bharat/IndicBERTv2-MLM-only` and the `text` field from
+`screened_meta_gbm`. It creates a stable record-level development slice from
+the same published train view. The split is for loss monitoring only; both
+sides contain automatically screened, unreviewed text, so development loss is
+not a language-quality score or an independent benchmark. Use
+`--max-train-records 0 --max-dev-records 0` to use the full profile. This
+profile is small and is not enough to train a general language model from
+scratch. The run writes weights and `run_report.json` beneath the selected
+output directory. Dataset terms and base-model terms are separate; check the
+checkpoint's current license before sharing trained weights.
+
 To inspect the short context rows, replace the config name with
 `short_utterances_meta_gbm`. Filter using `recommended_for_training`,
 `rights_status`, and `quality_status` rather than relying on the config name
@@ -60,8 +100,17 @@ indexes joined to the existing audio by `source_record_id`. The corpus's
 separate `asr` config remains at 2,002 rows. References are unadjudicated; the
 104,500 non-empty SraVaani outputs are machine drafts, not ground truth. The
 speech page's 118,375 displayed rows includes audio and both text-only indexes.
-See the [7 October metrics audit](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/research/current-platform-metrics-2026-10-07.md)
+See the [7 October metrics audit](../research/current-platform-metrics-2026-10-07.md)
 before selecting a config for training or evaluation.
+
+For an audio fine-tuning example, open
+[`notebooks/garhwali_asr_reference_kaggle.ipynb`](../notebooks/garhwali_asr_reference_kaggle.ipynb)
+in Kaggle and attach the private `garhwali-asr-reference-clips-v0-1` dataset.
+It trains Whisper Tiny for one epoch, saves the model and run report to
+`/kaggle/working`, and evaluates validation WER/CER against existing provider
+references. Kaggle access is required for that audio package; the public
+Hugging Face ASR reference index alone is text-only. The labels are unreviewed,
+so scores are provisional.
 
 ## Try three vocabulary rows
 

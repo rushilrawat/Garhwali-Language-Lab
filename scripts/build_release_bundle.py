@@ -206,9 +206,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', type=Path, default=OUTPUT)
     parser.add_argument('--check', action='store_true')
+    parser.add_argument(
+        '--snapshot-only', action='store_true',
+        help='verify the frozen bundle without comparing newer local source files',
+    )
     args = parser.parse_args()
     if args.check:
-        errors = verify(args.output)
+        errors = verify(args.output, check_sources=not args.snapshot_only)
         print(json.dumps({'status': 'passed' if not errors else 'failed',
                           'errors': errors}, indent=2, sort_keys=True))
         if errors:

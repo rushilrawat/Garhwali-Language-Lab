@@ -1,0 +1,5 @@
+# Optional local CPU training dependencies. Model weights download when a
+# training example starts; no hosted GPU or paid service is required.
+-r requirements-dev.txt
+-r requirements-asr.txt
+accelerate>=1,<2

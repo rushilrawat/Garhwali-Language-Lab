@@ -71,3 +71,27 @@ received native-speaker adjudication.
 
 For current counts and runnable examples, use the card for the selected
 dataset/configuration. The corpus card links to the full developer quick start.
+
+### Speech ASR reference index
+
+The speech repository also publishes text-only `asr_reference` split indexes
+under `training_views/v0.2/`. They link to existing audio in
+`garhwali_speech` by `source_record_id` (index) to `record_id` (audio); they do
+not duplicate audio payloads or create transcripts.
+
+| Field | Meaning |
+| --- | --- |
+| `source_record_id` | Stable join key to the audio row's `record_id`. |
+| `audio_sha256` | Audio identity for deduplication and run manifests. |
+| `target_text` | Cleaned upstream VAANI provider transcript. |
+| `target_kind`, `target_source`, `target_normalization` | Label type, source, and cleaning profile. |
+| `review_status`, `native_speaker_reviewed`, `reference_quality_flags` | Unadjudicated status and carried source quality flags. |
+| `split`, `split_policy` | Project speaker-disjoint train/validation/test assignment. |
+| `district`, `duration_seconds`, `source_license` | Stratification and reuse metadata. |
+| `speaker_identity_resolution` | Existing speaker ID or exact source join used to resolve identity. |
+
+Current sizes are 2,202 train, 373 validation, and 143 test rows. These are
+upstream references, not human-checked gold labels. Validation is entirely
+Tehri Garhwal and test is mostly Uttarkashi; report district-specific figures
+and avoid claims of balanced regional coverage. The optional
+`asr_meta_extra_train` view is train-only and must not be used for evaluation.

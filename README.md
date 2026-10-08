@@ -7,7 +7,7 @@
 We organize Garhwali text, speech, folklore, scholarship, and local knowledge into reusable resources with source, rights, and quality information.
 
 [![Python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-827%20passing%20(last%20run%207%20Oct)-brightgreen.svg)](research/corpus-preparation-status.md)
+[![Tests](https://img.shields.io/badge/tests-832%20passing%20(last%20run%208%20Oct)-brightgreen.svg)](research/corpus-preparation-status.md)
 [![Hugging Face corpus](https://img.shields.io/badge/Hugging%20Face-corpus-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![Hugging Face speech](https://img.shields.io/badge/Hugging%20Face-speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 
@@ -32,6 +32,12 @@ Platform versions below were checked on **7 October 2026**. This table shows cur
 | [Kaggle ASR notebook](https://www.kaggle.com/code/rushilrawat1/garhwali-asr-baseline-reference-labels) | **v3 — saved, not run** | Baseline notebook configured to use the v2 reference dataset. |
 
 ## Training starting points
+
+For fresh-clone setup and a CPU-first text training example, use the
+[developer quick start](docs/DEVELOPER_QUICKSTART.md). The [developer readiness
+guide](docs/DEVELOPER_READINESS.md) explains the data contract, experimental
+evaluation, and release limits. The ASR example uses a private Kaggle audio
+package; its provider references have not been adjudicated.
 
 ### Text experiments
 
@@ -61,10 +67,10 @@ Automated screening does not verify Garhwali spelling, meaning, dialect, or tran
 
 ## Work with the project
 
-Create an environment, install the pipeline requirements, and run the existing test suite:
+Create an environment, install the developer requirements, and run the test suite:
 
-    python3 -m venv .venv
-    .venv/bin/python -m pip install -r requirements-pipeline.txt
+    python3.12 -m venv .venv
+    .venv/bin/python -m pip install -r requirements-dev.txt
     PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 
 Load and inspect the dataset with the Hugging Face Datasets library. To rebuild local Kaggle exports or refresh derived corpus views, follow the [pipeline guide](PIPELINE.md). These commands write local artifacts; they do not publish data.
@@ -76,6 +82,7 @@ Raw downloads, PDFs, caches, and generated data are excluded from Git. Review th
 - [Dataset card](DATASET_CARD.md) — scope, configurations, and intended use.
 - [Dataset schema](docs/DATASET_SCHEMA.md) — common fields and per-configuration layouts.
 - [Developer quick start](docs/DEVELOPER_QUICKSTART.md) — loading and querying examples.
+- [Developer readiness](docs/DEVELOPER_READINESS.md) — training examples, data contract, evaluation, and release checks.
 - [Documentation index](docs/README.md) — project documentation and research.
 - [Corpus status](research/corpus-preparation-status.md) — current preparation state.
 - [Kaggle and Hugging Face roadmap](research/huggingface-kaggle-quality-release-roadmap-2026-10-06.md) — release decisions and remaining gates.
