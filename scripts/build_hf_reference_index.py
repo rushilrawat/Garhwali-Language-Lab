@@ -269,6 +269,22 @@ def sync_quickstart_text(text: str, report: dict) -> str:
     end = text.find("\n\n## Try three vocabulary rows", start)
     if start < 0 or end < 0:
         raise ValueError("Cannot find the developer quick-start release summary")
+
+    counts = dict(report.get("content_config_counts") or {})
+    reference_counts = {
+        name: int(details.get("records", 0))
+        for name, details in (report.get("tables") or {}).items()
+    }
+    counts.update(reference_counts)
+    content_rows = int(report.get("public_profile_package_rows", 0))
+    reference_rows = sum(reference_counts.values())
+    total_rows = content_rows + reference_rows
+    summary = (
+        f"The `{release_id}` package manifest reports **{total_rows:,} total view rows**: "
+        f"{content_rows:,} content/config rows plus {reference_rows:,} reference rows. "
+        "This is not a unique-example count."
+    )
+
     intro = "\n".join((
         "The dataset IDs are `rushilrawat/garhwali-corpus` (text and reference tables)",
         "and `rushilrawat/garhwali-speech` (audio and speech metadata). Both repositories",
@@ -279,15 +295,11 @@ def sync_quickstart_text(text: str, report: dict) -> str:
         "envelope, schema, and loading guidance. These examples stream the published",
         "configs. Pass a commit SHA as `revision=` when",
         "you need an immutable Hub snapshot.",
+        "",
+        summary,
     ))
     text = text[:start] + intro + text[end:]
 
-    counts = dict(report.get("content_config_counts") or {})
-    reference_counts = {
-        name: int(details.get("records", 0))
-        for name, details in (report.get("tables") or {}).items()
-    }
-    counts.update(reference_counts)
     lines = text.splitlines()
     for index, line in enumerate(lines):
         for name, count in counts.items():
@@ -325,23 +337,6 @@ def sync_quickstart_text(text: str, report: dict) -> str:
                 lines.insert(insertion, resource_row)
     text = "\n".join(lines) + ("\n" if text.endswith("\n") else "")
 
-    content_rows = int(report.get("public_profile_package_rows", 0))
-    reference_rows = sum(reference_counts.values())
-    total_rows = content_rows + reference_rows
-    summary = (
-        f"The `{release_id}` package manifest reports **{total_rows:,} total view rows**: "
-        f"{content_rows:,} content/config rows plus {reference_rows:,} reference rows. "
-        "This is not a unique-example count."
-    )
-    text, replacements = re.subn(
-        r"The (?:release|`[^`]+` package manifest) reports \*\*[\d,]+ total view rows\*\*:.*?(?:This is not [^.]+ unique examples\.|This is not a unique-example count\.)",
-        summary,
-        text,
-        count=1,
-        flags=re.DOTALL,
-    )
-    if replacements != 1:
-        raise ValueError("Cannot synchronize the developer quick-start package total")
     expansion_heading = "## Load the fast-tracked text view"
     start = text.find(expansion_heading)
     if start >= 0:
