@@ -27,6 +27,7 @@ def collect_project_files(root: Path = ROOT, runner=subprocess.run) -> list[str]
         value.decode("utf-8")
         for value in result.stdout.split(b"\0")
         if value
+        and (root / value.decode("utf-8")).exists()
     }
     return sorted(
         path for path in paths

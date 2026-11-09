@@ -2,7 +2,7 @@
 
 This index maps Git-tracked and non-ignored files in the public checkout. Ignored raw downloads, caches, model weights, and generated corpus payloads are not listed. Local disk totals vary by checkout; source and release inventories live in the linked reports and manifests.
 
-Files indexed: **1,050**.
+Files indexed: **1,059**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -750,6 +750,7 @@ python scripts/generate_project_file_map.py
 - `scripts/audit_benchmark_nested_overlap.py`
 - `scripts/audit_benchmark_overlap_candidates.py`
 - `scripts/audit_benchmark_v02_rights.py`
+- `scripts/audit_existing_asr_references.py`
 - `scripts/audit_final_release.py`
 - `scripts/audit_garhwali_expansion.py`
 - `scripts/audit_hf_release_continuity.py`
@@ -771,6 +772,7 @@ python scripts/generate_project_file_map.py
 - `scripts/build_archive_book_page_map.py`
 - `scripts/build_archive_source_disposition.py`
 - `scripts/build_asr_training_curriculum.py`
+- `scripts/build_audio_review_batch.py`
 - `scripts/build_audio_training_manifests.py`
 - `scripts/build_benchmark_usage_labels.py`
 - `scripts/build_benchmark_v02.py`
@@ -779,12 +781,18 @@ python scripts/generate_project_file_map.py
 - `scripts/build_hf_meta_omni_speech.py`
 - `scripts/build_hf_reference_index.py`
 - `scripts/build_hf_speech_release.py`
+- `scripts/build_hf_speech_training_views.py`
+- `scripts/build_hf_speech_training_views_v0_2.py`
 - `scripts/build_hf_upload_plan.py`
 - `scripts/build_huggingface_dataset.py`
 - `scripts/build_instruction_accuracy_split.py`
 - `scripts/build_instruction_dataset.py`
+- `scripts/build_kaggle_asr_input.py`
+- `scripts/build_kaggle_asr_input_v0_2.py`
+- `scripts/build_kaggle_asr_notebook.py`
 - `scripts/build_kaggle_release.py`
 - `scripts/build_language_resources.py`
+- `scripts/build_model_training_candidate.py`
 - `scripts/build_quality_text_release.py`
 - `scripts/build_quality_tiers.py`
 - `scripts/build_recommended_text_view.py`
@@ -795,6 +803,7 @@ python scripts/generate_project_file_map.py
 - `scripts/build_sravaani_recovery_adjudication.py`
 - `scripts/build_vaani_corpus_manifests.py`
 - `scripts/build_vaani_source_conflicts.py`
+- `scripts/build_vaani_speaker_recovered_asr_v0_1.py`
 - `scripts/calibrate_sravaani_recovery_confidence.py`
 - `scripts/check_source_freshness.py`
 - `scripts/clean_text_corpus.py`

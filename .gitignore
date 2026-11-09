@@ -136,3 +136,8 @@ coverage/
 
 # Local-only row-level accuracy ledger includes VAANI speaker identifiers.
 /research/model-accuracy-lineage-2026-09-24.json
+
+# Local-only review queues, training candidates, and export staging
+data/review/
+data/training/
+data/exports/
