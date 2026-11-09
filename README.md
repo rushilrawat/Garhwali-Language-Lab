@@ -80,6 +80,7 @@ Raw downloads, PDFs, caches, and generated data are excluded from Git. Review th
 
 ## Project guides
 
+- [Corpus explorer](explorer/index.html) — browse and search the public corpus and speech datasets with their rights fields; a single static page that reads the Hugging Face Dataset Viewer API (serve it with GitHub Pages or open it locally).
 - [Dataset card](DATASET_CARD.md) — scope, configurations, and intended use.
 - [Dataset schema](docs/DATASET_SCHEMA.md) — common fields and per-configuration layouts.
 - [Developer quick start](docs/DEVELOPER_QUICKSTART.md) — loading and querying examples.

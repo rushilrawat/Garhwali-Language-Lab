@@ -2,7 +2,7 @@
 
 This index maps Git-tracked and non-ignored files in the public checkout. Ignored raw downloads, caches, model weights, and generated corpus payloads are not listed. Local disk totals vary by checkout; source and release inventories live in the linked reports and manifests.
 
-Files indexed: **1,059**.
+Files indexed: **1,062**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -64,6 +64,10 @@ python scripts/generate_project_file_map.py
 - `examples/search_garhwali_lexicon.py`
 - `examples/text_training_utils.py`
 - `examples/train_text_mlm.py`
+
+## `explorer/`
+
+- `explorer/index.html`
 
 ## `incoming/`
 
@@ -688,6 +692,8 @@ python scripts/generate_project_file_map.py
 - `research/retrieval-miss-analysis-2026-09-28.md`
 - `research/retrieval-quality-2026-09-25.md`
 - `research/retrieval-source-page-cluster-uncertainty-2026-09-28.md`
+- `research/rights-clearance-decisions-2026-11-09.json`
+- `research/rights-clearance-triage-2026-11-09.md`
 - `research/scholarly-open-sources.json`
 - `research/semantic-duplicate-audit-2026-09-16.md`
 - `research/semantic-duplicate-refinement-2026-09-16.md`
