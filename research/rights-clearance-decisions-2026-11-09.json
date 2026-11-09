@@ -1,0 +1,603 @@
+{
+  "title": "Rights clearance decisions for the 8,444 rights-pending catalog texts",
+  "date": "2026-11-09",
+  "scope": "Distinct full texts in the local v0.2.7 all-data catalog that appear in no public v0.2.7 config (exact NFKC/casefold/whitespace match).",
+  "jurisdiction_rule": "Release requires public-domain status, a compatible license, or written permission in both India (source country) and the United States (Hugging Face hosting). India-only public domain is listed separately for an owner decision.",
+  "status_note": "No public data changed. Tier A decisions are evidence-complete and await owner sign-off before they are wired into the builders and released.",
+  "totals": {
+    "records": 8444,
+    "words": 2936664,
+    "sources": 49
+  },
+  "tiers": {
+    "A_public_domain_india_and_us": {
+      "sources": 4,
+      "records": 451,
+      "words": 149251
+    },
+    "B1_us_public_domain_india_death_date_needed": {
+      "sources": 2,
+      "records": 234,
+      "words": 62401
+    },
+    "B2_india_public_domain_us_protected_or_unresolved": {
+      "sources": 3,
+      "records": 769,
+      "words": 203177
+    },
+    "C_open_license_with_conditions": {
+      "sources": 3,
+      "records": 593,
+      "words": 186645
+    },
+    "D_needs_permission": {
+      "sources": 25,
+      "records": 5988,
+      "words": 2234680
+    },
+    "E_unlicensed_web_or_dataset": {
+      "sources": 12,
+      "records": 409,
+      "words": 100510
+    }
+  },
+  "sources": [
+    {
+      "source_id": "ia_british_garhwal_1910",
+      "records": 246,
+      "words": 89945,
+      "tier": "A_public_domain_india_and_us",
+      "decision": "clear_pending_owner_signoff",
+      "work": "H. G. Walton, British Garhwal: A Gazetteer (District Gazetteers of the United Provinces, vol. XXXVI), Government Press, Allahabad, 1910",
+      "basis": "India: Government work, Copyright Act 1957 s.28 term of 60 years from publication ended 1970 (same basis the project already applies to Walton scan pages 90-91). US: published 1910, before 1931.",
+      "evidence": [
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
+        "https://wzcc.nvli.in/gazettes/british-garhwal-gazetteer-being-volume-xxxvi-district-gazetteers-united-provinces-agra-and",
+        "https://search.worldcat.org/oclc/160247247",
+        "https://web.law.duke.edu/cspd/publicdomainday/2026/"
+      ],
+      "edition_check": "Local scan title page reads Volume XXXVI, H. G. Walton, I.C.S., Allahabad, 1910."
+    },
+    {
+      "source_id": "ia_strachey_duthie_garhwal_flora_catalogue_1906",
+      "records": 124,
+      "words": 28680,
+      "tier": "A_public_domain_india_and_us",
+      "decision": "clear_pending_owner_signoff",
+      "work": "R. Strachey, rev. J. F. Duthie, Catalogue of the Plants of Kumaon and of the Adjacent Portions of Garhwal and Tibet, Lovell Reeve, London, 1906",
+      "basis": "Last surviving author J. F. Duthie died 23 Feb 1922; Strachey died 1908. India: life+50 term then in force ended 31 Dec 1972, before the 1992 extension (which did not revive expired terms). UK: life+70 ended 1992. US: published 1906.",
+      "evidence": [
+        "https://heenecemetery.org.uk/burial/john-duthie-buried-1922",
+        "https://catalog.hathitrust.org/Record/002000543.marc",
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
+        "https://web.law.duke.edu/cspd/publicdomainday/2026/"
+      ],
+      "edition_check": "Local scan title page matches the 1906 Strachey/Duthie revision."
+    },
+    {
+      "source_id": "ia_e_sherman_oakley_holy_himalaya_1905",
+      "records": 57,
+      "words": 16902,
+      "tier": "A_public_domain_india_and_us",
+      "decision": "clear_pending_owner_signoff",
+      "work": "E. Sherman Oakley, Holy Himalaya, Oliphant Anderson & Ferrier, Edinburgh, 1905",
+      "basis": "Author died at Ranikhet in 1934 or 1935. India: life+50 term ended by 31 Dec 1985. UK: life+70 ended by 2005. US: published 1905.",
+      "evidence": [
+        "https://whowaswho-indology.info/?p=18788",
+        "https://ci.nii.ac.jp/ncid/BA03824796",
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
+        "https://web.law.duke.edu/cspd/publicdomainday/2026/"
+      ],
+      "edition_check": "Local OCR is the 1905 first edition (Archive item holyhimalayareli00oaklrich); no later-edition markers found."
+    },
+    {
+      "source_id": "ia_note_on_bhotias_almora_british_garhwal_1905",
+      "records": 24,
+      "words": 13724,
+      "tier": "A_public_domain_india_and_us",
+      "decision": "clear_pending_owner_signoff",
+      "work": "C. A. Sherring, Notes on the Bhotias of Almora and British Garhwal, Memoirs of the Asiatic Society of Bengal vol. I no. 8, Calcutta, 1906",
+      "basis": "Author identified from the scan's title page (catalog record currently says 'not identified'). Sherring died 8 Oct 1940. India: life+50 term ended 31 Dec 1990, before the 1992 extension. UK: life+70 ended 2010. US: published 1906. The Archive uploader's CC BY-NC 4.0 label applies to the scan, not to the 1906 text.",
+      "evidence": [
+        "https://stats.acscricket.com/Archive/Players/497/497355/497355.html",
+        "https://collections.westminster.org.uk/index.php/sherring-charles-atmore-1868-1940",
+        "https://ci.nii.ac.jp/ncid/BA03928441",
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
+        "https://web.law.duke.edu/cspd/publicdomainday/2026/"
+      ],
+      "edition_check": "Local scan page 1 reads Memoirs ASB vol. I no. 8, C. A. Sherring, Calcutta, 1906. Correct the catalog author and year (1906, not 1905)."
+    },
+    {
+      "source_id": "ia_rai_pati_ram_bahadur_garhwal_ancient_modern_1916",
+      "records": 185,
+      "words": 49419,
+      "tier": "B1_us_public_domain_india_death_date_needed",
+      "decision": "pending_author_death_date",
+      "work": "Rai Pati Ram Bahadur, Garhwal: Ancient and Modern, Army Press, Simla, 1916",
+      "basis": "US: published 1916, public domain. India: public domain now if the author died before 1966; no death date found yet. The book also has an introduction by another writer whose identity and dates need the same check.",
+      "evidence": [
+        "https://archive.org/details/in.ernet.dli.2015.43255",
+        "https://web.law.duke.edu/cspd/publicdomainday/2026/",
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html"
+      ]
+    },
+    {
+      "source_id": "ia_dharmanand_joshi_notes_garhwal_district_1910",
+      "records": 49,
+      "words": 12982,
+      "tier": "B1_us_public_domain_india_death_date_needed",
+      "decision": "pending_author_death_date",
+      "work": "Rai Bahadur Dharmanand Joshi, Notes on the Garhwal District, Indian Press, Allahabad, 1910",
+      "basis": "US: published 1910, public domain. India: public domain now if the author died before 1966; no death date found yet.",
+      "evidence": [
+        "https://icvtesting.nvli.in/rarebooks/notes-garhwal-district-0",
+        "https://web.law.duke.edu/cspd/publicdomainday/2026/",
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html"
+      ]
+    },
+    {
+      "source_id": "ia_himalayan_folklore_1935",
+      "records": 368,
+      "words": 83597,
+      "tier": "B2_india_public_domain_us_protected_or_unresolved",
+      "decision": "pending_gairola_death_date_and_reprint_page_split",
+      "work": "E. S. Oakley and T. D. Gairola, Himalayan Folklore (1935; scan is the 1977 Bibliotheca Himalayica reprint)",
+      "basis": "Oakley died 1934/35. Gairola died 28 May 1940 per Wikipedia/Wikidata, or 28 May 1950 per a regional literature article. If 1940: public domain in India (term ended 1990) and the US (public domain at home on 1 Jan 1996, so no URAA restoration). If 1950: public domain in India since 2011 but protected in the US until end 2030. Either way, the 1977 reprint's added introduction is a separate in-copyright layer, so those pages must be excluded.",
+      "evidence": [
+        "https://en.wikipedia.org/wiki/Taradutt_Gairola",
+        "https://www.wikidata.org/wiki/Q55419025",
+        "http://e-magazineofuttarakhand.blogspot.com/2009/10/",
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html"
+      ]
+    },
+    {
+      "source_id": "ia_rahul_sankrityayan_himalaya_parichay_garhwal_1953",
+      "records": 305,
+      "words": 84894,
+      "tier": "B2_india_public_domain_us_protected_or_unresolved",
+      "decision": "owner_jurisdiction_decision",
+      "work": "Rahul Sankrityayan, Himalaya Parichay vol. 1: Garhwal, 1953",
+      "basis": "Author died 14 Apr 1963: public domain in India since 1 Jan 2024. In the US, restored under the URAA (still protected in India on 1 Jan 1996), so protected until the end of 2048.",
+      "evidence": [
+        "https://en.wikipedia.org/wiki/Rahul_Sankrityayan",
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
+        "https://commons.wikimedia.org/wiki/Commons:Hirtle_chart"
+      ]
+    },
+    {
+      "source_id": "ia_mahidhar_sharma_barthwal_garhwal_me_kon_kahan_se_1938",
+      "records": 96,
+      "words": 34686,
+      "tier": "B2_india_public_domain_us_protected_or_unresolved",
+      "decision": "pending_author_death_date",
+      "work": "Mahidhar Sharma Barthwal, Garhwal Me Kon Kahan Se, 1938",
+      "basis": "The Archive public-domain mark is unverified. India: public domain if the author died before 1966. US: public domain only if it was already public domain in India on 1 Jan 1996, which requires death before 1946. No death date found.",
+      "evidence": [
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
+        "https://commons.wikimedia.org/wiki/Commons:Hirtle_chart"
+      ]
+    },
+    {
+      "source_id": "uou_cgl",
+      "records": 436,
+      "words": 132143,
+      "tier": "C_open_license_with_conditions",
+      "decision": "conditional_noncommercial_release_after_quote_screening",
+      "work": "Uttarakhand Open University study material (CGL, MAHL modules)",
+      "basis": "Site declares CC BY-NC-SA 4.0, but the modules quote copyrighted Garhwali poems and prose by other authors, which UOU cannot license. Pages dominated by quoted literary works must be screened out; the rest can go into a noncommercial/share-alike config like HinDialect.",
+      "evidence": [
+        "https://uou.ac.in/terms-use"
+      ]
+    },
+    {
+      "source_id": "uou_more",
+      "records": 156,
+      "words": 54036,
+      "tier": "C_open_license_with_conditions",
+      "decision": "conditional_noncommercial_release_after_quote_screening",
+      "work": "Uttarakhand Open University study material (CGL, MAHL modules)",
+      "basis": "Site declares CC BY-NC-SA 4.0, but the modules quote copyrighted Garhwali poems and prose by other authors, which UOU cannot license. Pages dominated by quoted literary works must be screened out; the rest can go into a noncommercial/share-alike config like HinDialect.",
+      "evidence": [
+        "https://uou.ac.in/terms-use"
+      ]
+    },
+    {
+      "source_id": "archive_folksong_thesis",
+      "records": 1,
+      "words": 466,
+      "tier": "C_open_license_with_conditions",
+      "decision": "conditional_noncommercial_release_after_quote_screening",
+      "work": "Sudama Singh Bhandari, A Thematic Study of Garhwali Folk Songs (Archive item)",
+      "basis": "Archive item declares CC BY-NC-SA 4.0; quoted song texts need component review.",
+      "evidence": []
+    },
+    {
+      "source_id": "emagazineofuttarakhand",
+      "records": 1770,
+      "words": 1119227,
+      "tier": "D_needs_permission",
+      "work": "E-Magazine of Uttarakhand (Bhishma Kukreti and contributors)",
+      "evidence": [
+        "https://e-magazineofuttarakhand.blogspot.com/"
+      ],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_haridatta_bhatta_garhwali_bhasha_sahitya_1976",
+      "records": 443,
+      "words": 116912,
+      "tier": "D_needs_permission",
+      "work": "Haridatta Bhatta 'Shailesh', Garhwali Bhasha Aur Uska Sahitya (1976); author reported died 2011",
+      "evidence": [
+        "https://thenritime.blogspot.com/2011/09/noted-writer-dr-haridutt-bhatt-shailesh.html?m=0"
+      ],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "govind_chatak_gadwali_lokgeet_1956",
+      "records": 369,
+      "words": 69456,
+      "tier": "D_needs_permission",
+      "work": "Govind Chatak works (estate)",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "shanti_chaudhary_garhwali_lokkala_loksahitya_1994",
+      "records": 298,
+      "words": 80294,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_shiv_prasad_dabral_uttarakhand_yatra_darshan",
+      "records": 284,
+      "words": 60741,
+      "tier": "D_needs_permission",
+      "work": "Shiv Prasad Dabral 'Charan' works; author died 24 Nov 1999, so protected in India until end 2059",
+      "evidence": [
+        "https://en.wikipedia.org/wiki/Shiv_Prasad_Dabral"
+      ],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_govind_chatak_gadwali_lok_gathayen_1958",
+      "records": 276,
+      "words": 47067,
+      "tier": "D_needs_permission",
+      "work": "Govind Chatak works (estate)",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_tehri_garhwal_district_gazetteer_1971",
+      "records": 253,
+      "words": 92854,
+      "tier": "D_needs_permission",
+      "decision": "wait_or_government_permission",
+      "work": "Uttar Pradesh District Gazetteers: Tehri Garhwal (1971)",
+      "basis": "Government work: India s.28 term runs to end 2031. US: URAA-restored, protected until end 2066. Needs state government permission, or wait.",
+      "evidence": [
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html"
+      ]
+    },
+    {
+      "source_id": "ia_shiv_prasad_dabral_alaknanda_ethnography_vol2_1964",
+      "records": 248,
+      "words": 57486,
+      "tier": "D_needs_permission",
+      "work": "Shiv Prasad Dabral 'Charan' works; author died 24 Nov 1999, so protected in India until end 2059",
+      "evidence": [
+        "https://en.wikipedia.org/wiki/Shiv_Prasad_Dabral"
+      ],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "incoming_garhwali_hindi_dictionary",
+      "records": 239,
+      "words": 108939,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_gunanand_juyal_madhya_pahadi_1967",
+      "records": 200,
+      "words": 60120,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_shiv_prasad_dabral_uttarakhand_history_vol1_1965",
+      "records": 186,
+      "words": 43338,
+      "tier": "D_needs_permission",
+      "work": "Shiv Prasad Dabral 'Charan' works; author died 24 Nov 1999, so protected in India until end 2059",
+      "evidence": [
+        "https://en.wikipedia.org/wiki/Shiv_Prasad_Dabral"
+      ],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_krishna_kumar_garhwal_ancient_inscriptions",
+      "records": 172,
+      "words": 57145,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "incoming_garhwali_bhasha_linguistic_grammatical_study",
+      "records": 147,
+      "words": 34160,
+      "tier": "D_needs_permission",
+      "work": "Govind Chatak works (estate)",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_shiv_prasad_dabral_uttarakhand_history_vol3",
+      "records": 137,
+      "words": 52228,
+      "tier": "D_needs_permission",
+      "work": "Shiv Prasad Dabral 'Charan' works; author died 24 Nov 1999, so protected in India until end 2059",
+      "evidence": [
+        "https://en.wikipedia.org/wiki/Shiv_Prasad_Dabral"
+      ],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "incoming_english_hindi_garhwali_dictionary",
+      "records": 123,
+      "words": 66600,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_shiv_prasad_dabral_alaknanda_pravas_vol1",
+      "records": 123,
+      "words": 28127,
+      "tier": "D_needs_permission",
+      "work": "Shiv Prasad Dabral 'Charan' works; author died 24 Nov 1999, so protected in India until end 2059",
+      "evidence": [
+        "https://en.wikipedia.org/wiki/Shiv_Prasad_Dabral"
+      ],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "incoming_chandola_syntactic_sketch",
+      "records": 110,
+      "words": 16930,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "idioms_proverbs",
+      "records": 99,
+      "words": 783,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "emagazine_animals",
+      "records": 90,
+      "words": 100,
+      "tier": "D_needs_permission",
+      "work": "E-Magazine of Uttarakhand (Bhishma Kukreti and contributors)",
+      "evidence": [
+        "https://e-magazineofuttarakhand.blogspot.com/"
+      ],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_babicz_peaks_passes_garhwal_1990",
+      "records": 81,
+      "words": 25214,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "incoming_garhwali_language_and_culture",
+      "records": 76,
+      "words": 58390,
+      "tier": "D_needs_permission",
+      "work": "Govind Chatak works (estate)",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "incoming_gadwali_sahitya",
+      "records": 74,
+      "words": 16583,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "dhyani_occupations",
+      "records": 65,
+      "words": 65,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_ns_bhandari_snow_balls_garhwal_1946",
+      "records": 64,
+      "words": 7415,
+      "tier": "D_needs_permission",
+      "work": "Other modern books, dictionaries, and compilations",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "ia_govind_chatak_gadwali_bhasha_undated",
+      "records": 61,
+      "words": 14506,
+      "tier": "D_needs_permission",
+      "work": "Govind Chatak works (estate)",
+      "evidence": [],
+      "decision": "needs_written_permission",
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+    },
+    {
+      "source_id": "dcad_gbm",
+      "records": 119,
+      "words": 86638,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "languageshome",
+      "records": 80,
+      "words": 318,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "hikinegi_garhwali",
+      "records": 53,
+      "words": 306,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "uttarakhandiwords_animals",
+      "records": 51,
+      "words": 52,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "euttaranchal_3",
+      "records": 38,
+      "words": 188,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "garhwalilanguage_dictionary",
+      "records": 24,
+      "words": 24,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "madlad400_gbm_clean",
+      "records": 18,
+      "words": 11558,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "records",
+      "records": 12,
+      "words": 687,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "euttaranchal_2",
+      "records": 6,
+      "words": 29,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "omniglot",
+      "records": 4,
+      "words": 74,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "uttarakhandkhabarsaar",
+      "records": 2,
+      "words": 626,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    },
+    {
+      "source_id": "euttaranchal_1",
+      "records": 2,
+      "words": 10,
+      "tier": "E_unlicensed_web_or_dataset",
+      "decision": "keep_local_unclearable_without_site_permission",
+      "work": "Web pages, social posts, and web-crawl datasets",
+      "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
+      "evidence": []
+    }
+  ]
+}
