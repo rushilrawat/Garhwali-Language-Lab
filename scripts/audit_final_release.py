@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 from collections import Counter
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
@@ -433,6 +434,589 @@ def audit_benchmark(project_root):
     }
 
 
+@dataclass
+class _AuditState:
+    """Counters and per-split key sets accumulated while auditing a package."""
+
+    actual_counts: dict = field(default_factory=dict)
+    text_ids: dict = field(default_factory=dict)
+    text_normalized: dict = field(default_factory=dict)
+    text_components: dict = field(default_factory=dict)
+    instruction_prompts: dict = field(default_factory=dict)
+    asr_hashes: dict = field(default_factory=dict)
+    asr_speakers: dict = field(default_factory=dict)
+    provenance_missing: int = 0
+    rights_failures: int = 0
+    language_scope_failures: int = 0
+    text_admission_metadata_missing: int = 0
+    invalid_text_training_recommendations: int = 0
+    instruction_reference_metadata_missing: int = 0
+    instruction_attribution_missing: int = 0
+    content_hash_failures: int = 0
+    text_id_hash_failures: int = 0
+    asr_metadata_missing: int = 0
+    expected_audio: set = field(default_factory=set)
+    draft_hashes: set = field(default_factory=set)
+    draft_rows: int = 0
+    empty_drafts: int = 0
+    draft_quality_missing: int = 0
+    supervised_drafts: int = 0
+    source_conflict_drafts: int = 0
+    invalid_source_conflict_drafts: int = 0
+    recovery_adjudications: int = 0
+    invalid_recovery_adjudications: int = 0
+    third_checkpoint_records: int = 0
+    invalid_third_checkpoint_records: int = 0
+    audio_grounded_review_records: int = 0
+    invalid_audio_grounded_review_records: int = 0
+    catalog_ids: set = field(default_factory=set)
+    catalog_redacted: int = 0
+    catalog_missing_evidence: int = 0
+    knowledge_records: int = 0
+    knowledge_provenance_missing: int = 0
+    knowledge_source_untraceable: int = 0
+    knowledge_quality_missing: int = 0
+    knowledge_rights_failures: int = 0
+    knowledge_rights_unassessed: int = 0
+    shard_hash_failures: int = 0
+
+
+def _rights_failure_count(rows):
+    return sum(
+        not public_rights_basis(row)
+        or not all(
+            is_publishable_provenance(item)
+            for item in public_rights_basis(row)
+        )
+        for row in rows
+    )
+
+
+def _load_config_rows(state, errors, dataset_root, key, group, config):
+    rows = []
+    declared_hashes = config.get('file_sha256') or {}
+    filenames = config.get('files', [])
+    if set(declared_hashes) != set(filenames):
+        errors.append(f'{key} shard hash manifest does not match its file list')
+        state.shard_hash_failures += 1
+    for filename in filenames:
+        path = dataset_root / 'data' / group / filename
+        if not path.exists():
+            errors.append(f'{key} shard is missing: {filename}')
+            continue
+        if declared_hashes.get(filename) != hashlib.sha256(path.read_bytes()).hexdigest():
+            errors.append(f'{key} shard hash mismatch: {filename}')
+            state.shard_hash_failures += 1
+        rows.extend(read_jsonl(path))
+    state.actual_counts[key] = len(rows)
+    if len(rows) != config.get('records'):
+        errors.append(f'{key} has {len(rows)} rows, manifest declares {config.get("records")}')
+    if len(config.get('files', [])) != config.get('shards'):
+        errors.append(f'{key} shard count does not match its manifest')
+    return rows
+
+
+def _audit_text_rows(state, errors, key, group, split, rows, manifest):
+    id_hash_failures = sum(
+        not row.get('text')
+        or row.get('id') != hashlib.sha256(
+            str(row.get('text') or '').encode('utf-8')
+        ).hexdigest()
+        for row in rows
+    )
+    state.text_id_hash_failures += id_hash_failures
+    state.text_ids[split] = {row.get('id') for row in rows}
+    state.text_normalized[split] = {
+        normalized_text_key(row.get('text')) for row in rows
+        if normalized_text_key(row.get('text'))
+    }
+    state.text_components[split] = {
+        row.get('duplicate_component_id') for row in rows
+        if row.get('duplicate_component_id')
+    }
+    missing = sum(not row.get('provenance') for row in rows)
+    rights = _rights_failure_count(rows)
+    language_scope = sum(
+        row.get('language') != 'gbm' or any(
+            item.get('iso_639_3') != 'gbm'
+            for item in public_rights_basis(row)
+        )
+        for row in rows
+    )
+    admission_missing = sum(
+        'language_buckets' not in row
+        or 'quality_tiers' not in row
+        or 'recommended_for_training' not in row
+        for row in rows
+    )
+    invalid_recommendations = sum(
+        row.get('recommended_for_training')
+        is not recommended_text_training_row(row)
+        for row in rows
+    )
+    if missing:
+        errors.append(f'{key} has {missing} rows without provenance')
+    if rights:
+        errors.append(f'{key} has {rights} rows without compatible public rights')
+    if language_scope:
+        errors.append(f'{key} has {language_scope} rows outside explicit Garhwali scope')
+    if admission_missing:
+        errors.append(
+            f'{key} has {admission_missing} rows without language/quality '
+            'admission metadata'
+        )
+    if invalid_recommendations:
+        errors.append(
+            f'{key} has {invalid_recommendations} training recommendation flags '
+            'that disagree with Garhwali, quality, and public-rights evidence'
+        )
+    if id_hash_failures:
+        errors.append(
+            f'{key} has {id_hash_failures} text IDs that do not match SHA-256 of exported text'
+        )
+    state.provenance_missing += missing
+    state.rights_failures += rights
+    state.language_scope_failures += language_scope
+    state.text_admission_metadata_missing += admission_missing
+    state.invalid_text_training_recommendations += invalid_recommendations
+
+
+def _audit_asr_rows(state, errors, key, group, split, rows, manifest):
+    state.expected_audio.update(row.get('audio') for row in rows if row.get('audio'))
+    state.asr_hashes[split] = {row.get('audio_sha256') for row in rows}
+    state.asr_speakers[split] = {
+        row.get('speaker_id') for row in rows
+        if row.get('speaker_id') not in (None, '', 'NA')
+    }
+    missing = sum(
+        not row.get('source') or not row.get('license') or not row.get('transcript')
+        for row in rows
+    )
+    if missing:
+        errors.append(f'{key} has {missing} rows missing transcript/source/license metadata')
+    state.asr_metadata_missing += missing
+
+
+def _audit_lexicon_or_instruction_rows(state, errors, key, group, split, rows, manifest):
+    missing = sum(not row.get('provenance') for row in rows)
+    rights = _rights_failure_count(rows)
+    if missing:
+        errors.append(f'{key} has {missing} rows without provenance')
+    if rights:
+        errors.append(f'{key} has {rights} rows without compatible public rights')
+    state.provenance_missing += missing
+    state.rights_failures += rights
+    if group == 'instructions':
+        _audit_instruction_metadata(state, errors, key, split, rows)
+    else:
+        for row in rows:
+            expected = hashlib.sha256(
+                str(row.get('form') or '').encode('utf-8')
+            ).hexdigest()
+            if row.get('form_sha256') != expected:
+                state.content_hash_failures += 1
+
+
+def _audit_instruction_metadata(state, errors, key, split, rows):
+    state.instruction_prompts[split] = {
+        ' '.join(str(row.get('instruction') or '').casefold().split())
+        for row in rows
+    }
+    reference_missing = sum(
+        not row.get('acceptable_responses') for row in rows
+    )
+    if reference_missing:
+        errors.append(
+            f'{key} has {reference_missing} rows without acceptable '
+            'response metadata'
+        )
+    state.instruction_reference_metadata_missing += reference_missing
+    attribution_missing = sum(
+        any(
+            not item.get('attribution')
+            or not (item.get('license_id') or item.get('license_url'))
+            for item in public_rights_basis(row)
+        )
+        for row in rows
+    )
+    if attribution_missing:
+        errors.append(
+            f'{key} has {attribution_missing} rows with incomplete '
+            'public attribution or license metadata'
+        )
+    state.instruction_attribution_missing += attribution_missing
+
+
+def _audit_draft_rows(state, errors, key, group, split, rows, manifest):
+    state.expected_audio.update(row.get('audio') for row in rows if row.get('audio'))
+    state.draft_rows += len(rows)
+    for row in rows:
+        digest = row.get('audio_sha256')
+        if digest in state.draft_hashes:
+            errors.append(f'sravaani_drafts contains duplicate audio hash {digest}')
+        state.draft_hashes.add(digest)
+        state.empty_drafts += not bool(row.get('transcript'))
+        quality = structured_object(row.get('machine_transcript_quality'))
+        state.draft_quality_missing += not bool(quality)
+        if quality is None:
+            errors.append('SraVaani draft has invalid machine quality JSON')
+        state.supervised_drafts += row.get('training_eligible') is True
+        if row.get('language_scope_status') == 'source_label_conflict':
+            state.source_conflict_drafts += 1
+            state.invalid_source_conflict_drafts += bool(
+                row.get('training_eligible')
+                or row.get('experimental_training_eligible')
+                or not row.get('active_for_source_error_analysis')
+            )
+        _audit_draft_review_objects(state, errors, row)
+
+
+def _audit_draft_review_objects(state, errors, row):
+    adjudication = structured_object(row.get('recovery_adjudication'))
+    if adjudication is None:
+        errors.append('SraVaani draft has invalid recovery adjudication JSON')
+    if adjudication:
+        state.recovery_adjudications += 1
+        state.invalid_recovery_adjudications += bool(
+            adjudication.get('automatic_correction')
+            or adjudication.get('human_reference_available')
+            or adjudication.get('supervised_training_eligible')
+            or adjudication.get('recommended_for_machine_label_training')
+            or not adjudication.get('original_transcript_preserved')
+        )
+    third_checkpoint = structured_object(row.get('recovery_third_checkpoint'))
+    if third_checkpoint is None:
+        errors.append('SraVaani draft has invalid third-checkpoint JSON')
+    if third_checkpoint:
+        state.third_checkpoint_records += 1
+        state.invalid_third_checkpoint_records += bool(
+            third_checkpoint.get('confidence_is_calibrated')
+            or third_checkpoint.get('human_reference_available')
+        )
+    audio_review = structured_object(row.get('audio_grounded_review'))
+    if audio_review is None:
+        errors.append('SraVaani draft has invalid audio-grounded review JSON')
+    if audio_review:
+        state.audio_grounded_review_records += 1
+        state.invalid_audio_grounded_review_records += bool(
+            not audio_review.get('machine_audio_review_complete')
+            or not audio_review.get('human_listening_review_required')
+            or audio_review.get('automatic_correction')
+            or audio_review.get('human_reference_available')
+            or audio_review.get('supervised_training_eligible')
+            or audio_review.get('recommended_for_machine_label_training')
+            or not audio_review.get('original_transcript_preserved')
+        )
+
+
+def _audit_catalog_rows(state, errors, key, group, split, rows, manifest):
+    for row in rows:
+        identity = row.get('id')
+        if not identity or identity in state.catalog_ids:
+            errors.append('catalog contains a missing or duplicate stable ID')
+        state.catalog_ids.add(identity)
+        if identity != row.get('text_sha256'):
+            state.content_hash_failures += 1
+        if row.get('text') is None:
+            state.catalog_redacted += 1
+            if not row.get('redaction_reason') or not row.get('sources'):
+                state.catalog_missing_evidence += 1
+        else:
+            expected = hashlib.sha256(row['text'].encode('utf-8')).hexdigest()
+            if row.get('release_text_sha256') != expected:
+                state.content_hash_failures += 1
+
+
+def _audit_knowledge_rows(state, errors, key, group, split, rows, manifest):
+    ids = [row.get('id') for row in rows]
+    if not all(ids) or len(ids) != len(set(ids)):
+        errors.append(f'{group} contains a missing or duplicate stable ID')
+    if any(row.get('knowledge_family') != group for row in rows):
+        errors.append(f'{group} contains a mismatched knowledge family')
+    provenance_missing = sum(
+        not row.get('provenance')
+        or any(
+            not (item.get('source_id') or item.get('source_url'))
+            for item in row.get('provenance') or []
+        )
+        for row in rows
+    )
+    # Historical behavior: the knowledge count replaced the shared
+    # provenance_missing total instead of adding to it.
+    state.provenance_missing = provenance_missing
+    source_untraceable = sum(
+        not row.get('provenance')
+        or any(
+            not (
+                item.get('source_url')
+                or item.get('source_snapshot_sha256')
+                or item.get('source_capture_path')
+            )
+            for item in row.get('provenance') or []
+        )
+        for row in rows
+    )
+    quality_missing = sum(
+        not isinstance(row.get('quality_metadata'), dict)
+        or not row['quality_metadata'].get('review_status')
+        for row in rows
+    )
+    rights_unassessed = sum(
+        not row.get('rights_status')
+        or row.get('rights_status') == 'not_assessed'
+        for row in rows
+    )
+    knowledge_rights_missing = sum(
+        not is_public_factual_metadata_row(row, group)
+        and (
+            not row.get('public_rights_basis')
+            or not all(
+                is_publishable_provenance(item)
+                and item.get('attribution')
+                and (item.get('source_url') or item.get('source_snapshot_sha256'))
+                for item in row.get('public_rights_basis') or []
+            )
+        )
+        for row in rows
+    )
+    if provenance_missing:
+        errors.append(
+            f'{group}/{split} has {provenance_missing} rows without '
+            'standardized source provenance'
+        )
+    if source_untraceable:
+        errors.append(
+            f'{group}/{split} has {source_untraceable} rows with '
+            'source IDs but no source URL or captured-source locator'
+        )
+    if quality_missing:
+        errors.append(
+            f'{group}/{split} has {quality_missing} rows without quality metadata'
+        )
+    if rights_unassessed:
+        errors.append(
+            f'{group}/{split} has {rights_unassessed} rows without an '
+            'assessed rights status'
+        )
+    if manifest.get('profile') == 'public' and knowledge_rights_missing:
+        errors.append(
+            f'{group}/{split} has {knowledge_rights_missing} rows without compatible public rights'
+        )
+    state.knowledge_provenance_missing += provenance_missing
+    state.knowledge_source_untraceable += source_untraceable
+    state.knowledge_quality_missing += quality_missing
+    state.knowledge_rights_failures += knowledge_rights_missing
+    state.knowledge_rights_unassessed += rights_unassessed
+    state.knowledge_records += len(rows)
+
+
+_GROUP_AUDITS = {
+    'text': _audit_text_rows,
+    'asr': _audit_asr_rows,
+    'lexicon': _audit_lexicon_or_instruction_rows,
+    'instructions': _audit_lexicon_or_instruction_rows,
+    'sravaani_drafts': _audit_draft_rows,
+    'catalog': _audit_catalog_rows,
+}
+
+
+def _check_cross_split_and_drafts(state, errors):
+    errors.extend(overlap_error('text IDs', state.text_ids))
+    errors.extend(overlap_error('normalized text', state.text_normalized))
+    errors.extend(overlap_error('text duplicate components', state.text_components))
+    errors.extend(overlap_error('ASR audio hashes', state.asr_hashes))
+    errors.extend(overlap_error('ASR speakers', state.asr_speakers))
+    errors.extend(overlap_error('instruction prompts', state.instruction_prompts))
+    if state.draft_quality_missing:
+        errors.append(f'{state.draft_quality_missing} SraVaani drafts lack quality metadata')
+    if state.supervised_drafts:
+        errors.append(f'{state.supervised_drafts} machine drafts are marked supervised-training eligible')
+    if state.invalid_source_conflict_drafts:
+        errors.append(
+            f'{state.invalid_source_conflict_drafts} source-label conflict drafts are '
+            'marked as Garhwali training data'
+        )
+    if state.invalid_recovery_adjudications:
+        errors.append(
+            f'{state.invalid_recovery_adjudications} recovery adjudications make an '
+            'unsupported training or accuracy claim'
+        )
+    if state.invalid_third_checkpoint_records:
+        errors.append(
+            f'{state.invalid_third_checkpoint_records} third-checkpoint records make '
+            'an unsupported confidence or reference claim'
+        )
+    if state.invalid_audio_grounded_review_records:
+        errors.append(
+            f'{state.invalid_audio_grounded_review_records} audio-grounded reviews make '
+            'an unsupported completion, training, or accuracy claim'
+        )
+
+
+def _check_catalog_totals(state, errors, index):
+    expected_catalog_records = index.get('text', {}).get(
+        'unique_parent_documents', index.get('text', {}).get('total')
+    )
+    if len(state.catalog_ids) != expected_catalog_records:
+        errors.append('catalog does not account for every exact-unique text record')
+    if state.catalog_missing_evidence:
+        errors.append(f'{state.catalog_missing_evidence} redacted catalog rows lack public evidence')
+    if state.content_hash_failures:
+        errors.append(f'{state.content_hash_failures} exported values have invalid release hashes')
+
+
+def _check_speech_counts(state, errors, index, manifest):
+    asr_total = sum(
+        state.actual_counts.get(f'asr/{split}', 0) for split in ('train', 'validation', 'test')
+    )
+    if asr_total != index.get('speech', {}).get('strict_comparison_rows'):
+        errors.append('ASR export total does not match release strict comparison rows')
+    comparison = index.get('speech_baseline_comparison', {})
+    checks = {
+        'draft_queue_records': manifest.get('draft_queue_records'),
+        'draft_records': manifest.get('draft_records'),
+        'draft_unique_audio': manifest.get('draft_unique_audio'),
+        'draft_inherited_duplicate_rows': manifest.get('draft_inherited_duplicate_rows'),
+    }
+    expected = {
+        'draft_records': comparison.get('sravaani_draft_rows'),
+        'draft_unique_audio': comparison.get('sravaani_draft_unique_audio'),
+        'draft_inherited_duplicate_rows': comparison.get('sravaani_draft_inherited_duplicate_rows'),
+    }
+    for name, value in expected.items():
+        if checks[name] != value:
+            errors.append(f'{name} does not match release index')
+    if state.draft_rows != manifest.get('draft_unique_audio'):
+        errors.append('exported draft rows do not match unique-audio count')
+    if state.source_conflict_drafts != manifest.get('draft_source_label_conflicts'):
+        errors.append('source-label conflict count does not match manifest')
+    if state.recovery_adjudications != manifest.get('draft_three_checkpoint_review_records'):
+        errors.append('recovery adjudication count does not match manifest')
+    if state.third_checkpoint_records != manifest.get('draft_third_checkpoint_records'):
+        errors.append('third-checkpoint recovery count does not match manifest')
+    if state.audio_grounded_review_records != manifest.get('draft_audio_grounded_review_records'):
+        errors.append('audio-grounded review count does not match manifest')
+    if not manifest.get('drafts_complete'):
+        errors.append('SraVaani draft coverage is incomplete')
+    return checks
+
+
+def _check_audio_files(state, errors, warnings, dataset_root, manifest):
+    audio_files = set()
+    if (dataset_root / 'audio').exists():
+        audio_files = {
+            path.relative_to(dataset_root).as_posix()
+            for path in (dataset_root / 'audio').rglob('*.wav')
+        }
+    missing_audio = state.expected_audio - audio_files
+    unexpected_audio = audio_files - state.expected_audio
+    if manifest.get('include_audio'):
+        if missing_audio:
+            errors.append(f'{len(missing_audio)} referenced audio files are missing')
+        if unexpected_audio:
+            errors.append(f'{len(unexpected_audio)} unexpected audio files are present')
+        if manifest.get('linked_audio_files') != len(state.expected_audio):
+            errors.append('linked audio count does not match referenced unique audio')
+    else:
+        warnings.append('audio_not_included')
+    if manifest.get('draft_inherited_duplicate_rows'):
+        warnings.append('inherited_source_audio_duplicates_collapsed')
+    if state.empty_drafts:
+        warnings.append('empty_machine_drafts_retained_with_quality_flags')
+    return audio_files, missing_audio, unexpected_audio
+
+
+def _audit_report(state, errors, warnings, index, manifest, reference_index_report,
+                  benchmark_report, checks, audio_files, missing_audio, unexpected_audio):
+    s = state
+    return {
+        'audit_id': f'garhwali-final-release-audit-v{RELEASE_VERSION}',
+        'generated': date.today().isoformat(),
+        'release_id': index.get('release_id'),
+        'status': 'passed' if not errors else 'failed',
+        'errors': errors,
+        'warnings': warnings,
+        'configs': s.actual_counts,
+        'exported_rows': sum(
+            count for key, count in s.actual_counts.items() if key in REQUIRED_CONFIGS
+        ),
+        'repository_rows_including_reference_tables': sum(s.actual_counts.values()),
+        'reference_index': reference_index_report,
+        'audio': {
+            'included': bool(manifest.get('include_audio')),
+            'referenced_unique_files': len(s.expected_audio),
+            'present_files': len(audio_files),
+            'missing_files': len(missing_audio),
+            'unexpected_files': len(unexpected_audio),
+        },
+        'provenance': {
+            'missing_rows': s.provenance_missing,
+            'public_rights_failures': s.rights_failures,
+            'text_language_scope_failures': s.language_scope_failures,
+            'text_admission_metadata_missing': s.text_admission_metadata_missing,
+            'invalid_text_training_recommendations': s.invalid_text_training_recommendations,
+            'instruction_reference_metadata_missing': s.instruction_reference_metadata_missing,
+            'instruction_attribution_or_license_missing': s.instruction_attribution_missing,
+            'asr_missing_transcript_source_or_license': s.asr_metadata_missing,
+            'knowledge_missing_standardized_rows': s.knowledge_provenance_missing,
+            'knowledge_source_untraceable_rows': s.knowledge_source_untraceable,
+            'knowledge_quality_metadata_missing': s.knowledge_quality_missing,
+            'knowledge_public_rights_failures': s.knowledge_rights_failures,
+            'knowledge_rights_unassessed': s.knowledge_rights_unassessed,
+        },
+        'leakage': {
+            'text_id_cross_split': 0 if not overlap_error('text', s.text_ids) else 1,
+            'normalized_text_cross_split': (
+                0 if not overlap_error('normalized text', s.text_normalized) else 1
+            ),
+            'semantic_component_cross_split': (
+                0 if not overlap_error('component', s.text_components) else 1
+            ),
+            'asr_audio_cross_split': 0 if not overlap_error('asr', s.asr_hashes) else 1,
+            'asr_speaker_cross_split': 0 if not overlap_error('speaker', s.asr_speakers) else 1,
+            'instruction_prompt_cross_split': (
+                0 if not overlap_error('instruction', s.instruction_prompts) else 1
+            ),
+        },
+        'drafts': {
+            **checks,
+            'exported_unique_audio': len(s.draft_hashes),
+            'empty_transcripts': s.empty_drafts,
+            'quality_metadata_missing': s.draft_quality_missing,
+            'supervised_training_eligible': s.supervised_drafts,
+            'source_label_conflicts': s.source_conflict_drafts,
+            'invalid_source_label_conflicts': s.invalid_source_conflict_drafts,
+            'recovery_adjudications': s.recovery_adjudications,
+            'invalid_recovery_adjudications': s.invalid_recovery_adjudications,
+            'third_checkpoint_records': s.third_checkpoint_records,
+            'invalid_third_checkpoint_records': s.invalid_third_checkpoint_records,
+            'audio_grounded_review_records': s.audio_grounded_review_records,
+            'invalid_audio_grounded_review_records': s.invalid_audio_grounded_review_records,
+            'complete': bool(manifest.get('drafts_complete')),
+        },
+        'catalog': {
+            'records': len(s.catalog_ids),
+            'redacted_text_records': s.catalog_redacted,
+            'missing_evidence': s.catalog_missing_evidence,
+            'invalid_release_hashes': s.content_hash_failures,
+        },
+        'text_id_hash_failures': s.text_id_hash_failures,
+        'shard_hash_failures': s.shard_hash_failures,
+        'structured_knowledge': {
+            'records': s.knowledge_records,
+            'configs': sorted(
+                KNOWLEDGE_GROUPS & {key.split('/', 1)[0] for key in s.actual_counts}
+            ),
+            'provenance_missing': s.knowledge_provenance_missing,
+            'source_untraceable': s.knowledge_source_untraceable,
+            'quality_metadata_missing': s.knowledge_quality_missing,
+            'public_rights_failures': s.knowledge_rights_failures,
+            'rights_unassessed': s.knowledge_rights_unassessed,
+        },
+        'benchmark': benchmark_report,
+    }
+
+
 def audit(index, dataset_root, benchmark_root=None):
     dataset_root = Path(dataset_root)
     errors = list(validate(index))
@@ -482,535 +1066,26 @@ def audit(index, dataset_root, benchmark_root=None):
     if unexpected_configs:
         errors.append(f'unexpected configs: {", ".join(unexpected_configs)}')
 
-    actual_counts = {}
-    text_ids = {}
-    text_normalized = {}
-    text_components = {}
-    instruction_prompts = {}
-    asr_hashes = {}
-    asr_speakers = {}
-    provenance_missing = 0
-    rights_failures = 0
-    language_scope_failures = 0
-    text_admission_metadata_missing = 0
-    invalid_text_training_recommendations = 0
-    instruction_reference_metadata_missing = 0
-    instruction_attribution_missing = 0
-    content_hash_failures = 0
-    text_id_hash_failures = 0
-    asr_metadata_missing = 0
-    expected_audio = set()
-    draft_hashes = set()
-    draft_rows = 0
-    empty_drafts = 0
-    draft_quality_missing = 0
-    supervised_drafts = 0
-    source_conflict_drafts = 0
-    invalid_source_conflict_drafts = 0
-    recovery_adjudications = 0
-    invalid_recovery_adjudications = 0
-    third_checkpoint_records = 0
-    invalid_third_checkpoint_records = 0
-    audio_grounded_review_records = 0
-    invalid_audio_grounded_review_records = 0
-    catalog_ids = set()
-    catalog_redacted = 0
-    catalog_missing_evidence = 0
-    knowledge_records = 0
-    knowledge_provenance_missing = 0
-    knowledge_source_untraceable = 0
-    knowledge_quality_missing = 0
-    knowledge_rights_failures = 0
-    knowledge_rights_unassessed = 0
-    shard_hash_failures = 0
-
+    state = _AuditState()
     for key, config in sorted(manifest.get('configs', {}).items()):
         group, split = key.split('/', 1)
-        rows = []
-        declared_hashes = config.get('file_sha256') or {}
-        filenames = config.get('files', [])
-        if set(declared_hashes) != set(filenames):
-            errors.append(f'{key} shard hash manifest does not match its file list')
-            shard_hash_failures += 1
-        for filename in filenames:
-            path = dataset_root / 'data' / group / filename
-            if not path.exists():
-                errors.append(f'{key} shard is missing: {filename}')
-                continue
-            if declared_hashes.get(filename) != hashlib.sha256(path.read_bytes()).hexdigest():
-                errors.append(f'{key} shard hash mismatch: {filename}')
-                shard_hash_failures += 1
-            rows.extend(read_jsonl(path))
-        actual_counts[key] = len(rows)
-        if len(rows) != config.get('records'):
-            errors.append(f'{key} has {len(rows)} rows, manifest declares {config.get("records")}')
-        if len(config.get('files', [])) != config.get('shards'):
-            errors.append(f'{key} shard count does not match its manifest')
+        rows = _load_config_rows(state, errors, dataset_root, key, group, config)
+        handler = _GROUP_AUDITS.get(group)
+        if handler is None and group in KNOWLEDGE_GROUPS:
+            handler = _audit_knowledge_rows
+        if handler is not None:
+            handler(state, errors, key, group, split, rows, manifest)
 
-        if group == 'text':
-            id_hash_failures = sum(
-                not row.get('text')
-                or row.get('id') != hashlib.sha256(
-                    str(row.get('text') or '').encode('utf-8')
-                ).hexdigest()
-                for row in rows
-            )
-            text_id_hash_failures += id_hash_failures
-            text_ids[split] = {row.get('id') for row in rows}
-            text_normalized[split] = {
-                normalized_text_key(row.get('text')) for row in rows
-                if normalized_text_key(row.get('text'))
-            }
-            text_components[split] = {
-                row.get('duplicate_component_id') for row in rows
-                if row.get('duplicate_component_id')
-            }
-            missing = sum(not row.get('provenance') for row in rows)
-            rights = sum(
-                not public_rights_basis(row)
-                or not all(
-                    is_publishable_provenance(item)
-                    for item in public_rights_basis(row)
-                )
-                for row in rows
-            )
-            language_scope = sum(
-                row.get('language') != 'gbm' or any(
-                    item.get('iso_639_3') != 'gbm'
-                    for item in public_rights_basis(row)
-                )
-                for row in rows
-            )
-            admission_missing = sum(
-                'language_buckets' not in row
-                or 'quality_tiers' not in row
-                or 'recommended_for_training' not in row
-                for row in rows
-            )
-            invalid_recommendations = sum(
-                row.get('recommended_for_training')
-                is not recommended_text_training_row(row)
-                for row in rows
-            )
-            if missing:
-                errors.append(f'{key} has {missing} rows without provenance')
-            if rights:
-                errors.append(f'{key} has {rights} rows without compatible public rights')
-            if language_scope:
-                errors.append(f'{key} has {language_scope} rows outside explicit Garhwali scope')
-            if admission_missing:
-                errors.append(
-                    f'{key} has {admission_missing} rows without language/quality '
-                    'admission metadata'
-                )
-            if invalid_recommendations:
-                errors.append(
-                    f'{key} has {invalid_recommendations} training recommendation flags '
-                    'that disagree with Garhwali, quality, and public-rights evidence'
-                )
-            if id_hash_failures:
-                errors.append(
-                    f'{key} has {id_hash_failures} text IDs that do not match SHA-256 of exported text'
-                )
-            provenance_missing += missing
-            rights_failures += rights
-            language_scope_failures += language_scope
-            text_admission_metadata_missing += admission_missing
-            invalid_text_training_recommendations += invalid_recommendations
-        elif group == 'asr':
-            expected_audio.update(row.get('audio') for row in rows if row.get('audio'))
-            asr_hashes[split] = {row.get('audio_sha256') for row in rows}
-            asr_speakers[split] = {
-                row.get('speaker_id') for row in rows
-                if row.get('speaker_id') not in (None, '', 'NA')
-            }
-            missing = sum(
-                not row.get('source') or not row.get('license') or not row.get('transcript')
-                for row in rows
-            )
-            if missing:
-                errors.append(f'{key} has {missing} rows missing transcript/source/license metadata')
-            asr_metadata_missing += missing
-        elif group in ('lexicon', 'instructions'):
-            missing = sum(not row.get('provenance') for row in rows)
-            rights = sum(
-                not public_rights_basis(row)
-                or not all(
-                    is_publishable_provenance(item)
-                    for item in public_rights_basis(row)
-                )
-                for row in rows
-            )
-            if missing:
-                errors.append(f'{key} has {missing} rows without provenance')
-            if rights:
-                errors.append(f'{key} has {rights} rows without compatible public rights')
-            provenance_missing += missing
-            rights_failures += rights
-            if group == 'instructions':
-                instruction_prompts[split] = {
-                    ' '.join(str(row.get('instruction') or '').casefold().split())
-                    for row in rows
-                }
-                reference_missing = sum(
-                    not row.get('acceptable_responses') for row in rows
-                )
-                if reference_missing:
-                    errors.append(
-                        f'{key} has {reference_missing} rows without acceptable '
-                        'response metadata'
-                    )
-                instruction_reference_metadata_missing += reference_missing
-                attribution_missing = sum(
-                    any(
-                        not item.get('attribution')
-                        or not (item.get('license_id') or item.get('license_url'))
-                        for item in public_rights_basis(row)
-                    )
-                    for row in rows
-                )
-                if attribution_missing:
-                    errors.append(
-                        f'{key} has {attribution_missing} rows with incomplete '
-                        'public attribution or license metadata'
-                    )
-                instruction_attribution_missing += attribution_missing
-            else:
-                for row in rows:
-                    expected = hashlib.sha256(
-                        str(row.get('form') or '').encode('utf-8')
-                    ).hexdigest()
-                    if row.get('form_sha256') != expected:
-                        content_hash_failures += 1
-        elif group == 'sravaani_drafts':
-            expected_audio.update(row.get('audio') for row in rows if row.get('audio'))
-            draft_rows += len(rows)
-            for row in rows:
-                digest = row.get('audio_sha256')
-                if digest in draft_hashes:
-                    errors.append(f'sravaani_drafts contains duplicate audio hash {digest}')
-                draft_hashes.add(digest)
-                empty_drafts += not bool(row.get('transcript'))
-                quality = structured_object(row.get('machine_transcript_quality'))
-                draft_quality_missing += not bool(quality)
-                if quality is None:
-                    errors.append('SraVaani draft has invalid machine quality JSON')
-                supervised_drafts += row.get('training_eligible') is True
-                if row.get('language_scope_status') == 'source_label_conflict':
-                    source_conflict_drafts += 1
-                    invalid_source_conflict_drafts += bool(
-                        row.get('training_eligible')
-                        or row.get('experimental_training_eligible')
-                        or not row.get('active_for_source_error_analysis')
-                    )
-                adjudication = structured_object(row.get('recovery_adjudication'))
-                if adjudication is None:
-                    errors.append('SraVaani draft has invalid recovery adjudication JSON')
-                if adjudication:
-                    recovery_adjudications += 1
-                    invalid_recovery_adjudications += bool(
-                        adjudication.get('automatic_correction')
-                        or adjudication.get('human_reference_available')
-                        or adjudication.get('supervised_training_eligible')
-                        or adjudication.get('recommended_for_machine_label_training')
-                        or not adjudication.get('original_transcript_preserved')
-                    )
-                third_checkpoint = structured_object(row.get('recovery_third_checkpoint'))
-                if third_checkpoint is None:
-                    errors.append('SraVaani draft has invalid third-checkpoint JSON')
-                if third_checkpoint:
-                    third_checkpoint_records += 1
-                    invalid_third_checkpoint_records += bool(
-                        third_checkpoint.get('confidence_is_calibrated')
-                        or third_checkpoint.get('human_reference_available')
-                    )
-                audio_review = structured_object(row.get('audio_grounded_review'))
-                if audio_review is None:
-                    errors.append('SraVaani draft has invalid audio-grounded review JSON')
-                if audio_review:
-                    audio_grounded_review_records += 1
-                    invalid_audio_grounded_review_records += bool(
-                        not audio_review.get('machine_audio_review_complete')
-                        or not audio_review.get('human_listening_review_required')
-                        or audio_review.get('automatic_correction')
-                        or audio_review.get('human_reference_available')
-                        or audio_review.get('supervised_training_eligible')
-                        or audio_review.get('recommended_for_machine_label_training')
-                        or not audio_review.get('original_transcript_preserved')
-                    )
-        elif group == 'catalog':
-            for row in rows:
-                identity = row.get('id')
-                if not identity or identity in catalog_ids:
-                    errors.append('catalog contains a missing or duplicate stable ID')
-                catalog_ids.add(identity)
-                if identity != row.get('text_sha256'):
-                    content_hash_failures += 1
-                if row.get('text') is None:
-                    catalog_redacted += 1
-                    if not row.get('redaction_reason') or not row.get('sources'):
-                        catalog_missing_evidence += 1
-                else:
-                    expected = hashlib.sha256(row['text'].encode('utf-8')).hexdigest()
-                    if row.get('release_text_sha256') != expected:
-                        content_hash_failures += 1
-        elif group in KNOWLEDGE_GROUPS:
-            ids = [row.get('id') for row in rows]
-            if not all(ids) or len(ids) != len(set(ids)):
-                errors.append(f'{group} contains a missing or duplicate stable ID')
-            if any(row.get('knowledge_family') != group for row in rows):
-                errors.append(f'{group} contains a mismatched knowledge family')
-            provenance_missing = sum(
-                not row.get('provenance')
-                or any(
-                    not (item.get('source_id') or item.get('source_url'))
-                    for item in row.get('provenance') or []
-                )
-                for row in rows
-            )
-            source_untraceable = sum(
-                not row.get('provenance')
-                or any(
-                    not (
-                        item.get('source_url')
-                        or item.get('source_snapshot_sha256')
-                        or item.get('source_capture_path')
-                    )
-                    for item in row.get('provenance') or []
-                )
-                for row in rows
-            )
-            quality_missing = sum(
-                not isinstance(row.get('quality_metadata'), dict)
-                or not row['quality_metadata'].get('review_status')
-                for row in rows
-            )
-            rights_unassessed = sum(
-                not row.get('rights_status')
-                or row.get('rights_status') == 'not_assessed'
-                for row in rows
-            )
-            knowledge_rights_missing = sum(
-                not is_public_factual_metadata_row(row, group)
-                and (
-                    not row.get('public_rights_basis')
-                    or not all(
-                        is_publishable_provenance(item)
-                        and item.get('attribution')
-                        and (item.get('source_url') or item.get('source_snapshot_sha256'))
-                        for item in row.get('public_rights_basis') or []
-                    )
-                )
-                for row in rows
-            )
-            if provenance_missing:
-                errors.append(
-                    f'{group}/{split} has {provenance_missing} rows without '
-                    'standardized source provenance'
-                )
-            if source_untraceable:
-                errors.append(
-                    f'{group}/{split} has {source_untraceable} rows with '
-                    'source IDs but no source URL or captured-source locator'
-                )
-            if quality_missing:
-                errors.append(
-                    f'{group}/{split} has {quality_missing} rows without quality metadata'
-                )
-            if rights_unassessed:
-                errors.append(
-                    f'{group}/{split} has {rights_unassessed} rows without an '
-                    'assessed rights status'
-                )
-            if manifest.get('profile') == 'public' and knowledge_rights_missing:
-                errors.append(
-                    f'{group}/{split} has {knowledge_rights_missing} rows without compatible public rights'
-                )
-            knowledge_provenance_missing += provenance_missing
-            knowledge_source_untraceable += source_untraceable
-            knowledge_quality_missing += quality_missing
-            knowledge_rights_failures += knowledge_rights_missing
-            knowledge_rights_unassessed += rights_unassessed
-            knowledge_records += len(rows)
-
-    errors.extend(overlap_error('text IDs', text_ids))
-    errors.extend(overlap_error('normalized text', text_normalized))
-    errors.extend(overlap_error('text duplicate components', text_components))
-    errors.extend(overlap_error('ASR audio hashes', asr_hashes))
-    errors.extend(overlap_error('ASR speakers', asr_speakers))
-    errors.extend(overlap_error('instruction prompts', instruction_prompts))
-    if draft_quality_missing:
-        errors.append(f'{draft_quality_missing} SraVaani drafts lack quality metadata')
-    if supervised_drafts:
-        errors.append(f'{supervised_drafts} machine drafts are marked supervised-training eligible')
-    if invalid_source_conflict_drafts:
-        errors.append(
-            f'{invalid_source_conflict_drafts} source-label conflict drafts are '
-            'marked as Garhwali training data'
-        )
-    if invalid_recovery_adjudications:
-        errors.append(
-            f'{invalid_recovery_adjudications} recovery adjudications make an '
-            'unsupported training or accuracy claim'
-        )
-    if invalid_third_checkpoint_records:
-        errors.append(
-            f'{invalid_third_checkpoint_records} third-checkpoint records make '
-            'an unsupported confidence or reference claim'
-        )
-    if invalid_audio_grounded_review_records:
-        errors.append(
-            f'{invalid_audio_grounded_review_records} audio-grounded reviews make '
-            'an unsupported completion, training, or accuracy claim'
-        )
-    expected_catalog_records = index.get('text', {}).get(
-        'unique_parent_documents', index.get('text', {}).get('total')
+    _check_cross_split_and_drafts(state, errors)
+    _check_catalog_totals(state, errors, index)
+    checks = _check_speech_counts(state, errors, index, manifest)
+    audio_files, missing_audio, unexpected_audio = _check_audio_files(
+        state, errors, warnings, dataset_root, manifest
     )
-    if len(catalog_ids) != expected_catalog_records:
-        errors.append('catalog does not account for every exact-unique text record')
-    if catalog_missing_evidence:
-        errors.append(f'{catalog_missing_evidence} redacted catalog rows lack public evidence')
-    if content_hash_failures:
-        errors.append(f'{content_hash_failures} exported values have invalid release hashes')
-
-    asr_total = sum(actual_counts.get(f'asr/{split}', 0) for split in ('train', 'validation', 'test'))
-    if asr_total != index.get('speech', {}).get('strict_comparison_rows'):
-        errors.append('ASR export total does not match release strict comparison rows')
-    comparison = index.get('speech_baseline_comparison', {})
-    checks = {
-        'draft_queue_records': manifest.get('draft_queue_records'),
-        'draft_records': manifest.get('draft_records'),
-        'draft_unique_audio': manifest.get('draft_unique_audio'),
-        'draft_inherited_duplicate_rows': manifest.get('draft_inherited_duplicate_rows'),
-    }
-    expected = {
-        'draft_records': comparison.get('sravaani_draft_rows'),
-        'draft_unique_audio': comparison.get('sravaani_draft_unique_audio'),
-        'draft_inherited_duplicate_rows': comparison.get('sravaani_draft_inherited_duplicate_rows'),
-    }
-    for name, value in expected.items():
-        if checks[name] != value:
-            errors.append(f'{name} does not match release index')
-    if draft_rows != manifest.get('draft_unique_audio'):
-        errors.append('exported draft rows do not match unique-audio count')
-    if source_conflict_drafts != manifest.get('draft_source_label_conflicts'):
-        errors.append('source-label conflict count does not match manifest')
-    if recovery_adjudications != manifest.get('draft_three_checkpoint_review_records'):
-        errors.append('recovery adjudication count does not match manifest')
-    if third_checkpoint_records != manifest.get('draft_third_checkpoint_records'):
-        errors.append('third-checkpoint recovery count does not match manifest')
-    if audio_grounded_review_records != manifest.get('draft_audio_grounded_review_records'):
-        errors.append('audio-grounded review count does not match manifest')
-    if not manifest.get('drafts_complete'):
-        errors.append('SraVaani draft coverage is incomplete')
-    audio_files = set()
-    if (dataset_root / 'audio').exists():
-        audio_files = {
-            path.relative_to(dataset_root).as_posix()
-            for path in (dataset_root / 'audio').rglob('*.wav')
-        }
-    missing_audio = expected_audio - audio_files
-    unexpected_audio = audio_files - expected_audio
-    if manifest.get('include_audio'):
-        if missing_audio:
-            errors.append(f'{len(missing_audio)} referenced audio files are missing')
-        if unexpected_audio:
-            errors.append(f'{len(unexpected_audio)} unexpected audio files are present')
-        if manifest.get('linked_audio_files') != len(expected_audio):
-            errors.append('linked audio count does not match referenced unique audio')
-    else:
-        warnings.append('audio_not_included')
-    if manifest.get('draft_inherited_duplicate_rows'):
-        warnings.append('inherited_source_audio_duplicates_collapsed')
-    if empty_drafts:
-        warnings.append('empty_machine_drafts_retained_with_quality_flags')
-
-    return {
-        'audit_id': f'garhwali-final-release-audit-v{RELEASE_VERSION}',
-        'generated': date.today().isoformat(),
-        'release_id': index.get('release_id'),
-        'status': 'passed' if not errors else 'failed',
-        'errors': errors,
-        'warnings': warnings,
-        'configs': actual_counts,
-        'exported_rows': sum(
-            count for key, count in actual_counts.items() if key in REQUIRED_CONFIGS
-        ),
-        'repository_rows_including_reference_tables': sum(actual_counts.values()),
-        'reference_index': reference_index_report,
-        'audio': {
-            'included': bool(manifest.get('include_audio')),
-            'referenced_unique_files': len(expected_audio),
-            'present_files': len(audio_files),
-            'missing_files': len(missing_audio),
-            'unexpected_files': len(unexpected_audio),
-        },
-        'provenance': {
-            'missing_rows': provenance_missing,
-            'public_rights_failures': rights_failures,
-            'text_language_scope_failures': language_scope_failures,
-            'text_admission_metadata_missing': text_admission_metadata_missing,
-            'invalid_text_training_recommendations': invalid_text_training_recommendations,
-            'instruction_reference_metadata_missing': instruction_reference_metadata_missing,
-            'instruction_attribution_or_license_missing': instruction_attribution_missing,
-            'asr_missing_transcript_source_or_license': asr_metadata_missing,
-            'knowledge_missing_standardized_rows': knowledge_provenance_missing,
-            'knowledge_source_untraceable_rows': knowledge_source_untraceable,
-            'knowledge_quality_metadata_missing': knowledge_quality_missing,
-            'knowledge_public_rights_failures': knowledge_rights_failures,
-            'knowledge_rights_unassessed': knowledge_rights_unassessed,
-        },
-        'leakage': {
-            'text_id_cross_split': 0 if not overlap_error('text', text_ids) else 1,
-            'normalized_text_cross_split': (
-                0 if not overlap_error('normalized text', text_normalized) else 1
-            ),
-            'semantic_component_cross_split': (
-                0 if not overlap_error('component', text_components) else 1
-            ),
-            'asr_audio_cross_split': 0 if not overlap_error('asr', asr_hashes) else 1,
-            'asr_speaker_cross_split': 0 if not overlap_error('speaker', asr_speakers) else 1,
-            'instruction_prompt_cross_split': (
-                0 if not overlap_error('instruction', instruction_prompts) else 1
-            ),
-        },
-        'drafts': {
-            **checks,
-            'exported_unique_audio': len(draft_hashes),
-            'empty_transcripts': empty_drafts,
-            'quality_metadata_missing': draft_quality_missing,
-            'supervised_training_eligible': supervised_drafts,
-            'source_label_conflicts': source_conflict_drafts,
-            'invalid_source_label_conflicts': invalid_source_conflict_drafts,
-            'recovery_adjudications': recovery_adjudications,
-            'invalid_recovery_adjudications': invalid_recovery_adjudications,
-            'third_checkpoint_records': third_checkpoint_records,
-            'invalid_third_checkpoint_records': invalid_third_checkpoint_records,
-            'audio_grounded_review_records': audio_grounded_review_records,
-            'invalid_audio_grounded_review_records': invalid_audio_grounded_review_records,
-            'complete': bool(manifest.get('drafts_complete')),
-        },
-        'catalog': {
-            'records': len(catalog_ids),
-            'redacted_text_records': catalog_redacted,
-            'missing_evidence': catalog_missing_evidence,
-            'invalid_release_hashes': content_hash_failures,
-        },
-        'text_id_hash_failures': text_id_hash_failures,
-        'shard_hash_failures': shard_hash_failures,
-        'structured_knowledge': {
-            'records': knowledge_records,
-            'configs': sorted(
-                KNOWLEDGE_GROUPS & {key.split('/', 1)[0] for key in actual_counts}
-            ),
-            'provenance_missing': knowledge_provenance_missing,
-            'source_untraceable': knowledge_source_untraceable,
-            'quality_metadata_missing': knowledge_quality_missing,
-            'public_rights_failures': knowledge_rights_failures,
-            'rights_unassessed': knowledge_rights_unassessed,
-        },
-        'benchmark': benchmark_report,
-    }
+    return _audit_report(
+        state, errors, warnings, index, manifest, reference_index_report,
+        benchmark_report, checks, audio_files, missing_audio, unexpected_audio,
+    )
 
 
 def main():

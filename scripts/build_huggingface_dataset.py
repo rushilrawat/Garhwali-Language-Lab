@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
 import copy
 import errno
 import hashlib
@@ -2407,9 +2408,44 @@ release audit are in the [source repository](https://github.com/rushilrawat/Garh
 '''
 
 
-def _build_at(output, profile='public', include_audio=False,
-              allow_partial_drafts=False, shard_rows=10_000):
-    output = prepare_package_output(output)
+@dataclass
+class _PackageBuild:
+    """Inputs and the growing manifest for one package build."""
+
+    output: Path
+    profile: str
+    include_audio: bool
+    shard_rows: int
+    direct_eval_record_ids: set
+    aggregate_eval_record_ids: set
+    report: dict
+
+    def write(self, config, rows, directory, split):
+        self.report['configs'][f'{config}/{split}'] = write_shards(
+            rows, self.output / directory, split, self.shard_rows
+        )
+
+    def route(self, rows):
+        return [
+            route_upstream_split_overlap(
+                row, self.direct_eval_record_ids, self.aggregate_eval_record_ids
+            )
+            for row in rows
+        ]
+
+
+SRAVAANI_DRAFT_PREFERENCE = (
+    'machine_drafts_sravaani_verified.jsonl',
+    'machine_drafts_sravaani_confidence_aware.jsonl',
+    'machine_drafts_sravaani_quality.jsonl',
+    'machine_drafts_sravaani.jsonl',
+)
+TRANSCRIPTS_DIR = ROOT / 'data/processed/model_ready/transcripts'
+LEXICON_PATH = ROOT / 'data/processed/model_ready/language_resources/pronunciation/lexicon.jsonl'
+INSTRUCTIONS_DIR = ROOT / 'data/processed/model_ready/instructions_v0.2'
+
+
+def _new_package_build(output, profile, include_audio, shard_rows):
     direct_eval_record_ids, aggregate_eval_record_ids = upstream_split_overlap_ids()
     overlap_audit = json.loads(
         UPSTREAM_SPLIT_OVERLAP_PATH.read_text(encoding='utf-8')
@@ -2431,79 +2467,72 @@ def _build_at(output, profile='public', include_audio=False,
     }
     if RELEASE_ID.endswith('v0.2.1'):
         report['source_expansion'] = source_expansion_metrics()
+    return _PackageBuild(
+        output, profile, include_audio, shard_rows,
+        direct_eval_record_ids, aggregate_eval_record_ids, report,
+    )
 
-    quality_catalog = list(read_jsonl(
-        ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
-    ))
-    parent_quality = {row['text_sha256']: row for row in quality_catalog}
+
+def _first_existing_draft_file():
+    return next(
+        path for path in (TRANSCRIPTS_DIR / name for name in SRAVAANI_DRAFT_PREFERENCE)
+        if path.exists()
+    )
+
+
+def _write_text_splits(pkg, parent_quality):
     text_dir = ROOT / 'data/processed/model_ready/splits/text'
     for split in ('train', 'validation', 'test'):
         rows = read_jsonl(text_dir / f'{split}.jsonl')
         exported_rows = [text_row(row, parent_quality) for row in rows]
-        if profile == 'public':
+        if pkg.profile == 'public':
             exported_rows = (
                 exported
                 for exported in exported_rows
                 if exported['language'] == 'gbm'
                 and is_public_garhwali_text_row(exported)
             )
-        exported_rows = [
-            route_upstream_split_overlap(
-                row, direct_eval_record_ids, aggregate_eval_record_ids
-            )
-            for row in exported_rows
-        ]
+        exported_rows = pkg.route(exported_rows)
         if split == 'train':
             train_rows = [row for row in exported_rows if row['split'] == 'train']
             overlap_rows = [
                 row for row in exported_rows if row['split'] == 'source_overlap'
             ]
-            report['text_source_overlap_records'] = len(overlap_rows)
-            report['configs']['text/train'] = write_shards(
-                train_rows, output / 'data/text', 'train', shard_rows
-            )
+            pkg.report['text_source_overlap_records'] = len(overlap_rows)
+            pkg.write('text', train_rows, 'data/text', 'train')
             if overlap_rows:
-                report['configs']['text/source_overlap'] = write_shards(
-                    overlap_rows, output / 'data/text', 'source_overlap', shard_rows
-                )
+                pkg.write('text', overlap_rows, 'data/text', 'source_overlap')
         else:
-            report['configs'][f'text/{split}'] = write_shards(
-                exported_rows, output / 'data/text', split, shard_rows
-            )
+            pkg.write('text', exported_rows, 'data/text', split)
 
+
+def _existing_text_rows(pkg):
+    """Collect text values already exported or present in other text-bearing configs."""
     existing_text_rows = []
-    for path in sorted((output / 'data/text').glob('*.jsonl')):
+    for path in sorted((pkg.output / 'data/text').glob('*.jsonl')):
         existing_text_rows.extend(read_jsonl(path))
-
     # Deduplicate across text-bearing configs, not only the main text split.
     asr_source_dir = (
-        ROOT / 'data/processed/model_ready/splits' / asr_split_directory(profile)
+        ROOT / 'data/processed/model_ready/splits' / asr_split_directory(pkg.profile)
     )
     for split in ('train', 'validation', 'test'):
         asr_rows = list(read_jsonl(asr_source_dir / f'{split}.jsonl'))
         existing_text_rows.extend(comparable_text_rows(asr_rows, 'asr_target_clean'))
-    draft_paths = (
-        ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_verified.jsonl',
-        ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl',
-        ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl',
-        ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl',
-    )
-    draft_source = next(path for path in draft_paths if path.exists())
     existing_text_rows.extend(comparable_text_rows(
-        read_jsonl(draft_source), 'machine_transcript'
+        read_jsonl(_first_existing_draft_file()), 'machine_transcript'
     ))
-    lexicon_path = (
-        ROOT / 'data/processed/model_ready/language_resources/pronunciation/lexicon.jsonl'
-    )
     existing_text_rows.extend(comparable_text_rows(
-        read_jsonl(lexicon_path), 'form'
+        read_jsonl(LEXICON_PATH), 'form'
     ))
-    instructions_dir = ROOT / 'data/processed/model_ready/instructions_v0.2'
     for split in ('train', 'validation', 'test'):
-        instruction_rows = list(read_jsonl(instructions_dir / f'{split}.jsonl'))
+        instruction_rows = list(read_jsonl(INSTRUCTIONS_DIR / f'{split}.jsonl'))
         existing_text_rows.extend(comparable_text_rows(instruction_rows, 'instruction'))
         existing_text_rows.extend(comparable_text_rows(instruction_rows, 'response'))
+    return existing_text_rows
 
+
+def _write_catalog(pkg, quality_catalog):
+    report = pkg.report
     refinement_path = ROOT / 'data/processed/model_ready/text_quality_v2/priority_text.jsonl'
     refinements = {
         row['text_sha256']: row for row in read_jsonl(refinement_path)
@@ -2511,11 +2540,12 @@ def _build_at(output, profile='public', include_audio=False,
     catalog_rows = [
         catalog_row(
             row,
-            include_all_text=profile_includes_all_data(profile),
+            include_all_text=profile_includes_all_data(pkg.profile),
             refinement=refinements.get(row['text_sha256']),
         )
         for row in quality_catalog
     ]
+    status_counts = Counter(row['redistribution_status'] for row in catalog_rows)
     report['catalog_refined_text_records'] = sum(
         'text_refinement' in row for row in catalog_rows
     )
@@ -2523,21 +2553,12 @@ def _build_at(output, profile='public', include_audio=False,
     report['catalog_redacted_text_records'] = sum(
         row['text'] is None for row in catalog_rows
     )
-    report['catalog_rights_cleared_records'] = sum(
-        row['redistribution_status'] == 'rights_cleared' for row in catalog_rows
-    )
-    report['catalog_noncommercial_records'] = sum(
-        row['redistribution_status'] == 'rights_cleared_noncommercial_sharealike'
-        for row in catalog_rows
-    )
-    report['catalog_source_policy_records'] = sum(
-        row['redistribution_status'] == 'reproduced_under_source_policy'
-        for row in catalog_rows
-    )
-    report['catalog_factual_word_records'] = sum(
-        row['redistribution_status'] == 'individual_word_fact'
-        for row in catalog_rows
-    )
+    report['catalog_rights_cleared_records'] = status_counts['rights_cleared']
+    report['catalog_noncommercial_records'] = status_counts[
+        'rights_cleared_noncommercial_sharealike'
+    ]
+    report['catalog_source_policy_records'] = status_counts['reproduced_under_source_policy']
+    report['catalog_factual_word_records'] = status_counts['individual_word_fact']
     report['catalog_sharealike_records'] = sum(
         any(
             item.get('license_id') in {'CC-BY-SA-4.0', 'CC-BY-NC-SA-4.0'}
@@ -2549,96 +2570,72 @@ def _build_at(output, profile='public', include_audio=False,
     report['all_collected_text_values_included'] = (
         report['catalog_redacted_text_records'] == 0
     )
-    if profile_includes_all_data(profile) and not report['all_collected_text_values_included']:
+    if profile_includes_all_data(pkg.profile) and not report['all_collected_text_values_included']:
         raise RuntimeError('All-data profile omitted one or more collected text values')
-    report['configs']['catalog/train'] = write_shards(
-        catalog_rows, output / 'data/catalog', 'train', shard_rows
-    )
+    pkg.write('catalog', catalog_rows, 'data/catalog', 'train')
+    return catalog_rows
 
+
+def _benchmark_eval_rows():
     benchmark_eval_dir = (
         ROOT / 'data/processed/evaluation/garhwali_bench_parent_safe_v0.2_2026-09-28'
         / 'v0.2-frozen-candidate'
     )
-    benchmark_eval_rows = []
+    rows = []
     for split in ('validation', 'test'):
         path = benchmark_eval_dir / f'text_recommended__{split}.jsonl'
         if path.exists():
-            benchmark_eval_rows.extend(read_jsonl(path))
-    text_expansion_rows, text_expansion_metrics = build_catalog_text_expansion(
+            rows.extend(read_jsonl(path))
+    return rows
+
+
+def _write_routed_catalog_view(pkg, config, rows, metrics, metrics_key):
+    """Route a catalog-derived view by upstream overlap and write train/overlap splits."""
+    rows = pkg.route(rows)
+    overlap_rows = [row for row in rows if row['split'] == 'source_overlap']
+    train_rows = [row for row in rows if row['split'] == 'train']
+    metrics['source_split_overlap_records'] = len(overlap_rows)
+    metrics['train_records'] = len(train_rows)
+    pkg.report[metrics_key] = metrics
+    pkg.write(config, train_rows, f'data/{config}', 'train')
+    if overlap_rows:
+        pkg.write(config, overlap_rows, f'data/{config}', 'source_overlap')
+    return rows
+
+
+def _write_catalog_views(pkg, catalog_rows, existing_text_rows):
+    benchmark_eval_rows = _benchmark_eval_rows()
+    expansion_rows, expansion_metrics = build_catalog_text_expansion(
         catalog_rows, existing_text_rows, benchmark_eval_rows
     )
-    text_expansion_rows = [
-        route_upstream_split_overlap(
-            row, direct_eval_record_ids, aggregate_eval_record_ids
-        )
-        for row in text_expansion_rows
-    ]
-    expansion_overlap_rows = [
-        row for row in text_expansion_rows if row['split'] == 'source_overlap'
-    ]
-    expansion_train_rows = [
-        row for row in text_expansion_rows if row['split'] == 'train'
-    ]
-    text_expansion_metrics['source_split_overlap_records'] = len(
-        expansion_overlap_rows
+    expansion_rows = _write_routed_catalog_view(
+        pkg, 'text_expansion', expansion_rows, expansion_metrics, 'text_expansion_metrics'
     )
-    text_expansion_metrics['train_records'] = len(expansion_train_rows)
-    report['text_expansion_metrics'] = text_expansion_metrics
-    report['configs']['text_expansion/train'] = write_shards(
-        expansion_train_rows, output / 'data/text_expansion', 'train', shard_rows
+    resource_rows, resource_metrics = build_catalog_text_resources(
+        catalog_rows, [*existing_text_rows, *expansion_rows], benchmark_eval_rows
     )
-    if expansion_overlap_rows:
-        report['configs']['text_expansion/source_overlap'] = write_shards(
-            expansion_overlap_rows, output / 'data/text_expansion',
-            'source_overlap', shard_rows
-        )
-    text_resource_rows, text_resource_metrics = build_catalog_text_resources(
-        catalog_rows, [*existing_text_rows, *text_expansion_rows], benchmark_eval_rows
+    resource_rows = _write_routed_catalog_view(
+        pkg, 'text_resources', resource_rows, resource_metrics, 'text_resource_metrics'
     )
-    text_resource_rows = [
-        route_upstream_split_overlap(
-            row, direct_eval_record_ids, aggregate_eval_record_ids
-        )
-        for row in text_resource_rows
-    ]
-    resource_overlap_rows = [
-        row for row in text_resource_rows if row['split'] == 'source_overlap'
-    ]
-    resource_train_rows = [
-        row for row in text_resource_rows if row['split'] == 'train'
-    ]
-    text_resource_metrics['source_split_overlap_records'] = len(
-        resource_overlap_rows
-    )
-    text_resource_metrics['train_records'] = len(resource_train_rows)
-    report['text_resource_metrics'] = text_resource_metrics
-    report['configs']['text_resources/train'] = write_shards(
-        resource_train_rows, output / 'data/text_resources', 'train', shard_rows
-    )
-    if resource_overlap_rows:
-        report['configs']['text_resources/source_overlap'] = write_shards(
-            resource_overlap_rows, output / 'data/text_resources',
-            'source_overlap', shard_rows
-        )
+    return expansion_rows, resource_rows
 
+
+def _write_paharili(pkg, existing_rows):
     if not PAHARILI_GBM_ROWS_PATH.is_file():
         raise FileNotFoundError(
             f'Missing prepared PahariLI Garhwali rows: {PAHARILI_GBM_ROWS_PATH}'
         )
-    paharili_existing_rows = [
-        *existing_text_rows, *text_expansion_rows, *text_resource_rows,
-    ]
     paharili_rows, paharili_metrics = build_paharili_gbm_rows(
-        read_jsonl(PAHARILI_GBM_ROWS_PATH), paharili_existing_rows
+        read_jsonl(PAHARILI_GBM_ROWS_PATH), existing_rows
     )
-    report['paharili_gbm_metrics'] = paharili_metrics
+    pkg.report['paharili_gbm_metrics'] = paharili_metrics
     for split in ('train', 'test', 'source_overlap'):
         split_rows = [row for row in paharili_rows if row['split'] == split]
         if split_rows:
-            report['configs'][f'paharili_gbm/{split}'] = write_shards(
-                split_rows, output / 'data/paharili_gbm', split, shard_rows
-            )
+            pkg.write('paharili_gbm', split_rows, 'data/paharili_gbm', split)
 
+
+def _write_knowledge(pkg):
     for family, path in KNOWLEDGE_CONFIGS.items():
         if not path.exists():
             raise FileNotFoundError(f'Missing structured knowledge catalog: {path}')
@@ -2650,62 +2647,48 @@ def _build_at(output, profile='public', include_audio=False,
         ids = [row['id'] for row in rows]
         if len(ids) != len(set(ids)):
             raise ValueError(f'Duplicate stable IDs in {family}')
-        if profile == 'public':
-            report['structured_knowledge_excluded_for_rights'][family] = 0
-            report['structured_knowledge_metadata_only'][family] = len(rows)
+        if pkg.profile == 'public':
+            pkg.report['structured_knowledge_excluded_for_rights'][family] = 0
+            pkg.report['structured_knowledge_metadata_only'][family] = len(rows)
             rows = [public_factual_metadata_row(row, family) for row in rows]
-        report['configs'][f'{family}/train'] = write_shards(
-            rows, output / f'data/{family}', 'train', shard_rows
-        )
+        pkg.write(family, rows, f'data/{family}', 'train')
 
+
+def _write_asr(pkg):
     audio_sources = []
-    asr_dir = ROOT / 'data/processed/model_ready/splits' / asr_split_directory(profile)
+    asr_dir = ROOT / 'data/processed/model_ready/splits' / asr_split_directory(pkg.profile)
     for split in ('train', 'validation', 'test'):
         rows = list(read_jsonl(asr_dir / f'{split}.jsonl'))
         audio_sources.extend(rows)
-        report['configs'][f'asr/{split}'] = write_shards(
-            (audio_row(row, 'asr_target_clean', include_audio) for row in rows),
-            output / 'data/asr', split, shard_rows,
+        pkg.write(
+            'asr',
+            (audio_row(row, 'asr_target_clean', pkg.include_audio) for row in rows),
+            'data/asr', split,
         )
+    return audio_sources
 
-    queue_path = ROOT / 'data/processed/model_ready/transcripts/untranscribed_queue.jsonl'
-    confidence_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl'
-    verified_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_verified.jsonl'
-    quality_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani_quality.jsonl'
-    raw_drafts_path = ROOT / 'data/processed/model_ready/transcripts/machine_drafts_sravaani.jsonl'
-    drafts_path = next(
-        path for path in (
-            verified_drafts_path, confidence_drafts_path,
-            quality_drafts_path, raw_drafts_path
-        ) if path.exists()
-    )
-    queue = list(read_jsonl(queue_path))
+
+def _optional_jsonl(path):
+    return list(read_jsonl(path)) if path.exists() else []
+
+
+def _write_drafts(pkg, allow_partial_drafts):
+    report = pkg.report
+    queue = list(read_jsonl(TRANSCRIPTS_DIR / 'untranscribed_queue.jsonl'))
     queue_count = len(queue)
+    drafts_path = _first_existing_draft_file()
     drafts = list(read_jsonl(drafts_path))
     unique_drafts = list(deduplicate_audio_rows(drafts, 'machine_transcript'))
-    third_checkpoint_path = (
-        ROOT / 'data/processed/model_ready/transcripts/'
-        'sravaani_recovery_whisper_v0.1.jsonl'
-    )
-    third_checkpoint_rows = list(read_jsonl(third_checkpoint_path)) \
-        if third_checkpoint_path.exists() else []
     unique_drafts = attach_recovery_third_checkpoint(
-        unique_drafts, third_checkpoint_rows
+        unique_drafts, _optional_jsonl(TRANSCRIPTS_DIR / 'sravaani_recovery_whisper_v0.1.jsonl')
     )
-    adjudication_path = (
-        ROOT / 'data/processed/model_ready/transcripts/'
-        'sravaani_recovery_adjudication.jsonl'
+    unique_drafts = attach_recovery_adjudication(
+        unique_drafts, _optional_jsonl(TRANSCRIPTS_DIR / 'sravaani_recovery_adjudication.jsonl')
     )
-    adjudication_rows = list(read_jsonl(adjudication_path)) \
-        if adjudication_path.exists() else []
-    unique_drafts = attach_recovery_adjudication(unique_drafts, adjudication_rows)
-    audio_review_path = (
-        ROOT / 'data/processed/model_ready/transcripts/'
-        'sravaani_recovery_audio_grounded_review.jsonl'
+    unique_drafts = attach_audio_grounded_review(
+        unique_drafts,
+        _optional_jsonl(TRANSCRIPTS_DIR / 'sravaani_recovery_audio_grounded_review.jsonl'),
     )
-    audio_review_rows = list(read_jsonl(audio_review_path)) \
-        if audio_review_path.exists() else []
-    unique_drafts = attach_audio_grounded_review(unique_drafts, audio_review_rows)
     report['draft_queue_records'] = queue_count
     report['draft_source'] = str(drafts_path.relative_to(ROOT))
     report['draft_records'] = len(drafts)
@@ -2737,44 +2720,32 @@ def _build_at(output, profile='public', include_audio=False,
             f'SraVaani drafts incomplete: {len(drafts)}/{queue_count}; '
             'use --allow-partial-drafts only for a preview'
         )
-    audio_sources.extend(unique_drafts)
-    report['configs']['sravaani_drafts/train'] = write_shards(
-        (audio_row(row, 'machine_transcript', include_audio,
+    pkg.write(
+        'sravaani_drafts',
+        (audio_row(row, 'machine_transcript', pkg.include_audio,
                    serialize_evidence=True) for row in unique_drafts),
-        output / 'data/sravaani_drafts', 'train', shard_rows,
+        'data/sravaani_drafts', 'train',
     )
+    return unique_drafts
 
-    lexicon = read_jsonl(
-        ROOT / 'data/processed/model_ready/language_resources/pronunciation/lexicon.jsonl'
-    )
-    if profile == 'public':
+
+def _write_lexicon_and_instructions(pkg):
+    lexicon = read_jsonl(LEXICON_PATH)
+    if pkg.profile == 'public':
         lexicon = (row for row in lexicon if is_public_text_row(row))
-    report['configs']['lexicon/train'] = write_shards(
-        (lexicon_row(row) for row in lexicon),
-        output / 'data/lexicon', 'train', shard_rows,
-    )
-
-    instructions_dir = ROOT / 'data/processed/model_ready/instructions_v0.2'
+    pkg.write('lexicon', (lexicon_row(row) for row in lexicon), 'data/lexicon', 'train')
     for split in ('train', 'validation', 'test'):
-        rows = list(read_jsonl(instructions_dir / f'{split}.jsonl'))
-        if profile == 'public':
+        rows = list(read_jsonl(INSTRUCTIONS_DIR / f'{split}.jsonl'))
+        if pkg.profile == 'public':
             rows = [row for row in rows if is_public_text_row(row)]
         rows = refresh_acceptable_responses(rows)
-        report['configs'][f'instructions/{split}'] = write_shards(
-            (with_public_rights_basis(row) for row in rows),
-            output / 'data/instructions', split, shard_rows,
+        pkg.write(
+            'instructions', (with_public_rights_basis(row) for row in rows),
+            'data/instructions', split,
         )
 
-    removed_audio_files = 0 if include_audio else remove_packaged_audio(output)
-    link_report = link_audio(audio_sources, output) if include_audio else {'new': 0, 'total': 0}
-    report['linked_audio_files'] = link_report['total']
-    report['newly_linked_audio_files'] = link_report['new']
-    report['removed_audio_files'] = removed_audio_files
-    output.mkdir(parents=True, exist_ok=True)
-    dataset_info = dataset_info_for_release(output, report['configs'])
-    (output / 'README.md').write_text(
-        dataset_card(report, dataset_info=dataset_info), encoding='utf-8'
-    )
+
+def _copy_package_documents(output):
     for name in ('LICENSE_POLICY.md', 'ATTRIBUTION.md', 'REMOVAL_POLICY.md'):
         shutil.copy2(ROOT / name, output / name)
     for name in ('DEVELOPER_QUICKSTART.md', 'DATASET_SCHEMA.md'):
@@ -2799,12 +2770,49 @@ def _build_at(output, profile='public', include_audio=False,
         'huggingface-upstream-split-overlap-2026-10-05.json',
     ):
         shutil.copy2(ROOT / 'research' / name, output / 'research' / name)
+
+
+def _finalize_package(pkg, audio_sources):
+    output, report = pkg.output, pkg.report
+    removed_audio_files = 0 if pkg.include_audio else remove_packaged_audio(output)
+    link_report = (
+        link_audio(audio_sources, output) if pkg.include_audio else {'new': 0, 'total': 0}
+    )
+    report['linked_audio_files'] = link_report['total']
+    report['newly_linked_audio_files'] = link_report['new']
+    report['removed_audio_files'] = removed_audio_files
+    output.mkdir(parents=True, exist_ok=True)
+    dataset_info = dataset_info_for_release(output, report['configs'])
+    (output / 'README.md').write_text(
+        dataset_card(report, dataset_info=dataset_info), encoding='utf-8'
+    )
+    _copy_package_documents(output)
     (output / 'manifest.json').write_text(
         json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
         encoding='utf-8',
     )
     report['manifest_sha256'] = sha256_file(output / 'manifest.json')
     return report
+
+
+def _build_at(output, profile='public', include_audio=False,
+              allow_partial_drafts=False, shard_rows=10_000):
+    output = prepare_package_output(output)
+    pkg = _new_package_build(output, profile, include_audio, shard_rows)
+    quality_catalog = list(read_jsonl(
+        ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
+    ))
+    parent_quality = {row['text_sha256']: row for row in quality_catalog}
+    _write_text_splits(pkg, parent_quality)
+    existing_text_rows = _existing_text_rows(pkg)
+    catalog_rows = _write_catalog(pkg, quality_catalog)
+    expansion_rows, resource_rows = _write_catalog_views(pkg, catalog_rows, existing_text_rows)
+    _write_paharili(pkg, [*existing_text_rows, *expansion_rows, *resource_rows])
+    _write_knowledge(pkg)
+    audio_sources = _write_asr(pkg)
+    audio_sources.extend(_write_drafts(pkg, allow_partial_drafts))
+    _write_lexicon_and_instructions(pkg)
+    return _finalize_package(pkg, audio_sources)
 
 
 def build(output, profile='public', include_audio=False, allow_partial_drafts=False,
