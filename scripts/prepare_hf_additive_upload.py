@@ -12,6 +12,8 @@ import sys
 import tempfile
 from pathlib import Path
 from pathlib import PurePosixPath
+import yaml
+
 from garhwali_lab.hashing import sha256_file as sha256
 from garhwali_lab.version import corpus_release_version, ensure_unpublished_corpus_version
 
@@ -163,8 +165,92 @@ def version_card(source: str, prefix: str) -> str:
     )
 
 
+def _front_matter(card: str) -> tuple[str, str, str]:
+    """Split a dataset card into (front matter, separator+body, prefix)."""
+    if not card.startswith("---\n"):
+        raise ValueError("Dataset card has no YAML front matter")
+    end = card.index("\n---\n", 4)
+    return card[4:end], card[end:], "---\n"
+
+
+def _config_blocks(front: str) -> dict[str, str]:
+    """Return each '- config_name:' block of the top-level configs list, verbatim."""
+    blocks: dict[str, str] = {}
+    lines = front.split("\n")
+    in_configs = False
+    current = None
+    for line in lines:
+        if line.startswith("configs:"):
+            in_configs = True
+            continue
+        if in_configs and line and not line.startswith((" ", "-")):
+            break
+        if in_configs and line.startswith("- config_name:"):
+            current = line.split(":", 1)[1].strip()
+            blocks[current] = line
+        elif in_configs and current is not None:
+            blocks[current] += "\n" + line
+    return {name: block.rstrip("\n") for name, block in blocks.items()}
+
+
+def carry_forward_configs(card: str, previous_card: str, prefix: str) -> tuple[str, list[str]]:
+    """Keep configs the live card declares from earlier releases.
+
+    The upload replaces the root card, and the card decides which configs the
+    Hub shows. A config the new card lacks, whose files all live under an
+    earlier ``releases/`` prefix, would silently disappear from the Hub even
+    though its files stay in the repo. Such configs are appended, with their
+    dataset_info entry, exactly as the live card declares them.
+    """
+    front, rest, opener = _front_matter(card)
+    previous_front, _, _ = _front_matter(previous_card)
+    new_blocks = _config_blocks(front)
+    previous_blocks = _config_blocks(previous_front)
+    previous_meta = yaml.safe_load(previous_front) or {}
+    previous_paths = {
+        config["config_name"]: [item["path"] for item in config.get("data_files", [])]
+        for config in previous_meta.get("configs", [])
+    }
+    carried = [
+        name for name in previous_blocks
+        if name not in new_blocks
+        and previous_paths.get(name)
+        and all(
+            path.startswith("releases/") and not path.startswith(f"{prefix}/")
+            for path in previous_paths[name]
+        )
+    ]
+    if not carried:
+        return card, []
+    lines = front.split("\n")
+    info_index = next(
+        (index for index, line in enumerate(lines) if line.startswith("dataset_info:")), None
+    )
+    if info_index is None:
+        raise ValueError("New card has no dataset_info line to extend")
+    insert = "\n".join(previous_blocks[name] for name in carried).split("\n")
+    lines[info_index:info_index] = insert
+    info_index += len(insert)
+    info_value = lines[info_index].split(":", 1)[1].strip()
+    if not info_value.startswith("["):
+        raise ValueError("Expected dataset_info as a one-line JSON list in the new card")
+    info = json.loads(info_value)
+    previous_info = {
+        entry.get("config_name"): entry for entry in previous_meta.get("dataset_info") or []
+    }
+    info.extend(previous_info[name] for name in carried if name in previous_info)
+    lines[info_index] = "dataset_info: " + json.dumps(info, ensure_ascii=False, separators=(",", ":"))
+    merged_front = "\n".join(lines)
+    merged = yaml.safe_load(merged_front)
+    names = [config["config_name"] for config in merged["configs"]]
+    if len(names) != len(set(names)) or not set(carried) <= set(names):
+        raise ValueError("Carried-forward configs did not merge cleanly")
+    return opener + merged_front + rest, carried
+
+
 def prepare(
-    package: Path, output: Path, plan_path: Path, prefix: str | None = None
+    package: Path, output: Path, plan_path: Path, prefix: str | None = None,
+    previous_card: Path | None = None,
 ) -> dict:
     package = package.resolve()
     output = output.resolve()
@@ -198,6 +284,11 @@ def prepare(
     files = validate_package(package)
     preflight = preflight_candidate(package)
     card = version_card((package / "README.md").read_text(encoding="utf-8"), prefix)
+    carried: list[str] = []
+    if previous_card is not None:
+        card, carried = carry_forward_configs(
+            card, Path(previous_card).read_text(encoding="utf-8"), prefix
+        )
     output.mkdir(parents=True)
     uploads = []
     release_root = output / prefix
@@ -227,6 +318,9 @@ def prepare(
         "candidate_preflight": preflight,
         "strategy": "add files under a versioned prefix and update the root dataset card; no deletion operations",
         "release_prefix": prefix,
+        "previous_card_checked": previous_card is not None,
+        "previous_card_sha256": sha256(Path(previous_card)) if previous_card is not None else None,
+        "carried_forward_configs": carried,
         "file_count": len(uploads),
         "payload_bytes": sum(item["bytes"] for item in uploads),
         "uploads": uploads,
@@ -243,8 +337,19 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--plan", type=Path, default=DEFAULT_PLAN)
     parser.add_argument("--prefix")
+    parser.add_argument(
+        "--previous-card", type=Path,
+        help="the live dataset card (README.md) downloaded from the Hub; configs it "
+             "declares from earlier releases are kept",
+    )
+    parser.add_argument(
+        "--allow-dropping-configs", action="store_true",
+        help="skip the live-card check (configs absent from the new card leave the Hub)",
+    )
     args = parser.parse_args()
-    plan = prepare(args.package, args.output, args.plan, args.prefix)
+    if args.previous_card is None and not args.allow_dropping_configs:
+        parser.error("pass --previous-card <live README.md> (or --allow-dropping-configs)")
+    plan = prepare(args.package, args.output, args.plan, args.prefix, args.previous_card)
     print(json.dumps({key: value for key, value in plan.items() if key != "uploads"}, indent=2))
 
 
