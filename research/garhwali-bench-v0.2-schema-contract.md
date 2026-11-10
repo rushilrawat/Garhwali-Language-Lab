@@ -279,6 +279,27 @@ historical/open rather than independent-final. The local task-card pack is
 It contains six documentation cards and aggregate evidence only, no benchmark
 payload text, audio, speaker identifiers, or publication authorization.
 
+## Pinned draft snapshot — 2026-11-10
+
+The current local draft (`data/processed/evaluation/garhwali_bench/v0.2-draft/`,
+14,703 records, contract validation `pass` with 0 errors) is pinned by hash in
+[`release/garhwali_bench_v0.2-draft_snapshot.json`](../release/garhwali_bench_v0.2-draft_snapshot.json):
+9 files, 115,766,660 bytes, combined SHA-256
+`96e0a75f905ceec60b6eb88a8d99c189812ed89cf8e839014d5ac83a94ee51ba`.
+
+This is a reproducibility pin, **not** the v0.2 release freeze: the blockers
+below are still open and the draft remains `draft_local_only_not_release_ready`.
+Any score reported against the draft should quote the combined digest. Check a
+local copy with:
+
+```bash
+PYTHONPATH=scripts .venv/bin/python scripts/freeze_benchmark.py verify \
+  data/processed/evaluation/garhwali_bench/v0.2-draft release/garhwali_bench_v0.2-draft_snapshot.json
+```
+
+If the draft is rebuilt, write a new snapshot with `freeze_benchmark.py freeze`
+rather than editing this one.
+
 ## Migration blockers before v0.2 can be frozen
 
 1. Recover original raw text for legacy internal/recommended rows only where

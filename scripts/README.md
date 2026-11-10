@@ -303,6 +303,11 @@ It checks source hashes, record counts and IDs, NFC text hashes, task references
 rights/provenance declarations, splits, and local ASR file hashes. Its report is
 a local draft-contract audit; it does not freeze v0.2 or clear rights.
 
+`freeze_benchmark.py freeze DIR` writes a hash manifest (per-file bytes, line
+count, SHA-256 and one combined digest; no records) for a benchmark export, and
+`freeze_benchmark.py verify DIR SNAPSHOT.json` checks a directory against it.
+The current draft's pin is `release/garhwali_bench_v0.2-draft_snapshot.json`.
+
 `build_benchmark_v02.py` adapts the same eight views into a deterministic,
 ignored local draft at `data/processed/evaluation/garhwali_bench/v0.2-draft/`.
 It retains each legacy row, separates available source/scoring text, pins
