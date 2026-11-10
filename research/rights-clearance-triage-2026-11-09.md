@@ -7,6 +7,12 @@ ledger is [`rights-clearance-decisions-2026-11-09.json`](rights-clearance-decisi
 A row-level queue (record ID, source, tier, decision) is kept local under
 `data/review/rights-clearance-queue-v0.1/queue.csv`.
 
+**Owner decisions, 2026-11-10:** Tier A is signed off for release in corpus
+v0.2.9 and is wired into the builder (`SIGNED_OFF_PUBLIC_DOMAIN_SOURCES` in
+`scripts/build_huggingface_dataset.py`), which also corrects the Bhotias
+attribution to C. A. Sherring, 1906. Sankrityayan stays local while it is
+protected in the US.
+
 **No public data changed.** Decisions marked "clear" are complete on the
 evidence. They still need owner sign-off before they are wired into the
 builders and released in a new corpus version.

@@ -47,7 +47,7 @@
       "records": 246,
       "words": 89945,
       "tier": "A_public_domain_india_and_us",
-      "decision": "clear_pending_owner_signoff",
+      "decision": "released_owner_signoff_2026_11_10",
       "work": "H. G. Walton, British Garhwal: A Gazetteer (District Gazetteers of the United Provinces, vol. XXXVI), Government Press, Allahabad, 1910",
       "basis": "India: Government work, Copyright Act 1957 s.28 term of 60 years from publication ended 1970 (same basis the project already applies to Walton scan pages 90-91). US: published 1910, before 1931.",
       "evidence": [
@@ -56,14 +56,15 @@
         "https://search.worldcat.org/oclc/160247247",
         "https://web.law.duke.edu/cspd/publicdomainday/2026/"
       ],
-      "edition_check": "Local scan title page reads Volume XXXVI, H. G. Walton, I.C.S., Allahabad, 1910."
+      "edition_check": "Local scan title page reads Volume XXXVI, H. G. Walton, I.C.S., Allahabad, 1910.",
+      "implemented_in": "scripts/build_huggingface_dataset.py SIGNED_OFF_PUBLIC_DOMAIN_SOURCES"
     },
     {
       "source_id": "ia_strachey_duthie_garhwal_flora_catalogue_1906",
       "records": 124,
       "words": 28680,
       "tier": "A_public_domain_india_and_us",
-      "decision": "clear_pending_owner_signoff",
+      "decision": "released_owner_signoff_2026_11_10",
       "work": "R. Strachey, rev. J. F. Duthie, Catalogue of the Plants of Kumaon and of the Adjacent Portions of Garhwal and Tibet, Lovell Reeve, London, 1906",
       "basis": "Last surviving author J. F. Duthie died 23 Feb 1922; Strachey died 1908. India: life+50 term then in force ended 31 Dec 1972, before the 1992 extension (which did not revive expired terms). UK: life+70 ended 1992. US: published 1906.",
       "evidence": [
@@ -72,14 +73,15 @@
         "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
         "https://web.law.duke.edu/cspd/publicdomainday/2026/"
       ],
-      "edition_check": "Local scan title page matches the 1906 Strachey/Duthie revision."
+      "edition_check": "Local scan title page matches the 1906 Strachey/Duthie revision.",
+      "implemented_in": "scripts/build_huggingface_dataset.py SIGNED_OFF_PUBLIC_DOMAIN_SOURCES"
     },
     {
       "source_id": "ia_e_sherman_oakley_holy_himalaya_1905",
       "records": 57,
       "words": 16902,
       "tier": "A_public_domain_india_and_us",
-      "decision": "clear_pending_owner_signoff",
+      "decision": "released_owner_signoff_2026_11_10",
       "work": "E. Sherman Oakley, Holy Himalaya, Oliphant Anderson & Ferrier, Edinburgh, 1905",
       "basis": "Author died at Ranikhet in 1934 or 1935. India: life+50 term ended by 31 Dec 1985. UK: life+70 ended by 2005. US: published 1905.",
       "evidence": [
@@ -88,14 +90,15 @@
         "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
         "https://web.law.duke.edu/cspd/publicdomainday/2026/"
       ],
-      "edition_check": "Local OCR is the 1905 first edition (Archive item holyhimalayareli00oaklrich); no later-edition markers found."
+      "edition_check": "Local OCR is the 1905 first edition (Archive item holyhimalayareli00oaklrich); no later-edition markers found.",
+      "implemented_in": "scripts/build_huggingface_dataset.py SIGNED_OFF_PUBLIC_DOMAIN_SOURCES"
     },
     {
       "source_id": "ia_note_on_bhotias_almora_british_garhwal_1905",
       "records": 24,
       "words": 13724,
       "tier": "A_public_domain_india_and_us",
-      "decision": "clear_pending_owner_signoff",
+      "decision": "released_owner_signoff_2026_11_10",
       "work": "C. A. Sherring, Notes on the Bhotias of Almora and British Garhwal, Memoirs of the Asiatic Society of Bengal vol. I no. 8, Calcutta, 1906",
       "basis": "Author identified from the scan's title page (catalog record currently says 'not identified'). Sherring died 8 Oct 1940. India: life+50 term ended 31 Dec 1990, before the 1992 extension. UK: life+70 ended 2010. US: published 1906. The Archive uploader's CC BY-NC 4.0 label applies to the scan, not to the 1906 text.",
       "evidence": [
@@ -105,7 +108,8 @@
         "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
         "https://web.law.duke.edu/cspd/publicdomainday/2026/"
       ],
-      "edition_check": "Local scan page 1 reads Memoirs ASB vol. I no. 8, C. A. Sherring, Calcutta, 1906. Correct the catalog author and year (1906, not 1905)."
+      "edition_check": "Local scan page 1 reads Memoirs ASB vol. I no. 8, C. A. Sherring, Calcutta, 1906. Correct the catalog author and year (1906, not 1905).",
+      "implemented_in": "scripts/build_huggingface_dataset.py SIGNED_OFF_PUBLIC_DOMAIN_SOURCES"
     },
     {
       "source_id": "ia_rai_pati_ram_bahadur_garhwal_ancient_modern_1916",
@@ -155,14 +159,15 @@
       "records": 305,
       "words": 84894,
       "tier": "B2_india_public_domain_us_protected_or_unresolved",
-      "decision": "owner_jurisdiction_decision",
+      "decision": "keep_local_owner_decision_2026_11_10",
       "work": "Rahul Sankrityayan, Himalaya Parichay vol. 1: Garhwal, 1953",
       "basis": "Author died 14 Apr 1963: public domain in India since 1 Jan 2024. In the US, restored under the URAA (still protected in India on 1 Jan 1996), so protected until the end of 2048.",
       "evidence": [
         "https://en.wikipedia.org/wiki/Rahul_Sankrityayan",
         "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
         "https://commons.wikimedia.org/wiki/Commons:Hirtle_chart"
-      ]
+      ],
+      "decision_note": "Owner chose not to publish on a US host while the work is protected in the US (until end of 2048)."
     },
     {
       "source_id": "ia_mahidhar_sharma_barthwal_garhwal_me_kon_kahan_se_1938",
@@ -598,6 +603,18 @@
       "work": "Web pages, social posts, and web-crawl datasets",
       "basis": "No license, unidentifiable underlying authors (web-crawl datasets license only the database), or an all-rights-reserved site. Keep local; clear only individual sites that grant written permission.",
       "evidence": []
+    }
+  ],
+  "owner_decisions": [
+    {
+      "date": "2026-11-10",
+      "scope": "Tier A (4 sources, 451 records)",
+      "decision": "release in corpus v0.2.9"
+    },
+    {
+      "date": "2026-11-10",
+      "scope": "ia_rahul_sankrityayan_himalaya_parichay_garhwal_1953",
+      "decision": "keep local"
     }
   ]
 }

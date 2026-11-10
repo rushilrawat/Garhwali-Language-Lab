@@ -74,6 +74,50 @@ BLOCKING_RIGHTS_MARKERS = (
     'license_not_stated', 'author_death_evidence_pending',
     'component_review', 'no_license',
 )
+# Owner sign-off on 2026-11-10 for Tier A of the rights triage
+# (research/rights-clearance-triage-2026-11-09.md and the decision ledger
+# research/rights-clearance-decisions-2026-11-09.json). Each entry matches one
+# exact Internet Archive item, so a different scan or edition never inherits
+# the clearance. These are English reference works: they reach the public
+# catalog but not the Garhwali training views, which require iso_639_3 == gbm.
+PUBLIC_DOMAIN_INDIA_US_SIGNED_OFF = 'public_domain_india_and_us_term_expired_owner_signoff_2026_11_10'
+RIGHTS_DECISION_LEDGER = 'research/rights-clearance-decisions-2026-11-09.json'
+_PD_LAW = (
+    'https://copyright.gov.in/Copyright_Act_1957/chapter_v.html; '
+    'https://web.law.duke.edu/cspd/publicdomainday/2026/'
+)
+SIGNED_OFF_PUBLIC_DOMAIN_SOURCES = {
+    'ia_british_garhwal_1910': {
+        'source_url': 'https://archive.org/details/in.ernet.dli.2015.48008',
+        'author': 'H. G. Walton',
+        'publication_year': 1910,
+        'attribution': 'H. G. Walton, British Garhwal: A Gazetteer (District Gazetteers of the United Provinces, vol. XXXVI), Government Press, Allahabad, 1910. Internet Archive item in.ernet.dli.2015.48008.',
+        'rights_evidence': 'India: Government work, Copyright Act 1957 s.28, term ended 1970. US: published 1910, before 1931. ' + _PD_LAW + '; https://wzcc.nvli.in/gazettes/british-garhwal-gazetteer-being-volume-xxxvi-district-gazetteers-united-provinces-agra-and; https://search.worldcat.org/oclc/160247247',
+    },
+    'ia_strachey_duthie_garhwal_flora_catalogue_1906': {
+        'source_url': 'https://archive.org/details/catalogueplants00duthgoog',
+        'author': 'Richard Strachey; revised by J. F. Duthie',
+        'publication_year': 1906,
+        'attribution': 'R. Strachey, revised by J. F. Duthie, Catalogue of the Plants of Kumaon and of the Adjacent Portions of Garhwal and Tibet, Lovell Reeve, London, 1906. Internet Archive item catalogueplants00duthgoog.',
+        'rights_evidence': 'Last author J. F. Duthie died 23 Feb 1922: India life+50 term ended 1972, not revived in 1992. US: published 1906. ' + _PD_LAW + '; https://heenecemetery.org.uk/burial/john-duthie-buried-1922; https://catalog.hathitrust.org/Record/002000543.marc',
+    },
+    'ia_e_sherman_oakley_holy_himalaya_1905': {
+        'source_url': 'https://archive.org/details/holyhimalayareli00oaklrich',
+        'author': 'E. Sherman Oakley',
+        'publication_year': 1905,
+        'attribution': 'E. Sherman Oakley, Holy Himalaya, Oliphant Anderson & Ferrier, Edinburgh, 1905. Internet Archive item holyhimalayareli00oaklrich.',
+        'rights_evidence': 'Author died 1934/35: India life+50 term ended by 1985. US: published 1905. ' + _PD_LAW + '; https://whowaswho-indology.info/?p=18788; https://ci.nii.ac.jp/ncid/BA03824796',
+    },
+    'ia_note_on_bhotias_almora_british_garhwal_1905': {
+        'source_url': 'https://archive.org/details/dli.pahar.1694',
+        'author': 'C. A. Sherring',
+        'publication_year': 1906,
+        'title': 'Notes on the Bhotias of Almora and British Garhwal',
+        'attribution': 'C. A. Sherring, Notes on the Bhotias of Almora and British Garhwal, Memoirs of the Asiatic Society of Bengal vol. I no. 8, Calcutta, 1906. Internet Archive item dli.pahar.1694 (the uploader\'s CC BY-NC label covers the scan, not the 1906 text).',
+        'rights_evidence': 'Author died 8 Oct 1940: India life+50 term ended 31 Dec 1990, before the 1992 extension. US: published 1906. ' + _PD_LAW + '; https://collections.westminster.org.uk/index.php/sherring-charles-atmore-1868-1940; https://ci.nii.ac.jp/ncid/BA03928441',
+    },
+}
+
 TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE = {
     'public_domain_us_uk_india_term_expired': {
         'license_id': 'Public-Domain-US-UK-India',
@@ -126,6 +170,13 @@ TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE = {
             'legislation.gov.uk/ukpga/1988/48/section/12',
             'copyright.gov.in/copyright_act_1957/chapter_v.html',
             'glottolog.org/resource/reference/id/50321',
+        ),
+    },
+    PUBLIC_DOMAIN_INDIA_US_SIGNED_OFF: {
+        'license_id': 'Public-Domain-India-US',
+        'required_evidence': (
+            'copyright.gov.in/copyright_act_1957/chapter_v.html',
+            'web.law.duke.edu/cspd/publicdomainday/2026',
         ),
     },
 }
@@ -297,6 +348,29 @@ def asr_split_directory(profile):
     return 'asr_experimental' if profile_includes_all_data(profile) else 'asr'
 
 
+def signed_off_public_domain_provenance(item):
+    """Apply an owner-signed-off public-domain basis to one exact source item."""
+    spec = SIGNED_OFF_PUBLIC_DOMAIN_SOURCES.get(item.get('source_id'))
+    if (
+        not spec
+        or str(item.get('source_url') or '').rstrip('/') != spec['source_url']
+        or set(item.get('quality_flags') or []) & BLOCKING_FLAGS
+    ):
+        return None
+    enriched = dict(item)
+    enriched.update({key: value for key, value in spec.items() if key != 'source_url'})
+    enriched.update({
+        'license': 'Public domain (India and US)',
+        'license_id': 'Public-Domain-India-US',
+        'license_url': 'https://creativecommons.org/publicdomain/mark/1.0/',
+        'rights_status': PUBLIC_DOMAIN_INDIA_US_SIGNED_OFF,
+        'rights_decision_ledger': RIGHTS_DECISION_LEDGER,
+        'commercial_use_status': 'public_domain_in_india_and_us',
+        'model_training_status': 'public_domain_in_india_and_us',
+    })
+    return enriched
+
+
 def open_bible_stories_provenance(item):
     """Use the exact Garhwali OBS v1 license rather than its host-site footer."""
     record_id = str(item.get('record_id') or '')
@@ -330,7 +404,11 @@ def open_bible_stories_provenance(item):
 
 
 def is_publishable_provenance(item):
-    item = open_bible_stories_provenance(item) or item
+    item = (
+        signed_off_public_domain_provenance(item)
+        or open_bible_stories_provenance(item)
+        or item
+    )
     flags = set(item.get('quality_flags') or [])
     if flags & BLOCKING_FLAGS:
         return False
@@ -1481,7 +1559,8 @@ def refresh_acceptable_responses(rows):
 def catalog_provenance(item):
     item = enrich_source_attribution(item)
     item = (
-        open_bible_stories_provenance(item)
+        signed_off_public_domain_provenance(item)
+        or open_bible_stories_provenance(item)
         or noncommercial_catalog_provenance(item)
         or pib_policy_catalog_provenance(item)
         or panos_reproduction_policy_provenance(item)
@@ -1505,6 +1584,7 @@ def catalog_provenance(item):
         'permitted_audiences',
         'source_pdf', 'source_pdf_sha256', 'pdf_page', 'title', 'author',
         'publication_year', 'extraction_method', 'modifications',
+        'rights_decision_ledger',
     )
     result = {key: item.get(key) for key in keep if item.get(key) not in (None, '', [])}
     for key, value in source_record_locator(item).items():
