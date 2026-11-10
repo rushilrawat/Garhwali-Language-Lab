@@ -19,6 +19,7 @@ from run_translation_baseline import (
     normalize,
     word_ngrams,
 )
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -232,19 +233,6 @@ def analyze_rows(
         ],
     }
     return report, paired
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    rows = []
-    with Path(path).open(encoding='utf-8') as handle:
-        for line_number, line in enumerate(handle, start=1):
-            if not line.strip():
-                continue
-            row = json.loads(line)
-            if not isinstance(row, dict):
-                raise ValueError(f'{path}:{line_number}: expected a JSON object')
-            rows.append(row)
-    return rows
 
 
 def run(

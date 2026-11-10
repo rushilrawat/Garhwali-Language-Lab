@@ -4,13 +4,13 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import shutil
 import tarfile
 import tempfile
 import time
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,14 +21,6 @@ CHECKPOINT = (
 )
 DATA = ROOT / "data/processed/model_ready/sravaani_finetune"
 OUTPUT = ROOT / "data/processed/evaluation/asr/sravaani_finetune/held_out_evaluation"
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def hypothesis_text(hypothesis) -> str:

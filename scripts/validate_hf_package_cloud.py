@@ -16,6 +16,7 @@ from build_huggingface_dataset import (
     source_record_ids,
     upstream_split_overlap_ids,
 )
+from garhwali_lab.hashing import sha256_file as sha256
 
 
 KNOWLEDGE_CONFIGS = {
@@ -34,14 +35,6 @@ QUALITY_DETAIL_FIELDS = (
     'quality_flags', 'machine_transcript_quality', 'quality_v2',
     'language_quality', 'surface_quality', 'quality_metadata',
 )
-
-
-def sha256(path):
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def script_profile(text):

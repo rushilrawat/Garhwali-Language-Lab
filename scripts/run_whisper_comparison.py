@@ -9,6 +9,7 @@ import json
 import os
 import time
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -75,14 +76,6 @@ def generation_kwargs(max_new_tokens=128, language_prompt='hi', num_beams=1):
 
 def resolve_run_id(model_id, run_id=None):
     return run_id or f'{model_id.replace("/", "--")}-garhwali-speaker-safe-v0.1'
-
-
-def sha256_file(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def model_weight_sha256(model_path):

@@ -13,6 +13,7 @@ from pathlib import Path
 
 from evaluation_run_manifest import utc_now, write_run_artifacts
 from run_translation_baseline import metric_summary
+from garhwali_lab.hashing import sha256_file as file_sha256
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,14 +44,6 @@ def selected_rows_sha256(rows):
         for row in rows
     )
     return hashlib.sha256(payload.encode('utf-8')).hexdigest()
-
-
-def file_sha256(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def run(

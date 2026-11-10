@@ -4,11 +4,12 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from collections import Counter, defaultdict
 from datetime import date
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,27 +21,6 @@ OUTPUT_PATH = Path("data/extracted/research/internet_archive_media_first_pass_20
 DURATION_TOLERANCE_SECONDS = 0.01
 TRANSCRIPT_EXTENSIONS = {".ass", ".dfxp", ".lrc", ".sbv", ".scc", ".ssa", ".srt", ".sub", ".ttml", ".vtt"}
 TRANSCRIPT_WORDS = ("caption", "closedcaption", "subtitle", "transcript")
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    rows = []
-    with path.open(encoding="utf-8") as stream:
-        for line_number, line in enumerate(stream, 1):
-            if not line.strip():
-                continue
-            row = json.loads(line)
-            if not isinstance(row, dict):
-                raise ValueError(f"{path}:{line_number}: expected a JSON object")
-            rows.append(row)
-    return rows
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def media_type(streams: list[dict]) -> str:

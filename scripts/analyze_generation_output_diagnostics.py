@@ -4,13 +4,14 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import math
 import re
 import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,27 +41,6 @@ SUSPICIOUS_INVISIBLES = {
     *map(chr, range(0x2066, 0x206A)),  # bidi isolate controls
 }
 CONTROL_TOKEN = re.compile(r"<extra_id_\d+>")
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    rows = []
-    with Path(path).open(encoding="utf-8") as handle:
-        for line_number, line in enumerate(handle, start=1):
-            if not line.strip():
-                continue
-            row = json.loads(line)
-            if not isinstance(row, dict):
-                raise ValueError(f"{path}:{line_number}: expected an object")
-            rows.append(row)
-    return rows
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def _normalized_output(text: str) -> str:

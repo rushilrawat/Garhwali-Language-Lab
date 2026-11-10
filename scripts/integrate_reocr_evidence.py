@@ -7,19 +7,13 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+from garhwali_lab.io import iter_jsonl as read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "experimental/incoming_pdfs.jsonl"
 CANDIDATES = ROOT / "data/processed/evaluation/data_quality/incoming_pdf_reocr_full_v0_1/candidates.jsonl"
 REPORT = ROOT / "data/processed/evaluation/data_quality/incoming_pdf_reocr_full_v0_1/integration_report.json"
-
-
-def read_jsonl(path: Path):
-    with path.open(encoding="utf-8") as handle:
-        for line in handle:
-            if line.strip():
-                yield json.loads(line)
 
 
 def accepted_candidate(evidence: dict) -> dict | None:

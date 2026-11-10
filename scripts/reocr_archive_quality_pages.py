@@ -12,6 +12,7 @@ import subprocess
 import tempfile
 from collections import defaultdict
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,14 +43,6 @@ def select_targets(page_rows: list[dict]) -> list[dict]:
         if row.get("source_id") in SOURCES
         and (row.get("ocr_empty") or row.get("candidate_ocr_warning_flags"))
     ]
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def tesseract_words(tsv: str) -> tuple[str, list[float]]:

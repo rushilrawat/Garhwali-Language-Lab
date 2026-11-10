@@ -6,9 +6,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import re
-import unicodedata
 from pathlib import Path
+from garhwali_lab.text import clean_text as normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,10 +43,6 @@ MODELS = (
         'declared_max_length': 2048,
     },
 )
-
-
-def normalize(text):
-    return re.sub(r'\s+', ' ', unicodedata.normalize('NFC', str(text))).strip()
 
 
 def score_tokenizer(tokenizer, texts, max_length=None):

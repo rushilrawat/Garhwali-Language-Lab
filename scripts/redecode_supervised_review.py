@@ -12,6 +12,7 @@ import unicodedata
 from pathlib import Path
 
 from run_asr_baseline import read_audio
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,11 +28,6 @@ BENGALI_FLAGS = {
     'bengali-script-in-garhwali-config',
     'bengali-script-under-garhwali-label',
 }
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
 
 
 def normalize_for_comparison(text):

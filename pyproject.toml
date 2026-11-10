@@ -1,0 +1,75 @@
+[project]
+name = "garhwali-language-lab"
+version = "0.2.8"
+description = "Provenance-first Garhwali (gbm) corpus, speech, and research pipeline"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+# Ingestion and release pipeline (what CI installs).
+pipeline = [
+    "certifi==2026.7.22",
+    "langgraph==1.2.11",
+    "langgraph-checkpoint-sqlite==3.1.1",
+    "pypdf==6.10.0",
+    "pyarrow>=25,<26",
+]
+# Hugging Face dataset tooling used by examples and release checks.
+hf = [
+    "datasets==5.1.0",
+    "huggingface_hub>=1.0,<2",
+    "pyarrow>=25,<26",
+]
+# Speech recognition experiments.
+asr = [
+    "numpy==2.5.3",
+    "torch==2.14.0",
+    "transformers==5.17.0",
+    "sentencepiece==0.2.2",
+]
+# Model audits and adapter experiments.
+model-audit = [
+    "accelerate==1.12.0",
+    "peft==0.20.0",
+    "protobuf==6.32.1",
+    "sentencepiece==0.2.2",
+    "tokenizers==0.23.2",
+    "torch==2.14.0",
+    "transformers==5.17.0",
+]
+dev = [
+    "garhwali-language-lab[pipeline,hf]",
+    "ruff==0.16.9",
+    "coverage>=7.6",
+]
+training = [
+    "garhwali-language-lab[dev,asr]",
+    "accelerate==1.12.0",
+]
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = { "" = "scripts" }
+packages = ["garhwali_lab"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+extend-exclude = [".venv", ".cache", "data", "release"]
+
+[tool.ruff.lint]
+# CI gate: real defects only. Style rules stay advisory.
+select = ["E9", "F", "B023", "B905", "BLE001"]
+
+[tool.ruff.lint.per-file-ignores]
+# Acquisition loops record every failure into a report instead of crashing.
+"scripts/collect_online.py" = ["BLE001"]
+"scripts/check_source_freshness.py" = ["BLE001"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["garhwali_lab"]

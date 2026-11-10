@@ -7,6 +7,7 @@ import hashlib
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
+from garhwali_lab.io import read_jsonl, write_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,11 +17,6 @@ LEXICON = ROOT / 'data/processed/model_ready/language_quality/lexicon_candidates
 OUTPUT = ROOT / 'data/processed/model_ready/instructions'
 SPLITS = ('train', 'validation', 'test')
 SYSTEM = 'Follow the instruction using the available Garhwali language evidence.'
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as source:
-        return [json.loads(line) for line in source if line.strip()]
 
 
 def instruction_record(task, instruction, response, split, parent_id, provenance,
@@ -139,13 +135,6 @@ def attach_acceptable_responses(records):
             responses[(row['task'], row['instruction'])]
         )
     return records
-
-
-def write_jsonl(path, rows):
-    Path(path).write_text(
-        ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in rows),
-        encoding='utf-8',
-    )
 
 
 def build(text_path=TEXT, parallel_path=PARALLEL, lexicon_path=LEXICON,

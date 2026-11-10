@@ -9,6 +9,7 @@ import json
 import os
 from datetime import date
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file as sha256
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,14 +24,6 @@ SUPPORT_FILES = {
     'research/huggingface-upstream-split-overlap-2026-10-05.json',
     'research/huggingface-upstream-split-overlap-2026-10-05.md',
 }
-
-
-def sha256(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def build(package, target_repo=None, visibility='private'):

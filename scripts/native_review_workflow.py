@@ -6,6 +6,7 @@ import csv
 import argparse
 from collections import defaultdict
 from pathlib import Path
+from garhwali_lab.io import write_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,14 +35,6 @@ def read_jsonl(path):
         return []
     with path.open(encoding='utf-8') as handle:
         return [json.loads(line) for line in handle if line.strip()]
-
-
-def write_jsonl(path, rows):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in rows),
-        encoding='utf-8',
-    )
 
 
 def consensus_value(row):

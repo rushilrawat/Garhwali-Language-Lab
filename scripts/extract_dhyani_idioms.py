@@ -5,22 +5,16 @@ from __future__ import annotations
 
 import hashlib
 import json
-import re
-import unicodedata
 from pathlib import Path
 
 from bs4 import BeautifulSoup
+from garhwali_lab.text import clean_text as normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "downloads" / "garhwali_idioms_dhyani" / "page.html"
 OUT = ROOT / "data" / "extracted" / "garhwali_idioms_dhyani"
 URL = "https://sites.google.com/view/dhyani/%E0%A4%97%E0%A4%A2%E0%A4%B5%E0%A4%B3-%E0%A4%95%E0%A4%95%E0%A4%B7/%E0%A4%97%E0%A4%A2%E0%A4%B5%E0%A4%B2-%E0%A4%AE%E0%A4%B9%E0%A4%B5%E0%A4%B0-%E0%A4%94%E0%A4%B0-%E0%A4%95%E0%A4%B9%E0%A4%B5%E0%A4%A4"
-
-
-def normalize(text: str) -> str:
-    text = unicodedata.normalize("NFC", text)
-    return re.sub(r"\s+", " ", text).strip()
 
 
 def record(text: str, kind: str, position: int, context: list[str] | None = None) -> dict:

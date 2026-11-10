@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import csv
-import hashlib
 import io
 import json
 import zipfile
@@ -11,6 +10,7 @@ from collections import Counter
 from pathlib import Path
 
 import pyarrow.parquet as pq
+from garhwali_lab.hashing import sha256_file as file_sha256
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,14 +25,6 @@ FIELDS = (
     "reference_quality_flags", "district", "speaker_identity_resolution",
     "source_license",
 )
-
-
-def file_sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def main() -> None:

@@ -3,14 +3,14 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import re
-import shutil
 from pathlib import Path
 
 import pyarrow as pa
 import pyarrow.parquet as pq
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import iter_jsonl as read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,21 +20,6 @@ ASR = ROOT / "data/processed/model_ready/splits/asr_speaker_recovered_v0.1"
 OLD_VIEW = ROOT / "data/huggingface/garhwali-speech-training-views-v0.1-upload"
 OUTPUT = ROOT / "data/huggingface/garhwali-speech-training-views-v0.2-upload"
 PREFIX = "training_views/v0.2/data/asr_reference"
-
-
-def read_jsonl(path: Path):
-    with path.open(encoding="utf-8") as handle:
-        for line in handle:
-            if line.strip():
-                yield json.loads(line)
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def write_parquet(path: Path, rows: list[dict]) -> str:

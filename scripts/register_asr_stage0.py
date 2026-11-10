@@ -3,9 +3,10 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,19 +25,6 @@ SRAVAANI_PREDICTIONS = (
     ROOT / 'data/processed/evaluation/asr/confidence_calibration/sravaani/predictions.jsonl'
 )
 OUTPUT = ROOT / 'data/processed/evaluation/asr/curriculum_stage_0/report.json'
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
-
-
-def sha256_file(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def relative(path):

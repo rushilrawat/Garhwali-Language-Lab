@@ -3,11 +3,9 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 from collections import Counter
-from pathlib import Path
 
 from ingest_archive_dabral_references import ROOT, existing_text_hashes, source_pages
 

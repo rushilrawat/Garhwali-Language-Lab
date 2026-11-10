@@ -15,6 +15,7 @@ import unicodedata
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -102,14 +103,6 @@ def source_metadata_for(pdf: Path) -> dict:
     metadata.setdefault("title", pdf.stem)
     metadata.setdefault("genre", "reference_material")
     return metadata
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def find_exact_duplicate(candidate: Path, pdf_paths: list[Path]) -> Path | None:

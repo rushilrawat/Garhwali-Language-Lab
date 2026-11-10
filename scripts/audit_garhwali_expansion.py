@@ -7,6 +7,7 @@ import hashlib
 import json
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.text import clean_text as normalize
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = {
@@ -17,10 +18,6 @@ SOURCES = {
 }
 INPUT_DIRS = ('corpus', 'restricted', 'experimental', 'extracted', 'data/extracted')
 REPORT = ROOT / 'data/extracted/expansion_audit/v0.2.0.json'
-
-
-def normalize(value: str) -> str:
-    return ' '.join(value.split())
 
 
 def row_text(row: dict) -> str:

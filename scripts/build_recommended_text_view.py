@@ -3,11 +3,12 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 
 from build_huggingface_dataset import recommended_text_training_row, text_row
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl, write_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,30 +16,6 @@ SPLIT_ROOT = ROOT / 'data/processed/model_ready/splits/text'
 QUALITY_PATH = ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
 OUTPUT = ROOT / 'data/processed/model_ready/splits/text_recommended'
 SPLITS = ('train', 'validation', 'test')
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as source:
-        return [json.loads(line) for line in source if line.strip()]
-
-
-def sha256_file(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as source:
-        for chunk in iter(lambda: source.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def write_jsonl(path, rows):
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    payload = ''.join(
-        json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n'
-        for row in rows
-    )
-    path.write_text(payload, encoding='utf-8')
-    return hashlib.sha256(payload.encode('utf-8')).hexdigest()
 
 
 def build_view(split_paths=None, quality_path=QUALITY_PATH, output_dir=OUTPUT):

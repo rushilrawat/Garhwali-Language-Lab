@@ -16,6 +16,8 @@ import unicodedata
 import wave
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,21 +25,8 @@ DEFAULT_TEXT_MANIFEST = ROOT / 'corpus/meta_omni.jsonl'
 OUTPUT_SPLITS = {'train': 'train', 'dev': 'validation', 'test': 'test'}
 
 
-def read_jsonl(path: Path) -> list[dict]:
-    with Path(path).open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
-
-
 def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def normalized_text(value: str) -> str:

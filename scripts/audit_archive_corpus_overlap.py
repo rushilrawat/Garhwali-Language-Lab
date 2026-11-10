@@ -12,10 +12,10 @@ import hashlib
 import json
 import unicodedata
 from collections import defaultdict
-from itertools import combinations
 from pathlib import Path
 
 from audit_archive_intake_quality import OCR_DIRS
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,19 +33,6 @@ def normalize_text(value: object) -> str:
 
 def text_ngrams(text: str, size: int) -> set[str]:
     return {text[index:index + size] for index in range(len(text) - size + 1)}
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    rows = []
-    with path.open(encoding="utf-8") as stream:
-        for line_number, line in enumerate(stream, 1):
-            if not line.strip():
-                continue
-            row = json.loads(line)
-            if not isinstance(row, dict):
-                raise ValueError(f"{path}:{line_number}: expected a JSON object")
-            rows.append(row)
-    return rows
 
 
 def read_archive_rows(root: Path) -> list[dict]:

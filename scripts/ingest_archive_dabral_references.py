@@ -6,10 +6,11 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-import unicodedata
 import xml.etree.ElementTree as ET
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file as sha256
+from garhwali_lab.text import clean_text as normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -76,18 +77,6 @@ def sha1(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
-
-
-def normalize(text: str) -> str:
-    return re.sub(r"\s+", " ", unicodedata.normalize("NFC", text)).strip()
 
 
 def page_text(page: ET.Element) -> str:

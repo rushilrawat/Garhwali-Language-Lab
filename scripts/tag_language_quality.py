@@ -8,6 +8,7 @@ import json
 import unicodedata
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.io import iter_jsonl as read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -320,12 +321,6 @@ def grammar_source_candidate(row):
         'genres': sorted(genres), 'language_quality': row.get('language_quality'),
         'dialect_quality': row.get('dialect_quality'), 'provenance': row.get('provenance', []),
     }
-
-
-def read_jsonl(path):
-    with path.open(encoding='utf-8') as source:
-        for line in source:
-            if line.strip(): yield json.loads(line)
 
 
 def write_row(handle, row):

@@ -7,9 +7,9 @@ import argparse
 import hashlib
 import json
 import re
-import unicodedata
 from datetime import date
 from pathlib import Path
+from garhwali_lab.text import clean_text as normalize
 
 
 SOURCE_URL = 'https://archive.org/details/cu31924089930774'
@@ -75,10 +75,6 @@ SAYINGS = (
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
-
-
-def normalize(text: str) -> str:
-    return re.sub(r'\s+', ' ', unicodedata.normalize('NFC', text)).strip()
 
 
 def extract_records(source_text: str, source_sha256: str) -> list[dict]:

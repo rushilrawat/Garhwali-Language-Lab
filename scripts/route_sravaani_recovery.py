@@ -4,10 +4,10 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -59,14 +59,6 @@ def route_row(row):
         'active_for_experiment': True,
         'supervised_training_eligible': False,
     }
-
-
-def sha256_file(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def run(input_path=INPUT, output_path=OUTPUT, report_path=REPORT):

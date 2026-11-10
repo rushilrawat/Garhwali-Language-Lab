@@ -8,13 +8,13 @@ import hashlib
 import json
 import re
 import time
-import unicodedata
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.error import URLError
 from urllib.parse import urljoin
 from urllib.request import Request, urlopen
+from garhwali_lab.text import clean_text as normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,10 +35,6 @@ def sha256(data: bytes | str) -> str:
     if isinstance(data, str):
         data = data.encode("utf-8")
     return hashlib.sha256(data).hexdigest()
-
-
-def normalize(value: str) -> str:
-    return " ".join(unicodedata.normalize("NFC", value).split())
 
 
 class ReflexTableParser(HTMLParser):

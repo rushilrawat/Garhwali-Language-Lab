@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from garhwali_lab.io import iter_jsonl as read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,13 +14,6 @@ BASE = ROOT / "data/processed/model_ready/transcripts/machine_drafts_sravaani_co
 OUTPUT = ROOT / "data/processed/model_ready/transcripts/machine_drafts_sravaani_verified.jsonl"
 REPORT = OUTPUT.with_name("machine_drafts_sravaani_verified_report.json")
 EVIDENCE_GLOB = "low_confidence_whisper_turbo*/cloud_output/predictions.jsonl"
-
-
-def read_jsonl(path: Path):
-    with path.open(encoding="utf-8") as handle:
-        for line in handle:
-            if line.strip():
-                yield json.loads(line)
 
 
 def load_evidence(directory: Path) -> tuple[dict[str, dict], list[str]]:

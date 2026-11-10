@@ -6,9 +6,9 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-import unicodedata
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from garhwali_lab.text import clean_text as normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,10 +27,6 @@ def digest(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             sha.update(block)
     return sha.hexdigest()
-
-
-def normalize(text: str) -> str:
-    return re.sub(r"\s+", " ", unicodedata.normalize("NFC", text)).strip()
 
 
 def page_text(page: ET.Element) -> str:

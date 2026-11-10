@@ -6,11 +6,7 @@ import json
 import statistics
 import time
 from pathlib import Path
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding="utf-8") as handle:
-        return [json.loads(line) for line in handle if line.strip()]
+from garhwali_lab.io import read_jsonl
 
 
 def row_identity(row):

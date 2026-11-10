@@ -3,6 +3,7 @@
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
+from garhwali_lab.io import iter_jsonl as read_jsonl, write_jsonl
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data/processed/model_ready/audio'
@@ -29,16 +30,6 @@ def enrich(row, quality):
         'channels', 'sample_width_bytes', 'peak_abs', 'zero_sample_share', 'clipped_sample_share')
     }
     return result
-
-
-def read_jsonl(path):
-    with path.open(encoding='utf-8') as source:
-        for line in source:
-            if line.strip(): yield json.loads(line)
-
-
-def write_jsonl(path, rows):
-    path.write_text(''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in rows), encoding='utf-8')
 
 
 def main():

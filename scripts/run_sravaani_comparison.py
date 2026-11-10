@@ -4,11 +4,11 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import time
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,14 +68,6 @@ def make_prediction_row(row, hypothesis, metrics):
         if row.get(field) is not None:
             prediction[field] = row[field]
     return prediction
-
-
-def sha256_file(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def validate_model_dir(model_dir):

@@ -84,7 +84,7 @@ class JambuIngestionTests(unittest.TestCase):
                 }],
             }
             # Use a single-page test layout; the production manifest has all 16 pages.
-            from ingest_jambu_garhwali import PAGE_COUNT, PAGE_SIZE, PAGES_DIR, SNAPSHOT_MANIFEST
+            from ingest_jambu_garhwali import PAGES_DIR
             import ingest_jambu_garhwali as module
             old_page_count, old_page_size = module.PAGE_COUNT, module.PAGE_SIZE
             try:

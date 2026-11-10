@@ -4,10 +4,10 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -209,14 +209,6 @@ def build_official_test_remainder(
         if row.get("transcription_split") == "test"
         and _audio_hash(row) not in fixed_test_hashes
     ]
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def run(root: Path, output: Path, remainder_manifest: Path | None = None) -> dict:

@@ -5,14 +5,10 @@ import argparse
 import json
 import os
 from pathlib import Path
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding="utf-8") as handle:
-        return [json.loads(line) for line in handle if line.strip()]
 
 
 def priority(row):

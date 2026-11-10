@@ -5,10 +5,9 @@ from __future__ import annotations
 
 import hashlib
 import json
-import re
-import unicodedata
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.text import clean_text as normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,10 +34,6 @@ EXPECTED_GIT_BLOB_SHA1 = {
     "proverbs.json": "d40448e532ef5b1aa765d84123cacda95b7103f9",
     "riddles.json": "0f0892a2539761911b685cf10027565ce5a4fc5b",
 }
-
-
-def normalize(text: str) -> str:
-    return re.sub(r"\s+", " ", unicodedata.normalize("NFC", text)).strip()
 
 
 def sha256(text: str | bytes) -> str:

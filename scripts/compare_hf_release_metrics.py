@@ -7,19 +7,12 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file as sha256
 
 
 COUNT_DISTRIBUTIONS = (
     "scripts", "rights_status_counts", "reuse_scope_counts", "license_label_counts",
 )
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def sha256_json(value: object) -> str:

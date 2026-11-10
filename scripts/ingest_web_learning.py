@@ -3,10 +3,10 @@
 import hashlib
 import json
 import re
-import unicodedata
 import urllib.request
 from html.parser import HTMLParser
 from pathlib import Path
+from garhwali_lab.text import clean_text as normalize
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT/'data/downloads/web_learning'
@@ -29,9 +29,6 @@ class TextParser(HTMLParser):
     def handle_data(self, data):
         value=re.sub(r'\s+',' ',data).strip()
         if value and not self.hidden: self.nodes.append(value)
-
-
-def normalize(text): return re.sub(r'\s+',' ',unicodedata.normalize('NFC',text)).strip()
 
 
 def labeled_pairs(text):

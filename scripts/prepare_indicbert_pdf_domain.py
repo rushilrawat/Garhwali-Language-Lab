@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 from audit_indicbert_cloud_input import from_incoming_pdf, read_jsonl
+from garhwali_lab.io import write_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,13 +20,6 @@ OUTPUT = ROOT / "data/processed/model_ready/indicbert_pdf_domain"
 def digest(rows: list[dict]) -> str:
     value = "\n".join(row["segment_sha256"] for row in rows).encode()
     return hashlib.sha256(value).hexdigest()
-
-
-def write_jsonl(path: Path, rows: list[dict]) -> None:
-    path.write_text(
-        "".join(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for row in rows),
-        encoding="utf-8",
-    )
 
 
 def run(input_dir: Path = INPUT, output_dir: Path = OUTPUT) -> dict:

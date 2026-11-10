@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import gc
-import hashlib
 import json
 import math
 import shutil
@@ -22,6 +21,7 @@ from train_sravaani_garhwali import (
     download_checkpoint,
     validate_checkpoint_file,
 )
+from garhwali_lab.hashing import sha256_file
 
 
 HARD_TIMEOUT_HOURS = 6.0
@@ -135,14 +135,6 @@ def max_combined_cost_usd(prior_cost_usd: float) -> float:
 def optimizer_steps(records: int, trial: Trial) -> int:
     microbatches = math.ceil(records / trial.batch_size)
     return math.ceil(microbatches / trial.accumulate_grad_batches) * trial.epochs
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def read_manifest(path: Path) -> list[dict]:

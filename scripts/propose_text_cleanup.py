@@ -17,6 +17,7 @@ import time
 import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
+from garhwali_lab.io import iter_jsonl as read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,13 +37,6 @@ DIALECT_PRIORITY_GENRES = {
     'thematic_lexicon', 'historical_lexicon', 'social_media',
     'speech_transcript', 'prompted_speech', 'sentence',
 }
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as source:
-        for line in source:
-            if line.strip():
-                yield json.loads(line)
 
 
 def mechanical_cleanup(text):

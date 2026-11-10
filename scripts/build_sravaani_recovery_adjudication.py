@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 from collections import Counter
 from pathlib import Path
@@ -11,6 +10,8 @@ from pathlib import Path
 from asr_metrics import score
 from calibrate_sravaani_recovery_confidence import character_agreement
 from redecode_sravaani_recovery import candidate_flags, severity
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl, write_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,28 +30,6 @@ MODEL_RANK = {
     'whisper-tiny-garhwali-v0.2': 1,
     'whisper-tiny-garhwali-v0.1': 2,
 }
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
-
-
-def write_jsonl(path, rows):
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in rows),
-        encoding='utf-8',
-    )
-
-
-def sha256_file(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def prediction(row):

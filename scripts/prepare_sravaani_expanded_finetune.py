@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 import prepare_sravaani_finetune as package_builder
+from garhwali_lab.io import read_jsonl, write_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,22 +16,6 @@ STRICT = ROOT / "data/processed/model_ready/splits/asr"
 EXPERIMENTAL = ROOT / "data/processed/model_ready/splits/asr_experimental"
 SPLITS = ROOT / "data/processed/model_ready/splits/asr_expanded_human"
 OUTPUT = ROOT / "data/processed/model_ready/sravaani_expanded_human_finetune"
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    with Path(path).open(encoding="utf-8") as handle:
-        return [json.loads(line) for line in handle if line.strip()]
-
-
-def write_jsonl(path: Path, rows: list[dict]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        "".join(
-            json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n"
-            for row in rows
-        ),
-        encoding="utf-8",
-    )
 
 
 def identified_speakers(rows: list[dict]) -> set[str]:

@@ -12,6 +12,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from record_schema import normalize_record
+from garhwali_lab.hashing import sha256_file as file_sha256
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,19 +25,6 @@ SPEECH_REPO = 'rushilrawat/garhwali-speech'
 DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-speech-2026-09-23'
 SOURCE_DATA = ROOT / 'data/downloads/meta_omni_gbm/data/gbm_Deva'
 TEXT_MANIFEST = ROOT / 'corpus/meta_omni.jsonl'
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    with path.open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
-
-
-def file_sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open('rb') as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def release_split(source_split: str) -> str:

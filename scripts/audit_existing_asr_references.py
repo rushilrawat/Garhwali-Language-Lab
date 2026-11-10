@@ -8,29 +8,17 @@ Model disagreement is a review signal, never an automatic label correction.
 from __future__ import annotations
 
 import csv
-import hashlib
 import json
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file as sha256
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SPLITS = ROOT / "data/processed/model_ready/splits/asr"
 PREDICTIONS = ROOT / "models/whisper-tiny-garhwali-cpu-v0.1/evaluation_predictions.jsonl"
 OUT = ROOT / "data/review/existing-asr-validation-labels-v0.1"
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    with path.open(encoding="utf-8") as stream:
-        return [json.loads(line) for line in stream if line.strip()]
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def build() -> None:

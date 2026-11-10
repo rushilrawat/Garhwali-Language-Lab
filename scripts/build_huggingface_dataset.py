@@ -19,6 +19,9 @@ from pathlib import Path
 
 from record_schema import normalize_record
 from hf_source_registry import SOURCE_URLS, source_record_locator
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import iter_jsonl as read_jsonl
+from garhwali_lab.text import content_key as normalized_text_key
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -290,13 +293,6 @@ def prepare_package_output(output):
 
 def asr_split_directory(profile):
     return 'asr_experimental' if profile_includes_all_data(profile) else 'asr'
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as handle:
-        for line in handle:
-            if line.strip():
-                yield json.loads(line)
 
 
 def open_bible_stories_provenance(item):
@@ -738,15 +734,6 @@ def source_languages(row):
         for item in provenance_items(row)
         if item.get('iso_639_3')
     })
-
-
-def normalized_text_key(text):
-    """Normalize text while retaining letters, digits, and orthographic marks."""
-    normalized = unicodedata.normalize('NFKC', str(text or '')).casefold()
-    return ''.join(
-        character for character in normalized
-        if unicodedata.category(character)[0] in {'L', 'M', 'N'}
-    )
 
 
 def source_record_ids(row):
@@ -1897,14 +1884,6 @@ def remove_packaged_audio(output):
     if directory.exists():
         shutil.rmtree(directory)
     return count
-
-
-def sha256_file(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def source_expansion_metrics():

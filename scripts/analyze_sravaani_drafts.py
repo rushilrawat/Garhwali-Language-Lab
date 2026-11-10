@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import re
 import unicodedata
@@ -12,6 +11,7 @@ from collections import Counter
 from pathlib import Path
 
 from tag_language_quality import script_profile
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -86,14 +86,6 @@ def analyze_row(row, hypothesis_frequency):
 def read_rows(path):
     with Path(path).open(encoding='utf-8') as handle:
         return [json.loads(line) for line in handle if line.strip()]
-
-
-def sha256_file(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def run(input_path=INPUT, output_path=OUTPUT, report_path=REPORT, review_path=REVIEW):

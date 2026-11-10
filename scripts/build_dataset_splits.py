@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Build leakage-checked text, ASR, TTS, and evaluation candidate splits."""
 
-import hashlib
 import json
-import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file as file_sha256
+from garhwali_lab.io import read_jsonl, write_jsonl
+from garhwali_lab.text import leakage_key as normalized_text_key
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,26 +19,6 @@ SEMANTIC_EDGES = ROOT / (
 )
 SPLITS = ('train', 'validation', 'test')
 PLACEHOLDER_SPEAKERS = {'', 'na', 'n/a', 'none', 'null', 'unknown', 'unidentified'}
-
-
-def read_jsonl(path):
-    with path.open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
-
-
-def write_jsonl(path, rows):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    payload = ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in rows)
-    path.write_text(payload, encoding='utf-8')
-    return {'records': len(rows), 'sha256': hashlib.sha256(payload.encode()).hexdigest()}
-
-
-def file_sha256(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def identified_speaker(row):
@@ -62,11 +43,6 @@ def audio_exclusion_reason(row):
     ):
         return 'audio_quality_review'
     return None
-
-
-def normalized_text_key(text):
-    normalized = unicodedata.normalize('NFKC', str(text or '')).casefold()
-    return ''.join(char for char in normalized if char.isalnum())
 
 
 def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):

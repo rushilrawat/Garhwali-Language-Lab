@@ -8,24 +8,11 @@ from collections import Counter
 from pathlib import Path
 
 from build_huggingface_dataset import is_public_text_row
+from garhwali_lab.io import iter_jsonl as read_jsonl, write_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data/processed/model_ready/quality_v2"
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding="utf-8") as handle:
-        for line in handle:
-            if line.strip():
-                yield json.loads(line)
-
-
-def write_jsonl(path, rows):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as handle:
-        for row in rows:
-            handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
 
 
 def text_quality_decision(row, refinement=None):

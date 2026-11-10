@@ -4,28 +4,16 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / "data/processed/model_ready/splits/text"
 OUTPUT = ROOT / "data/processed/evaluation/controlled_modeling/indicbert_cloud_input.json"
 SPLITS = ("train", "validation", "test")
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    with path.open(encoding="utf-8") as handle:
-        return [json.loads(line) for line in handle if line.strip()]
 
 
 def from_incoming_pdf(row: dict) -> bool:

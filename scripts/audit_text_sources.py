@@ -13,19 +13,13 @@ from build_huggingface_dataset import (
     is_publishable_provenance,
     provenance_items,
 )
+from garhwali_lab.io import iter_jsonl as read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
 QUALITY = ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'
 REVIEW = ROOT / 'data/processed/model_ready/text_quality_v2/review_queue.jsonl'
 OUT = ROOT / 'data/processed/model_ready/text_source_audit'
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as handle:
-        for line in handle:
-            if line.strip():
-                yield json.loads(line)
 
 
 def source_id(item):

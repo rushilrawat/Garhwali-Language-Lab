@@ -7,11 +7,12 @@ import argparse
 import hashlib
 import json
 import math
-import re
 import statistics
-import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl
+from garhwali_lab.text import clean_text as normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,15 +25,6 @@ DEFAULT_SEEDS = (17, 29, 43)
 DEFAULT_ORDERS = (2, 3)
 UNKNOWN = '\ufffd'
 BOUNDARY = '\0'
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as source:
-        return [json.loads(line) for line in source if line.strip()]
-
-
-def normalize(text):
-    return re.sub(r'\s+', ' ', unicodedata.normalize('NFC', str(text))).strip()
 
 
 def row_key(row):
@@ -95,14 +87,6 @@ def character_ngram_score(train_texts, evaluation_texts, order=2):
             unknown_tokens / max(1, sum(len(normalize(text)) for text in evaluation_texts)), 8,
         ),
     }
-
-
-def sha256_file(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as source:
-        for chunk in iter(lambda: source.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def display_path(path):

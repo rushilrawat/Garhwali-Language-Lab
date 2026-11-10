@@ -5,9 +5,8 @@ from __future__ import annotations
 
 import hashlib
 import json
-import re
-import unicodedata
 from pathlib import Path
+from garhwali_lab.text import clean_text as normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -249,10 +248,6 @@ CATALOG = [
     {"platform": "youtube", "url": "https://www.youtube.com/@ghaseri", "name": "Ghaseri", "status": "public_channel_catalogued"},
     {"platform": "youtube", "url": "https://www.youtube.com/@Learn_garhwali", "name": "Learn Garhwali", "status": "public_channel_catalogued"},
 ]
-
-
-def normalize(text: str) -> str:
-    return re.sub(r"\s+", " ", unicodedata.normalize("NFC", text)).strip()
 
 
 def main() -> None:

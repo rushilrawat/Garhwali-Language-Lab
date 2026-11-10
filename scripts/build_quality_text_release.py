@@ -16,6 +16,8 @@ from scripts.build_huggingface_dataset import (
     build_quality_screened_meta_text,
     normalized_text_key,
 )
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import write_jsonl
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE = ROOT / "data/huggingface/garhwali-language-lab-v0.2.7-staging"
@@ -63,14 +65,6 @@ FEATURES = [
         "source_training_eligible_before_project_decision",
     )
 ]
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def load_source(source: Path) -> tuple[dict, dict, dict]:
@@ -146,13 +140,6 @@ def project_row(row: dict) -> dict:
         "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
         "word_count": len(text.split()), "character_count": len(text),
     }
-
-
-def write_jsonl(path: Path, rows: list[dict]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8", newline="\n") as stream:
-        for row in rows:
-            stream.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
 
 
 def write_csv(path: Path, rows: list[dict]) -> None:

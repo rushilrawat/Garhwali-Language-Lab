@@ -6,9 +6,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import unicodedata
 from collections import defaultdict
 from pathlib import Path
+from garhwali_lab.text import match_key as normalize
 
 
 TEXT_FIELDS = ("text", "release_text", "text_clean", "text_model")
@@ -27,10 +27,6 @@ def read_rows(folder: Path):
                 if not isinstance(row, dict):
                     raise ValueError(f"{path}:{line_number}: expected a JSON object")
                 yield row
-
-
-def normalize(text: str) -> str:
-    return " ".join(unicodedata.normalize("NFKC", text).casefold().split())
 
 
 def digest(text: str) -> str:

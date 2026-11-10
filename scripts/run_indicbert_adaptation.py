@@ -10,6 +10,7 @@ import os
 import statistics
 import time
 from pathlib import Path
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,11 +22,6 @@ MODEL_ID = 'ai4bharat/IndicBERTv2-MLM-only'
 REVISION = '8598f13fe52443bc3fc054fcd665944560145b5c'
 MODEL = ROOT / '.cache/huggingface/hub/models--ai4bharat--IndicBERTv2-MLM-only/snapshots' / REVISION
 DEFAULT_SEEDS = (17, 29, 43)
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as source:
-        return [json.loads(line) for line in source if line.strip()]
 
 
 def row_key(row):

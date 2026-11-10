@@ -5,6 +5,7 @@ import json
 import unicodedata
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.io import read_jsonl, write_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,11 +14,6 @@ LEXICON = ROOT / 'data/processed/model_ready/language_quality/lexicon_candidates
 AUDIO = ROOT / 'data/processed/model_ready/audio_normalized/manifests'
 OUT = ROOT / 'data/processed/model_ready/language_resources'
 SPLITS = ('train', 'validation', 'test')
-
-
-def read_jsonl(path):
-    with path.open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
 
 
 def orthographic_units(text):
@@ -41,14 +37,6 @@ def source_phonetic_segments(row):
         elif isinstance(value, list):
             segments.extend(str(item) for item in value if str(item).strip())
     return list(dict.fromkeys(segments))
-
-
-def write_jsonl(path, rows):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in rows),
-        encoding='utf-8',
-    )
 
 
 def build_resources(text_path=TEXT, lexicon_path=LEXICON, audio_dir=AUDIO, output_dir=OUT):

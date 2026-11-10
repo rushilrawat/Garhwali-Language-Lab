@@ -9,7 +9,6 @@ pinned VAANI Garhwali source. Unresolved and ambiguous rows stay excluded.
 
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 import unicodedata
@@ -17,6 +16,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 import pyarrow.parquet as pq
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl, write_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,29 +31,6 @@ PUBLIC_SPEECH_MANIFEST = ROOT / (
 OUT = ROOT / "data/processed/model_ready/splits/asr_speaker_recovered_v0.1"
 PLACEHOLDERS = {"", "na", "n/a", "none", "unknown", "null", "unidentified"}
 SPLITS = ("train", "validation", "test")
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    with path.open(encoding="utf-8") as handle:
-        return [json.loads(line) for line in handle if line.strip()]
-
-
-def write_jsonl(path: Path, rows: list[dict]) -> str:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    payload = "".join(
-        json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n"
-        for row in rows
-    )
-    path.write_text(payload, encoding="utf-8")
-    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def is_identified(value: object) -> bool:

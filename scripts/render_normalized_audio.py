@@ -3,13 +3,14 @@
 
 import argparse
 import array
-import hashlib
 import json
 import math
 import sys
 import wave
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file as file_sha256
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,14 +18,6 @@ SPLIT_DIR = ROOT / 'data/processed/model_ready/splits/tts'
 NORMALIZATION = ROOT / 'data/processed/model_ready/audio/normalization.jsonl'
 OUT = ROOT / 'data/processed/model_ready/audio_normalized'
 SPLITS = ('train', 'validation', 'test')
-
-
-def file_sha256(path):
-    digest = hashlib.sha256()
-    with path.open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def render_wav(source, output, gain_db, dc_offset_normalized):
@@ -53,11 +46,6 @@ def render_wav(source, output, gain_db, dc_offset_normalized):
         'derived_sha256': file_sha256(output),
         'frames': params.nframes,
     }
-
-
-def read_jsonl(path):
-    with path.open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
 
 
 def build_derived_audio(

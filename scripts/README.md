@@ -418,3 +418,24 @@ speaker, duration, and reference-length slices. See the dated adaptation
 report for the full command, pinned input/model hashes, results, and limits.
 This result is a development diagnostic; it does not authorize scoring Meta
 test or promoting the checkpoint as independently accurate.
+
+## Shared library: `garhwali_lab`
+
+Common helpers live in `scripts/garhwali_lab/` and are importable from any
+script because scripts run with `scripts/` on the import path:
+
+- `garhwali_lab.io`: `read_jsonl` (list), `iter_jsonl` (stream), `write_jsonl`
+  (canonical sorted, unescaped layout), `read_json`, `write_json`.
+- `garhwali_lab.hashing`: `sha256_file`, `sha256_bytes`, `sha256_text`.
+- `garhwali_lab.text`: the text-normalization policy.
+  - `clean_text` for stored text (NFC, whitespace collapsed).
+  - `match_key` for whole-string comparison (NFKC, casefold, whitespace).
+  - `content_key` for deduplication (NFKC, casefold, letters, marks, digits;
+    Devanagari vowel signs are kept).
+  - `leakage_key` for leakage and overlap guards only. It is deliberately
+    looser (it drops vowel signs), so never use it to drop or merge records.
+- `garhwali_lab.paths`: `ROOT`, `SCRIPTS`, `DATA`.
+
+Use these instead of defining local copies. Task-specific scoring normalizers
+(for example in `asr_metrics.py` and the translation and retrieval baselines)
+intentionally differ and stay with their scorers.

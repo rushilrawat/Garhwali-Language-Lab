@@ -7,7 +7,6 @@ import argparse
 import hashlib
 import json
 import platform
-import sys
 from collections import Counter
 from pathlib import Path
 
@@ -17,6 +16,7 @@ from evaluation_run_manifest import write_run_artifacts
 from run_translation_baseline import corpus_chrf, metric_summary as translation_metric_summary
 from run_translation_baseline import normalize as normalize_translation_text
 from run_mt5_instruction_tuning import generation_diagnostics
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,19 +45,6 @@ TASKS = {
         ],
     },
 }
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    rows = []
-    with Path(path).open(encoding='utf-8') as handle:
-        for line_number, line in enumerate(handle, start=1):
-            if not line.strip():
-                continue
-            row = json.loads(line)
-            if not isinstance(row, dict):
-                raise ValueError(f'{path}:{line_number}: expected a JSON object')
-            rows.append(row)
-    return rows
 
 
 def _references(task: str, row: dict) -> list[str]:

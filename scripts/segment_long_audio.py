@@ -2,26 +2,18 @@
 """Segment archived long-form Garhwali audio into reviewable derived WAV clips."""
 
 import argparse
-import hashlib
 import json
 import re
 import subprocess
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file as file_sha256
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / 'data/downloads/folklore/podcast/manifest.json'
 DEFAULT_OUTPUT = ROOT / 'data/processed/long_form_audio'
 SILENCE_END = re.compile(r'silence_end:\s*([0-9]+(?:\.[0-9]+)?)')
-
-
-def file_sha256(path):
-    digest = hashlib.sha256()
-    with path.open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def parse_silence_ends(output):

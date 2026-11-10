@@ -10,6 +10,8 @@ from pathlib import Path
 
 from evaluation_run_manifest import write_run_artifacts
 from run_mt5_instruction_tuning import generation_diagnostics
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,27 +29,6 @@ DEFAULT_OUTPUT = ROOT / (
     "data/processed/evaluation/generation/"
     "mt0_32768_validation_manifested_2026-09-27"
 )
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    rows = []
-    with Path(path).open(encoding="utf-8") as handle:
-        for line_number, line in enumerate(handle, start=1):
-            if not line.strip():
-                continue
-            row = json.loads(line)
-            if not isinstance(row, dict):
-                raise ValueError(f"{path}:{line_number}: expected an object")
-            rows.append(row)
-    return rows
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def _selected_rows_sha256(record_hashes: list[str]) -> str:

@@ -7,24 +7,16 @@ import argparse
 import json
 import math
 import re
-import unicodedata
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.io import read_jsonl
+from garhwali_lab.text import clean_text as normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / 'data/processed/model_ready/text_cleanup/proposals.jsonl'
 OUTPUT = ROOT / 'data/processed/evaluation/text_cleanup_ablation/report.json'
 DEVANAGARI_TOKEN = re.compile(r'[\u0900-\u097F]+')
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as source:
-        return [json.loads(line) for line in source if line.strip()]
-
-
-def normalize(text):
-    return re.sub(r'\s+', ' ', unicodedata.normalize('NFC', str(text))).strip()
 
 
 def apply_spelling_candidates(text, candidates):

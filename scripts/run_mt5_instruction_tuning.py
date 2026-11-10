@@ -15,6 +15,7 @@ import time
 import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
+from garhwali_lab.io import read_jsonl, write_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,18 +30,6 @@ MODEL = (
 )
 DEFAULT_SEEDS = (17, 29, 43)
 TARGET_MODULES = ('q', 'v')
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as source:
-        return [json.loads(line) for line in source if line.strip()]
-
-
-def write_jsonl(path, rows):
-    Path(path).write_text(
-        ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in rows),
-        encoding='utf-8',
-    )
 
 
 def select_rows(rows, limit, seed):

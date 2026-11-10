@@ -6,6 +6,7 @@ import re
 import unicodedata
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.io import read_jsonl, write_jsonl
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data/processed/model_ready/transcripts'
@@ -32,15 +33,6 @@ def annotation_flags(text):
 
 def batch_id(index, size=1000):
     return f'batch-{index // size + 1:04d}'
-
-
-def read_jsonl(path):
-    with path.open(encoding='utf-8') as source:
-        return [json.loads(line) for line in source if line.strip()]
-
-
-def write_jsonl(path, rows):
-    path.write_text(''.join(json.dumps(row, ensure_ascii=False, sort_keys=True)+'\n' for row in rows), encoding='utf-8')
 
 
 def main():

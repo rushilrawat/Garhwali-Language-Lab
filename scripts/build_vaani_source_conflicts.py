@@ -7,6 +7,7 @@ import json
 import re
 from collections import Counter, defaultdict
 from pathlib import Path
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,11 +20,6 @@ FILENAME_SPEAKER = re.compile(
     r'^IISc_VaaniProject_[MS]_Uttarakhand_([^_]+)_([^_]+)_'
 )
 PLACEHOLDER_SPEAKERS = {'', 'na', 'n/a', 'none', 'null', 'unknown', 'unidentified'}
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
 
 
 def has_bengali_script(text):

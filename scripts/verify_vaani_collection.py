@@ -11,6 +11,7 @@ from pathlib import Path
 import wave
 
 from PIL import Image
+from garhwali_lab.hashing import sha256_file as sha256
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,14 +20,6 @@ DATA = ROOT / "data" / "vaani"
 
 def rows(name: str):
     return [json.loads(line) for line in (DATA / name).open(encoding="utf-8")]
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(8 * 1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def verify_audio(items):

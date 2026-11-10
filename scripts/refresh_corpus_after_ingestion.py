@@ -14,6 +14,7 @@ from pathlib import Path
 from ingest_jambu_garhwali import SNAPSHOT_MANIFEST as JAMBU_SNAPSHOT_MANIFEST
 from ingest_garhwali_language_library import RAW_DIR as LANGUAGE_LIBRARY_RAW_DIR
 from prepare_text_corpus import discover as discover_text_inputs
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,14 +66,6 @@ PROVENANCE_SCRIPT_PATHS = tuple(sorted({
 
 def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def git_output(root: Path, *arguments: str) -> str | None:

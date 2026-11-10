@@ -12,17 +12,7 @@ from collections import Counter
 from pathlib import Path
 
 from run_whisper_comparison import model_weight_sha256, sha256_file
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
-
-
-def write_jsonl(path, rows):
-    with Path(path).open('w', encoding='utf-8') as handle:
-        for row in rows:
-            handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n')
+from garhwali_lab.io import read_jsonl, write_jsonl
 
 
 def filter_rows(rows, tokenizer, max_target_tokens, max_audio_seconds):

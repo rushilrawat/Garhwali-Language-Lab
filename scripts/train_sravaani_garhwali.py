@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import math
 import tarfile
 import urllib.request
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -131,14 +131,6 @@ def write_plan(plan, output=PLAN_OUTPUT):
         json.dumps(plan, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
         encoding='utf-8',
     )
-
-
-def sha256_file(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(8 * 1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def validate_checkpoint_file(

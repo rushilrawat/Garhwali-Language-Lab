@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import re
@@ -13,6 +12,7 @@ import sys
 import tempfile
 from pathlib import Path
 from pathlib import PurePosixPath
+from garhwali_lab.hashing import sha256_file as sha256
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,14 +24,6 @@ PAYLOAD_SUFFIXES = {
     ".pdf", ".doc", ".docx", ".epub", ".mp3", ".wav", ".m4a", ".flac",
     ".ogg", ".mp4", ".mov", ".webm", ".zip", ".tar", ".gz", ".7z",
 }
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def package_files(package: Path) -> list[Path]:

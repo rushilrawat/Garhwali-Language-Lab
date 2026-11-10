@@ -8,14 +8,13 @@ import gc
 import hashlib
 import json
 import os
-import re
 import statistics
 import time
-import unicodedata
 from pathlib import Path
 
 import run_indicbert_adaptation as head
 import run_indicbert_lora_adaptation as lora
+from garhwali_lab.text import clean_text as normalize
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,10 +40,6 @@ def summarize_family(runs):
 
 def select_family(families):
     return min(families, key=lambda name: families[name]['mean_cross_entropy'])
-
-
-def normalize(text):
-    return re.sub(r'\s+', ' ', unicodedata.normalize('NFC', str(text))).strip()
 
 
 def exact_overlap(train_rows, test_rows):

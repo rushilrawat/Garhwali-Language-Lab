@@ -11,17 +11,13 @@ from collections import Counter
 from pathlib import Path
 
 from record_schema import normalize_record
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-speech-2026-09-23'
 TEXT_REPO = 'rushilrawat/garhwali-corpus'
 SPEECH_REPO = 'rushilrawat/garhwali-speech'
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    with path.open(encoding='utf-8') as handle:
-        return [json.loads(line) for line in handle if line.strip()]
 
 
 def write_json(path: Path, value: dict) -> None:

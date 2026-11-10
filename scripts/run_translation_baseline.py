@@ -14,6 +14,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from evaluation_run_manifest import utc_now, write_run_artifacts
+from garhwali_lab.hashing import sha256_file as file_sha256
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -152,14 +153,6 @@ def exact_source_duplicate_summary(examples):
         'duplicate_groups': len(duplicate_counts),
         'rows_in_duplicate_groups': sum(duplicate_counts),
     }
-
-
-def file_sha256(path):
-    digest = hashlib.sha256()
-    with Path(path).open('rb') as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def select_split(rows, split):

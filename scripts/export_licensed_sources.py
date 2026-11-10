@@ -10,6 +10,7 @@ import re
 from collections import Counter
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse
+from garhwali_lab.io import read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,11 +39,6 @@ ATTRIBUTION_OVERLAY_FIELDS = (
     "contributor_added_date", "attribution_status", "attribution_evidence_url",
     "attribution_evidence_sha256", "attribution_evidence_retrieved_at",
 )
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    with path.open(encoding="utf-8") as stream:
-        return [json.loads(line) for line in stream if line.strip()]
 
 
 def _title_from_history(history_url: str) -> str | None:

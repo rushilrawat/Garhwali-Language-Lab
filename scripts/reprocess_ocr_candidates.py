@@ -15,18 +15,12 @@ from collections import Counter
 from pathlib import Path
 
 from ingest_incoming_pdfs import FONTCONFIG, PDFTOPPM, TESSERACT, locate_tessdata, normalized_text
+from garhwali_lab.io import iter_jsonl as read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEVANAGARI = re.compile(r"[\u0900-\u097f]")
 REPLACEMENT = "\ufffd"
-
-
-def read_jsonl(path: Path):
-    with path.open(encoding="utf-8") as handle:
-        for line in handle:
-            if line.strip():
-                yield json.loads(line)
 
 
 def weakness(text: str) -> float:

@@ -9,12 +9,13 @@ reported as text-level evidence; it is not treated as proof of audio identity.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
-import unicodedata
 from collections import Counter, defaultdict
 from datetime import date
 from pathlib import Path
+from garhwali_lab.hashing import sha256_file
+from garhwali_lab.io import read_jsonl
+from garhwali_lab.text import leakage_key as normalized_key
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,24 +27,6 @@ AGGREGATE_PATH = (
 EXPERIMENTAL_PATH = ROOT / "experimental/indic_dialect_asr_gbm.jsonl"
 DEFAULT_OUTPUT = ROOT / "research/huggingface-upstream-split-overlap-2026-10-05.json"
 EVAL_SPLITS = {"dev", "validation", "test"}
-
-
-def normalized_key(text: str | None) -> str:
-    value = unicodedata.normalize("NFKC", str(text or "")).casefold()
-    return "".join(character for character in value if character.isalnum())
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    with path.open(encoding="utf-8") as stream:
-        return [json.loads(line) for line in stream if line.strip()]
-
-
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def source_match_index(rows: list[dict], family: str) -> dict[str, dict]:

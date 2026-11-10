@@ -7,11 +7,11 @@ import argparse
 import hashlib
 import json
 import os
-import unicodedata
 from collections import Counter
 from datetime import date
 from pathlib import Path
 
+from garhwali_lab.text import leakage_key as normalized_text_key
 from build_huggingface_dataset import (
     is_public_factual_metadata_row,
     is_publishable_provenance,
@@ -22,6 +22,7 @@ from build_garhwali_benchmark import (
     normalize as normalize_benchmark_text,
 )
 from validate_release_index import validate
+from garhwali_lab.io import iter_jsonl as read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,13 +64,6 @@ KNOWLEDGE_GROUPS = {
     'geography', 'historical_terms', 'literary_people',
     'literary_works', 'popular_songs', 'university_research',
 }
-
-
-def read_jsonl(path):
-    with Path(path).open(encoding='utf-8') as handle:
-        for line in handle:
-            if line.strip():
-                yield json.loads(line)
 
 
 def structured_object(value):
@@ -246,11 +240,6 @@ def overlap_error(label, split_values):
             if split_values.get(left, set()) & split_values.get(right, set()):
                 errors.append(f'{label} overlap across {left} and {right}')
     return errors
-
-
-def normalized_text_key(text):
-    normalized = unicodedata.normalize('NFKC', str(text or '')).casefold()
-    return ''.join(char for char in normalized if char.isalnum())
 
 
 def public_rights_basis(row):
