@@ -15,6 +15,7 @@ from refresh_corpus_after_ingestion import (
     build_pipeline_plan,
     configure_environment,
     replace_metrics_block,
+    write_metrics_page,
     render_metrics_table,
     run_pipeline,
 )
@@ -229,3 +230,19 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MetricsPageTests(unittest.TestCase):
+    def test_page_is_created_then_updated_in_place(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = write_metrics_page(root, "| A | 1 |")
+            first = path.read_text(encoding="utf-8")
+            self.assertIn("| A | 1 |", first)
+            self.assertIn("local, unpublished", first)
+            path.write_text(first.replace("# Local candidate", "# Edited title"), encoding="utf-8")
+            write_metrics_page(root, "| A | 2 |")
+            second = path.read_text(encoding="utf-8")
+            self.assertIn("# Edited title", second)
+            self.assertIn("| A | 2 |", second)
+            self.assertNotIn("| A | 1 |", second)

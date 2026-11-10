@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rebuild corpus-derived local views, package previews, and README figures."""
+"""Rebuild corpus-derived local views, package previews, and the local-candidate metrics page."""
 
 from __future__ import annotations
 
@@ -21,6 +21,18 @@ from garhwali_lab.version import corpus_default_version, ensure_unpublished_corp
 ROOT = Path(__file__).resolve().parents[1]
 START_MARKER = "<!-- AUTO-CORPUS-METRICS:START -->"
 END_MARKER = "<!-- AUTO-CORPUS-METRICS:END -->"
+# The README reports the live Hugging Face figures; the refresh's figures are
+# for the unpublished local candidate, so they get their own page.
+METRICS_PAGE = Path("project-status/local-candidate-metrics.md")
+METRICS_PAGE_TEMPLATE = f"""# Local candidate corpus metrics
+
+Written by `scripts/refresh_corpus_after_ingestion.py` after every full
+refresh. These figures describe the **local, unpublished** candidate build,
+not the live Hugging Face dataset; see the README for the published figures.
+
+{START_MARKER}
+{END_MARKER}
+"""
 REQUIRED_SOURCE_MANIFESTS = (
     Path("corpus/jambu_garhwali_manifest.json"),
     Path("corpus/garhwali_language_library_manifest.json"),
@@ -171,11 +183,11 @@ def build_source_input_provenance(root: Path, capture_stage: str) -> dict:
 
 def replace_metrics_block(readme: str, table: str) -> str:
     if readme.count(START_MARKER) != 1 or readme.count(END_MARKER) != 1:
-        raise ValueError("README must contain exactly one auto-corpus-metrics marker pair")
+        raise ValueError("metrics page must contain exactly one auto-corpus-metrics marker pair")
     start = readme.index(START_MARKER) + len(START_MARKER)
     end = readme.index(END_MARKER)
     if end < start:
-        raise ValueError("README corpus-metrics markers are out of order")
+        raise ValueError("corpus-metrics markers are out of order")
     return readme[:start] + "\n" + table.rstrip() + "\n" + readme[end:]
 
 
@@ -354,6 +366,15 @@ def render_metrics_table(metrics: dict) -> str:
     )
 
 
+def write_metrics_page(root: Path, table: str) -> Path:
+    """Replace the table between the markers, creating the page if needed."""
+    page_path = root / METRICS_PAGE
+    page_path.parent.mkdir(parents=True, exist_ok=True)
+    page = page_path.read_text(encoding="utf-8") if page_path.exists() else METRICS_PAGE_TEMPLATE
+    page_path.write_text(replace_metrics_block(page, table), encoding="utf-8")
+    return page_path
+
+
 def refresh(root: Path = ROOT, runner=subprocess.run,
             environment: dict[str, str] | None = None) -> dict:
     environment = configure_environment(dict(os.environ) if environment is None else environment)
@@ -367,11 +388,7 @@ def refresh(root: Path = ROOT, runner=subprocess.run,
         json.dumps(metrics, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    readme_path = root / "README.md"
-    readme_path.write_text(
-        replace_metrics_block(readme_path.read_text(encoding="utf-8"), render_metrics_table(metrics)),
-        encoding="utf-8",
-    )
+    write_metrics_page(root, render_metrics_table(metrics))
     return metrics
 
 
