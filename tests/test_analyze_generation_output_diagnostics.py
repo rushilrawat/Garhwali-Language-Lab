@@ -27,7 +27,7 @@ class GenerationOutputDiagnosticsTests(unittest.TestCase):
                     "reference": row["response"],
                     "hypothesis": hypothesis,
                 }
-                for row, hypothesis in zip(self.validation_rows, hypotheses)
+                for row, hypothesis in zip(self.validation_rows, hypotheses, strict=True)
             ],
         }
 

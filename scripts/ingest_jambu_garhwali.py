@@ -138,7 +138,6 @@ def acquire_snapshot(
     fetcher=_download_page,
     sleeper=time.sleep,
 ) -> tuple[list[list[dict]], dict]:
-    raw_dir = root / RAW_DIR
     pages_dir = root / PAGES_DIR
     manifest_path = root / SNAPSHOT_MANIFEST
     pages_dir.mkdir(parents=True, exist_ok=True)

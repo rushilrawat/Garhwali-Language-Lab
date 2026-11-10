@@ -107,7 +107,7 @@ def _score_resample(indices, components: list[dict]) -> dict:
     else:
         precisions = [
             (matches + 1) / (possible + 1)
-            for matches, possible in zip(bleu_matches, bleu_possible)
+            for matches, possible in zip(bleu_matches, bleu_possible, strict=True)
         ]
         geometric_mean = math.exp(sum(math.log(value) for value in precisions) / 4)
         brevity = 1.0 if hypothesis_words > reference_words else math.exp(
@@ -115,7 +115,7 @@ def _score_resample(indices, components: list[dict]) -> dict:
         )
         bleu = round(brevity * geometric_mean, 8)
     chrf_scores = []
-    for matches, ref_total, hyp_total in zip(chrf_matches, chrf_reference, chrf_hypothesis):
+    for matches, ref_total, hyp_total in zip(chrf_matches, chrf_reference, chrf_hypothesis, strict=True):
         precision = matches / max(1, hyp_total)
         recall = matches / max(1, ref_total)
         denominator = 4 * precision + recall
@@ -184,11 +184,11 @@ def analyze_rows(
     metric_names = ('corpus_bleu_smoothed', 'corpus_chrf2', 'exact_match')
     baseline_components = [
         _record_components(reference, hypothesis)
-        for reference, hypothesis in zip(references, baseline)
+        for reference, hypothesis in zip(references, baseline, strict=True)
     ]
     candidate_components = [
         _record_components(reference, hypothesis)
-        for reference, hypothesis in zip(references, candidate)
+        for reference, hypothesis in zip(references, candidate, strict=True)
     ]
     rng = random.Random(seed)
     deltas = {name: [] for name in metric_names}

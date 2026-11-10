@@ -88,7 +88,7 @@ def run(data: Path, checkpoint: Path, output: Path) -> dict:
                 )
                 row.update({"status": "completed", "validation": metrics})
                 write_json(output / f"{variant['config_id']}-validation.json", predictions)
-            except Exception as error:
+            except Exception as error:  # noqa: BLE001 - record the failed variant and continue the sweep
                 row.update({
                     "status": "failed",
                     "error_type": type(error).__name__,

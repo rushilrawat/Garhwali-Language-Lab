@@ -39,7 +39,7 @@ def corpus_bleu(references, hypotheses, max_order=4):
     possible = [0] * max_order
     reference_length = 0
     hypothesis_length = 0
-    for reference, hypothesis in zip(references, hypotheses):
+    for reference, hypothesis in zip(references, hypotheses, strict=True):
         reference_words = normalize(reference).split()
         hypothesis_words = normalize(hypothesis).split()
         reference_length += len(reference_words)
@@ -54,7 +54,7 @@ def corpus_bleu(references, hypotheses, max_order=4):
     if not reference_length or not hypothesis_length:
         return 0.0
     precisions = [
-        (matches + 1) / (total + 1) for matches, total in zip(matched, possible)
+        (matches + 1) / (total + 1) for matches, total in zip(matched, possible, strict=True)
     ]
     geometric_mean = math.exp(sum(math.log(value) for value in precisions) / max_order)
     brevity = 1.0 if hypothesis_length > reference_length else math.exp(
@@ -74,7 +74,7 @@ def corpus_chrf(references, hypotheses, max_order=6, beta=2.0):
     scores = []
     for order in range(1, max_order + 1):
         matches = reference_total = hypothesis_total = 0
-        for reference, hypothesis in zip(references, hypotheses):
+        for reference, hypothesis in zip(references, hypotheses, strict=True):
             reference_counts = character_ngrams(reference, order)
             hypothesis_counts = character_ngrams(hypothesis, order)
             matches += sum(
@@ -130,7 +130,7 @@ def metric_summary(references, hypotheses):
         'corpus_chrf2': corpus_chrf(references, hypotheses),
         'exact_match': round(
             sum(normalize(reference) == normalize(hypothesis)
-                for reference, hypothesis in zip(references, hypotheses)) / max(1, len(references)),
+                for reference, hypothesis in zip(references, hypotheses, strict=True)) / max(1, len(references)),
             8,
         ),
         'empty_reference_records': sum(not normalize(reference) for reference in references),
@@ -205,7 +205,7 @@ def run(
     copy_hypotheses = sources
 
     predictions = []
-    for row, reference, copy, memory_row in zip(evaluation_rows, references, copy_hypotheses, memory):
+    for row, reference, copy, memory_row in zip(evaluation_rows, references, copy_hypotheses, memory, strict=True):
         memory_index = memory_row['memory_index']
         predictions.append({
             'record_id': row.get('record_id'),

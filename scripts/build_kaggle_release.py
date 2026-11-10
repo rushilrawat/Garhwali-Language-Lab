@@ -116,7 +116,7 @@ def build_corpus(corpus_root: Path, output: Path) -> dict[str, Any]:
                 columns.update(record)
         ordered_columns = ["dataset_config", "dataset_split"] + sorted(columns - {"dataset_config", "dataset_split"})
 
-        def rows() -> Iterable[dict[str, Any]]:
+        def rows(source_files=source_files, config=config) -> Iterable[dict[str, Any]]:
             for shard in source_files:
                 for record in _jsonl_records(shard):
                     if config in {"text", "text_expansion", "text_resources"}:

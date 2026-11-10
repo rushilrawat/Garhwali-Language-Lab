@@ -130,7 +130,7 @@ def normalized_batch_weights(rows):
 def weighted_batch_loss(losses, rows):
     return sum(
         loss * weight
-        for loss, weight in zip(losses, normalized_batch_weights(rows))
+        for loss, weight in zip(losses, normalized_batch_weights(rows), strict=True)
     )
 
 
@@ -453,7 +453,7 @@ def main():
                 else [training_weight(batch[0])]
             )
             batch_objective = 0.0
-            for row, factor in zip(batch, factors):
+            for row, factor in zip(batch, factors, strict=True):
                 audio = read_audio(ROOT / row['local_audio_path'])
                 features = processor(
                     audio, sampling_rate=16000, return_tensors='pt'

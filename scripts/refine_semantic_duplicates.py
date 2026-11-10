@@ -32,7 +32,7 @@ def main():
     counts = Counter()
     cross_split_supported = 0
     with (args.output / "refined_candidates.jsonl").open("w", encoding="utf-8") as handle:
-        for row, logit in zip(rows, logits):
+        for row, logit in zip(rows, logits, strict=True):
             lexical = SequenceMatcher(None, row["left_text"], row["right_text"]).ratio()
             score = sigmoid(logit)
             if lexical >= 0.98 and score >= 0.90:

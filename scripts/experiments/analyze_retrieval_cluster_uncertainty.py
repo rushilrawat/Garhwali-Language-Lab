@@ -272,7 +272,7 @@ def run(
         sampled_deltas = [
             char_value - word_value
             for char_value, word_value in zip(
-                candidate['bootstrap_values'], base['bootstrap_values'])
+                candidate['bootstrap_values'], base['bootstrap_values'], strict=True)
         ]
         paired_deltas[metric] = {
             'comparison': 'garhwali_character_bm25_minus_garhwali_word_bm25',

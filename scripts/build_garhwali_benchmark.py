@@ -68,7 +68,7 @@ def char_bigram_baseline(train_texts, evaluation_texts):
     context_counts = Counter()
     for text in train_texts:
         sequence = '\0' + normalize(text) + '\0'
-        for left, right in zip(sequence, sequence[1:]):
+        for left, right in zip(sequence, sequence[1:], strict=False):
             pair_counts[left, right] += 1
             context_counts[left] += 1
 
@@ -80,7 +80,7 @@ def char_bigram_baseline(train_texts, evaluation_texts):
         normalized = normalize(text)
         unknown_characters += sum(character not in vocabulary for character in normalized)
         sequence = '\0' + normalized + '\0'
-        for left, right in zip(sequence, sequence[1:]):
+        for left, right in zip(sequence, sequence[1:], strict=False):
             probability = (pair_counts[left, right] + 1) / (
                 context_counts[left] + vocabulary_size
             )

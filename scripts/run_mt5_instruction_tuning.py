@@ -86,7 +86,7 @@ def corpus_chrf(references, hypotheses, max_order=6, beta=2.0):
     scores = []
     for order in range(1, max_order + 1):
         matches = reference_total = hypothesis_total = 0
-        for reference, hypothesis in zip(references, hypotheses):
+        for reference, hypothesis in zip(references, hypotheses, strict=True):
             reference_counts = character_ngrams(reference, order)
             hypothesis_counts = character_ngrams(hypothesis, order)
             matches += sum(
@@ -110,7 +110,7 @@ def metric_summary(references, hypotheses):
     return {
         'exact_match': round(sum(
             normalize(reference) == normalize(hypothesis)
-            for reference, hypothesis in zip(references, hypotheses)
+            for reference, hypothesis in zip(references, hypotheses, strict=True)
         ) / max(1, len(references)), 8),
         'corpus_chrf2': corpus_chrf(references, hypotheses),
     }
@@ -120,7 +120,7 @@ def multi_reference_metric_summary(reference_sets, hypotheses):
     """Score each output against its closest valid source-attested variant."""
     selected = []
     exact = 0
-    for references, hypothesis in zip(reference_sets, hypotheses):
+    for references, hypothesis in zip(reference_sets, hypotheses, strict=True):
         references = list(references) or ['']
         exact_matches = [
             reference for reference in references
@@ -144,12 +144,12 @@ def generation_diagnostics(rows, hypotheses):
     """Summarize generation failure modes globally and by instruction task."""
     grouped = defaultdict(list)
     details = []
-    for row, hypothesis in zip(rows, hypotheses):
+    for row, hypothesis in zip(rows, hypotheses, strict=True):
         normalized_hypothesis = normalize(hypothesis)
         normalized_instruction = normalize(row['instruction'])
         tokens = normalized_hypothesis.split()
         repeated_adjacent = sum(
-            left == right for left, right in zip(tokens, tokens[1:])
+            left == right for left, right in zip(tokens, tokens[1:], strict=False)
         )
         detail = {
             'instruction_sha256': row['instruction_sha256'],
@@ -498,7 +498,7 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
         del base
         gc.collect()
         systems = {'base': {'test': base_test}}
-        for row, hypothesis in zip(test_rows, base_hypotheses):
+        for row, hypothesis in zip(test_rows, base_hypotheses, strict=True):
             predictions.append({
                 'instruction_sha256': row['instruction_sha256'],
                 'task': row['task'],
@@ -518,7 +518,7 @@ def run(data_dir=DATA, output_dir=OUTPUT, checkpoint_dir=CHECKPOINTS,
             )
             run_record['test'] = test_metrics
             systems[f'seed-{seed}'] = {'test': test_metrics}
-            for row, hypothesis in zip(test_rows, hypotheses):
+            for row, hypothesis in zip(test_rows, hypotheses, strict=True):
                 predictions.append({
                     'instruction_sha256': row['instruction_sha256'],
                     'task': row['task'],

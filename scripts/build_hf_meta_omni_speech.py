@@ -283,7 +283,6 @@ def build(output: Path = DEFAULT_OUTPUT) -> dict:
         'rights_status': Value('string'),
         'reuse_scope': Value('string'),
         'license_labels': Sequence(Value('string')),
-        'quality_status': Value('string'),
         'record_quality_flags': Sequence(Value('string')),
         'duplicate_audio_count': Value('int32'),
         'duplicate_text_count': Value('int32'),

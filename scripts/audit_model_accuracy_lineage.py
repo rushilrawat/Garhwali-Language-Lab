@@ -667,7 +667,7 @@ def _cross_role_overlaps(records: list[dict]) -> dict:
         for value, roles in sorted(grouped.items()):
             if not roles["training"] or not roles["evaluation"]:
                 continue
-            def rows_for(role):
+            def rows_for(role, roles=roles):
                 return [
                     {
                         "family": family,

@@ -64,7 +64,7 @@ def add_paths(manifest, paths):
         raise RuntimeError(f"path count mismatch for {manifest}: {len(paths)} vs {len(records)}")
     temp = manifest.with_suffix(manifest.suffix + ".tmp")
     with temp.open("w", encoding="utf-8") as handle:
-        for record, path in zip(records, paths):
+        for record, path in zip(records, paths, strict=True):
             record["audio_path"] = path
             handle.write(json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n")
     temp.replace(manifest)

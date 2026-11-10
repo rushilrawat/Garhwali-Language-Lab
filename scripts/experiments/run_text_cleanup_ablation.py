@@ -49,7 +49,7 @@ def char_bigram_score(train_texts, test_texts):
     contexts = Counter()
     for text in train_texts:
         sequence = '\0' + normalize(text) + '\0'
-        for left, right in zip(sequence, sequence[1:]):
+        for left, right in zip(sequence, sequence[1:], strict=False):
             pairs[left, right] += 1
             contexts[left] += 1
     vocabulary_size = max(1, len(vocabulary) + 2)
@@ -57,7 +57,7 @@ def char_bigram_score(train_texts, test_texts):
     evaluated = 0
     for text in test_texts:
         sequence = '\0' + normalize(text) + '\0'
-        for left, right in zip(sequence, sequence[1:]):
+        for left, right in zip(sequence, sequence[1:], strict=False):
             probability = (pairs[left, right] + 1) / (contexts[left] + vocabulary_size)
             negative_log_likelihood -= math.log(probability)
             evaluated += 1

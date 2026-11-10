@@ -144,7 +144,7 @@ def run(input_path=INPUT, output_path=OUTPUT, report_path=REPORT,
     for model_path in model_paths:
         model_path = Path(model_path)
         hypotheses = model_hypotheses(rows, model_path, device)
-        for row, hypothesis in zip(rows, hypotheses):
+        for row, hypothesis in zip(rows, hypotheses, strict=True):
             evidence[row['audio_sha256']][model_path.name] = hypothesis
     results = [
         build_review_record(row, evidence[row['audio_sha256']]) for row in rows

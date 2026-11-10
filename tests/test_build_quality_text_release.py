@@ -166,7 +166,7 @@ class BuildQualityTextReleaseTests(unittest.TestCase):
             self.assertEqual(manifest["selected_records"], 1)
             self.assertEqual(manifest["normalized_duplicate_excluded"], 1)
             exclusions = json.loads(
-                (hf_output := root / "hf" / "releases/v0.2.8/quality-screened-exclusions.json").read_text(encoding="utf-8")
+                (root / "hf" / "releases/v0.2.8/quality-screened-exclusions.json").read_text(encoding="utf-8")
             )
             self.assertEqual(exclusions["duplicate_text"][0]["excluded_id"], "two")
 

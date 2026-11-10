@@ -475,7 +475,6 @@ class LineageReportTests(unittest.TestCase):
             root = Path(temp_dir)
             self._write_required_manifests(root)
             family = "meta_omnilingual_whisper_compatible"
-            train_path = root / SPLIT_MANIFESTS[family]["train"]
             prediction_path = root / "models/whisper-tiny-garhwali-meta-mismatch/evaluation_predictions.jsonl"
             prediction_path.parent.mkdir(parents=True, exist_ok=True)
             prediction_path.write_text("{}\n", encoding="utf-8")

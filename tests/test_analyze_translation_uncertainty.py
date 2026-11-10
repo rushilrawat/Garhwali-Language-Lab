@@ -59,7 +59,7 @@ class TranslationUncertaintyTests(unittest.TestCase):
         indices = [0, 1, 1, 0]
         components = [
             metric_module._record_components(reference, hypothesis)
-            for reference, hypothesis in zip(references, hypotheses)
+            for reference, hypothesis in zip(references, hypotheses, strict=True)
         ]
         expected = metric_module.metric_summary(
             [references[index] for index in indices],

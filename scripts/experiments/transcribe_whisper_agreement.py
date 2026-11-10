@@ -59,7 +59,7 @@ def main():
                 do_sample=False,
             )
             hypotheses = processor.batch_decode(generated, skip_special_tokens=True)
-            for row, hypothesis in zip(batch, hypotheses):
+            for row, hypothesis in zip(batch, hypotheses, strict=True):
                 hypothesis = hypothesis.strip()
                 agreement = score(row["sravaani_transcript"], hypothesis)
                 result = {

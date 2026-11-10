@@ -39,7 +39,7 @@ def index_rows(rows, label):
 
 
 def aggregate(references, hypotheses):
-    scores = [score(reference, hypothesis) for reference, hypothesis in zip(references, hypotheses)]
+    scores = [score(reference, hypothesis) for reference, hypothesis in zip(references, hypotheses, strict=True)]
     totals = {
         field: sum(row[field] for row in scores)
         for field in (
@@ -126,7 +126,7 @@ def compare_predictions(
     reference_length_rows = defaultdict(list)
     for key, manifest_row, base_score, candidate_score in zip(
         ordered_keys, (manifest[item] for item in ordered_keys),
-        baseline_scores, candidate_scores,
+        baseline_scores, candidate_scores, strict=True
     ):
         base_prediction = baseline[key]
         candidate_prediction = candidate[key]

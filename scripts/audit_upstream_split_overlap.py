@@ -167,7 +167,7 @@ def main() -> None:
     experimental_rows = read_jsonl(EXPERIMENTAL_PATH)
     if len(aggregate_rows) != len(experimental_rows):
         raise ValueError("Aggregate transcript and ingested-record counts differ")
-    for index, (source_row, ingested_row) in enumerate(zip(aggregate_rows, experimental_rows)):
+    for index, (source_row, ingested_row) in enumerate(zip(aggregate_rows, experimental_rows, strict=True)):
         if ingested_row.get("record_id") != f"indic_dialect_asr_gbm:{index}":
             raise ValueError(f"Unexpected aggregate record order at row {index}")
         if ingested_row.get("text_original") != source_row.get("sentence"):

@@ -65,7 +65,7 @@ def audit_wav(path: Path, chunk_frames: int = 65_536) -> dict:
                 clipped_sample_share=clipped / total if total else 0.0,
                 signal_metrics_status="complete",
             )
-    except Exception as exc:  # A failure record is more useful than aborting a corpus run.
+    except Exception as exc:  # noqa: BLE001 - a failure record is more useful than aborting a corpus run.
         result["error"] = f"{type(exc).__name__}: {exc}"
     return result
 

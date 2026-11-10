@@ -40,7 +40,7 @@ class SavedGenerationManifestTests(unittest.TestCase):
             seed_predictions = [row for row in self.predictions if row["system"] == seed]
             rows = [
                 row | {"acceptable_responses": [prediction["reference"]]}
-                for row, prediction in zip(self.validation_rows, seed_predictions)
+                for row, prediction in zip(self.validation_rows, seed_predictions, strict=True)
             ]
             hypotheses = [row["hypothesis"] for row in seed_predictions]
             diagnostics, _ = generation_diagnostics(rows, hypotheses)

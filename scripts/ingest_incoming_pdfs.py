@@ -324,7 +324,7 @@ def ingest(input_dir: Path, output: Path, report_path: Path, cache_dir: Path,
         for page in reader.pages:
             try:
                 embedded.append(page.extract_text() or "")
-            except Exception:
+            except Exception:  # noqa: BLE001 - unreadable embedded text falls back to OCR below
                 embedded.append("")
         use_embedded = sum(has_substantive_embedded_text(text) for text in embedded) >= max(
             1, int(len(embedded) * 0.8)

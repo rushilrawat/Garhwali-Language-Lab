@@ -111,7 +111,6 @@ def audit_packages(old_package: Path, new_package: Path) -> dict:
                 break
 
     unrepresented = set(values_by_hash) - exact - contained
-    old_ids = {str(row["id"]) for row in old_text_rows if row.get("id")}
     try:
         old_release = json.loads((old_package / "manifest.json").read_text(encoding="utf-8")).get("release_id")
     except FileNotFoundError:

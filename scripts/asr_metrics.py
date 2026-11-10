@@ -65,7 +65,7 @@ def score_corpus(references, hypotheses, record_ids=None):
     excluded = []
     empty_hypotheses = 0
     per_record_scores = []
-    for record_id, reference, hypothesis in zip(record_ids, references, hypotheses):
+    for record_id, reference, hypothesis in zip(record_ids, references, hypotheses, strict=True):
         result = score(reference, hypothesis)
         if result['reference_words'] == 0 or result['reference_characters'] == 0:
             excluded.append({
@@ -117,7 +117,7 @@ def summarize_slices(rows, scores):
     has_audio_quality = all(
         'audio_quality_status' in row or 'audio_quality_flag' in row for row in rows
     ) if rows else False
-    for row, score_row in zip(rows, scores):
+    for row, score_row in zip(rows, scores, strict=True):
         duration = float(row.get('duration_seconds', 0))
         duration_label = '<3s' if duration < 3 else '3-8s' if duration < 8 else '8-15s' if duration < 15 else '15s+'
         words = len(normalize(row['asr_target_clean']).split())
@@ -161,12 +161,12 @@ def summarize_slices(rows, scores):
     }
     if rows and all('district' in row for row in rows):
         district_groups = defaultdict(list)
-        for row, score_row in zip(rows, scores):
+        for row, score_row in zip(rows, scores, strict=True):
             district_groups[str(row['district'])].append(score_row)
         slices['district'] = summarize(district_groups)
     if has_audio_quality:
         quality_groups = defaultdict(list)
-        for row, score_row in zip(rows, scores):
+        for row, score_row in zip(rows, scores, strict=True):
             quality = row.get('audio_quality_status', row.get('audio_quality_flag'))
             quality_groups[str(quality)].append(score_row)
         slices['audio_quality'] = {

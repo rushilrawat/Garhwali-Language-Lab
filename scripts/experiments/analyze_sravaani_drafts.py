@@ -35,7 +35,7 @@ def normalize_hypothesis(text):
 def repeated_token_loop(tokens):
     longest = 1
     current = 1
-    for left, right in zip(tokens, tokens[1:]):
+    for left, right in zip(tokens, tokens[1:], strict=False):
         current = current + 1 if left == right else 1
         longest = max(longest, current)
     return longest >= 4

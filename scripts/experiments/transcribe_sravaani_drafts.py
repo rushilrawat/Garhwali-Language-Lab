@@ -94,7 +94,7 @@ def main():
             batch = rows[offset:offset + args.batch_size]
             paths = [str(ROOT / row['local_audio_path']) for row in batch]
             hypotheses = model.transcribe(paths, batch_size=args.batch_size)
-            for row, hypothesis in zip(batch, hypotheses):
+            for row, hypothesis in zip(batch, hypotheses, strict=True):
                 output.write(json.dumps(
                     build_draft_record(row, hypothesis),
                     ensure_ascii=False,

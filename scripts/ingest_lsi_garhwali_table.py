@@ -153,7 +153,7 @@ def row_centers_from_number_column(tsv: str, printed_page: int,
 def cells_from_column_tsv(tsv: str, row_centers: list[float]) -> list[dict]:
     if len(row_centers) > 1:
         ordered_pitches = sorted(
-            right - left for left, right in zip(row_centers, row_centers[1:])
+            right - left for left, right in zip(row_centers, row_centers[1:], strict=False)
         )
         pitch = ordered_pitches[len(ordered_pitches) // 2]
     else:

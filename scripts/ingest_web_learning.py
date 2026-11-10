@@ -37,7 +37,7 @@ def labeled_pairs(text):
     return [(normalize(a),normalize(b)) for a,b in re.findall(pattern,text,flags=re.I|re.S)]
 
 
-def pairwise(values): return list(zip(values[0::2],values[1::2]))
+def pairwise(values): return list(zip(values[0::2],values[1::2], strict=False))
 
 
 def fetch(url):
@@ -54,7 +54,7 @@ def collect_records(fetcher=None):
     RAW.mkdir(parents=True,exist_ok=True); records=[]; source_counts={}; failures=[]
     for source,url in URLS.items():
         try: data=fetcher(url)
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001 - recorded in the failures report
             failures.append({'source': source, 'url': url, 'error': str(error)})
             continue
         digest=hashlib.sha256(data).hexdigest(); raw=RAW/f'{source}-{digest[:12]}.html'; raw.write_bytes(data)

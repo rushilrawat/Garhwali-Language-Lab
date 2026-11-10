@@ -155,7 +155,7 @@ def evaluate(rows, relevant_ids, index, query_field, selection_split='dev'):
         raise ValueError('retrieval selection supports only dev; test rows are not eligible')
     results = []
     requested = 0
-    for row, relevant_id in zip(rows, relevant_ids):
+    for row, relevant_id in zip(rows, relevant_ids, strict=True):
         if row.get('split') != selection_split:
             continue
         requested += 1

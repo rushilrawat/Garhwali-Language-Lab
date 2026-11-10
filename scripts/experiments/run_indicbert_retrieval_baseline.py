@@ -44,7 +44,7 @@ def select_evaluation_rows(rows, limit, selection_split='dev'):
 
 def rank_scores(document_ids, scores, relevant_id, top_k=10):
     ranked = sorted(
-        zip(document_ids, scores),
+        zip(document_ids, scores, strict=True),
         key=lambda item: (-item[1], item[0]),
     )
     rank = next(index for index, (document_id, _) in enumerate(ranked, 1)
@@ -118,7 +118,7 @@ def run(
     similarities = torch.matmul(query_embeddings, document_embeddings.T)
     results = []
     predictions = []
-    for row, scores in zip(evaluation_rows, similarities.tolist()):
+    for row, scores in zip(evaluation_rows, similarities.tolist(), strict=True):
         relevant_id = context_id(row['source_example']['context'])
         ranking = rank_scores(document_ids, scores, relevant_id)
         results.append({

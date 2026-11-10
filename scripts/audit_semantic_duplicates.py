@@ -30,8 +30,8 @@ def source_ids(row: dict) -> list[str]:
 
 def collect_pairs(rows, neighbor_indices, neighbor_scores, threshold=0.92, limit=200000):
     pairs = {}
-    for left, (indices, scores) in enumerate(zip(neighbor_indices, neighbor_scores)):
-        for right, score in zip(indices, scores):
+    for left, (indices, scores) in enumerate(zip(neighbor_indices, neighbor_scores, strict=True)):
+        for right, score in zip(indices, scores, strict=True):
             right = int(right)
             score = float(score)
             if right < 0 or left == right or score < threshold:

@@ -748,7 +748,7 @@ def opus_extract():
         raise ValueError('OPUS Garhwali/English alignment length mismatch')
     english_by_gbm = {}
     ids_by_gbm = {}
-    for index, (gbm, english) in enumerate(zip(gbm_parallel, en_parallel)):
+    for index, (gbm, english) in enumerate(zip(gbm_parallel, en_parallel, strict=True)):
         english_by_gbm.setdefault(gbm, []).append(english)
         if pair_ids:
             ids_by_gbm.setdefault(gbm, []).append(pair_ids[index])

@@ -44,7 +44,7 @@ def select_rows(rows, count, seed):
 
 def select_mask_positions(token_ids, attention_mask, special_ids, record_key, rate, seed):
     candidates = [
-        index for index, (token_id, attended) in enumerate(zip(token_ids, attention_mask))
+        index for index, (token_id, attended) in enumerate(zip(token_ids, attention_mask, strict=True))
         if attended and token_id not in special_ids
     ]
     if not candidates:

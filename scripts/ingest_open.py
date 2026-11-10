@@ -142,7 +142,7 @@ def main():
             temp = path.with_suffix('.tmp')
             temp.write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows))
             temp.replace(path)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001 - recorded in the failures report
             failures[source] = str(exc)
     records = []
     for path in sorted(OUT.glob('*.jsonl')):

@@ -230,7 +230,7 @@ def select_model_rows(rows, preliminary, limit):
     if limit <= 0:
         return []
     ranked = []
-    for row, proposal in zip(rows, preliminary):
+    for row, proposal in zip(rows, preliminary, strict=True):
         language = row.get('language_quality', {})
         score = (
             4 * bool(proposal['mechanical_changes'])
@@ -246,7 +246,7 @@ def select_model_rows(rows, preliminary, limit):
 
 def select_mask_positions(token_ids, attention_mask, special_ids, record_key, rate, seed):
     candidates = [
-        index for index, (token_id, attended) in enumerate(zip(token_ids, attention_mask))
+        index for index, (token_id, attended) in enumerate(zip(token_ids, attention_mask, strict=True))
         if attended and token_id not in special_ids
     ]
     if not candidates:

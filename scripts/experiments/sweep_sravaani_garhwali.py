@@ -395,7 +395,7 @@ def run(
                     )
                     best = result.copy()
                     write_json(output / "best-trial.json", best)
-            except Exception as error:
+            except Exception as error:  # noqa: BLE001 - record the failed trial and continue the sweep
                 result.update({
                     "status": "failed",
                     "error_type": type(error).__name__,

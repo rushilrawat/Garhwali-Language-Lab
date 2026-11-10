@@ -130,7 +130,7 @@ def run(
             batch = rows[offset:offset + batch_size]
             paths = [str(ROOT / row['local_audio_path']) for row in batch]
             hypotheses = model.transcribe(paths, batch_size=batch_size)
-            for row, hypothesis in zip(batch, hypotheses):
+            for row, hypothesis in zip(batch, hypotheses, strict=True):
                 metrics = score(row['asr_target_clean'], hypothesis)
                 scores.append(metrics)
                 predictions.append(make_prediction_row(row, hypothesis, metrics))

@@ -201,7 +201,7 @@ def run(input_path=INPUT, output_path=OUTPUT, report_path=REPORT, model_path=MOD
                 language='hi', task='transcribe', max_new_tokens=128,
             )
             hypotheses = processor.batch_decode(generated, skip_special_tokens=True)
-            for row, hypothesis in zip(batch, hypotheses):
+            for row, hypothesis in zip(batch, hypotheses, strict=True):
                 output.write(json.dumps(
                     build_result(row, hypothesis), ensure_ascii=False, sort_keys=True
                 ) + '\n')

@@ -112,7 +112,7 @@ def build_manifest_runs(
         hypotheses = [prediction["hypothesis"] for prediction in seed_predictions]
         primary_reference_rows = [
             row | {"acceptable_responses": [prediction["reference"]]}
-            for row, prediction in zip(source_rows, seed_predictions)
+            for row, prediction in zip(source_rows, seed_predictions, strict=True)
         ]
         primary_diagnostics, recomputed_details = generation_diagnostics(
             primary_reference_rows, hypotheses,
@@ -174,7 +174,7 @@ def build_manifest_runs(
         }
         predictions = []
         for record_hash, row, saved, detail in zip(
-            ordered_hashes, source_rows, seed_predictions, recomputed_details,
+            ordered_hashes, source_rows, seed_predictions, recomputed_details, strict=True
         ):
             for detail_field, saved_field in (
                 ("empty", "empty"),
