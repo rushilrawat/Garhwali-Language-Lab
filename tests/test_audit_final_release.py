@@ -434,6 +434,25 @@ class FinalReleaseAuditTests(unittest.TestCase):
             report['errors'],
         )
 
+    def test_provenance_total_counts_text_rows_after_knowledge_configs(self):
+        # Regression: knowledge configs sorted after text used to overwrite
+        # the running provenance_missing total instead of adding to it.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            index = self.fixture(root)
+            path = root / 'data/text/train-00000.jsonl'
+            row = json.loads(path.read_text())
+            row['provenance'] = []
+            write_jsonl(path, [row])
+            manifest_path = root / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text())
+            manifest['configs']['text/train']['file_sha256']['train-00000.jsonl'] = hashlib.sha256(path.read_bytes()).hexdigest()
+            manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+            report = m.audit(index, root)
+        self.assertIn('text/train has 1 rows without provenance', report['errors'])
+        self.assertEqual(report['provenance']['missing_rows'], 1)
+        self.assertEqual(report['provenance']['knowledge_missing_standardized_rows'], 0)
+
     def test_rejects_duplicate_knowledge_ids(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

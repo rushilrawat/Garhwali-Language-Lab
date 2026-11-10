@@ -741,9 +741,6 @@ def _audit_knowledge_rows(state, errors, key, group, split, rows, manifest):
         )
         for row in rows
     )
-    # Historical behavior: the knowledge count replaced the shared
-    # provenance_missing total instead of adding to it.
-    state.provenance_missing = provenance_missing
     source_untraceable = sum(
         not row.get('provenance')
         or any(
