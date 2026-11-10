@@ -56,7 +56,9 @@ reuses completed downloads rather than appending duplicate records.
   not enter the public Hugging Face text profile.
 
 Add a new wave by defining `<name>_wave_acquire` and `<name>_wave_extract` in
-`scripts/collect_online.py`, then registering the pair in `wave_actions()`.
+`scripts/collect_online.py`, then registering the pair in `WAVES` in
+`scripts/online_sources/registry.py`. Pure parsers and record helpers live in
+`scripts/online_sources/` so they can be tested without network access.
 
 ## Refresh all derived corpus figures
 
@@ -154,7 +156,7 @@ release. The local refresh helper never launches an upload by itself.
 ## Verification
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
+PYTHONPATH=scripts:scripts/experiments:scripts/archive .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_intake_quality.py
 PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_corpus_overlap.py
 .venv/bin/python scripts/dedup_report.py
@@ -162,26 +164,26 @@ PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_corpus_overlap.py
 .venv/bin/python scripts/tag_language_quality.py
 .venv/bin/python scripts/build_dataset_splits.py
 .venv/bin/python scripts/build_garhwali_benchmark.py
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/audit_multilingual_tokenizers.py
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_masked_lm_baseline.py
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/experiments/audit_multilingual_tokenizers.py
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/experiments/run_masked_lm_baseline.py
 .venv/bin/python scripts/run_translation_baseline.py --split dev
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --split dev --max-records 32 --max-new-tokens 64 --device cpu
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_nllb_translation_baseline.py --split dev --adapter .cache/model-adapters/garhwali-nllb-v12 --max-records 32 --max-new-tokens 64 --device cpu
-.venv/bin/python scripts/run_retrieval_baseline.py
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_whisper_comparison.py --device cpu
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/experiments/run_nllb_translation_baseline.py --split dev --max-records 32 --max-new-tokens 64 --device cpu
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/experiments/run_nllb_translation_baseline.py --split dev --adapter .cache/model-adapters/garhwali-nllb-v12 --max-records 32 --max-new-tokens 64 --device cpu
+.venv/bin/python scripts/experiments/run_retrieval_baseline.py
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/experiments/run_indicbert_retrieval_baseline.py --max-records 0 --device cpu
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/experiments/run_whisper_comparison.py --device cpu
 PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/propose_text_cleanup.py --model-records 4096 --device cpu
-.venv/bin/python scripts/run_text_cleanup_ablation.py
-.venv/bin/python scripts/run_text_scaling_experiment.py
-PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/run_indicbert_adaptation.py --device cpu
-PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_indicbert_lora_adaptation.py --device cpu --steps 256 --training-records 2048
-PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/evaluate_indicbert_transfer.py --device cpu --test-records 256
+.venv/bin/python scripts/experiments/run_text_cleanup_ablation.py
+.venv/bin/python scripts/experiments/run_text_scaling_experiment.py
+PYTHONPATH=.cache/asr-runtime .venv/bin/python scripts/experiments/run_indicbert_adaptation.py --device cpu
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/experiments/run_indicbert_lora_adaptation.py --device cpu --steps 256 --training-records 2048
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/experiments/evaluate_indicbert_transfer.py --device cpu --test-records 256
 .venv/bin/python scripts/build_instruction_dataset.py
 .venv/bin/python scripts/build_instruction_accuracy_split.py
-PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_indicbert_lora_adaptation.py --device cpu --steps 1024 --training-records 8192 --output data/processed/evaluation/controlled_modeling/indicbert_lora_long.json --checkpoint-dir models/controlled_modeling/indicbert_lora_v0.2
+PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/experiments/run_indicbert_lora_adaptation.py --device cpu --steps 1024 --training-records 8192 --output data/processed/evaluation/controlled_modeling/indicbert_lora_long.json --checkpoint-dir models/controlled_modeling/indicbert_lora_v0.2
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_mt5_instruction_tuning.py --device cpu --steps 64 --training-records 2304
 PYTHONPATH=.cache/asr-runtime:scripts .venv/bin/python scripts/run_mt5_instruction_tuning.py --device cpu --data-dir data/processed/model_ready/instructions_v0.2 --output-dir data/processed/evaluation/controlled_modeling/mt0_instruction_v0.2 --checkpoint-dir models/controlled_modeling/mt0_instruction_v0.2 --steps 256 --training-records 2046 --model-path .cache/huggingface/hub/models--bigscience--mt0-small/snapshots/8116a34237e19160ec003147e758f065876d95f0 --model-id bigscience/mt0-small --revision 8116a34237e19160ec003147e758f065876d95f0 --run-id garhwali-mt0-instruction-lora-v0.2
-PYTHONPATH=scripts .venv/bin/python scripts/analyze_sravaani_drafts.py
+PYTHONPATH=scripts .venv/bin/python scripts/experiments/analyze_sravaani_drafts.py
 PYTHONPATH=scripts .venv/bin/python scripts/build_huggingface_dataset.py --output data/huggingface/garhwali-language-lab --include-audio
 ```
 

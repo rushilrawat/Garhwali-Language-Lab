@@ -72,7 +72,7 @@ Create an environment, install the developer requirements, and run the test suit
 
     python3.12 -m venv .venv
     .venv/bin/python -m pip install -r requirements-dev.txt
-    PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
+    PYTHONPATH=scripts:scripts/experiments:scripts/archive .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 
 Load and inspect the dataset with the Hugging Face Datasets library. To rebuild local Kaggle exports or refresh derived corpus views, follow the [pipeline guide](PIPELINE.md). These commands write local artifacts; they do not publish data.
 

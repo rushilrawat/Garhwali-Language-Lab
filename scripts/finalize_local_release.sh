@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PYTHON_BIN="${PYTHON_BIN:-.venv/bin/python}"
-export PYTHONPATH="scripts${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH="scripts:scripts/experiments:scripts/archive${PYTHONPATH:+:$PYTHONPATH}"
 export PYTHONDONTWRITEBYTECODE=1
 RELEASE_VERSION="${GARHWALI_RELEASE_VERSION:-$("$PYTHON_BIN" -m garhwali_lab.version corpus)}"
 RELEASE_DIR="release/v${RELEASE_VERSION#v}"

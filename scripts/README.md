@@ -11,12 +11,29 @@ scripts. LangChain is not currently used. See [`PIPELINE.md`](../PIPELINE.md) fo
 the architecture and
 [`README.md`](../README.md) for the current data and runtime status.
 
+Top level (`scripts/`) holds the pipeline, release tooling, and quality gates:
+
 - `ingest_*`, `collect_*`, `download_*`, and `extract_*`: source acquisition
+  (`collect_online.py` runs network steps; `online_sources/` holds its pure
+  parsers, record helpers, and the wave registry)
 - `prepare_*`, `clean_*`, `refine_*`, and `segment_*`: corpus preparation
-- `build_*`, `register_*`, and `export_*`: datasets and release artifacts
+- `build_*` and `export_*`: datasets and release artifacts
 - `audit_*`, `validate_*`, `verify_*`, and `check_*`: quality gates
-- `train_*`, `run_*`, `evaluate_*`, and `sweep_*`: model experiments
-- `*_hf_job.sh`: Hugging Face Jobs container entry points
+- `garhwali_lab/`: shared library (see below)
+
+Subfolders separate work that is not part of the release pipeline:
+
+- `experiments/`: model training, evaluation, sweeps, and research analyses
+  (`train_*`, `run_*`, `evaluate_*`, `sweep_*`, `register_*`, `analyze_*`, ...).
+  They add `scripts/` to the import path themselves, so run them directly,
+  for example `python scripts/experiments/train_whisper_garhwali.py --help`.
+- `hf_jobs/`: Hugging Face Jobs container entry points (`*_hf_job.sh`).
+- `archive/`: superseded builders kept so earlier published artifacts stay
+  reproducible (the v0.1 speech training view and Kaggle ASR input).
+
+Run the tests with `PYTHONPATH=scripts:scripts/experiments:scripts/archive`.
+Dated research reports cite scripts at the paths they had when written; a
+script moved here keeps its file name.
 
 For a graph-managed source wave, use `ingestion_graph.py` with a unique
 `--run-id` and `--refresh-derived`. This checkpointed mode acquires and extracts
@@ -151,7 +168,7 @@ Unit tests live in `tests/` and mirror the Python command name. Run all tests
 with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
+PYTHONPATH=scripts:scripts/experiments:scripts/archive .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
 The current working-tree suite passes **820 tests** (6 October 2026). The
@@ -241,7 +258,7 @@ aggregate diagnostics without generated text, and rejects hash/ID/task/reference
 drift. Run it with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/analyze_generation_output_diagnostics.py
+PYTHONPATH=scripts .venv/bin/python scripts/experiments/analyze_generation_output_diagnostics.py
 ```
 
 The [dated report](../research/generation-output-diagnostics-2026-09-28.md)
@@ -331,7 +348,7 @@ saved report. It writes hash-linked JSON/Markdown locally; it neither reads
 test predictions nor changes model or benchmark data. Run it with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/analyze_retrieval_cluster_uncertainty.py
+PYTHONPATH=scripts .venv/bin/python scripts/experiments/analyze_retrieval_cluster_uncertainty.py
 ```
 
 The intervals are conditional on the fixed 1,059-document retrieval corpus,
@@ -346,7 +363,7 @@ not copied source text, and remain under ignored `data/processed/`. Run it
 with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/analyze_retrieval_misses.py
+PYTHONPATH=scripts .venv/bin/python scripts/experiments/analyze_retrieval_misses.py
 ```
 
 The [dated report](../research/retrieval-miss-analysis-2026-09-28.md) records
@@ -374,7 +391,7 @@ and FFmpeg already available locally, build an ASR-ready view without network
 access:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/prepare_meta_omnilingual_asr.py \
+PYTHONPATH=scripts .venv/bin/python scripts/experiments/prepare_meta_omnilingual_asr.py \
   --source-manifest data/huggingface/garhwali-language-lab-speech-2026-09-23/meta_omnilingual-manifest.jsonl \
   --text-manifest corpus/meta_omni.jsonl \
   --parquet-root data/downloads/meta_omni_gbm/data/gbm_Deva \
@@ -402,7 +419,7 @@ manifests while excluding them from this model-specific run with a hashed
 row-level ledger:
 
 ```bash
-.venv/bin/python scripts/prepare_whisper_compatible_manifests.py \
+.venv/bin/python scripts/experiments/prepare_whisper_compatible_manifests.py \
   --train-manifest data/processed/model_ready/splits/meta_omnilingual_asr/train.jsonl \
   --validation-manifest data/processed/model_ready/splits/meta_omnilingual_asr/validation.jsonl \
   --model models/whisper-tiny-garhwali-v0.2 \
@@ -410,10 +427,10 @@ row-level ledger:
 ```
 
 Train from the filtered train view and evaluate only on its paired validation
-view with `scripts/train_whisper_garhwali.py --train-manifest ...
+view with `scripts/experiments/train_whisper_garhwali.py --train-manifest ...
 --eval-manifest ... --eval-split validation --seed 17`. Compare candidate and
 baseline predictions on the exact same IDs, audio hashes, and references with
-`scripts/compare_asr_predictions.py`. The paired output includes aggregate,
+`scripts/experiments/compare_asr_predictions.py`. The paired output includes aggregate,
 speaker, duration, and reference-length slices. See the dated adaptation
 report for the full command, pinned input/model hashes, results, and limits.
 This result is a development diagnostic; it does not authorize scoring Meta

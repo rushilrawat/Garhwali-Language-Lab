@@ -13,6 +13,7 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.types import RetryPolicy
 
 import collect_online
+from online_sources.registry import WAVES
 import dedup_report
 import verify_ingestion
 
@@ -28,17 +29,8 @@ class IngestionState(TypedDict, total=False):
 
 
 def wave_actions(wave):
-    actions = {
-        'fourth': ('fourth_wave_acquire', 'fourth_wave_extract'),
-        'fifth': ('fifth_wave_acquire', 'fifth_wave_extract'),
-        'sixth': ('sixth_wave_acquire', 'sixth_wave_extract'),
-        'seventh': ('seventh_wave_acquire', 'seventh_wave_extract'),
-        'eighth': ('eighth_wave_acquire', 'eighth_wave_extract'),
-        'ninth': ('ninth_wave_acquire', 'ninth_wave_extract'),
-        'tenth': ('tenth_wave_acquire', 'tenth_wave_extract'),
-    }
     try:
-        return actions[wave]
+        return WAVES[wave]
     except KeyError as exc:
         raise ValueError(f'Unknown ingestion wave: {wave}') from exc
 

@@ -4,8 +4,6 @@ Snapshots are content addressed. The source ledger records successful and failed
 requests. Corpus promotion is always a separate, human-reviewed operation.
 """
 import argparse
-import csv
-import hashlib
 import html
 import io
 import json
@@ -13,32 +11,66 @@ import gzip
 import re
 import subprocess
 import time
-import unicodedata
 import zipfile
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
-from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlencode, quote
 
-from wikitext_plain import to_plain_text
+from online_sources.records import (  # noqa: F401 - re-exported for callers and tests
+    VERSION,
+    BY,
+    SA,
+    sha,
+    now,
+    make_record,
+    latin_record,
+    save_records,
+    csv_dict_rows,
+)
+from online_sources.parsers import (  # noqa: F401 - re-exported for callers and tests
+    GenericTextParser,
+    OBSTextParser,
+    TableAndLineParser,
+    sand_garhwali_records,
+    chan_garhwali_records,
+    mamta_garhwali_records,
+    lsi_cldf_garhwali_records,
+    obs_text_blocks,
+    obs_garhwali_record,
+    djvu_word_pages,
+    garhwali_section,
+    plain_wikitext,
+    wiktionary_page_records,
+    incubator_wiktionary_records,
+    meta_record,
+    benchmark_record,
+    indic_asr_record,
+    paharili_line,
+    madlad_clean_records,
+    madlad_provenance,
+)
+from online_sources.vocabulary import (  # noqa: F401 - re-exported for callers and tests
+    CULTURAL_TERMS,
+    cultural_chunks,
+    cultural_genres,
+    cultural_record,
+    THEMED_DOMAINS,
+    themed_domain,
+    devanagari_variants,
+    themed_lexicon_record,
+    local_gloss_domain,
+    hindi_gloss_domain,
+)
+from online_sources.registry import (  # noqa: F401 - re-exported for callers and tests
+    WAVES,
+    scholarly_open_sources,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / 'sources' / 'online'
 CORPUS = ROOT / 'corpus'
 LOG = RAW / 'requests.jsonl'
-VERSION = 'online-0.1'
-BY = 'https://creativecommons.org/licenses/by/4.0/'
-SA = 'https://creativecommons.org/licenses/by-sa/4.0/'
-
-
-def sha(data):
-    return hashlib.sha256(data).hexdigest()
-
-
-def now():
-    return datetime.now(timezone.utc).isoformat()
 
 
 def fetch(source, name, url, max_time=55, max_size=100000000):
@@ -207,352 +239,6 @@ class HTTPRangeReader(io.RawIOBase):
         super().close()
 
 
-def make_record(source, key, text, info, license_id, license_url, attribution, **extra):
-    normalized = unicodedata.normalize('NFC', text).strip()
-    if not normalized:
-        raise ValueError('Empty text')
-    return dict(record_id=f'{source}:{key}', source_id=source, text_original=text,
-                text_normalized=normalized, text_sha256=sha(normalized.encode()),
-                iso_639_3='gbm', script='Deva', license_id=license_id,
-                license_url=license_url, attribution=attribution, provenance=info,
-                extractor_version=VERSION, modifications='Unicode NFC and outer whitespace trimming only',
-                native_reviewed=False, quality_status='unreviewed', training_eligible=False,
-                historical=False, **extra)
-
-
-def save_records(path, rows):
-    ids = set()
-    for row in rows:
-        if not all(row.get(k) for k in ('record_id', 'text_original', 'license_url', 'attribution', 'provenance')):
-            raise ValueError('Incomplete corpus record')
-        if row['record_id'] in ids:
-            raise ValueError('Duplicate record ID: ' + row['record_id'])
-        ids.add(row['record_id'])
-    if not rows:
-        raise ValueError('Refusing to replace a source with an empty extraction')
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temp = path.with_suffix('.tmp')
-    temp.write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows))
-    temp.replace(path)
-
-
-def csv_dict_rows(data):
-    return list(csv.DictReader(io.StringIO(data.decode('utf-8-sig'))))
-
-
-def latin_record(source, key, text, info, attribution, **extra):
-    record = make_record(source, key, text, info, 'CC-BY-4.0', BY, attribution, **extra)
-    record['script'] = 'Latn'
-    return record
-
-
-def sand_garhwali_records(data, info, parameters_data=None,
-                          parameters_info=None):
-    parameters = {
-        item['ID']: item for item in csv_dict_rows(parameters_data)
-    } if parameters_data else {}
-    rows = []
-    for item in csv_dict_rows(data):
-        if item.get('Language_ID') != 'Garhwali':
-            continue
-        parameter = parameters.get(item.get('Parameter_ID'), {})
-        rows.append(latin_record(
-            'sand_garhwali', item['ID'], item.get('Form') or item['Value'], info,
-            'South Asian Numeral Database contributors; source mephd2021; Numeralbank editors',
-            corpus_layer='core_open', genre='numeral_lexicon', modality='text',
-            parameter_id=item.get('Parameter_ID'), value=item.get('Value'),
-            english_gloss=parameter.get('Name'),
-            concepticon_id=parameter.get('Concepticon_ID'),
-            concepticon_gloss=parameter.get('Concepticon_Gloss'),
-            parameter_table_provenance=parameters_info,
-            segments=item.get('Segments'), source_bibliography=item.get('Source'),
-            source_url='https://github.com/numeralbank/sand/tree/v1.0',
-            rights_evidence='https://zenodo.org/records/15463198'))
-    return rows
-
-
-def chan_garhwali_records(data, info):
-    rows = []
-    for item in csv_dict_rows(data):
-        if item.get('Language_ID') != 'garh1243-2':
-            continue
-        rows.append(latin_record(
-            'chan_numerals_garhwali', item['ID'], item.get('Form') or item['Value'], info,
-            'Eugene Chan numeral data; Numeralbank CLDF editors',
-            corpus_layer='core_open', genre='numeral_lexicon', modality='text',
-            parameter_id=item.get('Parameter_ID'), value=item.get('Value'),
-            segments=item.get('Segments'), other_form=item.get('Other_Form'),
-            variant_id=item.get('Variant_ID'), source_bibliography=item.get('Source'),
-            upstream_language_id=item.get('Language_ID'),
-            source_url='https://github.com/numeralbank/channumerals/tree/v1.0.2',
-            rights_evidence='https://zenodo.org/records/15654191'))
-    return rows
-
-
-def mamta_garhwali_records(values_data, values_info, examples_data, examples_info):
-    values = []
-    for item in csv_dict_rows(values_data):
-        if item.get('Language_ID') != 'garh1243':
-            continue
-        values.append(latin_record(
-            'mamta_southasia_values', item['ID'], item['Value'], values_info,
-            'Special Numerals in South Asian Languages contributors and CLDF editors',
-            corpus_layer='reference_open', genre='numeral_lexicon', modality='text',
-            parameter_id=item.get('Parameter_ID'), example_ids=item.get('Example_IDs'),
-            source_url='https://github.com/cldf-datasets/mamtasouthasia/tree/v1.0',
-            rights_evidence='https://zenodo.org/records/17985722'))
-    examples = []
-    for item in csv_dict_rows(examples_data):
-        if item.get('Language_ID') != 'garh1243':
-            continue
-        examples.append(latin_record(
-            'mamta_southasia_examples', item['ID'], item['Primary_Text'], examples_info,
-            'Special Numerals in South Asian Languages contributors and CLDF editors',
-            corpus_layer='core_open', genre='translated_example', modality='text',
-            analyzed_word=item.get('Analyzed_Word'), gloss=item.get('Gloss'),
-            translation=item.get('Translated_Text'), lgr_conformance=item.get('LGR_Conformance'),
-            source_url='https://github.com/cldf-datasets/mamtasouthasia/tree/v1.0',
-            rights_evidence='https://zenodo.org/records/17985722'))
-    return values, examples
-
-
-def lsi_cldf_garhwali_records(data, info, parameters_data=None,
-                              parameters_info=None):
-    parameters = {
-        item['ID']: item for item in csv_dict_rows(parameters_data)
-    } if parameters_data else {}
-    rows = []
-    for item in csv_dict_rows(data):
-        if item.get('Language_ID') != 'GARHWALI':
-            continue
-        parameter = parameters.get(item.get('Parameter_ID'), {})
-        record = latin_record(
-            'lsi_cldf_garhwali', item['ID'], item.get('Form') or item['Value'], info,
-            'George A. Grierson, Linguistic Survey of India; Lexibank CLDF editors',
-            corpus_layer='historical_review', genre='historical_lexicon', modality='text',
-            parameter_id=item.get('Parameter_ID'), value=item.get('Value'),
-            english_gloss=parameter.get('Name'),
-            concepticon_id=parameter.get('Concepticon_ID'),
-            concepticon_gloss=parameter.get('Concepticon_Gloss'),
-            parameter_table_provenance=parameters_info,
-            segments=item.get('Segments'), source_bibliography=item.get('Source'),
-            source_url='https://github.com/lexibank/lsi/tree/v1.0',
-            rights_evidence='https://zenodo.org/records/8361936',
-            quality_flags=['structured_derivative_of_existing_lsi_ocr',
-                           'source_level_duplicate_expected'])
-        record['historical'] = True
-        rows.append(record)
-    return rows
-
-
-class OBSTextParser(HTMLParser):
-    TARGET_CLASSES = {'mt', 's', 'p', 'pmr'}
-
-    def __init__(self):
-        super().__init__(convert_charrefs=True)
-        self.div_depth = 0
-        self.content_depth = None
-        self.capture_depth = None
-        self.parts = []
-        self.blocks = []
-
-    def handle_starttag(self, tag, attrs):
-        attrs = dict(attrs)
-        if tag == 'div':
-            self.div_depth += 1
-            if self.content_depth is None and attrs.get('id') == 'content':
-                self.content_depth = self.div_depth
-            elif self.content_depth is not None and self.capture_depth is None:
-                classes = set(attrs.get('class', '').split())
-                if classes & self.TARGET_CLASSES:
-                    self.capture_depth = self.div_depth
-                    self.parts = []
-        elif tag == 'br' and self.capture_depth is not None:
-            self.parts.append(' ')
-
-    def handle_data(self, data):
-        if self.capture_depth is not None:
-            self.parts.append(data)
-
-    def handle_endtag(self, tag):
-        if tag != 'div':
-            return
-        if self.capture_depth == self.div_depth:
-            text = ' '.join(''.join(self.parts).split())
-            if text and text != '&nbsp;':
-                self.blocks.append(text)
-            self.capture_depth = None
-            self.parts = []
-        if self.content_depth == self.div_depth:
-            self.content_depth = None
-        self.div_depth -= 1
-
-
-def obs_text_blocks(data):
-    parser = OBSTextParser()
-    parser.feed(data.decode('utf-8'))
-    return parser.blocks
-
-
-def djvu_word_pages(data):
-    root = ET.fromstring(data)
-    pages = []
-    for page in root.findall('.//OBJECT'):
-        lines = []
-        for line in page.findall('.//LINE'):
-            text = ' '.join((word.text or '').strip() for word in line.findall('WORD')).strip()
-            if text:
-                lines.append(text)
-        pages.append('\n'.join(lines))
-    return pages
-
-
-def obs_garhwali_record(story_number, data, info):
-    blocks = obs_text_blocks(data)
-    if len(blocks) < 2:
-        raise ValueError(f'Open Bible Story {story_number} has too little text')
-    text_value = '\n\n'.join(blocks)
-    devanagari = sum('\u0900' <= char <= '\u097f' for char in text_value)
-    alphabetic = sum(char.isalpha() for char in text_value)
-    if alphabetic == 0 or devanagari / alphabetic < 0.5:
-        raise ValueError(f'Open Bible Story {story_number} is not predominantly Devanagari')
-    return make_record(
-        'obs_garhwali', f'{story_number:03d}', text_value, info,
-        'CC-BY-SA-4.0', 'https://creativecommons.org/licenses/by-sa/4.0/',
-        'Open Bible Stories — Garhwali (gbm), OBS-TLF v1 (2026-06-26), aggregated by the unfoldingWord OBS Library project; text-only extraction from the TLF umbrella OBS Android app. CC BY-SA 4.0. Audio and Sweet Publishing illustrations are excluded.',
-        corpus_layer='licensed_sharealike', genre='religious_narrative', modality='text',
-        story_number=story_number,
-        source_url=f'https://media.ipsapps.org/in/osa/stories/36-Garhwali-{story_number:03d}.html',
-        rights_evidence='https://openbiblestories.org/l/gbm/; https://git.door43.org/OBS-TLF/gbm_obs/releases/tag/v1',
-        rights_status='upstream_openbiblestories_declares_CC_BY_SA_4; v1_2026_06_26; text_only',
-        quality_flags=['translation_quality_unreviewed', 'illustrations_excluded'])
-
-
-def garhwali_section(text):
-    match = re.search(r'^==\s*Garhwali\s*==\s*\n(.*?)(?=^==[^=]|\Z)', text, re.M | re.S)
-    return match.group(1).strip() if match else ''
-
-
-def plain_wikitext(text):
-    """Render the small Wiktionary subset used for glosses and examples."""
-    previous = None
-    while text != previous:
-        previous = text
-        text = re.sub(r'\{\{[^{}]*\}\}', ' ', text)
-    text = re.sub(r'\[\[(?:[^\]|]*\|)?([^\]]+)\]\]', r'\1', text)
-    text = re.sub(r'<[^>]*>', ' ', text)
-    text = text.replace("'''", '').replace("''", '')
-    return re.sub(r'\s+', ' ', html.unescape(text)).strip(' ;,')
-
-
-def wiktionary_page_records(page, info):
-    """Extract Garhwali values instead of treating English wikitext as corpus text."""
-    title = page['title']
-    if not re.search(r'[\u0900-\u097f]', title):
-        return []
-    revision = page['revisions'][0]
-    section = garhwali_section(revision['slots']['main']['*'])
-    if not section:
-        return []
-    source_url = f'https://en.wiktionary.org/w/index.php?oldid={revision["revid"]}'
-    attribution = (
-        'English Wiktionary contributors; '
-        f'https://en.wiktionary.org/w/index.php?title={quote(title)}&action=history'
-    )
-    glosses = []
-    for line in section.splitlines():
-        if line.startswith('# ') and not line.startswith('#:'):
-            gloss = plain_wikitext(line[2:])
-            if gloss and gloss not in glosses:
-                glosses.append(gloss)
-    common = dict(
-        corpus_layer='core_open', modality='text',
-        source_url=source_url, rights_evidence=source_url,
-        revision_id=revision['revid'], text_format='structured_wiktionary',
-    )
-    rows = [make_record(
-        'wiktionary_en', f'{page["pageid"]}:lemma', title, info,
-        'CC-BY-SA-4.0', SA, attribution,
-        genre='lexicon', english_gloss='; '.join(glosses), **common,
-    )]
-    seen_values = {title}
-    alternative_sections = re.findall(
-        r'^=+Alternative forms=+\s*\n(.*?)(?=^={3,}[^=]|\Z)',
-        section, re.M | re.S,
-    )
-    alternative_index = 0
-    for alternative_section in alternative_sections:
-        for match in re.finditer(r'\{\{(?:alter|l)\|gbm\|([^{}]+)\}\}', alternative_section):
-            for value in match.group(1).split('|'):
-                value = plain_wikitext(value)
-                if ('=' in value or value in seen_values
-                        or not re.search(r'[\u0900-\u097f]', value)):
-                    continue
-                seen_values.add(value)
-                alternative_index += 1
-                rows.append(make_record(
-                    'wiktionary_en', f'{page["pageid"]}:alternative:{alternative_index}',
-                    value, info, 'CC-BY-SA-4.0', SA, attribution,
-                    genre='lexicon', english_gloss='; '.join(glosses),
-                    relation='alternative_form', headword=title, **common,
-                ))
-    usage_index = 0
-    for line in section.splitlines():
-        match = re.search(r'\{\{(?:ux|usex)\|gbm\|(.+)\}\}', line)
-        if not match:
-            continue
-        fields = match.group(1).split('|', 1)
-        example = plain_wikitext(fields[0])
-        translation = plain_wikitext(fields[1]) if len(fields) > 1 else ''
-        if not example or not re.search(r'[\u0900-\u097f]', example):
-            continue
-        usage_index += 1
-        rows.append(make_record(
-            'wiktionary_en', f'{page["pageid"]}:usage:{usage_index}', example, info,
-            'CC-BY-SA-4.0', SA, attribution,
-            genre='sentence', translation=translation, **common,
-        ))
-    return rows
-
-
-def incubator_wiktionary_records(payload, info):
-    rows = []
-    for page in payload['query']['pages'].values():
-        revision = page['revisions'][0]
-        raw = revision['slots']['main']['*']
-        if not raw.strip() or re.match(r'^\s*#redirect', raw, re.I):
-            continue
-        text = to_plain_text(raw)
-        if not text:
-            continue
-        rows.append(make_record(
-            'incubator_wt', page['pageid'], text, info, 'CC-BY-SA-4.0', SA,
-            'Wikimedia Incubator contributors; '
-            f'https://incubator.wikimedia.org/w/index.php?title={quote(page["title"])}&action=history',
-            title=page['title'], revision_id=revision['revid'], corpus_layer='core_open',
-            item_url=f'https://incubator.wikimedia.org/w/index.php?oldid={revision["revid"]}',
-            text_format='plain_text_from_wikitext', source_text_format='wikitext',
-            genre='lexicon', modality='text', quality_flags=['mechanically_rendered_wikitext'],
-        ))
-    return rows
-
-
-def meta_record(row, split, index, info):
-    if row.get('iso_639_3') != 'gbm':
-        raise ValueError('Non-Garhwali row in Garhwali configuration')
-    key = ':'.join(str(row.get(k, '')) for k in ('speaker_id', 'prompt_id', 'segment_id'))
-    return make_record('meta_omni', key, row['raw_text'], info, 'CC-BY-4.0', BY,
-                       'Meta Omnilingual ASR Corpus contributors; see saved upstream dataset card',
-                       split=split, upstream_row_index=index, speaker_id=row.get('speaker_id'),
-                       prompt_id=row.get('prompt_id'), prompt=row.get('prompt'),
-                       segment_id=row.get('segment_id'), duration_seconds=row.get('duration'),
-                       modality='speech_transcript', genre='prompted_speech', corpus_layer='core_open',
-                       source_url='https://huggingface.co/datasets/facebook/omnilingual-asr-corpus',
-                       rights_status='upstream_meta_cc_by_4_0',
-                       rights_evidence='sources/online/meta_omni/card.md.metadata.json',
-                       audio_downloaded=False)
-
-
 def meta():
     dataset = 'facebook/omnilingual-asr-corpus'
     card, _ = fetch('meta_omni', 'card.md', f'https://huggingface.co/datasets/{dataset}/raw/main/README.md')
@@ -714,23 +400,7 @@ def snapshot(source, name):
     return data, info
 
 
-def benchmark_record(kind, row, split, index, info, canary):
-    licenses = {'flores': ('CC-BY-SA-4.0', SA),
-                'xorqa': ('MIT', 'https://opensource.org/license/mit'),
-                'crosssum': ('CC-BY-NC-SA-4.0', 'https://creativecommons.org/licenses/by-nc-sa/4.0/')}
-    if row.get('lang', 'gbm') != 'gbm':
-        raise ValueError('Wrong benchmark language')
-    text = row['source'] if kind == 'flores' else row['question'] if kind == 'xorqa' else row['summary']
-    rec = make_record('indicgenbench_' + kind, f'{split}:{index}', text, info, *licenses[kind],
-                       'Singh et al. (2024), Google IndicGenBench; upstream dataset card and source example retained',
-                       split=split, usage='evaluation_only', benchmark_canary=canary,
-                       source_example=row, corpus_layer='evaluation_only', genre=kind, modality='text',
-                       rights_status='upstream_declared_license; component_rights_review_before_redistribution')
-    return rec
-
-
 def extract():
-    import xml.etree.ElementTree as ET
     counts = {}
     for kind in ['flores', 'xorqa', 'crosssum']:
         source = f'google__IndicGenBench_{kind}_in'
@@ -891,7 +561,6 @@ def archive_open():
 
 
 def archive_extract():
-    import xml.etree.ElementTree as ET
     raw, info = snapshot('archive_1865', 'pages.xml')
     pages = ET.fromstring(raw).findall('.//OBJECT')
     rows = []
@@ -1207,50 +876,6 @@ def indic_asr_range_acquire():
                       'range_requests': derived_info['range_requests']}, indent=2))
 
 
-def indic_asr_record(row, row_index, info):
-    if row.get('language') != 'garhwali' or not row.get('sentence', '').strip():
-        raise ValueError(f'Unexpected Garhwali ASR row {row_index}')
-
-    upstream_source = row.get('source') or 'not_reported'
-    source_url = 'https://huggingface.co/datasets/grushaaaaa/indic-dialect-asr'
-    rights_status = 'dataset_declares_CC_BY_4; source_component_and_consent_review_pending'
-    rights_evidence = None
-    quality_flags = [
-        'community_aggregation', 'possible_upstream_duplicate',
-        'source_lineage_review_required',
-    ]
-    attribution = f'Indic Dialect ASR by grushaaaaa; declared source: {upstream_source}'
-
-    if upstream_source.startswith('Vaani/'):
-        rights_status = 'upstream_vaani_cc_by_4_0'
-        rights_evidence = 'https://vaani.iisc.ac.in/dataset/Version1'
-        attribution = (
-            'Project VAANI, IISc/ARTPARK; transcript accessed via '
-            'grushaaaaa/indic-dialect-asr'
-        )
-        quality_flags.remove('source_lineage_review_required')
-    elif upstream_source == 'facebook/omnilingual-asr-corpus':
-        rights_status = 'upstream_meta_cc_by_4_0'
-        rights_evidence = 'https://huggingface.co/datasets/facebook/omnilingual-asr-corpus'
-        attribution = (
-            'AI at Meta, Omnilingual ASR Corpus; transcript accessed via '
-            'grushaaaaa/indic-dialect-asr'
-        )
-        quality_flags.remove('source_lineage_review_required')
-
-    return make_record(
-        'indic_dialect_asr_gbm', row_index, row['sentence'], info,
-        'CC-BY-4.0', BY, attribution,
-        split='train', upstream_row_index=row_index,
-        upstream_source=upstream_source,
-        usage='all_data_experimental_user_approved', corpus_layer='experimental',
-        experimental_training_eligible=True, genre='speech_transcript',
-        modality='speech_transcript', audio_referenced=True,
-        source_url=source_url, rights_status=rights_status,
-        rights_evidence=rights_evidence, quality_flags=quality_flags,
-    )
-
-
 def indic_asr_extract():
     rows = []
     transcript_pointer = RAW / 'indic_dialect_asr' / 'transcripts.json.metadata.json'
@@ -1326,13 +951,6 @@ def panlex_extract():
             rows.append(rec)
     save_records(ROOT / 'restricted' / 'panlex_gbm.jsonl', rows)
     print(json.dumps({'panlex_gbm_unique_forms': len(rows)}, indent=2))
-
-
-def paharili_line(line):
-    fields = line.rstrip('\n').rsplit('\t', 1)
-    if len(fields) != 2 or not fields[0].strip() or not re.fullmatch(r'[a-z]{3}', fields[1]):
-        raise ValueError('Malformed PahariLI labeled sentence')
-    return fields[0], fields[1]
 
 
 def more_extract():
@@ -1452,56 +1070,6 @@ def existing_text_hashes(exclude=None):
                 text_value = row.get('text_normalized', '')
                 hashes.add(row.get('text_sha256') or sha(text_value.encode()))
     return hashes
-
-
-def madlad_clean_records(raw, info, known_hashes):
-    """Extract novel clean Garhwali documents while retaining conservative rights flags."""
-    rows = []
-    duplicate_rows = 0
-    seen = set(known_hashes)
-    for index, line in enumerate(gzip.decompress(raw).decode().splitlines()):
-        item = json.loads(line)
-        if set(item) != {'text'} or not item['text'].strip():
-            raise ValueError(f'Unexpected MADLAD Garhwali row {index}')
-        normalized = unicodedata.normalize('NFC', item['text']).strip()
-        digest = sha(normalized.encode())
-        if digest in seen:
-            duplicate_rows += 1
-            continue
-        seen.add(digest)
-        devanagari = sum('\u0900' <= char <= '\u097f' for char in normalized)
-        alphabetic = sum(char.isalpha() for char in normalized)
-        nonspace = sum(not char.isspace() for char in normalized)
-        copyright_marker = bool(re.search(r'copyright|©|all rights reserved', normalized, re.I))
-        flags = ['common_crawl', 'dataset_clean_partition',
-                 'component_rights_review_required', 'source_url_removed']
-        if copyright_marker:
-            flags.append('copyright_notice_detected')
-        rows.append(make_record(
-            'madlad400_gbm_clean', index, item['text'], info,
-            'ODC-BY-1.0-database-only', 'https://opendatacommons.org/licenses/by/1-0/',
-            'Kudugunta et al. (2023), MADLAD-400; original web authors retain component rights',
-            upstream_row=index, upstream_split='clean', dataset_revision=info.get('dataset_revision'),
-            usage='all_data_experimental_user_approved', corpus_layer='experimental',
-            experimental_training_eligible=True, genre='web_document',
-            modality='text', source_url='https://huggingface.co/datasets/allenai/MADLAD-400',
-            rights_status='ODC_BY_1_covers_database; underlying_page_copyrights_not_cleared',
-            quality_flags=flags,
-            quality_metrics={'characters': len(normalized), 'alphabetic_characters': alphabetic,
-                             'devanagari_characters': devanagari,
-                             'devanagari_share_of_nonspace': round(devanagari / nonspace, 4)
-                             if nonspace else 0,
-                             'line_count': len(normalized.splitlines()),
-                             'copyright_marker': copyright_marker}))
-    return rows, duplicate_rows
-
-
-def madlad_provenance(info):
-    """Attach the immutable dataset revision to downloaded file provenance."""
-    enriched = dict(info)
-    enriched['dataset_revision'] = '9d886a76bd8fa69b294f2dd3843dacb8388ee5a5'
-    enriched['upstream_partition_sha256'] = '6516174f88d38e5c6db032a3e3d83d002e20a34df0f02f52c9188884b6bb6999'
-    return enriched
 
 
 def third_wave_extract():
@@ -1735,81 +1303,6 @@ def sixth_wave_extract():
     ocr_uou_more.main()
 
 
-def scholarly_open_sources():
-    """Rights-audited scholarship used as reference material, never corpus rows."""
-    return [
-        {
-            'source_id': 'acl_dialect_matters',
-            'title': 'Dialect Matters: Cross-Lingual ASR Transfer for Low-Resource Indic Language Varieties',
-            'authors': ['Akriti Dhasmana', 'Aarohi Srivastava', 'David Chiang'],
-            'year': 2026,
-            'topic': 'Garhwali ASR, code-mixing, dialect transfer, and error analysis',
-            'landing_page': 'https://aclanthology.org/2026.vardial-1.12/',
-            'license_id': 'CC-BY-4.0',
-            'license_url': BY,
-            'license_evidence': 'https://aclanthology.org/faq/copyright/',
-            'artifacts': ['landing.html', 'paper.pdf', 'copyright.html'],
-            'disposition': 'open_research_reference',
-        },
-        {
-            'source_id': 'scholarly_montaut_2022',
-            'title': "On the Non-Lexical Categories of avyay 'Invariables' and Their Grammaticalization in Pahari Languages, with a Comparison to Standard Hindi",
-            'authors': ['Annie Montaut'],
-            'year': 2022,
-            'topic': 'Garhwali and Kumaoni adpositions, case marking, particles, and grammaticalization',
-            'landing_page': 'https://hasp.ub.uni-heidelberg.de/catalog/book/919',
-            'license_id': 'CC-BY-SA-4.0',
-            'license_url': SA,
-            'license_evidence': 'https://hasp.ub.uni-heidelberg.de/catalog/book/919',
-            'artifacts': [
-                'book.html (access-challenge response)',
-                'chapter.html (access-challenge response)',
-            ],
-            'local_access_status': 'automated_full_text_blocked_by_anubis_challenge',
-            'disposition': 'catalogued_open_license_access_challenge',
-        },
-        {
-            'source_id': 'scholarly_sahu_2023',
-            'title': 'Preserving the Linguistic Diversity of Uttarakhand: Role of Language and Education Policies',
-            'authors': ['Preety Sahu'],
-            'year': 2023,
-            'topic': 'Garhwali language vitality, education, policy, and intergenerational transmission',
-            'landing_page': 'https://www.journals.asianresassoc.org/index.php/ijll/article/view/1194',
-            'license_id': 'CC-BY-4.0',
-            'license_url': BY,
-            'license_evidence': 'https://www.journals.asianresassoc.org/index.php/ijll/article/view/1194',
-            'artifacts': ['landing.html', 'paper.pdf'],
-            'disposition': 'open_research_reference',
-        },
-        {
-            'source_id': 'scholarly_uniyal_2019',
-            'title': 'English-Garhwali SMT System – Development and Evaluation',
-            'authors': ['Arushi Uniyal'],
-            'year': 2019,
-            'topic': 'English-Garhwali parallel corpora, statistical MT, evaluation, and error categories',
-            'landing_page': 'https://www.researchpublish.com/papers/english-garhwali-smt-system--development-and-evaluation',
-            'license_id': 'CC-BY-NC-3.0',
-            'license_url': 'https://creativecommons.org/licenses/by-nc/3.0/',
-            'license_evidence': 'https://www.researchpublish.com/papers/english-garhwali-smt-system--development-and-evaluation',
-            'artifacts': ['landing.html', 'paper.pdf'],
-            'disposition': 'restricted_noncommercial_research_reference',
-        },
-        {
-            'source_id': 'scholarly_stronski_2010',
-            'title': 'Non-Nominative Subjects in Rajasthani and Central Pahari: The Status of the Ergative and Obligatory Constructions',
-            'authors': ['Krzysztof Stroński'],
-            'year': 2010,
-            'topic': 'Central Pahari split ergativity, obligation, and non-nominative subjects',
-            'landing_page': 'https://pressto.amu.edu.pl/index.php/linpo/article/view/v10122-010-0007-9',
-            'license_id': 'CC-BY-NC-ND-4.0',
-            'license_url': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
-            'license_evidence': 'https://pressto.amu.edu.pl/index.php/linpo/article/view/v10122-010-0007-9',
-            'artifacts': ['landing.html', 'paper.pdf'],
-            'disposition': 'unaltered_noncommercial_research_reference',
-        },
-    ]
-
-
 def seventh_wave_acquire():
     """Acquire openly licensed scholarship that directly informs Garhwali work."""
     jobs = [
@@ -1843,234 +1336,6 @@ def seventh_wave_extract():
         'sources': sources,
     }, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps({'scholarly_sources': len(sources), 'corpus_records_added': 0}, indent=2))
-
-
-CULTURAL_TERMS = (
-    'garhwal', 'garhwál', 'garhwâl', 'garhwalí', 'garhwali', 'gurhwal', 'gurwal',
-    'गढ़वाल', 'गढ़वाली', 'गढ़वाल', 'गढ़वाली',
-)
-
-
-def cultural_chunks(text, terms=CULTURAL_TERMS, source_kind='page'):
-    """Select page- or paragraph-level cultural evidence without copying whole books."""
-    if source_kind == 'page':
-        if '\f' in text:
-            units = text.split('\f')
-        else:
-            paragraphs = re.split(r'\n\s*\n', text)
-            units = []
-            current = []
-            current_size = 0
-            for paragraph in paragraphs:
-                if current and current_size + len(paragraph) > 6000:
-                    units.append('\n\n'.join(current))
-                    current = []
-                    current_size = 0
-                current.append(paragraph)
-                current_size += len(paragraph)
-            if current:
-                units.append('\n\n'.join(current))
-    elif source_kind == 'passage':
-        units = re.split(r'\n\s*\n', text)
-    else:
-        raise ValueError(f'Unknown cultural source kind: {source_kind}')
-    selected = []
-    lowered_terms = tuple(term.casefold() for term in terms)
-    for index, unit in enumerate(units, 1):
-        cleaned = re.sub(r'[ \t]+', ' ', unit)
-        cleaned = re.sub(r'\n{3,}', '\n\n', cleaned).strip()
-        if len(cleaned) < 40:
-            continue
-        folded = cleaned.casefold()
-        if any(term in folded for term in lowered_terms):
-            selected.append({'source_unit': index, 'text': cleaned})
-    return selected
-
-
-def cultural_genres(text):
-    vocabulary = {
-        'folk_narrative': ('folklore', 'folk-lore', 'legend', 'tale', 'story', 'myth', 'गाथा', 'कथा'),
-        'performance': ('song', 'ballad', 'dance', 'drum', 'theatre', 'play', 'गीत', 'नाटक', 'नृत्य', 'ढोल'),
-        'ritual_religion': ('ritual', 'worship', 'deity', 'god', 'goddess', 'shrine', 'temple', 'पूजा', 'देव', 'मंदिर'),
-        'social_custom': ('marriage', 'custom', 'caste', 'festival', 'fair', 'विवाह', 'रीति', 'त्योहार', 'मेला'),
-        'material_culture': ('food', 'dress', 'house', 'craft', 'agriculture', 'crop', 'भोजन', 'वेश', 'शिल्प', 'कृषि'),
-        'language_literature': ('language', 'dialect', 'proverb', 'poem', 'literature', 'भाषा', 'बोली', 'कहावत', 'कविता'),
-        'place_history': ('history', 'king', 'village', 'district', 'इतिहास', 'राजा', 'गांव', 'जिला'),
-    }
-    folded = text.casefold()
-    labels = [label for label, markers in vocabulary.items()
-              if any(marker.casefold() in folded for marker in markers)]
-    return labels or ['general_cultural_context']
-
-
-def cultural_record(source, key, text, info, license_id, license_url, attribution, **extra):
-    record = make_record(source, key, text, info, license_id, license_url, attribution, **extra)
-    record.update(iso_639_3='eng', script='Latn', corpus_layer='cultural_reference',
-                  usage='research_context_only', historical=True, training_eligible=False)
-    return record
-
-
-class GenericTextParser(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.parts = []
-        self.skipped = 0
-
-    def handle_starttag(self, tag, _attrs):
-        if tag in ('script', 'style'):
-            self.skipped += 1
-        elif tag in ('p', 'li', 'h1', 'h2', 'h3', 'br') and not self.skipped:
-            self.parts.append('\n')
-
-    def handle_endtag(self, tag):
-        if tag in ('script', 'style') and self.skipped:
-            self.skipped -= 1
-        elif tag in ('p', 'li', 'h1', 'h2', 'h3') and not self.skipped:
-            self.parts.append('\n')
-
-    def handle_data(self, data):
-        if not self.skipped:
-            self.parts.append(data)
-
-    def text(self):
-        value = html.unescape(''.join(self.parts))
-        value = re.sub(r'[ \t]+', ' ', value)
-        return re.sub(r'\n{3,}', '\n\n', value).strip()
-
-
-class TableAndLineParser(HTMLParser):
-    """Retain table cells and visual block boundaries from vocabulary pages."""
-
-    def __init__(self):
-        super().__init__()
-        self.parts, self.rows = [], []
-        self.row = self.cell = None
-        self.skipped = 0
-
-    def handle_starttag(self, tag, _attrs):
-        if tag in ('script', 'style'):
-            self.skipped += 1
-        elif not self.skipped:
-            if tag in ('div', 'p', 'li', 'br', 'tr'):
-                self.parts.append('\n')
-            if tag == 'tr':
-                self.row = []
-            elif tag in ('td', 'th') and self.row is not None:
-                self.cell = []
-
-    def handle_endtag(self, tag):
-        if tag in ('script', 'style') and self.skipped:
-            self.skipped -= 1
-        elif not self.skipped:
-            if tag in ('td', 'th') and self.cell is not None:
-                self.row.append(re.sub(r'\s+', ' ', ''.join(self.cell)).strip())
-                self.cell = None
-            elif tag == 'tr' and self.row is not None:
-                if self.row:
-                    self.rows.append(self.row)
-                self.row = None
-            if tag in ('div', 'p', 'li', 'tr'):
-                self.parts.append('\n')
-
-    def handle_data(self, data):
-        if not self.skipped:
-            self.parts.append(data)
-            if self.cell is not None:
-                self.cell.append(data)
-
-    def lines(self):
-        value = html.unescape(''.join(self.parts))
-        return [re.sub(r'\s+', ' ', line).strip()
-                for line in value.splitlines() if line.strip()]
-
-
-THEMED_DOMAINS = {
-    'bird': {'bird', 'pigeon', 'kite', 'eagle', 'vulture', 'partridge', 'hen',
-             'sparrow', 'monal', 'crow', 'cuckoo', 'owl', 'starling', 'blackbird'},
-    'animal': {'animal', 'fish', 'dog', 'snake', 'worm', 'cow', 'buffalo', 'goat',
-               'sheep', 'ape', 'fox', 'lizard', 'rat', 'ox', 'horse', 'cat', 'tiger',
-               'frog', 'bear', 'jackal', 'deer', 'elephant', 'monkey', 'mule', 'kid',
-               'calf', 'snail', 'earthworm', 'crab', 'porcupine', 'leopard'},
-    'insect': {'insect', 'fly', 'louse', 'leech', 'firefly', 'nit', 'locust',
-               'cricket', 'scorpion', 'ant', 'bug', 'cockroach', 'flea', 'honeybee'},
-    'plant_nature': {'tree', 'forest', 'fruit', 'seed', 'leaf', 'root', 'bark',
-                     'flower', 'grass', 'sun', 'moon', 'star', 'water', 'rain',
-                     'river', 'lake', 'sea', 'stone', 'sand', 'earth', 'cloud',
-                     'fog', 'sky', 'wind', 'snow', 'ice'},
-    'body': {'skin', 'meat', 'blood', 'bone', 'fat', 'egg', 'horn', 'tail', 'feather',
-             'hair', 'head', 'ear', 'eye', 'nose', 'mouth', 'tooth', 'tongue',
-             'fingernail', 'foot', 'leg', 'knee', 'hand', 'wing', 'belly', 'guts',
-             'neck', 'back', 'breast', 'heart', 'liver'},
-    'kinship_people': {'woman', 'man', 'child', 'wife', 'husband', 'mother', 'father'},
-}
-
-
-def themed_domain(gloss):
-    tokens = set(re.sub(r'[^a-z ]', ' ', gloss.casefold()).split())
-    for domain, words in THEMED_DOMAINS.items():
-        if tokens & words:
-            return domain
-    return 'basic_vocabulary'
-
-
-def devanagari_variants(value):
-    """Extract written forms while dropping romanization and editorial notes."""
-    value = re.sub(r'\([^)]*\)', '', value)
-    value = re.sub(r'\[[^]]*\]|\{[^}]*\}', '', value)
-    variants = []
-    for piece in re.split(r'[,/;]', value):
-        piece = piece.strip(' .?–—-')
-        if piece and any('\u0900' <= char <= '\u097f' for char in piece):
-            variants.append(piece)
-    return variants
-
-
-def themed_lexicon_record(source, key, term, info, license_id, license_url,
-                           attribution, gloss_en=None, gloss_hi=None, **extra):
-    script = extra.pop('script', 'Deva')
-    record = make_record(source, key, term, info, license_id, license_url, attribution,
-                         gloss_en=gloss_en, gloss_hi=gloss_hi,
-                         semantic_domain=extra.pop('semantic_domain', themed_domain(gloss_en or '')),
-                         genre='thematic_lexicon', modality='text',
-                         corpus_layer='research_lexicon', usage='research_and_native_review',
-                         **extra)
-    record['training_eligible'] = False
-    record['script'] = script
-    return record
-
-
-def local_gloss_domain(gloss):
-    folded = gloss.casefold()
-    rules = {
-        'food': ('dish', 'bread', 'flour', 'food', 'sugar', 'butter', 'wine', 'grain'),
-        'plant_nature': ('plant', 'tree', 'forest', 'grass', 'flower', 'seed', 'fruit', 'meadow'),
-        'household_object': ('vessel', 'utensil', 'basket', 'stove', 'mill', 'blanket', 'rug'),
-        'clothing_ornament': ('blouse', 'cloth', 'skirt', 'bangle', 'ring', 'slipper', 'trousers'),
-        'agriculture_livestock': ('agricultur', 'crop', 'cattle', 'livestock', 'grazing', 'pastoral'),
-        'ritual_culture': ('festival', 'deity', 'goddess', 'worship', 'ritual', 'dance', 'marriage'),
-        'land_geography': ('river', 'stream', 'land', 'village', 'mountain', 'gullies'),
-    }
-    for domain, markers in rules.items():
-        if any(marker in folded for marker in markers):
-            return domain
-    return 'local_cultural_term'
-
-
-def hindi_gloss_domain(gloss, default='basic_vocabulary'):
-    compact = re.sub(r'\s+', '', gloss)
-    markers = {
-        'bird': ('पक्षी', 'कठफोड़ा'),
-        'insect': ('पिस्सू', 'खटमल', 'मच्छर', 'कनखजूरा', 'ततैया', 'मक्खी', 'चींटी',
-                   'तितली', 'मकड़ा', 'बिच्छु', 'जूं', 'लीख', 'जुगुनू', 'कीड़ा'),
-        'plant_nature': ('सूरज', 'चन्द्रमा', 'तारे', 'उज्याला', 'अन्धेरा', 'आसमान', 'हवा',
-                         'नदि', 'पर्वत', 'बर्फ', 'पानी', 'पत्थर', 'फूल', 'काँटा', 'जड़',
-                         'लकड़ी', 'घास', 'झारना', 'चमक', 'जंगल', 'पेड़', 'बिजली', 'तूफान'),
-        'kinship_people': ('पत्नी', 'औरत', 'लडका'),
-    }
-    for domain, words in markers.items():
-        if any(word in compact for word in words):
-            return domain
-    return default
 
 
 def ninth_wave_acquire():
@@ -2379,9 +1644,21 @@ def tenth_wave_extract():
     extract()
 
 
+# Every collection step callable from the command line.
+ACTIONS = (
+    'survey', 'meta', 'probes', 'wiktionary', 'acquire', 'extract', 'downloads',
+    'restricted', 'uou', 'wayback', 'archive_open', 'archive_extract',
+    'more_acquire', 'more_extract', 'historical_more_acquire', 'historical_more_extract',
+    'opus_acquire', 'opus_extract', 'indic_asr_acquire', 'indic_asr_range_acquire',
+    'indic_asr_extract', 'panlex_acquire', 'panlex_extract', 'third_wave_acquire',
+    'third_wave_extract',
+    *(action for pair in WAVES.values() for action in pair),
+)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['survey', 'meta', 'probes', 'wiktionary', 'acquire', 'extract', 'downloads', 'restricted', 'uou', 'wayback', 'archive_open', 'archive_extract', 'more_acquire', 'more_extract', 'historical_more_acquire', 'historical_more_extract', 'opus_acquire', 'opus_extract', 'indic_asr_acquire', 'indic_asr_range_acquire', 'indic_asr_extract', 'panlex_acquire', 'panlex_extract', 'third_wave_acquire', 'third_wave_extract', 'fourth_wave_acquire', 'fourth_wave_extract', 'fifth_wave_acquire', 'fifth_wave_extract', 'sixth_wave_acquire', 'sixth_wave_extract', 'seventh_wave_acquire', 'seventh_wave_extract', 'eighth_wave_acquire', 'eighth_wave_extract', 'ninth_wave_acquire', 'ninth_wave_extract', 'tenth_wave_acquire', 'tenth_wave_extract'])
+    parser.add_argument('action', choices=ACTIONS)
     args = parser.parse_args()
     print('result', globals()[args.action]())
 
