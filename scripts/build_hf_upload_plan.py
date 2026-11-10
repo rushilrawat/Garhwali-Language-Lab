@@ -6,15 +6,15 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 from datetime import date
 from pathlib import Path
 from garhwali_lab.hashing import sha256_file as sha256
+from garhwali_lab.version import bundle_release_version
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE = ROOT / 'data/huggingface/garhwali-language-lab-all-data'
-RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')
+RELEASE_VERSION = bundle_release_version()
 DEFAULT_OUTPUT = ROOT / f'release/v{RELEASE_VERSION}/huggingface-all-data-upload.json'
 SUPPORT_FILES = {
     'DATASET_SCHEMA.md',

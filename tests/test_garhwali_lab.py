@@ -79,3 +79,35 @@ class PathTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VersionTests(unittest.TestCase):
+    def test_default_corpus_version_is_unpublished(self):
+        from garhwali_lab import version
+
+        self.assertFalse(version.is_published_corpus_version(version.corpus_default_version()))
+
+    def test_guard_refuses_published_and_retired_versions(self):
+        import os
+        from unittest import mock
+
+        from garhwali_lab import version
+
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(version.ALLOW_REBUILD_ENV, None)
+            for published in ("0.2.8", "v0.2.0", "2.2.0"):
+                with self.assertRaises(version.PublishedVersionError):
+                    version.ensure_unpublished_corpus_version(published)
+            version.ensure_unpublished_corpus_version(version.corpus_default_version())
+        with mock.patch.dict(os.environ, {version.ALLOW_REBUILD_ENV: "1"}):
+            version.ensure_unpublished_corpus_version("0.2.8")
+
+    def test_environment_override_applies_to_both_lines(self):
+        import os
+        from unittest import mock
+
+        from garhwali_lab import version
+
+        with mock.patch.dict(os.environ, {version.ENV_VAR: "v3.1.4"}):
+            self.assertEqual(version.corpus_release_version(), "3.1.4")
+            self.assertEqual(version.bundle_release_version(), "3.1.4")

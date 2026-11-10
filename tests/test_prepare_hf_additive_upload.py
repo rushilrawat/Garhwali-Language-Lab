@@ -1,3 +1,4 @@
+from garhwali_lab.version import corpus_release_version
 import hashlib
 import json
 import subprocess
@@ -17,7 +18,7 @@ from scripts.prepare_hf_additive_upload import (
 
 class AdditiveHuggingFaceUploadTests(unittest.TestCase):
     def test_default_release_version_targets_next_additive_candidate(self):
-        self.assertEqual(RELEASE_VERSION, "0.2.8")
+        self.assertEqual(RELEASE_VERSION, corpus_release_version())
 
     def make_package(self, root: Path) -> Path:
         package = root / "package"
@@ -45,7 +46,7 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             "profile": "metadata_only_complete_reference_index", "tables": {},
         }), encoding="utf-8")
         (package / "manifest.json").write_text(json.dumps({
-            "profile": "public", "release_id": "garhwali-language-lab-v0.2.0",
+            "profile": "public", "release_id": "garhwali-language-lab-v9.0.0",
             "record_schema_version": "1.0.0",
             "include_audio": False, "linked_audio_files": 0,
             "removed_audio_files": 0,
@@ -66,12 +67,12 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             "[schema](DATASET_SCHEMA.md)\n"
         )
         self.assertEqual(
-            version_card(card, "releases/v0.2.0"),
-            "path: releases/v0.2.0/data/text/train-*.jsonl\n"
-            "[rights report](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v0.2.0/research/text-rights-resolution-2026-09-30.md)\n"
-            "[reference index](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v0.2.0/reference_index_manifest.json)\n"
-            "[developer guide](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v0.2.0/DEVELOPER_QUICKSTART.md)\n"
-            "[schema](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v0.2.0/DATASET_SCHEMA.md)\n",
+            version_card(card, "releases/v9.0.0"),
+            "path: releases/v9.0.0/data/text/train-*.jsonl\n"
+            "[rights report](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v9.0.0/research/text-rights-resolution-2026-09-30.md)\n"
+            "[reference index](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v9.0.0/reference_index_manifest.json)\n"
+            "[developer guide](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v9.0.0/DEVELOPER_QUICKSTART.md)\n"
+            "[schema](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/resolve/main/releases/v9.0.0/DATASET_SCHEMA.md)\n",
         )
 
     def test_validates_package_hashes_and_prepares_without_overwrite(self):
@@ -81,7 +82,7 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             self.assertEqual(len(validate_package(package)), 11)
             output = root / "upload"
             preflight = {
-                "run_id": "garhwali-hf-public-cloud-validation-v0.2.0",
+                "run_id": "garhwali-hf-public-cloud-validation-v9.0.0",
                 "status": "passed",
                 "report_sha256": "a" * 64,
                 "record_schema_version": "1.0.0",
@@ -96,14 +97,14 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             self.assertEqual(plan["candidate_preflight"], preflight)
             self.assertEqual(plan["record_schema_version"], "1.0.0")
             self.assertEqual(len(plan["input_manifest_sha256"]), 64)
-            self.assertIn("releases/v0.2.0/data/catalog/train-*.jsonl", (output / "README.md").read_text())
+            self.assertIn("releases/v9.0.0/data/catalog/train-*.jsonl", (output / "README.md").read_text())
             self.assertIn(
-                "resolve/main/releases/v0.2.0/reference_index_manifest.json",
+                "resolve/main/releases/v9.0.0/reference_index_manifest.json",
                 (output / "README.md").read_text(),
             )
-            self.assertTrue((output / "releases/v0.2.0/data/catalog/train-00000.jsonl").exists())
-            self.assertTrue((output / "releases/v0.2.0/DEVELOPER_QUICKSTART.md").exists())
-            self.assertTrue((output / "releases/v0.2.0/search_garhwali_lexicon.py").exists())
+            self.assertTrue((output / "releases/v9.0.0/data/catalog/train-00000.jsonl").exists())
+            self.assertTrue((output / "releases/v9.0.0/DEVELOPER_QUICKSTART.md").exists())
+            self.assertTrue((output / "releases/v9.0.0/search_garhwali_lexicon.py").exists())
             self.assertEqual((root / "plan.json").stat().st_size > 0, True)
             with self.assertRaises(FileExistsError):
                 prepare(package, output, root / "plan.json")
@@ -123,8 +124,8 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             def write_mismatched_report(command, **kwargs):
                 report_path = Path(command[command.index("--output") + 1])
                 report_path.write_text(json.dumps({
-                    "run_id": "garhwali-hf-public-cloud-validation-v0.2.1",
-                    "release_id": "garhwali-language-lab-v0.2.1",
+                    "run_id": "garhwali-hf-public-cloud-validation-v9.0.1",
+                    "release_id": "garhwali-language-lab-v9.0.1",
                     "status": "passed",
                     "record_schema_version": "1.0.0",
                     "configs": {},
@@ -199,7 +200,7 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "must match manifest release_id"):
                 prepare(
                     package, root / "upload", root / "plan.json",
-                    "releases/v0.2.1",
+                    "releases/v9.0.1",
                 )
 
     def test_plan_commit_message_uses_the_manifest_release_version(self):
@@ -208,13 +209,13 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             package = self.make_package(root)
             manifest_path = package / "manifest.json"
             manifest = json.loads(manifest_path.read_text())
-            manifest["release_id"] = "garhwali-language-lab-v0.2.1"
+            manifest["release_id"] = "garhwali-language-lab-v9.0.1"
             manifest_path.write_text(json.dumps(manifest))
 
             with patch(
                 "scripts.prepare_hf_additive_upload.preflight_candidate",
                 return_value={
-                    "run_id": "garhwali-hf-public-cloud-validation-v0.2.1",
+                    "run_id": "garhwali-hf-public-cloud-validation-v9.0.1",
                     "status": "passed",
                     "report_sha256": "b" * 64,
                     "record_schema_version": "1.0.0",
@@ -223,10 +224,10 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
             ):
                 plan = prepare(
                     package, root / "upload", root / "plan.json",
-                    "releases/v0.2.1",
+                    "releases/v9.0.1",
                 )
 
-            self.assertIn("Add Garhwali corpus v0.2.1", plan["command"])
+            self.assertIn("Add Garhwali corpus v9.0.1", plan["command"])
 
 
 if __name__ == "__main__":

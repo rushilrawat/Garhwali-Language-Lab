@@ -13,10 +13,11 @@ import tempfile
 from pathlib import Path
 from pathlib import PurePosixPath
 from garhwali_lab.hashing import sha256_file as sha256
+from garhwali_lab.version import corpus_release_version, ensure_unpublished_corpus_version
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.2.8').removeprefix('v')
+RELEASE_VERSION = corpus_release_version()
 DEFAULT_PACKAGE = ROOT / f"data/huggingface/garhwali-language-lab-v{RELEASE_VERSION}-staging"
 DEFAULT_OUTPUT = ROOT / f"data/huggingface/garhwali-corpus-v{RELEASE_VERSION}-additive-upload"
 DEFAULT_PLAN = ROOT / f"data/huggingface/garhwali-corpus-v{RELEASE_VERSION}-upload-plan.json"
@@ -177,6 +178,7 @@ def prepare(
     if not release_match:
         raise ValueError(f"Invalid release_id: {release_id}")
     version = release_match.group("version")
+    ensure_unpublished_corpus_version(version)
     expected_prefix = f"releases/v{version}"
     prefix = prefix or expected_prefix
     prefix_path = PurePosixPath(prefix)

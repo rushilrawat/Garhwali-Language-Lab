@@ -1,3 +1,6 @@
+from garhwali_lab.version import corpus_default_version
+
+NEXT = corpus_default_version()
 import os
 import tempfile
 import unittest
@@ -104,10 +107,10 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
         self.assertEqual(plan["plan_schema_version"], 2)
         self.assertFalse(plan["mutates_workspace"])
         self.assertEqual(plan["script_count"], len(PIPELINE_COMMANDS))
-        self.assertEqual(plan["release_version"], "0.2.8")
+        self.assertEqual(plan["release_version"], NEXT)
         self.assertEqual(
             plan["public_output"],
-            "data/huggingface/garhwali-language-lab-v0.2.8-staging",
+            f"data/huggingface/garhwali-language-lab-v{NEXT}-staging",
         )
         public_build = next(
             step for step in plan["steps"]
@@ -116,7 +119,7 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
         )
         self.assertEqual(
             public_build["command"][-2:],
-            ["--output", "data/huggingface/garhwali-language-lab-v0.2.8-staging"],
+            ["--output", f"data/huggingface/garhwali-language-lab-v{NEXT}-staging"],
         )
         code = plan["provenance"]["code"]
         source_inputs = plan["provenance"]["source_inputs"]
@@ -196,14 +199,14 @@ class RefreshCorpusAfterIngestionTests(unittest.TestCase):
 
     def test_default_pipeline_version_matches_current_schema_release(self):
         environment = configure_environment({})
-        self.assertEqual(environment['GARHWALI_RELEASE_VERSION'], '0.2.8')
+        self.assertEqual(environment['GARHWALI_RELEASE_VERSION'], NEXT)
         self.assertEqual(
             environment['GARHWALI_HF_PUBLIC_OUTPUT'],
-            'data/huggingface/garhwali-language-lab-v0.2.8-staging',
+            f'data/huggingface/garhwali-language-lab-v{NEXT}-staging',
         )
         self.assertEqual(
             environment['GARHWALI_HF_ALL_DATA_OUTPUT'],
-            'data/huggingface/garhwali-language-lab-all-data-v0.2.8-local',
+            f'data/huggingface/garhwali-language-lab-all-data-v{NEXT}-local',
         )
 
     def test_pipeline_refreshes_cleaned_text_before_language_quality_tags(self):

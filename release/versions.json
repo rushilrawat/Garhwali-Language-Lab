@@ -1,0 +1,11 @@
+{
+  "_comment": "Single source of truth for release versions. 'corpus' is the Hugging Face corpus line; 'bundle' is the frozen GitHub release bundle under release/. After publishing corpus.next, append it to corpus.published and bump corpus.next.",
+  "corpus": {
+    "next": "0.2.9",
+    "published": ["0.2.0", "0.2.1", "0.2.2", "0.2.3", "0.2.4", "0.2.5", "0.2.6", "0.2.7", "0.2.8"],
+    "retired_labels": ["2.0.0", "2.1.0", "2.2.0"]
+  },
+  "bundle": {
+    "current": "0.1.1"
+  }
+}

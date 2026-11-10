@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -23,10 +22,11 @@ from build_garhwali_benchmark import (
 )
 from validate_release_index import validate
 from garhwali_lab.io import iter_jsonl as read_jsonl
+from garhwali_lab.version import bundle_release_version
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')
+RELEASE_VERSION = bundle_release_version()
 DEFAULT_INDEX = ROOT / f'release/v{RELEASE_VERSION}-manifest.json'
 DEFAULT_DATASET = ROOT / 'data/huggingface/garhwali-language-lab'
 DEFAULT_OUTPUT = ROOT / f'release/v{RELEASE_VERSION}/final-audit.json'

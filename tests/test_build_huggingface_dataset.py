@@ -1,3 +1,4 @@
+from garhwali_lab.version import corpus_release_version
 import hashlib
 import importlib.util
 import json
@@ -125,7 +126,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         )
 
     def test_default_release_version_targets_next_additive_candidate(self):
-        self.assertEqual(m.RELEASE_VERSION, '0.2.8')
+        self.assertEqual(m.RELEASE_VERSION, corpus_release_version())
 
     def test_hf_feature_schema_merges_null_list_types_across_splits(self):
         value_null = {'dtype': 'null', '_type': 'Value'}

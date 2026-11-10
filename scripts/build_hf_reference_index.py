@@ -11,6 +11,7 @@ from pathlib import Path
 
 from record_schema import normalize_record
 from hf_source_registry import SOURCE_URLS, source_record_locator
+from garhwali_lab.version import corpus_release_version
 
 ROOT = Path(__file__).resolve().parents[1]
 ALL_DATA = ROOT / os.environ.get(
@@ -19,7 +20,7 @@ ALL_DATA = ROOT / os.environ.get(
 PUBLIC_DATA = ROOT / os.environ.get(
     "GARHWALI_HF_PUBLIC_OUTPUT", "data/huggingface/garhwali-language-lab"
 )
-RELEASE_ID = f"garhwali-language-lab-v{os.environ.get('GARHWALI_RELEASE_VERSION', '2.2.0').removeprefix('v')}"
+RELEASE_ID = f"garhwali-language-lab-v{corpus_release_version()}"
 
 TABLES = {
     "record_index": PUBLIC_DATA / "data/record_index/train-00000.jsonl",

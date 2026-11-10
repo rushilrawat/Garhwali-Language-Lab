@@ -15,6 +15,7 @@ from ingest_jambu_garhwali import SNAPSHOT_MANIFEST as JAMBU_SNAPSHOT_MANIFEST
 from ingest_garhwali_language_library import RAW_DIR as LANGUAGE_LIBRARY_RAW_DIR
 from prepare_text_corpus import discover as discover_text_inputs
 from garhwali_lab.hashing import sha256_file
+from garhwali_lab.version import corpus_default_version, ensure_unpublished_corpus_version
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -179,7 +180,7 @@ def replace_metrics_block(readme: str, table: str) -> str:
 
 
 def configure_environment(environment: dict[str, str]) -> dict[str, str]:
-    version = environment.setdefault("GARHWALI_RELEASE_VERSION", "0.2.8").removeprefix("v")
+    version = environment.setdefault("GARHWALI_RELEASE_VERSION", corpus_default_version()).removeprefix("v")
     environment.setdefault(
         "GARHWALI_HF_ALL_DATA_OUTPUT",
         f"data/huggingface/garhwali-language-lab-all-data-v{version}-local",
@@ -356,6 +357,7 @@ def render_metrics_table(metrics: dict) -> str:
 def refresh(root: Path = ROOT, runner=subprocess.run,
             environment: dict[str, str] | None = None) -> dict:
     environment = configure_environment(dict(os.environ) if environment is None else environment)
+    ensure_unpublished_corpus_version(environment["GARHWALI_RELEASE_VERSION"])
     provenance = run_pipeline(root, runner=runner, environment=environment)
     metrics = collect_metrics(root, environment=environment)
     metrics["refresh_provenance"] = provenance

@@ -3,12 +3,12 @@
 
 import argparse
 import json
-import os
 from pathlib import Path
+from garhwali_lab.version import bundle_release_version
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.1.1').removeprefix('v')
+RELEASE_VERSION = bundle_release_version()
 DEFAULT_INDEX = ROOT / f'release/v{RELEASE_VERSION}-manifest.json'
 
 

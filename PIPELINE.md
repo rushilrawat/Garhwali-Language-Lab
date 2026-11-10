@@ -105,10 +105,13 @@ overlap audit are in
 [`research/internet-archive-intake-2026-10-03.md`](research/internet-archive-intake-2026-10-03.md)
 and
 [`research/internet-archive-intake-quality-2026-10-04.md`](research/internet-archive-intake-quality-2026-10-04.md).
-The refresh, package-builder, upload-preparer, and local-release defaults
-still target v0.2.8, which is now already published. Set an explicit new
-version such as v0.2.9 before building another release so the existing v0.2.8
-staging and Hub paths are not reused:
+Release versions come from [`release/versions.json`](release/versions.json).
+The refresh, package builder, upload preparer, and local-release scripts
+default to `corpus.next` (currently v0.2.9), and refuse to rebuild or upload a
+version listed in `corpus.published` unless `GARHWALI_ALLOW_PUBLISHED_REBUILD=1`
+is set. After publishing, append the version to `corpus.published` and bump
+`corpus.next`. `GARHWALI_RELEASE_VERSION` still overrides the default for one
+run:
 
 ```bash
 GARHWALI_RELEASE_VERSION=0.2.9 .venv/bin/python scripts/ingestion_graph.py run \

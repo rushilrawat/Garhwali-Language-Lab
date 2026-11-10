@@ -22,6 +22,7 @@ from hf_source_registry import SOURCE_URLS, source_record_locator
 from garhwali_lab.hashing import sha256_file
 from garhwali_lab.io import iter_jsonl as read_jsonl
 from garhwali_lab.text import content_key as normalized_text_key
+from garhwali_lab.version import corpus_release_version, ensure_unpublished_corpus_version
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,7 +36,7 @@ PAHARILI_LICENSE_PATH = ROOT / 'sources/online/paharili/c71d239df91726fc-LICENSE
 # are historical storage paths, not semantic project release versions.
 LEGACY_PUBLIC_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-v2.0.0-staging'
 LEGACY_ALL_DATA_OUTPUT = ROOT / 'data/huggingface/garhwali-language-lab-all-data-v2.0.0-local'
-RELEASE_VERSION = os.environ.get('GARHWALI_RELEASE_VERSION', '0.2.8').removeprefix('v')
+RELEASE_VERSION = corpus_release_version()
 RELEASE_PUBLIC_OUTPUT = ROOT / f'data/huggingface/garhwali-language-lab-v{RELEASE_VERSION}-staging'
 RELEASE_ALL_DATA_OUTPUT = ROOT / f'data/huggingface/garhwali-language-lab-all-data-v{RELEASE_VERSION}-local'
 MANAGED_OUTPUTS = {
@@ -2861,6 +2862,8 @@ def main():
     output = args.output or (
         ALL_DATA_OUTPUT if profile_includes_all_data(args.profile) else DEFAULT_OUTPUT
     )
+    if output.resolve() in {RELEASE_PUBLIC_OUTPUT.resolve(), RELEASE_ALL_DATA_OUTPUT.resolve()}:
+        ensure_unpublished_corpus_version(RELEASE_VERSION)
     print(json.dumps(build(
         output,
         profile=args.profile,
