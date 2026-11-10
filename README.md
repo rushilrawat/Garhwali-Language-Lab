@@ -74,6 +74,8 @@ Create an environment, install the developer requirements, and run the test suit
     .venv/bin/python -m pip install -r requirements-dev.txt
     PYTHONPATH=scripts:scripts/experiments:scripts/archive .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 
+The `requirements-*.txt` files are hash-pinned lock files generated from the extras in `pyproject.toml`, so pip installs exactly the tested versions. After changing a dependency, regenerate them with `uv pip compile pyproject.toml --extra <extra> --python-version 3.12 --universal --generate-hashes -o requirements-<name>.txt` (the command is also recorded at the top of each file). External tools are found on `PATH`; set `GARHWALI_PDFTOPPM` to point at a specific `pdftoppm` binary.
+
 Load and inspect the dataset with the Hugging Face Datasets library. To rebuild local Kaggle exports or refresh derived corpus views, follow the [pipeline guide](PIPELINE.md). These commands write local artifacts; they do not publish data.
 
 Raw downloads, PDFs, caches, and generated data are excluded from Git. Review the [PDF intake guide](incoming/pdfs/README.md) before adding scans.

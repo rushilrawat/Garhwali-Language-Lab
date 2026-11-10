@@ -13,6 +13,7 @@ import hashlib
 import io
 import json
 import re
+import os
 import shutil
 import subprocess
 import tempfile
@@ -289,10 +290,8 @@ def ingest(source_pdf: Path = SOURCE_PDF, output_path: Path = DEFAULT_OUTPUT,
     actual_sha = sha256_bytes(pdf_bytes)
     if actual_sha != SOURCE_SHA256:
         raise ValueError(f'LSI source PDF checksum mismatch: {actual_sha}')
-    pdftoppm = shutil.which('pdftoppm') or (
-        '/Users/rushilrawat/.cache/codex-runtimes/codex-primary-runtime/'
-        'dependencies/bin/override/pdftoppm'
-    )
+    # Set GARHWALI_PDFTOPPM when pdftoppm (poppler) is not on PATH.
+    pdftoppm = os.environ.get('GARHWALI_PDFTOPPM') or shutil.which('pdftoppm') or 'pdftoppm'
     tesseract = shutil.which('tesseract')
     if not Path(pdftoppm).exists() or not tesseract:
         raise RuntimeError('pdftoppm and tesseract are required for LSI table extraction')

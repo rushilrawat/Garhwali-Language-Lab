@@ -9,6 +9,7 @@ import hashlib
 import io
 import json
 import re
+import os
 import shutil
 import subprocess
 import tempfile
@@ -202,10 +203,8 @@ def ingest(source_pdf: Path = SOURCE_PDF, output_path: Path = DEFAULT_OUTPUT,
         raise FileNotFoundError(f'missing local Hindi Tesseract model: {tessdata_path}')
     model_sha = sha256_bytes(tessdata_path.read_bytes())
     tessdata_dir = tessdata_path.parent
-    pdftoppm = shutil.which('pdftoppm') or (
-        '/Users/rushilrawat/.cache/codex-runtimes/codex-primary-runtime/'
-        'dependencies/bin/override/pdftoppm'
-    )
+    # Set GARHWALI_PDFTOPPM when pdftoppm (poppler) is not on PATH.
+    pdftoppm = os.environ.get('GARHWALI_PDFTOPPM') or shutil.which('pdftoppm') or 'pdftoppm'
     tesseract = shutil.which('tesseract')
     if not Path(pdftoppm).exists() or not tesseract:
         raise RuntimeError('pdftoppm and tesseract are required for LSI specimen extraction')

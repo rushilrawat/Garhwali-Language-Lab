@@ -13,8 +13,8 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: requirements-pipeline.txt
-      - run: python -m pip install -r requirements-pipeline.txt ruff==0.16.9
+          cache-dependency-path: requirements-dev.txt
+      - run: python -m pip install --require-hashes -r requirements-dev.txt
       - name: Lint (pyflakes, closures, zip strictness, blind excepts)
         run: ruff check scripts tests examples
       - run: PYTHONPATH=scripts:scripts/experiments:scripts/archive python -m unittest discover -s tests -p 'test_*.py'
