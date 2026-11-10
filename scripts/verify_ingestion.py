@@ -26,13 +26,13 @@ def rights_are_documented(row):
     return bool((row.get('source_url') or row.get('source_pdf')) and row.get('rights_status'))
 
 
-def main():
+def verify(root=ROOT):
     snapshots = 0
-    for pointer in (ROOT / 'sources' / 'online').rglob('*.metadata.json'):
+    for pointer in (root / 'sources' / 'online').rglob('*.metadata.json'):
         info = json.loads(pointer.read_text())
         raw = Path(info['raw_path'])
         if not raw.is_absolute():
-            raw = ROOT / raw
+            raw = root / raw
         require(raw.exists(), f'missing snapshot: {raw}')
         require(
             hashlib.sha256(raw.read_bytes()).hexdigest() == info['sha256'],
@@ -44,7 +44,7 @@ def main():
     all_ids = set()
     for layer in LAYERS:
         rows = []
-        for path in (ROOT / layer).glob('*.jsonl'):
+        for path in (root / layer).glob('*.jsonl'):
             rows.extend(json.loads(line) for line in path.read_text().splitlines())
         ids = [row['record_id'] for row in rows]
         require(len(ids) == len(set(ids)), f'duplicate ID within {layer}')
@@ -54,7 +54,7 @@ def main():
         require(all(rights_are_documented(row) for row in rows), layer)
         counts[layer] = len(rows)
 
-    uou = [json.loads(line) for line in (ROOT / 'restricted' / 'uou_cgl_pages.jsonl').read_text().splitlines()]
+    uou = [json.loads(line) for line in (root / 'restricted' / 'uou_cgl_pages.jsonl').read_text().splitlines()]
     require(len(uou) == 436, f'expected 436 UOU rows, found {len(uou)}')
     devanagari = sum('\u0900' <= char <= '\u097f' for row in uou for char in row['text_normalized'])
     characters = sum(len(row['text_normalized']) for row in uou)
@@ -64,7 +64,7 @@ def main():
     )
 
     madlad = [json.loads(line) for line in
-              (ROOT / 'experimental' / 'madlad400_gbm_clean.jsonl').read_text().splitlines()]
+              (root / 'experimental' / 'madlad400_gbm_clean.jsonl').read_text().splitlines()]
     require(len(madlad) == 18, f'expected 18 MADLAD rows, found {len(madlad)}')
     require(all(row.get('corpus_layer') == 'experimental' for row in madlad), 'MADLAD layer')
     require(all(row.get('experimental_training_eligible') for row in madlad), 'MADLAD eligibility')
@@ -73,9 +73,12 @@ def main():
     require(all(0 <= row['quality_metrics']['devanagari_share_of_nonspace'] <= 1
                 for row in madlad), 'MADLAD quality metrics')
 
-    print(json.dumps({'snapshots_verified': snapshots, 'layer_counts': counts,
-                      'total_records': len(all_ids), 'uou_devanagari_ratio': round(devanagari / characters, 3)},
-                     indent=2))
+    return {'snapshots_verified': snapshots, 'layer_counts': counts,
+            'total_records': len(all_ids), 'uou_devanagari_ratio': round(devanagari / characters, 3)}
+
+
+def main():
+    print(json.dumps(verify(), indent=2))
 
 
 if __name__ == '__main__':

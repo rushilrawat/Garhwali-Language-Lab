@@ -15,23 +15,25 @@ LAYER_PATHS = {
 OUTPUT = ROOT / 'outputs' / 'online-ingestion-2026-09-07' / 'dedup-report.json'
 
 
-def load_rows():
+def load_rows(layer_paths=None, root=ROOT):
+    layer_paths = LAYER_PATHS if layer_paths is None else layer_paths
     rows = []
-    for layer, folder in LAYER_PATHS.items():
+    for layer, folder in layer_paths.items():
         for path in sorted(folder.glob('*.jsonl')):
             for line_number, line in enumerate(path.read_text().splitlines(), 1):
                 row = json.loads(line)
                 text = row.get('text_normalized', '')
                 digest = hashlib.sha256(text.encode()).hexdigest()
-                rows.append(dict(layer=layer, file=str(path.relative_to(ROOT)),
+                rows.append(dict(layer=layer, file=str(path.relative_to(root)),
                                  line=line_number, record_id=row['record_id'],
                                  source_id=row.get('source_id'), text_sha256=digest,
                                  text_length=len(text)))
     return rows
 
 
-def main():
-    rows = load_rows()
+def build_report(layer_paths=None, root=ROOT):
+    layer_paths = LAYER_PATHS if layer_paths is None else layer_paths
+    rows = load_rows(layer_paths, root)
     by_text = defaultdict(list)
     for row in rows:
         by_text[row['text_sha256']].append(row)
@@ -40,7 +42,7 @@ def main():
     for row in rows:
         by_layer[row['layer']].add(row['text_sha256'])
         by_file[row['file']].add(row['text_sha256'])
-    layer_names = list(LAYER_PATHS)
+    layer_names = list(layer_paths)
     pair_overlap = {}
     for index, left in enumerate(layer_names):
         for right in layer_names[index + 1:]:
@@ -65,6 +67,11 @@ def main():
             for group in duplicate_groups[:100]
         ],
     }
+    return report
+
+
+def main():
+    report = build_report()
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(report, ensure_ascii=False, indent=2, default=dict))
     print(json.dumps({key: report[key] for key in
