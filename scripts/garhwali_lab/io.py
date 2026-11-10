@@ -6,6 +6,7 @@ lines. ``write_jsonl`` produces the project's canonical byte layout: one
 ``json.dumps(row, ensure_ascii=False, sort_keys=True)`` per line.
 """
 
+import hashlib
 import json
 from collections.abc import Iterable, Iterator
 from pathlib import Path
@@ -24,13 +25,13 @@ def read_jsonl(path: str | Path) -> list[Any]:
         return [json.loads(line) for line in handle if line.strip()]
 
 
-def write_jsonl(path: str | Path, rows: Iterable[Any]) -> None:
+def write_jsonl(path: str | Path, rows: Iterable[Any]) -> str:
+    """Write rows in the canonical layout and return the SHA-256 of the bytes written."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        "".join(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for row in rows),
-        encoding="utf-8",
-    )
+    payload = "".join(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for row in rows)
+    path.write_text(payload, encoding="utf-8")
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
 def read_json(path: str | Path) -> Any:

@@ -67,6 +67,9 @@ class RecommendedTextViewTests(unittest.TestCase):
             self.assertEqual(report['counts']['train']['source_records'], 2)
             self.assertEqual(report['counts']['train']['recommended_records'], 1)
             self.assertEqual(report['records_removed_from_full_corpus'], 0)
+            from garhwali_lab.hashing import sha256_file
+            for name, entry in report['artifacts'].items():
+                self.assertEqual(entry['sha256'], sha256_file(root / 'output' / name), name)
             selected = [json.loads(line) for line in (
                 root / 'output/train.jsonl'
             ).read_text().splitlines()]

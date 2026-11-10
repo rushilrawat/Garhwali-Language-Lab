@@ -111,3 +111,17 @@ class VersionTests(unittest.TestCase):
         with mock.patch.dict(os.environ, {version.ENV_VAR: "v3.1.4"}):
             self.assertEqual(version.corpus_release_version(), "3.1.4")
             self.assertEqual(version.bundle_release_version(), "3.1.4")
+
+
+class WriteJsonlReturnTests(unittest.TestCase):
+    def test_write_jsonl_returns_the_sha256_of_the_file_it_wrote(self):
+        import tempfile
+        from pathlib import Path
+
+        from garhwali_lab.hashing import sha256_file
+        from garhwali_lab.io import write_jsonl
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'nested' / 'rows.jsonl'
+            digest = write_jsonl(path, [{'b': 1, 'a': 'गढ़'}])
+            self.assertEqual(digest, sha256_file(path))
+

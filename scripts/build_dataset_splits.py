@@ -5,7 +5,8 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 from garhwali_lab.hashing import sha256_file as file_sha256
-from garhwali_lab.io import read_jsonl, write_jsonl
+from garhwali_lab.io import read_jsonl
+from garhwali_lab.io import write_jsonl as _write_jsonl
 from garhwali_lab.text import leakage_key as normalized_text_key
 
 
@@ -20,6 +21,12 @@ SEMANTIC_EDGES = ROOT / (
 SPLITS = ('train', 'validation', 'test')
 PLACEHOLDER_SPEAKERS = {'', 'na', 'n/a', 'none', 'null', 'unknown', 'unidentified'}
 
+
+
+def write_jsonl(path, rows):
+    """Write a split file and return its artifact entry for the report."""
+    rows = list(rows)
+    return {'records': len(rows), 'sha256': _write_jsonl(path, rows)}
 
 def identified_speaker(row):
     return str(row.get('speaker_id') or '').strip().casefold() not in PLACEHOLDER_SPEAKERS

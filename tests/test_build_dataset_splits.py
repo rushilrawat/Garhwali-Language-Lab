@@ -74,6 +74,11 @@ class DatasetSplitTests(unittest.TestCase):
             ]
             self.assertEqual(len(experimental), 2)
             self.assertTrue(all(row['experimental_training_eligible'] for row in experimental))
+            # Every artifact entry records the written file's hash and row count.
+            from garhwali_lab.hashing import sha256_file
+            for relative, entry in report['artifacts'].items():
+                self.assertEqual(entry['sha256'], sha256_file(out / relative), relative)
+                self.assertEqual(entry['records'], len((out / relative).read_text().splitlines()), relative)
 
     def test_rejects_identified_speaker_crossing_splits(self):
         with tempfile.TemporaryDirectory() as tmp:
