@@ -92,8 +92,13 @@ let reqSeq=0;
 let state={ds:'',splits:[],cfg:'',split:'',offset:0,query:'',total:0,rows:[],features:[],cols:[],sel:-1,localFilter:false};
 
 function showMsg(t){const m=$('msg');m.textContent=t||'';m.hidden=!t}
-async function api(path){
-  const r=await fetch(API+path);
+async function api(path,attempt=0){
+  // The viewer's first uncached request can fail without CORS headers, which
+  // the browser reports as a network error; one delayed retry usually succeeds.
+  let r;
+  try{ r=await fetch(API+path); }
+  catch(e){ if(attempt<1){ await new Promise(ok=>setTimeout(ok,1500)); return api(path,attempt+1); } throw e; }
+  if(r.status>=500&&attempt<1){ await new Promise(ok=>setTimeout(ok,1500)); return api(path,attempt+1); }
   const j=await r.json().catch(()=>({error:`HTTP ${r.status}`}));
   if(!r.ok||j.error) throw new Error(j.error||`HTTP ${r.status}`);
   return j;
