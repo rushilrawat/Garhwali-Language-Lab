@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import platform
+import random
 from collections import Counter
 from pathlib import Path
 
@@ -16,7 +17,7 @@ from evaluation_run_manifest import write_run_artifacts
 from run_translation_baseline import corpus_chrf, metric_summary as translation_metric_summary
 from run_translation_baseline import normalize as normalize_translation_text
 from run_mt5_instruction_tuning import generation_diagnostics
-from garhwali_lab.io import read_jsonl
+from garhwali_lab.io import read_json, read_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,6 +46,86 @@ TASKS = {
         ],
     },
 }
+
+
+# Headline metrics re-estimated by the bootstrap, per task.
+HEADLINE_METRICS = {
+    'asr': ('wer', 'cer'),
+    'translation': ('corpus_chrf2', 'corpus_bleu_smoothed', 'exact_match'),
+    'summarization': ('rouge_l_f1', 'corpus_chrf2'),
+    'question_answering': ('exact_match', 'token_f1'),
+}
+# Most specific shared-source key first; records with none of these are their
+# own cluster. Resampling whole clusters keeps related records together, so
+# intervals are not narrowed by near-duplicates or shared source pages.
+CLUSTER_FIELDS = (
+    'source_page_family_sha256',
+    'overlay_source_page_family_sha256',
+    'source_context_group_sha256',
+    'overlay_source_family_sha256',
+    'duplicate_component_id',
+    'speaker_id',
+)
+
+
+def cluster_keys(rows: list[dict], record_ids: list[str]) -> tuple[list[str], Counter]:
+    """Return one cluster key per row and how many rows each field supplied."""
+    keys = []
+    used = Counter()
+    for row, record_id in zip(rows, record_ids, strict=True):
+        lineage = row.get('lineage') or {}
+        for field in CLUSTER_FIELDS:
+            value = lineage.get(field) or row.get(field)
+            if value:
+                keys.append(f'{field}:{value}')
+                used[field] += 1
+                break
+        else:
+            keys.append(f'record:{record_id}')
+            used['record_id'] += 1
+    return keys, used
+
+
+def bootstrap_intervals(score, indices, clusters, metric_names, *,
+                        replicates: int, seed: int, confidence: float = 0.95) -> dict:
+    """Percentile intervals from a cluster bootstrap over the given record indices."""
+    if replicates < 1:
+        raise ValueError('bootstrap replicates must be positive')
+    groups: dict[str, list[int]] = {}
+    for index in indices:
+        groups.setdefault(clusters[index], []).append(index)
+    names = list(groups)
+    rng = random.Random(seed)
+    samples = {name: [] for name in metric_names}
+    for _ in range(replicates):
+        chosen = [index for _ in names for index in groups[rng.choice(names)]]
+        metrics = score(chosen)
+        for name in metric_names:
+            value = metrics.get(name)
+            if isinstance(value, (int, float)):
+                samples[name].append(float(value))
+    alpha = (1 - confidence) / 2
+
+    def percentile(values, q):
+        ordered = sorted(values)
+        position = q * (len(ordered) - 1)
+        lower = int(position)
+        upper = min(lower + 1, len(ordered) - 1)
+        return ordered[lower] + (ordered[upper] - ordered[lower]) * (position - lower)
+
+    return {
+        'method': 'cluster_percentile_bootstrap',
+        'replicates': replicates,
+        'seed': seed,
+        'confidence': confidence,
+        'clusters': len(names),
+        'records': len(indices),
+        'intervals': {
+            name: [round(percentile(values, alpha), 8), round(percentile(values, 1 - alpha), 8)]
+            for name, values in samples.items() if values
+        },
+    }
+
 
 
 def _references(task: str, row: dict) -> list[str]:
@@ -102,6 +183,8 @@ def evaluate_rows(
     allow_historical_test: bool = False,
     input_sha256: str | None = None,
     prediction_input_sha256: str | None = None,
+    bootstrap_replicates: int = 0,
+    bootstrap_seed: int = 17,
 ) -> tuple[dict, list[dict]]:
     """Score one explicit split after exact prediction-ID reconciliation."""
     if task not in TASKS:
@@ -214,6 +297,55 @@ def evaluate_rows(
         metrics['metric_ids'] = TASKS[task]['metric_ids']
     elif task == 'question_answering':
         metrics['metric_ids'] = TASKS[task]['metric_ids']
+    clusters, cluster_fields_used = cluster_keys(selected, selected_ids)
+    if bootstrap_replicates and task in HEADLINE_METRICS:
+        if task == 'asr':
+            def score(chosen):
+                return score_asr_corpus(
+                    [references[index][0] for index in chosen],
+                    [hypotheses[index] for index in chosen],
+                    record_ids=[f'{selected_ids[index]}#{n}' for n, index in enumerate(chosen)],
+                )
+            bootstrap_indices = list(range(len(selected)))
+        elif task == 'translation':
+            def score(chosen):
+                return translation_metric_summary(
+                    [references[index][0] for index in chosen],
+                    [hypotheses[index] for index in chosen],
+                )
+            bootstrap_indices = metric_indices
+        elif task == 'summarization':
+            def score(chosen):
+                result = score_rouge_l(
+                    [hypotheses[index] for index in chosen],
+                    [references[index] for index in chosen],
+                )
+                result['corpus_chrf2'] = corpus_chrf(
+                    [references[index][0] for index in chosen],
+                    [hypotheses[index] for index in chosen],
+                )
+                return result
+            bootstrap_indices = metric_indices
+        else:
+            def score(chosen):
+                return score_qa_answers(
+                    [hypotheses[index] for index in chosen],
+                    [references[index] for index in chosen],
+                )
+            bootstrap_indices = metric_indices
+        uncertainty = bootstrap_intervals(
+            score, bootstrap_indices, clusters, HEADLINE_METRICS[task],
+            replicates=bootstrap_replicates, seed=bootstrap_seed,
+        )
+    else:
+        uncertainty = {
+            'method': 'not_computed',
+            'reason': (
+                'bootstrap not requested' if task in HEADLINE_METRICS
+                else f'no bootstrap defined for task {task}'
+            ),
+        }
+    uncertainty['cluster_fields_used'] = dict(sorted(cluster_fields_used.items()))
     selected_hash = hashlib.sha256(_canonical_jsonl(selected)).hexdigest()
     ordered_predictions = [
         dict({
@@ -266,18 +398,44 @@ def evaluate_rows(
         'excluded_record_ids': [selected_ids[index] for index in excluded_indices],
         'source_split_counts': source_split_counts,
         'metrics': metrics,
+        'uncertainty': uncertainty,
+        'benchmark_snapshot': None,
         'limitations': [
             'Metric scores do not validate Garhwali spelling, meaning, or reference quality.',
             'Development metrics are for selection/diagnostics, not independent final accuracy.',
             'Historical public test metrics are not blind and must not select a model.',
-            'Source-family clustered uncertainty is not computed by this scorer.',
+            (
+                'Uncertainty intervals resample source-family clusters; they do not cover reference errors or model exposure.'
+                if uncertainty['method'] != 'not_computed'
+                else 'Source-family clustered uncertainty was not computed for this run.'
+            ),
         ],
     }
     return report, ordered_predictions
 
 
-def run(
-    *,
+def snapshot_reference(snapshot_path: Path, benchmark_sha256: str) -> dict:
+    """Tie a run to a pinned benchmark snapshot; the input file must be in it."""
+    snapshot = read_json(snapshot_path)
+    matches = [
+        entry['path'] for entry in snapshot.get('files', [])
+        if entry.get('sha256') == benchmark_sha256
+    ]
+    if not matches:
+        raise ValueError(
+            f'benchmark input is not part of snapshot {snapshot_path} '
+            f'(sha256 {benchmark_sha256[:12]}...); re-pin the benchmark or score the pinned file'
+        )
+    return {
+        'snapshot_file': snapshot_path.name,
+        'schema': snapshot.get('schema'),
+        'combined_sha256': snapshot.get('combined_sha256'),
+        'benchmark_file': matches[0],
+        'benchmark_id': (snapshot.get('benchmark') or {}).get('benchmark_id'),
+    }
+
+
+def run(    *,
     task: str,
     benchmark_path: Path,
     predictions_path: Path,
@@ -289,6 +447,9 @@ def run(
     device: str = 'cpu',
     seed: int | None = None,
     git_root: Path | None = ROOT,
+    snapshot_path: Path | None = None,
+    bootstrap_replicates: int = 0,
+    bootstrap_seed: int = 17,
 ) -> dict:
     benchmark_path = Path(benchmark_path)
     predictions_path = Path(predictions_path)
@@ -305,7 +466,11 @@ def run(
         allow_historical_test=allow_historical_test,
         input_sha256=benchmark_hash,
         prediction_input_sha256=prediction_hash,
+        bootstrap_replicates=bootstrap_replicates,
+        bootstrap_seed=bootstrap_seed,
     )
+    if snapshot_path is not None:
+        report['benchmark_snapshot'] = snapshot_reference(Path(snapshot_path), benchmark_hash)
     report['run_id'] = f"garhwali-{task}-{split}-{prediction_hash[:12]}"
     config = {
         'task': task,
@@ -316,6 +481,8 @@ def run(
         'normalizer_id': report['metrics']['normalizer_id'],
         'tokenizer_id': report['metrics']['tokenizer_id'],
         'allow_historical_test': allow_historical_test,
+        'bootstrap_replicates': bootstrap_replicates,
+        'bootstrap_seed': bootstrap_seed if bootstrap_replicates else None,
     }
     write_run_artifacts(
         output_dir,
@@ -335,6 +502,7 @@ def run(
             Path(__file__).with_name('asr_metrics.py'),
             Path(__file__).with_name('benchmark_metrics.py'),
             Path(__file__).with_name('evaluation_run_manifest.py'),
+            Path(__file__).with_name('freeze_benchmark.py'),
             Path(__file__).with_name('run_mt5_instruction_tuning.py'),
             Path(__file__).with_name('run_translation_baseline.py'),
         ),
@@ -357,6 +525,11 @@ def main() -> int:
     parser.add_argument('--allow-historical-test', action='store_true')
     parser.add_argument('--device', default='cpu')
     parser.add_argument('--seed', type=int)
+    parser.add_argument('--snapshot', type=Path,
+                        help='benchmark snapshot JSON (release/*_snapshot.json) the input must belong to')
+    parser.add_argument('--bootstrap', type=int, default=0, metavar='N',
+                        help='cluster-bootstrap replicates for uncertainty intervals (0 = off)')
+    parser.add_argument('--bootstrap-seed', type=int, default=17)
     args = parser.parse_args()
     report = run(
         task=args.task,
@@ -373,6 +546,9 @@ def main() -> int:
         allow_historical_test=args.allow_historical_test,
         device=args.device,
         seed=args.seed,
+        snapshot_path=args.snapshot,
+        bootstrap_replicates=args.bootstrap,
+        bootstrap_seed=args.bootstrap_seed,
     )
     print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
     return 0

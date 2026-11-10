@@ -311,7 +311,8 @@ rather than editing this one.
    open.
 3. Bind implemented QA, summarization, and translation metrics to verified task
    fields and run reports; freeze remaining task signatures, exclusions, and
-   source-grouped uncertainty. Metric implementation does not
+   source-grouped uncertainty (now available through the scorer's
+   `--bootstrap`; see item 6). Metric implementation does not
    establish reference correctness or produce model scores.
 4. Keep internal text rights status explicit at row level; this schema work does
    not clear any source for redistribution.
@@ -319,6 +320,15 @@ rather than editing this one.
    status; do not equate a Devanagari declaration with a native-language pass.
 6. Add metric-run reports with ordered IDs, denominators, exclusions, coverage,
    source strata, uncertainty, and prediction/configuration hashes.
+   **Status 2026-11-10:** implemented in `score_benchmark_predictions.py`.
+   Reports already carried ordered IDs, coverage, exclusions, source-split
+   counts and input/prediction/config hashes; they now also carry
+   `--bootstrap N` cluster-percentile intervals for ASR, translation,
+   summarization and QA headline metrics (clusters = most specific shared
+   source-page, source-context, duplicate-component or speaker ID, else the
+   record), and `--snapshot` ties a run to the pinned draft snapshot and
+   refuses inputs that are not in it. Generation has no bootstrap yet. Open
+   until real model runs are scored and reported this way.
 7. Add public/local field cards and run the release gate only after rights and
    split/exposure decisions. Semantic equivalence and model exposure remain
    `unknown` where not tested.
