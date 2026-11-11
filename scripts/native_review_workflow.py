@@ -3,10 +3,12 @@
 
 import json
 import csv
+import unicodedata
 import argparse
 from collections import defaultdict
 from pathlib import Path
 from garhwali_lab.io import write_jsonl
+from garhwali_lab.text import clean_text
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,39 +39,87 @@ def read_jsonl(path):
         return [json.loads(line) for line in handle if line.strip()]
 
 
+LIST_CONSENSUS_FIELDS = {'dialect_labels'}
+TEXT_CONSENSUS_FIELDS = {'corrected_text', 'pronunciation'}
+
+
+def _normalized_field(field, value):
+    """Normalize a decision field so formatting differences are not disagreements."""
+    if field in LIST_CONSENSUS_FIELDS:
+        values = value if isinstance(value, list) else [value]
+        return sorted({clean_text(item) for item in values if clean_text(item)})
+    if field in TEXT_CONSENSUS_FIELDS and isinstance(value, str):
+        return clean_text(value)
+    if isinstance(value, str):
+        return value.strip()
+    return value
+
+
 def consensus_value(row):
-    value = {field: row.get(field) for field in CONSENSUS_FIELDS if row.get(field) not in (None, '', [])}
+    value = {}
+    for field in CONSENSUS_FIELDS:
+        normalized = _normalized_field(field, row.get(field))
+        if normalized not in (None, '', []):
+            value[field] = normalized
     return json.dumps(value, ensure_ascii=False, sort_keys=True)
 
 
 def adjudicate_rows(decisions):
+    """Adjudicate each target by independent-reviewer agreement.
+
+    Each reviewer's latest decision counts once. A target is adjudicated when at
+    least two distinct reviewers agree and their decision outnumbers every other
+    decision, so a third reviewer can settle an earlier two-way disagreement.
+    Text fields are compared after NFC and whitespace normalization, and list
+    fields such as ``dialect_labels`` are compared as sets.
+    """
     groups = defaultdict(list)
     for row in decisions:
         groups[(row['review_type'], row['target_id'])].append(row)
 
     adjudicated, disagreements, pending = [], [], []
     for (review_type, target_id), rows in sorted(groups.items()):
-        reviewer_ids = {row['reviewer_id'] for row in rows}
+        latest = {}
+        for row in rows:
+            latest[row['reviewer_id']] = row
         base = {'review_type': review_type, 'target_id': target_id, 'reviews': rows}
-        if len(reviewer_ids) < 2:
+        if len(latest) < 2:
             pending.append({**base, 'status': 'pending_second_review'})
             continue
-        values = {consensus_value(row) for row in rows}
-        if len(values) != 1:
+        votes = defaultdict(list)
+        for reviewer_id, row in latest.items():
+            votes[consensus_value(row)].append(reviewer_id)
+        ranked = sorted(votes.items(), key=lambda item: len(item[1]), reverse=True)
+        winner, supporters = ranked[0]
+        runner_up = len(ranked[1][1]) if len(ranked) > 1 else 0
+        if len(supporters) < 2 or len(supporters) == runner_up:
             disagreements.append({**base, 'status': 'needs_adjudication'})
             continue
-        consensus = json.loads(values.pop())
+        # Emit the first supporting reviewer's own values (NFC, lists sorted) so
+        # line breaks in a corrected verse survive; normalization is for comparison.
+        first = next(row for row in rows if row['reviewer_id'] in supporters
+                     and consensus_value(row) == winner)
+        consensus = {
+            field: (json.loads(winner)[field] if field in LIST_CONSENSUS_FIELDS
+                    else unicodedata.normalize('NFC', first[field]).strip()
+                    if isinstance(first[field], str) else first[field])
+            for field in json.loads(winner)
+        }
         reviewer_notes = {
             row['reviewer_id']: row['notes'] for row in rows if row.get('notes')
         }
-        adjudicated.append({
+        dissenting = sorted(set(latest) - set(supporters))
+        record = {
             'review_type': review_type,
             'target_id': target_id,
-            'status': 'two_pass_agreement',
-            'reviewer_ids': sorted(reviewer_ids),
+            'status': 'majority_agreement' if dissenting else 'two_pass_agreement',
+            'reviewer_ids': sorted(supporters),
             'reviewer_notes': reviewer_notes,
             **consensus,
-        })
+        }
+        if dissenting:
+            record['dissenting_reviewer_ids'] = dissenting
+        adjudicated.append(record)
     return {'adjudicated': adjudicated, 'disagreements': disagreements, 'pending': pending}
 
 

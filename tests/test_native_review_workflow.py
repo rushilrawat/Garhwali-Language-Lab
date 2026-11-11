@@ -41,6 +41,53 @@ class NativeReviewWorkflowTests(unittest.TestCase):
         self.assertEqual(len(result['pending']), 1)
         self.assertEqual(result['adjudicated'], [])
 
+    def _ocr(self, reviewer, text, labels=None, **extra):
+        row = {'review_type': 'ocr', 'target_id': 't1', 'reviewer_id': reviewer,
+               'decision': 'correct', 'corrected_text': text}
+        if labels is not None:
+            row['dialect_labels'] = labels
+        row.update(extra)
+        return row
+
+    def test_whitespace_and_label_order_are_not_disagreements(self):
+        result = m.adjudicate_rows([
+            self._ocr('r1', 'गढ़वाळ  भाषा', ['Tehriyali', 'Srinagariya']),
+            self._ocr('r2', 'गढ़वाळ भाषा ', ['Srinagariya', 'Tehriyali']),
+        ])
+        self.assertEqual(result['disagreements'], [])
+        self.assertEqual(result['adjudicated'][0]['status'], 'two_pass_agreement')
+        self.assertEqual(result['adjudicated'][0]['dialect_labels'], ['Srinagariya', 'Tehriyali'])
+
+    def test_third_reviewer_settles_a_disagreement(self):
+        result = m.adjudicate_rows([
+            self._ocr('r1', 'पाणी'), self._ocr('r2', 'पानी'), self._ocr('r3', 'पाणी'),
+        ])
+        self.assertEqual(result['disagreements'], [])
+        row = result['adjudicated'][0]
+        self.assertEqual(row['status'], 'majority_agreement')
+        self.assertEqual(row['corrected_text'], 'पाणी')
+        self.assertEqual(row['reviewer_ids'], ['r1', 'r3'])
+        self.assertEqual(row['dissenting_reviewer_ids'], ['r2'])
+
+    def test_tied_votes_stay_open(self):
+        result = m.adjudicate_rows([
+            self._ocr('r1', 'क'), self._ocr('r2', 'ख'), self._ocr('r3', 'क'), self._ocr('r4', 'ख'),
+        ])
+        self.assertEqual(result['adjudicated'], [])
+        self.assertEqual(len(result['disagreements']), 1)
+
+    def test_latest_decision_per_reviewer_counts_once(self):
+        result = m.adjudicate_rows([
+            self._ocr('r1', 'क'), self._ocr('r1', 'ख'), self._ocr('r2', 'ख'),
+        ])
+        self.assertEqual(result['adjudicated'][0]['corrected_text'], 'ख')
+
+    def test_corrected_line_breaks_are_kept_in_output(self):
+        result = m.adjudicate_rows([
+            self._ocr('r1', 'पैली पंक्ति\nदूसरी पंक्ति'), self._ocr('r2', 'पैली पंक्ति दूसरी पंक्ति'),
+        ])
+        self.assertEqual(result['adjudicated'][0]['corrected_text'], 'पैली पंक्ति\nदूसरी पंक्ति')
+
     def test_reviewer_notes_do_not_create_a_false_decision_disagreement(self):
         decisions = [
             {

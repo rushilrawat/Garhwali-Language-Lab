@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import unicodedata
 from collections import Counter
 from pathlib import Path
@@ -27,6 +28,60 @@ SOURCE_ATTESTED_TRANSCRIPTION_SOURCES = {
     'asjp', 'chan_numerals_garhwali', 'lsi_cldf_garhwali',
     'mamta_southasia_examples', 'mamta_southasia_values', 'sand_garhwali',
 }
+
+
+GARHWALI_NAMES = ('garhwali', 'gadwali')
+OTHER_LANGUAGE_NAMES = (
+    'hindi', 'english', 'sanskrit', 'nepali', 'kumaoni', 'kumauni', 'urdu',
+    'bengali', 'jaunsari', 'punjabi', 'tibetan',
+)
+NEGATION_TOKENS = {'not', 'non', 'unverified', 'unconfirmed', 'without'}
+TOPIC_TOKENS = {
+    'about', 'concerning', 'regarding', 'mentions', 'mention', 'on', 'of', 'reference',
+    'study', 'studies', 'history', 'gazetteer', 'grammar', 'translation',
+}
+MIXED_SCOPE_TOKENS = {'mixed', 'and'}
+MIXED_SCOPE_PHRASES = ('or_regional', 'does_not_separate')
+_TOKEN = re.compile(r'[a-z]+')
+_CLAUSE = re.compile(r'[;,()\[\]]')
+
+
+def _first_language_position(text, names):
+    positions = [match.start() for name in names for match in re.finditer(rf'\b{name}', text)]
+    return min(positions) if positions else None
+
+
+def label_language(value):
+    """Classify a free-text language label as naming Garhwali or not.
+
+    Returns ``'garhwali'`` when the label affirms Garhwali as the record's
+    language, and ``'mixed'`` when it names another language first and Garhwali
+    after it without a topic word between them ("Kumaoni/Garhwali"). A label that mentions Garhwali in a negated clause ("not verified
+    Garhwali text") or only as the topic of another language's text ("Hindi
+    language reference concerning Garhwali") returns ``'other'``. A label that
+    does not mention Garhwali at all returns ``'other'`` when it names another
+    language and ``'unspecified'`` otherwise.
+    """
+    text = str(value or '').casefold().replace('_', ' ')
+    garhwali_at = _first_language_position(text, GARHWALI_NAMES)
+    other_at = _first_language_position(text, OTHER_LANGUAGE_NAMES)
+    if garhwali_at is None:
+        return 'other' if other_at is not None else 'unspecified'
+    for clause in _CLAUSE.split(text):
+        if any(name in clause for name in GARHWALI_NAMES):
+            if set(_TOKEN.findall(clause)) & NEGATION_TOKENS:
+                return 'other'
+            break
+    if other_at is not None and other_at < garhwali_at:
+        between = set(_TOKEN.findall(text[other_at:garhwali_at]))
+        return 'other' if between & TOPIC_TOKENS else 'mixed'
+    return 'garhwali'
+
+
+def scope_declares_mixed(value):
+    text = str(value or '').casefold()
+    tokens = set(_TOKEN.findall(text.replace('_', ' ')))
+    return bool(tokens & MIXED_SCOPE_TOKENS) or any(phrase in text for phrase in MIXED_SCOPE_PHRASES)
 
 
 def script_profile(text):
@@ -74,18 +129,16 @@ def assess_language(text, provenance):
     scopes = [str(value).casefold() for value in _values(provenance, 'language_scope')]
     candidates = {str(value).casefold() for value in _values(provenance, 'language_candidates')}
     quality_flags = {str(value).casefold() for value in _values(provenance, 'quality_flags')}
-    garhwali_label = ('gbm' in iso_labels or any('garhwali' in value or 'gadwali' in value
-                                                for value in language_labels + scopes))
+    garhwali_label = ('gbm' in iso_labels or any(
+        label_language(value) in {'garhwali', 'mixed'} for value in language_labels + scopes))
     source_ids = {str(value).casefold() for value in _values(provenance, 'source_id')}
     source_attested_transcription = bool(
         garhwali_label and source_ids & SOURCE_ATTESTED_TRANSCRIPTION_SOURCES
     )
     non_garhwali_label = bool(iso_labels - {'gbm', 'mul'} or any(
-        'garhwali' not in value and 'gadwali' not in value for value in language_labels))
+        label_language(value) != 'garhwali' for value in language_labels))
     mixed_declared = ('mul' in iso_labels or (garhwali_label and non_garhwali_label) or
-                      len(candidates) > 1 or any(
-        marker in value for value in scopes
-        for marker in (' mixed ', ' and ', 'or_regional', 'does_not_separate')))
+                      len(candidates) > 1 or any(scope_declares_mixed(value) for value in scopes))
     mixed_flagged = any(marker in flag for flag in quality_flags for marker in (
         'language_mixed', 'mixed_languages', 'mixed_garhwali', 'predominantly_english'))
     mixed_scope = mixed_declared or mixed_flagged
@@ -122,11 +175,9 @@ def assess_language(text, provenance):
     garhwali_sources = []
     for source in provenance:
         source_iso = str(source.get('iso_639_3') or '').casefold()
-        source_language = str(source.get('language') or '').casefold()
-        source_scope = str(source.get('language_scope') or '').casefold()
-        if (source_iso == 'gbm' or 'garhwali' in source_language
-                or 'gadwali' in source_language or 'garhwali' in source_scope
-                or 'gadwali' in source_scope):
+        if (source_iso == 'gbm'
+                or label_language(source.get('language')) in {'garhwali', 'mixed'}
+                or label_language(source.get('language_scope')) in {'garhwali', 'mixed'}):
             garhwali_sources.append(source)
     clean_garhwali_source = any(
         not ({str(flag).casefold() for flag in source.get('quality_flags') or []}

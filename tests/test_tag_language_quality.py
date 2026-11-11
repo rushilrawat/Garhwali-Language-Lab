@@ -191,4 +191,61 @@ class LanguageQualityTests(unittest.TestCase):
         self.assertTrue(all(item['garhwali'] == 'भासा' for item in result))
 
 
-if __name__ == '__main__': unittest.main()
+
+
+
+class SourceLabelMatchingTests(unittest.TestCase):
+    """Free-text labels that only mention Garhwali must not count as Garhwali labels."""
+
+    DEVANAGARI = 'गढ़वाल का इतिहास बहुत पुराना है'
+
+    def test_label_language_uses_real_ingest_strings(self):
+        cases = {
+            'Garhwali': 'garhwali',
+            'Garhwali; mixed Hindi/English glosses possible': 'garhwali',
+            'multilingual Garhwali-focused research source': 'garhwali',
+            'garhwali_focused_mixed_reference': 'garhwali',
+            'Kumaoni/Garhwali': 'mixed',
+            'Hindi OCR; regional history reference, not verified Garhwali text': 'other',
+            'English OCR; botanical reference, vernacular Garhwali labels not confirmed': 'other',
+            'Hindi/regional historical OCR; Garhwali not individually confirmed': 'other',
+            'Hindi language reference concerning Garhwali; page-level language requires review': 'other',
+            'English historical reference; page explicitly mentions Garhwal/Garhwali': 'other',
+            'non-Garhwali': 'other',
+            'upstream-labeled; not independently language-reviewed': 'unspecified',
+        }
+        for label, expected in cases.items():
+            with self.subTest(label=label):
+                self.assertEqual(m.label_language(label), expected)
+
+    def test_negated_garhwali_language_is_not_a_garhwali_candidate(self):
+        result = m.assess_language(self.DEVANAGARI, [{
+            'language': 'Hindi OCR; regional history reference, not verified Garhwali text',
+        }])
+        self.assertEqual(result['status'], 'non_garhwali_source_language')
+        self.assertTrue(result['review_required'])
+
+    def test_topic_only_scope_needs_review(self):
+        result = m.assess_language(self.DEVANAGARI, [{
+            'language_scope': 'Hindi language reference concerning Garhwali; page-level language requires review',
+        }])
+        self.assertEqual(result['status'], 'garhwali_scope_unverified')
+        self.assertNotEqual(result['confidence'], 'high')
+
+    def test_underscore_mixed_scope_is_detected(self):
+        result = m.assess_language(self.DEVANAGARI, [{
+            'language': 'Garhwali', 'language_scope': 'garhwali_focused_mixed_reference',
+        }])
+        self.assertEqual(result['status'], 'mixed_language_source')
+
+    def test_two_language_label_is_mixed(self):
+        result = m.assess_language(self.DEVANAGARI, [{'language': 'Kumaoni/Garhwali'}])
+        self.assertEqual(result['status'], 'mixed_language_source')
+
+    def test_plain_garhwali_label_is_unchanged(self):
+        result = m.assess_language(self.DEVANAGARI, [{'language': 'Garhwali'}])
+        self.assertEqual((result['status'], result['confidence']), ('garhwali_candidate', 'high'))
+
+
+if __name__ == '__main__':
+    unittest.main()

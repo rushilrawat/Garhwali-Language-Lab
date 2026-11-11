@@ -113,16 +113,23 @@ def discover(root: Path = ROOT) -> list[Path]:
 
 def prepare(paths: list[Path], output_dir: Path, root: Path = ROOT) -> dict:
     groups: dict[str, dict] = {}
-    source_records = empty_records = invalid_json_records = 0
+    source_records = empty_records = invalid_json_records = invalid_utf8_records = 0
     layers = Counter()
     for path in sorted(paths):
         layer = layer_for(path, root)
-        with path.open(encoding="utf-8", errors="replace") as handle:
-            for line_number, line in enumerate(handle, start=1):
-                if not line.strip():
+        # Decode strictly per line: replacing bad bytes with U+FFFD would let
+        # corrupted text through as if it were valid.
+        with path.open("rb") as handle:
+            for line_number, raw_line in enumerate(handle, start=1):
+                if not raw_line.strip():
                     continue
                 source_records += 1
                 layers[layer] += 1
+                try:
+                    line = raw_line.decode("utf-8")
+                except UnicodeDecodeError:
+                    invalid_utf8_records += 1
+                    continue
                 try:
                     row = json.loads(line)
                 except json.JSONDecodeError:
@@ -221,6 +228,7 @@ def prepare(paths: list[Path], output_dir: Path, root: Path = ROOT) -> dict:
         "duplicate_groups": len(duplicates),
         "empty_records": empty_records,
         "invalid_json_records": invalid_json_records,
+        "invalid_utf8_records": invalid_utf8_records,
         "characters": sum(len(row["text"]) for row in canonical),
         "layer_records": dict(sorted(layers.items())),
         "split_unique_texts": dict(sorted(Counter(row["split"] for row in canonical).items())),
