@@ -8,6 +8,18 @@ class SegmentTests(unittest.TestCase):
         self.assertEqual(m.segment('एक वाक्य। दूसर वाक्य! तिसर?'),
                          ['एक वाक्य।', 'दूसर वाक्य!', 'तिसर?'])
 
+    def test_splits_double_danda_verses(self):
+        self.assertEqual(m.segment('पैली पंक्ति ॥ दूसरी पंक्ति ॥ तिसरी'),
+                         ['पैली पंक्ति ॥', 'दूसरी पंक्ति ॥', 'तिसरी'])
+
+    def test_keeps_verse_number_with_its_verse(self):
+        self.assertEqual(m.segment('पैली पंक्ति ॥ १ ॥ दूसरी पंक्ति ॥२॥ तिसरी'),
+                         ['पैली पंक्ति ॥ १ ॥', 'दूसरी पंक्ति ॥२॥', 'तिसरी'])
+
+    def test_does_not_split_after_devanagari_abbreviation(self):
+        self.assertEqual(m.segment('डॉ. शिवानंद नौटियाल न लेखी। अगलो वाक्य'),
+                         ['डॉ. शिवानंद नौटियाल न लेखी।', 'अगलो वाक्य'])
+
     def test_keeps_unpunctuated_text(self):
         self.assertEqual(m.segment('गढ़वाली भाषा'), ['गढ़वाली भाषा'])
 

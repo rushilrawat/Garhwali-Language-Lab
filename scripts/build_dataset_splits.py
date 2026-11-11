@@ -66,6 +66,46 @@ def audio_exclusion_reason(row):
     return None
 
 
+def flag_experimental_audio_leakage(rows):
+    """Flag, without moving, experimental audio rows that leak across splits.
+
+    The experimental views keep upstream splits and unidentified speakers, so
+    they cannot be speaker-disjoint by construction. Rows whose identified
+    speaker or normalized transcript also occurs in another split get a
+    quality flag, and the counts go into the report.
+    """
+    speaker_splits = defaultdict(set)
+    transcript_splits = defaultdict(set)
+    for row in rows:
+        if identified_speaker(row):
+            speaker_splits[str(row['speaker_id']).strip().casefold()].add(row['split'])
+        key = normalized_text_key(row.get('asr_target_clean'))
+        if key:
+            transcript_splits[key].add(row['split'])
+    counts = Counter()
+    for row in rows:
+        flags = set(row['experimental_quality_flags'])
+        if not identified_speaker(row):
+            counts['experimental_unidentified_speaker_records'] += 1
+            flags.add('speaker_unidentified')
+        elif len(speaker_splits[str(row['speaker_id']).strip().casefold()]) > 1:
+            counts['experimental_speaker_cross_split_records'] += 1
+            flags.add('speaker_crosses_splits')
+        key = normalized_text_key(row.get('asr_target_clean'))
+        if key and len(transcript_splits[key]) > 1:
+            counts['experimental_transcript_cross_split_records'] += 1
+            flags.add('transcript_crosses_splits')
+        row['experimental_quality_flags'] = sorted(flags)
+    if counts['experimental_speaker_cross_split_records'] or counts['experimental_transcript_cross_split_records']:
+        print('warning: experimental audio splits leak across splits: '
+              f'{dict(counts)}; filter on experimental_quality_flags', file=sys.stderr)
+    return {name: counts[name] for name in (
+        'experimental_unidentified_speaker_records',
+        'experimental_speaker_cross_split_records',
+        'experimental_transcript_cross_split_records',
+    )}
+
+
 def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
     """Keep normalized and model-supported near duplicates in one split."""
     by_id = {row['segment_sha256']: dict(row) for row in rows}
@@ -205,6 +245,8 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT,
         )),
     } for row in audio_rows if str(row.get('asr_target_clean') or '').strip()]
 
+    experimental_leakage = flag_experimental_audio_leakage(experimental_audio)
+
     speaker_splits = defaultdict(set)
     for row in strict_audio:
         speaker_splits[row['speaker_id']].add(row['split'])
@@ -303,6 +345,7 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT,
             'supported_semantic_edge_cross_split': 0,
             'parent_document_cross_split': parent_document_cross_split,
             'identified_speaker_cross_split': 0,
+            **experimental_leakage,
         },
         'text_duplicate_components': text_component_report,
         'artifacts': dict(sorted(artifacts.items())),

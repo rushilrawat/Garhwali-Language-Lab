@@ -247,5 +247,23 @@ class SourceLabelMatchingTests(unittest.TestCase):
         self.assertEqual((result['status'], result['confidence']), ('garhwali_candidate', 'high'))
 
 
+class ContentMarkerTests(unittest.TestCase):
+    def test_hindi_sentence_with_garhwali_label_goes_to_review(self):
+        result = m.assess_language('मैं घर जा रहा हूँ और वह भी आएगा, यह सच है', [{'iso_639_3': 'gbm'}])
+        self.assertEqual(result['status'], 'garhwali_candidate')
+        self.assertEqual(result['confidence'], 'medium')
+        self.assertIn('hindi_function_words_dominant', result['review_reasons'])
+        self.assertTrue(result['review_required'])
+
+    def test_garhwali_sentence_keeps_high_confidence(self):
+        result = m.assess_language('मी घौर जाणू छौं अर वु भी आलु', [{'iso_639_3': 'gbm'}])
+        self.assertEqual(result['confidence'], 'high')
+        self.assertGreaterEqual(result['content_markers']['garhwali'], 2)
+
+    def test_short_text_is_not_scored(self):
+        markers = m.content_markers('है और')
+        self.assertFalse(m.hindi_marker_dominant(markers))
+
+
 if __name__ == '__main__':
     unittest.main()

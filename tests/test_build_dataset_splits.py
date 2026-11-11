@@ -255,5 +255,25 @@ class ComponentSplitPolicyTests(unittest.TestCase):
                     m.component_safe_text_splits(rows, semantic_path=missing)
 
 
+class ExperimentalAudioLeakageTests(unittest.TestCase):
+    def test_flags_speaker_and_transcript_leakage(self):
+        rows = [
+            {'speaker_id': 'S1', 'split': 'train', 'asr_target_clean': 'पाणी ल्या', 'experimental_quality_flags': []},
+            {'speaker_id': 'S1', 'split': 'test', 'asr_target_clean': 'घौर जा', 'experimental_quality_flags': []},
+            {'speaker_id': '', 'split': 'validation', 'asr_target_clean': 'पाणी ल्या।', 'experimental_quality_flags': []},
+            {'speaker_id': 'S2', 'split': 'test', 'asr_target_clean': 'अलग', 'experimental_quality_flags': []},
+        ]
+        with redirect_stderr(io.StringIO()):
+            report = m.flag_experimental_audio_leakage(rows)
+        self.assertEqual(report, {
+            'experimental_unidentified_speaker_records': 1,
+            'experimental_speaker_cross_split_records': 2,
+            'experimental_transcript_cross_split_records': 2,
+        })
+        self.assertIn('speaker_crosses_splits', rows[1]['experimental_quality_flags'])
+        self.assertIn('transcript_crosses_splits', rows[2]['experimental_quality_flags'])
+        self.assertEqual(rows[3]['experimental_quality_flags'], [])
+
+
 if __name__ == '__main__':
     unittest.main()
