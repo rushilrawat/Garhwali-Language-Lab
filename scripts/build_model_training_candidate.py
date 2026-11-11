@@ -18,6 +18,7 @@ from build_huggingface_dataset import normalized_text_key
 from export_licensed_sources import build_benchmark_exports
 from garhwali_lab.hashing import sha256_file
 from garhwali_lab.io import read_jsonl
+from garhwali_lab.hashing import sha256_bytes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -54,10 +55,6 @@ FIELDS = [
     "benchmark_overlap_notice", "inclusion_reason", "text_sha256",
     "word_count", "character_count",
 ]
-
-
-def sha256_bytes(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
 
 
 def read_json(path: Path) -> dict:

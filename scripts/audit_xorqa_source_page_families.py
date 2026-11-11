@@ -12,16 +12,13 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from audit_benchmark_overlap_candidates import normalize_text
+from garhwali_lab.hashing import sha256_text
 
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / 'benchmarks/indicgenbench_xorqa.jsonl'
 OUTPUT_JSON = Path('data/processed/evaluation/garhwali_bench/xorqa_source_page_families_2026-09-28.json')
 OUTPUT_MARKDOWN = Path('data/processed/evaluation/garhwali_bench/xorqa_source_page_families_2026-09-28.md')
-
-
-def sha256_text(value: str) -> str:
-    return hashlib.sha256(value.encode('utf-8')).hexdigest()
 
 
 def normalize_page_title(value: object) -> str:

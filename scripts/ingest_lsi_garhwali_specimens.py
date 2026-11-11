@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import hashlib
 import io
 import json
 import re
@@ -16,6 +15,7 @@ import tempfile
 import unicodedata
 from datetime import date
 from pathlib import Path
+from garhwali_lab.hashing import sha256_bytes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -120,10 +120,6 @@ SPECIMENS = (
         'genre': 'folk_narrative',
     },
 )
-
-
-def sha256_bytes(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()
 
 
 def devanagari_share(text: str) -> float:

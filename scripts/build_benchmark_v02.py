@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import re
 import sys
@@ -14,6 +13,7 @@ from pathlib import Path
 
 from audit_benchmark_overlap_candidates import normalize_text as normalize_overlap_text
 from audit_xorqa_source_page_families import source_page_hashes
+from garhwali_lab.hashing import sha256_bytes, sha256_text
 
 
 SCHEMA_VERSION = 'garhwali-bench-record-v0.2-draft'
@@ -134,14 +134,6 @@ METRICS = {
         'limitations': 'The shared scorer emits corpus and per-record WER/CER with explicit empty-reference policy; existing local ASR comparisons remain historical and are not native-validated or independent.',
     },
 }
-
-
-def sha256_bytes(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
-
-
-def sha256_text(value: str) -> str:
-    return sha256_bytes(value.encode('utf-8'))
 
 
 def _script_name(char: str) -> str:

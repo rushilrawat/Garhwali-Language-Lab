@@ -4,11 +4,11 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import unicodedata
 from collections import Counter
 from pathlib import Path
+from garhwali_lab.hashing import sha256_bytes
 
 
 TASK_FIELDS = {
@@ -17,10 +17,6 @@ TASK_FIELDS = {
     'xorqa': ('context', 'question', 'answers'),
 }
 ALLOWED_SPLITS = {'train', 'dev', 'test'}
-
-
-def sha256_bytes(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
 
 
 def _has_surrogate(value: object) -> bool:

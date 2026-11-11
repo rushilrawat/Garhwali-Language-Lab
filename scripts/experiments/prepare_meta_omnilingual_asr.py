@@ -11,7 +11,6 @@ sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 
 
 import argparse
-import hashlib
 import io
 import json
 import math
@@ -25,15 +24,12 @@ from collections import Counter
 from pathlib import Path
 from garhwali_lab.hashing import sha256_file
 from garhwali_lab.io import read_jsonl
+from garhwali_lab.hashing import sha256_bytes
 
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_TEXT_MANIFEST = ROOT / 'corpus/meta_omni.jsonl'
 OUTPUT_SPLITS = {'train': 'train', 'dev': 'validation', 'test': 'test'}
-
-
-def sha256_bytes(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
 
 
 def normalized_text(value: str) -> str:

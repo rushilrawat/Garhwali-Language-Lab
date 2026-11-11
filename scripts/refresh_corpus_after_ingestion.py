@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import subprocess
@@ -16,6 +15,7 @@ from ingest_garhwali_language_library import RAW_DIR as LANGUAGE_LIBRARY_RAW_DIR
 from prepare_text_corpus import discover as discover_text_inputs
 from garhwali_lab.hashing import sha256_file
 from garhwali_lab.version import corpus_default_version, ensure_unpublished_corpus_version
+from garhwali_lab.hashing import sha256_bytes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -75,10 +75,6 @@ PROVENANCE_SCRIPT_PATHS = tuple(sorted({
     Path("scripts/validate_hf_package_cloud.py"),
     Path("scripts/compare_hf_release_metrics.py"),
 }, key=lambda path: path.as_posix()))
-
-
-def sha256_bytes(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
 
 
 def git_output(root: Path, *arguments: str) -> str | None:

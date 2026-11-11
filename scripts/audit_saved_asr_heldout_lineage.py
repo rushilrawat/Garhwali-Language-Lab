@@ -7,12 +7,12 @@ This is a provenance audit only. It does not run inference or select a model.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import math
 import re
 from pathlib import Path
 from typing import Any
+from garhwali_lab.hashing import sha256_bytes, sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,14 +57,6 @@ RUNS = (
         'aggregate_key': None,
     },
 )
-
-
-def sha256_bytes(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
-
-
-def sha256_file(path: Path) -> str:
-    return sha256_bytes(Path(path).read_bytes())
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
