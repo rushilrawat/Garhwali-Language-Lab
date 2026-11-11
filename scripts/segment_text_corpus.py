@@ -11,8 +11,32 @@ SOURCE = ROOT/'data/processed/model_ready/cleaned/text.jsonl'
 OUT = ROOT/'data/processed/model_ready/segments'
 
 
+# Devanagari abbreviations that end in a full stop but do not end a sentence.
+ABBREVIATIONS = frozenset({'डॉ', 'डा', 'श्री', 'प्रो', 'सं', 'पृ', 'ई', 'कु', 'स्व', 'पं'})
+_BOUNDARY = re.compile(
+    r'(?<=[।!?])\s+'
+    # A double danda ends a verse unless a verse number follows (॥ १ ॥).
+    r'|(?<=॥)\s+(?![\d०-९]+\s*॥)'
+    r'|(?<=[^\d]\.)(?:\s+|$)'
+)
+
+
+def _ends_with_abbreviation(part):
+    if not part.endswith('.'):
+        return False
+    words = part[:-1].split()
+    return bool(words) and words[-1] in ABBREVIATIONS
+
+
 def segment(text):
-    return [part.strip() for part in re.split(r'(?<=[।!?])\s+|(?<=[^\d]\.)(?:\s+|$)', text) if part.strip()]
+    parts = [part.strip() for part in _BOUNDARY.split(text) if part.strip()]
+    merged = []
+    for part in parts:
+        if merged and _ends_with_abbreviation(merged[-1]):
+            merged[-1] = f'{merged[-1]} {part}'
+        else:
+            merged.append(part)
+    return merged
 
 
 def split_for_hash(digest):

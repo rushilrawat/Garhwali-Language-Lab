@@ -84,6 +84,36 @@ def scope_declares_mixed(value):
     return bool(tokens & MIXED_SCOPE_TOKENS) or any(phrase in text for phrase in MIXED_SCOPE_PHRASES)
 
 
+# Seed marker lists for a coarse Garhwali vs Hindi check on Devanagari text.
+# They are deliberately short and must be validated by native reviewers before
+# any record is dropped on their basis; today they only route rows to review.
+HINDI_MARKERS = frozenset({
+    'है', 'हैं', 'था', 'थी', 'थे', 'रहा', 'रही', 'रहे', 'में', 'और', 'नहीं',
+    'गया', 'गई', 'गयी', 'किया', 'होता', 'होती', 'लेकिन', 'क्योंकि',
+})
+GARHWALI_MARKERS = frozenset({
+    'छ', 'छन', 'छौं', 'छौ', 'छै', 'च', 'चा', 'छयो', 'नी', 'मा', 'अर', 'ह्वे',
+    'ह्वेगे', 'तैं', 'बटि', 'कख',
+})
+MIN_MARKER_TOKENS = 4
+_DEVANAGARI_TOKEN = re.compile(r'[\u0900-\u0963\u0966-\u097F]+')
+
+
+def content_markers(text):
+    """Count Hindi-leaning and Garhwali-leaning function words in the text."""
+    tokens = _DEVANAGARI_TOKEN.findall(unicodedata.normalize('NFC', str(text or '')))
+    return {
+        'tokens': len(tokens),
+        'hindi': sum(token in HINDI_MARKERS for token in tokens),
+        'garhwali': sum(token in GARHWALI_MARKERS for token in tokens),
+    }
+
+
+def hindi_marker_dominant(markers):
+    return (markers['tokens'] >= MIN_MARKER_TOKENS and markers['hindi'] >= 2
+            and markers['hindi'] > 2 * markers['garhwali'])
+
+
 def script_profile(text):
     counts = {'devanagari': 0, 'latin': 0, 'bengali': 0, 'other_alphabetic': 0}
     for char in text:
@@ -185,14 +215,21 @@ def assess_language(text, provenance):
         for source in garhwali_sources
     )
     uncertain_source = bool(garhwali_sources) and not clean_garhwali_source
+    markers = content_markers(text) if profile['script'] == 'Deva' else None
+    hindi_dominant = bool(markers) and hindi_marker_dominant(markers)
+    if hindi_dominant and status == 'garhwali_candidate':
+        reasons.append('hindi_function_words_dominant')
     if status in {'garhwali_candidate', 'source_attested_garhwali_transcription'}:
-        confidence = 'medium' if uncertain_source else 'high'
+        confidence = 'medium' if uncertain_source or hindi_dominant else 'high'
     elif status == 'romanized_garhwali_candidate' and garhwali_label:
         confidence = 'medium'
     else:
         confidence = 'low'
-    return {'status': status, 'review_required': bool(reasons), 'review_reasons': reasons,
-            'confidence': confidence, 'evidence': evidence, 'script_profile': profile}
+    result = {'status': status, 'review_required': bool(reasons), 'review_reasons': reasons,
+              'confidence': confidence, 'evidence': evidence, 'script_profile': profile}
+    if markers is not None:
+        result['content_markers'] = markers
+    return result
 
 
 def language_bucket(language_quality):
