@@ -7,7 +7,7 @@
 We organize Garhwali text, speech, folklore, scholarship, and local knowledge into reusable resources with source, rights, and quality information.
 
 [![Python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-832%20passing%20(last%20run%208%20Oct)-brightgreen.svg)](project-status/corpus-preparation-status.md)
+[![Tests](https://img.shields.io/badge/tests-912%20passing%20(last%20run%2011%20Nov)-brightgreen.svg)](project-status/corpus-preparation-status.md)
 [![Hugging Face corpus](https://img.shields.io/badge/Hugging%20Face-corpus-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![Hugging Face speech](https://img.shields.io/badge/Hugging%20Face-speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 
@@ -30,6 +30,18 @@ Platform versions below were checked on **8 October 2026**. This table shows cur
 | [Kaggle screened text](https://www.kaggle.com/datasets/rushilrawat1/garhwali-screened-text-candidates) | **v1 — public** | 1,841 screened training candidates and 110 short context rows. |
 | [Kaggle ASR references](https://www.kaggle.com/datasets/rushilrawat1/garhwali-asr-reference-clips-v0-1) | **v2 — private** | 2,718 existing VAANI audio/reference pairs with train, validation, and test splits. |
 | [Kaggle ASR notebook](https://www.kaggle.com/code/rushilrawat1/garhwali-asr-baseline-reference-labels) | **v3 — saved, not run** | Baseline notebook configured to use the v2 reference dataset. |
+
+## Recent changes
+
+Three fixes to the preparation pipeline were merged on **11 November 2026**. They change how future builds tag, review, and split rows; the published Hugging Face and Kaggle versions above were built before them and are unchanged.
+
+- **Language tagging.** A free-text source label that mentions Garhwali only in a negated clause or as a topic no longer counts as a Garhwali label, and underscore scopes such as `garhwali_focused_mixed_reference` are treated as mixed. Devanagari rows labeled Garhwali but dominated by Hindi function words are kept, drop to medium confidence, and are sent to native review.
+- **Segmentation.** The segmenter now splits verse on the double danda (॥), keeps verse numbers with their verse, and no longer splits after Devanagari abbreviations such as डॉ.
+- **Native review.** Adjudication uses a majority rule, so a third reviewer settles a tie, and corrected text is compared after NFC and whitespace normalization, with dialect labels compared as sets.
+- **Splits.** Conflicting duplicate components are placed by a hash of their root instead of always going to train, so duplicates no longer push the 90/5/5 target toward train. Experimental ASR/TTS rows whose speaker or normalized transcript also appears in another split are flagged and counted. A missing semantic-edge file is reported and can be made a hard error.
+- **Text intake.** `prepare_text_corpus` decodes input strictly and counts invalid UTF-8.
+- **Shared helpers.** Thirteen scripts now import the SHA-256 helpers from `garhwali_lab.hashing`, and a test fails if a script redefines them.
+- **Release bundle.** `release/versions.json` names **v0.2.0** as the current frozen GitHub bundle, so CI's release snapshot check now runs against `release/v0.2.0` instead of v0.1.1.
 
 ## Training starting points
 
@@ -64,7 +76,7 @@ The Hugging Face corpus page displays **963,484 rows** and **7.57 GB** across 20
 
 Source terms vary; there is no single license for the entire corpus. Check each source and the row-level rights fields before reuse. The main catalog gap is **8,444 distinct full texts** retained locally pending rights evidence; they are not part of the public corpus. See the [license policy](LICENSE_POLICY.md), [attribution guide](ATTRIBUTION.md), and [current metrics audit](project-status/current-platform-metrics-2026-10-08.md). Figures for the next, unpublished build are on the [local candidate metrics](project-status/local-candidate-metrics.md) page.
 
-Automated screening does not verify Garhwali spelling, meaning, dialect, or transcript accuracy. The benchmark remains a local draft, and independent-final evaluation eligibility is **0 of 5 task areas**. Existing model scores are development results, not independent confirmation. See the [model roadmap](research/benchmark-model-roadmap.md) and [final review](project-status/finalreport.md).
+Automated screening does not verify Garhwali spelling, meaning, dialect, or transcript accuracy. The native-speaker review workflow is in place, but **0 records have been adjudicated** so far (see the [review guide](review/README.md)). The benchmark remains a local draft, and independent-final evaluation eligibility is **0 of 5 task areas**. Existing model scores are development results, not independent confirmation. See the [model roadmap](research/benchmark-model-roadmap.md) and [final review](project-status/finalreport.md).
 
 ## Work with the project
 
@@ -73,6 +85,8 @@ Create an environment, install the developer requirements, and run the test suit
     python3.12 -m venv .venv
     .venv/bin/python -m pip install -r requirements-dev.txt
     PYTHONPATH=scripts:scripts/experiments:scripts/archive .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
+
+On 11 November 2026 the full suite ran 912 tests with no failures. Tests for the Kaggle, speech, and ingestion-graph builders need `pyarrow` and `langgraph` from the developer requirements and error out without them.
 
 The `requirements-*.txt` files are hash-pinned lock files generated from the extras in `pyproject.toml`, so pip installs exactly the tested versions. After changing a dependency, regenerate them with `uv pip compile pyproject.toml --extra <extra> --python-version 3.12 --universal --generate-hashes -o requirements-<name>.txt` (the command is also recorded at the top of each file). External tools are found on `PATH`; set `GARHWALI_PDFTOPPM` to point at a specific `pdftoppm` binary.
 
@@ -90,6 +104,7 @@ Raw downloads, PDFs, caches, and generated data are excluded from Git. Review th
 - [Documentation index](docs/README.md) — project documentation and research.
 - [Project status and audit index](project-status/README.md) — current status, readiness, metrics, and project-wide reports.
 - [Current platform metrics](project-status/current-platform-metrics-2026-10-08.md) — verified Hugging Face, Kaggle, GitHub, and CI state.
+- [Release bundles](release/v0.2.0/README.md) — the current frozen v0.2.0 bundle; [`release/versions.json`](release/versions.json) is the single source of truth for corpus and bundle versions.
 - [Corpus preparation status](project-status/corpus-preparation-status.md) — current preparation state.
 - [Kaggle and Hugging Face roadmap](research/huggingface-kaggle-quality-release-roadmap-2026-10-06.md) — release decisions and remaining gates.
 - [Source catalog](sources/online/deep-search-catalog.md) — investigated source leads.
