@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Build leakage-checked text, ASR, TTS, and evaluation candidate splits."""
 
+import hashlib
 import json
+import os
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 from garhwali_lab.hashing import sha256_file as file_sha256
@@ -19,6 +22,17 @@ SEMANTIC_EDGES = ROOT / (
     'semantic_duplicates_refined_v0_2/cloud_output/refined_candidates.jsonl'
 )
 SPLITS = ('train', 'validation', 'test')
+REQUIRE_SEMANTIC_ENV = 'GARHWALI_REQUIRE_SEMANTIC_EDGES'
+
+
+def split_for_hash(digest):
+    """Deterministic 90/5/5 bucket, matching the upstream segment split rule."""
+    bucket = int(hashlib.sha256(str(digest).encode('utf-8')).hexdigest()[:8], 16) % 1000
+    if bucket < 900:
+        return 'train'
+    if bucket < 950:
+        return 'validation'
+    return 'test'
 PLACEHOLDER_SPEAKERS = {'', 'na', 'n/a', 'none', 'null', 'unknown', 'unidentified'}
 
 
@@ -91,7 +105,18 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
 
     semantic_edges = 0
     semantic_path = Path(semantic_path) if semantic_path else None
-    if semantic_path and semantic_path.exists():
+    if semantic_path is None:
+        semantic_source = 'disabled'
+    elif semantic_path.exists():
+        semantic_source = 'loaded'
+    else:
+        semantic_source = 'missing'
+        message = (f'semantic duplicate edges not found at {semantic_path}; '
+                   'near-duplicate isolation is limited to exact normalized matches')
+        if os.environ.get(REQUIRE_SEMANTIC_ENV) == '1':
+            raise FileNotFoundError(message)
+        print(f'warning: {message}', file=sys.stderr)
+    if semantic_source == 'loaded':
         for edge in read_jsonl(semantic_path):
             if edge.get('refined_decision') not in {
                 'supported_candidate', 'high_confidence_near_duplicate',
@@ -106,13 +131,17 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
     components = defaultdict(list)
     for identity in by_id:
         components[find(identity)].append(identity)
-    split_priority = {'train': 0, 'validation': 1, 'test': 2}
     moved = 0
+    hashed_components = 0
     for root, identities in components.items():
-        assigned = min(
-            (by_id[identity]['split'] for identity in identities),
-            key=split_priority.__getitem__,
-        )
+        member_splits = {by_id[identity]['split'] for identity in identities}
+        if len(member_splits) == 1:
+            assigned = member_splits.pop()
+        else:
+            # Conflicting components are placed by a hash of their root. Always
+            # choosing train (the earlier rule) halved validation and test.
+            assigned = split_for_hash(root)
+            hashed_components += 1
         for identity in identities:
             row = by_id[identity]
             if row['split'] != assigned:
@@ -128,6 +157,8 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
         'supported_semantic_edges': semantic_edges,
         'components': len(components),
         'records_reassigned': moved,
+        'conflicting_components_hash_assigned': hashed_components,
+        'semantic_edges_source': semantic_source,
     }
 
 

@@ -1,5 +1,10 @@
 import hashlib
+import io
 import json
+import os
+from collections import Counter
+from contextlib import redirect_stderr
+from unittest import mock
 import tempfile
 import unittest
 from pathlib import Path
@@ -123,10 +128,11 @@ class DatasetSplitTests(unittest.TestCase):
             report = m.build_splits(
                 text_path, audio_path, root / 'out', semantic_path=semantic_path
             )
-            self.assertEqual(report['text']['records']['test'], 0)
-            self.assertEqual(report['text']['records']['train'], 2)
+            expected = m.split_for_hash('a' * 64)
+            self.assertEqual(report['text']['records'][expected], 2)
+            self.assertEqual(sum(report['text']['records'].values()), 2)
             self.assertEqual(
-                report['text_duplicate_components']['records_reassigned'], 1
+                report['text_duplicate_components']['conflicting_components_hash_assigned'], 1
             )
 
     def test_semantic_reassignment_keeps_all_segments_of_parent_document_together(self):
@@ -167,10 +173,8 @@ class DatasetSplitTests(unittest.TestCase):
                 text_path, audio_path, root / 'out', semantic_path=semantic_path
             )
 
-            self.assertEqual(
-                report['text']['records'],
-                {'test': 0, 'train': 3, 'validation': 0},
-            )
+            expected = m.split_for_hash('a' * 64)
+            self.assertEqual(report['text']['records'][expected], 3)
             self.assertEqual(report['leakage_checks']['parent_document_cross_split'], 0)
 
     def test_custom_release_id_is_recorded_for_versioned_candidate(self):
@@ -210,6 +214,45 @@ class DatasetSplitTests(unittest.TestCase):
                 'audio_supervised': hashlib.sha256(audio_path.read_bytes()).hexdigest(),
                 'semantic_edges': hashlib.sha256(semantic_path.read_bytes()).hexdigest(),
             })
+
+class ComponentSplitPolicyTests(unittest.TestCase):
+    def test_conflicting_components_keep_the_target_ratio(self):
+        rows = []
+        for index in range(4000):
+            left = hashlib.sha256(f'left-{index}'.encode()).hexdigest()
+            right = hashlib.sha256(f'right-{index}'.encode()).hexdigest()
+            rows.append({'segment_sha256': left, 'split': 'train', 'text': f'वाक्य {index}'})
+            rows.append({'segment_sha256': right, 'split': 'test', 'text': f'वाक्य {index}!'})
+        result, report = m.component_safe_text_splits(rows, semantic_path=None)
+        counts = Counter(row['split'] for row in result)
+        self.assertEqual(report['conflicting_components_hash_assigned'], 4000)
+        self.assertGreater(counts['validation'] / len(result), 0.035)
+        self.assertGreater(counts['test'] / len(result), 0.035)
+        by_component = {}
+        for row in result:
+            by_component.setdefault(row['duplicate_component_id'], set()).add(row['split'])
+        self.assertTrue(all(len(splits) == 1 for splits in by_component.values()))
+
+    def test_agreeing_components_keep_their_split(self):
+        rows = [
+            {'segment_sha256': 'a' * 64, 'split': 'validation', 'text': 'एक'},
+            {'segment_sha256': 'b' * 64, 'split': 'validation', 'text': 'एक।'},
+        ]
+        result, report = m.component_safe_text_splits(rows, semantic_path=None)
+        self.assertEqual({row['split'] for row in result}, {'validation'})
+        self.assertEqual(report['records_reassigned'], 0)
+
+    def test_missing_semantic_file_is_reported_and_can_be_required(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = Path(tmp) / 'absent.jsonl'
+            rows = [{'segment_sha256': 'a' * 64, 'split': 'train', 'text': 'एक'}]
+            with redirect_stderr(io.StringIO()) as err:
+                _, report = m.component_safe_text_splits(rows, semantic_path=missing)
+            self.assertEqual(report['semantic_edges_source'], 'missing')
+            self.assertIn('warning', err.getvalue())
+            with mock.patch.dict(os.environ, {m.REQUIRE_SEMANTIC_ENV: '1'}):
+                with self.assertRaises(FileNotFoundError):
+                    m.component_safe_text_splits(rows, semantic_path=missing)
 
 
 if __name__ == '__main__':

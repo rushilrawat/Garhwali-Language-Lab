@@ -20,9 +20,12 @@ lexicon, OCR, transcripts, or evaluation data.
 
 Reviewers copy the shape in `decision-template.json` into the Git-ignored file
 `data/review_decisions/native_reviews.jsonl`. Use a project-assigned pseudonymous
-reviewer ID rather than a name or contact detail. A target becomes adjudicated
-only when two distinct reviewers submit identical decisions. Disagreements remain
-explicit and require a third adjudication decision.
+reviewer ID rather than a name or contact detail. Each reviewer's latest decision
+counts once. A target becomes adjudicated when at least two distinct reviewers
+agree and their decision outnumbers every other decision. Corrected text is
+compared after Unicode NFC and whitespace normalization, and dialect labels are
+compared as a set. Disagreements stay explicit until another reviewer breaks the
+tie; the result then records `majority_agreement` with the dissenting reviewer IDs.
 
 Allowed `review_type` values are `language_identity`, `dialect`, `lexicon`,
 `ocr`, `transcript`, `evaluation_text`, and `evaluation_asr`. A decision is

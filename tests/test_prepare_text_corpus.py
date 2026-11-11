@@ -36,6 +36,19 @@ class TextPreparationTests(unittest.TestCase):
             self.assertEqual(report["empty_records"], 1)
             self.assertEqual(report["unique_texts"], 1)
 
+    def test_prepare_counts_invalid_utf8_instead_of_replacing_it(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "corpus" / "bad.jsonl"
+            source.parent.mkdir(parents=True)
+            good = json.dumps({"text": "गढ़वाली"}, ensure_ascii=False).encode("utf-8")
+            source.write_bytes(good + b"\n" + b'{"text": "\xff\xfe broken"}\n')
+            report = m.prepare([source], root / "out", root=root)
+            self.assertEqual(report["invalid_utf8_records"], 1)
+            self.assertEqual(report["unique_texts"], 1)
+            written = (root / "out").rglob("*.jsonl")
+            self.assertFalse(any("\ufffd" in path.read_text(encoding="utf-8") for path in written))
+
     def test_prepare_fills_missing_source_id_from_filename(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
