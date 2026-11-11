@@ -4,13 +4,13 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import re
 import unicodedata
 import zipfile
 from datetime import date
 from pathlib import Path
+from garhwali_lab.hashing import sha256_bytes
 
 
 SOURCE_URL = 'https://git.door43.org/OBS-TLF/gbm_obs'
@@ -21,10 +21,6 @@ LICENSE_URL = 'https://creativecommons.org/licenses/by-sa/4.0/'
 ATTRIBUTION = 'The Love Fellowship, Garhwali Open Bible Stories (TLF), version 1'
 DEFAULT_ARCHIVE = Path('data/downloads/obs_tlf_gbm_v1/gbm_obs_v1.zip')
 DEFAULT_OUTPUT = Path('data/extracted/obs_tlf_v1/records.jsonl')
-
-
-def sha256_bytes(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
 
 
 def parse_story(markdown: str, number: int) -> tuple[str, str, str]:

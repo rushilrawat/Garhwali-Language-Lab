@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import re
 from datetime import date
 from pathlib import Path
 from garhwali_lab.text import clean_text as normalize
+from garhwali_lab.hashing import sha256_bytes
 
 
 SOURCE_URL = 'https://archive.org/details/cu31924089930774'
@@ -71,10 +71,6 @@ SAYINGS = (
         'quality_flags': ['historical_transliteration', 'ocr_transliteration_uncertain', 'not_native_reviewed'],
     },
 )
-
-
-def sha256_bytes(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()
 
 
 def extract_records(source_text: str, source_sha256: str) -> list[dict]:

@@ -11,7 +11,6 @@ sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 
 
 import argparse
-import hashlib
 import json
 import platform
 import random
@@ -19,6 +18,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from audit_xorqa_source_page_families import source_page_hashes
+from garhwali_lab.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -40,14 +40,6 @@ RETRIEVERS = (
     'oracle_english_word_bm25',
 )
 METRICS = ('recall_at_1', 'recall_at_5', 'recall_at_10', 'mrr_at_10')
-
-
-def sha256_bytes(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
-
-
-def sha256_file(path: Path) -> str:
-    return sha256_bytes(Path(path).read_bytes())
 
 
 def read_jsonl(path: Path) -> list[dict]:

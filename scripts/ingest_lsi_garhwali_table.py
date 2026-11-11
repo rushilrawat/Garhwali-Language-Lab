@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import hashlib
 import io
 import json
 import re
@@ -20,6 +19,7 @@ import tempfile
 import unicodedata
 from datetime import date
 from pathlib import Path
+from garhwali_lab.hashing import sha256_bytes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -56,10 +56,6 @@ COLUMN_CROPS = {
 CROP_TOP = 250
 CROP_HEIGHT = 2220
 TOKEN_RE = re.compile(r'[A-Za-zÀ-ÖØ-öø-ÿĀ-ȳ]')
-
-
-def sha256_bytes(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()
 
 
 def clean_cell_token(text: str) -> str:

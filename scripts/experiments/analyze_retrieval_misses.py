@@ -11,7 +11,6 @@ sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
 
 
 import argparse
-import hashlib
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -24,6 +23,7 @@ from run_retrieval_baseline import (
     metric_summary,
     word_tokens,
 )
+from garhwali_lab.hashing import sha256_bytes, sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -45,14 +45,6 @@ RETRIEVER_QUERIES = {
     'oracle_english_word_bm25': ('oracle_question', word_tokens),
 }
 STATUS_ORDER = ('rank_1', 'rank_2_5', 'rank_6_10', 'rank_11_plus', 'zero_score')
-
-
-def sha256_bytes(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
-
-
-def sha256_file(path: Path) -> str:
-    return sha256_bytes(Path(path).read_bytes())
 
 
 def read_jsonl(path: Path) -> list[dict]:
