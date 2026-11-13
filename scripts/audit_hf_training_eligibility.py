@@ -15,11 +15,8 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from build_huggingface_dataset import (
-    is_publishable_provenance,
-    recommended_text_training_row,
-)
-
+from hf_rights import is_publishable_provenance
+from hf_rows import recommended_text_training_row
 
 TEXT_CONFIGS = ("text", "text_expansion", "text_resources")
 SOURCE_LIST_FIELDS = ("provenance", "sources", "public_rights_basis")

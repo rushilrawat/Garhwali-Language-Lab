@@ -14,12 +14,11 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from build_huggingface_dataset import normalized_text_key
 from export_licensed_sources import build_benchmark_exports
-from garhwali_lab.hashing import sha256_file
-from garhwali_lab.io import read_jsonl
-from garhwali_lab.hashing import sha256_bytes
 
+from garhwali_lab.hashing import sha256_bytes, sha256_file
+from garhwali_lab.io import read_jsonl
+from garhwali_lab.text import content_key as normalized_text_key
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "data/training/garhwali-text-training-v0.2"
