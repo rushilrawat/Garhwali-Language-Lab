@@ -51,7 +51,7 @@ same edition and scan already exists in `sources/online/`.
 Run the resumable intake with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/ingest_incoming_pdfs.py
+.venv/bin/python scripts/ingest_incoming_pdfs.py
 ```
 
 The command checks exact PDF hashes before extraction, reuses prior work for an

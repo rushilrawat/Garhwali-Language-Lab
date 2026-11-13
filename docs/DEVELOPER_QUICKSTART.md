@@ -19,6 +19,7 @@ Hugging Face Datasets without downloading model weights or audio:
 ```bash
 python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements-dev.txt
+.venv/bin/python -m unittest
 .venv/bin/python examples/search_garhwali_lexicon.py "water" --limit 3
 ```
 

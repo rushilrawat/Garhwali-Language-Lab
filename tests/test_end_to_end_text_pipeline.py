@@ -8,7 +8,7 @@ outputs, and that split membership matches the stored expectation.
 
 Regenerate the expectation after an intentional change with:
 
-    GARHWALI_UPDATE_E2E_EXPECTED=1 PYTHONPATH=scripts python -m unittest tests.test_end_to_end_text_pipeline
+    GARHWALI_UPDATE_E2E_EXPECTED=1 python -m unittest tests.test_end_to_end_text_pipeline
 """
 
 import hashlib
