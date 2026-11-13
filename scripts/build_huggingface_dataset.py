@@ -2088,404 +2088,185 @@ def dataset_info_for_release(output, config_report):
     return dataset_info
 
 
-def dataset_card(report, dataset_info=None):
-    release_version = str(report.get('release_id', '')).rsplit('-v', 1)[-1]
-    candidate_history = ''
-    if release_version == '0.2.4':
-        candidate_history = '''
-4. **v0.2.2 — improve traceability and report usable counts.** The package
-   resolves existing social-record IDs to their item URLs, separates source
-   references from content rows, reports rights and reuse labels by config, and
-   adds a deduplicated `text_expansion` view from already-collected catalog
-   values. Earlier files remain available.
-5. **v0.2.3 — surface additional existing Garhwali resources.** Adds a
-   deduplicated, rights-filtered `text_resources` view for catalog text not
-   already present in other text-bearing configurations. The view preserves
-   row-level rights and quality signals, excludes held-out evaluation source
-   records, and is explicitly not an evaluation set or uniformly training-ready.
-6. **v0.2.4 — improve source attribution and revision traceability.** Recovers
-   creator attribution for 36 existing Tatoeba sentences and adds immutable
-   page-revision/history links for 319 existing Wikimedia and Wiktionary
-   records. No new text is added; source text, release eligibility, and review
-   status are not promoted by this metadata update.'''
-    elif release_version == '0.2.5':
-        candidate_history = '''
-4. **v0.2.2 — improve traceability and report usable counts.** Resolves existing
-   social-record IDs to item URLs, separates source references from content,
-   and adds a deduplicated `text_expansion` view from collected catalog values.
-5. **v0.2.3 — surface existing Garhwali resources.** Adds a deduplicated,
-   rights-filtered `text_resources` view with row-level source and quality data.
-6. **v0.2.4 — improve source attribution and revision traceability.** Recovers
-   creator attribution for 36 Tatoeba sentences and immutable history links for
-   319 Wikimedia/Wiktionary records. It adds no source text.
-7. **v0.2.5 — prevent upstream evaluation-source overlap in default train.**
-   Keeps all records but routes text linked to upstream Meta/VAANI development
-   or test sources into an explicit `source_overlap` split. The split audit and
-   evidence IDs are included with the release.'''
-    elif release_version == '0.2.3':
-        candidate_history = '''
-5. **v0.2.3 — surface additional existing Garhwali resources.** Adds a
-   deduplicated, rights-filtered `text_resources` view for catalog text not
-   already present in other text-bearing configurations. The view preserves
-   row-level rights and quality signals, excludes held-out evaluation source
-   records, and is explicitly not an evaluation set or uniformly training-ready.'''
-    elif release_version == '0.2.2':
-        candidate_history = '''
-4. **v0.2.2 — improve traceability and report usable counts.** The package
-   resolves existing social-record IDs to their item URLs, separates source
-   references from content rows, reports rights and reuse labels by config, and
-   adds a deduplicated `text_expansion` view from already-collected catalog
-   values. Earlier files remain available.'''
-    draft_status = 'complete' if report['drafts_complete'] else 'partial'
-    exported_rows = sum(item['records'] for item in report['configs'].values())
-    draft_unique_audio = report.get('draft_unique_audio', 0)
-    draft_nonempty_audio = report.get(
-        'draft_unique_nonempty_audio', draft_unique_audio
-    )
-    draft_empty_audio = report.get(
-        'draft_empty_audio', max(0, draft_unique_audio - draft_nonempty_audio)
-    )
-    draft_source_rows = report.get('draft_records')
-    draft_source_summary = (
-        f' from {draft_source_rows:,} source rows'
-        if draft_source_rows is not None else ''
-    )
-    audio_summary = (
-        f"The package includes **{report['linked_audio_files']:,} content-addressed audio files**."
-        if report['include_audio'] else
-        'This transcript-only package does not include audio files or source filenames.'
-    )
-    nonempty_configs = {
-        key: value for key, value in report['configs'].items()
-        if value.get('records', 0) > 0
-    }
-    config_names = sorted({key.split('/', 1)[0] for key in nonempty_configs})
-    config_count = len(config_names)
-    config_word = 'configuration' if config_count == 1 else 'configurations'
-    config_blocks = []
-    for name in config_names:
-        splits = set()
-        for key, value in sorted(nonempty_configs.items()):
+CARD_TEMPLATE_PATH = Path(__file__).resolve().parent / 'templates/hf_dataset_card.md'
+CARD_SECTION_MARKER = re.compile(r'^<!-- card:([\w.-]+) -->$', re.MULTILINE)
+CONFIG_USES = {
+    'asr': 'provider transcripts; not native-adjudicated',
+    'catalog': 'unique text inventory with content and metadata-only entries',
+    'geography': 'place facts and citations',
+    'historical_terms': 'historical names and terms',
+    'instructions': 'instruction/response examples',
+    'lexicon': 'vocabulary and pronunciation candidates',
+    'literary_people': 'writer and contributor metadata',
+    'literary_works': 'work-level bibliography',
+    'popular_songs': 'song-level metadata; no lyrics',
+    'paharili_gbm': 'Garhwali-labeled PahariLI language-identification text; unreviewed and retains source-lineage and rights caveats',
+    'record_index': 'archive references; not training examples',
+    'record_sources': 'record-to-source links; not training examples',
+    'source_catalog': 'deduplicated source and rights references',
+    'sravaani_drafts': 'machine transcript drafts; not ground truth',
+    'text': 'Garhwali text examples; source_overlap preserves rows linked to upstream dev/test content outside train',
+    'text_expansion': 'strict-tier candidates; upstream dev/test overlaps are in source_overlap; not evaluation data',
+    'text_resources': 'additional rights-cleared Garhwali resources; quality varies; upstream overlaps are separately split',
+    'university_research': 'research bibliography',
+}
+
+
+@lru_cache(maxsize=1)
+def card_sections():
+    """Read the card template into ``{section name: text}``."""
+    parts = CARD_SECTION_MARKER.split(CARD_TEMPLATE_PATH.read_text(encoding='utf-8'))
+    return {name: body.strip('\n') for name, body in zip(parts[1::2], parts[2::2], strict=True)}
+
+
+def _card_config_yaml_and_table(configs):
+    by_config = {}
+    for key, value in configs.items():
+        if value.get('records', 0) > 0:
             config, split = key.split('/', 1)
-            if config != name:
-                continue
-            # Dataset metadata accepts one declaration per split. Use a shard
-            # glob so multiple JSONL shards do not become duplicate split names.
-            splits.add(split)
-        files = [
+            by_config.setdefault(config, {})[split] = value['records']
+    # Dataset metadata accepts one declaration per split. A shard glob keeps
+    # multiple JSONL shards from becoming duplicate split names.
+    yaml_blocks = [
+        f'- config_name: {name}\n  data_files:\n' + '\n'.join(
             f'  - split: {split}\n    path: data/{name}/{split}-*.jsonl'
-            for split in sorted(splits)
-        ]
-        config_blocks.append(
-            f'- config_name: {name}\n  data_files:\n' + '\n'.join(files)
+            for split in sorted(by_config[name])
         )
-    configs_yaml = '\n'.join(config_blocks)
-    dataset_info_yaml = ''
-    if dataset_info:
-        # JSON flow collections are valid YAML and keep generated feature
-        # metadata deterministic without adding a YAML dependency to the pipeline.
-        dataset_info_yaml = (
-            'dataset_info: '
-            + json.dumps(dataset_info, ensure_ascii=False, separators=(',', ':'))
-            + '\n'
-        )
-    config_uses = {
-        'asr': 'provider transcripts; not native-adjudicated',
-        'catalog': 'unique text inventory with content and metadata-only entries',
-        'geography': 'place facts and citations',
-        'historical_terms': 'historical names and terms',
-        'instructions': 'instruction/response examples',
-        'lexicon': 'vocabulary and pronunciation candidates',
-        'literary_people': 'writer and contributor metadata',
-        'literary_works': 'work-level bibliography',
-        'popular_songs': 'song-level metadata; no lyrics',
-        'paharili_gbm': 'Garhwali-labeled PahariLI language-identification text; unreviewed and retains source-lineage and rights caveats',
-        'record_index': 'archive references; not training examples',
-        'record_sources': 'record-to-source links; not training examples',
-        'source_catalog': 'deduplicated source and rights references',
-        'sravaani_drafts': 'machine transcript drafts; not ground truth',
-        'text': 'Garhwali text examples; source_overlap preserves rows linked to upstream dev/test content outside train',
-        'text_expansion': 'strict-tier candidates; upstream dev/test overlaps are in source_overlap; not evaluation data',
-        'text_resources': 'additional rights-cleared Garhwali resources; quality varies; upstream overlaps are separately split',
-        'university_research': 'research bibliography',
+        for name in sorted(by_config)
+    ]
+    table_rows = [
+        f'| `{name}` | {sum(by_config[name].values()):,} | '
+        f'{CONFIG_USES.get(name, "source-specific records; inspect the schema")} |'
+        for name in sorted(by_config)
+    ]
+    entries = sum(len(splits) for splits in by_config.values())
+    return '\n'.join(yaml_blocks), '\n'.join(table_rows), len(by_config), entries
+
+
+def dataset_card(report, dataset_info=None):
+    """Render the Hugging Face README from ``templates/hf_dataset_card.md``."""
+    sections = card_sections()
+    release_id = str(report.get('release_id', ''))
+    release_version = release_id.rsplit('-v', 1)[-1]
+    expansion = report.get('text_expansion_metrics') or {}
+    resources = report.get('text_resource_metrics') or {}
+    paharili = report.get('paharili_gbm_metrics') or {}
+    paharili_splits = paharili.get('split_records') or {}
+    source_expansion = report.get('source_expansion') or {}
+    jambu = source_expansion.get('jambu') or {}
+    library = source_expansion.get('language_library') or {}
+    configs_yaml, config_table, config_count, entry_count = _card_config_yaml_and_table(report['configs'])
+
+    draft_unique_audio = report.get('draft_unique_audio', 0)
+    draft_nonempty_audio = report.get('draft_unique_nonempty_audio', draft_unique_audio)
+    draft_empty_audio = report.get('draft_empty_audio', max(0, draft_unique_audio - draft_nonempty_audio))
+    draft_source_rows = report.get('draft_records')
+    exported_rows = sum(item['records'] for item in report['configs'].values())
+    all_data = profile_includes_all_data(report['profile'])
+    package_summary = (
+        f"This {'complete all-data' if all_data else 'public-profile'} package contains "
+        f"**{exported_rows:,} records** across {config_count} named "
+        f"{'configuration' if config_count == 1 else 'configurations'} ({entry_count} config/split entries)"
+    )
+
+    values = {
+        'release_id': report['release_id'],
+        'release_version': release_version,
+        'configs_yaml': configs_yaml,
+        'config_table': config_table,
+        'dataset_info_yaml': (
+            # JSON flow collections are valid YAML and keep generated feature
+            # metadata deterministic without adding a YAML dependency.
+            'dataset_info: ' + json.dumps(dataset_info, ensure_ascii=False, separators=(',', ':')) + '\n'
+            if dataset_info else ''
+        ),
+        'language_header': '- gbm\n- hi\n- en' if all_data else '- gbm',
+        'draft_status': 'complete' if report['drafts_complete'] else 'partial',
+        'draft_summary': (
+            f'{package_summary}. The SraVaani draft config covers '
+            f'**{draft_unique_audio:,} unique audio hashes**'
+            f"{f' from {draft_source_rows:,} source rows' if draft_source_rows is not None else ''}: "
+            f'**{draft_nonempty_audio:,}** have non-empty draft text and '
+            f'**{draft_empty_audio:,}** are empty.'
+        ),
+        'audio_summary': (
+            f"The package includes **{report['linked_audio_files']:,} content-addressed audio files**."
+            if report['include_audio'] else
+            'This transcript-only package does not include audio files or source filenames.'
+        ),
+        'draft_third_checkpoint_records': report['draft_third_checkpoint_records'],
+        'draft_three_checkpoint_review_records': report['draft_three_checkpoint_review_records'],
+        'draft_audio_grounded_review_records': report['draft_audio_grounded_review_records'],
+        'draft_source_label_conflicts': report['draft_source_label_conflicts'],
+        'catalog_records': report['catalog_records'],
+        'catalog_noncommercial_records': report.get('catalog_noncommercial_records', 0),
+        'catalog_sharealike_records': report.get('catalog_sharealike_records', 0),
+        'catalog_source_policy_records': report.get('catalog_source_policy_records', 0),
+        'catalog_factual_word_records': report.get('catalog_factual_word_records', 0),
+        'metadata_only_records': sum(report.get('structured_knowledge_metadata_only', {}).values()),
+        'text_source_overlap_records': report.get('text_source_overlap_records', 0),
+        'overlap_audit_url': (
+            'https://huggingface.co/datasets/rushilrawat/garhwali-corpus/blob/main/'
+            f'releases/v{release_version}/research/huggingface-upstream-split-overlap-2026-10-05.md'
+        ),
+        'expansion_records': expansion.get('records', 0),
+        'expansion_source_overlap_records': expansion.get('source_split_overlap_records', 0),
+        'expansion_recommended': expansion.get('recommended_for_training', 0),
+        'expansion_not_recommended': max(
+            0, expansion.get('records', 0) - expansion.get('recommended_for_training', 0)
+        ),
+        'resource_records': resources.get('records', 0),
+        'resource_words': resources.get('whitespace_words', 0),
+        'resource_characters': resources.get('characters', 0),
+        'resource_recommended': resources.get('recommended_for_training', 0),
+        'paharili_new_records': paharili.get('new_records', 0),
+        'paharili_source_records': paharili.get('garhwali_source_records', 0),
+        'paharili_unique_texts': paharili.get('normalized_unique_source_texts', 0),
+        'paharili_collapsed_records': paharili.get('collapsed_duplicate_source_records', 0),
+        'paharili_new_source_ids': paharili.get('new_source_record_ids', 0),
+        'paharili_existing_source_ids': paharili.get('source_record_ids_already_in_existing_configs', 0),
+        'paharili_train': paharili_splits.get('train', 0),
+        'paharili_test': paharili_splits.get('test', 0),
+        'paharili_source_overlap': paharili_splits.get('source_overlap', 0),
+        'jambu_source_records': jambu.get('source_records', 0),
+        'jambu_unique_forms': jambu.get('unique_forms', 0),
+        'jambu_new_forms': max(0, jambu.get('unique_forms', 0) - jambu.get('already_in_current_corpus', 0)),
+        'jambu_already_in_corpus': jambu.get('already_in_current_corpus', 0),
+        'jambu_cross_source_overlap': jambu.get('cross_source_overlap', 0),
+        'jambu_new_vs_other_sources': jambu.get('new_vs_other_sources', 0),
+        'library_source_records': library.get('source_records', 0),
+        'library_unique_strings': library.get('unique_strings', 0),
+        'library_cross_source_overlap': library.get('cross_source_overlap', 0),
+        'library_new_vs_current_corpus': library.get('new_vs_current_corpus', 0),
+        'library_type_counts': ', '.join(
+            f'{kind} {count:,}' for kind, count in sorted((library.get('records_by_type') or {}).items())
+        ),
     }
-    config_rows = []
-    for name in config_names:
-        row_count = sum(
-            details.get('records', 0)
-            for key, details in nonempty_configs.items()
-            if key.split('/', 1)[0] == name
-        )
-        config_rows.append(
-            f'| `{name}` | {row_count:,} | '
-            f'{config_uses.get(name, "source-specific records; inspect the schema")} |'
-        )
-    config_table = '\n'.join(config_rows)
-    speech_companion = ''
-    if profile_includes_all_data(report['profile']):
-        language_header = '- gbm\n- hi\n- en'
-        package_summary = (
-            f'This complete all-data package contains **{exported_rows:,} records** '
-            f'across {config_count} named {config_word} '
-            f'({len(nonempty_configs)} config/split entries)'
-        )
-        resource_summary = '''Versioned Garhwali (`gbm`) text, speech, lexicon,
-instructions, geography, historical terms, literature, music, and university-
-research resources built by the Garhwali Language Lab. Available source, rights,
-and review metadata vary by configuration.'''
-        catalog_summary = f'''The `catalog` configuration contains all
-**{report['catalog_records']:,} exact-unique collected text records with their full
-text values. No catalog text values are redacted. Source, license, rights status,
-quality tier, language evidence, and review state remain attached to every row so
-research use and any later redistribution decision can be audited.'''
-        access_notice = '''> **Access warning:** this all-data profile contains
-restricted and rights-pending source content. Keep it local or access-controlled;
-do not publish it as an open dataset until every included component is cleared.
-It retains all structured records with row-level source, quality, and rights
-metadata attached.'''
+
+    def section(name):
+        return sections[name].format_map(values)
+
+    profile = 'all-data' if all_data else 'public'
+    history = sections.get(f'history-{release_version}')
+    if release_id.endswith('v0.2.1'):
+        additions = '\n\n' + section('additions-0.2.1') + '\n'
+    elif release_id.endswith('v0.2.0'):
+        additions = '\n\n' + section('additions-0.2.0') + '\n'
     else:
-        speech_companion = '''\n\n## Linked speech dataset\n\nThe companion [Garhwali Speech dataset](https://huggingface.co/datasets/rushilrawat/garhwali-speech) contains VAANI audio with provider transcripts and separately labeled SraVaani drafts.'''
-        language_header = '- gbm'
-        package_summary = (
-            f'This public-profile package contains **{exported_rows:,} records** '
-            f'across {config_count} named {config_word} '
-            f'({len(nonempty_configs)} config/split entries)'
-        )
-        resource_summary = '''This public profile contains Garhwali
-text, human transcripts, lexicon and instructions, plus experimental SraVaani
-drafts. The geography, history, literature, song, and university-research
-configurations contain factual and bibliographic metadata, with expressive
-notes, lyrics, summaries, and source passages omitted.'''
-        catalog_summary = f'''The `catalog` configuration publicly accounts for all
-**{report['catalog_records']:,} exact-unique collected text records**. Rows whose
-source terms do not permit redistribution retain their stable content hash,
-source URL, rights status, quality tier, language evidence, and review reasons;
-their full text is not included in public content. The current catalog exposes **{report.get('catalog_noncommercial_records', 0):,}** CC BY-NC-SA 4.0 records,
-**{report.get('catalog_sharealike_records', 0):,}** total share-alike records, and
-**{report.get('catalog_source_policy_records', 0):,}** entries under source-specific reproduction policies (5 PIB instrument facts and 193 Mountain Voices glossary headwords), plus **{report.get('catalog_factual_word_records', 0):,}** exact one-token facts published without definitions, source record positions, or list arrangement. The fact-only projection includes individually selected tokens and lexical tokens that appear in at least two distinct thematic source collections; it is not a copy of any source list. The Panos guideline permits attributed reproduction by press, educational/research institutions, and nonprofits; commercial scope and machine-learning training are not expressly addressed, so these headwords are excluded from model-training views. Per-row terms apply; the package asserts no blanket content license.'''
-        metadata_only = sum(
-            report.get('structured_knowledge_metadata_only', {}).values()
-        )
-        access_notice = f'''All **{metadata_only:,} structured geography, history, literature, song, and research records** appear in factual/bibliographic form; no records are dropped from these metadata configurations. Prose notes, lyrics, translations, abstracts, and source passages are omitted unless separately licensed. For retained catalog entries, the full text not included in this public profile remains in the local all-data package; entries whose source text was not acquired remain represented by their available source metadata. Each text-catalog record carries its specific rights state: CC BY-SA rows require attribution and share-alike; CC BY-NC-SA rows are noncommercial and share-alike; the five PIB instrument terms cite the PIB reproduction policy; and the 193 Mountain Voices glossary headwords carry Panos's attributed-reproduction guideline for press, educational/research institutions, and nonprofits. That guideline does not expressly address commercial scope or model training, so those values are excluded from model-training views. The **{report.get('catalog_factual_word_records', 0):,}** isolated one-token facts are listed without definitions, source record positions, or list ordering. Lexical facts from unlicensed thematic sources are included only when independently present in at least two distinct source collections; all such facts remain catalog-only, outside training views, and retain language-review flags. See the [source-by-source rights-resolution log](research/text-rights-resolution-2026-09-30.md). Native-speaker review and dialect annotation are deferred; benchmark and model scores are automated research results, not native-validated claims.'''
-    expansion_metrics = report.get('text_expansion_metrics') or {}
-    resource_metrics = report.get('text_resource_metrics') or {}
-    paharili_metrics = report.get('paharili_gbm_metrics') or {}
-    text_expansion_summary = f'''## Fast-tracked text expansion
-
-The `text_expansion` config adds **{expansion_metrics.get('records', 0):,}** Garhwali candidate texts from the existing catalog. Each passed automated strict-tier and recorded rights-basis checks, is absent from the existing text splits after NFKC/alphanumeric normalization, and has no source-record ID matching existing text validation/test or frozen benchmark validation/test rows. **{expansion_metrics.get('source_split_overlap_records', 0):,}** values with upstream Meta or VAANI development/test source matches remain published in the `source_overlap` split, outside default `train`. The values remain machine-screened, not native-reviewed. **{expansion_metrics.get('recommended_for_training', 0):,}** currently meet the project's conservative training-recommendation rule; **{max(0, expansion_metrics.get('records', 0) - expansion_metrics.get('recommended_for_training', 0)):,}** do not pass the current source-eligibility or quality gates. This is not training approval; source-page-family isolation is not assessed, so it is not an independent evaluation set. Values also appear in the `catalog` inventory by design; do not add config row counts when reporting unique texts.'''
-    text_resources_summary = f'''## Supplementary text resources
-
-The `text_resources` config adds **{resource_metrics.get('records', 0):,}** additional normalized-unique Garhwali records ({resource_metrics.get('whitespace_words', 0):,} whitespace-delimited words; {resource_metrics.get('characters', 0):,} characters) already present in the source catalog. These pass the recorded redistribution-basis and Garhwali-language filters and are absent from the existing text-bearing views after normalized deduplication. Their quality tiers vary; **{resource_metrics.get('recommended_for_training', 0):,}** are currently recommended for training and none are recommended for evaluation. The config is intended for lookup and research. Check each row's `redistribution_status`, license, quality flags, and source terms before reuse. CC BY-NC-SA rows are limited to noncommercial use and require share-alike; this subset is not uniformly training-ready or a native-reviewed text set.'''
-    paharili_summary = ''
-    if paharili_metrics:
-        split_counts = paharili_metrics.get('split_records') or {}
-        paharili_summary = f'''## PahariLI Garhwali text addition
-
-The new `paharili_gbm` config adds **{paharili_metrics.get('new_records', 0):,} normalized-unique Garhwali-labeled sentence records** from the [PahariLI corpus](https://github.com/rachanagusain/PahariLI). It starts from {paharili_metrics.get('garhwali_source_records', 0):,} upstream GBM-labeled rows, which reduce to {paharili_metrics.get('normalized_unique_source_texts', 0):,} distinct normalized texts after collapsing {paharili_metrics.get('collapsed_duplicate_source_records', 0):,} repeated source rows. All source record IDs and surface variants are retained: {paharili_metrics.get('new_source_record_ids', 0):,} source IDs appear in this config, and {paharili_metrics.get('source_record_ids_already_in_existing_configs', 0):,} remain on the exact-matching row already in `text_expansion`. That existing text is not duplicated here.
-
-The config keeps the upstream language-identification splits: {split_counts.get('train', 0):,} train, {split_counts.get('test', 0):,} test, and {split_counts.get('source_overlap', 0):,} text groups that occur in both upstream splits. The last group stays in `source_overlap` to avoid train/test leakage. This test split is the upstream PahariLI classification split; it is not an independent evaluation set for the project's language model or other tasks.
-
-The PahariLI repository includes an Apache-2.0 license file, but its README does not identify the sentence-level source of each item. Each row therefore keeps the repository-level license declaration, raw-file URL and SHA-256, source index, attribution, and the existing `source_lineage_missing`, `component_rights_review_required`, and possible scripture/blog flags. The release makes no claim that Apache-2.0 independently clears underlying source text. Rows are unreviewed and not recommended for general language-model training; the upstream `train` partition remains usable for experimental language-identification work. The upstream license text is included at `licenses/PahariLI-Apache-2.0.txt`.'''
-    release_version = str(report.get('release_id', '')).rsplit('-v', 1)[-1]
-    overlap_audit_url = (
-        'https://huggingface.co/datasets/rushilrawat/garhwali-corpus/blob/main/'
-        f'releases/v{release_version}/research/'
-        'huggingface-upstream-split-overlap-2026-10-05.md'
-    )
-    text_source_overlap_summary = f'''## Upstream source-split overlap
-
-The text package preserves every row. The `text/source_overlap` split contains **{report.get('text_source_overlap_records', 0):,}** rows previously assigned to `text/train` that carry a Meta dev/test record ID, an official VAANI test-remainder source record, or a transcript match to held-out Meta/VAANI source material. The `text_expansion/source_overlap` split contains **{expansion_metrics.get('source_split_overlap_records', 0):,}** similar catalog additions. These rows remain downloadable and retain their source metadata, but are kept outside the default train split. This is a conservative source-lineage warning, not a claim that all matched audio recordings are identical. See the [split-overlap audit]({overlap_audit_url}).'''
-    draft_summary = (
-        f'{package_summary}. The SraVaani draft config covers '
-        f'**{draft_unique_audio:,} unique audio hashes**{draft_source_summary}: '
-        f'**{draft_nonempty_audio:,}** have non-empty draft text and '
-        f'**{draft_empty_audio:,}** are empty.'
-    )
-    source_expansion = ''
-    if str(report.get('release_id', '')).endswith('v0.2.1'):
-        expansion = report.get('source_expansion') or {}
-        jambu = expansion.get('jambu') or {}
-        library = expansion.get('language_library') or {}
-        type_counts = ', '.join(
-            f'{kind} {count:,}'
-            for kind, count in sorted((library.get('records_by_type') or {}).items())
-        )
-        source_expansion = f'''
-
-## Garhwali source additions included in v0.2.1
-
-- **Jambu Garhwali reflex lexicon:** {jambu.get('source_records', 0):,} source rows and
-  {jambu.get('unique_forms', 0):,} distinct forms. This source was already in the
-  preceding local corpus snapshot; the v0.2.1 refresh revalidates its pinned local
-  snapshot and adds **{max(0, jambu.get('unique_forms', 0) - jambu.get('already_in_current_corpus', 0)):,}**
-  new forms (the current snapshot already contains {jambu.get('already_in_current_corpus', 0):,}).
-  Its earlier intake comparison found {jambu.get('cross_source_overlap', 0):,}
-  forms shared with other sources and {jambu.get('new_vs_other_sources', 0):,}
-  forms absent from those sources. It is an attributed CC BY 4.0 lexical source,
-  not conversational text, and remains unreviewed by native speakers.
-- **Garhwali Language Library 1.0.0:** {library.get('source_records', 0):,} pinned static
-  word, phrase, proverb, and riddle entries; {library.get('unique_strings', 0):,}
-  distinct strings, {library.get('cross_source_overlap', 0):,} exact overlaps with
-  the existing corpus, and {library.get('new_vs_current_corpus', 0):,} exact-new
-  strings. Types: {type_counts}. The static files are attributed under MIT;
-  generated inflection forms are excluded and are not counted as corpus examples.
-
-Both additions retain their upstream spellings, provenance, license and review
-state. Exact matches keep source attribution without counting again as new text.
-The public profile includes a row only when its rights filter passes. Neither
-source entry has received native-speaker review or been promoted into
-recommended training splits.
-'''
-    elif str(report.get('release_id', '')).endswith('v0.2.0'):
-        source_expansion = '''
-
-## Garhwali-only additions in v0.2.0
-
-This release adds **671 exact-unique source texts** after normalization and
-cross-corpus deduplication (696 source rows; 673 unique values within this
-intake, including two exact matches already held in earlier layers):
-
-- 632 Garhwali entries from the dialect-comparison table in the
-  [Linguistic Survey of India, Vol. IX, Part IV](https://archive.org/details/LSIV0-V11),
-  representing 609 exact-unique forms explicitly tagged Standard, Rathi, or
-  Tehri. 496 table rows have OCR confidence below 60/100; all OCR remains
-  machine-produced and unreviewed.
-- Nine Devanagari Garhwali language specimens from the same historical volume.
-  These are source-grounded OCR excerpts, not modern conversational speech.
-- Five sayings explicitly identified as Garhwali in Upreti's 1894
-  [*Proverbs & Folklore of Kumaun and Garhwal*](https://archive.org/details/cu31924089930774).
-- Fifty Garhwali Open Bible Stories from the pinned
-  [Door43 OBS-TLF source](https://git.door43.org/OBS-TLF/gbm_obs), revision
-  `f08afc73e1770129fbcd3089181f2faf2abbf54d`, licensed CC BY-SA 4.0.
-
-The historical excerpts use a recorded Public Domain Mark basis; each story
-retains the upstream attribution and CC BY-SA terms. The corpus rows preserve
-page, source revision or checksum, rights, script/language evidence, and quality
-status. The OCR and translated stories have not received native-speaker review.
-For the public profile, only rows passing the project's rights filter carry
-full text; the all-data package retains every collected value locally.
-'''
-    return f'''---
-language:
-{language_header}
-license: other
-task_categories:
-- automatic-speech-recognition
-- text-classification
-- text-generation
-- translation
-configs:
-{configs_yaml}
-{dataset_info_yaml}---
-
-# Garhwali Language Lab
-
-Release: **{report['release_id']}**
-
-{access_notice}
-{source_expansion}
-
-## Project history
-
-This release is the result of a staged corpus build, with older releases kept
-available under their own versioned paths:
-
-1. **v0.1.x — establish the corpus workflow.** The project began by collecting
-   Garhwali text and language references with source attribution, then added a
-   reproducible preparation and release pipeline.
-2. **v0.2.0 — expand Garhwali-only sources.** A deduplicated source wave added
-   671 exact-unique texts, including historical Garhwali specimens and stories.
-   Historical OCR and translated stories remain visibly marked as unreviewed.
-3. **v0.2.1 — continue the corpus and make it easier to use (30 September–1 October 2026).**
-   The follow-up added 164 exact-new strings after deduplication, brought more
-   values into the rights-filtered profile under their recorded bases, and
-   exposed factual/bibliographic metadata for all 216 structured records. The
-   release also adds a consistent rights-and-quality envelope, exact-count
-   quick start, schema guide, searchable lexicon example, and linked speech
-   dataset. Earlier release files remain available.
-{candidate_history}
-
-The figures below describe the current v{release_version} package, not a cumulative sum of
-overlapping views. Row-level terms and quality labels remain authoritative.
-
-## Developer quick start
-
-Install the small tabular-data stack with `pip install datasets pandas duckdb`,
-then stream three vocabulary entries:
-
-```python
-from datasets import load_dataset
-
-lexicon = load_dataset(
-    "rushilrawat/garhwali-corpus", "lexicon", split="train", streaming=True
-)
-for row in lexicon.take(3):
-    print(row["form"], row.get("glosses"), row["rights_status"], row["quality_status"])
-```
-
-Counts are rows in the current views, not unique examples. Configurations can
-overlap, and reference-index rows are not model-training examples. See the
-[developer quick start](DEVELOPER_QUICKSTART.md), [schema guide](DATASET_SCHEMA.md),
-and [lexicon search script](search_garhwali_lexicon.py) for practical examples.
-
-## Configurations and current row counts
-
-| Configuration | Rows | Use |
-| --- | ---: | --- |
-{config_table}
-
-{resource_summary}
-
-{draft_summary} {audio_summary}
-
-This dataset card describes data scope, not model accuracy. Native-speaker
-review and dialect annotation are deferred; transcripts and machine drafts retain
-their review status. The project pipeline uses Python 3.12 and LangGraph for
-resumable ingestion; quality checks and model metrics use task-specific scripts.
-LangChain is not part of the current pipeline. See the [project README](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/README.md)
-and [benchmark research status](https://github.com/rushilrawat/Garhwali-Language-Lab/blob/main/research/benchmark-research-status-2026-09-25.md)
-for the latest measured results and limitations.
-
-{catalog_summary}
-
-{text_source_overlap_summary}
-
-{text_expansion_summary}
-
-{text_resources_summary}
-
-{paharili_summary}
-
-The `asr` configuration contains human transcripts from VAANI. The
-`sravaani_drafts` configuration contains machine-generated hypotheses from
-`ARTPARK-IISc/SraVaani-1.0` revision
-`f5dd5358325a5208775b91dad98918e079ea2b27`; these are noisy experimental data,
-not human ground truth. Targeted rows also retain their local Whisper alternative,
-cross-model agreement, and bounded review-confidence evidence. Draft export
-status: **{draft_status}**.
-
-All **{report['draft_third_checkpoint_records']:,}** targeted recordings retain
-the third-checkpoint hypothesis. For the **{report['draft_three_checkpoint_review_records']:,}**
-Garhwali review records, the package also carries a structurally ranked machine
-proposal and its evidence limits. These proposals are pending audio review and
-are never represented as automatic corrections or human references.
-The remaining **{report['draft_audio_grounded_review_records']:,}** structural
-outliers also include deterministic re-decoding, waveform activity, and
-human-reference calibration evidence. They still require listening review.
-
-The draft layer also preserves **{report['draft_source_label_conflicts']:,}
-source-label conflict recordings**. These remain available for auditing but are
-explicitly ineligible for Garhwali training.
-
-To keep Dataset Viewer schemas stable across shards, the SraVaani draft
-configuration stores nested evidence objects and draft quality-flag arrays as
-compact JSON strings. Parse those columns with a JSON parser; their values are
-preserved without flattening or omission.
-
-This package uses multiple upstream licenses. Inspect each row's provenance
-before redistribution or model release. Full documentation, limitations, and the
-release audit are in the [source repository](https://github.com/rushilrawat/Garhwali-Language-Lab).{speech_companion}
-'''
+        additions = ''
+    values.update({
+        'access_notice': section(f'{profile}-access'),
+        'resource_summary': section(f'{profile}-resources'),
+        'catalog_summary': section(f'{profile}-catalog'),
+        'speech_companion': '' if all_data else '\n\n' + section('public-speech-companion'),
+        'candidate_history': '\n' + history if history else '',
+        'source_expansion': additions,
+        'text_source_overlap_summary': section('source-overlap'),
+        'text_expansion_summary': section('text-expansion'),
+        'text_resources_summary': section('text-resources'),
+        'paharili_summary': section('paharili') if paharili else '',
+    })
+    return section('main') + '\n'
 
 
 @dataclass

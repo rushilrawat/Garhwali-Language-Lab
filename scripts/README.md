@@ -20,6 +20,8 @@ Top level (`scripts/`) holds the pipeline, release tooling, and quality gates:
 - `build_*` and `export_*`: datasets and release artifacts
 - `audit_*`, `validate_*`, `verify_*`, and `check_*`: quality gates
 - `garhwali_lab/`: shared library (see below)
+- `templates/`: text templates, such as the Hugging Face dataset card that
+  `build_huggingface_dataset.py` fills in
 
 Subfolders separate work that is not part of the release pipeline:
 
