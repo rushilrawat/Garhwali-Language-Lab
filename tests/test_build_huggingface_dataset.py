@@ -8,16 +8,19 @@ from pathlib import Path
 from unittest.mock import patch
 
 import build_huggingface_dataset as m
+import hf_card
+import hf_rights
+import hf_rows
 
 
 class HuggingFaceDatasetBuilderTests(unittest.TestCase):
     def test_normalized_text_key_preserves_devanagari_vowel_marks(self):
         self.assertNotEqual(
-            m.normalized_text_key('कला'), m.normalized_text_key('काली')
+            hf_rows.normalized_text_key('कला'), hf_rows.normalized_text_key('काली')
         )
         self.assertEqual(
-            m.normalized_text_key('गढ़वाली वाक्य।'),
-            m.normalized_text_key('  गढ़वाली   वाक्य! '),
+            hf_rows.normalized_text_key('गढ़वाली वाक्य।'),
+            hf_rows.normalized_text_key('  गढ़वाली   वाक्य! '),
         )
 
     def test_meta_cc_by_decision_is_narrow_and_makes_strict_training_candidate_eligible(self):
@@ -46,9 +49,9 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'public_rights_basis': [original],
         }
 
-        decided = m.apply_meta_training_rights_decision(row)
+        decided = hf_rows.apply_meta_training_rights_decision(row)
 
-        self.assertTrue(m.recommended_text_training_row(decided))
+        self.assertTrue(hf_rows.recommended_text_training_row(decided))
         self.assertFalse(original['training_eligible'])
         self.assertFalse(decided['provenance'][0]['training_eligible_before_project_decision'])
         self.assertTrue(decided['provenance'][0]['training_eligible'])
@@ -67,8 +70,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         other_source = {**base, 'source_id': 'other'}
         restricted_meta = {**base, 'source_id': 'meta_omni', 'license_id': 'CC-BY-NC-SA-4.0'}
 
-        self.assertFalse(m.apply_meta_training_rights_decision({'provenance': [other_source]})['provenance'][0]['training_eligible'])
-        self.assertFalse(m.apply_meta_training_rights_decision({'provenance': [restricted_meta]})['provenance'][0]['training_eligible'])
+        self.assertFalse(hf_rows.apply_meta_training_rights_decision({'provenance': [other_source]})['provenance'][0]['training_eligible'])
+        self.assertFalse(hf_rows.apply_meta_training_rights_decision({'provenance': [restricted_meta]})['provenance'][0]['training_eligible'])
 
     def test_quality_text_view_excludes_blank_and_audits_normalized_duplicates(self):
         source = {
@@ -102,7 +105,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'text_expansion': [],
         }
 
-        selected, metrics = m.build_quality_screened_meta_text(rows)
+        selected, metrics = hf_rows.build_quality_screened_meta_text(rows)
 
         self.assertEqual(len(selected), 1)
         self.assertEqual(selected[0]['id'], 'one')
@@ -118,7 +121,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             ],
             'text_expansion': [],
         }
-        deduplicated, duplicate_metrics = m.build_quality_screened_meta_text(duplicate_rows)
+        deduplicated, duplicate_metrics = hf_rows.build_quality_screened_meta_text(duplicate_rows)
         self.assertEqual([row['id'] for row in deduplicated], ['one'])
         self.assertEqual(duplicate_metrics['normalized_duplicate_excluded'], 1)
         self.assertEqual(
@@ -154,7 +157,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             },
         }
 
-        merged = m.merge_hf_feature_schemas([overlap_features, train_features])
+        merged = hf_card.merge_hf_feature_schemas([overlap_features, train_features])
 
         for field in (
             merged['dialect_quality']['dialect_labels'],
@@ -165,7 +168,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
 
     def test_hf_feature_schema_rejects_conflicting_non_null_types(self):
         with self.assertRaisesRegex(ValueError, 'incompatible Hugging Face feature'):
-            m.merge_hf_feature_schemas([
+            hf_card.merge_hf_feature_schemas([
                 {'label': {'dtype': 'string', '_type': 'Value'}},
                 {'label': {'dtype': 'bool', '_type': 'Value'}},
             ])
@@ -190,7 +193,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             }) + '\n', encoding='utf-8')
 
             features = Features._from_yaml_list(
-                m.infer_hf_config_features(Path(directory))
+                hf_card.infer_hf_config_features(Path(directory))
             )
             self.assertEqual(
                 features['dialect_quality']['dialect_labels'].feature.dtype,
@@ -243,7 +246,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 f'{config_name}/train': {'records': len(rows)}
                 for config_name, rows in config_rows.items()
             }
-            dataset_info = m.dataset_info_for_release(output, config_report)
+            dataset_info = hf_card.dataset_info_for_release(output, config_report)
 
             self.assertEqual(
                 [entry['config_name'] for entry in dataset_info],
@@ -281,7 +284,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'recommended_for_training': True,
         }
 
-        routed = m.route_upstream_split_overlap(
+        routed = hf_rows.route_upstream_split_overlap(
             original, {'meta:test:1'}, set()
         )
 
@@ -300,7 +303,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                          'record_id': 'indic_dialect_asr_gbm:14'}],
         }
 
-        routed = m.route_upstream_split_overlap(
+        routed = hf_rows.route_upstream_split_overlap(
             row, set(), {'indic_dialect_asr_gbm:14'}
         )
 
@@ -315,7 +318,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'provenance': [{'source_id': 'meta_omni', 'record_id': 'meta:test:2'}],
         }
 
-        routed = m.route_upstream_split_overlap(row, {'meta:test:2'}, set())
+        routed = hf_rows.route_upstream_split_overlap(row, {'meta:test:2'}, set())
 
         self.assertEqual(routed['split'], 'test')
         self.assertEqual(routed['source_split_overlap_status'], 'upstream_eval_record_id_match')
@@ -323,7 +326,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
     def test_rows_without_upstream_overlap_keep_their_split(self):
         row = {'id': 'row-4', 'split': 'train', 'provenance': []}
 
-        routed = m.route_upstream_split_overlap(row, set(), set())
+        routed = hf_rows.route_upstream_split_overlap(row, set(), set())
 
         self.assertEqual(routed['split'], 'train')
         self.assertEqual(
@@ -342,7 +345,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             }],
         }
 
-        routed = m.route_upstream_split_overlap(row, set(), set())
+        routed = hf_rows.route_upstream_split_overlap(row, set(), set())
 
         self.assertEqual(routed['split'], 'source_overlap')
         self.assertEqual(
@@ -371,7 +374,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             },
         }
 
-        enriched = m.enrich_source_attribution(source, overlays)
+        enriched = hf_rows.enrich_source_attribution(source, overlays)
 
         self.assertEqual(enriched['line'], 7)
         self.assertEqual(enriched['attribution_name'], 'sabretou')
@@ -381,17 +384,17 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
 
     def test_source_attribution_overlay_rejects_source_identity_mismatch(self):
         with self.assertRaisesRegex(ValueError, 'Source ID mismatch'):
-            m.enrich_source_attribution(
+            hf_rows.enrich_source_attribution(
                 {'source_id': 'tatoeba', 'record_id': 'tatoeba:42'},
                 {'tatoeba:42': {'source_id': 'wiktionary_en'}},
             )
 
     def test_audited_attribution_overlay_enriches_tatoeba_and_wiki_provenance(self):
-        overlays = m.source_attribution_overlays()
+        overlays = hf_rows.source_attribution_overlays()
         self.assertEqual(len(overlays), 355)
         self.assertNotIn('text_normalized', json.dumps(overlays, ensure_ascii=False))
 
-        tatoeba = m.catalog_provenance({
+        tatoeba = hf_rows.catalog_provenance({
             'source_id': 'tatoeba',
             'record_id': 'tatoeba:4648044',
             'quality_flags': ['missing_contributor'],
@@ -406,7 +409,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             (record_id, item) for record_id, item in overlays.items()
             if item.get('source_id') == 'wikimedia'
         )
-        wiki = m.catalog_provenance({
+        wiki = hf_rows.catalog_provenance({
             'source_id': 'wikimedia',
             'record_id': wiki_id,
         })
@@ -441,7 +444,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
 
     def test_knowledge_configs_cover_every_structured_cultural_catalog(self):
         self.assertEqual(
-            set(m.KNOWLEDGE_CONFIGS),
+            set(hf_rows.KNOWLEDGE_CONFIGS),
             {
                 'geography', 'historical_terms', 'literary_people',
                 'literary_works', 'popular_songs', 'university_research',
@@ -449,7 +452,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         )
 
     def test_knowledge_row_adds_a_stable_common_id_without_losing_metadata(self):
-        exported = m.knowledge_row(
+        exported = hf_rows.knowledge_row(
             {
                 'person_id': 'literary-person:example',
                 'canonical_name': 'Example',
@@ -466,10 +469,10 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertFalse(exported['quality_metadata']['native_reviewed'])
 
         with self.assertRaisesRegex(ValueError, 'stable ID'):
-            m.knowledge_row({'title': 'No identifier'}, 'literary_works')
+            hf_rows.knowledge_row({'title': 'No identifier'}, 'literary_works')
 
     def test_knowledge_row_resolves_source_ids_to_traceable_metadata(self):
-        exported = m.knowledge_row(
+        exported = hf_rows.knowledge_row(
             {
                 'term_id': 'history:term:example',
                 'source_refs': ['history-source'],
@@ -494,8 +497,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertEqual(exported['provenance'][0]['source_capture_path'], 'sources/manual/history.md')
 
     def test_source_catalog_resolves_geography_evidence_and_shared_capture(self):
-        geography_sources = m.source_catalog_for_family('geography')
-        geography = m.knowledge_row(
+        geography_sources = hf_rows.source_catalog_for_family('geography')
+        geography = hf_rows.knowledge_row(
             {
                 'record_id': 'place:example',
                 'evidence': ['district_portal'],
@@ -507,8 +510,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             geography['provenance'][0]['source_url'],
             'https://uttarakhand.s3waas.gov.in/',
         )
-        people_sources = m.source_catalog_for_family('literary_people')
-        capture = m.source_provenance('itihaas-garhwali-capture', people_sources)
+        people_sources = hf_rows.source_catalog_for_family('literary_people')
+        capture = hf_rows.source_provenance('itihaas-garhwali-capture', people_sources)
         self.assertEqual(
             capture['source_snapshot_sha256'],
             'f1f5870478d5f290509606f9c6d05f4bd86925b7d9080a80735cfbf05c756ae5',
@@ -528,11 +531,11 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'rights_status': 'source_component_and_consent_review_pending',
             }]}],
         }
-        self.assertTrue(m.is_public_text_row(allowed))
-        self.assertFalse(m.is_public_text_row(blocked))
-        self.assertTrue(m.is_public_garhwali_text_row(allowed))
+        self.assertTrue(hf_rights.is_public_text_row(allowed))
+        self.assertFalse(hf_rights.is_public_text_row(blocked))
+        self.assertTrue(hf_rights.is_public_garhwali_text_row(allowed))
         allowed['parents'][0]['provenance'][0]['iso_639_3'] = 'eng'
-        self.assertFalse(m.is_public_garhwali_text_row(allowed))
+        self.assertFalse(hf_rights.is_public_garhwali_text_row(allowed))
 
         exact_duplicate = {
             'provenance': [
@@ -547,10 +550,10 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 },
             ],
         }
-        self.assertTrue(m.is_public_text_row(exact_duplicate))
-        self.assertTrue(m.is_public_garhwali_text_row(exact_duplicate))
+        self.assertTrue(hf_rights.is_public_text_row(exact_duplicate))
+        self.assertTrue(hf_rights.is_public_garhwali_text_row(exact_duplicate))
         self.assertEqual(
-            [item['source_id'] for item in m.publishable_provenance_items(exact_duplicate)],
+            [item['source_id'] for item in hf_rights.publishable_provenance_items(exact_duplicate)],
             ['open'],
         )
 
@@ -571,18 +574,18 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'provenance': [{**rights_basis, 'training_eligible': False}],
             'public_rights_basis': [rights_basis],
         }
-        self.assertFalse(m.recommended_text_training_row(row))
+        self.assertFalse(hf_rows.recommended_text_training_row(row))
         row['provenance'][0]['training_eligible'] = True
-        self.assertTrue(m.recommended_text_training_row(row))
+        self.assertTrue(hf_rows.recommended_text_training_row(row))
         row['split'] = 'validation'
-        self.assertFalse(m.recommended_text_training_row(row))
+        self.assertFalse(hf_rows.recommended_text_training_row(row))
         row['split'] = 'train'
-        self.assertTrue(m.recommended_text_training_row(row))
+        self.assertTrue(hf_rows.recommended_text_training_row(row))
         row['provenance'][0].pop('training_eligible')
-        self.assertTrue(m.recommended_text_training_row(row))
+        self.assertTrue(hf_rows.recommended_text_training_row(row))
 
     def test_catalog_provenance_preserves_source_training_flags(self):
-        exported = m.catalog_provenance({
+        exported = hf_rows.catalog_provenance({
             'source_id': 'open',
             'record_id': 'open:1',
             'training_eligible': False,
@@ -592,7 +595,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIs(exported['experimental_training_eligible'], True)
 
     def test_catalog_provenance_preserves_upstream_transcript_split(self):
-        exported = m.catalog_provenance({
+        exported = hf_rows.catalog_provenance({
             'source_id': 'vaani-transcription-part',
             'record_id': 'vaani:official-test-row',
             'canonical_transcript_source': 'ARTPARK-IISc/Vaani-transcription-part',
@@ -621,8 +624,8 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'source_url': 'https://example.org/record',
             }],
         }
-        self.assertTrue(m.is_public_knowledge_row(cleared))
-        self.assertFalse(m.is_public_knowledge_row(pending))
+        self.assertTrue(hf_rights.is_public_knowledge_row(cleared))
+        self.assertFalse(hf_rights.is_public_knowledge_row(pending))
 
     def test_catalog_text_expansion_filters_rights_duplicates_and_eval_records(self):
         license_basis = {
@@ -652,7 +655,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             row.update(overrides)
             return row
 
-        rows, metrics = m.build_catalog_text_expansion(
+        rows, metrics = hf_rows.build_catalog_text_expansion(
             [
                 candidate('new-1', 'नयाँ वाक्य'),
                 candidate('new-2', 'नयाँ वाक्य!'),
@@ -715,7 +718,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 },
             }
 
-        rows, metrics = m.build_paharili_gbm_rows(
+        rows, metrics = hf_rows.build_paharili_gbm_rows(
             [
                 source('paharili_gbm:train:1', 'गार्हवाली वाक्य।', 'train'),
                 source('paharili_gbm:test:2', 'गार्हवाली वाक्य!', 'test'),
@@ -804,7 +807,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'source_url': 'https://example.org/source/1', 'iso_639_3': 'gbm',
             }],
         )
-        rows, metrics = m.build_catalog_text_resources(
+        rows, metrics = hf_rows.build_catalog_text_resources(
             [
                 candidate('open-resource', 'गढवाळी पूरक वाक्य', open_basis),
                 nc_row,
@@ -839,7 +842,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'catalog footer CC BY; item page has no license block',
         ):
             with self.subTest(rights_status=rights_status):
-                self.assertFalse(m.is_publishable_provenance({
+                self.assertFalse(hf_rights.is_publishable_provenance({
                     'license_id': 'CC-BY-NC-SA-4.0',
                     'rights_status': rights_status,
                 }))
@@ -850,14 +853,14 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             ('CC-BY-ND-4.0', 'https://creativecommons.org/licenses/by-nd/4.0/'),
         ):
             with self.subTest(license_id=license_id):
-                self.assertFalse(m.is_publishable_provenance({
+                self.assertFalse(hf_rights.is_publishable_provenance({
                     'license_id': license_id,
                     'license_url': license_url,
                 }))
 
     def test_open_license_matching_requires_mit_token_not_substring(self):
-        self.assertTrue(m.is_publishable_provenance({'license_id': 'MIT'}))
-        self.assertFalse(m.is_publishable_provenance({'license': 'limited permission'}))
+        self.assertTrue(hf_rights.is_publishable_provenance({'license_id': 'MIT'}))
+        self.assertFalse(hf_rights.is_publishable_provenance({'license': 'limited permission'}))
 
     def test_territorial_public_domain_requires_exact_status_and_complete_evidence(self):
         cases = (
@@ -867,7 +870,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'rights_status': 'public_domain_us_uk_india_term_expired',
                 'rights_evidence': ' '.join(
                     'https://' + url for url in
-                    m.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
+                    hf_rights.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
                         'public_domain_us_uk_india_term_expired'
                     ]['required_evidence']
                 ),
@@ -880,7 +883,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'rights_status': 'public_domain_india_government_work_term_expired',
                 'rights_evidence': ' '.join(
                     'https://' + url for url in
-                    m.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
+                    hf_rights.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
                         'public_domain_india_government_work_term_expired'
                     ]['required_evidence']
                 ),
@@ -893,7 +896,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'rights_status': 'public_domain_us_uk_india_term_expired_upreti_proverbs',
                 'rights_evidence': ' '.join(
                     'https://' + url for url in
-                    m.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
+                    hf_rights.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
                         'public_domain_us_uk_india_term_expired_upreti_proverbs'
                     ]['required_evidence']
                 ),
@@ -906,7 +909,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'rights_status': 'public_domain_us_uk_india_term_expired_upreti_hill_dialects',
                 'rights_evidence': ' '.join(
                     'https://' + url for url in
-                    m.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
+                    hf_rights.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
                         'public_domain_us_uk_india_term_expired_upreti_hill_dialects'
                     ]['required_evidence']
                 ),
@@ -919,7 +922,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'rights_status': 'public_domain_us_uk_india_term_expired_grierson',
                 'rights_evidence': ' '.join(
                     'https://' + url for url in
-                    m.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
+                    hf_rights.TERRITORIAL_PUBLIC_DOMAIN_EVIDENCE[
                         'public_domain_us_uk_india_term_expired_grierson'
                     ]['required_evidence']
                 ),
@@ -929,10 +932,10 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         )
         for item in cases:
             with self.subTest(rights_status=item['rights_status']):
-                self.assertTrue(m.is_publishable_provenance(item))
+                self.assertTrue(hf_rights.is_publishable_provenance(item))
                 incomplete = {**item, 'rights_evidence': 'Archive says public domain'}
-                self.assertFalse(m.is_publishable_provenance(incomplete))
-        self.assertFalse(m.is_publishable_provenance({
+                self.assertFalse(hf_rights.is_publishable_provenance(incomplete))
+        self.assertFalse(hf_rights.is_publishable_provenance({
             'license_id': 'Public-Domain',
             'license_url': 'https://archive.org/details/example',
             'rights_status': 'public_domain',
@@ -945,24 +948,24 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             **base, 'text': 'गढ़वाली',
             'provenance': [{'source_id': 'open', 'license_id': 'CC-BY-4.0'}],
         }
-        exported = m.text_row(open_row)
+        exported = hf_rows.text_row(open_row)
         self.assertEqual(exported['script'], 'Deva')
         self.assertEqual(exported['public_rights_basis'][0]['source_id'], 'open')
         self.assertEqual(exported['language'], 'und')
         self.assertEqual(exported['original_split'], '')
         self.assertEqual(exported['split_assignment'], '')
-        self.assertEqual(m.text_row({**base, 'text': 'garhwali'})['script'], 'Latn')
+        self.assertEqual(hf_rows.text_row({**base, 'text': 'garhwali'})['script'], 'Latn')
 
     def test_text_export_does_not_label_english_or_mixed_context_as_garhwali(self):
         base = {'segment_sha256': 'a', 'split': 'train', 'quality_flags': []}
-        english = m.text_row({
+        english = hf_rows.text_row({
             **base,
             'text': 'Garhwal district history',
             'parents': [{'text_sha256': 'eng-parent', 'provenance': [
                 {'source_id': 'gazetteer', 'iso_639_3': 'eng'},
             ]}],
         })
-        mixed = m.text_row({
+        mixed = hf_rows.text_row({
             **base,
             'text': 'Garhwali गढ़वाली',
             'parents': [{'text_sha256': 'mixed-parent', 'provenance': [
@@ -987,7 +990,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'quality_v2': {'tier': 'strict_gold_candidate'},
             },
         }
-        exported = m.text_row(row, parent_quality)
+        exported = hf_rows.text_row(row, parent_quality)
         self.assertEqual(exported['language'], 'gbm')
         self.assertEqual(exported['quality_tiers'], ['strict_gold_candidate'])
         self.assertTrue(exported['recommended_for_training'])
@@ -997,7 +1000,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             {'task': 'translation', 'instruction': 'Same prompt',
              'response': 'one', 'acceptable_responses': ['one', 'two']},
         ]
-        refreshed = m.refresh_acceptable_responses(rows)
+        refreshed = hf_rows.refresh_acceptable_responses(rows)
         self.assertEqual(refreshed[0]['acceptable_responses'], ['one'])
 
     def test_catalog_keeps_every_identity_but_redacts_unlicensed_text(self):
@@ -1014,7 +1017,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'rights_status': 'public_webpage_no_open_license_stated',
             }],
         }
-        exported = m.catalog_row(row, refinement={
+        exported = hf_rows.catalog_row(row, refinement={
             'automatic_changes': [],
             'review_signals': ['romanized_text_requires_native_review'],
             'manual_review_required': True,
@@ -1056,7 +1059,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'attribution': 'HinDialect contributors',
             }],
         }
-        exported = m.catalog_row(row)
+        exported = hf_rows.catalog_row(row)
         self.assertEqual(exported['text'], 'गढ़वाली लोकपाठ')
         self.assertTrue(exported['text_publicly_available'])
         self.assertEqual(
@@ -1068,7 +1071,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             exported['noncommercial_rights_basis'][0]['license_id'],
             'CC-BY-NC-SA-4.0',
         )
-        self.assertFalse(m.is_public_garhwali_text_row(row))
+        self.assertFalse(hf_rights.is_public_garhwali_text_row(row))
 
     def test_uou_sitewide_nc_sa_does_not_clear_conflicting_pdf_excerpt(self):
         row = {
@@ -1086,16 +1089,16 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             }],
         }
         source = row['provenance'][0]
-        self.assertIsNone(m.noncommercial_catalog_provenance(source))
-        self.assertFalse(m.is_publishable_provenance(source))
-        exported = m.catalog_row(row)
+        self.assertIsNone(hf_rights.noncommercial_catalog_provenance(source))
+        self.assertFalse(hf_rights.is_publishable_provenance(source))
+        exported = hf_rows.catalog_row(row)
         self.assertIsNone(exported['text'])
         self.assertEqual(exported['redistribution_status'], 'rights_pending')
 
         # Even without the component-review flag, the exact conflicted UOU
         # status is not one of the specifically reviewed NC-SA sources.
         source_without_flag = {**source, 'quality_flags': []}
-        self.assertIsNone(m.noncommercial_catalog_provenance(source_without_flag))
+        self.assertIsNone(hf_rights.noncommercial_catalog_provenance(source_without_flag))
 
     def test_obs_project_release_overrides_the_weaker_host_site_footer(self):
         item = {
@@ -1108,12 +1111,12 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'attribution': 'Free Bibles India / unfoldingWord',
             'quality_flags': ['item_page_has_no_license_block', 'translation_quality_unreviewed'],
         }
-        resolved = m.open_bible_stories_provenance(item)
+        resolved = hf_rights.open_bible_stories_provenance(item)
         self.assertEqual(resolved['license_id'], 'CC-BY-SA-4.0')
         self.assertEqual(resolved['commercial_use_status'], 'permitted_with_attribution_and_sharealike')
         self.assertTrue(resolved['sharealike_required'])
-        self.assertTrue(m.is_publishable_provenance(item))
-        self.assertFalse(m.open_bible_stories_provenance({
+        self.assertTrue(hf_rights.is_publishable_provenance(item))
+        self.assertFalse(hf_rights.open_bible_stories_provenance({
             **item, 'record_id': 'obs_garhwali:051',
         }))
 
@@ -1126,11 +1129,11 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'rights_status': 'official_current_page_CC_BY_NC_SA_4; mirror_card_says_CC0; conservative_license_applied',
             'attribution': 'PanLex',
         }
-        self.assertIsNotNone(m.noncommercial_catalog_provenance(base))
-        self.assertIsNone(m.noncommercial_catalog_provenance({
+        self.assertIsNotNone(hf_rights.noncommercial_catalog_provenance(base))
+        self.assertIsNone(hf_rights.noncommercial_catalog_provenance({
             **base, 'source_url': 'https://example.org/other',
         }))
-        self.assertIsNone(m.noncommercial_catalog_provenance({
+        self.assertIsNone(hf_rights.noncommercial_catalog_provenance({
             **base, 'quality_flags': ['component_rights_review_required'],
         }))
 
@@ -1143,13 +1146,13 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'rights_status': 'not_recorded',
             'attribution': 'Press Information Bureau, Government of India',
         }
-        cleared = m.pib_policy_catalog_provenance(provenance)
+        cleared = hf_rights.pib_policy_catalog_provenance(provenance)
         self.assertEqual(cleared['license_id'], 'LicenseRef-PIB-Copyright-Policy')
         self.assertEqual(
             cleared['commercial_use_status'],
             'not_explicitly_addressed_by_source_policy',
         )
-        self.assertIsNone(m.pib_policy_catalog_provenance({
+        self.assertIsNone(hf_rights.pib_policy_catalog_provenance({
             **provenance, 'record_id': 'pib_ramman_instruments:6',
         }))
 
@@ -1171,7 +1174,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'provenance': [source],
         }
 
-        exported = m.catalog_row(row)
+        exported = hf_rows.catalog_row(row)
 
         self.assertEqual(exported['text'], 'Andolan')
         self.assertTrue(exported['text_publicly_available'])
@@ -1192,10 +1195,10 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             exported['public_rights_basis'][0]['permitted_audiences'],
             ['press', 'educational institutions', 'research institutions', 'nonprofit organisations'],
         )
-        self.assertIsNone(m.panos_reproduction_policy_provenance({
+        self.assertIsNone(hf_rights.panos_reproduction_policy_provenance({
             **source, 'record_id': 'mountainvoices_local_glossary:194',
         }))
-        self.assertIsNone(m.panos_reproduction_policy_provenance({
+        self.assertIsNone(hf_rights.panos_reproduction_policy_provenance({
             **source, 'source_id': 'other_glossary',
         }))
 
@@ -1213,21 +1216,21 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'provenance': [source],
         }
 
-        exported = m.catalog_row(word)
+        exported = hf_rows.catalog_row(word)
 
         self.assertEqual(exported['text'], 'Jitun')
         self.assertEqual(exported['redistribution_status'], 'individual_word_fact')
-        self.assertFalse(m.is_public_garhwali_text_row(word))
+        self.assertFalse(hf_rights.is_public_garhwali_text_row(word))
         self.assertEqual(
             exported['factual_publication_basis'][0]['basis_type'],
             'individual_lexical_token_only',
         )
         self.assertNotIn('record_id', exported['factual_publication_basis'][0])
         self.assertTrue(all('record_id' not in item for item in exported['sources']))
-        self.assertIsNone(m.catalog_row({
+        self.assertIsNone(hf_rows.catalog_row({
             **word, 'text': 'Jitun aa',
         })['text'])
-        self.assertIsNone(m.catalog_row({
+        self.assertIsNone(hf_rows.catalog_row({
             **word, 'provenance': [{**source, 'record_id': 'languageshome:19'}],
         })['text'])
 
@@ -1253,24 +1256,24 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'provenance': [source, corroborating_source],
         }
 
-        exported = m.catalog_row(word)
+        exported = hf_rows.catalog_row(word)
 
         self.assertEqual(exported['text'], 'काखड़')
         self.assertEqual(exported['redistribution_status'], 'individual_word_fact')
-        self.assertFalse(m.is_public_garhwali_text_row(word))
+        self.assertFalse(hf_rights.is_public_garhwali_text_row(word))
         self.assertNotIn('record_id', exported['sources'][0])
-        self.assertIsNone(m.catalog_row({
+        self.assertIsNone(hf_rows.catalog_row({
             **word, 'provenance': [source],
         })['text'])
-        self.assertIsNone(m.catalog_row({
+        self.assertIsNone(hf_rows.catalog_row({
             **word, 'text': 'काखड़ पशु',
         })['text'])
-        self.assertIsNone(m.catalog_row({
+        self.assertIsNone(hf_rows.catalog_row({
             **word, 'provenance': [source, {
                 **corroborating_source, 'quality_flags': ['uncorrected_ocr'],
             }],
         })['text'])
-        self.assertIsNone(m.catalog_row({
+        self.assertIsNone(hf_rows.catalog_row({
             **word, 'provenance': [{**source, 'source_id': 'other_site'}],
         })['text'])
 
@@ -1294,7 +1297,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             }],
         }
 
-        exported = m.catalog_row(row)
+        exported = hf_rows.catalog_row(row)
 
         sources = {item['source_id']: item for item in exported['sources']}
         self.assertEqual(
@@ -1326,12 +1329,12 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'training_eligible': False,
             }],
         }
-        with patch.object(m, 'source_record_locator', return_value={
+        with patch.object(hf_rows, 'source_record_locator', return_value={
             'source_url': 'https://www.reddit.com/r/example/comments/post',
             'source_title': 'Example post',
             'source_kind': 'social_media_reddit',
         }):
-            exported = m.catalog_row(row)
+            exported = hf_rows.catalog_row(row)
 
         self.assertEqual(
             exported['sources'][0]['source_url'],
@@ -1343,7 +1346,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         )
 
     def test_public_knowledge_projection_keeps_facts_and_drops_expressive_fields(self):
-        row = m.knowledge_row({
+        row = hf_rows.knowledge_row({
             'record_id': 'work:example',
             'title': 'Example Title',
             'creators': ['A. Author'],
@@ -1355,19 +1358,19 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'local_capture': 'sources/manual/example.md',
             },
         })
-        exported = m.public_factual_metadata_row(row, 'literary_works')
+        exported = hf_rows.public_factual_metadata_row(row, 'literary_works')
         self.assertEqual(exported['title'], 'Example Title')
         self.assertEqual(exported['creators'], ['A. Author'])
         self.assertNotIn('notes', exported)
         self.assertFalse(exported['expressive_source_content_included'])
         self.assertEqual(exported['record_scope'], 'factual_bibliographic_metadata_only')
-        self.assertTrue(m.is_public_factual_metadata_row(exported, 'literary_works'))
+        self.assertTrue(hf_rows.is_public_factual_metadata_row(exported, 'literary_works'))
         self.assertEqual(
             exported['provenance'][0]['source_capture_path'],
             'sources/manual/example.md',
         )
         self.assertEqual(exported['quality_metadata']['review_status'], 'not_reviewed')
-        self.assertFalse(m.is_public_factual_metadata_row(
+        self.assertFalse(hf_rows.is_public_factual_metadata_row(
             {**exported, 'notes': 'expressive text'}, 'literary_works'
         ))
 
@@ -1381,7 +1384,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'rights_status': 'public_webpage_no_open_license_stated',
             }],
         }
-        exported = m.catalog_row(row, include_all_text=True)
+        exported = hf_rows.catalog_row(row, include_all_text=True)
         self.assertEqual(exported['text'], 'गढ़वाली पाठ')
         self.assertTrue(exported['content_included'])
         self.assertTrue(exported['active_for_quality_work'])
@@ -1403,7 +1406,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'extraction_method': 'tesseract_hin_eng',
             }],
         }
-        exported = m.catalog_row(row, include_all_text=True)
+        exported = hf_rows.catalog_row(row, include_all_text=True)
         source = exported['sources'][0]
         self.assertEqual(source['source_pdf_sha256'], 'a' * 64)
         self.assertEqual(source['pdf_page'], 7)
@@ -1413,10 +1416,10 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertEqual(source['extraction_method'], 'tesseract_hin_eng')
 
     def test_all_data_profile_is_first_class(self):
-        self.assertTrue(m.profile_includes_all_data('all-data'))
-        self.assertFalse(m.profile_includes_all_data('public'))
-        self.assertEqual(m.asr_split_directory('all-data'), 'asr_experimental')
-        self.assertEqual(m.asr_split_directory('public'), 'asr')
+        self.assertTrue(hf_rights.profile_includes_all_data('all-data'))
+        self.assertFalse(hf_rights.profile_includes_all_data('public'))
+        self.assertEqual(hf_rights.asr_split_directory('all-data'), 'asr_experimental')
+        self.assertEqual(hf_rights.asr_split_directory('public'), 'asr')
 
     def test_all_data_card_states_that_no_text_is_redacted(self):
         report = {
@@ -1434,7 +1437,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'draft_audio_grounded_review_records': 0,
             'draft_source_label_conflicts': 0,
         }
-        card = m.dataset_card(report)
+        card = hf_card.dataset_card(report)
         self.assertIn('complete all-data package', card)
         self.assertIn('No catalog text values are redacted', card)
         self.assertNotIn('This rights-filtered package', card)
@@ -1467,7 +1470,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'draft_source_label_conflicts': 0,
         }
 
-        card = m.dataset_card(report)
+        card = hf_card.dataset_card(report)
 
         self.assertEqual(card.count('  - split: train'), 2)
         self.assertIn('path: data/catalog/train-*.jsonl', card)
@@ -1492,7 +1495,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'draft_audio_grounded_review_records': 0,
             'draft_source_label_conflicts': 0,
         }
-        card = m.dataset_card(report)
+        card = hf_card.dataset_card(report)
         self.assertIn('public-profile package', card)
         self.assertIn('## Project history', card)
         self.assertIn('## Developer quick start', card)
@@ -1540,7 +1543,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             },
         }
 
-        card = m.dataset_card(report)
+        card = hf_card.dataset_card(report)
 
         self.assertIn('Release: **garhwali-language-lab-v0.2.1**', card)
         self.assertIn('source additions included in v0.2.1', card)
@@ -1575,7 +1578,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'draft_source_label_conflicts': 0,
         }
 
-        card = m.dataset_card(report)
+        card = hf_card.dataset_card(report)
 
         self.assertIn('The SraVaani draft config covers **5 unique audio hashes**', card)
         self.assertIn('**3** have non-empty draft text and **2** are empty', card)
@@ -1599,7 +1602,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'draft_source_label_conflicts': 0,
             'text_expansion_metrics': {'records': 1658, 'recommended_for_training': 607},
         }
-        card = m.dataset_card(report)
+        card = hf_card.dataset_card(report)
         self.assertIn('Release: **garhwali-language-lab-v0.2.2**', card)
         self.assertIn('v0.2.2 — improve traceability and report usable counts', card)
         self.assertIn('deduplicated `text_expansion` view', card)
@@ -1639,7 +1642,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             },
         }
 
-        card = m.dataset_card(report)
+        card = hf_card.dataset_card(report)
 
         self.assertIn('config_name: paharili_gbm', card)
         self.assertIn('adds **14,988 normalized-unique Garhwali-labeled sentence records**', card)
@@ -1668,7 +1671,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'text_resource_metrics': {'records': 1, 'recommended_for_training': 0},
         }
 
-        card = m.dataset_card(report)
+        card = hf_card.dataset_card(report)
 
         flattened_card = ' '.join(card.split())
         self.assertIn('v0.2.4 — improve source attribution and revision traceability', flattened_card)
@@ -1705,7 +1708,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'text_resource_metrics': {'records': 246, 'recommended_for_training': 0},
         }
 
-        card = ' '.join(m.dataset_card(report).split())
+        card = ' '.join(hf_card.dataset_card(report).split())
 
         self.assertIn('v0.2.5 — prevent upstream evaluation-source overlap', card)
         self.assertIn('routes text linked to upstream Meta/VAANI development or test sources', card)
@@ -1729,7 +1732,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'paharili_gbm_metrics': {'new_records': 1},
         }
         for profile in ('public', 'all-data'):
-            card = m.dataset_card({**report, 'profile': profile})
+            card = hf_card.dataset_card({**report, 'profile': profile})
             self.assertNotIn('{', card)
             self.assertNotIn('<!--', card)
             self.assertTrue(card.startswith('---\nlanguage:\n'))
@@ -1764,7 +1767,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             ]}],
         }]
 
-        card = m.dataset_card(report, dataset_info=dataset_info)
+        card = hf_card.dataset_card(report, dataset_info=dataset_info)
         metadata_line = next(
             line for line in card.splitlines() if line.startswith('dataset_info: ')
         )
@@ -1777,7 +1780,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'text': 'गढ़वाली पाठ',
             'provenance': [{'iso_639_3': 'gbm', 'license': 'CC-BY-4.0'}],
         }
-        exported = m.catalog_row(row)
+        exported = hf_rows.catalog_row(row)
         self.assertEqual(exported['text'], 'गढ़वाली पाठ')
         self.assertTrue(exported['text_publicly_available'])
         self.assertIsNone(exported['redaction_reason'])
@@ -1796,7 +1799,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 },
             ],
         }
-        exported = m.catalog_row(row)
+        exported = hf_rows.catalog_row(row)
         self.assertEqual(exported['text'], 'गढ़वाली पाठ')
         self.assertEqual(
             [item['source_id'] for item in exported['public_rights_basis']], ['open']
@@ -1835,7 +1838,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
                 'automatic_correction': False,
             },
         }
-        exported = m.audio_row(row, transcript_field='asr_target_clean')
+        exported = hf_rows.audio_row(row, transcript_field='asr_target_clean')
         self.assertEqual(exported['audio'], f'audio/ab/{"ab" * 32}.wav')
         self.assertEqual(exported['transcript'], 'गढ़वाली')
         self.assertEqual(exported['machine_transcript_quality']['flags'], ['mixed_script'])
@@ -1853,7 +1856,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertTrue(exported['audio_grounded_review']['human_listening_review_required'])
 
     def test_audio_export_uses_string_for_missing_speaker(self):
-        exported = m.audio_row(
+        exported = hf_rows.audio_row(
             {'audio_sha256': 'ab' * 32, 'asr_target_clean': 'गढ़वाली'},
             transcript_field='asr_target_clean', include_audio_reference=False,
         )
@@ -1869,7 +1872,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'recovery_adjudication': {'automatic_correction': False},
         }
 
-        exported = m.audio_row(
+        exported = hf_rows.audio_row(
             row, 'machine_transcript', serialize_evidence=True
         )
 
@@ -1899,7 +1902,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'proposed_machine_transcript': 'प्रस्ताव',
             'automatic_correction': False,
         }]
-        result = m.attach_recovery_adjudication(rows, evidence)[0]
+        result = hf_rows.attach_recovery_adjudication(rows, evidence)[0]
         self.assertEqual(
             result['recovery_adjudication']['proposed_machine_transcript'], 'प्रस्ताव'
         )
@@ -1915,7 +1918,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'mean_token_log_probability': -1.5,
             'token_confidence_uncalibrated': 0.22,
         }]
-        result = m.attach_recovery_third_checkpoint(rows, evidence)[0]
+        result = hf_rows.attach_recovery_third_checkpoint(rows, evidence)[0]
         exported = result['recovery_third_checkpoint']
         self.assertEqual(exported['transcript'], 'गढ़वळि पाठ')
         self.assertFalse(exported['confidence_is_calibrated'])
@@ -1932,7 +1935,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             'human_listening_review_required': True,
             'automatic_correction': False,
         }]
-        result = m.attach_audio_grounded_review(rows, evidence)[0]
+        result = hf_rows.attach_audio_grounded_review(rows, evidence)[0]
         exported = result['audio_grounded_review']
         self.assertTrue(exported['machine_audio_review_complete'])
         self.assertTrue(exported['human_listening_review_required'])
@@ -1969,15 +1972,15 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
             {'audio_sha256': 'same', 'audio_path': 'one.wav'},
             {'audio_sha256': 'same', 'audio_path': 'two.wav'},
         ]
-        self.assertTrue(m.drafts_cover_queue(queue, drafts))
-        self.assertFalse(m.drafts_cover_queue(queue, drafts[:1]))
+        self.assertTrue(hf_rows.drafts_cover_queue(queue, drafts))
+        self.assertFalse(hf_rows.drafts_cover_queue(queue, drafts[:1]))
 
     def test_duplicate_audio_rows_merge_source_paths(self):
         rows = [
             {'audio_sha256': 'same', 'audio_path': 'one.wav', 'machine_transcript': 'पाठ'},
             {'audio_sha256': 'same', 'audio_path': 'two.wav', 'machine_transcript': 'पाठ'},
         ]
-        merged = list(m.deduplicate_audio_rows(rows, 'machine_transcript'))
+        merged = list(hf_rows.deduplicate_audio_rows(rows, 'machine_transcript'))
         self.assertEqual(len(merged), 1)
         self.assertEqual(merged[0]['duplicate_source_audio_paths'], ['one.wav', 'two.wav'])
 

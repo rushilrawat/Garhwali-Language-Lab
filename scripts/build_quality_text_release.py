@@ -11,11 +11,8 @@ import re
 from collections import Counter
 from pathlib import Path
 
-from scripts.build_huggingface_dataset import (
-    META_OMNILINGUAL_TRAINING_DECISION,
-    build_quality_screened_meta_text,
-    normalized_text_key,
-)
+from hf_rights import META_OMNILINGUAL_TRAINING_DECISION
+from hf_rows import build_quality_screened_meta_text, normalized_text_key
 from garhwali_lab.hashing import sha256_file
 from garhwali_lab.io import write_jsonl
 

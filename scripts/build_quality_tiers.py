@@ -7,9 +7,10 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from build_huggingface_dataset import is_public_text_row
-from garhwali_lab.io import iter_jsonl as read_jsonl, write_jsonl
+from hf_rights import is_public_text_row
 
+from garhwali_lab.io import iter_jsonl as read_jsonl
+from garhwali_lab.io import write_jsonl
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data/processed/model_ready/quality_v2"

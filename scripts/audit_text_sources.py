@@ -7,14 +7,10 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from build_huggingface_dataset import (
-    catalog_row,
-    is_public_text_row,
-    is_publishable_provenance,
-    provenance_items,
-)
-from garhwali_lab.io import iter_jsonl as read_jsonl
+from hf_rights import is_public_text_row, is_publishable_provenance, provenance_items
+from hf_rows import catalog_row
 
+from garhwali_lab.io import iter_jsonl as read_jsonl
 
 ROOT = Path(__file__).resolve().parents[1]
 QUALITY = ROOT / 'data/processed/model_ready/quality_v2/text.jsonl'

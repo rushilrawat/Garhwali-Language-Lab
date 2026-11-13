@@ -22,6 +22,10 @@ Top level (`scripts/`) holds the pipeline, release tooling, and quality gates:
 - `garhwali_lab/`: shared library (see below)
 - `templates/`: text templates, such as the Hugging Face dataset card that
   `build_huggingface_dataset.py` fills in
+- Hugging Face package: `build_huggingface_dataset.py` is the command and
+  writes the package; `hf_rights.py` holds the publication and rights rules,
+  `hf_rows.py` the per-config row builders, and `hf_card.py` the dataset card
+  and feature metadata
 
 Subfolders separate work that is not part of the release pipeline:
 
