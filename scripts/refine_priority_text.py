@@ -10,9 +10,9 @@ import unicodedata
 from collections import Counter
 from pathlib import Path
 
-from build_huggingface_dataset import is_public_garhwali_text_row, provenance_items
-from garhwali_lab.io import iter_jsonl as read_jsonl
+from hf_rights import is_public_garhwali_text_row, provenance_items
 
+from garhwali_lab.io import iter_jsonl as read_jsonl
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'data/processed/model_ready/language_quality/text.jsonl'
