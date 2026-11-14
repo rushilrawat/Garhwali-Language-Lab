@@ -6,19 +6,19 @@ import hashlib
 import json
 import re
 import unicodedata
-from dataclasses import dataclass, field
 from collections import Counter, defaultdict
+from dataclasses import dataclass, field
 from pathlib import Path
 
-from build_huggingface_dataset import (
+from hf_rights import is_publishable_provenance
+from hf_rows import (
     is_public_factual_metadata_row,
-    is_publishable_provenance,
     recommended_text_training_row,
     source_record_ids,
     upstream_split_overlap_ids,
 )
-from garhwali_lab.hashing import sha256_file as sha256
 
+from garhwali_lab.hashing import sha256_file as sha256
 
 KNOWLEDGE_CONFIGS = {
     'geography', 'historical_terms', 'literary_people',

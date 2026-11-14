@@ -6,10 +6,10 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from build_huggingface_dataset import recommended_text_training_row, text_row
+from hf_rows import recommended_text_training_row, text_row
+
 from garhwali_lab.hashing import sha256_file
 from garhwali_lab.io import read_jsonl, write_jsonl
-
 
 ROOT = Path(__file__).resolve().parents[1]
 SPLIT_ROOT = ROOT / 'data/processed/model_ready/splits/text'

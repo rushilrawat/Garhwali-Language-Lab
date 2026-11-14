@@ -11,20 +11,19 @@ from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
-from garhwali_lab.text import leakage_key as normalized_text_key
-from build_huggingface_dataset import (
-    is_public_factual_metadata_row,
-    is_publishable_provenance,
-    recommended_text_training_row,
-)
 from build_garhwali_benchmark import (
     audit_cross_split_text_overlap,
+)
+from build_garhwali_benchmark import (
     normalize as normalize_benchmark_text,
 )
+from hf_rights import is_publishable_provenance
+from hf_rows import is_public_factual_metadata_row, recommended_text_training_row
 from validate_release_index import validate
-from garhwali_lab.io import iter_jsonl as read_jsonl
-from garhwali_lab.version import bundle_release_version
 
+from garhwali_lab.io import iter_jsonl as read_jsonl
+from garhwali_lab.text import leakage_key as normalized_text_key
+from garhwali_lab.version import bundle_release_version
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE_VERSION = bundle_release_version()
