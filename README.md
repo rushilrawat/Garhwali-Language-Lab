@@ -84,7 +84,10 @@ Create an environment, install the developer requirements, and run the test suit
 
     python3.12 -m venv .venv
     .venv/bin/python -m pip install -r requirements-dev.txt
-    PYTHONPATH=scripts:scripts/experiments:scripts/archive .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
+    .venv/bin/python -m pip install --no-deps -e .   # optional: import garhwali_lab from notebooks or other folders
+    .venv/bin/python -m unittest
+
+Run commands from the repository root. Pipeline commands run directly (`.venv/bin/python scripts/<name>.py`) and need no `PYTHONPATH`.
 
 On 11 November 2026 the full suite ran 912 tests with no failures. Tests for the Kaggle, speech, and ingestion-graph builders need `pyarrow` and `langgraph` from the developer requirements and error out without them.
 

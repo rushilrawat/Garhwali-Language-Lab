@@ -31,7 +31,9 @@ Subfolders separate work that is not part of the release pipeline:
 - `archive/`: superseded builders kept so earlier published artifacts stay
   reproducible (the v0.1 speech training view and Kaggle ASR input).
 
-Run the tests with `PYTHONPATH=scripts:scripts/experiments:scripts/archive`.
+Run the tests from the repository root with `python -m unittest`;
+`tests/__init__.py` puts `scripts/`, its subfolders, and `examples/` on the
+import path.
 Dated research reports cite scripts at the paths they had when written; a
 script moved here keeps its file name.
 
@@ -79,7 +81,7 @@ OCR-warning signals; it also probes local MP3/MP4 container metadata with
 otherwise it falls back to the original page indexes. Run it with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_intake_quality.py
+.venv/bin/python scripts/audit_archive_intake_quality.py
 ```
 
 `audit_archive_corpus_overlap.py` compares those page texts against every
@@ -88,7 +90,7 @@ It reports exact matches and high-similarity character 5-gram candidates,
 without copying source text into its report or changing corpus rows:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_corpus_overlap.py
+.venv/bin/python scripts/audit_archive_corpus_overlap.py
 ```
 
 Both scripts write machine-readable reports under Git-ignored
@@ -113,12 +115,12 @@ builder once so the consolidated candidate view and its cross-corpus references
 are synchronized:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_intake_quality.py
-PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_corpus_overlap.py
-PYTHONPATH=scripts .venv/bin/python scripts/build_archive_source_disposition.py
-PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_intake_quality.py
-PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_corpus_overlap.py
-PYTHONPATH=scripts .venv/bin/python scripts/build_archive_source_disposition.py
+.venv/bin/python scripts/audit_archive_intake_quality.py
+.venv/bin/python scripts/audit_archive_corpus_overlap.py
+.venv/bin/python scripts/build_archive_source_disposition.py
+.venv/bin/python scripts/audit_archive_intake_quality.py
+.venv/bin/python scripts/audit_archive_corpus_overlap.py
+.venv/bin/python scripts/build_archive_source_disposition.py
 ```
 
 The per-item decisions and limits are in the
@@ -135,7 +137,7 @@ file listing and local item folder for transcript/caption sidecars without
 reading their contents:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/audit_archive_media_first_pass.py
+.venv/bin/python scripts/audit_archive_media_first_pass.py
 ```
 
 The verified 4 October results and interpretation are in the
@@ -157,7 +159,7 @@ explicitly labeled as overlapping views, not unique examples or accuracy.
 Reproduce the v0.2.5-to-v0.2.6 comparison with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/compare_hf_release_metrics.py \
+.venv/bin/python scripts/compare_hf_release_metrics.py \
   --previous research/huggingface-v0.2.5-comparison-preflight-2026-10-05.json \
   --candidate research/huggingface-v0.2.6-candidate-preflight-2026-10-05.json \
   --json-output research/huggingface-release-metrics-v0.2.5-to-v0.2.6-2026-10-05.json \
@@ -168,7 +170,7 @@ Unit tests live in `tests/` and mirror the Python command name. Run all tests
 with:
 
 ```bash
-PYTHONPATH=scripts:scripts/experiments:scripts/archive .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
+.venv/bin/python -m unittest
 ```
 
 The current working-tree suite passes **820 tests** (6 October 2026). The
@@ -209,7 +211,7 @@ diagnostic on those 338 rows; it is open-test evidence, not a blind or
 speaker-independent score. Reproduce the audit with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/audit_vaani_official_split_lineage.py \
+.venv/bin/python scripts/audit_vaani_official_split_lineage.py \
   --remainder-manifest data/extracted/research/vaani-official-test-remainder.jsonl
 ```
 
@@ -228,7 +230,7 @@ The detailed row-level JSON is local-only and defaults under Git-ignored
 the 5 October snapshot with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/audit_model_accuracy_lineage.py \
+.venv/bin/python scripts/audit_model_accuracy_lineage.py \
   --output-prefix data/processed/evaluation/garhwali_bench/model-accuracy-lineage-2026-10-05
 ```
 
@@ -258,7 +260,7 @@ aggregate diagnostics without generated text, and rejects hash/ID/task/reference
 drift. Run it with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/experiments/analyze_generation_output_diagnostics.py
+.venv/bin/python scripts/experiments/analyze_generation_output_diagnostics.py
 ```
 
 The [dated report](../research/generation-output-diagnostics-2026-09-28.md)
@@ -353,7 +355,7 @@ saved report. It writes hash-linked JSON/Markdown locally; it neither reads
 test predictions nor changes model or benchmark data. Run it with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/experiments/analyze_retrieval_cluster_uncertainty.py
+.venv/bin/python scripts/experiments/analyze_retrieval_cluster_uncertainty.py
 ```
 
 The intervals are conditional on the fixed 1,059-document retrieval corpus,
@@ -368,7 +370,7 @@ not copied source text, and remain under ignored `data/processed/`. Run it
 with:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/experiments/analyze_retrieval_misses.py
+.venv/bin/python scripts/experiments/analyze_retrieval_misses.py
 ```
 
 The [dated report](../research/retrieval-miss-analysis-2026-09-28.md) records
@@ -382,7 +384,7 @@ The separate speech release is built with `scripts/build_hf_speech_release.py`.
 When the pinned Meta Omnilingual shards are present in
 `data/downloads/meta_omni_gbm/data/gbm_Deva/`, add that source with
 `python -m pip install -r requirements-hf-release.txt` followed by
-`PYTHONPATH=scripts python scripts/build_hf_meta_omni_speech.py`.
+`python scripts/build_hf_meta_omni_speech.py`.
 The builder verifies local text/audio hashes and duplicate overlap before
 writing the second config. The generated package is gitignored; syncing it to
 Hugging Face requires a write-scoped repository credential. Re-running the
@@ -396,7 +398,7 @@ and FFmpeg already available locally, build an ASR-ready view without network
 access:
 
 ```bash
-PYTHONPATH=scripts .venv/bin/python scripts/experiments/prepare_meta_omnilingual_asr.py \
+.venv/bin/python scripts/experiments/prepare_meta_omnilingual_asr.py \
   --source-manifest data/huggingface/garhwali-language-lab-speech-2026-09-23/meta_omnilingual-manifest.jsonl \
   --text-manifest corpus/meta_omni.jsonl \
   --parquet-root data/downloads/meta_omni_gbm/data/gbm_Deva \

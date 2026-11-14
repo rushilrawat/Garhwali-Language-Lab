@@ -1,6 +1,7 @@
 """Shared helpers for Garhwali Language Lab pipeline and research scripts.
 
-Scripts run from ``scripts/`` (``python scripts/<name>.py`` or with
-``PYTHONPATH=scripts``), so this package is importable without installation.
+Commands in ``scripts/`` import it directly (``python scripts/<name>.py`` puts
+``scripts/`` on the import path), and ``pip install -e .`` makes it importable
+from anywhere else, such as notebooks.
 Keep it small and dependency-free: standard library only.
 """

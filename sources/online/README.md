@@ -287,7 +287,7 @@ package.
 
 ```text
 python3 -m unittest discover -s scripts -p 'test_*.py'
-PYTHONPATH=scripts .venv/bin/python scripts/ingest_literary_works.py
+.venv/bin/python scripts/ingest_literary_works.py
 python3 scripts/ingest_open.py
 python3 scripts/collect_online.py meta
 python3 scripts/collect_online.py wiktionary

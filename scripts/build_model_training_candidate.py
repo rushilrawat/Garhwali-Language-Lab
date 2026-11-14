@@ -511,7 +511,7 @@ The Meta texts are already present in the current Hub corpus. This profile adds 
 
 From the repository root, run:
 
-    PYTHONPATH=scripts .venv/bin/python scripts/build_model_training_candidate.py
+    .venv/bin/python scripts/build_model_training_candidate.py
 
 Build inputs and artifact hashes are recorded in manifest.json.
 """
