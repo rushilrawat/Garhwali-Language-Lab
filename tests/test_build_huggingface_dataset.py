@@ -1714,6 +1714,26 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIn('**363** similar catalog additions', card)
         self.assertIn('The text package preserves every row', card)
 
+    def test_card_template_fills_every_placeholder(self):
+        report = {
+            'release_id': 'garhwali-language-lab-v0.2.1',
+            'configs': {'text/train': {'records': 1}},
+            'linked_audio_files': 0,
+            'include_audio': False,
+            'catalog_records': 1,
+            'drafts_complete': True,
+            'draft_third_checkpoint_records': 0,
+            'draft_three_checkpoint_review_records': 0,
+            'draft_audio_grounded_review_records': 0,
+            'draft_source_label_conflicts': 0,
+            'paharili_gbm_metrics': {'new_records': 1},
+        }
+        for profile in ('public', 'all-data'):
+            card = m.dataset_card({**report, 'profile': profile})
+            self.assertNotIn('{', card)
+            self.assertNotIn('<!--', card)
+            self.assertTrue(card.startswith('---\nlanguage:\n'))
+
     def test_card_can_declare_explicit_features_for_problematic_config(self):
         report = {
             'release_id': 'garhwali-language-lab-v0.2.5',
