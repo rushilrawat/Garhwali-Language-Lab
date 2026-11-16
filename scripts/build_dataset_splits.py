@@ -106,6 +106,14 @@ def flag_experimental_audio_leakage(rows):
     )}
 
 
+# Normalized keys that must not link segments into one split component.
+# Very short keys ('c', 'ह') and boilerplate repeated across many documents
+# ('0inpublicdomain') otherwise chain thousands of unrelated documents into a
+# single component, which then lands in one split as a block.
+MIN_LINK_KEY_CHARS = 4
+MAX_LINK_KEY_DOCUMENTS = 20
+
+
 def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
     """Keep normalized and model-supported near duplicates in one split."""
     by_id = {row['segment_sha256']: dict(row) for row in rows}
@@ -133,12 +141,26 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
             union(identities[0], identity)
 
     normalized_groups = defaultdict(list)
+    key_documents = defaultdict(set)
     for identity, row in by_id.items():
         key = normalized_text_key(row.get('text'))
         if key:
             normalized_groups[key].append(identity)
+            key_documents[key].update(
+                str(source.get('text_sha256')) for source in row.get('parents', [])
+                if source.get('text_sha256')
+            )
     normalized_edges = 0
-    for identities in normalized_groups.values():
+    skipped_short_keys = skipped_boilerplate_keys = 0
+    for key, identities in normalized_groups.items():
+        if len(identities) < 2:
+            continue
+        if len(key) < MIN_LINK_KEY_CHARS:
+            skipped_short_keys += 1
+            continue
+        if len(key_documents[key]) > MAX_LINK_KEY_DOCUMENTS:
+            skipped_boilerplate_keys += 1
+            continue
         for identity in identities[1:]:
             union(identities[0], identity)
             normalized_edges += 1
@@ -195,7 +217,10 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
         'parent_document_links': sum(len(identities) - 1 for identities in document_segments.values()),
         'normalized_edges': normalized_edges,
         'supported_semantic_edges': semantic_edges,
+        'normalized_keys_skipped_short': skipped_short_keys,
+        'normalized_keys_skipped_boilerplate': skipped_boilerplate_keys,
         'components': len(components),
+        'largest_component_records': max((len(ids) for ids in components.values()), default=0),
         'records_reassigned': moved,
         'conflicting_components_hash_assigned': hashed_components,
         'semantic_edges_source': semantic_source,
