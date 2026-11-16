@@ -215,8 +215,11 @@ def assess_language(text, provenance):
         for source in garhwali_sources
     )
     uncertain_source = bool(garhwali_sources) and not clean_garhwali_source
-    markers = content_markers(text) if profile['script'] == 'Deva' else None
-    hindi_dominant = bool(markers) and hindi_marker_dominant(markers)
+    # Always record the counts so every row has the same shape; the Hugging
+    # Face package infers one schema per shard and rejects a key that only
+    # some rows carry. Only Devanagari text is judged on them.
+    markers = content_markers(text)
+    hindi_dominant = profile['script'] == 'Deva' and hindi_marker_dominant(markers)
     if hindi_dominant and status == 'garhwali_candidate':
         reasons.append('hindi_function_words_dominant')
     if status in {'garhwali_candidate', 'source_attested_garhwali_transcription'}:
@@ -225,11 +228,9 @@ def assess_language(text, provenance):
         confidence = 'medium'
     else:
         confidence = 'low'
-    result = {'status': status, 'review_required': bool(reasons), 'review_reasons': reasons,
-              'confidence': confidence, 'evidence': evidence, 'script_profile': profile}
-    if markers is not None:
-        result['content_markers'] = markers
-    return result
+    return {'status': status, 'review_required': bool(reasons), 'review_reasons': reasons,
+            'confidence': confidence, 'evidence': evidence, 'script_profile': profile,
+            'content_markers': markers}
 
 
 def language_bucket(language_quality):

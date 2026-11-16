@@ -260,6 +260,14 @@ class ContentMarkerTests(unittest.TestCase):
         self.assertEqual(result['confidence'], 'high')
         self.assertGreaterEqual(result['content_markers']['garhwali'], 2)
 
+    def test_every_row_carries_content_markers(self):
+        # The Hugging Face package needs one schema per shard, so Latin and
+        # Devanagari rows must have the same language_quality keys.
+        latin = m.assess_language('mi ghar jaanu chhaun', [{'iso_639_3': 'gbm'}])
+        devanagari = m.assess_language('मी घौर जाणू छौं', [{'iso_639_3': 'gbm'}])
+        self.assertEqual(set(latin), set(devanagari))
+        self.assertEqual(latin['content_markers'], {'tokens': 0, 'hindi': 0, 'garhwali': 0})
+
     def test_short_text_is_not_scored(self):
         markers = m.content_markers('है और')
         self.assertFalse(m.hindi_marker_dominant(markers))

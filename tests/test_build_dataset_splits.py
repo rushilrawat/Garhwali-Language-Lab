@@ -177,6 +177,25 @@ class DatasetSplitTests(unittest.TestCase):
             self.assertEqual(report['text']['records'][expected], 3)
             self.assertEqual(report['leakage_checks']['parent_document_cross_split'], 0)
 
+    def test_shared_junk_segment_does_not_trip_parent_document_guard(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            text_path, audio_path = root / 'text.jsonl', root / 'audio.jsonl'
+            write_jsonl(text_path, [
+                {'segment_sha256': 'a' * 64, 'split': 'train', 'text': 'पहिलो किताबको वाक्य।',
+                 'parents': [{'text_sha256': 'doc-1'}]},
+                {'segment_sha256': 'b' * 64, 'split': 'test', 'text': 'दोस्रो किताबको वाक्य।',
+                 'parents': [{'text_sha256': 'doc-2'}]},
+                {'segment_sha256': 'c' * 64, 'split': 'train', 'text': '.',
+                 'parents': [{'text_sha256': 'doc-1'}, {'text_sha256': 'doc-2'}]},
+            ])
+            write_jsonl(audio_path, [])
+
+            report = m.build_splits(text_path, audio_path, root / 'out', semantic_path=None)
+
+            self.assertEqual(report['leakage_checks']['parent_document_cross_split'], 0)
+            self.assertEqual(report['text']['records']['test'], 1)
+
     def test_custom_release_id_is_recorded_for_versioned_candidate(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -232,6 +251,62 @@ class ComponentSplitPolicyTests(unittest.TestCase):
         for row in result:
             by_component.setdefault(row['duplicate_component_id'], set()).add(row['split'])
         self.assertTrue(all(len(splits) == 1 for splits in by_component.values()))
+
+    def test_short_and_boilerplate_keys_do_not_chain_documents(self):
+        rows = []
+        for index in range(30):
+            document = hashlib.sha256(f'doc-{index}'.encode()).hexdigest()
+            split = ('train', 'validation', 'test')[index % 3]
+            for text in (f'अलग वाक्य संख्या {index}', 'c', '0 in public domain'):
+                rows.append({
+                    'segment_sha256': hashlib.sha256(f'{index}-{text}'.encode()).hexdigest(),
+                    'split': split, 'text': text, 'parents': [{'text_sha256': document}],
+                })
+        result, report = m.component_safe_text_splits(rows, semantic_path=None)
+        self.assertEqual(report['normalized_keys_skipped_short'], 1)
+        self.assertEqual(report['normalized_keys_skipped_boilerplate'], 1)
+        # The junk segments stay out of every group, so each document body stands alone.
+        self.assertEqual(report['largest_component_records'], 1)
+        self.assertEqual(report['records_reassigned'], 0)
+        self.assertEqual(Counter(row['split'] for row in result), {'train': 30, 'validation': 30, 'test': 30})
+
+    def test_junk_segment_with_many_parents_does_not_bridge_documents(self):
+        rows = []
+        parents = []
+        for index in range(30):
+            document = hashlib.sha256(f'doc-{index}'.encode()).hexdigest()
+            parents.append({'text_sha256': document})
+            rows.append({
+                'segment_sha256': hashlib.sha256(f'body-{index}'.encode()).hexdigest(),
+                'split': ('train', 'validation', 'test')[index % 3],
+                'text': f'अलग वाक्य संख्या {index}', 'parents': [{'text_sha256': document}],
+            })
+        # One deduplicated '.' segment that lists every document as a parent.
+        rows.append({'segment_sha256': 'f' * 64, 'split': 'train', 'text': '.', 'parents': parents})
+        result, report = m.component_safe_text_splits(rows, semantic_path=None)
+        self.assertEqual(report['largest_component_records'], 1)
+        self.assertEqual(report['records_reassigned'], 0)
+
+    def test_oversized_component_goes_to_train(self):
+        rows = [{
+            'segment_sha256': hashlib.sha256(f'seg-{index}'.encode()).hexdigest(),
+            'split': ('train', 'validation', 'test')[index % 3],
+            'text': f'एक ही किताब का वाक्य {index}', 'parents': [{'text_sha256': 'book'}],
+        } for index in range(150)]
+        result, report = m.component_safe_text_splits(rows, semantic_path=None)
+        self.assertEqual(report['oversized_components_to_train'], 1)
+        self.assertEqual({row['split'] for row in result}, {'train'})
+
+    def test_repeated_sentence_still_links_its_documents(self):
+        rows = [
+            {'segment_sha256': 'a' * 64, 'split': 'train', 'text': 'मी घौर जाणू छौं',
+             'parents': [{'text_sha256': 'd1'}]},
+            {'segment_sha256': 'b' * 64, 'split': 'test', 'text': 'मी घौर जाणू छौं।',
+             'parents': [{'text_sha256': 'd2'}]},
+        ]
+        result, report = m.component_safe_text_splits(rows, semantic_path=None)
+        self.assertEqual(len({row['split'] for row in result}), 1)
+        self.assertEqual(report['normalized_edges'], 1)
 
     def test_agreeing_components_keep_their_split(self):
         rows = [

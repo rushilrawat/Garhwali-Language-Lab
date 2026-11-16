@@ -106,6 +106,43 @@ def flag_experimental_audio_leakage(rows):
     )}
 
 
+# Segments whose normalized key is very short ('.', 'c', 'ह') or repeated
+# across many documents ('Digitization by eGangotri/Sarayu Trust.') link
+# nothing: not their duplicates, and not the parent documents they appear in.
+# Otherwise they chain thousands of unrelated documents into one component.
+MIN_LINK_KEY_CHARS = 4
+MAX_LINK_KEY_DOCUMENTS = 20
+# A component larger than this share of all rows goes to train, so one big
+# block can never swamp validation or test.
+MAX_HELD_OUT_COMPONENT_SHARE = 0.01
+MIN_HELD_OUT_COMPONENT_LIMIT = 100
+
+
+def link_exempt_segments(rows):
+    """Group segments by normalized key and find the ones that must not link.
+
+    Returns ``(normalized_groups, key_documents, exempt_segment_ids)``.
+    """
+    normalized_groups = defaultdict(list)
+    key_documents = defaultdict(set)
+    row_keys = {}
+    for row in rows:
+        identity = row['segment_sha256']
+        key = normalized_text_key(row.get('text'))
+        row_keys[identity] = key
+        if key:
+            normalized_groups[key].append(identity)
+            key_documents[key].update(
+                str(source.get('text_sha256')) for source in row.get('parents', [])
+                if source.get('text_sha256')
+            )
+    exempt = {
+        identity for identity, key in row_keys.items()
+        if len(key) < MIN_LINK_KEY_CHARS or len(key_documents[key]) > MAX_LINK_KEY_DOCUMENTS
+    }
+    return normalized_groups, key_documents, exempt
+
+
 def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
     """Keep normalized and model-supported near duplicates in one split."""
     by_id = {row['segment_sha256']: dict(row) for row in rows}
@@ -122,8 +159,12 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
         if left_root != right_root:
             parent[max(left_root, right_root)] = min(left_root, right_root)
 
+    normalized_groups, key_documents, exempt = link_exempt_segments(by_id.values())
+
     document_segments = defaultdict(list)
     for identity, row in by_id.items():
+        if identity in exempt:
+            continue
         for source_document in row.get('parents', []):
             document_id = source_document.get('text_sha256')
             if document_id:
@@ -132,13 +173,17 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
         for identity in identities[1:]:
             union(identities[0], identity)
 
-    normalized_groups = defaultdict(list)
-    for identity, row in by_id.items():
-        key = normalized_text_key(row.get('text'))
-        if key:
-            normalized_groups[key].append(identity)
     normalized_edges = 0
-    for identities in normalized_groups.values():
+    skipped_short_keys = skipped_boilerplate_keys = 0
+    for key, identities in normalized_groups.items():
+        if len(identities) < 2:
+            continue
+        if len(key) < MIN_LINK_KEY_CHARS:
+            skipped_short_keys += 1
+            continue
+        if len(key_documents[key]) > MAX_LINK_KEY_DOCUMENTS:
+            skipped_boilerplate_keys += 1
+            continue
         for identity in identities[1:]:
             union(identities[0], identity)
             normalized_edges += 1
@@ -173,9 +218,14 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
         components[find(identity)].append(identity)
     moved = 0
     hashed_components = 0
+    oversized_components = 0
+    max_held_out = max(MIN_HELD_OUT_COMPONENT_LIMIT, int(len(by_id) * MAX_HELD_OUT_COMPONENT_SHARE))
     for root, identities in components.items():
         member_splits = {by_id[identity]['split'] for identity in identities}
-        if len(member_splits) == 1:
+        if len(identities) > max_held_out:
+            assigned = 'train'
+            oversized_components += 1
+        elif len(member_splits) == 1:
             assigned = member_splits.pop()
         else:
             # Conflicting components are placed by a hash of their root. Always
@@ -195,9 +245,13 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
         'parent_document_links': sum(len(identities) - 1 for identities in document_segments.values()),
         'normalized_edges': normalized_edges,
         'supported_semantic_edges': semantic_edges,
+        'normalized_keys_skipped_short': skipped_short_keys,
+        'normalized_keys_skipped_boilerplate': skipped_boilerplate_keys,
         'components': len(components),
+        'largest_component_records': max((len(ids) for ids in components.values()), default=0),
         'records_reassigned': moved,
         'conflicting_components_hash_assigned': hashed_components,
+        'oversized_components_to_train': oversized_components,
         'semantic_edges_source': semantic_source,
     }
 
@@ -213,8 +267,13 @@ def build_splits(text_path=TEXT_SOURCE, audio_path=AUDIO_SOURCE, output_dir=OUT,
 
     text_hash_splits = defaultdict(set)
     parent_document_splits = defaultdict(set)
+    _, _, link_exempt = link_exempt_segments(text_rows)
     for row in text_rows:
         text_hash_splits[row['segment_sha256']].add(row['split'])
+        if row['segment_sha256'] in link_exempt:
+            # Junk and boilerplate segments ('.', scan credits) may sit beside
+            # documents in any split; they are not document content.
+            continue
         for source_document in row.get('parents', []):
             document_id = source_document.get('text_sha256')
             if document_id:
