@@ -297,6 +297,47 @@ class ComponentSplitPolicyTests(unittest.TestCase):
         self.assertEqual(report['oversized_components_to_train'], 1)
         self.assertEqual({row['split'] for row in result}, {'train'})
 
+    def test_train_heavy_input_is_topped_up_to_the_held_out_target(self):
+        # 400 two-segment documents, all inherited as train (as upstream
+        # chaining leaves them), plus one oversized book that must stay in train.
+        rows = []
+        for index in range(400):
+            document = f'doc-{index}'
+            for part in range(2):
+                rows.append({
+                    'segment_sha256': hashlib.sha256(f'{index}-{part}'.encode()).hexdigest(),
+                    'split': 'train', 'text': f'अलग वाक्य {index} भाग {part}',
+                    'parents': [{'text_sha256': document}],
+                })
+        rows += [{
+            'segment_sha256': hashlib.sha256(f'book-{index}'.encode()).hexdigest(),
+            'split': 'train', 'text': f'किताब का वाक्य {index}', 'parents': [{'text_sha256': 'book'}],
+        } for index in range(200)]
+        result, report = m.component_safe_text_splits(rows, semantic_path=None)
+        counts = Counter(row['split'] for row in result)
+        target = int(len(rows) * m.HELD_OUT_TARGET_SHARE)
+        self.assertEqual(report['held_out_target_records'], target)
+        self.assertEqual(counts['validation'], target)
+        self.assertEqual(counts['test'], target)
+        self.assertEqual(report['held_out_top_up_records'], {'validation': target, 'test': target})
+        by_document = {}
+        for row in result:
+            by_document.setdefault(row['parents'][0]['text_sha256'], set()).add(row['split'])
+        self.assertTrue(all(len(splits) == 1 for splits in by_document.values()))
+        self.assertEqual(by_document['book'], {'train'})
+        moved = [row for row in result if row['split'] != 'train']
+        self.assertTrue(all(row['split_assignment'] == 'held_out_top_up' for row in moved))
+
+    def test_top_up_leaves_balanced_input_alone(self):
+        rows = [{
+            'segment_sha256': hashlib.sha256(f'seg-{index}'.encode()).hexdigest(),
+            'split': ('validation', 'test')[index % 2] if index < 20 else 'train',
+            'text': f'वाक्य संख्या {index}',
+        } for index in range(100)]
+        result, report = m.component_safe_text_splits(rows, semantic_path=None)
+        self.assertEqual(report['held_out_top_up_records'], {'validation': 0, 'test': 0})
+        self.assertEqual(report['records_reassigned'], 0)
+
     def test_repeated_sentence_still_links_its_documents(self):
         rows = [
             {'segment_sha256': 'a' * 64, 'split': 'train', 'text': 'मी घौर जाणू छौं',
