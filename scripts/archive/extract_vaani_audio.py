@@ -11,7 +11,7 @@ from pathlib import Path
 import pyarrow.parquet as pq
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SOURCE = ROOT / "data" / "vaani" / "source" / "main" / "audio" / "Garhwali"
 DEFAULT_OUTPUT = ROOT / "data" / "vaani" / "audio" / "main"
 DEFAULT_MANIFEST = ROOT / "data" / "vaani" / "audio-local-manifest.jsonl"

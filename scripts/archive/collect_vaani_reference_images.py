@@ -18,7 +18,7 @@ import requests
 from huggingface_hub import get_token
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "vaani"
 REPO = "ARTPARK-IISc/Vaani"
 REVISION = "fe12c49bc61c083d5bb2092513fb6ec2e7ae72ee"

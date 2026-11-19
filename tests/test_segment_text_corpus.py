@@ -35,6 +35,7 @@ class SegmentTests(unittest.TestCase):
         records = [
             {
                 'segment_sha256': '1' * 64,
+                'text': 'गढ़वाली वाक्य संख्या 1।',
                 'parents': [
                     {'text_sha256': 'a' * 64, 'parent_split': 'train'},
                     {'text_sha256': 'b' * 64, 'parent_split': 'test'},
@@ -42,6 +43,7 @@ class SegmentTests(unittest.TestCase):
             },
             {
                 'segment_sha256': '2' * 64,
+                'text': 'गढ़वाली वाक्य संख्या 2।',
                 'parents': [
                     {'text_sha256': 'b' * 64, 'parent_split': 'test'},
                     {'text_sha256': 'c' * 64, 'parent_split': 'validation'},
@@ -49,6 +51,7 @@ class SegmentTests(unittest.TestCase):
             },
             {
                 'segment_sha256': '3' * 64,
+                'text': 'गढ़वाली वाक्य संख्या 3।',
                 'parents': [
                     {'text_sha256': 'd' * 64, 'parent_split': 'train'},
                 ],
@@ -71,6 +74,7 @@ class SegmentTests(unittest.TestCase):
         records = [
             {
                 'segment_sha256': '1' * 64,
+                'text': 'गढ़वाली वाक्य संख्या 4।',
                 'parents': [
                     {'text_sha256': 'a' * 64, 'parent_split': 'train'},
                     {'text_sha256': 'b' * 64, 'parent_split': 'test'},
@@ -78,6 +82,7 @@ class SegmentTests(unittest.TestCase):
             },
             {
                 'segment_sha256': '2' * 64,
+                'text': 'गढ़वाली वाक्य संख्या 5।',
                 'parents': [{'text_sha256': 'c' * 64, 'parent_split': 'train'}],
             },
         ]
@@ -95,6 +100,7 @@ class SegmentTests(unittest.TestCase):
         records = [
             {
                 'segment_sha256': '1' * 64,
+                'text': 'गढ़वाली वाक्य संख्या 6।',
                 'parents': [{'text_sha256': 'd' * 64, 'parent_split': 'test'}],
             },
         ]
@@ -104,10 +110,29 @@ class SegmentTests(unittest.TestCase):
         self.assertEqual(assigned[0]['split'], 'test')
         self.assertEqual(documents[0]['split'], 'test')
 
+    def test_junk_segment_does_not_connect_documents(self):
+        documents = [{'text_sha256': f'{index:064x}', 'parent_split': split}
+                     for index, split in enumerate(('train', 'validation', 'test'))]
+        records = [
+            {'segment_sha256': f'{index + 1:064x}', 'text': f'अलग वाक्य संख्या {index}।',
+             'parents': [document]}
+            for index, document in enumerate(documents)
+        ]
+        records.append({'segment_sha256': 'f' * 64, 'text': '.', 'parents': documents})
+
+        assigned, assigned_documents = m.assign_document_aware_splits(records)
+
+        self.assertEqual(
+            {row['text_sha256']: row['split'] for row in assigned_documents},
+            {document['text_sha256']: document['parent_split'] for document in documents},
+        )
+        self.assertEqual(len({row['component_sha256'] for row in assigned_documents}), 3)
+
     def test_connected_component_uses_majority_parent_split(self):
         records = [
             {
                 'segment_sha256': '1' * 64,
+                'text': 'गढ़वाली वाक्य संख्या 7।',
                 'parents': [
                     {'text_sha256': 'a' * 64, 'parent_split': 'train'},
                     {'text_sha256': 'b' * 64, 'parent_split': 'test'},
@@ -115,6 +140,7 @@ class SegmentTests(unittest.TestCase):
             },
             {
                 'segment_sha256': '2' * 64,
+                'text': 'गढ़वाली वाक्य संख्या 8।',
                 'parents': [
                     {'text_sha256': 'b' * 64, 'parent_split': 'test'},
                     {'text_sha256': 'c' * 64, 'parent_split': 'test'},

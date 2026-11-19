@@ -12,7 +12,7 @@ import pyarrow.parquet as pq
 import requests
 from huggingface_hub import get_token
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "vaani"
 VIEWER = "https://datasets-server.huggingface.co/parquet"
 REPOS = {

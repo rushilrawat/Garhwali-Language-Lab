@@ -3,6 +3,12 @@
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path as _Path
+
+# Shared modules (garhwali_lab, metrics, manifests) live one level up in scripts/.
+sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+
 from collections import Counter
 import hashlib
 import io
@@ -14,7 +20,7 @@ from PIL import Image
 from garhwali_lab.hashing import sha256_file as sha256
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "vaani"
 
 

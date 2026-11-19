@@ -1,6 +1,8 @@
+import tempfile
 import unittest
+from pathlib import Path
 
-from generate_project_file_map import append_disk_inventory, render_file_map
+from generate_project_file_map import collect_project_files, render_file_map
 
 
 class ProjectFileMapTests(unittest.TestCase):
@@ -24,19 +26,23 @@ class ProjectFileMapTests(unittest.TestCase):
         self.assertIn("Hugging Face manifests", result)
         self.assertIn("Files indexed: **0**.", result)
 
-    def test_map_summarizes_ignored_payloads_without_losing_total_file_counts(self):
-        result = append_disk_inventory(render_file_map([]), {
-            "total_files": 10,
-            "total_bytes": 2048,
-            "listed_files": 4,
-            "unlisted_files": 6,
-            "unlisted_bytes": 1024,
-            "groups": {"data/audio/…/": [5, 900], "data/cache/": [1, 124]},
-        })
+    def test_lists_only_tracked_files(self):
+        calls = []
 
-        self.assertIn("Workspace files counted: **10**", result)
-        self.assertIn("Ignored or otherwise unlisted payload files: **6** (1,024 bytes)", result)
-        self.assertIn("`data/audio/…/` | 5 | 900", result)
+        class Result:
+            stdout = b"README.md\0scripts/a.py\0"
+
+        def runner(command, **kwargs):
+            calls.append(command)
+            return Result()
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "scripts").mkdir()
+            (root / "README.md").write_text("x")
+            (root / "scripts/a.py").write_text("x")
+            self.assertEqual(collect_project_files(root, runner=runner), ["README.md", "scripts/a.py"])
+        self.assertEqual(calls, [["git", "ls-files", "--cached", "-z"]])
 
 
 if __name__ == "__main__":

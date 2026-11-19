@@ -7,6 +7,12 @@ Model disagreement is a review signal, never an automatic label correction.
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path as _Path
+
+# Shared modules (garhwali_lab, metrics, manifests) live one level up in scripts/.
+sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+
 import csv
 import json
 from collections import Counter
@@ -15,7 +21,7 @@ from garhwali_lab.hashing import sha256_file as sha256
 from garhwali_lab.io import read_jsonl
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 SPLITS = ROOT / "data/processed/model_ready/splits/asr"
 PREDICTIONS = ROOT / "models/whisper-tiny-garhwali-cpu-v0.1/evaluation_predictions.jsonl"
 OUT = ROOT / "data/review/existing-asr-validation-labels-v0.1"

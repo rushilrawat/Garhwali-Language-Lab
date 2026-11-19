@@ -10,6 +10,7 @@ from pathlib import Path
 from garhwali_lab.hashing import sha256_file as file_sha256
 from garhwali_lab.io import read_jsonl
 from garhwali_lab.io import write_jsonl as _write_jsonl
+from garhwali_lab.text import MIN_LINK_KEY_CHARS, MAX_LINK_KEY_DOCUMENTS, link_exempt_segments
 from garhwali_lab.text import leakage_key as normalized_text_key
 
 
@@ -106,41 +107,14 @@ def flag_experimental_audio_leakage(rows):
     )}
 
 
-# Segments whose normalized key is very short ('.', 'c', 'ह') or repeated
-# across many documents ('Digitization by eGangotri/Sarayu Trust.') link
-# nothing: not their duplicates, and not the parent documents they appear in.
-# Otherwise they chain thousands of unrelated documents into one component.
-MIN_LINK_KEY_CHARS = 4
-MAX_LINK_KEY_DOCUMENTS = 20
 # A component larger than this share of all rows goes to train, so one big
 # block can never swamp validation or test.
 MAX_HELD_OUT_COMPONENT_SHARE = 0.01
 MIN_HELD_OUT_COMPONENT_LIMIT = 100
-
-
-def link_exempt_segments(rows):
-    """Group segments by normalized key and find the ones that must not link.
-
-    Returns ``(normalized_groups, key_documents, exempt_segment_ids)``.
-    """
-    normalized_groups = defaultdict(list)
-    key_documents = defaultdict(set)
-    row_keys = {}
-    for row in rows:
-        identity = row['segment_sha256']
-        key = normalized_text_key(row.get('text'))
-        row_keys[identity] = key
-        if key:
-            normalized_groups[key].append(identity)
-            key_documents[key].update(
-                str(source.get('text_sha256')) for source in row.get('parents', [])
-                if source.get('text_sha256')
-            )
-    exempt = {
-        identity for identity, key in row_keys.items()
-        if len(key) < MIN_LINK_KEY_CHARS or len(key_documents[key]) > MAX_LINK_KEY_DOCUMENTS
-    }
-    return normalized_groups, key_documents, exempt
+# Validation and test are topped up to this share of all text rows by moving
+# whole train components, so the oversized train block and upstream
+# document chaining cannot shrink them. Components stay intact: no leakage.
+HELD_OUT_TARGET_SHARE = 0.05
 
 
 def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
@@ -216,28 +190,56 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
     components = defaultdict(list)
     for identity in by_id:
         components[find(identity)].append(identity)
-    moved = 0
     hashed_components = 0
-    oversized_components = 0
+    oversized = set()
     max_held_out = max(MIN_HELD_OUT_COMPONENT_LIMIT, int(len(by_id) * MAX_HELD_OUT_COMPONENT_SHARE))
+    assigned = {}
     for root, identities in components.items():
         member_splits = {by_id[identity]['split'] for identity in identities}
         if len(identities) > max_held_out:
-            assigned = 'train'
-            oversized_components += 1
+            assigned[root] = 'train'
+            oversized.add(root)
         elif len(member_splits) == 1:
-            assigned = member_splits.pop()
+            assigned[root] = member_splits.pop()
         else:
             # Conflicting components are placed by a hash of their root. Always
             # choosing train (the earlier rule) halved validation and test.
-            assigned = split_for_hash(root)
+            assigned[root] = split_for_hash(root)
             hashed_components += 1
+
+    # Top up validation and test to the target with whole train components,
+    # taken in a stable hash order; a component is moved only if it fits.
+    target = int(len(by_id) * HELD_OUT_TARGET_SHARE)
+    held_out = Counter()
+    for root, split in assigned.items():
+        held_out[split] += len(components[root])
+    topped_up = Counter()
+    topped_up_roots = set()
+    for root in sorted(components, key=lambda r: hashlib.sha256(r.encode('utf-8')).hexdigest()):
+        if assigned[root] != 'train' or root in oversized:
+            continue
+        size = len(components[root])
+        for split in ('validation', 'test'):
+            if held_out[split] + size <= target:
+                assigned[root] = split
+                held_out[split] += size
+                topped_up[split] += size
+                topped_up_roots.add(root)
+                break
+        if held_out['validation'] >= target and held_out['test'] >= target:
+            break
+
+    moved = 0
+    for root, identities in components.items():
         for identity in identities:
             row = by_id[identity]
-            if row['split'] != assigned:
+            if row['split'] != assigned[root]:
                 row['original_split'] = row['split']
-                row['split'] = assigned
-                row['split_assignment'] = 'duplicate_component_isolation'
+                row['split'] = assigned[root]
+                row['split_assignment'] = (
+                    'held_out_top_up' if root in topped_up_roots
+                    else 'duplicate_component_isolation'
+                )
                 moved += 1
             row['duplicate_component_id'] = root
     return list(by_id.values()), {
@@ -251,7 +253,9 @@ def component_safe_text_splits(rows, semantic_path=SEMANTIC_EDGES):
         'largest_component_records': max((len(ids) for ids in components.values()), default=0),
         'records_reassigned': moved,
         'conflicting_components_hash_assigned': hashed_components,
-        'oversized_components_to_train': oversized_components,
+        'oversized_components_to_train': len(oversized),
+        'held_out_target_records': target,
+        'held_out_top_up_records': {split: topped_up[split] for split in ('validation', 'test')},
         'semantic_edges_source': semantic_source,
     }
 
