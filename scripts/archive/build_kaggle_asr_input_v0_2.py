@@ -2,6 +2,12 @@
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path as _Path
+
+# Shared modules (garhwali_lab, metrics, manifests) live one level up in scripts/.
+sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+
 import csv
 import io
 import json
@@ -13,7 +19,7 @@ import pyarrow.parquet as pq
 from garhwali_lab.hashing import sha256_file as file_sha256
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 SPLITS = ("train", "validation", "test")
 LOCAL = ROOT / "data/processed/model_ready/splits/asr_speaker_recovered_v0.1"
 HF = ROOT / "data/huggingface/garhwali-speech-training-views-v0.2-upload/training_views/v0.2"

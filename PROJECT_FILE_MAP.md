@@ -746,8 +746,22 @@ python scripts/generate_project_file_map.py
 ## `scripts/`
 
 - `scripts/README.md`
+- `scripts/archive/audit_existing_asr_references.py`
+- `scripts/archive/audit_text_release_quality.py`
+- `scripts/archive/build_audio_review_batch.py`
 - `scripts/archive/build_hf_speech_training_views.py`
 - `scripts/archive/build_kaggle_asr_input.py`
+- `scripts/archive/build_kaggle_asr_input_v0_2.py`
+- `scripts/archive/build_kaggle_asr_notebook.py`
+- `scripts/archive/collect_vaani_reference_images.py`
+- `scripts/archive/download_garhwali_folktales.py`
+- `scripts/archive/download_vaani_transcription_only.py`
+- `scripts/archive/export_asr_finetuning_data.py`
+- `scripts/archive/extract_dhyani_idioms.py`
+- `scripts/archive/extract_downloaded_folklore.py`
+- `scripts/archive/extract_vaani_audio.py`
+- `scripts/archive/reconcile_vaani_audio_paths.py`
+- `scripts/archive/verify_vaani_collection.py`
 - `scripts/asr_metrics.py`
 - `scripts/audit_archive_alternate_ocr_overlap.py`
 - `scripts/audit_archive_corpus_overlap.py`
@@ -758,7 +772,6 @@ python scripts/generate_project_file_map.py
 - `scripts/audit_benchmark_nested_overlap.py`
 - `scripts/audit_benchmark_overlap_candidates.py`
 - `scripts/audit_benchmark_v02_rights.py`
-- `scripts/audit_existing_asr_references.py`
 - `scripts/audit_final_release.py`
 - `scripts/audit_garhwali_expansion.py`
 - `scripts/audit_hf_release_continuity.py`
@@ -768,7 +781,6 @@ python scripts/generate_project_file_map.py
 - `scripts/audit_model_accuracy_lineage.py`
 - `scripts/audit_saved_asr_heldout_lineage.py`
 - `scripts/audit_semantic_duplicates.py`
-- `scripts/audit_text_release_quality.py`
 - `scripts/audit_text_sources.py`
 - `scripts/audit_upstream_split_overlap.py`
 - `scripts/audit_vaani.py`
@@ -779,7 +791,6 @@ python scripts/generate_project_file_map.py
 - `scripts/build_archive_book_page_map.py`
 - `scripts/build_archive_source_disposition.py`
 - `scripts/build_asr_training_curriculum.py`
-- `scripts/build_audio_review_batch.py`
 - `scripts/build_audio_training_manifests.py`
 - `scripts/build_benchmark_usage_labels.py`
 - `scripts/build_benchmark_v02.py`
@@ -793,8 +804,6 @@ python scripts/generate_project_file_map.py
 - `scripts/build_huggingface_dataset.py`
 - `scripts/build_instruction_accuracy_split.py`
 - `scripts/build_instruction_dataset.py`
-- `scripts/build_kaggle_asr_input_v0_2.py`
-- `scripts/build_kaggle_asr_notebook.py`
 - `scripts/build_kaggle_release.py`
 - `scripts/build_language_resources.py`
 - `scripts/build_model_training_candidate.py`
@@ -811,13 +820,10 @@ python scripts/generate_project_file_map.py
 - `scripts/check_source_freshness.py`
 - `scripts/clean_text_corpus.py`
 - `scripts/collect_online.py`
-- `scripts/collect_vaani_reference_images.py`
 - `scripts/compare_archive_ocr_variants.py`
 - `scripts/compare_hf_release_metrics.py`
 - `scripts/dedup_report.py`
 - `scripts/deep_cleanup.py`
-- `scripts/download_garhwali_folktales.py`
-- `scripts/download_vaani_transcription_only.py`
 - `scripts/evaluation_run_manifest.py`
 - `scripts/experiments/analyze_generation_output_diagnostics.py`
 - `scripts/experiments/analyze_retrieval_cluster_uncertainty.py`
@@ -869,11 +875,7 @@ python scripts/generate_project_file_map.py
 - `scripts/experiments/transcribe_sravaani_drafts.py`
 - `scripts/experiments/transcribe_vaani_drafts.py`
 - `scripts/experiments/transcribe_whisper_agreement.py`
-- `scripts/export_asr_finetuning_data.py`
 - `scripts/export_licensed_sources.py`
-- `scripts/extract_dhyani_idioms.py`
-- `scripts/extract_downloaded_folklore.py`
-- `scripts/extract_vaani_audio.py`
 - `scripts/finalize_local_release.sh`
 - `scripts/finalize_local_release_v0_2.sh`
 - `scripts/freeze_benchmark.py`
@@ -955,7 +957,6 @@ python scripts/generate_project_file_map.py
 - `scripts/prepare_vaani_supervised.py`
 - `scripts/promote_paharili_garhwali.py`
 - `scripts/propose_text_cleanup.py`
-- `scripts/reconcile_vaani_audio_paths.py`
 - `scripts/record_schema.py`
 - `scripts/refine_priority_text.py`
 - `scripts/refine_semantic_duplicates.py`
@@ -975,7 +976,6 @@ python scripts/generate_project_file_map.py
 - `scripts/validate_ocr_corrections.py`
 - `scripts/validate_release_index.py`
 - `scripts/verify_ingestion.py`
-- `scripts/verify_vaani_collection.py`
 - `scripts/wikitext_plain.py`
 
 ## `sources/`

@@ -8,7 +8,7 @@ import shutil
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "data/processed/model_ready/transcripts/machine_drafts_sravaani_confidence_aware.jsonl"
 OUTPUT = ROOT / "data/review/vaani-no-provider-100-v0.1"
 

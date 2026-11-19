@@ -35,7 +35,10 @@ Subfolders separate work that is not part of the release pipeline:
   for example `python scripts/experiments/train_whisper_garhwali.py --help`.
 - `hf_jobs/`: Hugging Face Jobs container entry points (`*_hf_job.sh`).
 - `archive/`: superseded builders kept so earlier published artifacts stay
-  reproducible (the v0.1 speech training view and Kaggle ASR input).
+  reproducible (the v0.1 speech training view and Kaggle ASR input), plus
+  one-off acquisition, audit, and Kaggle/VAANI helper scripts that no
+  pipeline step, test, or doc calls. Run them directly, for example
+  `python scripts/archive/verify_vaani_collection.py`.
 
 Run the tests from the repository root with `python -m unittest`;
 `tests/__init__.py` puts `scripts/`, its subfolders, and `examples/` on the

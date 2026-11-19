@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "downloads" / "folklore" / "podcast"
 FEED_URL = "https://anchor.fm/s/3c077010/podcast/rss"
 

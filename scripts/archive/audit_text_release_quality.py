@@ -8,7 +8,7 @@ import statistics
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 INPUT = ROOT / "data/processed/model_ready/splits/text"
 JSON_OUT = ROOT / "research/text-release-quality-2026-09-16.json"
 MD_OUT = ROOT / "research/text-release-quality-2026-09-16.md"

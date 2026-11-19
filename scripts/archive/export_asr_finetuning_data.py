@@ -4,7 +4,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'data/processed/model_ready/cleaned/audio_transcripts.jsonl'
 OUT = ROOT / 'data/processed/model_ready/asr_finetuning'
 
