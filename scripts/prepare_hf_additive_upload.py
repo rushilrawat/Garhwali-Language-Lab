@@ -207,11 +207,6 @@ def _carry_forward_body(body: str, previous_body: str, carried: list[str]) -> st
     sections ("... 8 October 2026") are left behind: they describe an older
     release.
     """
-    previous_lines = previous_body.split("\n")
-    rows = [
-        line for line in previous_lines
-        if (match := _TABLE_ROW.match(line)) and match.group(1) in carried
-    ]
     sections = re.split(r"\n(?=## )", previous_body)
     new_headings = {line for line in body.split("\n") if line.startswith("## ")}
     extra = [
@@ -221,6 +216,17 @@ def _carry_forward_body(body: str, previous_body: str, carried: list[str]) -> st
         and not _DATED_HEADING.search(section.split("\n", 1)[0])
         and any(f"`{name}`" in section for name in carried)
     ]
+    # Rows come from the main table only: a carried section brings its own
+    # small table along, and taking its rows too would list a config twice.
+    rows = {}
+    for section in sections:
+        if section.strip("\n") in extra:
+            continue
+        for line in section.split("\n"):
+            match = _TABLE_ROW.match(line)
+            if match and match.group(1) in carried:
+                rows.setdefault(match.group(1), line)
+    rows = [rows[name] for name in carried if name in rows]
     lines = body.split("\n")
     last_row = max(
         (index for index, line in enumerate(lines) if _TABLE_ROW.match(line)), default=None

@@ -60,6 +60,7 @@ class CarryForwardTests(unittest.TestCase):
             '| `text` | 18,598 | Garhwali text examples |\n'
             '| `screened_meta_gbm` | 1,841 | experimental sentence-level text training candidates |\n\n'
             '## Clean screened text config\n\nThe v0.2.8 addition exposes `screened_meta_gbm`.\n\n'
+            '| `screened_meta_gbm` | 1,841 | Experimental sentence-level text training candidates |\n\n'
             '## Developer quick start\n\nRun it.\n'
         )
         new = NEW.replace('# Card v0.2.9\n', new_body)
@@ -73,9 +74,11 @@ class CarryForwardTests(unittest.TestCase):
             '| `text` | 19,321 | Garhwali text examples |\n'
             '| `screened_meta_gbm` | 1,841 | experimental sentence-level text training candidates |\n\n'
             '## Clean screened text config\n\nThe v0.2.8 addition exposes `screened_meta_gbm`.\n\n'
+            '| `screened_meta_gbm` | 1,841 | Experimental sentence-level text training candidates |\n\n'
             '## Developer quick start',
             body,
         )
+        self.assertEqual(body.count('| `screened_meta_gbm` |'), 2)  # main table + its section
         self.assertNotIn('8 October 2026', body)
         self.assertNotIn('18,598', body)
         self.assertEqual(body.count('## Developer quick start'), 1)

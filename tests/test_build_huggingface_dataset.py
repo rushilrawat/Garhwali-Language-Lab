@@ -1669,7 +1669,7 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertIn('config_name: paharili_gbm', card)
         self.assertIn('adds **14,988 normalized-unique Garhwali-labeled sentence records**', card)
         self.assertIn('11 repeated source rows', card)
-        self.assertIn('4 text groups that occur in both upstream splits', card)
+        self.assertIn('(4 groups in this release)', card)
         self.assertIn('README does not identify the sentence-level source of each item', card)
 
     def test_v0_2_4_card_documents_metadata_only_attribution_update(self):

@@ -253,7 +253,7 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
 
             arguments = shlex.split(plan["command"])
             self.assertEqual(arguments[:5], [
-                "hf", "upload", "rushilrawat/garhwali-corpus", str(root / "upload"), ".",
+                "hf", "upload", "rushilrawat/garhwali-corpus", str((root / "upload").resolve()), ".",
             ])
             self.assertEqual(arguments[-1], "Add Garhwali corpus v9.0.1")
 
