@@ -7,6 +7,7 @@ import argparse
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -324,7 +325,11 @@ def prepare(
         "file_count": len(uploads),
         "payload_bytes": sum(item["bytes"] for item in uploads),
         "uploads": uploads,
-        "command": f"hf upload rushilrawat/garhwali-corpus {output} . --repo-type dataset --commit-message 'Add Garhwali corpus v{version}'",
+        # Quoted: the checkout path ("Garhwali Language Lab") contains spaces.
+        "command": shlex.join([
+            "hf", "upload", "rushilrawat/garhwali-corpus", str(output), ".",
+            "--repo-type", "dataset", "--commit-message", f"Add Garhwali corpus v{version}",
+        ]),
     }
     plan_path.parent.mkdir(parents=True, exist_ok=True)
     plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
