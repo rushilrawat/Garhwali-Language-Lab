@@ -16,6 +16,14 @@ class SegmentTests(unittest.TestCase):
         self.assertEqual(m.segment('पैली पंक्ति ॥ १ ॥ दूसरी पंक्ति ॥२॥ तिसरी'),
                          ['पैली पंक्ति ॥ १ ॥', 'दूसरी पंक्ति ॥२॥', 'तिसरी'])
 
+    def test_splits_danda_without_following_space(self):
+        self.assertEqual(m.segment('एक वाक्य।दूसर वाक्य॥तिसर'),
+                         ['एक वाक्य।', 'दूसर वाक्य॥', 'तिसर'])
+
+    def test_unspaced_danda_keeps_verse_numbers_attached(self):
+        self.assertEqual(m.segment('पैली पंक्ति।१। दूसरी।।तिसरी'),
+                         ['पैली पंक्ति।१।', 'दूसरी।।', 'तिसरी'])
+
     def test_does_not_split_after_devanagari_abbreviation(self):
         self.assertEqual(m.segment('डॉ. शिवानंद नौटियाल न लेखी। अगलो वाक्य'),
                          ['डॉ. शिवानंद नौटियाल न लेखी।', 'अगलो वाक्य'])
