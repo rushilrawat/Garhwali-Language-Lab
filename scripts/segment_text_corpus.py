@@ -6,6 +6,8 @@ import re
 from collections import Counter
 from pathlib import Path
 
+from garhwali_lab.text import link_exempt_segments
+
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT/'data/processed/model_ready/cleaned/text.jsonl'
 OUT = ROOT/'data/processed/model_ready/segments'
@@ -47,7 +49,13 @@ def split_for_hash(digest):
 
 
 def assign_document_aware_splits(records):
-    """Keep every document connected by a shared segment in one split."""
+    """Keep every document connected by a shared segment in one split.
+
+    Junk and boilerplate segments ('.', scan credits; see
+    ``link_exempt_segments``) do not connect documents: one '.' shared by
+    thousands of documents used to chain them into a single train component.
+    """
+    _, _, exempt = link_exempt_segments(records)
     parents = {}
     original_splits = {}
 
@@ -71,6 +79,8 @@ def assign_document_aware_splits(records):
             original_splits.setdefault(parent['text_sha256'], parent['parent_split'])
         for document in documents:
             find(document)
+        if row['segment_sha256'] in exempt:
+            continue
         for document in documents[1:]:
             union(documents[0], document)
 
@@ -142,6 +152,7 @@ def main():
         row['parent_splits'] = sorted({parent['parent_split'] for parent in row['parents']})
     parent_split_conflicts = sum(len(row['parent_splits']) > 1 for row in records)
     records, documents = assign_document_aware_splits(records)
+    _, _, exempt_segments = link_exempt_segments(records)
     (OUT/'all_segments.jsonl').write_text(''.join(json.dumps(r,ensure_ascii=False,sort_keys=True)+'\n' for r in records),encoding='utf-8')
     (OUT/'document_splits.jsonl').write_text(''.join(json.dumps(r,ensure_ascii=False,sort_keys=True)+'\n' for r in documents),encoding='utf-8')
     for split in ('train', 'validation', 'test'):
@@ -160,11 +171,13 @@ def main():
                   for row in records for parent in row['parents']
                   if parent['segment_index'] == 0
               ),
+              'link_exempt_segments':len(exempt_segments),
               'remaining_cross_split_segments':sum(
                   len({parent['document_split'] for parent in row['parents']}) > 1
-                  for row in records
+                  for row in records if row['segment_sha256'] not in exempt_segments
               ),
-              'split_note':'Connected documents sharing any exact segment receive one deterministic component split.'}
+              'split_note':('Connected documents sharing an exact segment receive one deterministic '
+                            'component split; junk and boilerplate segments do not connect documents.')}
     (OUT/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2,sort_keys=True)+'\n',encoding='utf-8')
     print(json.dumps(report,ensure_ascii=False,indent=2,sort_keys=True))
 
