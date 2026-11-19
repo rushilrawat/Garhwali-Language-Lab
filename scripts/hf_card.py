@@ -249,6 +249,7 @@ def dataset_card(report, dataset_info=None):
         'paharili_collapsed_records': paharili.get('collapsed_duplicate_source_records', 0),
         'paharili_new_source_ids': paharili.get('new_source_record_ids', 0),
         'paharili_existing_source_ids': paharili.get('source_record_ids_already_in_existing_configs', 0),
+        'paharili_other_source_ids': paharili.get('source_record_ids_duplicating_other_sources', 0),
         'paharili_train': paharili_splits.get('train', 0),
         'paharili_test': paharili_splits.get('test', 0),
         'paharili_source_overlap': paharili_splits.get('source_overlap', 0),

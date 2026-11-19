@@ -756,6 +756,28 @@ class HuggingFaceDatasetBuilderTests(unittest.TestCase):
         self.assertEqual(metrics['already_present_in_existing_configs'], 1)
         self.assertEqual(metrics['new_records'], 2)
         self.assertEqual(metrics['split_records'], {'source_overlap': 1, 'train': 1})
+        self.assertEqual(metrics['source_record_ids_duplicating_other_sources'], 0)
+        self.assertTrue(metrics['all_source_record_ids_accounted_for'])
+
+    def test_paharili_text_held_by_another_source_is_left_out_and_counted(self):
+        source = {
+            'record_id': 'paharili_gbm:test:9', 'text_original': 'इकु समौ तीन छण छन।',
+            'split': 'test', 'iso_639_3': 'gbm', 'upstream_label': 'gbm',
+            'provenance': {'url': 'https://example.org/test.txt', 'sha256': 'b' * 64},
+        }
+        existing = {'text': 'इकु समौ तीन छण छन.', 'split': 'train',
+                    'provenance': [{'record_id': 'emagazineofuttarakhand:abc'}]}
+
+        rows, metrics = hf_rows.build_paharili_gbm_rows([source], [existing])
+
+        self.assertEqual(rows, [])
+        self.assertEqual(metrics['already_present_in_existing_configs'], 1)
+        self.assertEqual(metrics['source_record_ids_already_in_existing_configs'], 0)
+        self.assertEqual(metrics['source_record_ids_duplicating_other_sources'], 1)
+        self.assertEqual(
+            metrics['source_record_ids_duplicating_other_sources_sample'], ['paharili_gbm:test:9']
+        )
+        self.assertTrue(metrics['all_source_record_ids_accounted_for'])
 
     def test_catalog_text_resources_keep_broad_rights_cleared_text_separate(self):
         open_basis = {

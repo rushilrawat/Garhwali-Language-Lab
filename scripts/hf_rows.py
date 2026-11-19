@@ -281,6 +281,11 @@ def build_paharili_gbm_rows(source_rows, existing_text_rows):
     output = []
     already_present = 0
     already_present_source_ids = 0
+    # Texts that another config already holds from a different source (often
+    # the same sentence on emagazineofuttarakhand or DCAD). They are left out
+    # here so no text appears twice, and could otherwise sit in a different
+    # split from the existing row.
+    other_source_duplicate_ids = []
     source_overlap_groups = 0
     split_records = Counter()
     for key, group in sorted(groups.items()):
@@ -293,13 +298,9 @@ def build_paharili_gbm_rows(source_rows, existing_text_rows):
                 for existing in existing_by_key[key]
             ))
             missing_ids = set(record_ids) - represented_ids
-            if missing_ids:
-                raise ValueError(
-                    'PahariLI text already exists in another release config but '
-                    f'its source IDs are not preserved: {sorted(missing_ids)[:5]}'
-                )
+            other_source_duplicate_ids.extend(sorted(missing_ids))
             already_present += 1
-            already_present_source_ids += len(record_ids)
+            already_present_source_ids += len(record_ids) - len(missing_ids)
             continue
 
         split = 'source_overlap' if len(source_splits) > 1 else source_splits[0]
@@ -398,8 +399,11 @@ def build_paharili_gbm_rows(source_rows, existing_text_rows):
         'source_record_ids_already_in_existing_configs': already_present_source_ids,
         'new_records': len(output),
         'new_source_record_ids': sum(len(row['source_record_ids']) for row in output),
-        'all_source_record_ids_preserved': (
+        'source_record_ids_duplicating_other_sources': len(other_source_duplicate_ids),
+        'source_record_ids_duplicating_other_sources_sample': other_source_duplicate_ids[:20],
+        'all_source_record_ids_accounted_for': (
             already_present_source_ids
+            + len(other_source_duplicate_ids)
             + sum(len(row['source_record_ids']) for row in output)
             == len(garhwali_rows)
         ),
