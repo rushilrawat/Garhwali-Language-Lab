@@ -1,8 +1,8 @@
 # Project File Map
 
-This index maps Git-tracked and non-ignored files in the public checkout. Ignored raw downloads, caches, model weights, and generated corpus payloads are not listed. Local disk totals vary by checkout; source and release inventories live in the linked reports and manifests.
+This index maps the Git-tracked files in the public checkout. Ignored raw downloads, caches, model weights, and generated corpus payloads are not listed. Local disk totals vary by checkout; record inventories and hashes live in the source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **1,076**.
+Files indexed: **1,095**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -13,6 +13,7 @@ python scripts/generate_project_file_map.py
 ## Root files
 
 - `.gitignore`
+- `.nojekyll`
 - `ATTRIBUTION.md`
 - `DATASET_CARD.md`
 - `LICENSE`
@@ -69,6 +70,7 @@ python scripts/generate_project_file_map.py
 ## `explorer/`
 
 - `explorer/index.html`
+- `explorer/mountains.png`
 
 ## `incoming/`
 
@@ -98,6 +100,7 @@ python scripts/generate_project_file_map.py
 - `project-status/huggingface-current-metrics-and-utility-2026-10-06.md`
 - `project-status/kaggle-release-readiness-2026-10-06.md`
 - `project-status/language-quality-status-2026-09-10.md`
+- `project-status/local-candidate-metrics.md`
 - `project-status/model-training-readiness-2026-10-06.md`
 - `project-status/native-reference-review-readiness-2026-09-15.md`
 - `project-status/product-progress-2026-09-29.md`
@@ -106,6 +109,7 @@ python scripts/generate_project_file_map.py
 ## `release/`
 
 - `release/final-audit.json`
+- `release/garhwali_bench_v0.2-draft_snapshot.json`
 - `release/v0.1.0-manifest.json`
 - `release/v0.1.0/README.md`
 - `release/v0.1.0/artifacts/data/huggingface/garhwali-language-lab/ATTRIBUTION.md`
@@ -825,6 +829,7 @@ python scripts/generate_project_file_map.py
 - `scripts/experiments/build_sravaani_recovery_adjudication.py`
 - `scripts/experiments/calibrate_sravaani_recovery_confidence.py`
 - `scripts/experiments/compare_asr_predictions.py`
+- `scripts/experiments/diagnose_split_components.py`
 - `scripts/experiments/evaluate_indicbert_transfer.py`
 - `scripts/experiments/evaluate_mt0_generation_checkpoints.py`
 - `scripts/experiments/evaluate_mt0_selected_test.py`
@@ -871,6 +876,7 @@ python scripts/generate_project_file_map.py
 - `scripts/extract_vaani_audio.py`
 - `scripts/finalize_local_release.sh`
 - `scripts/finalize_local_release_v0_2.sh`
+- `scripts/freeze_benchmark.py`
 - `scripts/garhwali_lab/__init__.py`
 - `scripts/garhwali_lab/hashing.py`
 - `scripts/garhwali_lab/io.py`
@@ -878,6 +884,7 @@ python scripts/generate_project_file_map.py
 - `scripts/garhwali_lab/text.py`
 - `scripts/garhwali_lab/version.py`
 - `scripts/generate_project_file_map.py`
+- `scripts/hf_card.py`
 - `scripts/hf_jobs/run_hf_package_validation_job.sh`
 - `scripts/hf_jobs/run_indicbert_balanced_hf_job.sh`
 - `scripts/hf_jobs/run_indicbert_hf_job.sh`
@@ -905,6 +912,8 @@ python scripts/generate_project_file_map.py
 - `scripts/hf_jobs/run_text_noise_audit_hf_job.sh`
 - `scripts/hf_jobs/run_whisper_agreement_hf_job.sh`
 - `scripts/hf_jobs/run_whisper_turbo_agreement_hf_job.sh`
+- `scripts/hf_rights.py`
+- `scripts/hf_rows.py`
 - `scripts/hf_source_registry.py`
 - `scripts/ingest_archive_dabral_references.py`
 - `scripts/ingest_archive_holy_himalaya.py`
@@ -960,6 +969,7 @@ python scripts/generate_project_file_map.py
 - `scripts/segment_text_corpus.py`
 - `scripts/sync_release_index.py`
 - `scripts/tag_language_quality.py`
+- `scripts/templates/hf_dataset_card.md`
 - `scripts/validate_benchmark_v02.py`
 - `scripts/validate_hf_package_cloud.py`
 - `scripts/validate_ocr_corrections.py`
@@ -984,6 +994,7 @@ python scripts/generate_project_file_map.py
 ## `tests/`
 
 - `tests/__init__.py`
+- `tests/fixtures/e2e_text_pipeline_expected.json`
 - `tests/test_analyze_generation_output_diagnostics.py`
 - `tests/test_analyze_retrieval_cluster_uncertainty.py`
 - `tests/test_analyze_retrieval_misses.py`
@@ -1041,6 +1052,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_build_vaani_corpus_manifests.py`
 - `tests/test_build_vaani_source_conflicts.py`
 - `tests/test_calibrate_sravaani_recovery_confidence.py`
+- `tests/test_carry_forward_configs.py`
 - `tests/test_check_source_freshness.py`
 - `tests/test_clean_text_corpus.py`
 - `tests/test_collect_online.py`
@@ -1048,10 +1060,12 @@ python scripts/generate_project_file_map.py
 - `tests/test_compare_asr_predictions.py`
 - `tests/test_compare_hf_release_metrics.py`
 - `tests/test_deep_cleanup.py`
+- `tests/test_end_to_end_text_pipeline.py`
 - `tests/test_evaluate_indicbert_transfer.py`
 - `tests/test_evaluate_sravaani_finetune.py`
 - `tests/test_evaluation_run_manifest.py`
 - `tests/test_export_licensed_sources.py`
+- `tests/test_freeze_benchmark.py`
 - `tests/test_garhwali_lab.py`
 - `tests/test_generate_project_file_map.py`
 - `tests/test_hf_meta_omni_schema.py`
@@ -1095,6 +1109,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_redecode_supervised_review.py`
 - `tests/test_refine_priority_text.py`
 - `tests/test_refresh_corpus_after_ingestion.py`
+- `tests/test_refresh_steps.py`
 - `tests/test_register_asr_stage0.py`
 - `tests/test_register_asr_stage1_pilot.py`
 - `tests/test_register_asr_stage1_weighted_batch_pilot.py`
@@ -1115,9 +1130,13 @@ python scripts/generate_project_file_map.py
 - `tests/test_run_translation_baseline.py`
 - `tests/test_run_whisper_comparison.py`
 - `tests/test_score_benchmark_predictions.py`
+- `tests/test_score_uncertainty_and_snapshot.py`
 - `tests/test_search_garhwali_lexicon.py`
 - `tests/test_segment_long_audio.py`
 - `tests/test_segment_text_corpus.py`
+- `tests/test_shared_helpers.py`
+- `tests/test_signed_off_public_domain.py`
+- `tests/test_speech_and_training_builders.py`
 - `tests/test_sweep_sravaani_decoding.py`
 - `tests/test_sweep_sravaani_garhwali.py`
 - `tests/test_sync_release_index.py`
