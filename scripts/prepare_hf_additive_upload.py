@@ -194,6 +194,55 @@ def _config_blocks(front: str) -> dict[str, str]:
     return {name: block.rstrip("\n") for name, block in blocks.items()}
 
 
+_TABLE_ROW = re.compile(r"^\| `([\w.-]+)` \|")
+_DATED_HEADING = re.compile(r"\b\d{4}\b")
+
+
+def _carry_forward_body(body: str, previous_body: str, carried: list[str]) -> str:
+    """Keep the live card's table rows and prose for carried-forward configs.
+
+    Rows of the configurations table go after the new table's last row. A
+    ``## `` section of the live card that names a carried config and is missing
+    from the new card goes right after that table's section. Dated snapshot
+    sections ("... 8 October 2026") are left behind: they describe an older
+    release.
+    """
+    previous_lines = previous_body.split("\n")
+    rows = [
+        line for line in previous_lines
+        if (match := _TABLE_ROW.match(line)) and match.group(1) in carried
+    ]
+    sections = re.split(r"\n(?=## )", previous_body)
+    new_headings = {line for line in body.split("\n") if line.startswith("## ")}
+    extra = [
+        section.strip("\n") for section in sections
+        if section.startswith("## ")
+        and section.split("\n", 1)[0] not in new_headings
+        and not _DATED_HEADING.search(section.split("\n", 1)[0])
+        and any(f"`{name}`" in section for name in carried)
+    ]
+    lines = body.split("\n")
+    last_row = max(
+        (index for index, line in enumerate(lines) if _TABLE_ROW.match(line)), default=None
+    )
+    if last_row is None:
+        lines += ["", *rows] if rows else []
+        insert_at = len(lines)
+    else:
+        lines[last_row + 1:last_row + 1] = rows
+        after = last_row + 1 + len(rows)
+        insert_at = next(
+            (index for index in range(after, len(lines)) if lines[index].startswith("## ")),
+            len(lines),
+        )
+    if extra:
+        block = "\n\n".join(extra).split("\n") + [""]
+        if insert_at == len(lines):
+            block = [""] + block
+        lines[insert_at:insert_at] = block
+    return "\n".join(lines)
+
+
 def carry_forward_configs(card: str, previous_card: str, prefix: str) -> tuple[str, list[str]]:
     """Keep configs the live card declares from earlier releases.
 
@@ -201,10 +250,11 @@ def carry_forward_configs(card: str, previous_card: str, prefix: str) -> tuple[s
     Hub shows. A config the new card lacks, whose files all live under an
     earlier ``releases/`` prefix, would silently disappear from the Hub even
     though its files stay in the repo. Such configs are appended, with their
-    dataset_info entry, exactly as the live card declares them.
+    dataset_info entry, exactly as the live card declares them, along with
+    their row in the configurations table and their own card section.
     """
     front, rest, opener = _front_matter(card)
-    previous_front, _, _ = _front_matter(previous_card)
+    previous_front, previous_rest, _ = _front_matter(previous_card)
     new_blocks = _config_blocks(front)
     previous_blocks = _config_blocks(previous_front)
     previous_meta = yaml.safe_load(previous_front) or {}
@@ -246,6 +296,7 @@ def carry_forward_configs(card: str, previous_card: str, prefix: str) -> tuple[s
     names = [config["config_name"] for config in merged["configs"]]
     if len(names) != len(set(names)) or not set(carried) <= set(names):
         raise ValueError("Carried-forward configs did not merge cleanly")
+    rest = _carry_forward_body(rest, previous_rest, carried)
     return opener + merged_front + rest, carried
 
 

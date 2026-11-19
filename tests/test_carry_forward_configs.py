@@ -47,6 +47,39 @@ class CarryForwardTests(unittest.TestCase):
         self.assertNotIn('text', carried)
         self.assertNotIn('legacy_root', carried)
 
+    def test_carries_table_rows_and_config_section_but_not_dated_snapshots(self):
+        new_body = (
+            '# Card v0.2.9\n\n## Configurations and current row counts\n\n'
+            '| Configuration | Rows | Use |\n| --- | ---: | --- |\n'
+            '| `text` | 19,321 | Garhwali text examples |\n\n## Developer quick start\n\nRun it.\n'
+        )
+        live_body = (
+            '# Card v0.2.8\n\n## Current developer status — 8 October 2026\n\n'
+            'Old numbers mention `screened_meta_gbm`.\n\n'
+            '## Configurations and current row counts\n\n'
+            '| `text` | 18,598 | Garhwali text examples |\n'
+            '| `screened_meta_gbm` | 1,841 | experimental sentence-level text training candidates |\n\n'
+            '## Clean screened text config\n\nThe v0.2.8 addition exposes `screened_meta_gbm`.\n\n'
+            '## Developer quick start\n\nRun it.\n'
+        )
+        new = NEW.replace('# Card v0.2.9\n', new_body)
+        live = LIVE.replace('# Card\n', live_body)
+
+        merged, carried = m.carry_forward_configs(new, live, 'releases/v0.2.9')
+
+        body = merged.split('\n---\n', 1)[1]
+        self.assertEqual(carried, ['screened_meta_gbm'])
+        self.assertIn(
+            '| `text` | 19,321 | Garhwali text examples |\n'
+            '| `screened_meta_gbm` | 1,841 | experimental sentence-level text training candidates |\n\n'
+            '## Clean screened text config\n\nThe v0.2.8 addition exposes `screened_meta_gbm`.\n\n'
+            '## Developer quick start',
+            body,
+        )
+        self.assertNotIn('8 October 2026', body)
+        self.assertNotIn('18,598', body)
+        self.assertEqual(body.count('## Developer quick start'), 1)
+
     def test_nothing_to_carry_returns_card_unchanged(self):
         merged, carried = m.carry_forward_configs(NEW, NEW, 'releases/v0.2.9')
         self.assertEqual((merged, carried), (NEW, []))

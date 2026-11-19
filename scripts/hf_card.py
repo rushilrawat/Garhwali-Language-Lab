@@ -249,7 +249,14 @@ def dataset_card(report, dataset_info=None):
         'paharili_collapsed_records': paharili.get('collapsed_duplicate_source_records', 0),
         'paharili_new_source_ids': paharili.get('new_source_record_ids', 0),
         'paharili_existing_source_ids': paharili.get('source_record_ids_already_in_existing_configs', 0),
-        'paharili_other_source_ids': paharili.get('source_record_ids_duplicating_other_sources', 0),
+        'paharili_other_source_note': (
+            f" Another {paharili['source_record_ids_duplicating_other_sources']:,} PahariLI "
+            f"{'row repeats' if paharili['source_record_ids_duplicating_other_sources'] == 1 else 'rows repeat'} "
+            "a sentence that another config already holds from a different source. "
+            "They are left out so that no text appears twice or in two splits; the "
+            "release report lists them under `paharili_gbm_metrics`."
+            if paharili.get('source_record_ids_duplicating_other_sources') else ''
+        ),
         'paharili_train': paharili_splits.get('train', 0),
         'paharili_test': paharili_splits.get('test', 0),
         'paharili_source_overlap': paharili_splits.get('source_overlap', 0),
