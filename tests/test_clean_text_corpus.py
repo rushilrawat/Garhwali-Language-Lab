@@ -29,8 +29,9 @@ class CleanTextTests(unittest.TestCase):
         self.assertEqual(m.clean_text(once), (once, []))
 
     def test_precomposed_nukta_letters_are_nfc_normalized(self):
-        text, _ = m.clean_text('\u095c')  # precomposed DDDHA is a composition exclusion
+        text, changes = m.clean_text('\u095c')  # precomposed DDDHA is a composition exclusion
         self.assertEqual(text, '\u0921\u093c')
+        self.assertEqual(changes, ['normalized_unicode_nfc'])
 
     def test_native_text_needs_no_automatic_change(self):
         text = 'म्यार गढ़वाली भाषा'

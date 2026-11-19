@@ -16,6 +16,10 @@ INVISIBLE = dict.fromkeys(map(ord, '\u200b\u200c\u200d\u2060\ufeff'), None)
 def clean_text(text):
     changes = []
     cleaned = unicodedata.normalize('NFC', text)
+    if cleaned != text:
+        # Usually precomposed nukta letters (ड़ U+095C becomes ड + ़), which
+        # Unicode excludes from composition.
+        changes.append('normalized_unicode_nfc')
     without_invisible = cleaned.translate(INVISIBLE)
     if without_invisible != cleaned:
         changes.append('removed_invisible_characters')

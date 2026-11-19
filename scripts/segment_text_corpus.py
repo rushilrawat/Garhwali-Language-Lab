@@ -17,6 +17,10 @@ OUT = ROOT/'data/processed/model_ready/segments'
 ABBREVIATIONS = frozenset({'डॉ', 'डा', 'श्री', 'प्रो', 'सं', 'पृ', 'ई', 'कु', 'स्व', 'पं'})
 _BOUNDARY = re.compile(
     r'(?<=[।!?])\s+'
+    # OCR often drops the space after a danda (एक।दूसर). Split there too when a
+    # Devanagari letter follows, but not before a digit or another danda, so
+    # verse numbers (।१।, ॥२॥) stay attached.
+    r'|(?<=[।॥])(?=[\u0900-\u0963\u0970-\u097f])'
     # A double danda ends a verse unless a verse number follows (॥ १ ॥).
     r'|(?<=॥)\s+(?![\d०-९]+\s*॥)'
     r'|(?<=[^\d]\.)(?:\s+|$)'
