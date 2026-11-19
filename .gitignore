@@ -141,3 +141,4 @@ coverage/
 data/review/
 data/training/
 data/exports/
+.coverage

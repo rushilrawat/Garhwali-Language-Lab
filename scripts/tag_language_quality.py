@@ -378,7 +378,7 @@ def parallel_entries(row):
         english_values = []
         for field in ('parallel_english', 'english_prompt', 'translation', 'english_alignments'):
             value = metadata.get(field)
-            if isinstance(value, list): english_values.extend(value)
+            if isinstance(value, list): english_values.extend(item for item in value if item not in (None, ''))
             elif value not in (None, ''): english_values.append(value)
         for english in english_values:
             english = ' '.join(str(english).split())

@@ -58,6 +58,16 @@ build-backend = "setuptools.build_meta"
 package-dir = { "" = "scripts" }
 packages = ["garhwali_lab"]
 
+[tool.coverage.run]
+source = ["scripts", "examples"]
+
+[tool.coverage.report]
+# A no-regression floor, not a target. Scripts the end-to-end test runs as
+# subprocesses are not measured, so the real figure is higher. Raise it as
+# coverage grows.
+fail_under = 60
+skip_empty = true
+
 [tool.ruff]
 target-version = "py312"
 line-length = 120

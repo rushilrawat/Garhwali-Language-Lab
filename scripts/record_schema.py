@@ -104,6 +104,11 @@ def _reuse_scope(row: dict, family: str, rights_status: str, labels: list[str]) 
             scope += "; share-alike required"
         return scope
     normalized = {label.upper().replace(" ", "-") for label in labels}
+    # No-derivatives terms must be named before the broader CC-BY prefixes match.
+    if any(label.startswith("CC-BY-NC-ND") for label in normalized):
+        return "noncommercial use, attribution required, no derivatives under source license"
+    if any(label.startswith("CC-BY-ND") for label in normalized):
+        return "attribution required, no derivatives under source license"
     if any(label.startswith("CC-BY-NC-SA-") for label in normalized):
         return "noncommercial use; attribution and share-alike required"
     if any(label.startswith("CC-BY-SA-") for label in normalized):

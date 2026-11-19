@@ -26,10 +26,35 @@ class SegmentTests(unittest.TestCase):
     def test_does_not_split_decimal(self):
         self.assertEqual(m.segment('माप 3.14 छ।'), ['माप 3.14 छ।'])
 
-    def test_segment_split_is_deterministic(self):
-        digest = 'a' * 64
-        self.assertEqual(m.split_for_hash(digest), m.split_for_hash(digest))
-        self.assertIn(m.split_for_hash(digest), {'train', 'validation', 'test'})
+    def test_empty_and_whitespace_text_has_no_segments(self):
+        self.assertEqual(m.segment(''), [])
+        self.assertEqual(m.segment('  \n '), [])
+
+    def test_repeated_terminal_punctuation_stays_with_its_sentence(self):
+        self.assertEqual(m.segment('कख जाणा?? घर!'), ['कख जाणा??', 'घर!'])
+
+    def test_abbreviation_at_end_of_text_is_kept(self):
+        self.assertEqual(m.segment('लेखक डॉ.'), ['लेखक डॉ.'])
+
+    def test_segmentation_never_drops_or_reorders_characters(self):
+        texts = (
+            'एक वाक्य। दूसर वाक्य! तिसर?',
+            'पैली पंक्ति ॥ १ ॥ दूसरी पंक्ति ॥२॥ तिसरी',
+            'डॉ. शिवानंद नौटियाल न लेखी। माप 3.14 छ। Hello world. Next',
+        )
+        for text in texts:
+            with self.subTest(text=text):
+                self.assertEqual(''.join(m.segment(text)).replace(' ', ''), text.replace(' ', ''))
+
+    def test_hash_split_boundaries_give_a_90_5_5_target(self):
+        def digest(bucket):
+            return f'{bucket:08x}' + '0' * 56
+
+        cases = {0: 'train', 899: 'train', 900: 'validation', 949: 'validation',
+                 950: 'test', 999: 'test', 1000: 'train'}
+        for bucket, split in cases.items():
+            with self.subTest(bucket=bucket):
+                self.assertEqual(m.split_for_hash(digest(bucket)), split)
 
     def test_document_aware_splits_follow_transitive_segment_links(self):
         records = [

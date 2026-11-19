@@ -56,7 +56,7 @@ class LsiGarhwaliSpecimenTests(unittest.TestCase):
             'lsi_1916_garhwali:salani_specimen_9',
         }
         configured = {row['record_id']: row for row in module.SPECIMENS}
-        self.assertTrue(new_ids <= configured.keys())
+        self.assertEqual(set(new_ids) - set(configured), set())
         for record_id in new_ids:
             row = configured[record_id]
             self.assertIn('Garhwali', row['language_evidence'])

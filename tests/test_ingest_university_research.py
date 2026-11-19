@@ -21,7 +21,7 @@ class UniversityResearchIngestionTests(unittest.TestCase):
         catalog = json.loads(m.CATALOG.read_text(encoding="utf-8"))
         rows = [m.validate_record(row) for row in catalog["records"]]
         institutions = {row["institution"] for row in rows}
-        self.assertTrue(REQUIRED_INSTITUTIONS <= institutions)
+        self.assertEqual(set(REQUIRED_INSTITUTIONS) - set(institutions), set())
         self.assertGreaterEqual(len(rows), 8)
         self.assertEqual(len(rows), len({row["record_id"] for row in rows}))
         self.assertTrue(all(row["source_url"].startswith("https://") for row in rows))

@@ -84,5 +84,48 @@ class AsrMetricTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'same number'):
             m.summarize_slices([{'asr_target_clean': 'एक'}], [])
 
+    def test_district_and_audio_quality_slices_appear_only_when_every_row_has_them(self):
+        rows = [
+            {'asr_target_clean': 'एक', 'district': 'Tehri', 'audio_quality_status': 'clean'},
+            {'asr_target_clean': 'दो', 'district': 'Pauri', 'audio_quality_status': 'noisy'},
+            {'asr_target_clean': 'तीन', 'district': 'Tehri', 'audio_quality_status': 'clean'},
+        ]
+        scores = [
+            {'word_errors': 0, 'reference_words': 1, 'character_errors': 0, 'reference_characters': 2},
+            {'word_errors': 1, 'reference_words': 1, 'character_errors': 2, 'reference_characters': 2},
+            {'word_errors': 1, 'reference_words': 1, 'character_errors': 1, 'reference_characters': 3},
+        ]
+
+        report = m.summarize_slices(rows, scores)
+
+        self.assertEqual(report['district']['Tehri']['wer'], 1 / 2)
+        self.assertEqual(report['district']['Pauri']['records'], 1)
+        self.assertEqual(report['audio_quality']['field'], 'audio_quality_status')
+        self.assertEqual(report['audio_quality']['groups']['noisy']['cer'], 1.0)
+        self.assertIsNone(report['speaker_id'])
+
+        partial = m.summarize_slices([{**rows[0]}, {'asr_target_clean': 'दो'}], scores[:2])
+        self.assertIsNone(partial['district'])
+        self.assertFalse(partial['audio_quality']['available'])
+
+    def test_placeholder_speaker_ids_are_not_a_slice(self):
+        rows = [{'asr_target_clean': 'एक', 'speaker_id': value} for value in ('NA', 'unknown', ' null ', '')]
+        scores = [{'word_errors': 0, 'reference_words': 1, 'character_errors': 0, 'reference_characters': 2}] * 4
+        self.assertIsNone(m.summarize_slices(rows, scores)['speaker_id'])
+
+    def test_duration_and_length_bucket_edges(self):
+        rows = [{'asr_target_clean': ' '.join(['एक'] * words), 'duration_seconds': seconds}
+                for seconds, words in ((3, 10), (8, 11), (15, 25), (14.99, 26))]
+        scores = [{'word_errors': 0, 'reference_words': 1, 'character_errors': 0, 'reference_characters': 1}] * 4
+        report = m.summarize_slices(rows, scores)
+        self.assertEqual({label: v['records'] for label, v in report['duration_seconds'].items()},
+                         {'3-8s': 1, '8-15s': 2, '15s+': 1})
+        self.assertEqual({label: v['records'] for label, v in report['reference_word_count'].items()},
+                         {'1-10': 1, '11-25': 2, '26+': 1})
+
+    def test_normalization_strips_danda_and_composes_nukta(self):
+        self.assertEqual(m.normalize('गढ़वाली।  भाषा॥'), m.normalize('गढ\u093cवाली भाषा'))
+        self.assertEqual(m.score('गढ़वाली भाषा।', 'गढ\u093cवाली भाषा')['wer'], 0)
+
 
 if __name__ == '__main__': unittest.main()

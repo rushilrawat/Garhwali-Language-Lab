@@ -23,7 +23,7 @@ def write_jsonl(path, rows):
     )
 
 
-def test_wav_bytes():
+def make_wav_bytes():
     output = io.BytesIO()
     with wave.open(output, 'wb') as stream:
         stream.setnchannels(1)
@@ -33,7 +33,7 @@ def test_wav_bytes():
     return output.getvalue()
 
 
-def test_flac_bytes():
+def make_flac_bytes():
     ffmpeg = shutil.which('ffmpeg')
     samples = struct.pack('<h', 0) * 1600
     result = subprocess.run(
@@ -128,7 +128,7 @@ class PrepareMetaOmnilingualAsrTests(unittest.TestCase):
         self.temp.cleanup()
 
     def test_build_reconciles_rows_and_keeps_unsafe_test_in_audit_only(self):
-        with patch.object(prepare, 'decode_flac_to_wav', return_value=test_wav_bytes()):
+        with patch.object(prepare, 'decode_flac_to_wav', return_value=make_wav_bytes()):
             report = prepare.build_manifest(
                 self.source_path, self.text_path, self.parquet_root, self.output_path,
             )
@@ -164,7 +164,7 @@ class PrepareMetaOmnilingualAsrTests(unittest.TestCase):
         source_rows[0]['audio_sha256'] = '0' * 64
         write_jsonl(self.source_path, source_rows)
 
-        with patch.object(prepare, 'decode_flac_to_wav', return_value=test_wav_bytes()):
+        with patch.object(prepare, 'decode_flac_to_wav', return_value=make_wav_bytes()):
             with self.assertRaisesRegex(ValueError, 'audio SHA-256 mismatch'):
                 prepare.build_manifest(
                     self.source_path, self.text_path, self.parquet_root, self.output_path,
@@ -181,7 +181,7 @@ class PrepareMetaOmnilingualAsrTests(unittest.TestCase):
 
     @unittest.skipUnless(shutil.which('ffmpeg'), 'ffmpeg CLI is not installed')
     def test_ffmpeg_decoder_writes_valid_mono_16khz_pcm_wav(self):
-        flac = test_flac_bytes()
+        flac = make_flac_bytes()
         wav_bytes = prepare.decode_flac_to_wav(flac)
         with wave.open(__import__('io').BytesIO(wav_bytes), 'rb') as stream:
             self.assertEqual((stream.getnchannels(), stream.getsampwidth(), stream.getframerate()), (1, 2, 16000))
