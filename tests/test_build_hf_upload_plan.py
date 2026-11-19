@@ -82,7 +82,7 @@ class HuggingFaceUploadPlanTests(unittest.TestCase):
             report = m.build(root, visibility='public')
         self.assertEqual(report['files'], 3 + len(m.SUPPORT_FILES))
         paths = {artifact['path'] for artifact in report['artifacts']}
-        self.assertTrue(m.SUPPORT_FILES <= paths)
+        self.assertEqual(set(m.SUPPORT_FILES) - set(paths), set())
 
     def test_unlisted_release_file_is_still_rejected(self):
         with tempfile.TemporaryDirectory() as directory:

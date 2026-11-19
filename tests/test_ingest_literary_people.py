@@ -33,7 +33,7 @@ class LiteraryPeopleIngestionTests(unittest.TestCase):
         source_ids = {source["source_id"] for source in catalog["sources"]}
         rows = [m.validate_person(row, source_ids) for row in catalog["people"]]
         names = {row["canonical_name"] for row in rows}
-        self.assertTrue(REQUIRED_NAMES <= names)
+        self.assertEqual(set(REQUIRED_NAMES) - set(names), set())
         self.assertEqual(len(rows), len({row["person_id"] for row in rows}))
         self.assertTrue(any(row["verification_status"] == "name_uncertain" for row in rows))
         self.assertTrue(all(not (set(row) & m.FORBIDDEN) for row in rows))
