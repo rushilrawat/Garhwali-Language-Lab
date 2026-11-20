@@ -12,8 +12,9 @@ crawl; later Archive media intake is documented below.
 
 ## Current project context — live status checked 2026-10-07
 
-The public corpus is **v0.2.8**, with 20 named configs, 31 config/split
-views, 963,484 displayed rows, and 7.57 GB on Hugging Face. Its separate
+The public corpus is now **v0.2.9** (published 20 November 2026), with 20
+named configs, 30 config/split views and 976,343 overlapping view rows; the
+figures below were checked for v0.2.8. Its separate
 speech companion shows 118,375 rows / 36.5 GB, including 113,363 audio/source
 rows and two text-only indexes. These are overlapping platform views, not
 unique-example counts. The full 8 October metrics and limits are in the

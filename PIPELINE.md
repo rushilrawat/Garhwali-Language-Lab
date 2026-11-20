@@ -85,19 +85,20 @@ and source-catalog entry for each new source wave.
 
 The package profiles and reference index are local previews only. This helper
 never uploads to Hugging Face or changes repository visibility. The live
-v0.2.8 release includes the separate experimental `paharili_gbm` config even
+v0.2.9 release includes the separate experimental `paharili_gbm` config even
 though its sentence-level origins and reuse rights are unresolved; this is an
 explicit exception, not a rights clearance or recommendation for general model
 training. Other rights-pending source texts remain in the local all-data
 package. Candidate counts are not a measure of verified Garhwali.
 
-The current public corpus release is v0.2.8. The live Viewer reports 20 named
-configs, 31 config/split views, 963,484 displayed rows, and 7.57 GB. Those
-counts include overlapping views and 778,157 source/reference rows; they are
-not unique-example totals. The release is additive and retains prior release
-paths. The `catalog` config has 23,448 blank text fields; 15,004 normalized
-text values match content elsewhere in the public package, while 8,444
-distinct values are not otherwise exposed. See the [availability
+The current public corpus release is v0.2.9, published 20 November 2026 at
+Hub data commit `236f2ad`. Its card lists 20 named configs and 30 config/split
+views holding 976,343 rows. Those counts include overlapping views and 790,404
+source/reference rows; they are not unique-example totals. The release is
+additive and retains prior release paths. The `catalog` config has 22,997
+blank text fields; the v0.2.7 closeout scan found 15,004 normalized text values
+matching content elsewhere in the public package and 8,444 distinct values not
+otherwise exposed. See the [availability
 audit](research/huggingface-corpus-gap-resolution-2026-10-06.md) and the
 [8 October live metrics audit](project-status/current-platform-metrics-2026-10-08.md).
 The 475-row `text_resources` config is an access view over existing catalog
@@ -109,14 +110,14 @@ and
 [`research/internet-archive-intake-quality-2026-10-04.md`](research/internet-archive-intake-quality-2026-10-04.md).
 Release versions come from [`release/versions.json`](release/versions.json).
 The refresh, package builder, upload preparer, and local-release scripts
-default to `corpus.next` (currently v0.2.9), and refuse to rebuild or upload a
+default to `corpus.next` (currently v0.2.10), and refuse to rebuild or upload a
 version listed in `corpus.published` unless `GARHWALI_ALLOW_PUBLISHED_REBUILD=1`
 is set. After publishing, append the version to `corpus.published` and bump
 `corpus.next`. `GARHWALI_RELEASE_VERSION` still overrides the default for one
 run:
 
 ```bash
-GARHWALI_RELEASE_VERSION=0.2.9 .venv/bin/python scripts/ingestion_graph.py run \
+GARHWALI_RELEASE_VERSION=0.2.10 .venv/bin/python scripts/ingestion_graph.py run \
   --wave tenth --run-id next-garhwali-wave-YYYY-MM-DD --refresh-derived
 ```
 
@@ -135,10 +136,11 @@ are absent; that is an accurate input-availability signal, not a software-test
 failure. Restore the required inputs locally before executing the refresh.
 
 ```bash
-GARHWALI_RELEASE_VERSION=0.2.9 .venv/bin/python scripts/prepare_hf_additive_upload.py \
-  --prefix releases/v0.2.9 \
-  --output data/huggingface/garhwali-corpus-v0.2.9-additive-upload \
-  --plan data/huggingface/garhwali-corpus-v0.2.9-upload-plan.json
+GARHWALI_RELEASE_VERSION=0.2.10 .venv/bin/python scripts/prepare_hf_additive_upload.py \
+  --prefix releases/v0.2.10 \
+  --previous-card data/huggingface/garhwali-corpus-v0.2.9-additive-upload/README.md \
+  --output data/huggingface/garhwali-corpus-v0.2.10-additive-upload \
+  --plan data/huggingface/garhwali-corpus-v0.2.10-upload-plan.json
 ```
 
 Review the plan, verify the prefix is unused, and run its generated upload

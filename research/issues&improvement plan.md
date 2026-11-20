@@ -24,7 +24,7 @@ below preserve earlier evidence.
 
 ## Current closeout status — 2026-10-07
 
-The public corpus is v0.2.8; its current Hugging Face Viewer reports 20 named
+The public corpus is v0.2.9 (published 20 November 2026); as of the v0.2.8 check, its current Hugging Face Viewer reports 20 named
 configs, 31 config/split views, 963,484 displayed rows, and 7.57 GB. The speech
 page reports 118,375 rows / 36.5 GB, including 113,363 audio/source rows and
 text-only indexes of 2,718 VAANI references and 2,294 optional Meta train

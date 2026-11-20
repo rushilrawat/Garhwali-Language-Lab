@@ -4,7 +4,7 @@ The dataset IDs are `rushilrawat/garhwali-corpus` (text and reference tables)
 and `rushilrawat/garhwali-speech` (audio and speech metadata). Both repositories
 are public and tagged for Garhwali (`gbm`). The Hub cards link to the latest
 published revisions and preserve release history.
-This guide covers the v0.2.7 base package and its additive v0.2.8 configs.
+The current corpus release is v0.2.9 (20 November 2026), which keeps the two v0.2.8 Meta text configs. Row counts in the examples below were measured on v0.2.7/v0.2.8 and may differ slightly from v0.2.9.
 Use the Hub cards for current publication status and immutable revisions. The
 packages preserve a common rights/quality
 envelope, schema, and loading guidance. These examples stream the published
