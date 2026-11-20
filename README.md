@@ -7,7 +7,7 @@
 We organize Garhwali text, speech, folklore, scholarship, and local knowledge into reusable resources with source, rights, and quality information.
 
 [![Python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-912%20passing%20(last%20run%2011%20Nov)-brightgreen.svg)](project-status/corpus-preparation-status.md)
+[![Tests](https://img.shields.io/badge/tests-968%20passing%20(last%20run%2020%20Nov)-brightgreen.svg)](project-status/corpus-preparation-status.md)
 [![Hugging Face corpus](https://img.shields.io/badge/Hugging%20Face-corpus-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![Hugging Face speech](https://img.shields.io/badge/Hugging%20Face-speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 
@@ -89,7 +89,7 @@ Create an environment, install the developer requirements, and run the test suit
 
 Run commands from the repository root. Pipeline commands run directly (`.venv/bin/python scripts/<name>.py`) and need no `PYTHONPATH`.
 
-On 11 November 2026 the full suite ran 912 tests with no failures. Tests for the Kaggle, speech, and ingestion-graph builders need `pyarrow` and `langgraph` from the developer requirements and error out without them.
+On 20 November 2026 GitHub CI ran the full suite: 968 tests passed (1 skipped), with 62% line coverage against a 60% floor. Tests for the Kaggle, speech, and ingestion-graph builders need `pyarrow` and `langgraph` from the developer requirements and error out without them.
 
 The `requirements-*.txt` files are hash-pinned lock files generated from the extras in `pyproject.toml`, so pip installs exactly the tested versions. After changing a dependency, regenerate them with `uv pip compile pyproject.toml --extra <extra> --python-version 3.12 --universal --generate-hashes -o requirements-<name>.txt` (the command is also recorded at the top of each file). External tools are found on `PATH`; set `GARHWALI_PDFTOPPM` to point at a specific `pdftoppm` binary.
 
