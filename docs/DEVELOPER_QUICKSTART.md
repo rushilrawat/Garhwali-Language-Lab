@@ -37,15 +37,15 @@ For immutable reruns, pass a Hugging Face commit SHA with `--revision`.
 
 The corpus repository is currently better for source discovery, vocabulary
 exploration, and research than for large-scale language-model training. Its
-current Hub card displays 963,484 configuration rows and 7.57 GB; 778,157 rows
-are source/reference tables, and all config totals overlap. The v0.2.7 `text`
-config has 18,598 rows, none recommended for general text training. The
+v0.2.9 configs hold 976,343 rows; 790,404 are source/reference tables, and all
+config totals overlap. The v0.2.9 `text` config has 19,321 rows, none
+recommended for general text training. The
 additive v0.2.8 `screened_meta_gbm` view makes 1,841 non-empty, deduplicated
 sentence-length Meta transcript rows available as experimental training
 candidates; a separate 110-row short-utterance view is context-only. Those
 texts were already in the v0.2.7 public `text`/`text_expansion` views, so the
 new configs improve usability and labeling but do not add 1,951 newly sourced
-unique texts. The 14,988-row PahariLI config remains experimental
+unique texts. The 14,996-row PahariLI config remains experimental
 language-identification material with unresolved sentence origins and
 unreviewed labels.
 
@@ -98,10 +98,10 @@ The speech audio configs contain 113,363 rows (about 154.65 hours). Its latest
 (2,202 train / 373 validation / 143 test), and the optional
 `asr_meta_extra_train` index has 2,294 Meta train rows. Both are text-only
 indexes joined to the existing audio by `source_record_id`. The corpus's
-separate `asr` config remains at 2,002 rows. References are unadjudicated; the
+separate `asr` config has 1,888 rows in v0.2.9. References are unadjudicated; the
 104,500 non-empty SraVaani outputs are machine drafts, not ground truth. The
 speech page's 118,375 displayed rows includes audio and both text-only indexes.
-See the [8 October metrics audit](../project-status/current-platform-metrics-2026-10-08.md)
+See the [20 November metrics page](../project-status/current-platform-metrics-2026-11-20.md)
 before selecting a config for training or evaluation.
 
 For an audio fine-tuning example, open
@@ -195,7 +195,7 @@ status separately. The demo prints these fields with each match.
 
 ## Load the fast-tracked text view
 
-The `text_expansion` config contains **1,737** rows: 1,283 in `train` and 454
+The `text_expansion` config contains **1,559** rows: 1,128 in `train` and 431
 in `source_overlap`. They are candidates already present in the catalog, not
 new source ingestion or an independent evaluation set. Zero rows in this
 historical config are marked for general text-model training; use the separate
@@ -215,8 +215,8 @@ for row in extra_text.take(3):
 
 ## Load supplementary text resources
 
-The `text_resources` config exposes **475** rows already present in the source
-catalog: 285 in `train` and 190 in `source_overlap`. This is a lookup and
+The `text_resources` config exposes **648** rows already present in the source
+catalog: 401 in `train` and 247 in `source_overlap`. This is a lookup and
 research view with varied quality; it is not an evaluation set or uniformly
 training-ready. Check record-level rights and quality fields before reuse.
 
@@ -239,12 +239,12 @@ overlap; adding their row counts does not give the number of unique examples.
 | --- | ---: | --- |
 | `screened_meta_gbm` | 1,841 | Non-empty Meta transcript sentences; experimental LM training candidates, automated and unreviewed |
 | `short_utterances_meta_gbm` | 110 | Short Meta transcript context; not general LM training |
-| `text` | 18,598 | v0.2.7 main Garhwali text splits, with source, rights, and quality metadata |
-| `paharili_gbm` | 14,988 | PahariLI-derived Garhwali text-language-identification examples |
-| `text_expansion` | 1,737 | Additional deduplicated text view; inspect row-level status |
-| `text_resources` | 475 | Supplementary research text; inspect row-level status |
+| `text` | 19,321 | Main Garhwali text splits, with source, rights, and quality metadata |
+| `paharili_gbm` | 14,996 | PahariLI-derived Garhwali text-language-identification examples |
+| `text_expansion` | 1,559 | Additional deduplicated text view; inspect row-level status |
+| `text_resources` | 648 | Supplementary research text; inspect row-level status |
 | `lexicon` | 1,493 | Word forms, gloss candidates, and pronunciation metadata |
-| `asr` | 2,002 | Provider transcripts, not native-adjudicated |
+| `asr` | 1,888 | Provider transcripts, not native-adjudicated |
 | `sravaani_drafts` | 104,534 | Machine transcript drafts; not ground truth |
 | `instructions` | 3,228 | Instruction and response examples |
 | `catalog` | 36,105 | Unique text inventory with included text and source-linked metadata rows |
@@ -254,14 +254,14 @@ overlap; adding their row counts does not give the number of unique examples.
 | `literary_works` | 66 | Work-level bibliography |
 | `popular_songs` | 30 | Song-level metadata |
 | `university_research` | 8 | Research bibliography |
-| `record_index` | 355,846 | Archive references; not training examples |
-| `source_catalog` | 9,571 | Deduplicated sources and their known terms |
-| `record_sources` | 412,740 | Record-to-source join rows |
+| `record_index` | 358,180 | Archive references; not training examples |
+| `source_catalog` | 9,425 | Deduplicated sources and their known terms |
+| `record_sources` | 422,799 | Record-to-source join rows |
 
-The v0.2.7 package manifest recorded **961,533 total view rows** at that
-release. The live corpus page, checked 8 October 2026, reports **963,484**:
-185,327 content-config rows plus 778,157 reference rows. The additive v0.2.8
-overlay added two views and preserves earlier paths. These are configuration
+The v0.2.9 manifests record **976,343 total view rows**: 185,939
+content-config rows plus 790,404 reference rows, including the two v0.2.8
+configs carried forward. Earlier release paths are preserved. (For comparison,
+the v0.2.8 Viewer showed 963,484 rows on 8 October 2026.) These are configuration
 rows, not unique examples. The live speech page reports 118,375 displayed rows
 because its 113,363 audio/source rows are shown alongside two text-only label
 indexes (2,718 and 2,294 rows).

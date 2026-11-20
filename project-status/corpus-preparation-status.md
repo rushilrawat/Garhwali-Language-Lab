@@ -1,6 +1,41 @@
 # Corpus preparation status
 
-Status note 2026-11-20: the public corpus is now **v0.2.9** (Hub data commit `236f2ad`), with 20 named configs and 30 config/split views holding 976,343 rows; build-level figures are in [local-candidate-metrics.md](local-candidate-metrics.md). The paragraph below describes v0.2.8.
+## Corpus v0.2.9 release and pipeline fixes — 2026-11-20
+
+Corpus v0.2.9 was published additively to Hugging Face at [data commit `236f2ad`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/236f2adaa587fc237f23700a64d7cb777ee02756), under
+`releases/v0.2.9/`. All 57 planned files were verified on the Hub with
+matching sizes, the root card names v0.2.9, and the v0.2.2 to v0.2.8 paths are
+unchanged. The card lists 20 named configs and 30 config/split views; the
+release manifests total 976,343 rows (790,404 reference, 185,939 content). The
+Dataset Viewer was still processing the new files when these figures were
+taken. Per-config counts are on the [20 November metrics page](current-platform-metrics-2026-11-20.md).
+
+v0.2.9 is the first release built with the November pipeline fixes (PRs #1 to
+#13):
+
+- **Held-out splits.** Text segments split 182,611 train / 10,145 validation /
+  10,145 test (90/5/5), up from about 95/2.4/2.6 in the first local v0.2.9
+  build. Junk or very common segments no longer chain documents together, and
+  whole duplicate components are moved into validation and test until each
+  reaches 5%. Every leakage check is 0.
+- **Text cleaning.** A danda followed directly by a letter ends a segment
+  (202,901 exact-unique segments), and NFC changes are logged per row.
+- **PahariLI.** Texts already held by another source are counted instead of
+  stopping the build.
+- **Hub card.** Configs carried forward from earlier releases keep their
+  documentation; the generated upload command is quoted.
+- **Tests.** The [CI run](https://github.com/rushilrawat/Garhwali-Language-Lab/actions/runs/44677966885) after the doc refresh passed 968 tests (1 skipped) with
+  62% line coverage against a 60% floor.
+
+`release/versions.json` now lists v0.2.9 as published and v0.2.10 as next.
+Unchanged: 0 records native-adjudicated, 8,444 distinct texts held locally
+pending rights (v0.2.7 scan), benchmark still a local draft with 0 of 5 task
+areas eligible for independent-final claims. Speech and Kaggle releases did
+not change.
+
+Build-level figures (parent texts, characters, segments) are in [local-candidate-metrics.md](local-candidate-metrics.md).
+
+## v0.2.8 status — 2026-10-08
 
 Updated 2026-10-08. This remains a chronological preparation log: experiment and release paragraphs retain the dataset snapshot they measured and are not current metrics unless stated. The public corpus is **v0.2.8** over the v0.2.7 source package. The live Viewer reports 20 named configs, 31 config/split views, 963,484 displayed rows, and 7.57 GB: 778,157 source/reference rows plus 185,327 overlapping content-view rows. Its two added views expose 1,841 existing Meta transcript values as machine-screened training candidates and 110 as short context; these are not new source text and neither is native-reviewed. The 18,598-row historical `text` config still has zero records marked recommended for general text training; `text_expansion` (1,737) and `text_resources` (475) likewise have zero recommended rows. The corpus `asr` view has 2,002 unreviewed reference rows. The separate speech page shows 118,375 rows / 36.5 GB, comprising 113,363 source/audio rows and text-only indexes of 2,718 VAANI references plus 2,294 Meta train rows; its 113,350 unique hashes represent about 154.65 hours. Provider and machine-draft references remain unadjudicated. The 104,500 non-empty SraVaani drafts are hypotheses, not human references. A fresh local scan found 119.93 GiB allocated under `data/`; its storage definitions are in the [current metrics and utility audit](huggingface-current-metrics-and-utility-2026-10-06.md). The current cross-platform counts and definitions are in the [8 October metrics audit](current-platform-metrics-2026-10-08.md). A cross-config string audit finds 15,004 of 23,448 blank catalog values elsewhere in the public JSONL package and 8,444 distinct texts not present in any public config; all 8,444 remain local with rights pending. Their locators are inline for 7,675 and available through `source_catalog` for 769; some identify only a dataset or collection. See the [v0.2.7 publication report](../research/huggingface-corpus-v0.2.7-release-2026-10-06.md), [availability audit](../research/huggingface-corpus-gap-resolution-2026-10-06.md), and [`project-status/finalreport.md`](finalreport.md). Historical dated sections below remain unchanged. Raw and downloaded material remains gitignored.
 

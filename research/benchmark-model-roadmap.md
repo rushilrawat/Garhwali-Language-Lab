@@ -1,6 +1,6 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Updated:** 2026-10-08. Current corpus: v0.2.9 (published 2026-11-20); speech companion: v0.2.1. Benchmark/model findings below retain their dated evaluation snapshots. See the [8 October platform metrics audit](../project-status/current-platform-metrics-2026-10-08.md) for current counts and limits.
+**Updated:** 2026-11-20. Current corpus: v0.2.9 (published 2026-11-20); speech companion: v0.2.1. Benchmark/model findings below retain their dated evaluation snapshots. See the [20 November metrics page](../project-status/current-platform-metrics-2026-11-20.md) for current counts and limits.
 **Scope:** GarhwaliBench and the model-research suite in this repository
 **Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 
@@ -11,7 +11,12 @@ This is the working plan for moving from useful but mixed-history experiments to
 Corpus documentation and public availability are summarized in the
 [project closeout](../project-status/finalreport.md) and
 [text-availability audit](huggingface-corpus-gap-resolution-2026-10-06.md).
-The corpus release is public at v0.2.8 over the v0.2.7 source package; the
+Update 2026-11-20: corpus v0.2.9 is public, with text segments split 90/5/5
+(182,611 / 10,145 / 10,145) and every leakage check at 0. That makes it the
+release to freeze the v0.2 benchmark splits on; baselines have not been rerun
+against it yet. The rest of this section describes the 7 October state.
+
+The corpus release was public at v0.2.8 over the v0.2.7 source package; the
 speech companion remains public at v0.2.1. The v0.2.8 text views expose 1,841
 existing Meta transcript values as experimental LM candidates and 110 as
 context-only rows; they add no new source text. GarhwaliBench is still a local draft, its data is not cleared for

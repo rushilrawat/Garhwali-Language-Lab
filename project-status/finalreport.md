@@ -1,5 +1,38 @@
 # Garhwali Language Lab — final review report
 
+## Corpus v0.2.9 release — 2026-11-20
+
+Corpus v0.2.9 was published additively to Hugging Face at [data commit `236f2ad`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/236f2adaa587fc237f23700a64d7cb777ee02756), under
+`releases/v0.2.9/`. All 57 planned files were verified on the Hub with
+matching sizes, the root card names v0.2.9, and the v0.2.2 to v0.2.8 paths are
+unchanged. The card lists 20 named configs and 30 config/split views; the
+release manifests total 976,343 rows (790,404 reference, 185,939 content). The
+Dataset Viewer was still processing the new files when these figures were
+taken. Per-config counts are on the [20 November metrics page](current-platform-metrics-2026-11-20.md).
+
+v0.2.9 is the first release built with the November pipeline fixes (PRs #1 to
+#13):
+
+- **Held-out splits.** Text segments split 182,611 train / 10,145 validation /
+  10,145 test (90/5/5), up from about 95/2.4/2.6 in the first local v0.2.9
+  build. Junk or very common segments no longer chain documents together, and
+  whole duplicate components are moved into validation and test until each
+  reaches 5%. Every leakage check is 0.
+- **Text cleaning.** A danda followed directly by a letter ends a segment
+  (202,901 exact-unique segments), and NFC changes are logged per row.
+- **PahariLI.** Texts already held by another source are counted instead of
+  stopping the build.
+- **Hub card.** Configs carried forward from earlier releases keep their
+  documentation; the generated upload command is quoted.
+- **Tests.** The [CI run](https://github.com/rushilrawat/Garhwali-Language-Lab/actions/runs/44677966885) after the doc refresh passed 968 tests (1 skipped) with
+  62% line coverage against a 60% floor.
+
+`release/versions.json` now lists v0.2.9 as published and v0.2.10 as next.
+Unchanged: 0 records native-adjudicated, 8,444 distinct texts held locally
+pending rights (v0.2.7 scan), benchmark still a local draft with 0 of 5 task
+areas eligible for independent-final claims. Speech and Kaggle releases did
+not change.
+
 ## Developer and platform addendum — 2026-10-08
 
 The [current platform audit](current-platform-metrics-2026-10-08.md) reconfirmed

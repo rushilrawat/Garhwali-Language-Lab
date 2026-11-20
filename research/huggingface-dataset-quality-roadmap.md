@@ -4,9 +4,13 @@
 **Scope:** Make `rushilrawat/garhwali-corpus` and `rushilrawat/garhwali-speech` more useful, trustworthy, and easy to apply.
 **Current public corpus release:** v0.2.9 (published 2026-11-20). New releases remain additive; existing records and source evidence are preserved.
 
-## Latest platform state — 2026-10-07
+## Latest platform state
 
-The live corpus page reports 963,484 displayed rows / 7.57 GB across 20
+Corpus v0.2.9 was published on 2026-11-20 with 20 configs, 30 config/split
+views and 976,343 manifest rows (790,404 reference, 185,939 content); see the
+[20 November metrics page](../project-status/current-platform-metrics-2026-11-20.md). The paragraph below is the 2026-10-07 state.
+
+On 2026-10-07 the live corpus page reported 963,484 displayed rows / 7.57 GB across 20
 configs and 31 split views: 778,157 reference rows and 185,327 overlapping
 content rows. The 1,841-row sentence-level candidate view and 110-row context
 view are live; both re-index existing Meta-derived text and remain unreviewed.
@@ -508,11 +512,11 @@ versioned manifest and comparable metrics.
 | Phase | Status | Current proof / next deliverable |
 | --- | --- | --- |
 | 0. Baseline | Complete | [1 Oct baseline](huggingface-quality-baseline-2026-10-01.md) |
-| 1. Quality scorecard | Complete for published package checks | v0.2.7 preflight passed; latest recorded Viewer check lists 29 splits and Parquet exports. These are integrity checks, not linguistic accuracy. |
+| 1. Quality scorecard | Complete for published package checks | v0.2.9 preflight passed with 0 schema errors and 28 package views (30 on the live card with two carried-forward configs). The Viewer had not finished processing v0.2.9 on 2026-11-20. These are integrity checks, not linguistic accuracy. |
 | 2. Rights/provenance | Closed at the current release; clearance gap documented | v0.2.7 closeout: 15,004 of 23,448 blank catalog values occur elsewhere in the public package; 8,444 distinct full texts remain local with rights pending. PahariLI sentence origins also remain unresolved. |
-| 3. Dedup/splits | Partial | v0.2.7 isolates four PahariLI source-overlap groups; earlier preflight found zero identity leakage for its tested views. Source-family, semantic, audio, and speaker review remain incomplete. |
-| 4. Text/lexicon | Closed for this project stage | The public views contain 1,737 expansion and 475 resource rows; no text row currently meets the conservative model-training recommendation. |
+| 3. Dedup/splits | Text splits fixed in v0.2.9; review still partial | v0.2.9 text segments split 90/5/5 (182,611 / 10,145 / 10,145) with every leakage check at 0; junk segments no longer chain documents, and PahariLI texts held by other sources are counted. Source-family, semantic, audio, and speaker review remain incomplete. |
+| 4. Text/lexicon | Closed for this project stage | v0.2.9 public views contain 1,559 expansion and 648 resource rows; no text row currently meets the conservative model-training recommendation. |
 | 5. Speech/transcripts | Existing partial audits | Explicit labeled/empty/draft counts and split-safe manifests |
 | 6. Coverage expansion | Closed at v0.2.7; Archive intake remains local | 119 local payloads, 4,011 OCR pages, 722-page Chatak/Shailesh map, and 39 media files were not newly cleared or published. No verified Garhwali rows were promoted from this intake. |
-| 7. HF release views | Complete for v0.2.7 | Data at `1f7b2ce`; 18 named configs, 29 config/split views; prior release paths retained; latest recorded live Viewer check lists 29/29 splits and Parquet outputs |
+| 7. HF release views | Complete for v0.2.9 | Data at `236f2ad` (2026-11-20); 20 named configs, 30 config/split views; prior release paths retained and verified. Viewer processing pending at publish time. |
 | 8. Automation | Local preparation automated; publication remains deliberate | Ingestion/refresh graph, provenance, package preflight, and additive upload-plan gates exist. HF uploads remain explicit; the next default candidate is v0.2.10. |

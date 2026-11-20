@@ -7,7 +7,8 @@ Project-wide status, readiness, metrics, progress, and audit reports are grouped
 ## Read these first
 
 - [README.md](../README.md) — Project overview and current narrative.
-- [current-platform-metrics-2026-10-08.md](../project-status/current-platform-metrics-2026-10-08.md) — Live Hugging Face and Kaggle row counts, split views, GitHub CI status, and count definitions.
+- [current-platform-metrics-2026-11-20.md](../project-status/current-platform-metrics-2026-11-20.md) — Corpus v0.2.9 per-config counts, what changed, and the 20 November CI result.
+- [current-platform-metrics-2026-10-08.md](../project-status/current-platform-metrics-2026-10-08.md) — The 8 October Hugging Face, Kaggle, and GitHub audit (v0.2.8) and count definitions.
 - [DEVELOPER_QUICKSTART.md](DEVELOPER_QUICKSTART.md) — Exact Hugging Face config counts, copy-paste loaders, pandas/DuckDB examples, and lexicon search.
 - [DEVELOPER_READINESS.md](DEVELOPER_READINESS.md) — Five-step developer readiness status and limits of current training examples.
 - [DATASET_CARD.md](../DATASET_CARD.md) — Current v0.2.9 release scope, corrected counts, availability gap, and reuse limitations.
@@ -72,7 +73,7 @@ Project-wide status, readiness, metrics, progress, and audit reports are grouped
 
 ## How to keep the docs consistent
 
-- Treat the 8 October addendum at the top of `project-status/finalreport.md` and [current-platform-metrics-2026-10-08.md](../project-status/current-platform-metrics-2026-10-08.md) as the latest cross-platform status.
+- Treat the 20 November v0.2.9 section at the top of `project-status/finalreport.md` and [current-platform-metrics-2026-11-20.md](../project-status/current-platform-metrics-2026-11-20.md) as the latest status; the 8 October audit remains the latest speech and Kaggle check.
 - Treat [the 6 October Hugging Face metrics audit](../project-status/huggingface-current-metrics-and-utility-2026-10-06.md) as the v0.2.7 baseline snapshot, the [quality-release report](../research/quality-screened-text-release-report-2026-10-06.md) as the v0.2.8 text addendum, and [current-platform-metrics-2026-10-08.md](../project-status/current-platform-metrics-2026-10-08.md) as the live cross-platform audit. The 1,841-row training view and 110-row context view reuse existing transcript values. The corpus page reports 963,484 overlapping config rows; the speech page reports 118,375, comprising 113,363 audio/source rows plus text-only indexes of 2,718 and 2,294. None of these totals is a unique-language-example count.
 - Treat `project-status/benchmark-research-status-2026-09-25.md` as the measured benchmark/research scorecard with later dated addenda; older experiment reports are historical snapshots.
 - The latest broad benchmark scorecard refresh is dated 2026-09-30; the Meta Omnilingual ASR validation and adaptation addenda are dated 2026-10-04/05. These are development diagnostics, not independent final accuracy; no native-language adjudications have been completed.

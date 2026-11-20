@@ -1,6 +1,6 @@
 # Benchmark and model roadmap issues & improvement plan
 
-**Updated:** 2026-10-07 (current platform status; detailed benchmark evidence below remains dated snapshots)
+**Updated:** 2026-11-20 (corpus v0.2.9 status; detailed benchmark evidence below remains dated snapshots)
 
 **Scope:** issues found while executing the benchmark/model roadmap and its
 immediately preceding retrieval, generation, and ASR work. This is a living
@@ -24,7 +24,12 @@ below preserve earlier evidence.
 
 ## Current closeout status — 2026-10-07
 
-The public corpus is v0.2.9 (published 20 November 2026); as of the v0.2.8 check, its current Hugging Face Viewer reports 20 named
+Update 20 November 2026: the public corpus is now v0.2.9, with 20 named configs,
+30 config/split views and 976,343 manifest rows; see the [20 November metrics page](../project-status/current-platform-metrics-2026-11-20.md).
+Its text segments now split 90/5/5 (182,611 / 10,145 / 10,145) with every
+leakage check at 0, which unblocks freezing the v0.2 benchmark splits on this
+release. The 20 November CI run passed 968 tests.
+On 7 October the v0.2.8 Viewer reported 20 named
 configs, 31 config/split views, 963,484 displayed rows, and 7.57 GB. The speech
 page reports 118,375 rows / 36.5 GB, including 113,363 audio/source rows and
 text-only indexes of 2,718 VAANI references and 2,294 optional Meta train
