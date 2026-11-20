@@ -1,6 +1,7 @@
 from garhwali_lab.version import corpus_release_version
 import hashlib
 import json
+import shlex
 import subprocess
 import tempfile
 import unittest
@@ -228,6 +229,33 @@ class AdditiveHuggingFaceUploadTests(unittest.TestCase):
                 )
 
             self.assertIn("Add Garhwali corpus v9.0.1", plan["command"])
+
+    def test_upload_command_survives_spaces_in_the_output_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "Garhwali Language Lab"
+            root.mkdir()
+            package = self.make_package(root)
+            manifest_path = package / "manifest.json"
+            manifest = json.loads(manifest_path.read_text())
+            manifest["release_id"] = "garhwali-language-lab-v9.0.1"
+            manifest_path.write_text(json.dumps(manifest))
+            with patch(
+                "scripts.prepare_hf_additive_upload.preflight_candidate",
+                return_value={
+                    "run_id": "garhwali-hf-public-cloud-validation-v9.0.1",
+                    "status": "passed",
+                    "report_sha256": "b" * 64,
+                    "record_schema_version": "1.0.0",
+                    "config_count": 1,
+                },
+            ):
+                plan = prepare(package, root / "upload", root / "plan.json", "releases/v9.0.1")
+
+            arguments = shlex.split(plan["command"])
+            self.assertEqual(arguments[:5], [
+                "hf", "upload", "rushilrawat/garhwali-corpus", str((root / "upload").resolve()), ".",
+            ])
+            self.assertEqual(arguments[-1], "Add Garhwali corpus v9.0.1")
 
 
 if __name__ == "__main__":

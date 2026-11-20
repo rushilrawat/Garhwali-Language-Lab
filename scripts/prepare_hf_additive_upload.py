@@ -7,6 +7,7 @@ import argparse
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -193,6 +194,61 @@ def _config_blocks(front: str) -> dict[str, str]:
     return {name: block.rstrip("\n") for name, block in blocks.items()}
 
 
+_TABLE_ROW = re.compile(r"^\| `([\w.-]+)` \|")
+_DATED_HEADING = re.compile(r"\b\d{4}\b")
+
+
+def _carry_forward_body(body: str, previous_body: str, carried: list[str]) -> str:
+    """Keep the live card's table rows and prose for carried-forward configs.
+
+    Rows of the configurations table go after the new table's last row. A
+    ``## `` section of the live card that names a carried config and is missing
+    from the new card goes right after that table's section. Dated snapshot
+    sections ("... 8 October 2026") are left behind: they describe an older
+    release.
+    """
+    sections = re.split(r"\n(?=## )", previous_body)
+    new_headings = {line for line in body.split("\n") if line.startswith("## ")}
+    extra = [
+        section.strip("\n") for section in sections
+        if section.startswith("## ")
+        and section.split("\n", 1)[0] not in new_headings
+        and not _DATED_HEADING.search(section.split("\n", 1)[0])
+        and any(f"`{name}`" in section for name in carried)
+    ]
+    # Rows come from the main table only: a carried section brings its own
+    # small table along, and taking its rows too would list a config twice.
+    rows = {}
+    for section in sections:
+        if section.strip("\n") in extra:
+            continue
+        for line in section.split("\n"):
+            match = _TABLE_ROW.match(line)
+            if match and match.group(1) in carried:
+                rows.setdefault(match.group(1), line)
+    rows = [rows[name] for name in carried if name in rows]
+    lines = body.split("\n")
+    last_row = max(
+        (index for index, line in enumerate(lines) if _TABLE_ROW.match(line)), default=None
+    )
+    if last_row is None:
+        lines += ["", *rows] if rows else []
+        insert_at = len(lines)
+    else:
+        lines[last_row + 1:last_row + 1] = rows
+        after = last_row + 1 + len(rows)
+        insert_at = next(
+            (index for index in range(after, len(lines)) if lines[index].startswith("## ")),
+            len(lines),
+        )
+    if extra:
+        block = "\n\n".join(extra).split("\n") + [""]
+        if insert_at == len(lines):
+            block = [""] + block
+        lines[insert_at:insert_at] = block
+    return "\n".join(lines)
+
+
 def carry_forward_configs(card: str, previous_card: str, prefix: str) -> tuple[str, list[str]]:
     """Keep configs the live card declares from earlier releases.
 
@@ -200,10 +256,11 @@ def carry_forward_configs(card: str, previous_card: str, prefix: str) -> tuple[s
     Hub shows. A config the new card lacks, whose files all live under an
     earlier ``releases/`` prefix, would silently disappear from the Hub even
     though its files stay in the repo. Such configs are appended, with their
-    dataset_info entry, exactly as the live card declares them.
+    dataset_info entry, exactly as the live card declares them, along with
+    their row in the configurations table and their own card section.
     """
     front, rest, opener = _front_matter(card)
-    previous_front, _, _ = _front_matter(previous_card)
+    previous_front, previous_rest, _ = _front_matter(previous_card)
     new_blocks = _config_blocks(front)
     previous_blocks = _config_blocks(previous_front)
     previous_meta = yaml.safe_load(previous_front) or {}
@@ -245,6 +302,7 @@ def carry_forward_configs(card: str, previous_card: str, prefix: str) -> tuple[s
     names = [config["config_name"] for config in merged["configs"]]
     if len(names) != len(set(names)) or not set(carried) <= set(names):
         raise ValueError("Carried-forward configs did not merge cleanly")
+    rest = _carry_forward_body(rest, previous_rest, carried)
     return opener + merged_front + rest, carried
 
 
@@ -324,7 +382,11 @@ def prepare(
         "file_count": len(uploads),
         "payload_bytes": sum(item["bytes"] for item in uploads),
         "uploads": uploads,
-        "command": f"hf upload rushilrawat/garhwali-corpus {output} . --repo-type dataset --commit-message 'Add Garhwali corpus v{version}'",
+        # Quoted: the checkout path ("Garhwali Language Lab") contains spaces.
+        "command": shlex.join([
+            "hf", "upload", "rushilrawat/garhwali-corpus", str(output), ".",
+            "--repo-type", "dataset", "--commit-message", f"Add Garhwali corpus v{version}",
+        ]),
     }
     plan_path.parent.mkdir(parents=True, exist_ok=True)
     plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
