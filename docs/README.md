@@ -10,7 +10,7 @@ Project-wide status, readiness, metrics, progress, and audit reports are grouped
 - [current-platform-metrics-2026-10-08.md](../project-status/current-platform-metrics-2026-10-08.md) — Live Hugging Face and Kaggle row counts, split views, GitHub CI status, and count definitions.
 - [DEVELOPER_QUICKSTART.md](DEVELOPER_QUICKSTART.md) — Exact Hugging Face config counts, copy-paste loaders, pandas/DuckDB examples, and lexicon search.
 - [DEVELOPER_READINESS.md](DEVELOPER_READINESS.md) — Five-step developer readiness status and limits of current training examples.
-- [DATASET_CARD.md](../DATASET_CARD.md) — Current v0.2.8 release scope, corrected counts, availability gap, and reuse limitations.
+- [DATASET_CARD.md](../DATASET_CARD.md) — Current v0.2.9 release scope, corrected counts, availability gap, and reuse limitations.
 - [huggingface-current-metrics-and-utility-2026-10-06.md](../project-status/huggingface-current-metrics-and-utility-2026-10-06.md) — Corrected live Hub sizes, content-vs-reference counts, local storage accounting, and v0.2.7 training readiness; see the separate v0.2.8 screened-text report for the new usable view.
 - [huggingface-kaggle-quality-release-roadmap-2026-10-06.md](../research/huggingface-kaggle-quality-release-roadmap-2026-10-06.md) — Quality gates and ordered publication plan for the focused text add-on.
 - [quality-screened-text-release-report-2026-10-06.md](../research/quality-screened-text-release-report-2026-10-06.md) — Exact local package counts, quality checks, source lineage, and publication status.

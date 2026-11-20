@@ -2,7 +2,7 @@
 
 **Started:** 2026-10-01
 **Scope:** Make `rushilrawat/garhwali-corpus` and `rushilrawat/garhwali-speech` more useful, trustworthy, and easy to apply.
-**Current public corpus release:** v0.2.8 (checked 2026-10-07). New releases remain additive; existing records and source evidence are preserved.
+**Current public corpus release:** v0.2.9 (published 2026-11-20). New releases remain additive; existing records and source evidence are preserved.
 
 ## Latest platform state — 2026-10-07
 
@@ -450,7 +450,7 @@ fresh environment.
   ordered commands and output paths, checks that each script exists, and
   writes nothing. At the time of the v0.2.6 snapshot, its default staging
   paths followed that schema version; a regression test covers the planned
-  command list. Current next-candidate defaults are v0.2.8.
+  command list. Current next-candidate defaults are v0.2.10.
 - **Complete:** the additive upload preparer runs the full record-level
   validator before staging, requires the manifest version to match
   `releases/vX.Y.Z`, and writes nothing if validation fails. Its upload plan
@@ -515,4 +515,4 @@ versioned manifest and comparable metrics.
 | 5. Speech/transcripts | Existing partial audits | Explicit labeled/empty/draft counts and split-safe manifests |
 | 6. Coverage expansion | Closed at v0.2.7; Archive intake remains local | 119 local payloads, 4,011 OCR pages, 722-page Chatak/Shailesh map, and 39 media files were not newly cleared or published. No verified Garhwali rows were promoted from this intake. |
 | 7. HF release views | Complete for v0.2.7 | Data at `1f7b2ce`; 18 named configs, 29 config/split views; prior release paths retained; latest recorded live Viewer check lists 29/29 splits and Parquet outputs |
-| 8. Automation | Local preparation automated; publication remains deliberate | Ingestion/refresh graph, provenance, package preflight, and additive upload-plan gates exist. HF uploads remain explicit; the next default candidate is v0.2.8. |
+| 8. Automation | Local preparation automated; publication remains deliberate | Ingestion/refresh graph, provenance, package preflight, and additive upload-plan gates exist. HF uploads remain explicit; the next default candidate is v0.2.10. |

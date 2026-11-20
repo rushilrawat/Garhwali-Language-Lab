@@ -1,6 +1,6 @@
 # Garhwali Corpus — dataset card
 
-**Current corpus release:** `garhwali-language-lab-v0.2.8`, public at [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus). The two additive text configs were uploaded at [data commit `48f9107`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/48f9107d0285b3b3ec3c893303efb8a997cfc49b); current metrics were checked on 8 October 2026 and are summarized in the [cross-platform metrics audit](project-status/current-platform-metrics-2026-10-08.md).
+**Current corpus release:** `garhwali-language-lab-v0.2.9`, public at [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) since 20 November 2026 ([data commit `236f2ad`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/236f2adaa587fc237f23700a64d7cb777ee02756)). It is additive: v0.2.2 to v0.2.8 paths are unchanged, and the two v0.2.8 Meta text configs are carried forward. Build-level figures are on the [local candidate metrics](project-status/local-candidate-metrics.md) page; the older [8 October cross-platform audit](project-status/current-platform-metrics-2026-10-08.md) describes v0.2.8.
 **Speech companion:** [Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech). The audio payload remains at base release `v0.2.1`; its additive v0.2 update adds text-only label indexes.
 
 ## What is in this dataset
@@ -9,37 +9,37 @@ The corpus brings together Garhwali text, vocabulary, speech references, machine
 
 ## Read this before using the row totals
 
-This release is a source-linked Garhwali research/resource collection, **not a large ready-to-train general text corpus**. The live Hub page reports **963,484 displayed rows** and **7.57 GB**. These are overlapping config views: three metadata/reference tables contribute 778,157 rows (80.8%), while content configurations contribute 185,327 overlapping rows. Neither figure is a count of unique language examples.
+This release is a source-linked Garhwali research/resource collection, **not a large ready-to-train general text corpus**. The v0.2.9 configs hold **976,343 overlapping view rows** in all. Three metadata/reference tables contribute 790,404 of them (81.0%), and content configurations contribute 185,939. Neither figure is a count of unique language examples. The Dataset Viewer was still processing the new files when these figures were taken, so they come from the release manifests and the live card; the Viewer totals may differ slightly once it finishes.
 
 The new `screened_meta_gbm` config contains **1,841** non-empty sentence-length rows (47,566 whitespace-separated words); `short_utterances_meta_gbm` contains **110** non-empty short context rows. Both are selected from existing Meta Omnilingual transcripts and were already present in the v0.2.7 `text`/`text_expansion` views. Thus, the v0.2.8 addition creates a clean, attributed, filterable training surface; it does not add 1,951 newly sourced unique texts. The training view has zero normalized duplicates internally and is recommended only for experimental sentence-level LM work. Every row remains machine-screened and **not native-speaker reviewed**.
 
-The historical v0.2.7 `text` config has **18,598 rows, 291,914 whitespace-separated words, and 1,373,045 characters**; those rows remain marked `recommended_for_training=false`. Its 1,737 `text_expansion` and 475 `text_resources` rows remain general-purpose training-ineligible. The 14,988 `paharili_gbm` rows are experimental language-identification material with unresolved sentence origins and unreviewed labels. The corpus `asr` config has 2,002 strict speaker-disjoint reference rows (36,228 transcript words). The speech companion now exposes a distinct 2,718-row VAANI `asr_reference` index with 2,202 train / 373 validation / 143 test rows, plus 2,294 optional Meta train rows. All references remain unadjudicated. Machine-generated SraVaani drafts are hypotheses, never gold transcripts.
+The v0.2.9 `text` config has **19,321 rows** (15,044 train, 1,368 validation, 1,287 test, 1,622 source-overlap); those rows remain marked `recommended_for_training=false`. Its 1,559 `text_expansion` and 648 `text_resources` rows remain general-purpose training-ineligible. The 14,996 `paharili_gbm` rows are experimental language-identification material with unresolved sentence origins and unreviewed labels. The corpus `asr` config has 1,888 strict speaker-disjoint reference rows (1,533 train, 245 validation, 110 test). The speech companion now exposes a distinct 2,718-row VAANI `asr_reference` index with 2,202 train / 373 validation / 143 test rows, plus 2,294 optional Meta train rows. All references remain unadjudicated. Machine-generated SraVaani drafts are hypotheses, never gold transcripts.
 
-The live corpus page reports **20 named configs, 31 config/split views, 963,484 displayed rows, and 7.57 GB**. The local parent-text catalog has **36,105 exact-unique records**; it is not equivalent to 36,105 public or training-ready passages. The speech page reports **118,375 displayed rows / 36.5 GB**: 113,363 audio/source rows plus the 2,718- and 2,294-row text-only indexes. The count includes overlapping views. See the [current metrics audit](project-status/current-platform-metrics-2026-10-08.md) and [v0.2.8 quality-release report](research/quality-screened-text-release-report-2026-10-06.md) for methods and use limits.
+The live corpus card lists **20 named configs and 30 config/split views (976,343 rows)**; the Hub repository holds 8.53 GB across all release paths. The local parent-text catalog has **36,105 exact-unique records**; it is not equivalent to 36,105 public or training-ready passages. The speech page reports **118,375 displayed rows / 36.5 GB**: 113,363 audio/source rows plus the 2,718- and 2,294-row text-only indexes. The count includes overlapping views. See the [current metrics audit](project-status/current-platform-metrics-2026-10-08.md) and [v0.2.8 quality-release report](research/quality-screened-text-release-report-2026-10-06.md) for methods and use limits.
 
 | Config | Rows | What it contains |
 | --- | ---: | --- |
 | `screened_meta_gbm` | 1,841 | Strict, non-empty Meta Garhwali transcripts; experimental LM candidates, not native-reviewed |
 | `short_utterances_meta_gbm` | 110 | Short transcript context; not recommended for general LM training |
-| `text` | 18,598 | Main text segments with train, validation, test, and source-overlap splits |
-| `paharili_gbm` | 14,988 | PahariLI Garhwali-labeled sentence-classification examples; experimental |
+| `text` | 19,321 | Main text segments with train, validation, test, and source-overlap splits |
+| `paharili_gbm` | 14,996 | PahariLI Garhwali-labeled sentence-classification examples; experimental |
 | `catalog` | 36,105 | Parent-text inventory; some `text` fields are empty in this config |
-| `text_expansion` | 1,737 | Existing catalog text selected for a separate access view; 1,283 train and 454 source-overlap |
-| `text_resources` | 475 | Supplementary lookup/research view; 285 train, 190 source-overlap; 0 currently recommended for general text training |
-| `asr` | 2,002 | Strict speaker-disjoint ASR reference rows |
+| `text_expansion` | 1,559 | Existing catalog text selected for a separate access view; 1,128 train and 431 source-overlap |
+| `text_resources` | 648 | Supplementary lookup/research view; 401 train, 247 source-overlap; 0 currently recommended for general text training |
+| `asr` | 1,888 | Strict speaker-disjoint ASR reference rows |
 | `sravaani_drafts` | 104,534 | Machine transcript drafts; 104,500 non-empty, 34 empty; not ground truth |
 | `lexicon` | 1,493 | Vocabulary and pronunciation candidates |
 | `instructions` | 3,228 | Experimental instruction/response examples |
 | `geography` / `historical_terms` | 50 / 36 | Place and historical-term records |
 | `literary_people` / `literary_works` | 26 / 66 | People and work-level bibliography |
 | `popular_songs` / `university_research` | 30 / 8 | Song metadata (no lyrics) and research bibliography |
-| `record_index` | 355,846 | One metadata reference per archived row |
-| `source_catalog` | 9,571 | Deduplicated sources and their available URLs/rights metadata |
-| `record_sources` | 412,740 | Record-to-source reference links |
+| `record_index` | 358,180 | One metadata reference per archived row |
+| `source_catalog` | 9,425 | Deduplicated sources and their available URLs/rights metadata |
+| `record_sources` | 422,799 | Record-to-source reference links |
 
 ## Text availability and the remaining gap
 
-In the `catalog` config, 12,657 rows carry text and 23,448 rows expose metadata without the text value. That per-config count overstates how much text is missing from Hugging Face as a whole. The v0.2.7 closeout scan found **15,004 values already exposed elsewhere** and **8,444 distinct full texts**, totaling 2,936,664 words and 16,388,267 characters, absent from public configs. They remain in the local all-data package, marked `rights_pending` / `not_cleared`. The v0.2.8 text configs re-expose rows already present in v0.2.7; a direct comparison found no overlap between these 1,951 values and the 8,444 pending catalog texts, so that unresolved public-availability count is unchanged.
+In the v0.2.9 `catalog` config, 13,108 rows carry text and 22,997 rows expose metadata without the text value (v0.2.8: 12,657 and 23,448). The availability figures below come from the v0.2.7 closeout scan and have not been re-run for v0.2.9. That per-config count overstates how much text is missing from Hugging Face as a whole. The v0.2.7 closeout scan found **15,004 values already exposed elsewhere** and **8,444 distinct full texts**, totaling 2,936,664 words and 16,388,267 characters, absent from public configs. They remain in the local all-data package, marked `rights_pending` / `not_cleared`. The v0.2.8 text configs re-expose rows already present in v0.2.7; a direct comparison found no overlap between these 1,951 values and the 8,444 pending catalog texts, so that unresolved public-availability count is unchanged.
 
 The public reference tables retain source locators for these records: 7,675
 have inline URLs and 769 resolve a URL through `source_catalog`. The quick

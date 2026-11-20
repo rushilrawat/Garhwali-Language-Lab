@@ -25,7 +25,7 @@ Platform versions below were checked on **8 October 2026**. This table shows cur
 
 | Resource | Current version | What it contains |
 | --- | --- | --- |
-| [Hugging Face corpus](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) | **v0.2.8** | Mixed-source corpus with provenance and rights fields, plus purpose-labeled text views. |
+| [Hugging Face corpus](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) | **v0.2.9** | Mixed-source corpus with provenance and rights fields, plus purpose-labeled text views. |
 | [Hugging Face speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech) | **audio v0.2.1; training views v0.2** | VAANI and Meta audio, with separate text-only indexes for existing ASR references. |
 | [Kaggle screened text](https://www.kaggle.com/datasets/rushilrawat1/garhwali-screened-text-candidates) | **v1 — public** | 1,841 screened training candidates and 110 short context rows. |
 | [Kaggle ASR references](https://www.kaggle.com/datasets/rushilrawat1/garhwali-asr-reference-clips-v0-1) | **v2 — private** | 2,718 existing VAANI audio/reference pairs with train, validation, and test splits. |
@@ -74,7 +74,7 @@ The optional `asr_meta_extra_train` index adds 2,294 train-only Meta references.
 
 The Hugging Face corpus page displays **963,484 rows** and **7.57 GB** across 20 configurations and 31 config/split views. The display includes **778,157 source/reference rows** and **185,327 overlapping content-view rows**. These are view counts, not unique passages or training examples. The speech page displays **118,375 rows** because it totals the 113,363 audio/source rows and both text-only indexes.
 
-Source terms vary; there is no single license for the entire corpus. Check each source and the row-level rights fields before reuse. The main catalog gap is **8,444 distinct full texts** retained locally pending rights evidence; they are not part of the public corpus. See the [license policy](LICENSE_POLICY.md), [attribution guide](ATTRIBUTION.md), and [current metrics audit](project-status/current-platform-metrics-2026-10-08.md). Figures for the next, unpublished build are on the [local candidate metrics](project-status/local-candidate-metrics.md) page.
+Source terms vary; there is no single license for the entire corpus. Check each source and the row-level rights fields before reuse. The main catalog gap is **8,444 distinct full texts** retained locally pending rights evidence; they are not part of the public corpus. See the [license policy](LICENSE_POLICY.md), [attribution guide](ATTRIBUTION.md), and [current metrics audit](project-status/current-platform-metrics-2026-10-08.md). Build-level figures for v0.2.9 (parent texts, segments, splits) are on the [local candidate metrics](project-status/local-candidate-metrics.md) page.
 
 Automated screening does not verify Garhwali spelling, meaning, dialect, or transcript accuracy. The native-speaker review workflow is in place, but **0 records have been adjudicated** so far (see the [review guide](review/README.md)). The benchmark remains a local draft, and independent-final evaluation eligibility is **0 of 5 task areas**. Existing model scores are development results, not independent confirmation. See the [model roadmap](research/benchmark-model-roadmap.md) and [final review](project-status/finalreport.md).
 

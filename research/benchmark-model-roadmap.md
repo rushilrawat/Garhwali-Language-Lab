@@ -1,6 +1,6 @@
 # Garhwali Benchmark and Model Research Roadmap
 
-**Updated:** 2026-10-08. Current corpus: v0.2.8; speech companion: v0.2.1. Benchmark/model findings below retain their dated evaluation snapshots. See the [8 October platform metrics audit](../project-status/current-platform-metrics-2026-10-08.md) for current counts and limits.
+**Updated:** 2026-10-08. Current corpus: v0.2.9 (published 2026-11-20); speech companion: v0.2.1. Benchmark/model findings below retain their dated evaluation snapshots. See the [8 October platform metrics audit](../project-status/current-platform-metrics-2026-10-08.md) for current counts and limits.
 **Scope:** GarhwaliBench and the model-research suite in this repository
 **Execution:** Local-first. No new paid Hugging Face job was started in this 2026-09-29/30 pass; prior completed/canceled jobs exist in the account history. Native-speaker review and dialect annotation remain deferred, so this pass prepares the review flow without inventing human decisions.
 

@@ -19,7 +19,7 @@ This update supersedes the 6 October closeout figures below. It is based on the
 live Hugging Face Dataset Viewer/cards and Kaggle dataset cards read on 7
 October; it reports published state, not a new model run.
 
-- **Hugging Face corpus:** v0.2.8, 963,484 displayed rows / 7.57 GB across 20
+- **Hugging Face corpus:** v0.2.9 since 20 November 2026 (20 configs, 30 views, 976,343 manifest rows). The v0.2.8 check showed 963,484 displayed rows / 7.57 GB across 20
   configs and 31 split views. Of these, 778,157 are source/reference rows and
   185,327 are overlapping content-view rows. The 1,841 sentence-level text
   candidates and 110 short-context entries already exist in the earlier text
