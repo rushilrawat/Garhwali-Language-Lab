@@ -1,9 +1,9 @@
 # Garhwali Language Lab — deep final audit
 
-> **Historical audit with a 7 October status pointer.** The detailed checks in
-> this file retain their dated snapshots; they are not all current metrics.
-> Current corpus and platform status is summarized in [`project-status/finalreport.md`](finalreport.md)
-> and the [8 October cross-platform audit](current-platform-metrics-2026-10-08.md).
+> **Historical audit.** The detailed checks in this file retain their dated
+> snapshots; they are not current metrics. Corpus v0.2.9 was published on
+> 20 November 2026; current status is in [`project-status/finalreport.md`](finalreport.md)
+> and the [20 November metrics page](current-platform-metrics-2026-11-20.md).
 
 ## Follow-up — Kaggle packaging — 2026-10-06 snapshot
 
