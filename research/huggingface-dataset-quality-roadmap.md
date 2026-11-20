@@ -4,9 +4,13 @@
 **Scope:** Make `rushilrawat/garhwali-corpus` and `rushilrawat/garhwali-speech` more useful, trustworthy, and easy to apply.
 **Current public corpus release:** v0.2.9 (published 2026-11-20). New releases remain additive; existing records and source evidence are preserved.
 
-## Latest platform state — 2026-10-07
+## Latest platform state
 
-The live corpus page reports 963,484 displayed rows / 7.57 GB across 20
+Corpus v0.2.9 was published on 2026-11-20 with 20 configs, 30 config/split
+views and 976,343 manifest rows (790,404 reference, 185,939 content); see the
+[20 November metrics page](../project-status/current-platform-metrics-2026-11-20.md). The paragraph below is the 2026-10-07 state.
+
+On 2026-10-07 the live corpus page reported 963,484 displayed rows / 7.57 GB across 20
 configs and 31 split views: 778,157 reference rows and 185,327 overlapping
 content rows. The 1,841-row sentence-level candidate view and 110-row context
 view are live; both re-index existing Meta-derived text and remain unreviewed.

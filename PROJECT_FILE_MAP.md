@@ -2,7 +2,7 @@
 
 This index maps the Git-tracked files in the public checkout. Ignored raw downloads, caches, model weights, and generated corpus payloads are not listed. Local disk totals vary by checkout; record inventories and hashes live in the source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **1,095**.
+Files indexed: **1,097**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -96,6 +96,7 @@ python scripts/generate_project_file_map.py
 - `project-status/corpus-preparation-status.md`
 - `project-status/current-platform-metrics-2026-10-07.md`
 - `project-status/current-platform-metrics-2026-10-08.md`
+- `project-status/current-platform-metrics-2026-11-20.md`
 - `project-status/finalreport.md`
 - `project-status/huggingface-current-metrics-and-utility-2026-10-06.md`
 - `project-status/kaggle-release-readiness-2026-10-06.md`
@@ -849,6 +850,7 @@ python scripts/generate_project_file_map.py
 - `scripts/experiments/prepare_sravaani_expanded_finetune.py`
 - `scripts/experiments/prepare_sravaani_finetune.py`
 - `scripts/experiments/prepare_whisper_compatible_manifests.py`
+- `scripts/experiments/probe_paharili_overlap.py`
 - `scripts/experiments/redecode_sravaani_recovery.py`
 - `scripts/experiments/redecode_supervised_review.py`
 - `scripts/experiments/register_asr_stage0.py`

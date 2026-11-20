@@ -1,6 +1,6 @@
 # Garhwali Corpus — dataset card
 
-**Current corpus release:** `garhwali-language-lab-v0.2.9`, public at [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) since 20 November 2026 ([data commit `236f2ad`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/236f2adaa587fc237f23700a64d7cb777ee02756)). It is additive: v0.2.2 to v0.2.8 paths are unchanged, and the two v0.2.8 Meta text configs are carried forward. Build-level figures are on the [local candidate metrics](project-status/local-candidate-metrics.md) page; the older [8 October cross-platform audit](project-status/current-platform-metrics-2026-10-08.md) describes v0.2.8.
+**Current corpus release:** `garhwali-language-lab-v0.2.9`, public at [Hugging Face](https://huggingface.co/datasets/rushilrawat/garhwali-corpus) since 20 November 2026 ([data commit `236f2ad`](https://huggingface.co/datasets/rushilrawat/garhwali-corpus/commit/236f2adaa587fc237f23700a64d7cb777ee02756)). It is additive: v0.2.2 to v0.2.8 paths are unchanged, and the two v0.2.8 Meta text configs are carried forward. Build-level figures are on the [local candidate metrics](project-status/local-candidate-metrics.md) page; current figures are on the [20 November metrics page](project-status/current-platform-metrics-2026-11-20.md), and the older [8 October cross-platform audit](project-status/current-platform-metrics-2026-10-08.md) describes v0.2.8.
 **Speech companion:** [Garhwali Speech](https://huggingface.co/datasets/rushilrawat/garhwali-speech). The audio payload remains at base release `v0.2.1`; its additive v0.2 update adds text-only label indexes.
 
 ## What is in this dataset
@@ -15,7 +15,7 @@ The new `screened_meta_gbm` config contains **1,841** non-empty sentence-length 
 
 The v0.2.9 `text` config has **19,321 rows** (15,044 train, 1,368 validation, 1,287 test, 1,622 source-overlap); those rows remain marked `recommended_for_training=false`. Its 1,559 `text_expansion` and 648 `text_resources` rows remain general-purpose training-ineligible. The 14,996 `paharili_gbm` rows are experimental language-identification material with unresolved sentence origins and unreviewed labels. The corpus `asr` config has 1,888 strict speaker-disjoint reference rows (1,533 train, 245 validation, 110 test). The speech companion now exposes a distinct 2,718-row VAANI `asr_reference` index with 2,202 train / 373 validation / 143 test rows, plus 2,294 optional Meta train rows. All references remain unadjudicated. Machine-generated SraVaani drafts are hypotheses, never gold transcripts.
 
-The live corpus card lists **20 named configs and 30 config/split views (976,343 rows)**; the Hub repository holds 8.53 GB across all release paths. The local parent-text catalog has **36,105 exact-unique records**; it is not equivalent to 36,105 public or training-ready passages. The speech page reports **118,375 displayed rows / 36.5 GB**: 113,363 audio/source rows plus the 2,718- and 2,294-row text-only indexes. The count includes overlapping views. See the [current metrics audit](project-status/current-platform-metrics-2026-10-08.md) and [v0.2.8 quality-release report](research/quality-screened-text-release-report-2026-10-06.md) for methods and use limits.
+The live corpus card lists **20 named configs and 30 config/split views (976,343 rows)**; the Hub repository holds 8.53 GB across all release paths. The local parent-text catalog has **36,105 exact-unique records**; it is not equivalent to 36,105 public or training-ready passages. The speech page reports **118,375 displayed rows / 36.5 GB**: 113,363 audio/source rows plus the 2,718- and 2,294-row text-only indexes. The count includes overlapping views. See the [current metrics page](project-status/current-platform-metrics-2026-11-20.md) and [v0.2.8 quality-release report](research/quality-screened-text-release-report-2026-10-06.md) for methods and use limits.
 
 | Config | Rows | What it contains |
 | --- | ---: | --- |
@@ -49,7 +49,7 @@ identification or grant permission to republish the text. The
 [gap-resolution audit](research/huggingface-corpus-gap-resolution-2026-10-06.md)
 lists the largest source groups and the remaining steps.
 
-The v0.2.7 release separately includes PahariLI's 14,988 normalized-unique rows. PahariLI declares Apache-2.0 for its repository, but does not identify sentence-level source origins. Those rows are available in a clearly labeled experimental config; their underlying reuse rights remain unresolved, and they are not recommended for general language-model training or independent evaluation.
+The release separately includes PahariLI's Garhwali-labeled rows (14,996 in v0.2.9; 14,988 when first added in v0.2.7). PahariLI declares Apache-2.0 for its repository, but does not identify sentence-level source origins. Those rows are available in a clearly labeled experimental config; their underlying reuse rights remain unresolved, and they are not recommended for general language-model training or independent evaluation.
 
 ## Intended uses and limitations
 

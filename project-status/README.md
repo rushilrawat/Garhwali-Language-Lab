@@ -7,7 +7,8 @@ snapshots; use the latest metrics report for the current published counts.
 ## Current status
 
 - [Final review report](finalreport.md) — current platform state followed by dated release and experiment history.
-- [Current platform metrics](current-platform-metrics-2026-10-08.md) — live Hugging Face, Kaggle, and GitHub figures verified on 8 October 2026, including the developer update and CI run.
+- [Current platform metrics](current-platform-metrics-2026-11-20.md) — corpus v0.2.9 figures and CI state as of 20 November 2026.
+- [Previous platform metrics](current-platform-metrics-2026-10-08.md) — the 8 October 2026 audit of v0.2.8, speech, Kaggle, and GitHub.
 - [Corpus preparation status](corpus-preparation-status.md) — chronological corpus preparation log and current corpus pointers.
 - [Deep final audit](DEEP_DIVE_FINAL_AUDIT.md) — detailed project audit with dated follow-up snapshots.
 

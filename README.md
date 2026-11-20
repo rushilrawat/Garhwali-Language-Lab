@@ -7,7 +7,7 @@
 We organize Garhwali text, speech, folklore, scholarship, and local knowledge into reusable resources with source, rights, and quality information.
 
 [![Python](https://img.shields.io/badge/python-3.12-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-968%20passing%20(last%20run%2020%20Nov)-brightgreen.svg)](project-status/corpus-preparation-status.md)
+[![Tests](https://img.shields.io/badge/tests-968%20passing%20(last%20run%2020%20Nov)-brightgreen.svg)](https://github.com/rushilrawat/Garhwali-Language-Lab/actions/workflows/ci.yml)
 [![Hugging Face corpus](https://img.shields.io/badge/Hugging%20Face-corpus-brightgreen?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-corpus)
 [![Hugging Face speech](https://img.shields.io/badge/Hugging%20Face-speech-yellow?logo=huggingface)](https://huggingface.co/datasets/rushilrawat/garhwali-speech)
 
@@ -21,7 +21,7 @@ Primary language identifier: **garhwali:gbm** (Garhwali, ISO 639-3). English (`e
 
 ## Current versions
 
-Platform versions below were checked on **8 October 2026**. This table shows current versions only; dated release reports preserve earlier history.
+The corpus version below was published on **20 November 2026**; the speech and Kaggle entries were last checked on 8 October 2026 and have not changed since. This table shows current versions only; dated release reports preserve earlier history.
 
 | Resource | Current version | What it contains |
 | --- | --- | --- |
@@ -33,7 +33,15 @@ Platform versions below were checked on **8 October 2026**. This table shows cur
 
 ## Recent changes
 
-Three fixes to the preparation pipeline were merged on **11 November 2026**. They change how future builds tag, review, and split rows; the published Hugging Face and Kaggle versions above were built before them and are unchanged.
+Corpus **v0.2.9** was published to Hugging Face on **20 November 2026**. It is the first release built with the pipeline fixes merged between 11 and 20 November; the speech and Kaggle releases above were built before them and are unchanged. Full figures are in the [20 November metrics page](project-status/current-platform-metrics-2026-11-20.md).
+
+- **Held-out splits.** Text segments now split 90/5/5 (182,611 train / 10,145 validation / 10,145 test). Whole duplicate components are moved into validation and test until each reaches 5%, and every leakage check stays at 0. Very short or very common segments, such as a lone `.`, no longer chain unrelated documents together.
+- **Text cleaning.** A danda followed directly by a letter, as in `…है।अब…`, now ends a segment, and Unicode normalization changes are logged per row.
+- **PahariLI.** Sentences already held by another source are counted and reported instead of stopping the build.
+- **Hub card.** Additive uploads keep the documentation for configs carried forward from earlier releases, and the generated upload command is quoted so paths with spaces work.
+- **Tests and CI.** CI enforces a 60% line-coverage floor; 14 unused scripts moved to `scripts/archive/`.
+
+Earlier fixes, merged on 11 November 2026:
 
 - **Language tagging.** A free-text source label that mentions Garhwali only in a negated clause or as a topic no longer counts as a Garhwali label, and underscore scopes such as `garhwali_focused_mixed_reference` are treated as mixed. Devanagari rows labeled Garhwali but dominated by Hindi function words are kept, drop to medium confidence, and are sent to native review.
 - **Segmentation.** The segmenter now splits verse on the double danda (॥), keeps verse numbers with their verse, and no longer splits after Devanagari abbreviations such as डॉ.
@@ -72,9 +80,9 @@ The optional `asr_meta_extra_train` index adds 2,294 train-only Meta references.
 
 ## Current scale and limits
 
-The Hugging Face corpus page displays **963,484 rows** and **7.57 GB** across 20 configurations and 31 config/split views. The display includes **778,157 source/reference rows** and **185,327 overlapping content-view rows**. These are view counts, not unique passages or training examples. The speech page displays **118,375 rows** because it totals the 113,363 audio/source rows and both text-only indexes.
+The v0.2.9 corpus has **20 configurations and 30 config/split views** holding **976,343 rows**: **790,404 source/reference rows** and **185,939 overlapping content-view rows**. These are view counts, not unique passages or training examples. The Hub repository is 8.53 GB across all release paths. (The Dataset Viewer was still processing v0.2.9 when these figures were taken from the release manifest.) The speech page displays **118,375 rows** because it totals the 113,363 audio/source rows and both text-only indexes.
 
-Source terms vary; there is no single license for the entire corpus. Check each source and the row-level rights fields before reuse. The main catalog gap is **8,444 distinct full texts** retained locally pending rights evidence; they are not part of the public corpus. See the [license policy](LICENSE_POLICY.md), [attribution guide](ATTRIBUTION.md), and [current metrics audit](project-status/current-platform-metrics-2026-10-08.md). Build-level figures for v0.2.9 (parent texts, segments, splits) are on the [local candidate metrics](project-status/local-candidate-metrics.md) page.
+Source terms vary; there is no single license for the entire corpus. Check each source and the row-level rights fields before reuse. The main catalog gap is **8,444 distinct full texts** retained locally pending rights evidence (from the v0.2.7 closeout scan); they are not part of the public corpus. See the [license policy](LICENSE_POLICY.md), [attribution guide](ATTRIBUTION.md), and [current metrics page](project-status/current-platform-metrics-2026-11-20.md). Build-level figures for v0.2.9 (parent texts, segments, splits) are on the [local candidate metrics](project-status/local-candidate-metrics.md) page.
 
 Automated screening does not verify Garhwali spelling, meaning, dialect, or transcript accuracy. The native-speaker review workflow is in place, but **0 records have been adjudicated** so far (see the [review guide](review/README.md)). The benchmark remains a local draft, and independent-final evaluation eligibility is **0 of 5 task areas**. Existing model scores are development results, not independent confirmation. See the [model roadmap](research/benchmark-model-roadmap.md) and [final review](project-status/finalreport.md).
 
@@ -99,14 +107,14 @@ Raw downloads, PDFs, caches, and generated data are excluded from Git. Review th
 
 ## Project guides
 
-- [Corpus explorer](explorer/index.html) — browse and search the public corpus and speech datasets with their rights fields; a single static page that reads the Hugging Face Dataset Viewer API Live at <https://rushilrawat.github.io/Garhwali-Language-Lab/explorer/>.
+- [Corpus explorer](explorer/index.html) — browse and search the public corpus and speech datasets with their rights fields; a single static page that reads the Hugging Face Dataset Viewer API. Live at <https://rushilrawat.github.io/Garhwali-Language-Lab/explorer/>.
 - [Dataset card](DATASET_CARD.md) — scope, configurations, and intended use.
 - [Dataset schema](docs/DATASET_SCHEMA.md) — common fields and per-configuration layouts.
 - [Developer quick start](docs/DEVELOPER_QUICKSTART.md) — loading and querying examples.
 - [Developer readiness](docs/DEVELOPER_READINESS.md) — setup, training examples, data contract, evaluation, and release checks.
 - [Documentation index](docs/README.md) — project documentation and research.
 - [Project status and audit index](project-status/README.md) — current status, readiness, metrics, and project-wide reports.
-- [Current platform metrics](project-status/current-platform-metrics-2026-10-08.md) — verified Hugging Face, Kaggle, GitHub, and CI state.
+- [Current platform metrics](project-status/current-platform-metrics-2026-11-20.md) — v0.2.9 corpus figures, Hugging Face, Kaggle, GitHub, and CI state.
 - [Release bundles](release/v0.2.0/README.md) — the current frozen v0.2.0 bundle; [`release/versions.json`](release/versions.json) is the single source of truth for corpus and bundle versions.
 - [Corpus preparation status](project-status/corpus-preparation-status.md) — current preparation state.
 - [Kaggle and Hugging Face roadmap](research/huggingface-kaggle-quality-release-roadmap-2026-10-06.md) — release decisions and remaining gates.
