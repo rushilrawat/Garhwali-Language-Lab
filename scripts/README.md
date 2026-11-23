@@ -33,7 +33,9 @@ Subfolders separate work that is not part of the release pipeline:
   (`train_*`, `run_*`, `evaluate_*`, `sweep_*`, `register_*`, `analyze_*`, ...).
   They add `scripts/` to the import path themselves, so run them directly,
   for example `python scripts/experiments/train_whisper_garhwali.py --help`.
-- `hf_jobs/`: Hugging Face Jobs container entry points (`*_hf_job.sh`).
+- `hf_jobs/`: `run_hf_job.py`, the single Hugging Face Jobs container entry
+  point (`python scripts/hf_jobs/run_hf_job.py --list`). It replaced the
+  per-job `run_*_hf_job.sh` scripts; see `hf_jobs/README.md` for the mapping.
 - `archive/`: superseded builders kept so earlier published artifacts stay
   reproducible (the v0.1 speech training view and Kaggle ASR input), plus
   one-off acquisition, audit, and Kaggle/VAANI helper scripts that no
