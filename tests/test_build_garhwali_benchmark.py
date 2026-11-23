@@ -61,7 +61,9 @@ class GarhwaliBenchmarkTests(unittest.TestCase):
             self.assertEqual(report['records']['external_total'], 4)
             self.assertEqual(report['records']['text_evaluation'], 1)
             self.assertEqual(report['records']['asr_evaluation'], 1)
-            self.assertTrue(m.TRAIN_TEXT.as_posix().endswith('text_recommended/train.jsonl'))
+            self.assertTrue(m.TRAIN_TEXT.as_posix().endswith('model_ready/splits/text/train.jsonl'))
+            self.assertEqual(report['text_views']['source_dir'], str(train_text.parent))
+            self.assertEqual(report['text_views']['rights'], 'not_training_cleared')
             self.assertEqual(report['training']['text']['records'], 2)
             self.assertEqual(report['training']['text']['sha256'], m.sha256_file(train_text))
             self.assertEqual(report['leakage']['external_exact_train_text'], 1)
@@ -103,6 +105,15 @@ class GarhwaliBenchmarkTests(unittest.TestCase):
                     None,
                     root / 'out',
                 )
+
+    def test_cli_text_splits_dir_sets_training_path(self):
+        from unittest import mock
+        with mock.patch.object(m, 'build_benchmark', return_value={}) as build:
+            self.assertEqual(m.main(['--text-splits-dir', '/tmp/splits']), 0)
+        build.assert_called_once_with(train_text_path=Path('/tmp/splits/train.jsonl'))
+        with mock.patch.object(m, 'build_benchmark', return_value={}) as build:
+            m.main([])
+        build.assert_called_once_with(train_text_path=m.TEXT_SPLITS_DIR / 'train.jsonl')
 
 
 if __name__ == '__main__':

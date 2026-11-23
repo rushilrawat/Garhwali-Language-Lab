@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import math
@@ -15,7 +16,12 @@ from garhwali_lab.text import clean_text as normalize
 
 ROOT = Path(__file__).resolve().parents[1]
 BENCHMARKS = ROOT / 'benchmarks'
-TRAIN_TEXT = ROOT / 'data/processed/model_ready/splits/text_recommended/train.jsonl'
+# Benchmark text views (train/validation/test) come from the full corpus splits.
+# These rows are NOT training-cleared; the rights-filtered view lives in
+# splits/text_recommended and is currently empty (no source is training_eligible).
+TEXT_SPLITS_DIR = ROOT / 'data/processed/model_ready/splits/text'
+TEXT_VIEW_RIGHTS = 'not_training_cleared'
+TRAIN_TEXT = TEXT_SPLITS_DIR / 'train.jsonl'
 EVAL_TEXT = ROOT / 'data/processed/model_ready/splits/evaluation/text_candidate.jsonl'
 TRAIN_ASR = ROOT / 'data/processed/model_ready/splits/asr/train.jsonl'
 EVAL_ASR = ROOT / 'data/processed/model_ready/splits/evaluation/asr_candidate.jsonl'
@@ -193,6 +199,14 @@ def build_benchmark(
                 'sha256': sha256_file(train_text_path),
             },
         },
+        'text_views': {
+            'source_dir': display_path(train_text_path.parent),
+            'rights': TEXT_VIEW_RIGHTS,
+            'note': (
+                'Benchmark text views read train/validation/test.jsonl from source_dir. '
+                'Rows are not rights-cleared for training or redistribution.'
+            ),
+        },
         'leakage': {
             'external_exact_train_text': external_overlap,
             'external_cross_split_primary_text_groups': sum(
@@ -285,5 +299,17 @@ contamination remains measurable.
     return report
 
 
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        '--text-splits-dir', type=Path, default=TEXT_SPLITS_DIR,
+        help='directory holding train/validation/test.jsonl for the benchmark text views',
+    )
+    args = parser.parse_args(argv)
+    report = build_benchmark(train_text_path=Path(args.text_splits_dir) / 'train.jsonl')
+    print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
+    return 0
+
+
 if __name__ == '__main__':
-    print(json.dumps(build_benchmark(), ensure_ascii=False, indent=2, sort_keys=True))
+    raise SystemExit(main())

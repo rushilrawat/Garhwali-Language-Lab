@@ -1,0 +1,71 @@
+{
+  "schema": "garhwali-benchmark-freeze/1",
+  "frozen_at": "2026-11-23T19:08:25Z",
+  "directory": "v0.2-draft",
+  "file_count": 9,
+  "total_bytes": 1990970931,
+  "combined_sha256": "2ed10b18e0c39569973f0474b6d58541fd464bfbb8857dfdb77228fb4d805b6d",
+  "files": [
+    {
+      "path": "external__crosssum.jsonl",
+      "bytes": 10491184,
+      "lines": 699,
+      "sha256": "44a7912c3f40779a9c7579bcabca96926f171daa6050d33e093d8c2570d89147"
+    },
+    {
+      "path": "external__flores.jsonl",
+      "bytes": 13636542,
+      "lines": 2009,
+      "sha256": "e27c2d1b1c040d5361729965358a30646e06383ccf13cac9f45ab25d46f359be"
+    },
+    {
+      "path": "external__xorqa.jsonl",
+      "bytes": 8027130,
+      "lines": 1139,
+      "sha256": "978d4d80c0e6fcc97e91480e3220aa1543a0bf6ba22524b3da386024361dbfcd"
+    },
+    {
+      "path": "internal__asr.jsonl",
+      "bytes": 968802,
+      "lines": 110,
+      "sha256": "d3b2d803c0e3e4b7464aad961766f8f5cae811c062716c0b0c99709072367dc4"
+    },
+    {
+      "path": "internal__text.jsonl",
+      "bytes": 6946744,
+      "lines": 813,
+      "sha256": "ae09042693ddd996d9b628d4c21b7e644104f94446650c314f02b00ba7bef17e"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 9915,
+      "lines": 196,
+      "sha256": "93e59a28a5b20ea64b257c7bd6b04e34e50e918a6f4d587d251c5af98e834062"
+    },
+    {
+      "path": "text_recommended__test.jsonl",
+      "bytes": 113529730,
+      "lines": 10145,
+      "sha256": "2ab250da3cbf2892f92126aa792e98ea1525be006232e1e2bc4a64db81160dc7"
+    },
+    {
+      "path": "text_recommended__train.jsonl",
+      "bytes": 1736680609,
+      "lines": 182611,
+      "sha256": "eb27d9d2da6d15fbd08c700db5e3a84a24305b523322a270b86f7ef3d28d7258"
+    },
+    {
+      "path": "text_recommended__validation.jsonl",
+      "bytes": 100680275,
+      "lines": 10145,
+      "sha256": "d6e4bd497a96f3054214a82734321a4e8556615b1c736f8b82ade593ca0b2fd4"
+    }
+  ],
+  "benchmark": {
+    "benchmark_id": "garhwali-bench-v0.2-draft",
+    "schema_version": "garhwali-bench-export-v0.2-draft",
+    "source_release_id": "garhwali-bench-v0.1-experimental",
+    "total_records": 207671,
+    "status": "draft_local_only_not_release_ready"
+  }
+}

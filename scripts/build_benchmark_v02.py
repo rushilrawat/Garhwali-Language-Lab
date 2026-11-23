@@ -277,9 +277,14 @@ def adapt_record(view_name: str, row: dict, overlay: dict | None = None) -> dict
         payload = {'source_example': row.get('source_example')}
         source_text = row.get('text_original')
         audio_private = False
-    elif view_name == 'internal/text':
-        example_id = f"internal_text:{row.get('segment_sha256', '')}"
-        language = 'gbm'
+    elif view_name == 'internal/text' or 'segment_sha256' in row:
+        # Segment-schema rows: internal text, or full corpus splits used as text views.
+        if view_name == 'internal/text':
+            example_id = f"internal_text:{row.get('segment_sha256', '')}"
+            language = 'gbm'
+        else:
+            example_id = f"text_split:{row.get('segment_sha256', '')}"
+            language = None  # full corpus splits carry no per-segment language label
         declared_script = None
         split = row.get('split')
         provenance = {'parents': row.get('parents'), 'parent_count': row.get('parent_count')}
@@ -626,17 +631,13 @@ def build_export(project_root: Path, output_dir: Path | None = None) -> dict:
         view_paths[f'external/{task}'] = root / entry['path']
     for task, entry in source_manifest['internal_evaluation'].items():
         view_paths[f'internal/{task}'] = root / entry['path']
+    train_text = root / source_manifest['training']['text']['path']
     for split in ('train', 'validation', 'test'):
-        if split == 'train':
-            relative = source_manifest['training']['text']['path']
-        else:
-            relative = f'data/processed/model_ready/splits/text_recommended/{split}.jsonl'
-        view_paths[f'text_recommended/{split}'] = root / relative
+        view_paths[f'text_recommended/{split}'] = train_text.parent / f'{split}.jsonl'
 
     views = {}
     input_hashes = {}
     for view_name, path in sorted(view_paths.items()):
-        relative = path.relative_to(root).as_posix()
         expected = validation['assets'][view_name]['sha256']
         actual = sha256_bytes(path.read_bytes())
         if actual != expected:
@@ -656,6 +657,11 @@ def build_export(project_root: Path, output_dir: Path | None = None) -> dict:
         output_dir=destination,
     )
     manifest['source_release_id'] = source_manifest.get('release_id')
+    # The text_recommended/* view names are kept for stability; record what they hold.
+    manifest['text_view_source'] = train_text.parent.relative_to(root).as_posix()
+    manifest['text_view_rights'] = (source_manifest.get('text_views') or {}).get(
+        'rights', 'rights_filtered_recommended_view',
+    )
     manifest['source_validation_status'] = validation['status']
     manifest['source_validation_errors'] = len(validation['errors'])
     manifest_bytes = (json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2) + '\n').encode('utf-8')

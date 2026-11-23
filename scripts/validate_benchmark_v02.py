@@ -229,11 +229,14 @@ def validate_asr_records(rows: list[dict], project_root: Path) -> dict:
     }
 
 
-def validate_internal_text_records(rows: list[dict]) -> dict:
+def validate_internal_text_records(
+    rows: list[dict], expected_split: str = 'test', label: str = 'internal_text',
+) -> dict:
+    """Validate segment-schema text rows (internal text or full corpus split views)."""
     errors: list[str] = []
     seen_ids: set[str] = set()
     for index, row in enumerate(rows):
-        prefix = f'internal_text[{index}]'
+        prefix = f'{label}[{index}]'
         if _has_surrogate(row):
             errors.append(f'{prefix}: malformed Unicode surrogate')
         record_id = str(row.get('segment_sha256') or '')
@@ -248,8 +251,8 @@ def validate_internal_text_records(rows: list[dict]) -> dict:
             errors.append(f'{prefix}: segment hash does not match text')
         if not row.get('duplicate_component_id'):
             errors.append(f'{prefix}: duplicate component ID is missing')
-        if row.get('split') != 'test':
-            errors.append(f'{prefix}: expected current internal text view split test')
+        if row.get('split') != expected_split:
+            errors.append(f'{prefix}: expected text view split {expected_split}')
     return {'records': len(rows), 'errors': errors}
 
 
@@ -343,10 +346,12 @@ def validate_project(project_root: Path) -> dict:
         expected_assets.append((f'internal/{task}', str(entry['path']), None, entry.get('sha256')))
     train_entry = manifest.get('training', {}).get('text', {})
     expected_assets.append(('text_recommended/train', str(train_entry.get('path')), train_entry.get('records'), train_entry.get('sha256')))
+    # Validation/test views sit beside the manifest's training text file.
+    text_split_dir = Path(str(train_entry.get('path'))).parent.as_posix()
     for split in ('validation', 'test'):
         expected_assets.append((
             f'text_recommended/{split}',
-            f'data/processed/model_ready/splits/text_recommended/{split}.jsonl',
+            f'{text_split_dir}/{split}.jsonl',
             None,
             None,
         ))
@@ -378,7 +383,10 @@ def validate_project(project_root: Path) -> dict:
             report['errors'].extend(f'internal/asr: {error}' for error in task_report['errors'])
         else:
             expected_split = name.rsplit('/', 1)[-1]
-            task_report = validate_recommended_text_records(rows, expected_split)
+            if rows and all('segment_sha256' in row for row in rows):
+                task_report = validate_internal_text_records(rows, expected_split, name)
+            else:
+                task_report = validate_recommended_text_records(rows, expected_split)
             report['tasks'][name] = task_report
             report['errors'].extend(f'{name}: {error}' for error in task_report['errors'])
 

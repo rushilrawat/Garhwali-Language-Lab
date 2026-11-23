@@ -102,6 +102,23 @@ class BuildBenchmarkV02Tests(unittest.TestCase):
         self.assertFalse(record['text']['raw_text_available'])
         self.assertEqual(record['text']['raw_text_status'], 'not_available_in_v01_view')
 
+    def test_full_split_segment_rows_get_stable_ids_and_no_training_claim(self):
+        row = {
+            'segment_sha256': sha('गढ़वाली पाठ'),
+            'duplicate_component_id': 'component-a',
+            'text': 'गढ़वाली पाठ',
+            'split': 'train',
+            'parents': [{'provenance': [{'source_id': 's', 'record_id': 's:1'}]}],
+        }
+
+        record = adapt_record('text_recommended/train', row)
+
+        self.assertEqual(record['example_id'], f"text_split:{sha('गढ़वाली पाठ')}")
+        self.assertIsNone(record['language'])
+        self.assertEqual(record['usage']['usage_label'], 'not_training_eligible')
+        self.assertEqual(record['rights']['component_rights'][0]['record_id'], 's:1')
+        self.assertFalse(record['rights']['public_release_cleared'])
+
     def test_xorqa_usage_overlay_is_linked_without_dropping_record(self):
         row = {
             'record_id': 'xorqa:dev:1',

@@ -309,7 +309,10 @@ The page-level results are in
 [`research/benchmark-source-page-families-2026-09-28.md`](../research/benchmark-source-page-families-2026-09-28.md).
 
 `validate_benchmark_v02.py` validates the current benchmark manifest, three
-external task datasets, internal text/ASR views, and recommended text splits.
+external task datasets, internal text/ASR views, and the benchmark text splits
+(the folder holding the manifest's training text; since 2026-11-23 that is the
+full `splits/text/` corpus split, not the empty rights-filtered
+`splits/text_recommended/`).
 It checks source hashes, record counts and IDs, NFC text hashes, task references,
 rights/provenance declarations, splits, and local ASR file hashes. Its report is
 a local draft-contract audit; it does not freeze v0.2 or clear rights.
@@ -317,7 +320,13 @@ a local draft-contract audit; it does not freeze v0.2 or clear rights.
 `freeze_benchmark.py freeze DIR` writes a hash manifest (per-file bytes, line
 count, SHA-256 and one combined digest; no records) for a benchmark export, and
 `freeze_benchmark.py verify DIR SNAPSHOT.json` checks a directory against it.
-The current draft's pin is `release/garhwali_bench_v0.2-draft_snapshot.json`.
+The current pin is `release/garhwali_bench_v0.2-v0.2.9_freeze.json` (corpus
+v0.2.9, 207,671 records); the September draft's pin
+`release/garhwali_bench_v0.2-draft_snapshot.json` is kept for history.
+`build_garhwali_benchmark.py --text-splits-dir DIR` chooses the folder the
+benchmark text views read; the default is `splits/text/`. The view names stay
+`text_recommended/*`, and the manifests record the real source folder and that
+these rows are `not_training_cleared`.
 
 `build_benchmark_v02.py` adapts the same eight views into a deterministic,
 ignored local draft at `data/processed/evaluation/garhwali_bench/v0.2-draft/`.
