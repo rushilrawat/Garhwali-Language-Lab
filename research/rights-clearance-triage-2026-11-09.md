@@ -141,3 +141,47 @@ records. Clear individual sites only if a site owner grants permission.
 4. Screen the UOU pages for quoted works.
 5. Send the E-Magazine permission request first: it is the largest block of
    actual Garhwali in the queue.
+
+## Follow-up review — 2026-11-23
+
+This pass worked the open items from the next-steps list above. Findings are
+recorded per source under `review_2026_11_23` in the
+[decision ledger](rights-clearance-decisions-2026-11-09.json). **No public data
+changed and no one was contacted.**
+
+### Death-date and edition checks
+
+| Source | Records | Finding | Status |
+| --- | ---: | --- | --- |
+| Pati Ram, *Garhwal: Ancient and Modern* (1916) | 185 | The foreword is by J. M. Clay, Deputy Commissioner of Garhwal (death date not found), so those pages are a separate layer. Pati Ram had retired after a lifelong career and had a graduate son by 1916, so he was almost certainly born before about 1866. No death record found. | Owner decision: accept the age inference and release without the foreword, or wait |
+| Joshi, *Notes on the Garhwal District* (1910) | 49 | No death date. Already a Rai Bahadur in 1910, which points to an older author, but the inference is weaker than for Pati Ram. | Pending; owner may accept the inference |
+| *Himalayan Folklore* (1935 text; 1977 reprint scan) | 368 | Gairola's death in May 1940 is now given by two independent secondary sources (Wikipedia and a 2025 article by historian Yogesh Dhasmana). Only the 2009 E-Magazine post gives 1950. Still no primary record. | Owner decision: accept 1940 (then public domain in India and the US), excluding the 1977 introduction |
+| Barthwal, *Garhwal Me Kon Kahan Se* (1938) | 96 | The Archive Public Domain Mark was added by the uploader with no basis. No death date found. | Pending |
+| Juyal (1967) | 200 | The CC0 label was applied by a digitizing foundation (uploaded February 2026), not the rights holder. The book's own "all rights reserved" notice governs. | Conflict closed: needs permission |
+| Govind Chatak (5 works) | 929 | Chatak was born 13 December 1933 and died June 2007, so his works are protected in India until the end of 2067. | Needs estate permission |
+| E-Magazine of Uttarakhand | 1,860 | Posts carry "Copyright @ Bhishma Kukreti" and no open license. | Needs permission |
+
+If the owner accepts both inferences and the Gairola date, 602 records
+(Pati Ram 185, Joshi 49, *Himalayan Folklore* 368) could move to Tier A. All
+three are English-language references, so they would add historical context
+but no Garhwali training text, like the Tier A releases.
+
+### Published exception: `paharili_gbm`
+
+AIKosh lists PahariLI under Apache 2.0, but its description also says
+ownership and intellectual property rights remain with the original authors.
+Neither AIKosh nor the paper's public page says where the Garhwali sentences
+came from (the paper's footnotes point to news articles; its data section is
+paywalled). The config stays labelled experimental and not rights-cleared.
+Whether to keep it published, ask the authors for their sources, or withdraw it
+from the next release is an owner decision. Citation: Gusain, Dash, Parida and
+Jha, *Language Resources and Evaluation* 57 (2023), 1361–1387,
+doi:10.1007/s10579-023-09651-6.
+
+### Not done in this pass
+
+- **UOU quote screening (592 records).** This needs the local all-data text on
+  the owner's Mac; it was not run here.
+- **Outreach.** The permission targets, in priority order, are listed in
+  [`outreach-drafts.md`](outreach-drafts.md#permission-targets-2026-11-23).
+  Nothing has been sent.

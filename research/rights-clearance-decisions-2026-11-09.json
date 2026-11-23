@@ -3,7 +3,7 @@
   "date": "2026-11-09",
   "scope": "Distinct full texts in the local v0.2.7 all-data catalog that appear in no public v0.2.7 config (exact NFKC/casefold/whitespace match).",
   "jurisdiction_rule": "Release requires public-domain status, a compatible license, or written permission in both India (source country) and the United States (Hugging Face hosting). India-only public domain is listed separately for an owner decision.",
-  "status_note": "No public data changed. Tier A decisions are evidence-complete and await owner sign-off before they are wired into the builders and released.",
+  "status_note": "No public data changed. Tier A decisions are evidence-complete and await owner sign-off before they are wired into the builders and released. Follow-up review 2026-11-23 added findings (review_2026_11_23) for 12 sources and the paharili_gbm config; no decision there changes public data.",
   "totals": {
     "records": 8444,
     "words": 2936664,
@@ -116,43 +116,49 @@
       "records": 185,
       "words": 49419,
       "tier": "B1_us_public_domain_india_death_date_needed",
-      "decision": "pending_author_death_date",
+      "decision": "pending_owner_decision_age_inference",
       "work": "Rai Pati Ram Bahadur, Garhwal: Ancient and Modern, Army Press, Simla, 1916",
       "basis": "US: published 1916, public domain. India: public domain now if the author died before 1966; no death date found yet. The book also has an introduction by another writer whose identity and dates need the same check.",
       "evidence": [
         "https://archive.org/details/in.ernet.dli.2015.43255",
         "https://web.law.duke.edu/cspd/publicdomainday/2026/",
-        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html"
-      ]
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
+        "https://archive.org/stream/in.ernet.dli.2015.530003/2015.530003.garhwal-ancient_djvu.txt"
+      ],
+      "review_2026_11_23": "Second layer identified: the undated FOREWORD is signed 'J. M. CLAY', Deputy Commissioner of Garhwal, at Pauri; his death date was not found, so the foreword pages must be excluded or separately cleared. Author's preface is signed 'PATI RAM', Parvatipur, Garhwal, and thanks 'my son Saligram Singh Pramer, B.A.'; Clay writes that Pati Ram 'has spent his life in long and honorable service outside Garhwal and has but lately returned to enjoy a well-earned rest'. A retired author with a graduate son in 1916 was almost certainly born before about 1866, so surviving into 1966 would mean living past 100. No death record was found. DLI metadata on item 2015.43255 says 'In Public Domain' (a library label, not evidence). Owner can accept the age inference and release without the foreword pages, or keep waiting for a death record."
     },
     {
       "source_id": "ia_dharmanand_joshi_notes_garhwal_district_1910",
       "records": 49,
       "words": 12982,
       "tier": "B1_us_public_domain_india_death_date_needed",
-      "decision": "pending_author_death_date",
+      "decision": "pending_owner_decision_age_inference",
       "work": "Rai Bahadur Dharmanand Joshi, Notes on the Garhwal District, Indian Press, Allahabad, 1910",
       "basis": "US: published 1910, public domain. India: public domain now if the author died before 1966; no death date found yet.",
       "evidence": [
         "https://icvtesting.nvli.in/rarebooks/notes-garhwal-district-0",
         "https://web.law.duke.edu/cspd/publicdomainday/2026/",
-        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html"
-      ]
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
+        "https://archive.org/details/dli.ministry.29693"
+      ],
+      "review_2026_11_23": "No death date found. The author already held the title Rai Bahadur in 1910, a title normally given late in a government career, which points to birth well before 1880; surviving into 1966 would mean living past about 86-100. This is weaker than the Pati Ram inference. The Internet Archive copy (dli.ministry.29693, from the National Library of India) has no rights field. Keep pending unless the owner accepts the inference."
     },
     {
       "source_id": "ia_himalayan_folklore_1935",
       "records": 368,
       "words": 83597,
       "tier": "B2_india_public_domain_us_protected_or_unresolved",
-      "decision": "pending_gairola_death_date_and_reprint_page_split",
+      "decision": "pending_owner_decision_gairola_1940",
       "work": "E. S. Oakley and T. D. Gairola, Himalayan Folklore (1935; scan is the 1977 Bibliotheca Himalayica reprint)",
       "basis": "Oakley died 1934/35. Gairola died 28 May 1940 per Wikipedia/Wikidata, or 28 May 1950 per a regional literature article. If 1940: public domain in India (term ended 1990) and the US (public domain at home on 1 Jan 1996, so no URAA restoration). If 1950: public domain in India since 2011 but protected in the US until end 2030. Either way, the 1977 reprint's added introduction is a separate in-copyright layer, so those pages must be excluded.",
       "evidence": [
         "https://en.wikipedia.org/wiki/Taradutt_Gairola",
         "https://www.wikidata.org/wiki/Q55419025",
         "http://e-magazineofuttarakhand.blogspot.com/2009/10/",
-        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html"
-      ]
+        "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
+        "https://garhwalheritage.com/uttarakhands-first-mla-and-lawyer-taradatta-garola/"
+      ],
+      "review_2026_11_23": "Death year 1940 now has two independent secondary sources: English Wikipedia (born 6 June 1875, died 28 May 1940, no citation for the date) and a 2025 Hindi article by Uttarakhand historian Yogesh Dhasmana ('28 मई 1940 में उनके असामयिक निधन'). The 1950 date appears only in the 2009 E-Magazine of Uttarakhand post. Wikidata could not be read. No primary record (obituary, legislative record) was found. If the owner accepts 1940, the 1935 text is public domain in India and the US; the 1977 reprint's added introduction by Marc Gaborieau must still be excluded."
     },
     {
       "source_id": "ia_rahul_sankrityayan_himalaya_parichay_garhwal_1953",
@@ -179,8 +185,10 @@
       "basis": "The Archive public-domain mark is unverified. India: public domain if the author died before 1966. US: public domain only if it was already public domain in India on 1 Jan 1996, which requires death before 1946. No death date found.",
       "evidence": [
         "https://copyright.gov.in/Copyright_Act_1957/chapter_v.html",
-        "https://commons.wikimedia.org/wiki/Commons:Hirtle_chart"
-      ]
+        "https://commons.wikimedia.org/wiki/Commons:Hirtle_chart",
+        "https://archive.org/details/garhwal-me-kon-kahan-se_20250415"
+      ],
+      "review_2026_11_23": "Archive item garhwal-me-kon-kahan-se_20250415 carries a Public Domain Mark 1.0 applied by uploader 'Buddh Gyan' (2025-04-15) with no stated basis; publication date 1938, no publisher field. No death date for Mahidhar Sharma Barthwal was found in English or Hindi searches. Still pending."
     },
     {
       "source_id": "uou_cgl",
@@ -223,10 +231,12 @@
       "tier": "D_needs_permission",
       "work": "E-Magazine of Uttarakhand (Bhishma Kukreti and contributors)",
       "evidence": [
-        "https://e-magazineofuttarakhand.blogspot.com/"
+        "https://e-magazineofuttarakhand.blogspot.com/",
+        "https://e-magazineofuttarakhand.blogspot.com/2016/07/dr-govind-chatak-father-of-researches.html"
       ],
       "decision": "needs_written_permission",
-      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training.",
+      "review_2026_11_23": "Posts carry the footer 'Copyright @ Bhishma Kukreti Mumbai; <year>' and no Creative Commons or other license. Confirms all rights reserved. One request to Bhishma Kukreti covers his own articles; contributed pieces need their authors."
     },
     {
       "source_id": "ia_haridatta_bhatta_garhwali_bhasha_sahitya_1976",
@@ -246,9 +256,12 @@
       "words": 69456,
       "tier": "D_needs_permission",
       "work": "Govind Chatak works (estate)",
-      "evidence": [],
+      "evidence": [
+        "https://e-magazineofuttarakhand.blogspot.com/2016/07/dr-govind-chatak-father-of-researches.html"
+      ],
       "decision": "needs_written_permission",
-      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training.",
+      "review_2026_11_23": "Govind Chatak was born 13 Dec 1933 and died June 2007 (E-Magazine of Uttarakhand biography). India: protected until the end of 2067. US: URAA-restored, 95 years from publication. Needs permission from the Chatak estate or publisher."
     },
     {
       "source_id": "shanti_chaudhary_garhwali_lokkala_loksahitya_1994",
@@ -278,9 +291,12 @@
       "words": 47067,
       "tier": "D_needs_permission",
       "work": "Govind Chatak works (estate)",
-      "evidence": [],
+      "evidence": [
+        "https://e-magazineofuttarakhand.blogspot.com/2016/07/dr-govind-chatak-father-of-researches.html"
+      ],
       "decision": "needs_written_permission",
-      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training.",
+      "review_2026_11_23": "Govind Chatak was born 13 Dec 1933 and died June 2007 (E-Magazine of Uttarakhand biography). India: protected until the end of 2067. US: URAA-restored, 95 years from publication. Needs permission from the Chatak estate or publisher."
     },
     {
       "source_id": "ia_tehri_garhwal_district_gazetteer_1971",
@@ -322,9 +338,12 @@
       "words": 60120,
       "tier": "D_needs_permission",
       "work": "Other modern books, dictionaries, and compilations",
-      "evidence": [],
+      "evidence": [
+        "https://archive.org/details/ycbf_madhya-pahadi-bhasha-garhwali-kumauni-ka-anushilan-aur-uska-hindi-se-samban"
+      ],
       "decision": "needs_written_permission",
-      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training.",
+      "review_2026_11_23": "CC0 conflict resolved against the CC0 label: the CC0 1.0 mark on Archive item ycbf_madhya-pahadi-bhasha-garhwali-kumauni-ka-anushilan-aur-uska-hindi-se-samban was applied by uploader 'agamnigam.up' (Agamnigam Digital Preservation Foundation, Community Texts, uploaded 2026-02-24). A digitizer cannot waive the author's copyright, and the book itself says 'all rights reserved'. Treat as protected; needs permission from the Juyal estate or Navyug Granthagar."
     },
     {
       "source_id": "ia_shiv_prasad_dabral_uttarakhand_history_vol1_1965",
@@ -354,9 +373,12 @@
       "words": 34160,
       "tier": "D_needs_permission",
       "work": "Govind Chatak works (estate)",
-      "evidence": [],
+      "evidence": [
+        "https://e-magazineofuttarakhand.blogspot.com/2016/07/dr-govind-chatak-father-of-researches.html"
+      ],
       "decision": "needs_written_permission",
-      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training.",
+      "review_2026_11_23": "Govind Chatak was born 13 Dec 1933 and died June 2007 (E-Magazine of Uttarakhand biography). India: protected until the end of 2067. US: URAA-restored, 95 years from publication. Needs permission from the Chatak estate or publisher."
     },
     {
       "source_id": "ia_shiv_prasad_dabral_uttarakhand_history_vol3",
@@ -440,9 +462,12 @@
       "words": 58390,
       "tier": "D_needs_permission",
       "work": "Govind Chatak works (estate)",
-      "evidence": [],
+      "evidence": [
+        "https://e-magazineofuttarakhand.blogspot.com/2016/07/dr-govind-chatak-father-of-researches.html"
+      ],
       "decision": "needs_written_permission",
-      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training.",
+      "review_2026_11_23": "Govind Chatak was born 13 Dec 1933 and died June 2007 (E-Magazine of Uttarakhand biography). India: protected until the end of 2067. US: URAA-restored, 95 years from publication. Needs permission from the Chatak estate or publisher."
     },
     {
       "source_id": "incoming_gadwali_sahitya",
@@ -480,9 +505,12 @@
       "words": 14506,
       "tier": "D_needs_permission",
       "work": "Govind Chatak works (estate)",
-      "evidence": [],
+      "evidence": [
+        "https://e-magazineofuttarakhand.blogspot.com/2016/07/dr-govind-chatak-father-of-researches.html"
+      ],
       "decision": "needs_written_permission",
-      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training."
+      "basis": "Copyright subsists (living author, author died after 1965, or recent publication). Needs written permission from the author, estate, or publisher covering redistribution and model training.",
+      "review_2026_11_23": "Govind Chatak was born 13 Dec 1933 and died June 2007 (E-Magazine of Uttarakhand biography). India: protected until the end of 2067. US: URAA-restored, 95 years from publication. Needs permission from the Chatak estate or publisher."
     },
     {
       "source_id": "dcad_gbm",
@@ -615,6 +643,20 @@
       "date": "2026-11-10",
       "scope": "ia_rahul_sankrityayan_himalaya_parichay_garhwal_1953",
       "decision": "keep local"
+    }
+  ],
+  "published_exception_reviews": [
+    {
+      "config": "paharili_gbm",
+      "date": "2026-11-23",
+      "decision": "owner_decision_keep_experimental_or_withdraw",
+      "finding": "AIKosh lists PahariLI under 'Apache 2.0' but its description adds 'All dataset ownership and intellectual property rights remain with the original author(s).' Neither AIKosh nor the paper's public landing page names where the Garhwali sentences came from; the paper's footnotes point to news articles and the data-collection section is paywalled. A repository license from the dataset authors cannot license third-party sentences, so the config stays experimental and not rights-cleared. Options: keep it published as an explicitly experimental config (status quo), ask the authors for the sentence sources, or withdraw it from the next release.",
+      "citation": "Gusain, R., Dash, S. R., Parida, S., Jha, G. N. Automatic language identification: a case study of Pahari languages. Language Resources and Evaluation 57, 1361-1387 (2023). doi:10.1007/s10579-023-09651-6",
+      "evidence": [
+        "https://aikosh.indiaai.gov.in/home/datasets/details/paharili_pahari_language_identification_corpus.html",
+        "https://link.springer.com/article/10.1007/s10579-023-09651-6",
+        "https://github.com/rachana2010/PahariLI"
+      ]
     }
   ]
 }

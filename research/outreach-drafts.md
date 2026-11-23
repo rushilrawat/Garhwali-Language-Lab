@@ -63,3 +63,21 @@ we can place the material in a separate compatible layer.
 
 Regards,
 [name and affiliation]
+
+## Permission targets (2026-11-23)
+
+Nothing has been sent. Each request should use the template above, name the
+exact works and editions, and ask about both redistribution and model training.
+Order is by Garhwali text recovered per request.
+
+| # | Rights holder | Works | Records | Note |
+| ---: | --- | --- | ---: | --- |
+| 1 | Bhishma Kukreti (editor, E-Magazine of Uttarakhand) | His own articles; ask him to forward to contributors | 1,860 | 38% of all queued words; posts say "Copyright @ Bhishma Kukreti" |
+| 2 | Govind Chatak estate / publishers (Mohini Prakashan and others) | *Gadwali Lokgeet* (1956), *Gadwali Lok Gathayen* (1958), three language studies | 929 | Author died June 2007 |
+| 3 | Shiv Prasad Dabral estate | Five history and ethnography volumes | 978 | Author died 1999; mostly Hindi context |
+| 4 | Haridatta Bhatta 'Shailesh' estate; U.P. Hindi Samiti | *Garhwali Bhasha Aur Uska Sahitya* (1976) | 443 | Ownership may sit with the state body that published it |
+| 5 | Dictionary compilers (Purohit/Benjwal; Jakhmola) | Garhwali–Hindi and English–Hindi–Garhwali dictionaries | 362 | Protected compilations |
+| 6 | Shanti Chaudhary or publisher | *Garhwali Lokkala Loksahitya* (1994) | 298 | |
+| 7 | Uttarakhand government (gazetteers) | Tehri Garhwal District Gazetteer (1971) | 253 | Or wait until the India term ends after 2031 |
+| 8 | Juyal estate / Navyug Granthagar | *Madhya Pahadi Bhasha* (1967) | 200 | Archive CC0 label is not the rights holder's |
+| 9 | PahariLI authors (Rachana Gusain et al.) | Sentence sources for the Garhwali split | (published config) | Only if the owner keeps `paharili_gbm` |
