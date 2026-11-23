@@ -2,7 +2,7 @@
 
 This index maps the Git-tracked files in the public checkout. Ignored raw downloads, caches, model weights, and generated corpus payloads are not listed. Local disk totals vary by checkout; record inventories and hashes live in the source, ingestion, release, and Hugging Face manifests under `research/`, `corpus/`, `data/`, and `release/`.
 
-Files indexed: **1,097**.
+Files indexed: **1,074**.
 
 Regenerate after adding, moving, or removing project files with:
 
@@ -889,33 +889,8 @@ python scripts/generate_project_file_map.py
 - `scripts/garhwali_lab/version.py`
 - `scripts/generate_project_file_map.py`
 - `scripts/hf_card.py`
-- `scripts/hf_jobs/run_hf_package_validation_job.sh`
-- `scripts/hf_jobs/run_indicbert_balanced_hf_job.sh`
-- `scripts/hf_jobs/run_indicbert_hf_job.sh`
-- `scripts/hf_jobs/run_indicbert_pdf_domain_extended_hf_job.sh`
-- `scripts/hf_jobs/run_indicbert_pdf_domain_hf_job.sh`
-- `scripts/hf_jobs/run_mt0_16384_hf_job.sh`
-- `scripts/hf_jobs/run_mt0_32768_hf_job.sh`
-- `scripts/hf_jobs/run_mt0_32768_seed43_hf_job.sh`
-- `scripts/hf_jobs/run_mt0_extended_hf_job.sh`
-- `scripts/hf_jobs/run_mt0_generation_analysis_hf_job.sh`
-- `scripts/hf_jobs/run_mt0_hf_job.sh`
-- `scripts/hf_jobs/run_mt0_selected_test_hf_job.sh`
-- `scripts/hf_jobs/run_ocr_validation_hf_job.sh`
-- `scripts/hf_jobs/run_ocr_validation_multiseed_hf_job.sh`
-- `scripts/hf_jobs/run_pdf_adapter_ocr_validation_hf_job.sh`
-- `scripts/hf_jobs/run_semantic_duplicate_hf_job.sh`
-- `scripts/hf_jobs/run_semantic_refinement_hf_job.sh`
-- `scripts/hf_jobs/run_sravaani_expanded_hf_job.sh`
-- `scripts/hf_jobs/run_sravaani_hf_decoding_sweep.sh`
-- `scripts/hf_jobs/run_sravaani_hf_evaluation.sh`
-- `scripts/hf_jobs/run_sravaani_hf_job.sh`
-- `scripts/hf_jobs/run_sravaani_hf_refined_61.sh`
-- `scripts/hf_jobs/run_sravaani_hf_six_config_sweep.sh`
-- `scripts/hf_jobs/run_sravaani_hf_sweep.sh`
-- `scripts/hf_jobs/run_text_noise_audit_hf_job.sh`
-- `scripts/hf_jobs/run_whisper_agreement_hf_job.sh`
-- `scripts/hf_jobs/run_whisper_turbo_agreement_hf_job.sh`
+- `scripts/hf_jobs/README.md`
+- `scripts/hf_jobs/run_hf_job.py`
 - `scripts/hf_rights.py`
 - `scripts/hf_rows.py`
 - `scripts/hf_source_registry.py`
@@ -997,6 +972,7 @@ python scripts/generate_project_file_map.py
 
 - `tests/__init__.py`
 - `tests/fixtures/e2e_text_pipeline_expected.json`
+- `tests/fixtures/hf_jobs_legacy_commands.json`
 - `tests/test_analyze_generation_output_diagnostics.py`
 - `tests/test_analyze_retrieval_cluster_uncertainty.py`
 - `tests/test_analyze_retrieval_misses.py`
@@ -1119,6 +1095,7 @@ python scripts/generate_project_file_map.py
 - `tests/test_reocr_archive_quality_pages.py`
 - `tests/test_reprocess_ocr_candidates.py`
 - `tests/test_route_sravaani_recovery.py`
+- `tests/test_run_hf_job.py`
 - `tests/test_run_indicbert_adaptation.py`
 - `tests/test_run_indicbert_lora_adaptation.py`
 - `tests/test_run_indicbert_retrieval_baseline.py`
