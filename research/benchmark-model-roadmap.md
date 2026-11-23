@@ -13,8 +13,11 @@ Corpus documentation and public availability are summarized in the
 [text-availability audit](huggingface-corpus-gap-resolution-2026-10-06.md).
 Update 2026-11-20: corpus v0.2.9 is public, with text segments split 90/5/5
 (182,611 / 10,145 / 10,145) and every leakage check at 0. That makes it the
-release to freeze the v0.2 benchmark splits on; baselines have not been rerun
-against it yet. The rest of this section describes the 7 October state.
+release to freeze the v0.2 benchmark splits on. Update 2026-11-23: the v0.2
+benchmark is now frozen on v0.2.9 (207,671 records, combined SHA-256
+`2ed10b18…`) and the CPU baselines were rerun; see the
+[v0.2.9 freeze report](benchmark-v0.2-freeze-v0.2.9-2026-11-23.md). The rest
+of this section describes the 7 October state.
 
 The corpus release was public at v0.2.8 over the v0.2.7 source package; the
 speech companion remains public at v0.2.1. The v0.2.8 text views expose 1,841

@@ -156,6 +156,19 @@ class ValidateBenchmarkV02Tests(unittest.TestCase):
         result = validate_internal_text_records([row])
         self.assertTrue(any('segment hash does not match text' in error for error in result['errors']))
 
+    def test_validates_segment_rows_against_expected_view_split(self):
+        text = 'गढ़वाली वाक्य'
+        row = {
+            'segment_sha256': sha(text), 'duplicate_component_id': 'component-1',
+            'text': text, 'split': 'train',
+        }
+
+        result = validate_internal_text_records([row], 'train', 'text_recommended/train')
+        self.assertEqual(result['errors'], [])
+
+        result = validate_internal_text_records([row], 'validation', 'text_recommended/validation')
+        self.assertTrue(any('expected text view split validation' in error for error in result['errors']))
+
 
 if __name__ == '__main__':
     unittest.main()
