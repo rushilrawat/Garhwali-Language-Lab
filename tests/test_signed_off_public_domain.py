@@ -79,13 +79,29 @@ class SignedOffPublicDomainTests(unittest.TestCase):
 
 
 class PageExcludedSignOffTests(unittest.TestCase):
-    def test_nothing_clears_until_the_page_list_is_verified(self):
+    def test_nothing_clears_while_the_page_list_is_unverified(self):
         for source_id in PAGE_EXCLUDED:
             with self.subTest(source_id=source_id):
                 spec = hf_rights.SIGNED_OFF_PUBLIC_DOMAIN_SOURCES[source_id]
-                self.assertIsNone(spec['excluded_scan_pages'])
-                self.assertIsNone(hf_rights.signed_off_public_domain_provenance(item(source_id)))
-                self.assertFalse(hf_rights.is_publishable_provenance(item(source_id)))
+                original = spec['excluded_scan_pages']
+                spec['excluded_scan_pages'] = None
+                try:
+                    self.assertIsNone(hf_rights.signed_off_public_domain_provenance(item(source_id)))
+                    self.assertFalse(hf_rights.is_publishable_provenance(item(source_id)))
+                finally:
+                    spec['excluded_scan_pages'] = original
+
+    def test_verified_exclusions_match_the_scans(self):
+        pati_ram = 'ia_rai_pati_ram_bahadur_garhwal_ancient_modern_1916'
+        folklore = 'ia_himalayan_folklore_1935'
+        for source_id, page, cleared in (
+            (pati_ram, 8, False), (pati_ram, 9, False), (pati_ram, 12, True),
+            (folklore, 13, False), (folklore, 54, False), (folklore, 55, True),
+        ):
+            with self.subTest(source_id=source_id, page=page):
+                result = hf_rights.signed_off_public_domain_provenance(
+                    item(source_id, record_id=f'{source_id}:scan-page:{page:04d}'))
+                self.assertEqual(result is not None, cleared)
 
     def test_listed_pages_stay_local_and_other_pages_clear(self):
         source_id = 'ia_himalayan_folklore_1935'

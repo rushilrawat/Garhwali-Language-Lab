@@ -67,15 +67,17 @@ SIGNED_OFF_PUBLIC_DOMAIN_SOURCES = {
     },
     # Owner sign-off 2026-11-24 (decision ledger review_2026_11_23). Both
     # scans carry a later layer by another writer, so the listed front-matter
-    # scan pages stay local. While the page list is None it has not been
-    # checked against the local scan, and no page of the source is cleared.
+    # scan pages stay local. A page list of None means it has not been
+    # checked against the local scan, and then no page of the source clears.
+    # Lists below were checked against the local OCR on 2026-11-24.
     'ia_rai_pati_ram_bahadur_garhwal_ancient_modern_1916': {
         'source_url': 'https://archive.org/details/in.ernet.dli.2015.43255',
         'author': 'Rai Pati Ram Bahadur',
         'publication_year': 1916,
         'attribution': 'Rai Pati Ram Bahadur, Garhwal: Ancient and Modern, Army Press, Simla, 1916. Internet Archive item in.ernet.dli.2015.43255. Foreword by J. M. Clay excluded.',
         'rights_evidence': 'India: owner accepted on 2026-11-24 that the author, retired with a graduate son by 1916, died before 1966; no death record found. US: published 1916, before 1931. The foreword by J. M. Clay is excluded. ' + _PD_LAW + '; https://archive.org/details/in.ernet.dli.2015.43255',
-        'excluded_scan_pages': None,
+        # Scan pages 8-9 hold the foreword; the author's preface follows.
+        'excluded_scan_pages': frozenset({8, 9}),
         'excluded_layer': 'Foreword by J. M. Clay, Deputy Commissioner of Garhwal',
     },
     'ia_himalayan_folklore_1935': {
@@ -84,8 +86,11 @@ SIGNED_OFF_PUBLIC_DOMAIN_SOURCES = {
         'publication_year': 1935,
         'attribution': 'E. S. Oakley and T. D. Gairola, Himalayan Folklore: Kumaon and West Nepal, Allahabad, 1935; scan of the 1977 Bibliotheca Himalayica reprint, Internet Archive item in.ernet.dli.2015.532407. The 1977 introduction by Marc Gaborieau is excluded.',
         'rights_evidence': 'India: Oakley died 1934/35; owner accepted on 2026-11-24 that Gairola died 28 May 1940 (Wikipedia; Y. Dhasmana 2025), so the life+50 term ended 1990, before the 1992 extension. US: public domain in India on 1 Jan 1996, so not URAA-restored. The 1977 introduction is excluded. ' + _PD_LAW + '; https://en.wikipedia.org/wiki/Taradutt_Gairola; https://garhwalheritage.com/uttarakhands-first-mla-and-lawyer-taradatta-garola/',
-        'excluded_scan_pages': None,
-        'excluded_layer': '1977 reprint introduction by Marc Gaborieau',
+        # Scan pages 1-54 are the library stamp, 1977 series pages, contents,
+        # plates and the 1977 introduction with its bibliography; the 1934
+        # preface starts on scan page 55.
+        'excluded_scan_pages': frozenset(range(1, 55)),
+        'excluded_layer': '1977 reprint front matter and introduction by Marc Gaborieau',
     },
 }
 _SIGNED_OFF_INTERNAL_KEYS = {'source_url', 'excluded_scan_pages', 'excluded_layer'}
