@@ -81,3 +81,87 @@ Order is by Garhwali text recovered per request.
 | 7 | Uttarakhand government (gazetteers) | Tehri Garhwal District Gazetteer (1971) | 253 | Or wait until the India term ends after 2031 |
 | 8 | Juyal estate / Navyug Granthagar | *Madhya Pahadi Bhasha* (1967) | 200 | Archive CC0 label is not the rights holder's |
 | 9 | PahariLI authors (Rachana Gusain et al.) | Sentence sources for the Garhwali split | (published config) | Only if the owner keeps `paharili_gbm` |
+
+## Ready-to-send drafts (2026-11-24)
+
+Drafted on the owner's instruction; **none has been sent**. Fill in the
+bracketed details, confirm the recipient's address from their own published
+contact page, and send from the owner's account.
+
+### 1. Bhishma Kukreti, E-Magazine of Uttarakhand
+
+Subject: Permission to include E-Magazine of Uttarakhand articles in an open Garhwali language dataset
+
+Dear Shri Kukreti ji,
+
+I run the Garhwali Language Lab, a research project building an openly
+documented Garhwali text and speech corpus. It is published on Hugging Face
+([link]) so that researchers can build better tools for Garhwali, including
+spell-checkers, translation and speech recognition.
+
+Your E-Magazine of Uttarakhand is the largest body of written Garhwali we have
+found online. Our local research copy holds about 1,860 pages from it, roughly
+1.1 million words, and they are not public. Because the site says "Copyright @
+Bhishma Kukreti", we have not published any of them.
+
+May we have your permission to include your own articles in the public
+dataset? Specifically, we are asking for permission to:
+
+1. redistribute the text publicly as part of the dataset, with your name, the
+   article title and the original URL on every record; and
+2. allow the dataset to be used to train language models, including [commercial
+   and noncommercial / noncommercial only] models.
+
+If you'd rather allow only some of these uses, or only some articles, please
+tell us and we will follow that. You can withdraw permission for future
+releases at any time. For articles written by other contributors, we would be
+grateful for their contact details or for you to forward this request to them.
+
+With respect and thanks for your decades of work on Garhwali literature,
+[name]
+[affiliation, email, project link]
+
+### 2. Govind Chatak estate / publisher
+
+Subject: Permission request: Dr Govind Chatak's Garhwali folk-song collections in a language dataset
+
+Dear [family member / publisher],
+
+I am writing about Dr Govind Chatak's *Gadwali Lokgeet* (1956), *Gadwali Lok
+Gathayen* (Mohini Prakashan, 1958) and his studies of the Garhwali language.
+They are among the most important records of Garhwali folk literature, and
+we have used them as local research references in the Garhwali Language Lab, an
+open research corpus for Garhwali ([link]). We have not published any of their
+text.
+
+We would like permission to include the Garhwali texts from these books in the
+public dataset, with full credit to Dr Chatak, the edition and page references
+on every record, for (1) public redistribution and (2) training language
+models [commercial and noncommercial / noncommercial only]. If only some uses
+or works are acceptable, we will follow your terms. Could you also tell us
+whether you hold these rights, or who does?
+
+With thanks,
+[name]
+[affiliation, email, project link]
+
+### 3. PahariLI authors (Rachana Gusain et al.)
+
+Subject: Sources of the Garhwali sentences in PahariLI
+
+Dear Dr Gusain and co-authors,
+
+Thank you for releasing PahariLI ("Automatic language identification: a case
+study of Pahari languages", *Language Resources and Evaluation* 57, 2023). We
+include its Garhwali portion, marked experimental, in the Garhwali Language Lab
+corpus on Hugging Face ([link]), with credit and the Apache-2.0 notice.
+
+The AIKosh listing says ownership of the underlying text stays with the original
+authors, so we would like to document where the Garhwali sentences came from
+(for example, which news sites, books or other sources). Could you share the
+source list, or the relevant section of the paper? It would let us confirm the
+dataset's rights properly and describe it accurately to users.
+
+Best regards,
+[name]
+[affiliation, email, project link]
